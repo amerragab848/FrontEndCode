@@ -2987,5 +2987,85 @@
             "totalDeduction",
             "remarks"
         ]
+    },
+    "17": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "statusName",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "bicCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "toContactName",
+                "value": "bicContactName",
+                "type": "S"
+            },
+            {
+                "name": "startDate",
+                "value": "startDate",
+                "type": "D"
+            },
+            {
+                "name": "finishDate",
+                "value": "finishDate",
+                "type": "D"
+            },
+            {
+                "name": "estimatedTime",
+                "value": "estimatedTime",
+                "type": "S"
+            },
+            {
+                "name": "priority",
+                "value": "priorityName",
+                "type": "S"
+            },
+            {
+                "name": "description",
+                "value": "description",
+                "type": "S"
+            },
+            {
+                "name": "taskActivity",
+                "value": "suspendedText",
+                "type": "S"
+            }
+        ],
+        "friendlyNames": []
     }
 }

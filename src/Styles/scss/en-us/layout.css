@@ -22301,7 +22301,7 @@ tbody.grid-body tr td.text {
 }
 
 .btn.disabled {
-    pointer-events: unset !important
+    pointer-events: none !important
 }
 
 .doc-container .step-content .readOnly__disabled .btn.disabled {

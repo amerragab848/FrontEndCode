@@ -1914,7 +1914,7 @@
             "title": "Caution !!!",
             "content": "Are you sure you want to Change Key Contact ?",
             "buttons": "[No][Yes]",
-            "successTitle": "Operation completed successfuly", 
+            "successTitle": "Operation completed successfuly",
             "yes": "Yes",
             "no": "No"
         },
@@ -1922,7 +1922,7 @@
             "title": "!احذر عملية خطيرة",
             "content": "هل انت متاكدة انك تريد نقل مسئول الشركة؟",
             "buttons": "[لا][نعم]",
-            "successTitle": "تمت العملية بنجاح", 
+            "successTitle": "تمت العملية بنجاح",
             "yes": "نعم",
             "no": "لا"
         }
@@ -2468,6 +2468,10 @@
     "newCycle": {
         "en": "New Cycle",
         "ar": "مرحله جديده "
+    },
+    "cycle": {
+        "en": "Cycle",
+        "ar": "مرحله "
     },
     "cycleSubject": {
         "en": "Cycle Subject",
@@ -8436,5 +8440,57 @@
     "selectCostCosingTree": {
         "en": "--- Select Cost Coding Tree ---",
         "ar": "-- برجاء إختيار شجرة الحسابات"
+    },
+    "inventoryItems": {
+        "en": "Items Of Inventory",
+        "ar": "عناصر المخزن"
+    },
+    "allProjects": {
+        "en": "All Projects",
+        "ar": "كل المشاريع"
+    },
+    "transfare": {
+        "en": "Transfare",
+        "ar": "التحويل"
+    },
+    "returned": {
+        "en": "Returned",
+        "ar": "المرتجع"
+    },
+    "consumption": {
+        "en": "Consumption",
+        "ar": "الاستهلاك"
+    },
+    "exchanges":{
+        "en":"Exchanges",
+        "ar":"التحويل"
+    },
+    "drawingContractors":{
+        "en":"DrawingContractors",
+        "ar":"مسحوبات المقاولين"
+    },
+    "totalPurchased":{
+        "en":"TotalPurchased",
+        "ar":"اجمالى المشتريات"
+    },
+    "totalTranfare":{
+        "en":"TotalTranfare",
+        "ar":"اجمالى التحويلات"
+    },
+    "totalReturned":{
+        "en":"TotalReturned",
+        "ar":"اجمالى المرتجعات"
+    },
+    "totalConsumption":{
+        "en":"TotalConsumption",
+        "ar":"اجمالى التحويلات"
+    },
+    "totalExchanges":{
+        "en":"TotalExchanges",
+        "ar":"اجمالى التحويلات"
+    },
+    "totalDrawingContractors":{
+        "en":"TotalDrawingContractors",
+        "ar":"اجمالى مسحوبات المقاولين"
     }
 }

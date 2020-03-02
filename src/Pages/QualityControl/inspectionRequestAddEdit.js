@@ -86,7 +86,7 @@ let columns = [
     }, {
         Header: Resources['comment'][currentLanguage],
         accessor: 'cycleComment',
-        width: 120
+        width: 400
     }
 ]
 
@@ -141,6 +141,7 @@ class inspectionRequestAddEdit extends Component {
             fromContacts: [],
             approvalstatusList: [],
             discplines: [],
+            specsSections:[],
             letters: [],
             permission: [{ name: 'sendByEmail', code: 372 }, { name: 'sendByInbox', code: 371 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 959 },
@@ -151,6 +152,7 @@ class inspectionRequestAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
+            selectedspecsSection:{ label: Resources.specsSection[currentLanguage], value: "0" },
             selectedActionByContactId: { label: Resources.actionByContact[currentLanguage], value: "0" },
             selectedActionByCompanyId: { label: Resources.actionByCompany[currentLanguage], value: "0" },
             selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
@@ -182,7 +184,7 @@ class inspectionRequestAddEdit extends Component {
                 callBackFn: null
             },
             {
-                name: "newCycle",
+                name: "cycle",
                 callBackFn: null
             }
         ];
@@ -263,6 +265,7 @@ class inspectionRequestAddEdit extends Component {
             });
 
             dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {
+                result.cycleStatus=result.status;
                 this.setState({
                     documentCycle: { ...result }
                 });
@@ -390,6 +393,14 @@ class inspectionRequestAddEdit extends Component {
                 discplines: [...result]
             });
         });
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=specsSection", 'title', 'id', 'defaultLists', "specsSection", "listType").then(result => {
+            if (isEdit == false)
+                this.setState({ specsSections: [...result] });
+            else {
+                let specsSection = result.find(item => item.value == this.props.document.specsSectionId);
+                this.setState({ specsSections: [...result], selectedspecsSection: specsSection });
+            }
+        });
 
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
             let approvalStatus = {};
@@ -500,7 +511,8 @@ class inspectionRequestAddEdit extends Component {
 
     onChangeAnswer = (value) => {
         if (value != null) {
-
+            value =value.replace('<p>','');
+            value =value.replace(/<\/p>/gm, "");
             let original_document = { ...this.state.documentCycle };
             let updated_document = {};
             updated_document['cycleComment'] = value;
@@ -675,9 +687,9 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.cycleStatus = saveDocument.status == null ? true : saveDocument.status;
         saveDocument.subject = values.subject;
 
-        let api = saveDocument.typeAddOrEdit === "Edit" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
+        let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
 
-        if (saveDocument.typeAddOrEdit === "Edit") {
+        if (saveDocument.typeAddOrEdit === "editLastCycle") {
             this.setState({ CycleEditLoading: true })
         } else {
             this.setState({ CycleAddLoading: true })
@@ -700,7 +712,7 @@ class inspectionRequestAddEdit extends Component {
 
                 let IRCycles = this.state.IRCycles;
 
-                if (saveDocument.typeAddOrEdit === "Edit") {
+                if (saveDocument.typeAddOrEdit === "editLastCycle") {
                     let index = IRCycles.findIndex(x => x.id === saveDocument.id);
 
                     IRCycles.splice(index, 1);
@@ -773,7 +785,7 @@ class inspectionRequestAddEdit extends Component {
     editCycle(e) {
 
         let cycleObj = { ...this.state.documentCycle };
-        cycleObj.typeAddOrEdit = "Edit";
+        cycleObj.typeAddOrEdit = "editLastCycle";
         this.setState({
             documentCycle: { ...cycleObj }
         });
@@ -1173,6 +1185,14 @@ class inspectionRequestAddEdit extends Component {
                                                                         selectedValue={this.state.selecetedArea}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'areaId', false, '', '', '', 'selecetedArea')}
                                                                         index="areaId" />
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
+                                                                        title="specsSection"
+                                                                        data={this.state.specsSections}
+                                                                        selectedValue={this.state.selectedspecsSection}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedspecsSection')}
+                                                                        index="specsSection" />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown

@@ -3,7 +3,8 @@ import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetup";
+
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import { Filters } from "react-data-grid-addons";
 import moment from "moment";
 import Resources from "../../resources.json";
@@ -57,76 +58,134 @@ class ClosedSummaryDetails extends Component {
   constructor(props) {
     super(props);
 
+    // var columnsGrid = [
+    //   {
+    //     key: "docNo",
+    //     name: Resources["docNo"][currentLanguage],
+    //     width: 100,
+    //     draggable: true,
+    //     sortable: true,
+    //     resizable: true,
+    //     filterable: true,
+    //     sortDescendingFirst: true,
+    //     filterRenderer: SingleSelectFilter
+    //   },
+    //   {
+    //     key: "projectName",
+    //     name: Resources["projectName"][currentLanguage],
+    //     width: 150,
+    //     draggable: true,
+    //     sortable: true,
+    //     resizable: true,
+    //     filterable: true,
+    //     sortDescendingFirst: true,
+    //     filterRenderer: SingleSelectFilter
+    //   },
+    //   {
+    //     key: "subject",
+    //     name: Resources["subject"][currentLanguage],
+    //     width: 150,
+    //     draggable: true,
+    //     sortable: true,
+    //     resizable: true,
+    //     filterable: true,
+    //     sortDescendingFirst: true,
+    //     filterRenderer: SingleSelectFilter,
+    //     formatter: subjectLink
+    //   },
+    //   {
+    //     key: "closedBy",
+    //     name: Resources["closedBy"][currentLanguage],
+    //     width: 150,
+    //     draggable: true,
+    //     sortable: true,
+    //     resizable: true,
+    //     filterable: true,
+    //     sortDescendingFirst: true,
+    //     filterRenderer: SingleSelectFilter
+    //   },
+    //   {
+    //     key: "docType",
+    //     name: Resources["docType"][currentLanguage],
+    //     width: 150,
+    //     draggable: true,
+    //     sortable: true,
+    //     resizable: true,
+    //     filterable: true,
+    //     sortDescendingFirst: true,
+    //     filterRenderer: SingleSelectFilter
+    //   },
+    //   {
+    //     key: "oppenedDate",
+    //     name: Resources["openedDate"][currentLanguage],
+    //     width: 150,
+    //     draggable: true,
+    //     sortable: true,
+    //     resizable: true,
+    //     filterable: true,
+    //     sortDescendingFirst: true,
+    //     filterRenderer: SingleSelectFilter,
+    //     formatter: dateFormate
+    //   }
+    // ];
     var columnsGrid = [
       {
-        key: "docNo",
-        name: Resources["docNo"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: 'docNo',
+        title: Resources['docNo'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: subjectLink
       },
       {
-        key: "closedBy",
-        name: Resources["closedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'closedBy',
+        title: Resources['closedBy'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "docType",
-        name: Resources["docType"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'docType',
+        title: Resources['docType'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "oppenedDate",
-        name: Resources["openedDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'oppenedDate',
+        title: Resources['openedDate'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
       }
+     
     ];
+
 
     const filtersColumns = [
       {
@@ -268,7 +327,18 @@ class ClosedSummaryDetails extends Component {
 
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} cellClick={this.cellClick} />
+       
+        <GridCustom
+        ref='custom-data-grid'
+        key="ClosedSummaryDetails"
+        data={this.state.rows}
+        pageSize={this.state.rows.length}
+        groups={[]}
+        actions={[]}
+        rowActions={[]}
+        cells={this.state.columns}
+        rowClick={()=>{}}
+    />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?

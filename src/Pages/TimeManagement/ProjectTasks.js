@@ -72,9 +72,7 @@ class ProjectTasks extends Component {
         title: Resources["arrange"][currentLanguage],
         width: 10,
         groupable: true,
-        fixed: false,
-        sortable: true,
-        type: "text"
+        fixed: false, 
       },
       {
         field: "actualProgress",
@@ -466,7 +464,6 @@ class ProjectTasks extends Component {
       bicContactId : 0,
       currentContactId:0
     };
-
   }
 
   showTransferTasks = (value) => {

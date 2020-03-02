@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import Api from '../../api';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import Export from "../../Componants/OptionsPanels/Export";
-import GridSetup from "../Communication/GridSetup"
+
 import Resources from "../../resources.json";
 import Config from "../../Services/Config";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -14,7 +14,9 @@ import { toast } from "react-toastify";
 import { SkyLightStateless } from 'react-skylight';
 import { Formik, Form } from 'formik';
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import * as Yup from 'yup';
+
 const _ = require('lodash')
 
 let currentLanguage =
@@ -88,91 +90,80 @@ class ProjectCompanies extends Component {
             }
         ];
 
+      
+
         const columnsGrid = [
             {
-                formatter: this.customButton,
-                key: 'customBtn'
+                title: "",
+                type: "check-box",
+                fixed: true,
+                field: "id",
+                showTip: true
             },
             {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'roleTitle',
+                title: Resources['companyRole'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "roleTitle",
-                name: Resources["companyRole"][currentLanguage],
-                width: 180,
-                draggable: true,
+                field: 'disciplineTitle',
+                title: Resources['disciplineTitle'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "disciplineTitle",
-                name: Resources["disciplineTitle"][currentLanguage],
-                width: 180,
-                draggable: true,
+                field: 'location',
+                title: Resources['Address'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "location",
-                name: Resources["Address"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: 'contactsTel',
+                title: Resources['Telephone'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "contactsTel",
-                name: Resources["Telephone"][currentLanguage],
-                width: 180,
-                draggable: true,
+                field: 'contactsMobile',
+                title: Resources['Mobile'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "contactsMobile",
-                name: Resources["Mobile"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: 'contactsFax',
+                title: Resources['Fax'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "contactsFax",
-                name: Resources["Fax"][currentLanguage],
-                width: 180,
-                draggable: true,
+                field: 'grade',
+                title: Resources['Grade'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "grade",
-                name: Resources["Grade"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
+
         ];
 
         this.state = {
@@ -252,6 +243,14 @@ class ProjectCompanies extends Component {
                 });
             }
         }
+    }
+    clickRow = (id) => {
+         if (Config.IsAllow(1)) {
+                this.props.history.push({
+                    pathname: "/AddEditCompany/" + id,
+                });
+            }
+     
     }
 
     addRecord = () => {
@@ -361,13 +360,43 @@ class ProjectCompanies extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={true}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    viewContactHandler={this.clickHandler}
-                    cellClick={this.cellClick} />) : <LoadingSection />;
+                
+                <GridCustom
+                    ref='custom-data-grid'
+                    key="ProjectCompanies"
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={[{
+                        title: 'Delete',
+                        handleClick: values => {
+                            this.setState({
+                                showDeleteModal: true,
+                                selectedRowId: values
+                            });
+                        },
+                        classes: ''
+                    }]}
+                    rowActions={[{
+                        title:'Contact',
+                        handleClick : (rowSelected) => {
+                            if (Config.IsAllow(1)) {
+                                this.props.history.push({
+                                    pathname: "/Contacts/" + rowSelected.companyId,
+                                });
+                            }
+                            else {
+                                toast.warning("you don't have permission");
+                            }
+                        }
+                    }]}
+                    cells={this.state.columns}
+                    rowClick={(cell) => this.clickRow(cell.companyId)}
+                />) : <LoadingSection />;
 
-        const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} /> : null;
+        const btnExport = this.state.isLoading === false ?
+         <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} /> 
+         : null;
 
         return (
             <div className='mainContainer'>

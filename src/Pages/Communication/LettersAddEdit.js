@@ -28,8 +28,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
-    //sharedSettings: Yup.string().url('Please Enter Url.'),
+    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
 });
 
 let docId = 0;
@@ -56,32 +55,27 @@ class LettersAddEdit extends Component {
 
         const query = new URLSearchParams(this.props.location.search);
 
-        let index = 0;
+        //let index = 0;
 
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                    perviousRoute = obj.perviousRoute;
-                    prevLetterId = obj.prevLetterId;
-                    fromCompanyId = obj.replyToCompId;
-                    fromContactId = obj.replyToContactId;
-                    toCompanyId = obj.replyFromCompId;
-                    toContactId = obj.replyFromContId;
-                } catch {
-                    this.props.history.goBack();
-                }
-            }
-            index++;
+        let obj = Config.extractDataFromParamas(query);
+         
+        if (Object.entries(obj).length === 0) {
+            this.props.history.goBack();
+        } else {
+            docId = obj.docId;
+            projectId = obj.projectId;
+            projectName = obj.projectName;
+            isApproveMode = obj.isApproveMode;
+            docApprovalId = obj.docApprovalId;
+            arrange = obj.arrange;
+            perviousRoute = obj.perviousRoute;
+            prevLetterId = obj.prevLetterId;
+            fromCompanyId = obj.replyToCompId;
+            fromContactId = obj.replyToContactId;
+            toCompanyId = obj.replyFromCompId;
+            toContactId = obj.replyFromContId;
         }
-
+ 
         this.state = {
             tCompanyId: toCompanyId,
             frmCompanyId: fromCompanyId,
@@ -926,15 +920,7 @@ class LettersAddEdit extends Component {
                                                                         </div>
                                                                     </button>
                                                                 ) : (
-                                                                        <button
-                                                                            className={this.state.isViewMode === true
-                                                                                ? "primaryBtn-1 btn middle__btn disNone"
-                                                                                : "primaryBtn-1 btn middle__btn"
-                                                                            }>
-                                                                            {
-                                                                                Resources.save[currentLanguage]
-                                                                            }
-                                                                        </button>
+                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>
                                                                     )}
                                                                 <DocumentActions
                                                                     isApproveMode={this.state.isApproveMode}

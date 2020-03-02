@@ -1357,15 +1357,7 @@ var routes = [
             permission: 170,
             order: 9
         }
-    },
-    {
-        route:
-            "procurementAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-        moduleId: "contracts/procurementAddEdit",
-        title: "Procurement",
-        nav: false,
-        settings: { Contracts: false }
-    },
+    }, 
     {
         route: "pco",
         moduleId: "commonLogs",
@@ -2836,44 +2828,52 @@ var routes = [
             order: 6
         }
     },
-    {
+   
+    // {
+    //     route: "materialsSuspended",
+    //     moduleId: "reportCenter/materialsSuspended",
+    //     title: "materialsSuspended",
+    //     nav: true,
+    //     settings: { inventory: true, permission: 3724, order: 2 }
+    // },
+    { //start inventory Items Routes
         route: "inventoryRpt",
-        moduleId: "reports/inventoryRpt",
+        moduleId: "InventoryItemsReports/InventoryItems",
         title: "inventoryRpt",
         nav: true,
         settings: { inventory: true, permission: 3723, order: 1 }
     },
     {
         route: "materialsSuspended",
-        moduleId: "reportCenter/materialsSuspended",
+        moduleId: "InventoryItemsReports/SluggishMaterials",
         title: "materialsSuspended",
         nav: true,
         settings: { inventory: true, permission: 3724, order: 2 }
     },
     {
         route: "materialInventoryReport",
-        moduleId: "reportCenter/itemsBalancePerProject",
+        moduleId: "InventoryItemsReports/MaterialInventory",
         title: "materialInventoryReport",
         nav: true,
         settings: { inventory: true, permission: 3665, order: 3 }
     },
     {
         route: "materialInventoryByInterval",
-        moduleId: "reportCenter/materialInventoryByInterval",
+        moduleId: "InventoryItemsReports/MaterialInventoryByInterval",
         title: "materialInventoryByInterval",
         nav: true,
         settings: { inventory: true, permission: 3726, order: 4 }
     },
     {
         route: "transfarePerProject",
-        moduleId: "reportCenter/transfarePerProject",
+        moduleId: "InventoryItemsReports/TransfarePerProject",
         title: "transfarePerProject",
         nav: true,
         settings: { inventory: true, permission: 3727, order: 5 }
     },
     {
-        route: "totalsOfStockReport",
-        moduleId: "reportCenter/totalsOfStockReport",
+        route: "TotalsOfStockReport",
+        moduleId: "InventoryItemsReports/TotalsOfStockReport",
         title: "totalsOfStockReport",
         nav: true,
         settings: { inventory: true, permission: 3728, order: 6 }
@@ -3044,6 +3044,8 @@ var routes = [
             order: 11
         }
     }
+   
+   
 ];
 
 export default routes;
