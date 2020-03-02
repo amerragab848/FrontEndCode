@@ -1,4 +1,10 @@
-import React, { Component } from "react";
+
+import React, { Component, Fragment } from "react";
+import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+import DatePicker from "../../Componants/OptionsPanels/DatePicker";
+import dataservice from "../../Dataservice";
+
+import { Formik, Form } from "formik";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from "react-router-dom";
@@ -8,7 +14,8 @@ import CryptoJS from 'crypto-js';
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Pages/Communication/GridSetup";
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
+import { SkyLightStateless } from 'react-skylight';
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
@@ -59,292 +66,220 @@ class ProjectTasks extends Component {
     super(props);
 
     const columnsGrid = [
+      { title: '', type: 'check-box', fixed: true, field: 'id' },
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 100,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      // {
-      //   //key: "status",
-      //   key: "BtnActions",
-      //   width: 150
-      // },
-      {
-        key: "actualProgress",
-        name: Resources["actualProgress"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        field: "arrange",
+        title: Resources["arrange"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false, 
       },
       {
-        key: "id",
-        name: Resources["transferTask"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "actualProgress",
+        title: Resources["actualProgress"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "subject",
+        title: Resources["subject"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: subjectLink
+        type: "text"
       },
       {
-        key: "suspendedText",
-        name: Resources["suspeneded"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "suspendedText",
+        title: Resources["suspeneded"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "fromCompanyName",
-        name: Resources["fromCompany"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "fromCompanyName",
+        title: Resources["fromCompany"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "bicCompanyName",
-        name: Resources["actionByCompany"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "bicCompanyName",
+        title: Resources["actionByCompany"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "bicContactName",
-        name: Resources["actionByContact"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "bicContactName",
+        title: Resources["actionByContact"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "docCloseDate",
-        name: Resources["docClosedate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "docCloseDate",
+        title: Resources["docClosedate"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "originalEstimatedTime",
-        name: Resources["originalEstimatedTime"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "originalEstimatedTime",
+        title: Resources["originalEstimatedTime"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "estimatedTime",
-        name: Resources["estimatedTaskTime"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "estimatedTime",
+        title: Resources["estimatedTaskTime"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "actualTotal",
-        name: Resources["actualTotal"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "actualTotal",
+        title: Resources["actualTotal"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "userProgress",
-        name: Resources["userProgress"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "userProgress",
+        title: Resources["userProgress"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "remaining",
-        name: Resources["remaining"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "remaining",
+        title: Resources["remaining"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "startDate",
-        name: Resources["startDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "startDate",
+        title: Resources["startDate"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "finishDate",
-        name: Resources["finishDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "finishDate",
+        title: Resources["finishDate"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "docDelay",
-        name: Resources["delay"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "docDelay",
+        title: Resources["delay"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "oppenedBy",
-        name: Resources["openedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "oppenedBy",
+        title: Resources["openedBy"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "closedBy",
-        name: Resources["closedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "closedBy",
+        title: Resources["closedBy"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "lastEditBy",
-        name: Resources["lastEdit"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastEditBy",
+        title: Resources["lastEdit"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "lastEditDate",
-        name: Resources["lastEditDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastEditDate",
+        title: Resources["lastEditDate"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "lastSendTime",
-        name: Resources["lastSendTime"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastSendTime",
+        title: Resources["lastSendTime"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "lastApproveDate",
-        name: Resources["lastApproveDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastApproveDate",
+        title: Resources["lastApproveDate"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "lastApproveTime",
-        name: Resources["lastApprovedTime"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastApproveTime",
+        title: Resources["lastApprovedTime"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        type: "text"
       },
       {
-        key: "lastSendDate",
-        name: Resources["lastSendDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastSendDate",
+        title: Resources["lastSendDate"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        type: "date"
       }
     ];
 
@@ -467,6 +402,34 @@ class ProjectTasks extends Component {
       }
     ];
 
+    this.actions = [
+      {
+        title: 'Delete',
+        handleClick: (values) => {
+          if (Config.IsAllow(618)) {
+            this.setState({
+              showDeleteModal: true,
+              selectedRow: values
+            });
+          } else {
+            toast.warning(Resources["missingPermissions"][currentLanguage]);
+          }
+        },
+        classes: '',
+      }
+    ];
+
+    this.rowActions = [
+      {
+        title: 'Transfer Task',
+        handleClick: row => {
+          this.showTransferTasks(row)
+        }
+      }
+    ];
+
+    this.groups = [];
+
     this.state = {
       projectName: localStorage.getItem('lastSelectedprojectName'),
       pageTitle: Resources["projectTask"][currentLanguage],
@@ -474,10 +437,15 @@ class ProjectTasks extends Component {
       columns: columnsGrid,
       isLoading: true,
       rows: [],
+      CompanyData: [],
+      ContactNameData: [],
+      seletedCompany: "",
+      selectedConstact: '',
       filtersColumns: filtersColumns,
       isCustom: true,
       apiFilter: "",
       api: "",
+      hours: 0,
       viewModal: false,
       projectId: props.match.params.projectId,
       totalRows: 0,
@@ -488,7 +456,79 @@ class ProjectTasks extends Component {
       showDeleteModal: false,
       selectedRows: [],
       minimizeClick: false,
+      startDate: moment().format("YYYY-MM-DD"),
+      finishDate: moment().format("YYYY-MM-DD"),
+      selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+      selectedContract: { label: Resources.selectContract[currentLanguage], value: "0" },
+      maxEstimateHours: 0,
+      bicContactId : 0,
+      currentContactId:0
     };
+  }
+
+  showTransferTasks = (value) => {
+
+    this.setState({
+      viewModal: true,
+      maxEstimateHours: value.estimatedTime,
+      bicContactId : value.bicContactId
+    })
+  }
+  transferTasks = (value) => {
+
+    if (this.state.maxEstimateHours > value.hours) {
+      alert('Estimated Time You Entered Greater Than or Equal Current Estimate Time')
+    }
+    else {
+      if (this.state.bicContactId == this.state.currentContactId) {
+        alert("Can Not Transfer Task To The Same Contact");
+      } else {
+        dataservice.addObject("TransferTask", value).then(result => {
+
+          // let originalData = this.state.rows;
+
+          // let findIndex = originalData.findIndex(x => x.id === objItems.id);
+
+          // originalData.splice(findIndex, 1);
+
+          // originalData.push(objItems);
+
+          this.setState({
+            //rows: originalData,
+            viewModal: false
+          });
+          toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(() => {
+          toast.error(Resources["operationCanceled"][currentLanguage]);
+          this.setState({ viewModal: false });
+        });
+      }
+    }
+  }
+  GetData = (url, label, value, currState) => {
+    let Data = []
+    Api.get(url).then(result => {
+      (result).forEach(item => {
+        var obj = {};
+        obj.label = item[label];
+        obj.value = item[value];
+        Data.push(obj);
+      });
+      this.setState({
+        [currState]: [...Data]
+      });
+    }).catch(ex => {
+    });
+  }
+  Company_handleChange = (item) => {
+    let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + item.value;
+    this.GetData(url, "contactName", "id", "ContactNameData");
+
+    this.setState({ selectedFromCompany: item, CompanyValidation: false, selectedConstact: '' });
+
+  }
+  Contact_handleChange = (item) => {
+    this.setState({ selectedContract: item, ContactValidation: false });
   }
 
   componentWillUnmount() {
@@ -499,6 +539,7 @@ class ProjectTasks extends Component {
   }
 
   componentWillMount() {
+    let cni = Config.getPayload().cni;
 
     let url = this.state.isCustom === true ? "GetTasksByProjectIdCustom?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize :
       "GetTasksByProjectId?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
@@ -515,6 +556,9 @@ class ProjectTasks extends Component {
     ).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     this.props.actions.documentForAdding();
+
+    this.setState({ currentContactId: cni });
+
   }
 
   hideFilter(value) {
@@ -555,6 +599,10 @@ class ProjectTasks extends Component {
       });
     }
   }
+  DatehandleChange = (date, name) => {
+    if (name == "startDate") { this.setState({ startDate: date }) }
+    else { this.setState({ finishDate: date }); }
+  }
 
   GetNextData() {
 
@@ -593,6 +641,22 @@ class ProjectTasks extends Component {
   handleMinimize = () => {
     const currentClass = this.state.minimizeClick;
     const isCustom = this.state.isCustom;
+
+    let url = this.state.isCustom === true ? "GetTasksByProjectIdCustom?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize :
+      "GetTasksByProjectId?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
+
+    Api.get(url).then(
+      result => {
+        this.setState({
+          rows: result != null ? result.data : [],
+          isLoading: false,
+          api: "GetTasksByProjectIdCustom",
+          totalRows: result.total
+        });
+      }
+    ).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+
+    this.props.actions.documentForAdding();
 
     this.setState({
       minimizeClick: !currentClass,
@@ -743,7 +807,10 @@ class ProjectTasks extends Component {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   };
-
+  componentDidMount = () => {
+    let url2 = "GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId;
+    this.GetData(url2, 'companyName', 'companyId', 'CompanyData');
+  }
   onCloseModal = () => {
     this.setState({ showDeleteModal: false });
   };
@@ -786,15 +853,13 @@ class ProjectTasks extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows}
-          columns={this.state.columns}
-          showCheckbox={this.state.showCheckbox}
-          IsActiv={this.IsActive}
-          cellClick={this.cellClick}
-          clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-          getCellActions={this.GetCellActions}
-          UnSelectIsActiv={this.UnSelectIsActiv}
+        <GridCustom
+          data={this.state.rows}
+          cells={this.state.columns}
+          groups={this.groups}
           pageSize={this.state.pageSize}
+          actions={this.actions}
+          rowActions={this.rowActions}
         />
       ) : <LoadingSection />;
 
@@ -806,6 +871,7 @@ class ProjectTasks extends Component {
       <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> : null;
 
     return (
+
       <div className="mainContainer">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
@@ -857,7 +923,7 @@ class ProjectTasks extends Component {
                   </g>
                 </svg>
               </span>
-              {this.state.viewfilter === false ? (
+              {this.state.viewfilter === true ? (
                 <span className="text active">
                   <span className="show-fillter">
                     {Resources["showFillter"][currentLanguage]}
@@ -927,6 +993,90 @@ class ProjectTasks extends Component {
             />
           ) : null
           }
+        </div>
+        <div className="skyLight__form">
+          <SkyLightStateless
+            onOverlayClicked={() => this.setState({ viewModal: false })}
+            title={Resources['transferTask'][currentLanguage]}
+            onCloseClicked={() => this.setState({ viewModal: false })}
+            isVisible={this.state.viewModal}>
+
+            <Fragment>
+              <Formik
+                initialValues={{
+                  startDate: this.state.startDate,
+                  finishDate: this.state.finishDate,
+                  selectedContract: this.state.selectedContract.value > 0 ? this.state.selectedContract.value : "",
+                  selectedFromCompany: this.state.selectedFromCompany.value > 0 ? this.state.selectedFromCompany.value : "",
+                  hours: this.state.hours > 0 ? this.state.hours : 0,
+                }}
+                enableReinitialize={true}
+                //validationSchema={ValidtionSchemaForEdit} 
+                onSubmit={(values, actions) => {
+                  this.transferTasks(values, actions)
+                }}>
+
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <div className='document-fields'>
+                      <div className="proForm datepickerContainer">
+                        <div className="linebylineInput valid-input">
+                          <DatePicker
+                            title="startDate"
+                            name="startDate"
+                            startDate={values.startDate}
+                            handleChange={(e) => { this.DatehandleChange(e, "startDate"); }} />
+                        </div>
+                        <div className="linebylineInput valid-input">
+                          <DatePicker
+                            title="finishDate"
+                            name="finishDate"
+                            startDate={values.finishDate}
+                            handleChange={(e) => { this.DatehandleChange(e, "finish"); }} />
+                        </div>
+
+                        <div className="linebylineInput valid-input">
+                          <Dropdown
+                            title="CompanyName"
+                            data={this.state.CompanyData}
+                            handleChange={this.Company_handleChange}
+                            index='Company'
+                            selectedValue={this.state.selectedFromCompany} />
+                        </div>
+                        <div className="linebylineInput valid-input">
+                          <Dropdown
+                            title="ContactName"
+                            data={this.state.ContactNameData}
+                            handleChange={this.Contact_handleChange}
+                            index='Contact'
+                            selectedValue={this.state.selectedContract} />
+                        </div>
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.hours[currentLanguage]}
+                          </label>
+                          <div className="ui input inputDev">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="hours"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              defaultValue={values.hours || 0}
+                              name="hours"
+                              placeholder={Resources.hours[currentLanguage]} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="slider-Btns">
+                        <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['transferTask'][currentLanguage]}</button>
+                      </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </Fragment>
+          </SkyLightStateless>
         </div>
       </div>
     );

@@ -1952,9 +1952,10 @@ class requestPaymentsAddEdit extends Component {
         let exportFile = "";
 
         if (event.label === "Export") {
+
             this.setState({ isView: false, exportFile: "" });
-            let ExportColumnsList = [];
-            //const ExportColumns =
+
+            let ExportColumnsList = []; 
             itemsColumns.filter(i => {
                 if (i.key !== "BtnActions") {
                     ExportColumnsList.push({ title: i.name, field: i.key });
@@ -2634,9 +2635,7 @@ class requestPaymentsAddEdit extends Component {
                 </div>
             </Fragment>
         ) : (<LoadingSection />);
-
-        let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
-
+ 
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
