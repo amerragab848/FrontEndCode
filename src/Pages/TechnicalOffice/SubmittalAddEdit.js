@@ -108,6 +108,7 @@ class SubmittalAddEdit extends Component {
     }
 
     this.state = {
+      isCompany: Config.getPayload().uty === "company" ? true : false,
       submittalCycleId: 0,
       currentStep: 0,
       cycleId: "",
@@ -385,23 +386,27 @@ class SubmittalAddEdit extends Component {
   }
 
   checkDocumentIsView() {
-    if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(221)) {
-        this.setState({ isViewMode: true });
-      }
-      if (this.state.isApproveMode != true && Config.IsAllow(221)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(221)) {
-          if (this.props.document.status == true && Config.IsAllow(221)) {
-            this.setState({ isViewMode: false });
+    if (this.state.isCompany == true) {
+      this.setState({ isViewMode: false });
+    } else {
+      if (this.props.changeStatus === true) {
+        if (!Config.IsAllow(221)) {
+          this.setState({ isViewMode: true });
+        }
+        if (this.state.isApproveMode != true && Config.IsAllow(221)) {
+          if (this.props.hasWorkflow == false && Config.IsAllow(221)) {
+            if (this.props.document.status == true && Config.IsAllow(221)) {
+              this.setState({ isViewMode: false });
+            } else {
+              this.setState({ isViewMode: true });
+            }
           } else {
             this.setState({ isViewMode: true });
           }
-        } else {
-          this.setState({ isViewMode: true });
         }
+      } else {
+        this.setState({ isViewMode: false });
       }
-    } else {
-      this.setState({ isViewMode: false });
     }
   }
 
