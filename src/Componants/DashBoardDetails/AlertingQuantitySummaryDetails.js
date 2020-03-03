@@ -67,7 +67,7 @@ class AlertingQuantitySummaryDetails extends Component {
         title: Resources['description'][currentLanguage],
         width: 20,
         groupable: true,
-        fixed: false,
+        fixed: false, href: 'https://www.google.com/',
         type: "text",
         sortable: true,
       },

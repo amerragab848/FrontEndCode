@@ -78,13 +78,16 @@ class PermissionsGroupsPermissions extends Component {
             let group = []
             if (this.state.status == 1) {
                 this.state[this.state.selectedDocument.value].forEach(item => {
-                    group.push({ permissionId: item.code, groupName: this.state.groupName, permissionValue: this.state[item.code], groupId: this.state.groupId })
+                    if (this.state[item.code] == true) {
+                        group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId });
+                    }
                 })
             }
             else {
                 this.state[this.state.selectedDocument.value].forEach(item => {
-                    if (this.state[item.code] == true)
-                        group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId })
+                    if (this.state[item.code] == true) {
+                        group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId });
+                    }
                 })
             }
             this.setState({ isLoading: true })
