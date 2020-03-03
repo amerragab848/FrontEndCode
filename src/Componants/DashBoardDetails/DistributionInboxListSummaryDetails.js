@@ -433,12 +433,6 @@ class DistributionInboxListSummaryDetails extends Component {
             </div>
           </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }} >
-          <div className="gridfillter-container">
-            {ComponantFilter}
-          </div>
-        </div>
-
         <div>{dataGrid}</div>
       </div>
     );

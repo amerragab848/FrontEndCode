@@ -25,7 +25,8 @@ class DocApprovalDetails extends Component {
         fixed: false,
         width: 16,
         sortable: true,
-        type: "text"
+        type: "text",
+        classes: 'gridBtns '
       },
       {
         field: "subject",
@@ -36,7 +37,7 @@ class DocApprovalDetails extends Component {
         sortable: true,
         type: "text",
         href: 'link',
-       
+
         onRightClick: (e, cell) => {
           if (e.readStatus != true) {
             Api.post("UpdateStatusWorkFlow?id=" + e.id);
@@ -310,6 +311,7 @@ class DocApprovalDetails extends Component {
           isLoading: false
         });
       });
+      setTimeout(() => { this.addReadStatusClass() }, 1000);
     } else {
       this.setState({
         pageTitle: Resources["docApproval"][currentLanguage]
@@ -342,11 +344,20 @@ class DocApprovalDetails extends Component {
           }
           row.link = subject;
         });
+        setTimeout(() => { this.addReadStatusClass() }, 1000);
         this.setState({
           rows: newRows != null ? newRows : [],
           isLoading: false
         });
       });
+    }
+  }
+
+  addReadStatusClass = () => {
+    var gridBtns = document.querySelectorAll('.gridBtns');
+    for (let i = 0; i < gridBtns.length; i++) {
+      if (gridBtns[i].textContent.toLowerCase() == 'Read'.toLowerCase()) gridBtns[i].classList.add('Read');
+      else if (gridBtns[i].textContent.toLowerCase() == 'UnRead'.toLowerCase()) gridBtns[i].classList.add('UnRead');
     }
   }
 
@@ -444,7 +455,7 @@ class DocApprovalDetails extends Component {
       /> : <LoadingSection />;
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer main__withouttabs">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
