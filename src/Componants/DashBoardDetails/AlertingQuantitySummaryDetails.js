@@ -51,7 +51,7 @@ class AlertingQuantitySummaryDetails extends Component {
   constructor(props) {
     super(props);
 
-   
+
     var columnsGrid = [
       {
         field: 'docSubject',
@@ -61,53 +61,53 @@ class AlertingQuantitySummaryDetails extends Component {
         fixed: true,
         type: "text",
         sortable: true,
-    },
-    {
-      field: 'description',
-      title: Resources['description'][currentLanguage],
-      width: 20,
-      groupable: true,
-      fixed: false,
-      type: "text",
-      sortable: true,
-  },
-  {
-    field: 'projectName',
-    title: Resources['projectName'][currentLanguage],
-    width: 20,
-    groupable: true,
-    fixed: false,
-    type: "text",
-    sortable: true,
-},
-{
-  field: 'originalQnty',
-  title: Resources['originalQuantity'][currentLanguage],
-  width: 20,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true,
-},
-{
-  field: 'requestedQnty',
-  title: Resources['requestedQuantity'][currentLanguage],
-  width: 20,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true,
-},
-{
-  field: 'remainingQnty',
-  title: Resources['remainingQuantity'][currentLanguage],
-  width: 20,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true,
-}
-     
+      },
+      {
+        field: 'description',
+        title: Resources['description'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+      },
+      {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+      },
+      {
+        field: 'originalQnty',
+        title: Resources['originalQuantity'][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+      },
+      {
+        field: 'requestedQnty',
+        title: Resources['requestedQuantity'][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+      },
+      {
+        field: 'remainingQnty',
+        title: Resources['remainingQuantity'][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+      }
+
     ];
 
     const filtersColumns = [
@@ -239,18 +239,18 @@ class AlertingQuantitySummaryDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-     
-       <GridCustom
-                    ref='custom-data-grid'
-                    key="AlertingQuantitySummaryDetails"
-                    data={this.state.rows}
-                    pageSize={this.state.rows.length}
-                    groups={[]}
-                    actions={[]}
-                    rowActions={[]}
-                    cells={this.state.columns}
-                    rowClick={()=>{}}
-                />
+
+        <GridCustom
+          ref='custom-data-grid'
+          key="AlertingQuantitySummaryDetails"
+          data={this.state.rows}
+          pageSize={this.state.rows.length}
+          groups={[]}
+          actions={[]}
+          rowActions={[]}
+          cells={this.state.columns}
+          rowClick={cell => this.onRowClick(cell)}
+        />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
@@ -265,7 +265,7 @@ class AlertingQuantitySummaryDetails extends Component {
       /> : <LoadingSection />;
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer main__withouttabs">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
@@ -356,7 +356,7 @@ class AlertingQuantitySummaryDetails extends Component {
       </div>
     );
   }
-} 
+}
 
 function mapStateToProps(state, ownProps) {
   return {

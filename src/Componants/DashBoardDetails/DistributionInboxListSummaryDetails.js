@@ -87,7 +87,7 @@ class DistributionInboxListSummaryDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter: subjectLink
+        // formatter: subjectLink
       },
       {
         key: "projectName",
@@ -361,7 +361,7 @@ class DistributionInboxListSummaryDetails extends Component {
 
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer main__withouttabs">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
