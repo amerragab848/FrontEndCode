@@ -22312,24 +22312,29 @@ tbody.grid-body tr td.text {
 }
 
 .gridBtns span {
-    text-align: center !important;
-    margin: 4px auto !important; 
-    padding: 4px 10px !important;
-    border-radius: 26px !important;
-    width: 100% !important; 
-    color: #fff !important; 
-    background-color: #e9ecf0 !important;
-    font-size: 12px !important
+    text-align: center;
+    margin: 4px auto; 
+    padding: 3px 7px;
+    border-radius: 15px; 
+    color: #858d9e; 
+    background-color: #e9ecf0;
+    font-size: 11px;
+    font-weight: bold;
 }
+
 tbody.grid-body tr div.text.bold {
     font-weight: bold;
 }
 
+tbody.grid-body tr  .text.elipsisPadd {
+    padding-right: 10px !important;
+}
+
 .gridBtns.Read span { 
-    background-color: #5FD45F !important; 
+    background-color: #5FD45F !important; color: #fff !important; 
 }
 
 .gridBtns.UnRead span { 
-    background-color: #E74C3C !important; 
+    background-color: #E74C3C !important; color: #fff !important; 
 }
 /* Added New After devided*/
