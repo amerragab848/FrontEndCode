@@ -478,7 +478,7 @@ class ProjectTasks extends Component {
   }
   transferTasks = (value) => {
 
-    if (this.state.maxEstimateHours < value.hours) {
+    if (this.state.maxEstimateHours <= value.hours) {
       alert('Estimated Time You Entered Greater Than or Equal Current Estimate Time')
     }
     else {
