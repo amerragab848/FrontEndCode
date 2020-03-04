@@ -12959,6 +12959,12 @@
         "isRange": true
       },
       {
+        "name": "approvalStatus",
+        "field": "approvalStatusName",
+        "type": "string",
+        "isCustom": false
+      },
+      {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
