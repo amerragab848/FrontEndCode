@@ -126,9 +126,9 @@ class CommonLog extends Component {
     return shouldUpdate;
   };
 
-  hideFilter(e,value) {
+  hideFilter(e, value) {
     e.preventDefault()
-    this.setState({ viewfilter: !this.state.viewfilter }); 
+    this.setState({ viewfilter: !this.state.viewfilter });
   };
 
   addRecord() {
@@ -325,7 +325,7 @@ class CommonLog extends Component {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
         let oldRows = [];
 
-        const newRows = [...oldRows, ...result];
+        const newRows = [...oldRows, ...result.data];
 
         newRows.forEach(row => {
           let subject = "";
@@ -475,6 +475,9 @@ class CommonLog extends Component {
 
       });
     }
+
+
+
     filtersColumns = documentObj.filters;
 
     this.setState({
@@ -690,7 +693,7 @@ class CommonLog extends Component {
             <div className="subFilter">
               <h3 className="zero">{this.state.pageTitle}</h3>
               <span>{this.state.rows.length}</span>
-              <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={(e) => this.hideFilter(e,this.state.viewfilter)}>
+              <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={(e) => this.hideFilter(e, this.state.viewfilter)}>
                 <span>
                   <svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                     <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">

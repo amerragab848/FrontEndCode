@@ -46,7 +46,6 @@ const filterStyle = {
   menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db' })
 };
 
-
 class FilterComponent extends Component {
 
   constructor(props) {
