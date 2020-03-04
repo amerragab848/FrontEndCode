@@ -2943,6 +2943,16 @@
                 "type": "S"
             },
             {
+                "name": "contractorName",
+                "value": "contractName",
+                "type": "S"
+            },
+            {
+                "name": "contractorRefNumber",
+                "value": "contractRefNumber",
+                "type": "S"
+            },
+            {
                 "name": "phdApproval",
                 "value": "creationDate",
                 "type": "D"
