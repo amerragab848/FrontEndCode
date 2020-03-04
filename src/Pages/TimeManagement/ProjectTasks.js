@@ -505,11 +505,12 @@ class ProjectTasks extends Component {
               this.setState({
                 rows: result != null ? result.data : [],
                 isLoading: false,
+                viewModal: false,
                 api: "GetTasksByProjectIdCustom",
                 totalRows: result.total
               });
             }
-          ).catch(ex => toast.error(Resources["failError"][currentLanguage])); 
+          ).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
           toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(() => {
@@ -895,6 +896,28 @@ class ProjectTasks extends Component {
           pageSize={this.state.pageSize}
           actions={this.actions}
           rowActions={this.rowActions}
+
+          rowClick={cell => {
+            if (cell) { 
+              let objRout = {
+                docId: cell.id,
+                projectId: cell.projectId,
+                projectName: cell.projectName,
+                arrange: cell.arrange,
+                docApprovalId: cell.accountDocWorkFlowId,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+              }
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+              this.props.history.push({
+                pathname: "/" + "projectTaskAddEdit",
+                search: "?id=" + encodedPaylod
+              });
+            }
+          }
+          }
+
         />
       ) : <LoadingSection />;
 
