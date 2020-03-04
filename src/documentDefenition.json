@@ -1322,6 +1322,18 @@
         "exportDataType": "s"
       },
       {
+        "field": "refDoc",
+        "friendlyName": "refDoc",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
         "field": "docCloseDate",
         "friendlyName": "docClosedate",
         "minWidth": 85,
@@ -1519,6 +1531,12 @@
         "isCustom": true
       },
       {
+        "name": "refDoc",
+        "field": "refDoc",
+        "type": "string",
+        "isCustom": true
+      },
+      {
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
@@ -1567,6 +1585,20 @@
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
+        "type": "date",
+        "isCustom": false,
+        "isRange": true
+      },
+      {
+        "name": "lastApproveDate",
+        "field": "lastApproveDate",
+        "type": "date",
+        "isCustom": false,
+        "isRange": true
+      },
+      {
+        "name": "lastSendDate",
+        "field": "lastSendDate",
         "type": "date",
         "isCustom": false,
         "isRange": true
@@ -7774,7 +7806,6 @@
         "isCustom": false,
         "exportDataType": "d"
       },
-     
       {
         "field": "collected",
         "friendlyName": "collected",
@@ -9296,7 +9327,7 @@
     "documentAddEditPopUp": "",
     "documentAddPermission": 301,
     "documentEditPermission": 302,
-    "documentDeletePermission": 303, 
+    "documentDeletePermission": 303,
     "documentViewPermission": 304,
     "documentPermission": 305,
     "documentApi": {
@@ -9622,7 +9653,7 @@
         "isCustom": false
       }
     ]
-  }, 
+  },
   "resourcesTree": {
     "documentTitle": "resourcesTree",
     "documentAddEditLink": "resourcesTreeEdit",
@@ -12957,6 +12988,12 @@
         "type": "date",
         "isCustom": false,
         "isRange": true
+      },
+      {
+        "name": "approvalStatus",
+        "field": "approvalStatusName",
+        "type": "string",
+        "isCustom": false
       },
       {
         "name": "lastSendDate",
@@ -18683,7 +18720,7 @@
         "isCustom": true
       }
     ]
-  } ,
+  },
   "dailyReports": {
     "documentTitle": "dailyReports",
     "docTyp": 60,

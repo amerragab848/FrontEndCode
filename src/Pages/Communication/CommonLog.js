@@ -126,9 +126,9 @@ class CommonLog extends Component {
     return shouldUpdate;
   };
 
-  hideFilter(e,value) {
+  hideFilter(e, value) {
     e.preventDefault()
-    this.setState({ viewfilter: !this.state.viewfilter }); 
+    this.setState({ viewfilter: !this.state.viewfilter });
   };
 
   addRecord() {
@@ -323,43 +323,45 @@ class CommonLog extends Component {
 
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
-        let oldRows = [];
+ 
+   
+        if (result.data.length > 0) {
+          result.data.forEach(row => {
+            let subject = "";
+            if (row) {
+              let obj = {
+                docId: row.id,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+              };
 
-        const newRows = [...oldRows, ...result];
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
-        newRows.forEach(row => {
-          let subject = "";
-          if (row) {
-            let obj = {
-              docId: row.id,
-              projectId: row.projectId,
-              projectName: row.projectName,
-              arrange: 0,
-              docApprovalId: 0,
-              isApproveMode: false,
-              perviousRoute: window.location.pathname + window.location.search
-            };
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
-            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+              let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
 
-            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+              subject = doc_view;
+            }
+            row.link = subject;
+          });
+ 
 
-            let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+          this.setState({
+            rows: result.data,
+            totalRows: result.data != undefined ? result.total : 0,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
 
-            subject = doc_view;
-          }
-          row.link = subject;
-        });
-
-        this.setState({
-          rows: newRows,
-          totalRows: result.data != undefined ? result.total : 0,
-          isLoading: false
-        });
-
-        this.setState({
-          isLoading: false
-        });
       }).catch(ex => {
         this.setState({
           rows: [],
@@ -475,6 +477,9 @@ class CommonLog extends Component {
 
       });
     }
+
+
+
     filtersColumns = documentObj.filters;
 
     this.setState({
@@ -690,7 +695,7 @@ class CommonLog extends Component {
             <div className="subFilter">
               <h3 className="zero">{this.state.pageTitle}</h3>
               <span>{this.state.rows.length}</span>
-              <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={(e) => this.hideFilter(e,this.state.viewfilter)}>
+              <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={(e) => this.hideFilter(e, this.state.viewfilter)}>
                 <span>
                   <svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                     <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">

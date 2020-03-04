@@ -8492,5 +8492,9 @@
     "totalDrawingContractors":{
         "en":"TotalDrawingContractors",
         "ar":"اجمالى مسحوبات المقاولين"
+    },
+    "contractorRefNumber":{
+        "en":"Contractor Ref Number",
+        "ar":"Contractor Ref Number"
     }
 }

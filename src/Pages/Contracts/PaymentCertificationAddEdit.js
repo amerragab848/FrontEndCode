@@ -26,7 +26,7 @@ let perviousRoute = 0;
 let arrange = 0;
 
 class PaymentCertificationAddEdit extends Component {
-   
+
     constructor(props) {
 
         super(props);
@@ -74,6 +74,8 @@ class PaymentCertificationAddEdit extends Component {
                 contractSubject: "",
                 requestId: "",
                 requestSubject: "",
+                contractRefNumber: "",
+                contractName: "",
                 projectId: "",
                 projectName: "",
                 clientName: "",
@@ -272,6 +274,32 @@ class PaymentCertificationAddEdit extends Component {
                                                                             placeholder={Resources["contractSubject"][currentLanguage]}
                                                                             autoComplete="off"
                                                                             value={this.state.document.contractSubject}
+                                                                            readOnly
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput  fullInputWidth">
+                                                                    <label className="control-label">
+                                                                        {Resources["contractorName"][currentLanguage]}
+                                                                    </label>
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="contractorName" className="form-control" id="contractorName"
+                                                                            placeholder={Resources["contractorName"][currentLanguage]}
+                                                                            autoComplete="off"
+                                                                            value={this.state.document.contractName}
+                                                                            readOnly
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput  fullInputWidth">
+                                                                    <label className="control-label">
+                                                                        {Resources["contractorRefNumber"][currentLanguage]}
+                                                                    </label>
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="contractorRefNumber" className="form-control" id="contractorRefNumber"
+                                                                            placeholder={Resources["contractorRefNumber"][currentLanguage]}
+                                                                            autoComplete="off"
+                                                                            value={this.state.document.contractRefNumber}
                                                                             readOnly
                                                                         />
                                                                     </div>
