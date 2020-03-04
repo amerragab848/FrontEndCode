@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
     contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
     vat: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     tax: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
-    insurance: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+    insurance: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]),
     advancePaymentPercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     retainagePercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
@@ -869,7 +869,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true,
                 documentDeduction: documentDeduction
             });
-            
+
         } else {
 
             let paymentRequistion = {
@@ -938,7 +938,7 @@ class requestPaymentsAddEdit extends Component {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
             this.fillSummariesTab();
-            
+
             this.buildColumns(true);
         }
 
@@ -1085,8 +1085,6 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
 
-           // this.buildColumns(this.props.changeStatus);
-
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
                 this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
@@ -1215,7 +1213,6 @@ class requestPaymentsAddEdit extends Component {
             let paymentsItems = [...this.state.paymentsItems];
 
             if (paymentsItems.length === 0) {
-                //this.buildColumns(this.props.changeStatus);
                 this.setState({ isLoading: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
@@ -1661,26 +1658,26 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({ showBoqModal: true, isLoading: true });
 
-        dataservice.addObject("EditBoqStarcureRequestItem", boqStractureObj).then(result => {  
+        dataservice.addObject("EditBoqStarcureRequestItem", boqStractureObj).then(result => {
 
             let originalData = this.state.paymentsItems;
 
             let getIndex = originalData.findIndex(x => x.id === boqStractureObj.id);
-        
+
             let obj = originalData.find(x => x.id === boqStractureObj.id);
-            
-            obj.boqTypeChildId  = this.state.selectedBoqTypeChildEdit.value; 
+
+            obj.boqTypeChildId = this.state.selectedBoqTypeChildEdit.value;
             obj.boqSubType = this.state.selectedBoqSubTypeEdit.value;
-            obj.boqType = this.state.selectedBoqTypeEdit.value; 
-            obj.secondLevel  = this.state.selectedBoqTypeChildEdit.label; 
+            obj.boqType = this.state.selectedBoqTypeEdit.value;
+            obj.secondLevel = this.state.selectedBoqTypeChildEdit.label;
             obj.boqSubType = this.state.selectedBoqSubTypeEdit.label;
             obj.boqType = this.state.selectedBoqTypeEdit.label;
 
             originalData.splice(getIndex, 1);
-          
+
             originalData.push(obj);
 
-            this.setState({paymentsItems: originalData , showBoqModal: false, isLoading: false });
+            this.setState({ paymentsItems: originalData, showBoqModal: false, isLoading: false });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -1955,9 +1952,10 @@ class requestPaymentsAddEdit extends Component {
         let exportFile = "";
 
         if (event.label === "Export") {
+
             this.setState({ isView: false, exportFile: "" });
-            let ExportColumnsList = [];
-            //const ExportColumns =
+
+            let ExportColumnsList = []; 
             itemsColumns.filter(i => {
                 if (i.key !== "BtnActions") {
                     ExportColumnsList.push({ title: i.name, field: i.key });
@@ -2165,11 +2163,11 @@ class requestPaymentsAddEdit extends Component {
                 pageNumber: pageNumber
             });
 
-            let oldRows = [...this.state.paymentsItems];
+            let prevRows = [...this.state.paymentsItems];
 
-            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
-                const newRows = [...this.state.paymentsItems, ...result];
+                const newRows = [...prevRows, ...result];
 
                 this.setState({
                     paymentsItems: newRows,
@@ -2177,12 +2175,20 @@ class requestPaymentsAddEdit extends Component {
                 });
             }).catch(ex => {
                 this.setState({
-                    paymentsItems: oldRows,
+                    paymentsItems: prevRows,
                     isLoading: false
                 });
             });
         }
     }
+
+    uniqueByKey = (key, xs) =>
+        xs.reduce(([set, ys], x) =>
+            set.has(x[key])
+                ? [set, ys]
+                : [set.add(x[key]), ys.concat([x])]
+            , [new Set, []]
+        )[1];
 
     GetNextData() {
         let pageNumber = this.state.pageNumber + 1;
@@ -2192,21 +2198,25 @@ class requestPaymentsAddEdit extends Component {
             pageNumber: pageNumber
         });
 
-        let oldRows = [...this.state.paymentsItems];
+        let prevRows = [...this.state.paymentsItems];
 
-        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-            const newRows = [...this.state.paymentsItems, ...result];
+        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize)
+            .then(result => {
+                let paymentsItems = result;
+                //const primes = [...prevRows, ...data];
+                paymentsItems = this.uniqueByKey('id', prevRows.concat(paymentsItems));
 
-            this.setState({
-                paymentsItems: newRows,
-                isLoading: false
+                console.log(paymentsItems);
+                this.setState({
+                    paymentsItems,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                this.setState({
+                    paymentsItems: prevRows,
+                    isLoading: false
+                });
             });
-        }).catch(ex => {
-            this.setState({
-                paymentsItems: oldRows,
-                isLoading: false
-            });
-        });
     }
 
     clickHandlerDeleteRows = rows => {
@@ -2625,9 +2635,7 @@ class requestPaymentsAddEdit extends Component {
                 </div>
             </Fragment>
         ) : (<LoadingSection />);
-
-        let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
-
+ 
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>

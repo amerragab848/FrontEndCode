@@ -46,16 +46,24 @@ class Export extends Component {
 
             var blob = new Blob([format(template, ctx)]);
             this.setState({ isExpor: false, isExportRequestPayment: false })
-            if (this.ifIE()) {
-                if (window.navigator.msSaveBlob) {
-                    var blob = new Blob([format(template, ctx)], {
-                        type: "text/html"
-                    });
-                    return navigator.msSaveBlob(blob, 'procoor-' + title + '.xls');
-                }
+            //if (this.ifIE()) {
+            var a = document.createElement('a');
+            document.body.appendChild(a);
+            if (window.navigator.msSaveBlob) {
+                var blob = new Blob([format(template, ctx)], {
+                    type: "application/vnd.ms-excel"
+                    // type: "text/html"
+                });
+                //return navigator.msSaveBlob(blob, 'procoor-' + title + '.xls');
             }
-            else
-                return window.location.href = uri + base64(format(template, ctx))
+            a.href = URL.createObjectURL(blob);
+            a.download = 'procoor-' + title + ".xls";
+            a.click();
+            // lazy cleanup, note that this renders the link invalid
+            setTimeout(() => { URL.revokeObjectURL(a.href); }, 500);
+            // }
+            //// else
+            //  return window.location.href = uri + base64(format(template, ctx))
         }
     }
 
@@ -63,6 +71,16 @@ class Export extends Component {
         if (this.state.isExportRequestPayment) {
             this.tableToExcel(this.state.fileName);
         }
+    }
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.rows !== state.rows && nextProps.isExportRequestPayment === state.isExportRequestPayment) {
+            return {
+                rows: nextProps.rows,
+                isExportRequestPayment: nextProps.isExportRequestPayment
+            };
+        }
+        return null
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -126,6 +144,7 @@ class Export extends Component {
                     {this.state.isExport === true || this.state.isExportRequestPayment ?
                         this.drawItems()
                         : null}
+                    {/* {this.drawItems()} */}
                 </div>
             </Fragment>
         )

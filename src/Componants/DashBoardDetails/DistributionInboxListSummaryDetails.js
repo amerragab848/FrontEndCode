@@ -12,6 +12,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -19,33 +20,6 @@ const { SingleSelectFilter } = Filters;
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-let subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let spliteLink = row.docView.split('/');
-
-    let obj = {
-      docId: spliteLink[1],
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: 0,
-      isApproveMode: false,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" + spliteLink[0] + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
 };
 
 const statusButton = ({ value, row }) => {
@@ -64,77 +38,6 @@ const statusButton = ({ value, row }) => {
 class DistributionInboxListSummaryDetails extends Component {
   constructor(props) {
     super(props);
-    var columnsGrid = [
-      {
-        key: "statusText",
-        name: Resources["statusName"][currentLanguage],
-        width: 90,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: statusButton
-      },
-      {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: subjectLink
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 155,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "fromAccountName",
-        name: Resources["from"][currentLanguage],
-        width: 155,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "comment",
-        name: Resources["comment"][currentLanguage],
-        width: 155,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "creationDate",
-        name: Resources["sendDate"][currentLanguage],
-        width: 155,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
-      }
-    ];
 
     const filtersColumns = [
       {
@@ -179,7 +82,7 @@ class DistributionInboxListSummaryDetails extends Component {
 
     this.state = {
       viewfilter: false,
-      columns: columnsGrid,
+      // columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
@@ -187,6 +90,64 @@ class DistributionInboxListSummaryDetails extends Component {
       pageTitle: "",
       apiFilter: ""
     };
+
+    this.columnsGrid = [
+      {
+        title: Resources['statusName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        sortable: true,
+        fixed: true,
+        type: "text",
+        classes: 'gridBtns '
+      }, {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        fixed: true,
+        groupable: true,
+        type: "text",
+        sortable: true,
+        showTip: true,
+        classes: ' bold elipsisPadd',
+        onRightClick: cell => { this.cellClick(cell) },
+        href: 'docView',
+      }, {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 20,
+        groupable: true,
+        showTip: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+      }, {
+        field: 'fromAccountName',
+        title: Resources['from'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+        showTip: true,
+      }, {
+        field: 'comment',
+        title: Resources['comment'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true, href: 'link',
+      }, {
+        field: 'creationDate',
+        title: Resources['sendDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "date",
+      }
+    ];
   }
 
   componentDidMount() {
@@ -209,29 +170,69 @@ class DistributionInboxListSummaryDetails extends Component {
       this.setState({
         pageTitle: Resources["inboxSummary"][currentLanguage]
       });
+      this.columnsGrid[0].field = 'readUnread';
       if (action) {
         Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
+          if (result) {
+            result.forEach((row, index) => {
+              let doc_view = "";
+              let subject = "";
+              let spliteLink = row.docView.split('/');
 
+              let obj = {
+                docId: spliteLink[1],
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: row.arrange,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+              };
+
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+              row.docView = "/" + spliteLink[0] + "?id=" + encodedPaylod
+              subject = row.subject;
+              if (currentLanguage === "ar") row.readUnread = row.status === true ? 'قرأت' : 'لم تقرأ'
+              else row.readUnread = row.status === true ? 'Read' : 'UnRead'
+            });
+          }
+          setTimeout(() => { this.addReadStatusClass() }, 1000);
           this.setState({
             rows: result,
             isLoading: false
           });
-        });
+        }).then(this.addReadStatusClass());
       }
     } else {
       this.setState({
         pageTitle: Resources["distributionSummary"][currentLanguage]
       });
+      this.columnsGrid[0].field = 'statusText';
       if (action) {
-        Api.get(
-          "GetDocApprovalDetailsDistributionList?action=" +
-          action +
-          "&pageNumber=" +
-          0 +
-          "&pageSize=" +
-          200
-        ).then(result => {
+        Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + 200).then(result => {
+          if (result) {
+            result.forEach(row => {
+              let spliteLink = row.docView.split('/');
 
+              let obj = {
+                docId: spliteLink[1],
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: row.arrange,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+              };
+
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+              row.docView = "/" + spliteLink[0] + "?id=" + encodedPaylod;
+              if (currentLanguage === "ar") row.readUnread = row.status === true ? 'قرأت' : 'لم تقرأ';
+              else row.readUnread = row.status === true ? 'Read' : 'UnRead';
+            });
+          }
+          setTimeout(() => { this.addReadStatusClass() }, 1000);
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
@@ -240,6 +241,47 @@ class DistributionInboxListSummaryDetails extends Component {
       }
     }
   }
+
+  addReadStatusClass = () => {
+    var gridBtns = document.querySelectorAll('.gridBtns');
+    for (let i = 0; i < gridBtns.length; i++) {
+      if (currentLanguage === "ar") {
+        if (gridBtns[i].textContent == 'قرأت') gridBtns[i].classList.add('Read');
+        else if (gridBtns[i].textContent == 'لم تقرأ') gridBtns[i].classList.add('UnRead');
+      } else {
+        if (gridBtns[i].textContent.toLowerCase() == 'Read'.toLowerCase()) gridBtns[i].classList.add('Read');
+        else if (gridBtns[i].textContent.toLowerCase() == 'UnRead'.toLowerCase()) gridBtns[i].classList.add('UnRead');
+      }
+    }
+  }
+
+  subjectLink = (row) => {
+    let doc_view = "";
+    let subject = "";
+    if (row) {
+
+      let spliteLink = row.docView.split('/');
+
+      let obj = {
+        docId: spliteLink[1],
+        projectId: row.projectId,
+        projectName: row.projectName,
+        arrange: row.arrange,
+        docApprovalId: 0,
+        isApproveMode: false,
+        perviousRoute: window.location.pathname + window.location.search
+      };
+
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+      doc_view = "/" + spliteLink[0] + "?id=" + encodedPaylod
+      subject = row.subject;
+
+      //row.href = doc_view
+      // return <a href={doc_view}> {subject} </a>;
+    }
+    return null;
+  };
 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
@@ -302,50 +344,24 @@ class DistributionInboxListSummaryDetails extends Component {
     }
   }
 
-  cellClick = (rowId, colID) => {
-
-    let selectedRow = this.state.rows[rowId];
-    if (selectedRow) {
-      if (selectedRow.status !== true) {
-        Api.get("UpdateStatusInbox?id=" + selectedRow.id);
-      }
-    }
-    let spliteLink = selectedRow.docView.split('/');
-    if (colID != 0 && colID != 1) {
-      if (this.state.columns[colID].key !== "subject") {
-        let obj = {
-          docId: spliteLink[1],
-          projectId: selectedRow.projectId,
-          projectName: selectedRow.projectName,
-          arrange: selectedRow.arrange,
-          docApprovalId: 0,
-          isApproveMode: false,
-          perviousRoute: window.location.pathname + window.location.search
-        };
-
-        if (selectedRow.docType === 37 || selectedRow.docType === 114) {
-          obj.isModification = selectedRow.docTyp === 114 ? true : false;
-        }
-
-        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-
-        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-        this.props.history.push({ pathname: "/" + spliteLink[0], search: "?id=" + encodedPaylod });
-      }
-    }
+  cellClick = (cell) => {
+    if (cell.status !== true) Api.get("UpdateStatusInbox?id=" + cell.id);
   }
 
   render() {
-
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup
-          rows={this.state.rows}
-          columns={this.state.columns}
-          onRowClick={this.onRowClick}
-          cellClick={this.cellClick}
-          showCheckbox={false} />
+        <GridCustom
+          ref='custom-data-grid'
+          key="ClosedSummaryDetails"
+          data={this.state.rows}
+          pageSize={this.state.rows.length}
+          groups={[]}
+          actions={[]}
+          rowActions={[]}
+          cells={this.columnsGrid}
+          rowClick={(cell) => { this.onRowClick(cell) }}
+        />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
@@ -361,50 +377,21 @@ class DistributionInboxListSummaryDetails extends Component {
 
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer main__withouttabs">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
             <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
-                <svg
-                  width="16px"
-                  height="18px"
-                  viewBox="0 0 16 18"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                >
-                  <g
-                    id="Symbols"
-                    stroke="none"
-                    strokeWidth="1"
-                    fill="none"
-                    fillRule="evenodd"
-                  >
-                    <g
-                      id="Action-icons/Filters/Hide+text/24px/Grey_Base"
-                      transform="translate(-4.000000, -3.000000)"
-                    >
+                <svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                  <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                    <g id="Action-icons/Filters/Hide+text/24px/Grey_Base" transform="translate(-4.000000, -3.000000)" >
                       <g id="Group-4">
                         <g id="Group-7">
                           <g id="filter">
-                            <rect
-                              id="bg"
-                              fill="#80CBC4"
-                              opacity="0"
-                              x="0"
-                              y="0"
-                              width="24"
-                              height="24"
-                            />
-                            <path
-                              d="M15.5116598,15.1012559 C14.1738351,15.1012559 13.0012477,14.2345362 12.586259,12.9819466 L4.97668038,12.9819466 C4.43781225,12.9819466 4,12.5415758 4,12 C4,11.4584242 4.43781225,11.0180534 4.97668038,11.0180534 L12.586259,11.0180534 C13.0012477,9.76546385 14.1738351,8.89874411 15.5116598,8.89874411 C16.8494845,8.89874411 18.0220719,9.76546385 18.4370606,11.0180534 L19.0233196,11.0180534 C19.5621878,11.0180534 20,11.4584242 20,12 C20,12.5415758 19.5621878,12.9819466 19.0233196,12.9819466 L18.4370606,12.9819466 C18.0220719,14.2345362 16.8494845,15.1012559 15.5116598,15.1012559 Z M15.5116598,10.8626374 C14.8886602,10.8626374 14.3813443,11.372918 14.3813443,12 C14.3813443,12.627082 14.8886602,13.1373626 15.5116598,13.1373626 C16.1346594,13.1373626 16.6419753,12.627082 16.6419753,12 C16.6419753,11.372918 16.1346594,10.8626374 15.5116598,10.8626374 Z M7.78600823,9.20251177 C6.44547873,9.20251177 5.27202225,8.33246659 4.8586039,7.07576209 C4.37264206,7.01672011 4,6.60191943 4,6.10125589 C4,5.60059914 4.37263163,5.1858019 4.85858244,5.12675203 C5.27168513,3.86979791 6.44573643,3 7.78600823,3 C9.1238329,3 10.2964204,3.86671974 10.711409,5.11930926 L19.0233196,5.11930926 C19.5621878,5.11930926 20,5.5596801 20,6.10125589 C20,6.64283167 19.5621878,7.08320251 19.0233196,7.08320251 L10.711409,7.08320251 C10.2964204,8.33579204 9.1238329,9.20251177 7.78600823,9.20251177 Z M7.78600823,4.96389325 C7.1630086,4.96389325 6.65569273,5.4741739 6.65569273,6.10125589 C6.65569273,6.72833787 7.1630086,7.23861852 7.78600823,7.23861852 C8.40900786,7.23861852 8.91632373,6.72833787 8.91632373,6.10125589 C8.91632373,5.4741739 8.40900786,4.96389325 7.78600823,4.96389325 Z M13.1695709,18.8806907 C12.7545822,20.1332803 11.5819948,21 10.2441701,21 C8.90634542,21 7.73375797,20.1332803 7.3187693,18.8806907 L4.97668038,18.8806907 C4.43781225,18.8806907 4,18.4403199 4,17.8987441 C4,17.3571683 4.43781225,16.9167975 4.97668038,16.9167975 L7.3187693,16.9167975 C7.73375797,15.664208 8.90634542,14.7974882 10.2441701,14.7974882 C11.5819948,14.7974882 12.7545822,15.664208 13.1695709,16.9167975 L19.0233196,16.9167975 C19.5621878,16.9167975 20,17.3571683 20,17.8987441 C20,18.4403199 19.5621878,18.8806907 19.0233196,18.8806907 L13.1695709,18.8806907 Z M10.2441701,16.7613815 C9.62117047,16.7613815 9.1138546,17.2716621 9.1138546,17.8987441 C9.1138546,18.5258261 9.62117047,19.0361068 10.2441701,19.0361068 C10.8671697,19.0361068 11.3744856,18.5258261 11.3744856,17.8987441 C11.3744856,17.2716621 10.8671697,16.7613815 10.2441701,16.7613815 Z"
-                              id="Shape"
-                              fill="#5E6475"
-                              fillRule="nonzero"
-                            />
+                            <rect id="bg" fill="#80CBC4" opacity="0" x="0" y="0" width="24" height="24" />
+                            <path d="M15.5116598,15.1012559 C14.1738351,15.1012559 13.0012477,14.2345362 12.586259,12.9819466 L4.97668038,12.9819466 C4.43781225,12.9819466 4,12.5415758 4,12 C4,11.4584242 4.43781225,11.0180534 4.97668038,11.0180534 L12.586259,11.0180534 C13.0012477,9.76546385 14.1738351,8.89874411 15.5116598,8.89874411 C16.8494845,8.89874411 18.0220719,9.76546385 18.4370606,11.0180534 L19.0233196,11.0180534 C19.5621878,11.0180534 20,11.4584242 20,12 C20,12.5415758 19.5621878,12.9819466 19.0233196,12.9819466 L18.4370606,12.9819466 C18.0220719,14.2345362 16.8494845,15.1012559 15.5116598,15.1012559 Z M15.5116598,10.8626374 C14.8886602,10.8626374 14.3813443,11.372918 14.3813443,12 C14.3813443,12.627082 14.8886602,13.1373626 15.5116598,13.1373626 C16.1346594,13.1373626 16.6419753,12.627082 16.6419753,12 C16.6419753,11.372918 16.1346594,10.8626374 15.5116598,10.8626374 Z M7.78600823,9.20251177 C6.44547873,9.20251177 5.27202225,8.33246659 4.8586039,7.07576209 C4.37264206,7.01672011 4,6.60191943 4,6.10125589 C4,5.60059914 4.37263163,5.1858019 4.85858244,5.12675203 C5.27168513,3.86979791 6.44573643,3 7.78600823,3 C9.1238329,3 10.2964204,3.86671974 10.711409,5.11930926 L19.0233196,5.11930926 C19.5621878,5.11930926 20,5.5596801 20,6.10125589 C20,6.64283167 19.5621878,7.08320251 19.0233196,7.08320251 L10.711409,7.08320251 C10.2964204,8.33579204 9.1238329,9.20251177 7.78600823,9.20251177 Z M7.78600823,4.96389325 C7.1630086,4.96389325 6.65569273,5.4741739 6.65569273,6.10125589 C6.65569273,6.72833787 7.1630086,7.23861852 7.78600823,7.23861852 C8.40900786,7.23861852 8.91632373,6.72833787 8.91632373,6.10125589 C8.91632373,5.4741739 8.40900786,4.96389325 7.78600823,4.96389325 Z M13.1695709,18.8806907 C12.7545822,20.1332803 11.5819948,21 10.2441701,21 C8.90634542,21 7.73375797,20.1332803 7.3187693,18.8806907 L4.97668038,18.8806907 C4.43781225,18.8806907 4,18.4403199 4,17.8987441 C4,17.3571683 4.43781225,16.9167975 4.97668038,16.9167975 L7.3187693,16.9167975 C7.73375797,15.664208 8.90634542,14.7974882 10.2441701,14.7974882 C11.5819948,14.7974882 12.7545822,15.664208 13.1695709,16.9167975 L19.0233196,16.9167975 C19.5621878,16.9167975 20,17.3571683 20,17.8987441 C20,18.4403199 19.5621878,18.8806907 19.0233196,18.8806907 L13.1695709,18.8806907 Z M10.2441701,16.7613815 C9.62117047,16.7613815 9.1138546,17.2716621 9.1138546,17.8987441 C9.1138546,18.5258261 9.62117047,19.0361068 10.2441701,19.0361068 C10.8671697,19.0361068 11.3744856,18.5258261 11.3744856,17.8987441 C11.3744856,17.2716621 10.8671697,16.7613815 10.2441701,16.7613815 Z" id="Shape" fill="#5E6475" fillRule="nonzero" />
                           </g>
                         </g>
                       </g>
@@ -415,21 +402,13 @@ class DistributionInboxListSummaryDetails extends Component {
 
               {this.state.viewfilter === false ? (
                 <span className="text active">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
-                  </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
+                  <span className="show-fillter"> {Resources["showFillter"][currentLanguage]} </span>
+                  <span className="hide-fillter"> {Resources["hideFillter"][currentLanguage]} </span>
                 </span>
               ) : (
                   <span className="text">
-                    <span className="show-fillter">
-                      {Resources["showFillter"][currentLanguage]}
-                    </span>
-                    <span className="hide-fillter">
-                      {Resources["hideFillter"][currentLanguage]}
-                    </span>
+                    <span className="show-fillter">{Resources["showFillter"][currentLanguage]}</span>
+                    <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
                   </span>
                 )}
             </div>
@@ -439,18 +418,14 @@ class DistributionInboxListSummaryDetails extends Component {
           </div>
           <div className="rowsPaginations readOnly__disabled">
             <div className="linebylineInput valid-input">
-              <label className="control-label">
-                {Resources.totalDocs[currentLanguage]}
-              </label>
+              <label className="control-label"> {Resources.totalDocs[currentLanguage]} </label>
               <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
                 <input type="text" className="form-control" id="totalDocs" value={this.state.rows.length} readOnly name="totalDocs"
                   placeholder={Resources.totalDocs[currentLanguage]} />
               </div>
             </div>
             <div className="linebylineInput valid-input">
-              <label className="control-label">
-                {Resources.readedDocs[currentLanguage]}
-              </label>
+              <label className="control-label"> {Resources.readedDocs[currentLanguage]} </label>
               <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
                 <input type="text" className="form-control" id="readedDocs" value={this.state.rows.filter(x => x.status === true).length}
                   readOnly name="readedDocs" placeholder={Resources.readedDocs[currentLanguage]} />
@@ -458,20 +433,11 @@ class DistributionInboxListSummaryDetails extends Component {
             </div>
           </div>
         </div>
-        <div
-          className="filterHidden"
-          style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }} >
-          <div className="gridfillter-container">
-            {ComponantFilter}
-          </div>
-        </div>
-
         <div>{dataGrid}</div>
       </div>
     );
   }
 }
-
 
 function mapStateToProps(state, ownProps) {
   return {

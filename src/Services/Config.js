@@ -6,18 +6,18 @@ let signautre = null;
 export default class Config {
 
     static getPublicConfiguartion() {
-        return IP_CONFIG; 
+        return IP_CONFIG;
     }
 
     static SetConfigObject(info) {
         IP_CONFIG = info;
     }
-    
+
     static setSignature(sign) {
         signautre = sign;
     }
     static getSignature() {
-       return  signautre ;
+        return signautre;
     }
 
     static getPermissions() {
@@ -52,5 +52,36 @@ export default class Config {
             authorize = true;
         }
         return authorize;
+    }
+
+    static extractDataFromParamas(query) {
+        let params = {};
+        let index = 0;
+        for (let param of query.entries()) {
+            if (index == 0) {
+                try {
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+
+                    params.docId = obj.docId;
+                    params.projectId = obj.projectId;
+                    params.projectName = obj.projectName;
+                    params.isApproveMode = obj.isApproveMode;
+                    params.docApprovalId = obj.docApprovalId;
+                    params.arrange = obj.arrange;
+                    params.perviousRoute = obj.perviousRoute;
+
+                    params.prevLetterId = obj.prevLetterId;
+                    params.fromCompanyId = obj.replyToCompId;
+                    params.fromContactId = obj.replyToContactId;
+                    params.toCompanyId = obj.replyFromCompId;
+                    params.toContactId = obj.replyFromContId;
+                } catch {
+                    return {};
+                    //this.props.history.goBack();
+                }
+            }
+            index++;
+        }
+        return params;
     }
 }

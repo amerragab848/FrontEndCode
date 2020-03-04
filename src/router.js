@@ -431,10 +431,7 @@ const MaterialReturnedAddEdit = AsyncComponent(() =>
 const MaterialReleaseAddEdit = AsyncComponent(() =>
     import('./Pages/Procurement/materialReleaseAddEdit'),
 );
-const ProcurementAddEdit = AsyncComponent(() =>
-    import('./Pages/Procurement/procurementAddEdit'),
-);
-
+ 
 //Quality Control
 
 const InspectionRequestAddEdit = AsyncComponent(() =>
@@ -1197,12 +1194,7 @@ let originalRoutes = [
         key="r-167"
         path="/materialReleaseAddEdit"
         component={MaterialReleaseAddEdit}
-    />,
-    <Route
-        key="r-168"
-        path="/procurementAddEdit"
-        component={ProcurementAddEdit}
-    />,
+    />, 
     <Route key="r-169" path="/ExportDetails" component={ExportDetails} />,
     <Route
         key="r-171"
