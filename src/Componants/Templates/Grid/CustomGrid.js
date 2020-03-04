@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
-
 import GridCustom from 'react-customized-grid';
-
-import Calendar from "react-calendar"; 
-import moment from "moment"; 
+import Calendar from "react-calendar";
+import moment from "moment";
 import Resources from "../../../resources.json";
+import { isEqual } from 'lodash';
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 let arrColumn = ["arrange", "quantity", "unitPrice"];
@@ -15,7 +15,7 @@ export default class CustomGrid extends Component {
         super(props);
 
         this.state = {
-            columns: this.props.cells,//this.props.cells.filter(x => x.key !== "BtnActions" && x.key !== "actions"),
+            columns: this.props.cells,
             rows: this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             selectedIndexes: [],
@@ -37,7 +37,7 @@ export default class CustomGrid extends Component {
             setDate: moment(new Date()).format("DD/MM/YYYY"),
             fieldDate: {},
             isFilter: false,
-            showPicker : false
+            showPicker: false
         };
     }
 
@@ -65,15 +65,13 @@ export default class CustomGrid extends Component {
         }, 500);
     }
 
-    static getDerivedStateFromProps(props, current_state) {
-        if (current_state.rows !== props.rows && props.isFilter) {
-            props.changeValueOfProps();
-            return {
-                rows: props.rows,
-                filteredRows: props.rows
-            }
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.isFilter && !isEqual(this.state.rows, this.props.data)) {
+            this.props.changeValueOfProps();
+            this.setState({
+                rows: this.props.data
+            })
         }
-        return null
     }
 
     resetDate = () => {
@@ -164,7 +162,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
     };
- 
+
     onChange = (date, index, columnName, type, key) => {
 
         let margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
@@ -266,7 +264,7 @@ export default class CustomGrid extends Component {
                                     matched++;
                                 } else if (typeof filters[key] === "number") {
                                     matched = 0;
-                                }else if (row[`${key}`].toString().includes(`${filters[key]}`)) {
+                                } else if (row[`${key}`].toString().includes(`${filters[key]}`)) {
                                     matched++;
                                 } else if (row[`${key}`] === `${filters[key]}`) {
                                     matched++;
@@ -378,11 +376,11 @@ export default class CustomGrid extends Component {
                     </div>
                 </div>
             )
-        }) 
+        })
         return (
             <Fragment>
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
-                    <div className="filter__more" style={{ padding: 0 }}> 
+                    <div className="filter__more" style={{ padding: 0 }}>
                         <button className="filter__more--btn" onClick={this.showFilterMore}>{Resources.seeAll[currentLanguage]}</button>
                     </div>
                     <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
@@ -523,7 +521,7 @@ export default class CustomGrid extends Component {
                     rowActions={this.props.rowActions}
                     rowClick={cell => this.props.rowClick(cell)}
                     groups={this.props.groups}
-                    showPicker = {this.props.showPicker}
+                    showPicker={this.props.showPicker}
                 />
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>

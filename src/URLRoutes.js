@@ -1430,16 +1430,14 @@ var routes = [
         }
     },
     {
-        route:
-            "requestPaymentsAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        route: "requestPaymentsAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "contracts/requestPaymentsAddEdit",
         title: "Payment Requistion Edit",
         nav: false,
         settings: { Contracts: false }
     },
     {
-        route:
-            "requestPaymentsAddEditold/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        route: "requestPaymentsAddEditold/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "contracts/requestPaymentsAddEditold",
         title: "Payment Requistion Edit",
         nav: false,
@@ -2105,7 +2103,7 @@ var routes = [
         title: "Client Modification Addition",
         nav: false,
         settings: { Contracts: false }
-    }, 
+    },
     {
         route:
             "qualityControlAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -2113,7 +2111,7 @@ var routes = [
         title: "Quality Control",
         nav: false,
         settings: { Site: false }
-    }, 
+    },
     {
         route: "clientSelection",
         moduleId: "commonLogs",
@@ -2652,7 +2650,7 @@ var routes = [
         moduleId: "user/userSignature",
         title: "userSignature",
         nav: true
-    }, 
+    },
     {
         route: "taskDetails/:id",
         moduleId: "projects/taskDetails",
@@ -2881,17 +2879,17 @@ var routes = [
     ,
     {
         route: "releaseReport",
-        moduleId: "reportCenter/releaseReport",
+        moduleId: "InventoryItemsReports/ReleaseReport",
         title: "releaseReport",
         nav: true,
         settings: { inventory: true, permission: 3729, order: 7 }
     },
     {
-      route: "documentTpesReport",
-      moduleId: "OtherReports/DocumentTpesReport",
-      title: "WorkFlowWithDocumentTypeDetails",
-      nav: true,
-      settings: { OtherReports: true, permission: 3743, order: 6 }
+        route: "documentTpesReport",
+        moduleId: "OtherReports/DocumentTpesReport",
+        title: "WorkFlowWithDocumentTypeDetails",
+        nav: true,
+        settings: { OtherReports: true, permission: 3743, order: 6 }
     },
     {
         route: "TransmittalReport",
@@ -3043,7 +3041,7 @@ var routes = [
             caption: "procoor-icon-BIC",
             order: 11
         }
-    },{ //start inventory Items Routes
+    }, { //start inventory Items Routes
         route: "ExpnesesUserRequests",
         moduleId: "OtherReports/ExpnesesUserRequests",
         title: "expnesesUserRequests",
