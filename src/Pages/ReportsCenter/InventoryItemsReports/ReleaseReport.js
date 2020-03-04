@@ -4,7 +4,7 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Dataservice from '../../../Dataservice';
@@ -20,7 +20,7 @@ const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
 
-class CollectedPaymentRequisition extends Component {
+class ReleaseReport extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -42,9 +42,9 @@ class CollectedPaymentRequisition extends Component {
 
         this.columns = [
             {
-                field: "collected",
-                title: Resources["total"][currentLanguage],
-                width: 40,
+                field: "arrange",
+                title: Resources["arrange"][currentLanguage],
+                width: 8,
                 groupable: true,
                 fixed: true,
                 type: "text",
@@ -53,10 +53,82 @@ class CollectedPaymentRequisition extends Component {
             {
                 field: "docDate",
                 title: Resources["docDate"][currentLanguage],
-                width: 40,
+                width: 12,
                 groupable: true,
                 fixed: false,
                 type: "date",
+                sortable: true,
+            },
+            {
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "transactionTypeName",
+                title: Resources["transactionTypeName"][currentLanguage],
+                width: 17,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "description",
+                title: Resources["description"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "resourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "unitPrice",
+                title: Resources["unitPrice"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "quantity",
+                title: Resources["quantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "unit",
+                title: Resources["unit"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
             }
         ];
@@ -94,7 +166,7 @@ class CollectedPaymentRequisition extends Component {
             startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             endDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
-        Api.post('GetContractsRequestPaymentsReport', reportobj).then(
+        Api.post('GetMaterialInventoryHistoryByProjectId', reportobj).then(
             res => {
                 this.setState({
                     rows: res,
@@ -114,7 +186,7 @@ class CollectedPaymentRequisition extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="CollectedPaymentRequisition"
+                key="ReleaseReports"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -124,12 +196,12 @@ class CollectedPaymentRequisition extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
         const btnExport = <ExportDetails fieldsItems={this.columns}
-            rows={this.state.rows} fields={this.fields} fileName={Resources.collectedPaymentRequisition[currentLanguage]} />
+            rows={this.state.rows} fields={this.fields} fileName={Resources.releaseReport[currentLanguage]} />
 
         return (
             <div className="reports__content">
                 <header>
-                    <h2 className="zero">{Resources.collectedPaymentRequisition[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.releaseReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
                 <Formik
@@ -174,4 +246,4 @@ class CollectedPaymentRequisition extends Component {
     }
 
 }
-export default withRouter(CollectedPaymentRequisition)
+export default withRouter(ReleaseReport)

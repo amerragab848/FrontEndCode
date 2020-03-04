@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
-
 import GridCustom from 'react-customized-grid';
-
 import Calendar from "react-calendar";
 import moment from "moment";
 import Resources from "../../../resources.json";
+import { isEqual } from 'lodash';
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 let arrColumn = ["arrange", "quantity", "unitPrice"];
@@ -15,7 +15,7 @@ export default class CustomGrid extends Component {
         super(props);
 
         this.state = {
-            columns: this.props.cells,//this.props.cells.filter(x => x.key !== "BtnActions" && x.key !== "actions"),
+            columns: this.props.cells,
             rows: this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             selectedIndexes: [],
@@ -65,15 +65,13 @@ export default class CustomGrid extends Component {
         }, 500);
     }
 
-    static getDerivedStateFromProps(props, current_state) {
-        if (current_state.rows !== props.rows && props.isFilter) {
-            props.changeValueOfProps();
-            return {
-                rows: props.rows,
-                filteredRows: props.rows
-            }
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.isFilter && !isEqual(this.state.rows, this.props.data)) {
+            this.props.changeValueOfProps();
+            this.setState({
+                rows: this.props.data
+            })
         }
-        return null
     }
 
     resetDate = () => {
