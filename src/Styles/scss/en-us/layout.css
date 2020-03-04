@@ -21847,6 +21847,11 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     margin-right: -40px;
 }
 
+.mainContainer:not(.main__fulldash) .noTabs__document .noTabs__document {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .mainContainer:not(.main__fulldash) .approveDocument {
     left: 88px;
     right: 0px;
