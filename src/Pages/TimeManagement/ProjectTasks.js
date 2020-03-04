@@ -72,7 +72,7 @@ class ProjectTasks extends Component {
         title: Resources["arrange"][currentLanguage],
         width: 10,
         groupable: true,
-        fixed: false, 
+        fixed: false,
       },
       {
         field: "actualProgress",
@@ -461,8 +461,9 @@ class ProjectTasks extends Component {
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedContract: { label: Resources.selectContract[currentLanguage], value: "0" },
       maxEstimateHours: 0,
-      bicContactId : 0,
-      currentContactId:0
+      bicContactId: 0,
+      currentContactId: 0,
+      transferTaskObj: {}
     };
   }
 
@@ -471,32 +472,45 @@ class ProjectTasks extends Component {
     this.setState({
       viewModal: true,
       maxEstimateHours: value.estimatedTime,
-      bicContactId : value.bicContactId
+      bicContactId: value.bicContactId,
+      transferTaskObj: value
     })
   }
   transferTasks = (value) => {
 
-    if (this.state.maxEstimateHours > value.hours) {
+    if (this.state.maxEstimateHours <= value.hours) {
       alert('Estimated Time You Entered Greater Than or Equal Current Estimate Time')
     }
     else {
-      if (this.state.bicContactId == this.state.currentContactId) {
+      if (this.state.bicContactId == this.state.selectedContract.value) {
         alert("Can Not Transfer Task To The Same Contact");
       } else {
-        dataservice.addObject("TransferTask", value).then(result => {
+        let newObj = {};
+        newObj.id = this.state.transferTaskObj.id;
+        newObj.bicCompanyId = this.state.transferTaskObj.bicCompanyId;
+        newObj.bicContactId = this.state.transferTaskObj.bicContactId;
+        newObj.projectId = this.state.transferTaskObj.projectId;
+        newObj.parentId = this.state.transferTaskObj.parentId;
+        newObj.startDate = this.state.transferTaskObj.startDate;
+        newObj.finishDate = this.state.transferTaskObj.finishDate;
+        newObj.estimatedTime = this.state.transferTaskObj.estimatedTime;
+        newObj.subject = this.state.transferTaskObj.subject;
 
-          // let originalData = this.state.rows;
+        dataservice.addObject("TransferTask", newObj).then(result => {
+          let url = this.state.isCustom === true ? "GetTasksByProjectIdCustom?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize :
+            "GetTasksByProjectId?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
 
-          // let findIndex = originalData.findIndex(x => x.id === objItems.id);
+          Api.get(url).then(
+            result => {
+              this.setState({
+                rows: result != null ? result.data : [],
+                isLoading: false,
+                api: "GetTasksByProjectIdCustom",
+                totalRows: result.total
+              });
+            }
+          ).catch(ex => toast.error(Resources["failError"][currentLanguage])); 
 
-          // originalData.splice(findIndex, 1);
-
-          // originalData.push(objItems);
-
-          this.setState({
-            //rows: originalData,
-            viewModal: false
-          });
           toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(() => {
           toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -675,29 +689,50 @@ class ProjectTasks extends Component {
       isLoading: true,
       query: stringifiedQuery
     });
+    if (stringifiedQuery !== '{"isCustom":true}') {
+      this.setState({ isLoading: true, search: true })
+      let _query = stringifiedQuery.split(',"isCustom"')
 
-    Api.get("ProjectTackFilter?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
-      if (result.length > 0) {
+      let url = "ProjectTackFilter?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
+      Api.get(url).then(result => {
+        if (result.length > 0) {
 
-        this.setState({
-          rows: [...result.data],
-          totalRows: result.total,
-          isLoading: false,
-          apiFilter: "ProjectTackFilter"
+          this.setState({
+            rows: [...result],
+            totalRows: result.length,
+            isLoading: false,
+            apiFilter: "ProjectTackFilter"
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+            apiFilter: "ProjectTackFilter"
+          });
+        }
+      })
+        .catch(ex => {
+          this.setState({
+            rows: [],
+            isLoading: false
+          });
         });
-      } else {
-        this.setState({
-          isLoading: false,
-          apiFilter: "ProjectTackFilter"
-        });
-      }
-    })
-      .catch(ex => {
-        this.setState({
-          rows: [],
-          isLoading: false
-        });
-      });
+    } else {
+      this.setState({ isLoading: true })
+      let url = this.state.isCustom === true ? "GetTasksByProjectIdCustom?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize :
+        "GetTasksByProjectId?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
+
+      Api.get(url).then(
+        result => {
+          this.setState({
+            rows: result != null ? result.data : [],
+            isLoading: false,
+            api: "GetTasksByProjectIdCustom",
+            totalRows: result.total,
+            search: false
+          });
+        }
+      ).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+    }
   };
 
   addRecord() {
