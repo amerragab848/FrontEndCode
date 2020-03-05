@@ -62,7 +62,7 @@ class SendWorkFlow extends Component {
     }
 
     toAccounthandelChange = (item) => {
-        this.setState({
+         this.setState({
             toAccountId: { ...this.state.workFlowData, toAccountId: item.value },
             selectedApproveId: item
         });
@@ -92,6 +92,7 @@ class SendWorkFlow extends Component {
                     name="ddlApproveTo"
                     selectedValue={this.state.selectedApproveId}
                     index='ddlApproveTo'
+                    
                     handleChange={this.toAccounthandelChange}
                     className={this.state.toCompanyClass} />
                 <div className="fullWidthWrapper">
