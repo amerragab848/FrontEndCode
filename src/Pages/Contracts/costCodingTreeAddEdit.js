@@ -55,6 +55,7 @@ class CostCodingTreeAddEdit extends Component {
       drawChilderns: false,
       showDeleteModal: false,
       docId: "",
+      showActions: this.props.showActions === false ? false : true,
       IsFirstParent: false,
       finish: false,
       document: {
@@ -101,7 +102,7 @@ class CostCodingTreeAddEdit extends Component {
 
   getTree = () => {
     this.setState({ isLoading: true })
-    dataservice.GetDataGrid("GetNewAllCostCodingTree").then(result => {
+    dataservice.GetDataGrid(this.state.showActions ? "GetNewAllCostCodingTree" : "GetNewCostCodingTreeByProjectId?projectId=" + this.state.projectId).then(result => {
       let state = this.state
       this.clear();
       if (result) {
@@ -173,10 +174,10 @@ class CostCodingTreeAddEdit extends Component {
                   <i className="dropdown icon" />
                 </span>
                 <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>
-                  {this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}
+                  {this.state[item.id] ? this.state[item.id].codeTreeTitle || item.costCodingTreeName : item.codeTreeTitle || item.costCodingTreeName}
                 </span>
               </div>
-              {this.props.showActions == false ? null :
+              {this.state.showActions == false ? null :
                 <div className="Project__num">
                   <div className="eps__actions">
                     <a className="editIcon" data-toggle="tooltip" title="Edit" onClick={() => this.EditDocument(item)}>
@@ -386,7 +387,7 @@ class CostCodingTreeAddEdit extends Component {
     return (
       <div>
         <div className="documents-stepper noTabs__document">
-          {this.props.showActions == false ? null :
+          {this.state.showActions == false ? null :
             <div className="tree__header">
               <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
               <button className="primaryBtn-1 btn" onClick={this.viewModalForFirst.bind(this)}>
@@ -408,12 +409,11 @@ class CostCodingTreeAddEdit extends Component {
                           <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }}>
                             <i className="dropdown icon" />
                           </span>
-                          <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}
+                          <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>{this.state[item.id] ? this.state[item.id].codeTreeTitle || item.costCodingTreeName : item.codeTreeTitle || item.costCodingTreeName}
                           </span>
                         </div>
-                        {this.props.showActions == false ? null :
+                        {this.state.showActions == false ? null :
                           <div className="Project__num">
-
                             <div className="eps__actions">
                               <a className="editIcon" data-toggle="tooltip" title="edit" onClick={() => this.EditDocument(item)}>
                                 <img src={Edit} alt="Edit" />
