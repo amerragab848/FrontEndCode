@@ -45,9 +45,17 @@ class rptCostCodingTree extends Component {
             NodeData: res,
             isLoading: false
           });
+        }else{
+          this.setState({
+            isLoading: false
+          });
         }
       }
-    )
+    ).catch(res => {
+      this.setState({
+        isLoading: false
+      });
+    })
   }
 
   render() {
@@ -85,7 +93,7 @@ class rptCostCodingTree extends Component {
                     </div>
                   </div>
                   <table className="ui table">
-                    <tbody> 
+                    <tbody>
                       <tr>
                         <td>{Resources['projectName'][currentLanguage]}</td>
                         <td>{this.state.NodeData.projectName}</td>
