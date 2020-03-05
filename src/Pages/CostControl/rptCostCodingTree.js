@@ -67,62 +67,70 @@ class rptCostCodingTree extends Component {
     return (
       <div className="mainContainer">
         <div className="white-bg">
+          <div className="documents-stepper noTabs__document">
+            <HeaderDocument projectName={this.props.projectName} perviousRoute={"/"} docTitle={Resources.costCodingTreeReport[currentLanguage]} moduleTitle={Resources['costControl'][currentLanguage]} />
 
-          <HeaderDocument projectName={this.props.projectName} perviousRoute={"/"} docTitle={Resources.costCodingTreeReport[currentLanguage]} moduleTitle={Resources['costControl'][currentLanguage]} />
+            <Tree projectId={this.props.projectId} GetNodeData={this.GetNodeData} showActions={false} />
+            {this.state.isLoading ?
+              <div className="fixedLoading">
+                <LoadingSection />
+              </div> :
 
-          <Tree projectId={this.props.projectId} GetNodeData={this.GetNodeData} showActions={false} />
-          {this.state.isLoading ?
-            <div className="fixedLoading">
-              <LoadingSection />
-            </div> :
-
-            <div className="doc-pre-cycle">
-              <div className='document-fields'>
-                <div className="slider-Btns" style={{ margin: '30px 0', display: 'flex', justifyContent: 'flex-end' }}>
-                  <div className="filterBTNS exbortBtn">
-                    <Export rows={rows}
-                      columns={ExportColumns} fileName={Resources['costCodingTreeReport'][currentLanguage]} />
+              <div className="doc-pre-cycle">
+                <div className='document-fields'>
+                  <div className="slider-Btns" style={{ margin: '30px 0', display: 'flex', justifyContent: 'flex-end' }}>
+                    <div className="filterBTNS exbortBtn">
+                      <Export rows={rows}
+                        columns={ExportColumns} fileName={Resources['costCodingTreeReport'][currentLanguage]} />
+                    </div>
                   </div>
+                  <table className="ui table">
+                    <tbody> 
+                      <tr>
+                        <td>{Resources['projectName'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.projectName}</td>
+                      </tr>
+
+                      <tr>
+                        <td>{Resources['costCoding'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.costCodingTitle}</td>
+                      </tr>
+
+                      <tr>
+                        <td>{Resources['totalCost'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.totalCostCode}</td>
+                      </tr>
+                      <tr>
+                        <td>{Resources['estimatedCost'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.originalBudget}</td>
+                      </tr>
+                      <tr>
+                        <td>{Resources['invoicesTotal'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.invoicesTotal}</td>
+                      </tr>
+
+                      <tr>
+                        <td>{Resources['paymentTotal'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.paymentTotal}</td>
+                      </tr>
+
+                      <tr>
+                        <td>{Resources['materialRequestcount'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.totalMaterialRelease}</td>
+                      </tr>
+
+                      <tr>
+                        <td>{Resources['expensesTotal'][currentLanguage]}</td>
+                        <td>{this.state.NodeData.expenses}</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
                 </div>
-                <table className="ui table">
-                  <tbody>
-                    <tr>
-                      <td>{Resources['projectName'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.projectName}</td>
-                    </tr>
-                    <tr>
-                      <td>{Resources['costCoding'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.costCodingTitle}</td>
-                    </tr>
-                    <tr>
-                      <td>{Resources['totalCost'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.totalCostCode}</td>
-                    </tr>
-                    <tr>
-                      <td>{Resources['estimatedCost'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.originalBudget}</td>
-                    </tr>
-                    <tr>
-                      <td>{Resources['invoicesTotal'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.invoicesTotal}</td>
-                    </tr>
-                    <tr>
-                      <td>{Resources['paymentTotal'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.paymentTotal}</td>
-                    </tr>
-                    <tr>
-                      <td>{Resources['materialRequestcount'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.totalMaterialRelease}</td>
-                    </tr>
-                    <tr>
-                      <td>{Resources['expensesTotal'][currentLanguage]}</td>
-                      <td>{this.state.NodeData.expenses}</td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
-            </div>
-          }    </div>
+            }
+          </div>
+        </div>
       </div>
     )
   }

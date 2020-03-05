@@ -323,43 +323,45 @@ class CommonLog extends Component {
 
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
-        let oldRows = [];
+ 
+   
+        if (result.data.length > 0) {
+          result.data.forEach(row => {
+            let subject = "";
+            if (row) {
+              let obj = {
+                docId: row.id,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+              };
 
-        const newRows = [...oldRows, ...result.data];
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
-        newRows.forEach(row => {
-          let subject = "";
-          if (row) {
-            let obj = {
-              docId: row.id,
-              projectId: row.projectId,
-              projectName: row.projectName,
-              arrange: 0,
-              docApprovalId: 0,
-              isApproveMode: false,
-              perviousRoute: window.location.pathname + window.location.search
-            };
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
-            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+              let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
 
-            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+              subject = doc_view;
+            }
+            row.link = subject;
+          });
+ 
 
-            let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+          this.setState({
+            rows: result.data,
+            totalRows: result.data != undefined ? result.total : 0,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
 
-            subject = doc_view;
-          }
-          row.link = subject;
-        });
-
-        this.setState({
-          rows: newRows,
-          totalRows: result.data != undefined ? result.total : 0,
-          isLoading: false
-        });
-
-        this.setState({
-          isLoading: false
-        });
       }).catch(ex => {
         this.setState({
           rows: [],
