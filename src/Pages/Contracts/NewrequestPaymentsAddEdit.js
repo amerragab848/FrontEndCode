@@ -974,7 +974,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
 
             let paymentRequistion = {
-                subject: "..",
+                subject: "",
                 id: 0,
                 projectId: this.state.projectId,
                 arrange: "",

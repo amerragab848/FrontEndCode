@@ -885,7 +885,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
 
             let paymentRequistion = {
-                subject: "..",
+                subject: "",
                 id: 0,
                 projectId: this.state.projectId,
                 arrange: "",
@@ -2662,7 +2662,7 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="document-fields">
                                                 <Formik initialValues={{ ...this.state.document }}
                                                     validationSchema={validationSchema}
-                                                    enableReinitialize={this.props.changeStatus}
+                                                    enableReinitialize={true}
                                                     onSubmit={values => {
                                                         if (this.props.showModal) { return; }
 
