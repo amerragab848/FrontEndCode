@@ -12,6 +12,10 @@
     padding-right: 15px;
 }
 
+ul {
+    margin: 0
+}
+
 .container:before, .container:after {
     content: " ";
     display: table;
@@ -21561,7 +21565,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 }
 @media screen and (max-width: 1200px) {
     .discussion__panel .timeline .timeline__month--container .month__container {
-        left: 8px; 
+        right: 8px; 
     }
 }
 
@@ -21609,7 +21613,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 }
 
 .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--header .header__info {
-    margin-left: 12px; 
+    margin-right: 12px; 
 }
 
 .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--header .header__info h2 {
@@ -21701,7 +21705,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 }
 
 .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number svg {
-    margin-left: 24px; 
+    margin-right: 24px; 
 }
 
 .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number > span {
@@ -21713,8 +21717,8 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     line-height: 1.43;
     letter-spacing: -0.2px;
     color: #252833;
-    margin-left: 8px;
-    margin-right: 24px;
+    margin-left: 24px;
+    margin-right: 8px;
     cursor: pointer; 
 }
 
@@ -21767,7 +21771,8 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     height: 40px;
     border: none;
     background-color: #fafbfc;
-    padding-left: 8px;
+    padding-right: 8px;
+    padding-left: 50px;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: normal;
@@ -21794,6 +21799,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     padding: 0;
     transition: all 0.4s ease-in-out;
     cursor: pointer; 
+    transform: rotate(180deg);
 }
 
 .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment__field button.active {

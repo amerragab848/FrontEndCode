@@ -15975,6 +15975,7 @@ em {
 }
 
 .customeTabs .react-tabs__tab-list {
+    /* margin: 0; */
     border-bottom: 1px solid #E9ECF0 !important;
     display: flex !important;
     justify-content: center !important;
@@ -18512,6 +18513,7 @@ button.companies_icon {
     align-items: center;
     justify-content: center;
     margin-right: 16px;
+    flex-shrink: 0;
     transition: all 0.3s ease-in-out;
 }
 
@@ -21466,6 +21468,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     border: none;
     background-color: #fafbfc;
     padding-left: 8px;
+    padding-right: 50px;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: normal;
