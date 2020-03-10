@@ -22,7 +22,8 @@ class SendWorkFlow extends Component {
                 arrange: "",
                 workFlowId: null,
                 contacts: [],
-                dueDate: ""
+                dueDate: "",
+                useSelection: false
             },
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
             selectedContact: [],
@@ -39,8 +40,8 @@ class SendWorkFlow extends Component {
             selectedContact: [],
             useSelection: item.useSelection == true ? true : false
         });
-        console.log(item,'workFlowhandelChange');
-        
+        console.log(item, 'workFlowhandelChange');
+
         let url = "GetProjectWorkFlowContactsFirstLevelForList?workFlow=" + item.value;
         this.GetData(url, "contactName", "accountId", "WorkFlowContactData", 2);
     }
@@ -72,10 +73,16 @@ class SendWorkFlow extends Component {
     clickHandler = (e) => {
         this.setState({ submitLoading: true })
         var ids = this.state.selectedContact;
-        if (this.state.useSelection == true) { ids = ids.map(i => i.value) } else { ids = [ids.value] }
+        if (this.state.useSelection == true) {
+            ids = ids.map(i => i.value)
+        } else {
+            ids = [ids.value]
+        }
         let workFlowObj = { ...this.state.workFlowData };
         workFlowObj.contacts = ids;
         workFlowObj.workFlowId = this.state.selectedWorkFlow.value;
+        workFlowObj.useSelection = this.state.useSelection;
+
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.props.docId + '&docType=' + this.props.docTypeId + '&projectId=' + this.props.projectId;
         this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
     }
