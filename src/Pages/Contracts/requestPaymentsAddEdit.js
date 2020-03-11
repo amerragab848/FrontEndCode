@@ -343,16 +343,27 @@ class requestPaymentsAddEdit extends Component {
         let editQuantityComplete = ({ value, row }) => {
             if (row) {
                 return (
-                    <a className="editorCell">
-                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer", color: row.revisedQuantity >= row.quantityComplete ? "black" : "#F50505" }}>
-                            {row.quantityComplete}
-                        </span>
-                    </a>
+
+                    <span style={{ padding: "0 6px", margin: "5px 0", color: row.siteQuantityComplete >= row.quantityComplete ? "#F50505" : "black" }}>
+                        {row.quantityComplete}
+                    </span>
+
                 );
             }
             return null;
         };
+        let editRevisedQuantity = ({ value, row }) => {
+            if (row) {
+                return (
 
+                    <span style={{ padding: "0 6px", margin: "5px 0", color: row.revisedQuantity >= row.quantity ? "#0dc083" : "black" }}>
+                        {row.quantityComplete}
+                    </span>
+
+                );
+            }
+            return null;
+        };
         let editPercentComplete = ({ value, row }) => {
             if (row) {
                 return (
@@ -515,6 +526,7 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: false,
+                formatter: editRevisedQuantity,
                 sortDescendingFirst: true,
                 type: "number"
             },
@@ -635,7 +647,7 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: changeStatus ? null : editQuantityComplete,
+                formatter: editQuantityComplete,
                 editable: !changeStatus,
                 visible: this.props.changeStatus,
                 type: "number"
@@ -873,7 +885,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
 
             let paymentRequistion = {
-                subject: "..",
+                subject: "",
                 id: 0,
                 projectId: this.state.projectId,
                 arrange: "",
@@ -1955,7 +1967,7 @@ class requestPaymentsAddEdit extends Component {
 
             this.setState({ isView: false, exportFile: "" });
 
-            let ExportColumnsList = []; 
+            let ExportColumnsList = [];
             itemsColumns.filter(i => {
                 if (i.key !== "BtnActions") {
                     ExportColumnsList.push({ title: i.name, field: i.key });
@@ -2635,7 +2647,7 @@ class requestPaymentsAddEdit extends Component {
                 </div>
             </Fragment>
         ) : (<LoadingSection />);
- 
+
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -2650,7 +2662,7 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="document-fields">
                                                 <Formik initialValues={{ ...this.state.document }}
                                                     validationSchema={validationSchema}
-                                                    enableReinitialize={this.props.changeStatus}
+                                                    enableReinitialize={true}
                                                     onSubmit={values => {
                                                         if (this.props.showModal) { return; }
 

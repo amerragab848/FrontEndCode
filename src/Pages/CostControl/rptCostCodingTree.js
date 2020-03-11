@@ -40,12 +40,22 @@ class rptCostCodingTree extends Component {
     this.setState({ isLoading: true })
     Api.get('GetSummaryOfCostCoding?id=' + item.id + '').then(
       res => {
-        this.setState({
-          NodeData: res,
-          isLoading: false
-        })
+        if (res != null) {
+          this.setState({
+            NodeData: res,
+            isLoading: false
+          });
+        }else{
+          this.setState({
+            isLoading: false
+          });
+        }
       }
-    )
+    ).catch(res => {
+      this.setState({
+        isLoading: false
+      });
+    })
   }
 
   render() {
@@ -84,7 +94,6 @@ class rptCostCodingTree extends Component {
                   </div>
                   <table className="ui table">
                     <tbody>
-
                       <tr>
                         <td>{Resources['projectName'][currentLanguage]}</td>
                         <td>{this.state.NodeData.projectName}</td>
@@ -150,7 +159,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(rptCostCodingTree));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(rptCostCodingTree));

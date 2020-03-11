@@ -94,28 +94,14 @@ var routes = [
         title: "collectedInvoices",
         nav: true,
         settings: { Reports: true, permission: 686, order: 6 }
-    },
-    // {
-    //     route: "summaryOfApprovedInvoices",
-    //     moduleId: "reports/summaryOfApprovedInvoices",
-    //     title: "summaryOfApprovedInvoices",
-    //     nav: true,
-    //     settings: { Reports: true, permission: 686, order: 6 }
-    // },
+    }, 
     {
         route: "inventoryDetails",
         moduleId: "ProjectReports/InventoryDetails",
         title: "inventoryDetails",
         nav: true,
         settings: { ProjectReports: true, permission: 3689, order: 14 }
-    },
-    // {
-    //   route: "DocChart",
-    //   moduleId: "reportCenter/DocTypeChart",
-    //   title: "DocChart",
-    //   nav: true,
-    //   settings: { technicalOffice: true, permission: 4016, order: 6 }
-    // },
+    }, 
     {
         route: "boqTemplateReport",
         moduleId: "ProjectReports/BoqTemplateReport",
@@ -794,20 +780,7 @@ var routes = [
             caption: "procoor-icon-letters",
             order: 1
         }
-    },
-    // {
-    //   route: "ProjectCompanies",
-    //   moduleId: "ProjectCompanies",
-    //   title: "Companies",
-    //   nav: true,
-    //   hash: "#ProjectCompanies",
-    //   settings: {
-    //     Communication: true,
-    //     permission: 52,
-    //     caption: "procoor-icon-letters",
-    //     order: 1
-    //   }
-    // },
+    }, 
     {
         route:
             "internalMemoAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -850,20 +823,7 @@ var routes = [
             caption: "procoor-icon-email-records",
             order: 8
         }
-    },
-    // {
-    //   route: "corrRecievedSent",
-    //   moduleId: "communication/corrRecievedSent",
-    //   title: "correspondence",
-    //   nav: true,
-    //   hash: "#corrRecievedSent",
-    //   settings: {
-    //     Communication: true,
-    //     permission: 42,
-    //     caption: "procoor-icon-email-records",
-    //     order: 13
-    //   }
-    // },
+    }, 
     {
         route:
             "correspondenceSentAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -1643,20 +1603,7 @@ var routes = [
         title: "Daily Reports",
         nav: false,
         settings: { Site: false }
-    },
-    // {
-    //   route: "dailyReports",
-    //   moduleId: "commonLogs",
-    //   title: "dailyReports",
-    //   nav: true,
-    //   hash: "#dailyReports",
-    //   settings: {
-    //     Site: true,
-    //     permission: 269,
-    //     caption: "procoor-icon-daily-report",
-    //     order: 10
-    //   }
-    // },
+    }, 
     {
         route: "materialInspectionRequest",
         moduleId: "commonLogs",
@@ -1732,19 +1679,6 @@ var routes = [
         }
     },
     {
-        route: "weeklyReport",
-        moduleId: "commonLogs",
-        title: "weeklyReport",
-        nav: true,
-        hash: "#weeklyReport",
-        settings: {
-            Site: true,
-            permission: 788,
-            caption: "procoor-icon-submittal",
-            order: 1
-        }
-    },
-    {
         route: "dailyReports",
         moduleId: "commonLogs",
         title: "dailyReports",
@@ -1772,27 +1706,7 @@ var routes = [
         title: "Submittal Set Addition",
         nav: false,
         settings: { Site: false }
-    },
-    // {
-    //     route: "drawingSets",
-    //     moduleId: "commonLogs",
-    //     title: "drawingSets",
-    //     nav: true,
-    //     hash: "#drawingSets",
-    //     settings: {
-    //         Design: true,
-    //         caption: "procoor-icon-drawing-set",
-    //         permission: 215
-    //     }
-    // },
-    // {
-    //     route:
-    //         "drawingSetsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-    //     moduleId: "design/drawingSetsAddEdit",
-    //     title: "Drawing Set Addition",
-    //     nav: false,
-    //     settings: { Design: false }
-    // },
+    }, 
     {
         route: "drawingList",
         moduleId: "commonLogs",
@@ -2807,14 +2721,7 @@ var routes = [
         title: "paymentRequisition",
         nav: true,
         settings: { ContractsPo: true, permission: 3696, order: 6 }
-    },
-    // {
-    //   route: "purchaseOrderReport",
-    //   moduleId: "reportCenter/purchaseOrderReport",
-    //   title: "purchaseOrder",
-    //   nav: true,
-    //   settings: { ContractsPo: true, permission: 3695, order: 5 }
-    // },
+    }, 
     {
         route: "boqStructure",
         moduleId: "projects/boqStructure",
@@ -2825,15 +2732,7 @@ var routes = [
             permission: 3670,
             order: 6
         }
-    },
-   
-    // {
-    //     route: "materialsSuspended",
-    //     moduleId: "reportCenter/materialsSuspended",
-    //     title: "materialsSuspended",
-    //     nav: true,
-    //     settings: { inventory: true, permission: 3724, order: 2 }
-    // },
+    }, 
     { //start inventory Items Routes
         route: "inventoryRpt",
         moduleId: "InventoryItemsReports/InventoryItems",
@@ -2918,15 +2817,7 @@ var routes = [
         title: "onProgressDocuments",
         nav: true,
         settings: { technicalOffice: true, permission: 3762, order: 3 }
-    },
-
-    // {
-    //     route: "weeklyReport",
-    //     moduleId: "TechnicalOffice/weeklyReport",
-    //     title: "weeklyReport",
-    //     nav: true,
-    //     settings: { technicalOffice: true, permission: 3763, order: 4 }
-    // },
+    }, 
     {
         route: "contractorsPerformance",
         moduleId: "TechnicalOffice/ContractorsPerformance",

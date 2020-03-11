@@ -5,7 +5,7 @@ import Logo from "../../Styles/images/logo.svg";
 import Router from "../../URLRoutes";
 import Resources from "../../resources.json";
 import General from '../ProjectSetup/ProjectSetupRoutes';
-import Config from "../../Services/Config"; 
+import Config from "../../Services/Config";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as dashboardComponantActions from '../../store/actions/communication';
