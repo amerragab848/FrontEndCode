@@ -8496,5 +8496,14 @@
     "contractorRefNumber":{
         "en":"Contractor Ref Number",
         "ar":"Contractor Ref Number"
+    },
+    "CostControlTreeReport":{
+        "en":"Cost Control Tree Report",
+        "ar":"تقرير شجرة تحكم التكلفة"
+    },
+    "CostCodingReport":{
+        "en":"Cost Coding Report",
+        "ar":"تقرير كود التكلفة"
     }
+   
 }

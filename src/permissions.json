@@ -15779,6 +15779,40 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Cost Control Tree Report",
+            "ar": "تقرير شجرة تحكم التكلفة"
+          },
+          "id": 1241,
+          "permissions": [
+            {
+              "code": 10072,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
+            "en": "Cost Coding Report",
+            "ar": "تقرير كود التكلفة"
+          },
+          "id": 1242,
+          "permissions": [
+            {
+              "code": 10073,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     }
