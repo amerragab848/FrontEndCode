@@ -26,7 +26,7 @@ class DocApprovalDetails extends Component {
         width: 16,
         sortable: true,
         type: "text",
-        classes: 'gridBtns '
+        classes: 'gridBtns status '
       },
       {
         field: "subject",
@@ -283,7 +283,7 @@ class DocApprovalDetails extends Component {
       Api.get("GetRejectedRequestsDocApprove").then(result => {
         const newRows = [...result];
 
-        newRows.forEach(row => {
+        newRows.forEach((row, index) => {
           let subject = "";
           if (row) {
             let obj = {
@@ -305,13 +305,19 @@ class DocApprovalDetails extends Component {
             subject = doc_view;
           }
           row.link = subject;
+
+          setTimeout(() => {
+            var tableRow = document.querySelectorAll('.grid-body  tr');
+            for (let x = 0; x < tableRow.length; x++) {
+              if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
+            }
+          }, 500);
         });
         this.setState({
           rows: newRows != null ? newRows : [],
           isLoading: false
         });
       });
-      setTimeout(() => { this.addReadStatusClass() }, 1000);
     } else {
       this.setState({
         pageTitle: Resources["docApproval"][currentLanguage]
@@ -321,7 +327,7 @@ class DocApprovalDetails extends Component {
 
       Api.get("GetApprovalRequestsDocApprove").then(result => {
         const newRows = [...result];
-        newRows.forEach(row => {
+        newRows.forEach((row, index) => {
           let subject = "";
           if (row) {
             let obj = {
@@ -343,21 +349,19 @@ class DocApprovalDetails extends Component {
             subject = doc_view;
           }
           row.link = subject;
+
+          setTimeout(() => {
+            var tableRow = document.querySelectorAll('.grid-body  tr');
+            for (let x = 0; x < tableRow.length; x++) {
+              if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.readStatus === true ? 'Read' : 'UnRead');
+            }
+          }, 500);
         });
-        setTimeout(() => { this.addReadStatusClass() }, 1000);
         this.setState({
           rows: newRows != null ? newRows : [],
           isLoading: false
         });
       });
-    }
-  }
-
-  addReadStatusClass = () => {
-    var gridBtns = document.querySelectorAll('.gridBtns');
-    for (let i = 0; i < gridBtns.length; i++) {
-      if (gridBtns[i].textContent.toLowerCase() == 'Read'.toLowerCase()) gridBtns[i].classList.add('Read');
-      else if (gridBtns[i].textContent.toLowerCase() == 'UnRead'.toLowerCase()) gridBtns[i].classList.add('UnRead');
     }
   }
 

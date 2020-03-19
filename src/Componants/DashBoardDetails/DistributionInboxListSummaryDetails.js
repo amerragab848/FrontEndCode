@@ -99,7 +99,7 @@ class DistributionInboxListSummaryDetails extends Component {
         sortable: true,
         fixed: true,
         type: "text",
-        classes: 'gridBtns '
+        classes: 'gridBtns status '
       }, {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
@@ -170,6 +170,7 @@ class DistributionInboxListSummaryDetails extends Component {
       this.setState({
         pageTitle: Resources["inboxSummary"][currentLanguage]
       });
+
       this.columnsGrid[0].field = 'readUnread';
       if (action) {
         Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
@@ -193,16 +194,19 @@ class DistributionInboxListSummaryDetails extends Component {
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
               row.link = "/" + spliteLink[0] + "?id=" + encodedPaylod
               subject = row.subject;
-              if (currentLanguage === "ar") row.readUnread = row.status === true ? 'قرأت' : 'لم تقرأ'
-              else row.readUnread = row.status === true ? 'Read' : 'UnRead'
+              setTimeout(() => {
+                var tableRow = document.querySelectorAll('.grid-body  tr');
+                for (let x = 0; x < tableRow.length; x++) {
+                  if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
+                }
+              }, 500);
             });
           }
-          setTimeout(() => { this.addReadStatusClass() }, 1000);
           this.setState({
             rows: result,
             isLoading: false
           });
-        }).then(this.addReadStatusClass());
+        })
       }
     } else {
       this.setState({
@@ -212,7 +216,7 @@ class DistributionInboxListSummaryDetails extends Component {
       if (action) {
         Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + 200).then(result => {
           if (result) {
-            result.forEach(row => {
+            result.forEach((row, index) => {
               let spliteLink = row.docView.split('/');
 
               let obj = {
@@ -228,29 +232,19 @@ class DistributionInboxListSummaryDetails extends Component {
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
               row.link = "/" + spliteLink[0] + "?id=" + encodedPaylod;
-              if (currentLanguage === "ar") row.readUnread = row.status === true ? 'قرأت' : 'لم تقرأ';
-              else row.readUnread = row.status === true ? 'Read' : 'UnRead';
+              setTimeout(() => {
+                var tableRow = document.querySelectorAll('.grid-body  tr');
+                for (let x = 0; x < tableRow.length; x++) {
+                  if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
+                }
+              }, 500);
             });
           }
-          setTimeout(() => { this.addReadStatusClass() }, 1000);
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
           });
         });
-      }
-    }
-  }
-
-  addReadStatusClass = () => {
-    var gridBtns = document.querySelectorAll('.gridBtns');
-    for (let i = 0; i < gridBtns.length; i++) {
-      if (currentLanguage === "ar") {
-        if (gridBtns[i].textContent == 'قرأت') gridBtns[i].classList.add('Read');
-        else if (gridBtns[i].textContent == 'لم تقرأ') gridBtns[i].classList.add('UnRead');
-      } else {
-        if (gridBtns[i].textContent.toLowerCase() == 'Read'.toLowerCase()) gridBtns[i].classList.add('Read');
-        else if (gridBtns[i].textContent.toLowerCase() == 'UnRead'.toLowerCase()) gridBtns[i].classList.add('UnRead');
       }
     }
   }

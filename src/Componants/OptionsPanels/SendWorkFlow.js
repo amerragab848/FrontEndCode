@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Api from '../../api'
-import Dropdown from "./DropdownMelcous"; 
-import Resources from '../../resources.json'; 
+import Dropdown from "./DropdownMelcous";
+import Resources from '../../resources.json';
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -10,7 +10,7 @@ import {
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
- 
+
 class SendWorkFlow extends Component {
     constructor(props) {
         super(props)
@@ -21,30 +21,33 @@ class SendWorkFlow extends Component {
                 docTypeId: this.props.docTypeId,
                 arrange: "",
                 workFlowId: null,
-                toAccountId: null,
-                dueDate: ""
+                contacts: [],
+                dueDate: "",
+                useSelection: false
             },
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
-            selectedApproveId: { label: "select To Contact", value: 0 },
+            selectedContact: [],
             submitLoading: false,
             WorkFlowData: [],
-            WorkFlowContactData: []
+            WorkFlowContactData: [],
+            useSelection: false
         }
     }
 
     workFlowhandelChange = (item) => {
         this.setState({
             selectedWorkFlow: item,
-            workFlowData: { ...this.state.workFlowData, workFlowId: item.value }
+            selectedContact: [],
+            useSelection: item.useSelection == true ? true : false
         });
+        console.log(item, 'workFlowhandelChange');
 
         let url = "GetProjectWorkFlowContactsFirstLevelForList?workFlow=" + item.value;
-
         this.GetData(url, "contactName", "accountId", "WorkFlowContactData", 2);
-
     }
 
     componentDidMount = () => {
+
         let url = "ProjectWorkFlowGetList?projectId=" + this.state.workFlowData.projectId;
         this.GetData(url, 'subject', 'id', 'WorkFlowData', 1);
         this.props.actions.SendingWorkFlow(true);
@@ -56,24 +59,30 @@ class SendWorkFlow extends Component {
         }
         return null
     }
-  
+
     inputChangeHandler = (e) => {
         this.setState({ workFlowData: { ...this.state.workFlowData, Comment: e.target.value } });
     }
 
     toAccounthandelChange = (item) => {
         this.setState({
-            toAccountId: { ...this.state.workFlowData, toAccountId: item.value },
-            selectedApproveId: item
+            selectedContact: item
         });
     }
 
     clickHandler = (e) => {
         this.setState({ submitLoading: true })
-
+        var ids = this.state.selectedContact;
+        if (this.state.useSelection == true) {
+            ids = ids.map(i => i.value)
+        } else {
+            ids = [ids.value]
+        }
         let workFlowObj = { ...this.state.workFlowData };
-        workFlowObj.toAccountId = this.state.selectedApproveId.value;
+        workFlowObj.contacts = ids;
         workFlowObj.workFlowId = this.state.selectedWorkFlow.value;
+        workFlowObj.useSelection = this.state.useSelection;
+
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.props.docId + '&docType=' + this.props.docTypeId + '&projectId=' + this.props.projectId;
         this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
     }
@@ -90,10 +99,13 @@ class SendWorkFlow extends Component {
                 <Dropdown title="contact"
                     data={this.state.WorkFlowContactData}
                     name="ddlApproveTo"
-                    selectedValue={this.state.selectedApproveId}
+                    selectedValue={this.state.selectedContact}
+                    value={this.state.selectedContact}
                     index='ddlApproveTo'
+                    isMulti={this.state.useSelection == true ? true : false}
                     handleChange={this.toAccounthandelChange}
-                    className={this.state.toCompanyClass} />
+                    className={this.state.toCompanyClass}
+                />
                 <div className="fullWidthWrapper">
                     {!this.state.submitLoading ?
                         <button className="workFlowDataBtn-1 mediumBtn primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
@@ -112,12 +124,14 @@ class SendWorkFlow extends Component {
     }
 
     GetData = (url, label, value, currState, type) => {
-        let Data = []
+        let Data = [];
         Api.get(url).then(result => {
+
             (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
+                if (type == 1) { obj.useSelection = item["useSelection"] };
                 Data.push(obj);
             });
 
@@ -126,15 +140,31 @@ class SendWorkFlow extends Component {
             });
 
             switch (type) {
+
                 case 1:
-                    this.setState({
-                        selectedWorkFlow: Data[0]
+                    Api.get("GetProjectWorkFlowContactsFirstLevelForList?workFlow=" + Data[0].value).then(result2 => {
+                        let Data2 = [];
+                        (result2).forEach(item => {
+                            var obj2 = {};
+                            obj2.label = item["contactName"];
+                            obj2.value = item["accountId"];
+                            Data2.push(obj2);
+                        });
+
+                        let useSelection = Data[0]["useSelection"];
+
+                        this.setState({
+                            selectedWorkFlow: Data[0],
+                            WorkFlowContactData: [...Data2],
+                            useSelection
+                        });
                     });
+
                     break;
 
                 case 2:
                     this.setState({
-                        selectedApproveId: Data[0]
+                        selectedContact: []
                     });
                     break;
 
