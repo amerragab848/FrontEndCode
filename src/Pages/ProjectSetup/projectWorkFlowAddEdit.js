@@ -103,10 +103,9 @@ const ValidtionSchemaContactsForEdit = Yup.object().shape({
 
 const validationSchemaForAddEditWorkFlow = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    alertDays: Yup.number()
-        .required(Resources['isRequiredField'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
+    alertDays: Yup.number().required(Resources['isRequiredField'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
     rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage]),
+    distributionId: Yup.string().required(Resources['distributionList'][currentLanguage])
 })
 
 class projectWorkFlowAddEdit extends Component {
@@ -134,9 +133,9 @@ class projectWorkFlowAddEdit extends Component {
                 }
                 catch{
                     this.props.history.goBack();
-
                 }
             }
+
             index++;
         }
 
@@ -181,6 +180,7 @@ class projectWorkFlowAddEdit extends Component {
         ];
 
         this.state = {
+            DistributionList: [],
             IsAddModel: false,
             CurrStep: 0,
             rows: [],
@@ -219,11 +219,13 @@ class projectWorkFlowAddEdit extends Component {
             WorkFlowDocumentData: [],
             NewMultiApprovalData: [],
             SelectedApproval: { label: "Select Approval", value: "0" },
+            selectedDistributionList: { label: "Select Distribution List", value: "0" },
             permission: [{ name: 'sendByEmail', code: 606 }, { name: 'sendByInbox', code: 605 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 949 },
             { name: 'createTransmittal', code: 3035 }, { name: 'sendToWorkFlow', code: 702 }],
             IsAddModel: false
         }
+
         if (!Config.IsAllow(600) && !Config.IsAllow(601) && !Config.IsAllow(603)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
@@ -390,6 +392,7 @@ class projectWorkFlowAddEdit extends Component {
                         status: true,
                         subject: '',
                         useSelection: true,
+                        distributionId: ''
                     }
                     this.setState({
                         document: WorkFlowDoc
@@ -572,6 +575,22 @@ class projectWorkFlowAddEdit extends Component {
             }
         })
 
+        //DistributionList
+        dataservice.GetDataList('GetProjectDistributionListByProjectId?projectId=' + projectId + '', 'subject', 'id').then(result => {
+
+            this.setState({
+                DistributionList: result,
+                isLoading: false
+            })
+
+            if (isEdit === true) {
+                let distributionId = this.state.document.distributionId;
+                let selectedDistributionList = find(result, function (i) { return i.value == distributionId });
+                this.setState({
+                    selectedDistributionList: selectedDistributionList
+                })
+            }
+        })
     }
 
     AddEditWorkFlow = () => {
@@ -761,11 +780,13 @@ class projectWorkFlowAddEdit extends Component {
 
     AddFollowUps = (values) => {
         this.setState({ IsLoadingCheckCode: true })
+
         let FollowUps = {
             workFlowId: this.state.docId, followingUpsContactId: '',
             accountId: values.ContactNameFollowUp.value,
             followingUpsCompanyId: values.CompanyFollowUp.value
         }
+
         Api.post('AddFollowingUps', FollowUps).then(
             res => {
                 if (res === "isExist") {
@@ -852,9 +873,11 @@ class projectWorkFlowAddEdit extends Component {
         });
 
     }
+
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
+
     AddDocumentType = (values) => {
         this.setState({ IsLoadingCheckCode: true })
         let WorkFlowDocument = {
@@ -920,15 +943,14 @@ class projectWorkFlowAddEdit extends Component {
 
         this.setState({
             MultiApproval: { id: id, val: Value }
-        })
-
+        });
     }
 
     SaveMultiApproval = () => {
         Api.post('UpdateMultiApproval', this.state.NewMultiApprovalData).then(
             toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-
         )
+
         this.props.history.push({
             pathname: '/WorkFlow/' + projectId + '',
         })
@@ -972,110 +994,106 @@ class projectWorkFlowAddEdit extends Component {
             { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ]
 
-        const dataGrid =
-            this.state.isLoading === false ? (
-                <GridCustom cells={this.state.columns} data={this.state.rows}
-                    groups={[]} pageSize={this.state.rows.length}
-                    actions={[{
-                        title: 'Delete',
-                        handleClick: (values) => {
-                            this.clickHandlerDeleteRowsMain(values);
-                        },
-                        classes: '',
-                    }]}
-                    rowActions={[]}
-                    rowClick={(values) => {
-                        this.ShowPopUpForEdit(values);
-                    }}
-                />
-            ) : <LoadingSection />
+        const dataGrid = this.state.isLoading === false ? (
+            <GridCustom cells={this.state.columns} data={this.state.rows}
+                groups={[]} pageSize={this.state.rows.length}
+                actions={[{
+                    title: 'Delete',
+                    handleClick: (values) => {
+                        this.clickHandlerDeleteRowsMain(values);
+                    },
+                    classes: '',
+                }]}
+                rowActions={[]}
+                rowClick={(values) => {
+                    this.ShowPopUpForEdit(values);
+                }}
+            />
+        ) : <LoadingSection />
 
         let FollowUpsData = this.state.FollowUpsData;
 
-        let RenderFollowUpsTable =
-            FollowUpsData.map((item, index) => {
-                return (
-                    <tr key={item.id}>
-                        <td className="removeTr">
-                            <div className="contentCell tableCell-1">
-                                <span className="pdfImage" onClick={() => this.DeleteFollowUp(item.id, index)}>
-                                    <img src={Recycle} alt="pdf" />
-                                </span>
-                            </div>
-                        </td>
-                        <td>
-                            <div className="contentCell tableCell-2">
-                                <p>{item.actionByCompanyName}</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div className="contentCell tableCell-2">
-                                <p>{item.actionByContactName}</p>
-                            </div>
-                        </td>
-                    </tr>
-                )
-            })
+        let RenderFollowUpsTable = FollowUpsData.map((item, index) => {
+            return (
+                <tr key={item.id}>
+                    <td className="removeTr">
+                        <div className="contentCell tableCell-1">
+                            <span className="pdfImage" onClick={() => this.DeleteFollowUp(item.id, index)}>
+                                <img src={Recycle} alt="pdf" />
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <p>{item.actionByCompanyName}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <p>{item.actionByContactName}</p>
+                        </div>
+                    </td>
+                </tr>
+            )
+        })
 
         let DocumentTypeData = this.state.WorkFlowDocumentData;
 
-        let RenderDocumentTypeTable =
-            DocumentTypeData.map((item, index) => {
-                return (
-                    <tr key={item.id}>
-                        <td className="removeTr">
-                            <div className="contentCell tableCell-1">
-                                <span className="pdfImage" onClick={() => this.DeleteDocType(item.id, index)}>
-                                    <img src={Recycle} alt="pdf" />
-                                </span>
-                            </div>
-                        </td>
-                        <td>
-                            <div className="contentCell tableCell-2">
-                                <p>{item.docTypeTitle}</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div className="contentCell tableCell-2">
-                                <p>{item.redAlert}</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div className="contentCell tableCell-2">
-                                <p>{item.yellowAlert}</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div className="contentCell tableCell-2">
-                                <p>{item.greenAlert}</p>
-                            </div>
-                        </td>
-                    </tr>
-                )
-            })
+        let RenderDocumentTypeTable = DocumentTypeData.map((item, index) => {
+            return (
+                <tr key={item.id}>
+                    <td className="removeTr">
+                        <div className="contentCell tableCell-1">
+                            <span className="pdfImage" onClick={() => this.DeleteDocType(item.id, index)}>
+                                <img src={Recycle} alt="pdf" />
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <p>{item.docTypeTitle}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <p>{item.redAlert}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <p>{item.yellowAlert}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="contentCell tableCell-2">
+                            <p>{item.greenAlert}</p>
+                        </div>
+                    </td>
+                </tr>
+            )
+        });
 
-        const renderMultiApprovalTable =
-            this.state.MultiApprovalData.map((item) => {
-                return (
-                    <tr key={item.workFlowItemId}>
-                        <td>
-                            <div className="contentCell tableCell-1">
-                                <p>
-                                    {item.arrange}
-                                </p>
-                            </div>
-                        </td>
-                        {() => this.setState({ MultiApproval: item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false } })}
-                        <td>
-                            <Select options={[{ label: 'Multi', value: true }, { label: 'Single', value: false }]}
-                                onChange={e => this.MultiApprovalhandleChange(item.workFlowItemId, e)}
-                                onBlur={() => this.handleBlurmultiApproval(item.workFlowItemId)}
-                                defaultValue={item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false }}
-                            />
-                        </td>
-                    </tr>
-                )
-            })
+        const renderMultiApprovalTable = this.state.MultiApprovalData.map((item) => {
+            return (
+                <tr key={item.workFlowItemId}>
+                    <td>
+                        <div className="contentCell tableCell-1">
+                            <p>
+                                {item.arrange}
+                            </p>
+                        </div>
+                    </td>
+                    {() => this.setState({ MultiApproval: item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false } })}
+                    <td>
+                        <Select options={[{ label: 'Multi', value: true }, { label: 'Single', value: false }]}
+                            onChange={e => this.MultiApprovalhandleChange(item.workFlowItemId, e)}
+                            onBlur={() => this.handleBlurmultiApproval(item.workFlowItemId)}
+                            defaultValue={item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false }}
+                        />
+                    </td>
+                </tr>
+            )
+        });
 
         let FirstStepWorkFlow = () => {
             return (
@@ -1151,6 +1169,14 @@ class projectWorkFlowAddEdit extends Component {
                                             onChange={setFieldValue} onBlur={setFieldTouched} title="nextWorkFlow"
                                             error={errors.nextWorkFlowId} touched={touched.nextWorkFlowId}
                                             index="IR-nextWorkFlowId" name="nextWorkFlowId" id="nextWorkFlowId" />
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown data={this.state.DistributionList} selectedValue={this.state.selectedDistributionList}
+                                            handleChange={event => this.handleChangeDropDown(event, 'distributionId', false, '', '', '', 'selectedDistributionList')}
+                                            onChange={setFieldValue} onBlur={setFieldTouched} title="distributionList"
+                                            error={errors.distributionId} touched={touched.distributionId}
+                                            index="distributionId" name="distributionList" id="distributionList" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
@@ -1761,6 +1787,7 @@ class projectWorkFlowAddEdit extends Component {
         )
     }
 }
+
 function mapStateToProps(state) {
     return {
         document: state.communication.document,

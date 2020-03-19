@@ -8496,5 +8496,17 @@
     "contractorRefNumber":{
         "en":"Contractor Ref Number",
         "ar":"Contractor Ref Number"
+    },
+    "filesSettings":{
+        "en":"Files Settings",
+        "ar":"إعدادات الملفات"
+    },
+    "originalText":{
+        "en":"Original Text",
+        "ar":"النص الرئيسى"
+    },
+    "replacmentText":{
+        "en":"Replacment Text",
+        "ar":"النص البديل"
     }
 }
