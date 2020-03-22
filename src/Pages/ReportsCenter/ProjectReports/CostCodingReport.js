@@ -37,136 +37,66 @@ class CostControlTreeReport extends Component {
         }
         this.columns = [
             {
-                "field": "projectName",
-                "title": Resources.projectName[currentLanguage],
+                "field": "costCodingTitle",
+                "title": Resources.costCoding[currentLanguage],
                 "type": "text",
                 "width": 15,
                 "fixed": true,
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "description",
-                "title": Resources.description[currentLanguage],
-                "type": "text",
+                "field": "originalBudget",
+                "title": Resources.estimatedBudget[currentLanguage],
+                "type": "number",
                 "width": 15,
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "unit",
-                "title": Resources.unit[currentLanguage],
-                "type": "text",
+                "field": "paymentTotal",
+                "title": Resources.paymentRequisitionCost[currentLanguage],
+                "type": "number",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "expenses",
+                "title": Resources.expensesCost[currentLanguage],
+                "type": "number",
                 "width": 15,
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "purchased",
-                "title": Resources.purchased[currentLanguage],
-                "type": "text",
+                "field": "totalMaterialRelease",
+                "title": Resources.materialRelease[currentLanguage],
+                "type": "number",
                 "width": 15,
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "tranfare",
-                "title": Resources.transfare[currentLanguage],
-                "type": "text",
+                "field": "invoicesTotal",
+                "title": Resources.invoicesForPoCost[currentLanguage],
+                "type": "number",
                 "width": 15,
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "returned",
-                "title": Resources.returned[currentLanguage],
-                "type": "text",
+                "field": "actualCost",
+                "title": Resources.actualCost[currentLanguage],
+                "type": "number",
                 "width": 15,
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "consumption",
-                "title": Resources.consumption[currentLanguage],
+                "field": "actualPercentage",
+                "title": Resources.actualPercentage[currentLanguage],
                 "type": "text",
-                "width": 15,
+                "width": 20,
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "exchanges",
-                "title": Resources.exchanges[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "drawingContractors",
-                "title": Resources.drawingContractors[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "totalPurchased",
-                "title": Resources.totalPurchased[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "totalTranfare",
-                "title": Resources.totalTranfare[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "totalReturned",
-                "title": Resources.totalReturned[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "totalConsumption",
-                "title": Resources.totalConsumption[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "totalExchanges",
-                "title": Resources.totalExchanges[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "totalDrawingContractors",
-                "title": Resources.totalDrawingContractors[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "startQuantity",
-                "title": Resources.startQuantity[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "finishQuantity",
-                "title": Resources.finishQuantity[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "total",
-                "title": Resources.total[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "avgUnitPrice",
-                "title": Resources.avgUnitPrice[currentLanguage],
-                "type": "text",
+                "field": "balance",
+                "title": Resources.balance[currentLanguage],
+                "type": "number",
                 "width": 15,
                 "groupable": true,
                 "sortable": true
@@ -194,11 +124,43 @@ class CostControlTreeReport extends Component {
 
     GetNodeData = (item) => {
         this.setState({ isLoading: true })
-        Api.get('GetSummaryOfCostCoding?id=' + item.id + '').then(
+        Api.get('GetCostcodingReport?treeId=' + item.id + '&projectId=' + this.state.projectId + '').then(
             res => {
+               
+
                 if (res != null) {
+                    let estimatedBudgetTotal=0;
+                   let paymentRequisitionsCost=0;
+                    let expensesCost=0;
+                    let materialRelease=0;
+                    let invoicesForPOCost=0;
+                    let actualCostTotal=0;
+                     let balanceTotal=0;
+                    res.forEach(row => {
+                        row.actualPercentage = row.actualPercentage + " %";
+                        estimatedBudgetTotal=estimatedBudgetTotal+row.originalBudget;
+                        paymentRequisitionsCost=paymentRequisitionsCost+row.paymentTotal;
+                        expensesCost=expensesCost+row.expenses;
+                        materialRelease=materialRelease+row.totalMaterialRelease;
+                        invoicesForPOCost=invoicesForPOCost+row.invoicesTotal;
+                        actualCostTotal=actualCostTotal+row.actualCost;
+                       // actualPercentageTotal=actualPercentageTotal+row.paymentTotal;
+                        balanceTotal=balanceTotal+row.balance;
+                    })
+                    let actualPercentageTotal=estimatedBudgetTotal==0?"0 %":Math.round((actualCostTotal/estimatedBudgetTotal)*100)+" %";
+                    res.push({
+                        costCodingTitle:"Total",
+                        originalBudget:estimatedBudgetTotal,
+                        paymentTotal:paymentRequisitionsCost,
+                        expenses:expensesCost,
+                        totalMaterialRelease:materialRelease,
+                        invoicesTotal:invoicesForPOCost,
+                        actualCost:actualCostTotal,
+                        actualPercentage:actualPercentageTotal,
+                        balance:balanceTotal
+                    })
                     this.setState({
-                        NodeData: res,
+                        gridRows: res,
                         isLoading: false
                     });
                 } else {
@@ -215,7 +177,7 @@ class CostControlTreeReport extends Component {
     }
     render() {
         let exportBtn = this.state.isLoading == false ? <ExportDetails fieldsItems={this.columns}
-            rows={rows || []}
+            rows={this.state.gridRows}
             fields={[]} fileName={Resources.CostCodingReport[currentLanguage]} /> : null
         // let ExportColumns = [
         //     { field: 'projectName', title: Resources['projectName'][currentLanguage] },
@@ -226,8 +188,8 @@ class CostControlTreeReport extends Component {
         //     { field: 'totalMaterialRelease', title: Resources['materialRequestcount'][currentLanguage] },
         //     { field: 'expenses', title: Resources['expensesTotal'][currentLanguage] },
         // ]
-        let rows = []
-        rows.push(this.state.NodeData)
+        // let rows = []
+        // rows.push(this.state.NodeData)
         return (
             <div className="reports__content reports__multiDrop">
                 <header>
@@ -249,8 +211,8 @@ class CostControlTreeReport extends Component {
                         <LoadingSection />
                     </div> :
                     <>
-                        <GridCustom ref='custom-data-grid' groups={[]} data={rows || []} cells={this.columns}
-                            pageSize={this.state.NodeData.length} actions={[]} rowActions={[]} rowClick={() => { }}
+                        <GridCustom ref='custom-data-grid' groups={[]} data={this.state.gridRows} cells={this.columns}
+                            pageSize={this.state.gridRows.length} actions={[]} rowActions={[]} rowClick={() => { }}
                         />
                     </>
                 }

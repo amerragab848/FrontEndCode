@@ -52,7 +52,7 @@ class CostControlTreeReport extends Component {
    
     GetNodeData = (item) => {
         this.setState({ isLoading: true })
-        Api.get('GetSummaryOfCostCoding?id=' + item.id + '').then(
+        Api.get('GetSummaryOfCostControl?treeId=' + item.id + '&projectId='+this.state.projectId+'').then(
             res => {
                 if (res != null) {
                     this.setState({
