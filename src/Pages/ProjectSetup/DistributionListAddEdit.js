@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import GridCustom from 'react-customized-grid';
 import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
@@ -28,7 +29,6 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-//const _ = require('lodash')
 let MaxArrange = 1
 
 const ValidtionSchemaForDis_List = Yup.object().shape({
@@ -46,6 +46,9 @@ const ValidtionSchemaForContact = Yup.object().shape({
         .nullable(true),
     ContactName: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
+        .nullable(false),
+    actionId: Yup.string()
+        .required(Resources['action'][currentLanguage])
         .nullable(false),
 });
 
@@ -91,41 +94,39 @@ class TaskGroupsAddEdit extends Component {
         }
 
         const columnsGrid = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
-            },
-            {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: "arrange",
+                title: Resources["numberAbb"][currentLanguage],
+                groupable: true,
+                fixed: true,
+                width: 10,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                type: "text"
+            }, {
+                field: "companyName",
+                title: Resources["CompanyName"][currentLanguage],
+                groupable: true,
+                fixed: false,
+                width: 16,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                type: "text"
+            }, {
+                field: "contactName",
+                title: Resources["ContactName"][currentLanguage],
+                groupable: true,
+                fixed: false,
+                width: 16,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text"
+            }, {
+                field: "actionName",
+                title: Resources["action"][currentLanguage],
+                groupable: true,
+                fixed: false,
+                width: 16,
+                sortable: true,
+                type: "text"
             }
         ]
 
@@ -144,6 +145,7 @@ class TaskGroupsAddEdit extends Component {
             Status: 'true',
             CompanyData: [],
             ContactData: [],
+            distributionAction: [],
             isLoading: true,
             CurrStep: 0,
             SelectedCompany: '',
@@ -159,6 +161,7 @@ class TaskGroupsAddEdit extends Component {
             MaxArrangeContact: 1,
             DeleteFromLog: false,
             Dis_ListData: {},
+            SelectedAction: { label: "Select Action", value: "0" },
             permission: [{ name: 'sendByEmail', code: 631 },
             { name: 'sendByInbox', code: 630 },
             { name: 'sendTask', code: 1 },
@@ -173,12 +176,27 @@ class TaskGroupsAddEdit extends Component {
                 pathname: '/DistributionList/' + projectId,
             });
         }
+
+        this.rowActions = [
+            {
+                title: Resources['delete'][currentLanguage],
+                handleClick: value => {
+                    this.DeleteContact(value)
+                }
+            }
+        ];
     }
 
     FillCompanyDrop = () => {
         dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(
             res => {
                 this.setState({ CompanyData: res });
+            }
+        )
+
+        dataservice.GetDataList('GetaccountsDefaultList?listType=distribution_action &pageNumber=0&pageSize=100000', 'title', 'id').then(
+            res => {
+                this.setState({ distributionAction: res });
             }
         )
     }
@@ -250,6 +268,9 @@ class TaskGroupsAddEdit extends Component {
                     )
                 }
                 break;
+            case 'actionId':
+                this.setState({ SelectedAction: SelectedItem });
+                break;
             default:
                 break;
         }
@@ -318,7 +339,6 @@ class TaskGroupsAddEdit extends Component {
             });
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
         })
-
     }
 
     onCloseModal = () => {
@@ -330,14 +350,18 @@ class TaskGroupsAddEdit extends Component {
     }
 
     AddContact = (values, actions) => {
+
         this.setState({ isLoading: true });
+
         let obj = {
             id: undefined,
             arrange: values.ArrangeContact,
             companyId: values.Company.value,
             contactId: values.ContactName.value,
             distributionListId: docId,
+            actionId: this.state.SelectedAction.value
         };
+
         Api.post('AddProjectDistributionListItem', obj).then(
             res => {
                 let NewRows = this.state.rows;
@@ -354,6 +378,7 @@ class TaskGroupsAddEdit extends Component {
 
         values.Company = '';
         values.ContactName = '';
+        values.actionId = '';
         values.ArrangeContact = this.state.MaxArrangeContact;
     }
 
@@ -485,20 +510,29 @@ class TaskGroupsAddEdit extends Component {
                                 <p>{item.contactName}</p>
                             </div>
                         </td>
+                        <td>
+                            <div className="contentCell tableCell-1">
+                                <p>{item.actionName}</p>
+                            </div>
+                        </td>
                     </tr>
                     : <LoadingSection />
             )
         });
 
-        const dataGrid =
-            this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    minHeight={350}
-                    clickHandlerDeleteRows={this.DeleteContact}
-                    single={true}
-                />
-            ) : <LoadingSection />
+        const dataGrid = this.state.isLoading === false ? (
+            <GridCustom
+                key={"DistributionContact"}
+                cells={this.state.columns}
+                data={this.state.rows}
+                pageSize={2000}
+                actions={this.rowActions}
+                rowActions={[]}
+                rowClick={cell => { }}
+                groups={[]}
+
+            />
+        ) : <LoadingSection />
 
         const RenderAddContact = () => {
             return (
@@ -508,11 +542,11 @@ class TaskGroupsAddEdit extends Component {
                             ArrangeContact: this.state.MaxArrangeContact,
                             Company: '',
                             ContactName: '',
+                            actionId: this.state.SelectedAction.value
                         }}
                         enableReinitialize={true}
                         validationSchema={ValidtionSchemaForContact}
                         onSubmit={(values, actions) => { this.AddContact(values, actions) }}>
-
                         {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                             <Form onSubmit={handleSubmit}>
                                 <header className="main__header">
@@ -520,10 +554,8 @@ class TaskGroupsAddEdit extends Component {
                                         <h2 className="zero">{Resources['addContact'][currentLanguage]}</h2>
                                     </div>
                                 </header>
-
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
-
                                         <div className="linebylineInput valid-input">
                                             <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
                                                 selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
@@ -533,7 +565,6 @@ class TaskGroupsAddEdit extends Component {
                                                 touched={touched.Company}
                                                 value={values.Company} isClear={true} />
                                         </div>
-
                                         <div className="linebylineInput valid-input">
                                             <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
                                                 selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContact : values.ContactName} onChange={setFieldValue}
@@ -543,7 +574,6 @@ class TaskGroupsAddEdit extends Component {
                                                 touched={touched.ContactName}
                                                 value={values.ContactName} />
                                         </div>
-
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.ArrangeContact && touched.ArrangeContact ? 'has-error' : null) + ' '}>
@@ -556,7 +586,15 @@ class TaskGroupsAddEdit extends Component {
                                                 {errors.ArrangeContact && touched.ArrangeContact ? (<em className="pError">{errors.ArrangeContact}</em>) : null}
                                             </div>
                                         </div>
-
+                                        <div className="linebylineInput valid-input">
+                                            <DropdownMelcous title="action" data={this.state.distributionAction} name="action"
+                                                selectedValue={this.state.SelectedAction} onChange={setFieldValue}
+                                                handleChange={(e) => this.handleChangeDrops(e, "actionId")}
+                                                onBlur={setFieldTouched}
+                                                error={errors.actionId}
+                                                touched={touched.actionId}
+                                                value={values.actionId} isClear={true} />
+                                        </div>
                                     </div>
                                     <div className="slider-Btns">
                                         <button className="primaryBtn-1 btn meduimBtn" type='submit' >ADD</button>
@@ -664,7 +702,6 @@ class TaskGroupsAddEdit extends Component {
                                         )}
                                     </Formik>
 
-
                                     {this.state.IsEditMode ?
                                         <Fragment>
                                             <div className='document-fields'>
@@ -692,6 +729,11 @@ class TaskGroupsAddEdit extends Component {
                                                             <th>
                                                                 <div className="headCell tableCell-2">
                                                                     {Resources['ContactName'][currentLanguage]}
+                                                                </div>
+                                                            </th>
+                                                            <th>
+                                                                <div className="headCell tableCell-2">
+                                                                    {Resources['action'][currentLanguage]}
                                                                 </div>
                                                             </th>
                                                             <th></th>

@@ -8509,6 +8509,7 @@
         "en":"Contractor Ref Number",
         "ar":"Contractor Ref Number"
     },
+
     "CostControlTreeReport":{
         "en":"Cost Control Tree Report",
         "ar":"تقرير شجرة تحكم التكلفة"
@@ -8520,6 +8521,19 @@
     "expensesCost":{
         "en":"Expenses Cost",
         "ar":"تكلفة المصروفات"
+    },
+    "filesSettings":{
+        "en":"Files Settings",
+        "ar":"إعدادات الملفات"
+    },
+    "originalText":{
+        "en":"Original Text",
+        "ar":"النص الرئيسى"
+    },
+    "replacmentText":{
+        "en":"Replacment Text",
+        "ar":"النص البديل"
+
     }
     
    
