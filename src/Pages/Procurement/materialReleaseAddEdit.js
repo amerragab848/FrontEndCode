@@ -562,14 +562,14 @@ class materialReleaseAddEdit extends Component {
 
         if (this.state.ShowPopup) {
             let updated_document = { ...this.state.objItemForEdit }
-            updated_document.costCodeTreeId = item.id;
-            updated_document.costCodeTreeName = item.codeTreeTitle;
+            updated_document.costCodeTreeId = item.costCodingTreeId;
+            updated_document.costCodeTreeName = item.costCodingTreeName;
             this.setState({ objItemForEdit: updated_document })
         }
         else {
             this.setState({
-                costCodeTreeId: item.id,
-                costCodingTreeName: item.codeTreeTitle
+                costCodeTreeId: item.costCodingTreeId,
+                costCodingTreeName: item.costCodingTreeName
             })
         }
     }
