@@ -5,10 +5,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import * as communicationActions from "../../store/actions/communication";
 import Tree from "../../Pages/Contracts/costCodingTreeAddEdit";
-import Api from '../../api'
+import Api from '../../api';
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -16,7 +16,6 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 class rptCostCodingTree extends Component {
   constructor(props) {
     super(props);
-
 
     if (!Config.IsAllow(400)) {
       toast.warn(Resources['missingPermissions'][currentLanguage])
@@ -61,13 +60,13 @@ class rptCostCodingTree extends Component {
   render() {
 
     let ExportColumns = [
-      { key: 'projectName', name: Resources['projectName'][currentLanguage] },
-      { key: 'costCodingTitle', name: Resources['costCoding'][currentLanguage] },
-      { key: 'totalCostCode', name: Resources['totalCost'][currentLanguage] },
-      { key: 'invoicesTotal', name: Resources['invoicesTotal'][currentLanguage] },
-      { key: 'paymentTotal', name: Resources['paymentTotal'][currentLanguage] },
-      { key: 'totalMaterialRelease', name: Resources['materialRequestcount'][currentLanguage] },
-      { key: 'expenses', name: Resources['expensesTotal'][currentLanguage] },
+      { field: 'projectName', title: Resources['projectName'][currentLanguage] },
+      { field: 'costCodingTitle', title: Resources['costCoding'][currentLanguage] },
+      { field: 'totalCostCode', title: Resources['totalCost'][currentLanguage] },
+      { field: 'invoicesTotal', title: Resources['invoicesTotal'][currentLanguage] },
+      { field: 'paymentTotal', title: Resources['paymentTotal'][currentLanguage] },
+      { field: 'totalMaterialRelease', title: Resources['materialRequestcount'][currentLanguage] },
+      { field: 'expenses', title: Resources['expensesTotal'][currentLanguage] },
     ]
 
     let rows = []
@@ -98,12 +97,10 @@ class rptCostCodingTree extends Component {
                         <td>{Resources['projectName'][currentLanguage]}</td>
                         <td>{this.state.NodeData.projectName}</td>
                       </tr>
-
                       <tr>
                         <td>{Resources['costCoding'][currentLanguage]}</td>
                         <td>{this.state.NodeData.costCodingTitle}</td>
                       </tr>
-
                       <tr>
                         <td>{Resources['totalCost'][currentLanguage]}</td>
                         <td>{this.state.NodeData.totalCostCode}</td>

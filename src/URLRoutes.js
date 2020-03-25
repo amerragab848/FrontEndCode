@@ -103,6 +103,20 @@ var routes = [
         settings: { ProjectReports: true, permission: 3689, order: 14 }
     }, 
     {
+        route: "CostControlTreeReport",
+        moduleId: "ProjectReports/CostControlTreeReport",
+        title: "CostControlTreeReport",
+        nav: true,
+        settings: { ProjectReports: true, permission: 10072, order: 15 }
+    }, 
+    {
+        route: "CostCodingReport",
+        moduleId: "ProjectReports/CostCodingReport",
+        title: "CostCodingReport",
+        nav: true,
+        settings: { ProjectReports: true, permission: 10073, order: 16 }
+    }, 
+    {
         route: "boqTemplateReport",
         moduleId: "ProjectReports/BoqTemplateReport",
         title: "boqTemplateReport",

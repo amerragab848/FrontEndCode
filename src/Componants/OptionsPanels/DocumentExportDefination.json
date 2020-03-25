@@ -1352,6 +1352,7 @@
                 "value": "subject",
                 "type": "S"
             },
+           
             {
                 "name": "status",
                 "value": "statusName",
@@ -1628,8 +1629,28 @@
                 "type": "S"
             }
         ],
-        "columnsItems": [],
-        "friendlyNames": []
+        "columnsItems": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "resourceCode",
+            "itemCode",
+            "boqType",
+            "boqSubType",
+            "boqTypeChild"
+        ],
+        "friendlyNames": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "resourceCode",
+            "itemCode",
+            "boqType",
+            "boqSubType",
+            "boqTypeChild"
+        ]
     },
     "18": {
         "fields": [
@@ -2463,60 +2484,91 @@
     "9": {
         "fields": [
             {
-                "name": "number",
-                "value": "arrange",
+                "name": "subject",
+                "value": "subject",
                 "type": "S"
             },
             {
-                "name": "description",
-                "value": "details",
+                "name": "tax",
+                "value": "tax",
                 "type": "S"
             },
             {
-                "name": "resourceCode",
-                "value": "resourceCode",
+                "name": "vat",
+                "value": "vat",
                 "type": "S"
             },
             {
-                "name": "boqType",
-                "value": "boqType",
+                "name": "retainage",
+                "value": "retainage",
                 "type": "S"
             },
             {
-                "name": "boqTypeChild",
-                "value": "boqTypeChild",
+                "name": "insurance",
+                "value": "insurance",
                 "type": "S"
             },
             {
-                "name": "boqSubType",
-                "value": "boqSubType",
+                "name": "advancedPayment",
+                "value": "advancedPayment",
                 "type": "S"
             },
             {
-                "name": "itemCode",
-                "value": "itemCode",
+                "name": "advancedPaymentAmount",
+                "value": "advancedPaymentAmount",
                 "type": "S"
             },
             {
-                "name": "unitPrice",
-                "value": "unitPrice",
+                "name": "docDate",
+                "value": "docDate",
                 "type": "S"
             },
             {
-                "name": "originalQuantity",
-                "value": "originalQuantity",
+                "name": "completionDate",
+                "value": "completionDate",
                 "type": "S"
             },
             {
-                "name": "revQuantity",
-                "value": "revisedQuantity",
+                "name": "fromCompany",
+                "value": "companyName",
                 "type": "S"
             },
             {
-                "name": "total",
-                "value": "total",
+                "name": "contractTo",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "contractWithContact",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "originalContractSum",
+                "value": "originalContactSum",
+                "type": "S"
+            },
+            {
+                "name": "revisedContractSumToDate",
+                "value": "revisedContractSum",
+                "type": "S"
+            },
+            {
+                "name": "actualExceuted",
+                "value": "actualExceuted",
+                "type": "S"
+            },
+            {
+                "name": "balanceToFinish",
+                "value": "balanceToFinish",
+                "type": "S"
+            },
+            {
+                "name": "changeOrderSum",
+                "value": "approvedChangeOrder",
                 "type": "S"
             }
+            
         ],
         "columnsItems": [
             "details",

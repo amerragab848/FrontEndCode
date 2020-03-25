@@ -1463,7 +1463,7 @@
           "id": 50,
           "permissions": [
             {
-              "code": 615,
+              "code": 50615,
               "title": {
                 "en": "Add",
                 "ar": "اضافة مخزن المشروع"
@@ -1471,7 +1471,7 @@
               "value": false
             },
             {
-              "code": 616,
+              "code": 50616,
               "title": {
                 "en": "Edit",
                 "ar": "تعديل مخزن المشروع"
@@ -1479,7 +1479,7 @@
               "value": false
             },
             {
-              "code": 617,
+              "code": 50617,
               "title": {
                 "en": "Delete",
                 "ar": "حذف مخزن المشروع"
@@ -1487,7 +1487,7 @@
               "value": false
             },
             {
-              "code": 634,
+              "code": 50634,
               "title": {
                 "en": "View",
                 "ar": "عرض مخزن المشروع"
@@ -1495,7 +1495,7 @@
               "value": false
             },
             {
-              "code": 618,
+              "code": 50618,
               "title": {
                 "en": "View All",
                 "ar": "عرض جميع مخازن المشروع"
@@ -1503,7 +1503,7 @@
               "value": false
             },
             {
-              "code": 988,
+              "code": 50988,
               "title": {
                 "en": "Send To Distribution List",
                 "ar": "ارسال الى قائمةالتوزيع"
@@ -1511,7 +1511,7 @@
               "value": false
             },
             {
-              "code": 3074,
+              "code": 503074,
               "title": {
                 "en": "Create Transmittal",
                 "ar": "انشاء ارسالية"
@@ -1519,7 +1519,7 @@
               "value": false
             },
             {
-              "code": 3754,
+              "code": 503754,
               "title": {
                 "en": "View Items",
                 "ar": "عرض الأصناف"
@@ -12885,7 +12885,7 @@
           "id": 1204,
           "permissions": [
             {
-              "code": 615,
+              "code": 1204615,
               "title": {
                 "en": "Add",
                 "ar": "اضافة"
@@ -12893,7 +12893,7 @@
               "value": false
             },
             {
-              "code": 616,
+              "code": 1204616,
               "title": {
                 "en": "Edit",
                 "ar": "تعديل"
@@ -12901,7 +12901,7 @@
               "value": false
             },
             {
-              "code": 617,
+              "code": 1204617,
               "title": {
                 "en": "Delete",
                 "ar": "حذف "
@@ -12909,7 +12909,7 @@
               "value": false
             },
             {
-              "code": 634,
+              "code": 1204634,
               "title": {
                 "en": "View",
                 "ar": "عرض"
@@ -12917,7 +12917,7 @@
               "value": false
             },
             {
-              "code": 618,
+              "code": 1204618,
               "title": {
                 "en": "View All",
                 "ar": "عرض الكل"
@@ -12925,7 +12925,7 @@
               "value": false
             },
             {
-              "code": 988,
+              "code": 1204988,
               "title": {
                 "en": "Send To Distribution List",
                 "ar": "ارسال الى قائمةالتوزيع"
@@ -12933,7 +12933,7 @@
               "value": false
             },
             {
-              "code": 3074,
+              "code": 12043074,
               "title": {
                 "en": "Create Transmittal",
                 "ar": "انشاء ارسالية"
@@ -15775,6 +15775,40 @@
               "title": {
                 "en": "Avg Respond(PO)",
                 "ar": " (متوسط الاستجابه (طلبات الشراء"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
+            "en": "Cost Control Tree Report",
+            "ar": "تقرير شجرة تحكم التكلفة"
+          },
+          "id": 1241,
+          "permissions": [
+            {
+              "code": 10072,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
+            "en": "Cost Coding Report",
+            "ar": "تقرير كود التكلفة"
+          },
+          "id": 1242,
+          "permissions": [
+            {
+              "code": 10073,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
               },
               "value": false
             }

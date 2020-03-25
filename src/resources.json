@@ -35,6 +35,10 @@
         "en": "Subcontractor Evaluation Report",
         "ar": "سابقة اعمال"
     },
+    "paymentRequisitionCost": {
+        "en": "Payment Requisition Cost",
+        "ar": "تكلفة طلبات المستخلصات"
+    },
     "actualStartDate": {
         "en": "Actual Start Date",
         "ar": "تاريخ البدايه الفعلى"
@@ -4045,6 +4049,10 @@
         "en": "Add Invoices For Purchase Order",
         "ar": "اضافة فواتيرأوامر الشراء"
     },
+    "invoicesForPoCost": {
+        "en": "Invoices For PO Cost",
+        "ar": "تكلفة فواتير اوامر الشراء"
+    },
     "InvoicesForPOCount": {
         "en": "Invoices For PO Counting",
         "ar": "مجموع فواتيرأوامر الشراء"
@@ -4551,6 +4559,10 @@
     },
     "estimatedCost": {
         "en": "Estimate Cost",
+        "ar": "التكلفة المحددة  "
+    },
+    "estimatedBudget": {
+        "en": "Estimate Budget",
         "ar": "التكلفة المحددة  "
     },
     "addDrawingList": {
@@ -8497,6 +8509,19 @@
         "en":"Contractor Ref Number",
         "ar":"Contractor Ref Number"
     },
+
+    "CostControlTreeReport":{
+        "en":"Cost Control Tree Report",
+        "ar":"تقرير شجرة تحكم التكلفة"
+    },
+    "CostCodingReport":{
+        "en":"Cost Coding Report",
+        "ar":"تقرير كود التكلفة"
+    },
+    "expensesCost":{
+        "en":"Expenses Cost",
+        "ar":"تكلفة المصروفات"
+    },
     "filesSettings":{
         "en":"Files Settings",
         "ar":"إعدادات الملفات"
@@ -8508,5 +8533,8 @@
     "replacmentText":{
         "en":"Replacment Text",
         "ar":"النص البديل"
+
     }
+    
+   
 }

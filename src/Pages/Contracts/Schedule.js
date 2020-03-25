@@ -230,11 +230,11 @@ class Schedule extends Component {
         ]
 
         let ExportColumns = [
-            { key: 'arrange', name: Resources['arrange'][currentLanguage] },
-            { key: 'taskId', name: Resources['taskId'][currentLanguage] },
-            { key: 'description', name: Resources['description'][currentLanguage] },
-            { key: 'startDate', name: Resources['startDate'][currentLanguage] },
-            { key: 'finishDate', name: Resources['finishDate'][currentLanguage] }, ,
+            { field: 'arrange', title: Resources['arrange'][currentLanguage] },
+            { field: 'taskId', title: Resources['taskId'][currentLanguage] },
+            { field: 'description', title: Resources['description'][currentLanguage] },
+            { field: 'startDate', title: Resources['startDate'][currentLanguage] },
+            { field: 'finishDate', title: Resources['finishDate'][currentLanguage] }, 
         ]
 
         return (

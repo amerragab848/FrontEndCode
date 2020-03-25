@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
@@ -32,7 +33,9 @@ const statusButton = ({ value, row }) => {
   }
   return null;
 };
-
+// cellClick = (cell) => {
+//   //if (cell.status !== true) Api.get("UpdateStatusInbox?id=" + cell.id);
+// }
 let subjectLink = ({ value, row }) => {
   let doc_view = "";
   let subject = "";
@@ -157,7 +160,88 @@ class DocNotifyLogDetails extends Component {
         formatter: dateFormate
       }
     ];
-
+    //  this.columnGrid = [
+    //   {
+    //     title: Resources['statusName'][currentLanguage],
+    //     width: 10,
+    //     groupable: true,
+    //     sortable: true,
+    //     fixed: true,
+    //     type: "text",
+    //     classes: 'gridBtns status '
+    //   }, {
+    //     field: 'subject',
+    //     title: Resources['subject'][currentLanguage],
+    //     width: 20,
+    //     fixed: true,
+    //     groupable: true,
+    //     type: "text",
+    //     sortable: true,
+    //     showTip: true,
+    //     classes: ' bold elipsisPadd',
+    //     onRightClick: cell => { this.cellClick(cell) },
+    //     href: 'link',
+    //   }, {
+    //     field: 'creationDate',
+    //     title: Resources['docDate'][currentLanguage],
+    //     width: 20,
+    //     groupable: true,
+    //     showTip: true,
+    //     fixed: false,
+    //     type: "date",
+    //     sortable: true,
+    //   }, {
+    //     field: 'openedBy',
+    //     title: Resources['openedBy'][currentLanguage],
+    //     width: 20,
+    //     groupable: true,
+    //     fixed: false,
+    //     type: "text",
+    //     sortable: true,
+    //     showTip: true,
+    //   }, {
+    //     field: 'projectName',
+    //     title: Resources['projectName'][currentLanguage],
+    //     width: 20,
+    //     groupable: true,
+    //     fixed: false,
+    //     type: "text",
+    //     sortable: true,
+    //      href: 'link'
+    //   }, {
+    //     field: 'docType',
+    //     title: Resources['docType'][currentLanguage],
+    //     width: 10,
+    //     groupable: true,
+    //     fixed: false,
+    //     sortable: true,
+    //     type: "text",
+    //   }, {
+    //     field: 'refDoc',
+    //     title: Resources['docNo'][currentLanguage],
+    //     width: 20,
+    //     fixed: true,
+    //     groupable: true,
+    //     type: "text",
+    //     sortable: true,
+    //     showTip: true,
+    //     classes: ' bold elipsisPadd',
+    //     onRightClick: cell => { this.cellClick(cell) },
+    //     href: 'link',
+    //   }, {
+    //     field: 'dueDate',
+    //     title: Resources['dueDate'][currentLanguage],
+    //     width: 20,
+    //     fixed: true,
+    //     groupable: true,
+    //     type: "date",
+    //     sortable: true,
+    //     showTip: true,
+    //     classes: ' bold elipsisPadd'
+       
+    //   }
+    // ];
+ 
     const filtersColumns = [
       {
         field: "readStatusText",
@@ -294,7 +378,18 @@ class DocNotifyLogDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false} />
+         <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false} />
+      //   <GridCustom
+      //   ref='custom-data-grid'
+      //   key="ClosedSummaryDetails"
+      //   data={this.state.rows}
+      //   pageSize={this.state.rows.length}
+      //   groups={[]}
+      //   actions={[]}
+      //   rowActions={[]}
+      //   cells={this.columnGrid}
+      //   rowClick={(cell) => { this.onRowClick(cell) }}
+      // />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?

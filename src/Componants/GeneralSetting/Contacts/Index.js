@@ -240,6 +240,17 @@ class Index extends Component {
         else
             toast.warning("you don't have permission");
     }
+    editRecord = (e) => {
+        if (Config.IsAllow(11)) {
+            this.props.actions.TogglePopUp();
+            this.setState({
+                currentComponent: <AddNewContact contactID={e.id} titleData={this.state.titleData} companyID={this.state.companyID} />,
+                showComponent: true
+            })
+        }
+        else
+            toast.warning("you don't have permission");
+    }
 
     clickHandlerDeleteRowsMain = selectedRows => {
         if (Config.IsAllow(12)) {
@@ -354,7 +365,7 @@ class Index extends Component {
                 rowActions={this.rowActions}
                 cells={this.columnsGrid}
                 showCheckAll={true}
-                rowClick={() => { }}
+                rowClick={(e) => {this.editRecord(e) }}
             />
 
         ) : (<LoadingSection />);
