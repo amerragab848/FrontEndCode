@@ -676,7 +676,7 @@ class ExportDetails extends Component {
   exportPDFFile() {
     if (this.state.isExcel === true) return;
 
-    let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY');
+    let formatData = moment(this.props.document.documentDate).format('DD/MM/YYYY');
     let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
     let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
     return (

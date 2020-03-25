@@ -44,8 +44,8 @@ class ContractsDeductions extends Component {
         ]
 
         let ExportColumns = [
-            { key: 'title', name: Resources['description'][currentLanguage] },
-            { key: 'deductionValue', name: Resources['deductions'][currentLanguage] },
+            { field: 'title', title: Resources['description'][currentLanguage] },
+            { field: 'deductionValue', title: Resources['deductions'][currentLanguage] },
         ]
 
         return (
