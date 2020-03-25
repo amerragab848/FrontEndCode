@@ -241,7 +241,7 @@ class Index extends Component {
             toast.warning("you don't have permission");
     }
     editRecord = (e) => {
-        if (Config.IsAllow(10)) {
+        if (Config.IsAllow(11)) {
             this.props.actions.TogglePopUp();
             this.setState({
                 currentComponent: <AddNewContact contactID={e.id} titleData={this.state.titleData} companyID={this.state.companyID} />,
