@@ -94,6 +94,7 @@ class ExpensesUserAddEdit extends Component {
             selectedBoqItem: { label: Resources.boqItemSelection[currentLanguage], value: "0" },
             arrange: 0,
             refCode: '',
+            costCodingTreeId: '',
             costCodingTreeName: '',
             Loading: true,
             parentData: {},
@@ -300,7 +301,8 @@ class ExpensesUserAddEdit extends Component {
     // set cost tree name when select it 
     GetNodeData = (item) => {
         this.setState({
-            costCodingTreeName: item.codeTreeTitle
+            costCodingTreeName: item.costCodingTreeName,
+            costCodingTreeId:item.costCodingTreeId
         });
     }
 
@@ -315,6 +317,7 @@ class ExpensesUserAddEdit extends Component {
         values.arrange = this.state.arrange;
         values.refCode = this.state.refCode;
         values.costCodingTreeName = this.state.costCodingTreeName;
+        values.costCodingTreeId=this.state.costCodingTreeId;
         return obj;
     }
 

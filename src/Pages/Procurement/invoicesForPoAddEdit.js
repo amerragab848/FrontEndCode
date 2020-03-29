@@ -344,8 +344,9 @@ class invoicesForPoAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
+//        dataservice.GetDataList('GetNewCostCodingTreeByProjectId?projectId=' + this.state.projectId , 'costCodingTreeName', 'costCodingTreeId').then(result => {
 
-        dataservice.GetDataList('GetContractsBoqShowInCostCodingTree?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', 'subject', 'id').then(result => {
+    dataservice.GetDataList('GetContractsBoqShowInCostCodingTree?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', 'subject', 'id').then(result => {
 
             if (isEdit) {
                 let id = this.props.document.boqId;
@@ -423,6 +424,7 @@ class invoicesForPoAddEdit extends Component {
         let updated_document = {};
 
         updated_document[field] = e.target.value;
+       // updated_document["costCodingTreeId"]
 
         updated_document = Object.assign(original_document, updated_document);
 
@@ -582,7 +584,9 @@ class invoicesForPoAddEdit extends Component {
 
         let updated_document = {};
 
-        updated_document['costCodingTreeName'] = item.codeTreeTitle;
+       // updated_document['costCodingTreeName'] = item.codeTreeTitle;
+       updated_document['costCodingTreeName'] = item.costCodingTreeName;
+       updated_document['costCodingTreeId'] = item.costCodingTreeId;
 
         updated_document = Object.assign(original_document, updated_document);
 
@@ -1249,7 +1253,7 @@ class invoicesForPoAddEdit extends Component {
                                                 <label className="control-label">{Resources.costCoding[currentLanguage]}</label>
                                                 <div className="shareLinks">
                                                     <div className="inputDev ui input">
-                                                        <input type="text" className="form-control"
+                                                        <input disabled type="text" className="form-control"
                                                             onChange={(e) => this.handleChange(e, 'costCodingTreeName')}
                                                             value={this.state.document.costCodingTreeName}
                                                             name="costCodingTreeName"

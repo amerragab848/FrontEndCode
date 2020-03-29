@@ -7,6 +7,7 @@ import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
+//import GridCustom from 'react-customized-grid';
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -205,7 +206,10 @@ class ActionBySummaryDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+         <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+        // <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+        // pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+   // />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?

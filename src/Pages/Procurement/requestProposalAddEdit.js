@@ -97,13 +97,14 @@ class RequestProposalAddEdit extends Component {
       selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
       message: ""
     };
-
+    
     if (!Config.IsAllow(57) && !Config.IsAllow(58) && !Config.IsAllow(60)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push({
         pathname: "/RequestProposal/" + projectId
       });
     }
+    
   }
 
   componentDidMount = () => {
