@@ -13,6 +13,7 @@ import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
 import companyId from '../../../IP_Configrations.json'
+import { object } from "prop-types";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const find = require('lodash/find');
 
@@ -31,7 +32,6 @@ class Accounts extends Component {
                 width: 16,
                 sortable: true,
                 type: "text"
-
             },
             {
                 field: "empCode",
@@ -59,7 +59,6 @@ class Accounts extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-
             },
             {
                 field: "position",
@@ -69,7 +68,6 @@ class Accounts extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-
             },
             {
                 field: "supervisorCompanyName",
@@ -79,7 +77,6 @@ class Accounts extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-
             },
             {
                 field: "activationStatus",
@@ -89,7 +86,6 @@ class Accounts extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-
             },
             {
                 field: "supervisorName",
@@ -99,7 +95,6 @@ class Accounts extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-
             },
             {
                 field: "groupName",
@@ -109,9 +104,9 @@ class Accounts extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-
             }
         ];
+
         const filtersColumns = [
             {
                 field: "userName",
@@ -128,7 +123,7 @@ class Accounts extends Component {
             {
                 field: "empCode",
                 name: "employeeCode",
-                type: "string",
+                type: "number",
                 isCustom: true
             },
             {
@@ -373,12 +368,12 @@ class Accounts extends Component {
 
     componentDidMount = () => {
         if (config.IsAllow(794)) {
-            let pageNumber = this.state.pageNumber + 1
+            // let pageNumber = this.state.pageNumber + 1
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
                     rows: result,
                     isLoading: false,
-                    pageNumber: pageNumber,
+                    //pageNumber: pageNumber,
                     totalRows: result.length,
                     search: false,
                 });
@@ -427,13 +422,14 @@ class Accounts extends Component {
             isLoading: true,
             pageNumber: pageNumber
         });
-        let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+        let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=50"
         Api.get(url).then(result => {
             let oldRows = this.state.rows;
             const newRows = [...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
             this.setState({
                 rows: newRows,
                 totalRows: newRows.length,
+                pageSize: this.state.pageSize + 50,
                 isLoading: false
             });
         }).catch(ex => {
@@ -447,11 +443,15 @@ class Accounts extends Component {
 
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
+        let pageSize = this.state.pageSize - 50;
+
         this.setState({
             isLoading: true,
             pageNumber: pageNumber
         });
-        let url = this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize
+
+        let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + pageSize;
+
         Api.get(url).then(result => {
             let oldRows = [];// this.state.rows;
             const newRows = [...oldRows, ...result];
@@ -459,6 +459,7 @@ class Accounts extends Component {
             this.setState({
                 rows: newRows,
                 totalRows: newRows.length,
+                pageSize: pageSize,
                 isLoading: false
             });
         }).catch(ex => {
@@ -476,35 +477,48 @@ class Accounts extends Component {
     }
 
     filterMethodMain = (event, query, apiFilter) => {
+
+        delete query["isCustom"];
+
+        console.log("query", query);
+
         var stringifiedQuery = JSON.stringify(query);
+
         this.setState({
             isLoading: true,
             query: stringifiedQuery
         });
-        if (stringifiedQuery !== '{"isCustom":true}') {
+
+        if (stringifiedQuery !== '{}') {
             this.setState({ isLoading: true, search: true })
-            let _query = stringifiedQuery.split(',"isCustom"')
-            let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
+            // let _query = stringifiedQuery.split(',"isCustom"')
+            let url = 'GetAccountsFilter?pageNumber=' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + stringifiedQuery;
             Api.get(url).then(result => {
+                if (result != null) {
+                    this.setState({
+                        rows: result || [],
+                        isLoading: false,
+                        totalRows: result.length || 0
+                    });
+                }
+            }).catch(res => {
                 this.setState({
-                    rows: result || [],
-                    isLoading: false,
-                    pageNumber: 1,
-                    totalRows: result.length || 0
+                    isLoading: false
                 });
             })
         }
         else {
             this.setState({ isLoading: true })
-            let pageNumber = this.state.pageNumber + 1
+
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-                this.setState({
-                    rows: result || [],
-                    isLoading: false,
-                    pageNumber: pageNumber,
-                    totalRows: result.length || 0,
-                    search: false
-                });
+                if (result != null) {
+                    this.setState({
+                        rows: result || [],
+                        isLoading: false,
+                        totalRows: result.length || 0,
+                        search: false
+                    });
+                }
             });
         }
     };
@@ -645,7 +659,6 @@ class Accounts extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-
                 <GridCustom
                     key="Accounts"
                     cells={this.columnsGrid}

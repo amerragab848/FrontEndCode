@@ -3,15 +3,13 @@ import Api from "../../api";
 import { withRouter } from "react-router-dom";
 import Filter from "../FilterComponent/filterComponent";
 import LoadingSection from "../publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export";
-
+import Export from "../OptionsPanels/Export"; 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import * as actions from '../../store/actions/communication'
 import {connect} from 'react-redux';
-import { bindActionCreators } from 'redux';
-//import { bindActionCreators } from "C:/Users/a.yousry/AppData/Local/Microsoft/TypeScript/3.5/node_modules/redux";
+import { bindActionCreators } from 'redux'; 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {

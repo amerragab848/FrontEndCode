@@ -100,6 +100,16 @@ class ProjectCompanies extends Component {
                 field: "id",
                 showTip: true
             },
+            
+            {
+                field: 'companyName',
+                title: Resources['CompanyName'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
             {
                 field: 'roleTitle',
                 title: Resources['companyRole'][currentLanguage],

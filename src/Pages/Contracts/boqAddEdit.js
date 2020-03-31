@@ -140,7 +140,7 @@ class bogAddEdit extends Component {
             },
             {
                 field: "boqTypeChild",
-                title: Resources["boqSubType"][currentLanguage],
+                title: Resources["boqTypeChild"][currentLanguage],
                 width: 8,
                 groupable: true,
                 fixed: false,
@@ -149,7 +149,7 @@ class bogAddEdit extends Component {
             },
             {
                 field: "boqSubType",
-                title: Resources["boqTypeChild"][currentLanguage],
+                title: Resources["boqSubType"][currentLanguage],
                 width: 8,
                 groupable: true,
                 fixed: false,
@@ -463,17 +463,22 @@ class bogAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(617) || this.props.document.contractId !== null) {
-                this.setState({ isViewMode: true });
-            } else if (this.state.isApproveMode !== true && Config.IsAllow(617)) {
-                if (this.props.hasWorkflow === false && Config.IsAllow(617)) {
-                    if (this.props.document.status !== false && Config.IsAllow(617)) {
-                        this.setState({ isViewMode: false });
+            
+            if (Config.getPayload().uty === "company") {
+                this.setState({ isViewMode: false });
+            } else {
+                if (!Config.IsAllow(617) && this.props.document.contractId !== null) {
+                    this.setState({ isViewMode: true });
+                } else if (this.state.isApproveMode !== true && Config.IsAllow(617)) {
+                    if (this.props.hasWorkflow === false && Config.IsAllow(617)) {
+                        if (this.props.document.status !== false && Config.IsAllow(617)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
@@ -2244,11 +2249,11 @@ class bogAddEdit extends Component {
                                                 .value
                                             : "",
                                     discipline:
-                                    this.state.selectedDiscipline != undefined ?
-                                        (this.state.selectedDiscipline.value != "0"
-                                            ? this.state.selectedDiscipline
-                                                .value
-                                            : ""):"",
+                                        this.state.selectedDiscipline != undefined ?
+                                            (this.state.selectedDiscipline.value != "0"
+                                                ? this.state.selectedDiscipline
+                                                    .value
+                                                : "") : "",
                                     status: this.props.changeStatus
                                         ? this.props.document.status
                                         : true,
