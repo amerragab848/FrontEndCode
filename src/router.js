@@ -220,8 +220,8 @@ const VariationOrderAddEdit = AsyncComponent(() =>
 const RequestPaymentsAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/requestPaymentsAddEdit'),
 );
-const NewRequestPaymentsAddEdit = AsyncComponent(() =>
-    import('./Pages/Contracts/NewrequestPaymentsAddEdit'),
+const requestPaymentsAddEdit_old = AsyncComponent(() =>
+    import('./Pages/Contracts/requestPaymentsAddEdit_old'),
 );
 
 const PcoAddEdit = AsyncComponent(() => import('./Pages/Contracts/pcoAddEdit'));
@@ -932,7 +932,7 @@ let originalRoutes = [
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
     <Route key="r-96" path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />,
-    <Route key="r-96" path="/NewRequestPaymentsAddEdit" component={NewRequestPaymentsAddEdit} />,
+    <Route key="r-96" path="/requestPaymentsAddEdit_old" component={requestPaymentsAddEdit_old} />,
     <Route key="r-97" path="/projectsAddEdit" component={ProjectsAddEdit} />,
     <Route key="r-98" path="/baseAddEdit" component={BaseAddEdit} />,
     <Route

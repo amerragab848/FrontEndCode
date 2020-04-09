@@ -1,4 +1,3 @@
-//#region importComponent
 import React, { Component, Fragment } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -10,7 +9,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import TextEditor from "../../Componants/OptionsPanels/TextEditor";
-import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -29,18 +28,15 @@ import Export from "../../Componants/OptionsPanels/Export";
 import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
-//#endregion importComponent
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-//#region validation
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
     vat: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     tax: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
-    insurance: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+    insurance: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]),
     advancePaymentPercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     retainagePercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
@@ -62,11 +58,7 @@ const BoqTypeSchema = Yup.object().shape({
     boqSubType: Yup.string().required(Resources["boqSubType"][currentLanguage])
 });
 
-//#endregion validation
-
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif';
-
-//#region  Styles
 
 const actionPanel = {
     control: (styles, { isFocused }) => ({
@@ -106,9 +98,6 @@ const actionPanel = {
     menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db' }),
 };
 
-//#endregion
-
-//#region globalVariable
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -122,9 +111,7 @@ let itemsColumns = [];
 let VOItemsColumns = [];
 const isCompany = Config.getPayload().uty == "company" ? true : false;
 var steps_defination = [];
-//#endregion globalVariable
 
-//#region  columnOfInterimPayment
 const columnOfInterimPayment = [{
     title: Resources["workDescription"][currentLanguage],
     field: 'description'
@@ -150,18 +137,14 @@ const columnOfInterimPayment = [{
     title: Resources["comments"][currentLanguage],
     field: 'comment'
 }]
-//#endregion columnOfInterimPayment
 
 class requestPaymentsAddEdit extends Component {
-
     constructor(props) {
         super(props);
 
         const query = new URLSearchParams(this.props.location.search);
 
         let index = 0;
-
-        //#region getDataFromURL
 
         for (let param of query.entries()) {
             if (index == 0) {
@@ -183,9 +166,6 @@ class requestPaymentsAddEdit extends Component {
         }
 
         let userType = Config.getPayload();
-        //#endregion getDataFromURL
-
-        //#region variableofState
 
         this.state = {
             isItemUpdate: false,
@@ -318,16 +298,12 @@ class requestPaymentsAddEdit extends Component {
             CalculateRow: true
         };
 
-        //#endregion variableofState
-
-        //#region permisssion
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
-        //#endregion permisssion
 
-        //#region steps
+
         steps_defination = [
             {
                 name: "paymentRequisitions",
@@ -346,86 +322,8 @@ class requestPaymentsAddEdit extends Component {
                 callBackFn: () => this.fillSummariesTab()
             }
         ];
-        //#endregion steps
 
-        //#region rowActions
-        this.rowActions = [
-            ...(userType.uty === "company" ? [{
-                title: Resources["delete"][currentLanguage],
-                handleClick: value => {
-                    this.viewConfirmDelete(value.id, "requestItems");
-                }
-            }] : []),
-            {
-                title: Resources["viewHistory"][currentLanguage],
-                handleClick: value => {
-                    this.setState({
-                        isLoading: true
-                    });
-                    dataservice.GetDataGrid("GetContractsRequestPaymentsItemsHistory?id=" + value.id).then(result => {
-                        this.setState({
-                            paymentRequestItemsHistory: result,
-                            isLoading: false,
-                            showViewHistoryModal: true
-                        });
-
-                        this.ViewHistoryModal.show();
-                    });
-                }
-            },
-            {
-                title: 'Boq',
-                handleClick: value => {
-                    if (Config.IsAllow(1001104)) {
-                        let boqStractureObj = {
-                            ...this.state.boqStractureObj
-                        };
-                        let boqTypes = [...this.state.boqTypes];
-                        boqStractureObj.id = value.id;
-                        boqStractureObj.requestId = this.state.docId;
-                        boqStractureObj.contractId = this.state.document.contractId;
-
-                        if (boqTypes.length > 0) {
-                            this.setState({
-                                boqStractureObj: boqStractureObj,
-                                showBoqModal: true
-                            });
-                            this.boqTypeModal.show();
-                        } else {
-                            dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
-                                this.setState({
-                                    boqTypes: data,
-                                    boqStractureObj: boqStractureObj,
-                                    showBoqModal: true
-                                });
-                                this.boqTypeModal.show();
-                            });
-                        }
-                    } else {
-                        toast.warn(Resources["missingPermissions"][currentLanguage]);
-                    }
-                }
-            }
-        ];
-
-
-        if (docId > 0) {
-            this.rowActions.push({
-                title: 'Add Cost Coding Tree',
-                handleClick: value => {
-                    dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId=" + this.state.docId + "&reqItemId=" + value.id).then(result => {
-                        this.setState({
-                            itemId: value.id,
-                            quantityComplete: value.quantityComplete,
-                            trees: result != null ? result : [],
-                            showCostCodingTree: true
-                        });
-                        this.costCodingTree.show();
-                    });
-                }
-            });
-        }
-        //#endregion rowActions
+        //this.editRowsClick = this.editRowsClick.bind(this);
     }
 
     buildColumns(changeStatus) {
@@ -445,16 +343,27 @@ class requestPaymentsAddEdit extends Component {
         let editQuantityComplete = ({ value, row }) => {
             if (row) {
                 return (
-                    <a className="editorCell">
-                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer", color: row.revisedQuantity >= row.quantityComplete ? "black" : "#F50505" }}>
-                            {row.quantityComplete}
-                        </span>
-                    </a>
+
+                    <span style={{ padding: "0 6px", margin: "5px 0", color: row.siteQuantityComplete >= row.quantityComplete ? "#F50505" : "black" }}>
+                        {row.quantityComplete}
+                    </span>
+
                 );
             }
             return null;
         };
+        let editRevisedQuantity = ({ value, row }) => {
+            if (row) {
+                return (
 
+                    <span style={{ padding: "0 6px", margin: "5px 0", color: row.revisedQuantity >= row.quantity ? "#0dc083" : "black" }}>
+                        {row.quantityComplete}
+                    </span>
+
+                );
+            }
+            return null;
+        };
         let editPercentComplete = ({ value, row }) => {
             if (row) {
                 return (
@@ -518,296 +427,298 @@ class requestPaymentsAddEdit extends Component {
             return null;
         };
 
-        itemsColumns = [{
-            field: "arrange",
-            title: Resources["no"][currentLanguage],
-            width: 4,
-            groupable: true,
-            fixed: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "itemCode",
-            title: Resources["itemCode"][currentLanguage],
-            width: 10,
-            groupable: true,
-            fixed: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "details",
-            title: Resources["description"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "boqType",
-            title: Resources["boqType"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "secondLevel",
-            title: Resources["boqTypeChild"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "boqSubType",
-            title: Resources["boqSubType"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "quantity",
-            title: Resources["boqQuanty"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "revisedQuantity",
-            title: Resources["approvedQuantity"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "actualPercentage",
-            title: Resources["actualPercentage"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "unitPrice",
-            title: Resources["unitPrice"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "unit",
-            title: Resources["unit"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "prevoiuseQnty",
-            title: Resources["previousQuantity"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "oldPaymentPercent",
-            title: Resources["previousPaymentPercent"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "sitePercentComplete",
-            title: Resources["sitePercentComplete"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            handleChange: (e, cell) => {
+        if (this.state.isViewMode !== true) { itemsColumns.push({ key: "BtnActions", width: 150 }) }
 
-                let cellInstance = Object.assign({}, cell);
-
-                cellInstance.sitePercentComplete = parseFloat(e.target.value);
-
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-
-                let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                pItems[cellIndex] = cellInstance;
-
-                this.setState({
-                    paymentsItems: pItems,
-                    isFilter: true
-                });
+        itemsColumns = [
+            ...(this.props.changeStatus ? [
+                {
+                    key: "BtnActions",
+                    name: Resources["LogControls"][currentLanguage],
+                    width: 150,
+                    draggable: false,
+                    sortable: false,
+                    resizable: true,
+                    filterable: false,
+                    sortDescendingFirst: false
+                }] : []),
+            {
+                key: "arrange",
+                name: Resources["no"][currentLanguage],
+                width: 50,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "number"
             },
-            handleBlur: (e, cell) => {
-
-                this._onGridRowsUpdated(cell, "sitePercentComplete");
-
+            {
+                key: "itemCode",
+                name: Resources["itemCode"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
             },
-            type: this.props.changeStatus ? "text" : "input"
-        }, {
-            field: "siteQuantityComplete",
-            title: Resources["siteQuantityComplete"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            handleChange: (e, cell) => {
-
-                let cellInstance = Object.assign({}, cell);
-
-                cellInstance.siteQuantityComplete = parseFloat(e.target.value);
-
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-
-                let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                pItems[cellIndex] = cellInstance;
-
-                this.setState({
-                    paymentsItems: pItems,
-                    isFilter: true
-                });
+            {
+                key: "details",
+                name: Resources["description"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
             },
-            handleBlur: (e, cell) => {
-
-                this._onGridRowsUpdated(cell, "siteQuantityComplete");
+            {
+                key: "boqType",
+                name: Resources["boqType"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
             },
-            type: this.props.changeStatus ? "text" : "input"
-        }, {
-            field: "sitePaymentPercent",
-            title: Resources["contractPaymentPercent"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            handleChange: (e, cell) => {
-                let cellInstance = Object.assign({}, cell);
-
-                cellInstance.sitePaymentPercent = parseFloat(e.target.value);
-
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-
-                let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                pItems[cellIndex] = cellInstance;
-
-                this.setState({
-                    paymentsItems: pItems,
-                    isFilter: true
-                });
+            {
+                key: "secondLevel",
+                name: Resources["boqTypeChild"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "string"
             },
-            handleBlur: (e, cell) => {
-
-                this._onGridRowsUpdated(cell, "sitePaymentPercent");
+            {
+                key: "boqSubType",
+                name: Resources["boqSubType"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
             },
-            type: this.props.changeStatus ? "text" : "input"
-        }, ...(this.props.changeStatus ? [{
-            field: "percentComplete",
-            title: Resources["percentComplete"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            handleChange: (e, cell) => {
-
-                let cellInstance = Object.assign({}, cell);
-
-                cellInstance.percentComplete = parseFloat(e.target.value);
-
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-
-                let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                pItems[cellIndex] = cellInstance;
-
-                this.setState({
-                    paymentsItems: pItems,
-                    isFilter: true
-                });
+            {
+                key: "quantity",
+                name: Resources["boqQuanty"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "number"
             },
-            handleBlur: (e, cell) => {
-
-                this._onGridRowsUpdated(cell, "percentComplete");
+            {
+                key: "revisedQuantity",
+                name: Resources["approvedQuantity"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                formatter: editRevisedQuantity,
+                sortDescendingFirst: true,
+                type: "number"
             },
-            type: this.props.changeStatus ? "text" : "input"
-        }, {
-            field: "quantityComplete",
-            title: Resources["quantityComplete"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            handleChange: (e, cell) => {
-
-                let cellInstance = Object.assign({}, cell);
-
-                cellInstance.quantityComplete = parseFloat(e.target.value);
-
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-
-                let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                pItems[cellIndex] = cellInstance;
-
-                this.setState({
-                    paymentsItems: pItems,
-                    isFilter: true
-                });
+            {
+                key: "actualPercentage",
+                name: Resources["actualPercentage"][currentLanguage],
+                width: 150,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "number"
             },
-            handleBlur: (e, cell) => {
-
-                this._onGridRowsUpdated(cell, "quantityComplete");
+            {
+                key: "unitPrice",
+                name: Resources["unitPrice"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "number"
             },
-            type: this.props.changeStatus ? "text" : "input"
-        }, {
-            field: "paymentPercent",
-            title: Resources["paymentPercent"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            handleChange: (e, cell) => {
-
-                let cellInstance = Object.assign({}, cell);
-
-                cellInstance.paymentPercent = parseFloat(e.target.value);
-
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-
-                let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                pItems[cellIndex] = cellInstance;
-
-                this.setState({
-                    paymentsItems: pItems,
-                    isFilter: true
-                });
+            {
+                key: "unit",
+                name: Resources["unit"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "string"
             },
-            handleBlur: (e, cell) => {
-
-                this._onGridRowsUpdated(cell, "paymentPercent");
+            {
+                key: "prevoiuseQnty",
+                name: Resources["previousQuantity"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "number"
             },
-            type: this.props.changeStatus ? "text" : "input"
-        }] : []), {
-            field: "wasAdded",
-            title: Resources["status"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "totalExcutedPayment",
-            title: Resources["totalAmount"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "lastComment",
-            title: Resources["comment"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }, {
-            field: "itemStatus",
-            title: Resources["itemStatus"][currentLanguage],
-            width: 10,
-            groupable: true,
-            sortable: true,
-            type: "text"
-        }];
+            {
+                key: "oldPaymentPercent",
+                name: Resources["previousPaymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "number"
+            },
+            {
+                key: "sitePercentComplete",
+                name: Resources["sitePercentComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editSitePercentComplete,
+                editable: !changeStatus,
+                type: "number"
+            },
+            {
+                key: "siteQuantityComplete",
+                name: Resources["siteQuantityComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editSiteQuantityComplete,
+                editable: !changeStatus,
+                type: "number"
+            },
+            {
+                key: "sitePaymentPercent",
+                name: Resources["contractPaymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editsitePaymentPercent,
+                editable: !changeStatus,
+                type: "number"
+            },
+            ...(this.props.changeStatus ? [{
+                key: "percentComplete",
+                name: Resources["percentComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editPercentComplete,
+                editable: !changeStatus,
+                visible: this.props.changeStatus,
+                type: "number"
+            },
+            {
+                key: "quantityComplete",
+                name: Resources["quantityComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: editQuantityComplete,
+                editable: !changeStatus,
+                visible: this.props.changeStatus,
+                type: "number"
+            },
+            {
+                key: "paymentPercent",
+                name: Resources["paymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editPaymentPercent,
+                editable: !changeStatus,
+                type: "number"
+            }] : []),
+            {
+                key: "wasAdded",
+                name: Resources["status"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            }, {
+                key: "totalExcutedPayment",
+                name: Resources["totalAmount"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            },
+            {
+                key: "lastComment",
+                name: Resources["comment"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            },
+            {
+                key: "itemStatus",
+                name: Resources["itemStatus"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            }
+        ];
+
+        if (changeStatus) {
+            itemsColumns.push({
+                key: "actions",
+                name: Resources["LogControls"][currentLanguage],
+                width: 200,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: addCostCodingTree
+            });
+        }
 
         VOItemsColumns = [
             {
@@ -960,8 +871,8 @@ class requestPaymentsAddEdit extends Component {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
             this.props.actions.ExportingData({ items: [] });
+            dataservice.GetDataList('GetNewCostCodingTreeByProjectId?projectId=' + this.state.projectId , 'costCodingTreeName', 'costCodingTreeId').then(result => {
 
-            dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
                 this.setState({
                     fillDropDownTress: result
                 });
@@ -1109,7 +1020,11 @@ class requestPaymentsAddEdit extends Component {
                     contractsPool: result
                 });
             });
+
         }
+        // else {
+        //this.fillSummariesTab();
+        // }
     }
 
     componentWillUnmount() {
@@ -1184,7 +1099,6 @@ class requestPaymentsAddEdit extends Component {
 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
                 this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-
                     this.setState({
                         paymentsItems: result,
                         isLoading: false
@@ -1313,11 +1227,9 @@ class requestPaymentsAddEdit extends Component {
             if (paymentsItems.length === 0) {
                 this.setState({ isLoading: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-
                     this.setState({
                         paymentsItems: result != null ? result : [],
-                        isLoading: false,
-                        isFilter: true
+                        isLoading: false
                     });
                 });
             }
@@ -1523,38 +1435,57 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    onRowClick = (value) => {
+    onRowClick = (value, index, column) => {
 
-        let userType = Config.getPayload();
+        if (column.key != "BtnActions" && column.key != "actions") {
 
-        if (this.props.hasWorkflow == false || this.state.isApproveMode == true) {
-            if (this.props.changeStatus) {
-                let obj = this.state.document;
-                if (obj.status === true && obj.editable === true) {
+            let userType = Config.getPayload();
 
-                    let original_document = { ...this.state.currentObject };
+            if (this.props.hasWorkflow == false || this.state.isApproveMode == true) {
+                if (this.props.changeStatus) {
+                    let obj = this.state.document;
+                    if (obj.status === true && obj.editable === true) {
 
-                    let updated_document = {};
+                        let original_document = { ...this.state.currentObject };
 
-                    updated_document.percentComplete = value.percentComplete;
-                    updated_document.quantityComplete = value.quantityComplete;
-                    updated_document.paymentPercent = value.paymentPercent;
-                    updated_document.lastComment = value.comment;
-                    updated_document.id = value.id;
+                        let updated_document = {};
 
-                    updated_document = Object.assign(original_document, updated_document);
+                        updated_document.percentComplete = value.percentComplete;
+                        updated_document.quantityComplete = value.quantityComplete;
+                        updated_document.paymentPercent = value.paymentPercent;
+                        updated_document.lastComment = value.comment;
+                        updated_document.id = value.id;
 
-                    this.setState({
-                        viewPopUpRows: true,
-                        currentObject: value
-                    });
-                    this.addCommentModal.show();
-                } else {
-                    toast.warn(Resources["adminItemEditable"][currentLanguage]);
+                        updated_document = Object.assign(original_document, updated_document);
+
+                        this.setState({
+                            viewPopUpRows: true,
+                            currentObject: value
+                        });
+                        this.addCommentModal.show();
+                    } else {
+                        toast.warn(Resources["adminItemEditable"][currentLanguage]);
+                    }
                 }
+            } else {
+                toast.warn(Resources["adminItemEditable"][currentLanguage]);
             }
-        } else {
-            toast.warn(Resources["adminItemEditable"][currentLanguage]);
+        } else if (column.key === "actions") {
+            dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId=" + this.state.docId + "&reqItemId=" + value.id).then(result => {
+                this.setState({
+                    itemId: value.id,
+                    quantityComplete: value.quantityComplete,
+                    trees: result != null ? result : [],
+                    showCostCodingTree: true
+                });
+                this.costCodingTree.show();
+            });
+        } else if (column.key === "BtnActions") {
+            this.setState({
+                selectedBoqTypeEdit: { label: value.boqType, value: value.boqTypeId },
+                selectedBoqTypeChildEdit: { label: value.secondLevel, value: value.boqBoqTypeChildId },
+                selectedBoqSubTypeEdit: { label: value.boqSubType, value: value.boqSubTypeId }
+            });
         }
     };
 
@@ -1580,88 +1511,84 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-    _onGridRowsUpdated = (cell, type) => {
-        let cellInstance = JSON.parse(JSON.stringify(cell));
+    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+        let paymentsItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
 
-        let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+        let updateRow = paymentsItems[fromRow];
 
-        let newValue = parseFloat(cellInstance[type]);
+        paymentsItems[fromRow] = Object.assign(paymentsItems[fromRow], updated);
+
+        let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+        //let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
+
 
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
-        if (parseFloat(cellInstance.revisedQuantity) == 0 && (parseFloat(cellInstance.siteQuantityComplete) > 0 || parseFloat(cellInstance.sitePercentComplete) > 0)) {
-            cellInstance.revisedQuantity = 1;
+        if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
+            updateRow.revisedQuantity = 1;
         }
 
-        //#region switchCases
+        updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
 
-        switch (type) {
+        switch (Object.keys(updated)[0]) {
 
             case "quantityComplete":
-
-                cellInstance.percentComplete = parseFloat((newValue / cellInstance.revisedQuantity) * 100);
-                cellInstance.quantityComplete = parseFloat(newValue);
+                updateRow.percentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = parseFloat(newValue);
                 break;
 
             case "sitePaymentPercent":
-
-                cellInstance.paymentPercent = parseFloat(newValue);
-                cellInstance.sitePaymentPercent = parseFloat(newValue);
+                updateRow.paymentPercent = parseFloat(newValue);
+                updateRow.sitePaymentPercent = parseFloat(newValue);
                 break;
 
             case "percentComplete":
-
-                cellInstance.quantityComplete = parseFloat((newValue / 100) * cellInstance.revisedQuantity);
-                cellInstance.percentComplete = parseFloat(newValue);
+                updateRow.quantityComplete = (parseFloat(newValue) / 100) * updateRow.revisedQuantity;
+                updateRow.percentComplete = parseFloat(newValue);
                 break;
 
             case "sitePercentComplete":
                 sitePercentComplete = parseFloat(newValue);
-                siteQuantityComplete = parseFloat((newValue / 100) * cellInstance.revisedQuantity);
+                siteQuantityComplete = (parseFloat(newValue) / 100) * updateRow.revisedQuantity;
 
-                cellInstance.siteQuantityComplete = siteQuantityComplete;
-                cellInstance.quantityComplete = siteQuantityComplete;
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+                updateRow.quantityComplete = siteQuantityComplete;
 
-                cellInstance.percentComplete = sitePercentComplete;
-                cellInstance.sitePercentComplete = sitePercentComplete;
+                updateRow.percentComplete = sitePercentComplete;
+                updateRow.sitePercentComplete = sitePercentComplete;
+
                 break;
 
             case "siteQuantityComplete":
-                sitePercentComplete = parseFloat((newValue / cellInstance.revisedQuantity) * 100);
+                sitePercentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
                 siteQuantityComplete = parseFloat(newValue);
 
-                cellInstance.sitePercentComplete = sitePercentComplete;
-                cellInstance.percentComplete = sitePercentComplete;
+                updateRow.sitePercentComplete = sitePercentComplete;
+                updateRow.percentComplete = sitePercentComplete;
 
-                cellInstance.quantityComplete = siteQuantityComplete;
-                cellInstance.siteQuantityComplete = siteQuantityComplete;
+                updateRow.quantityComplete = siteQuantityComplete;
+                updateRow.siteQuantityComplete = siteQuantityComplete;
 
                 break;
         }
-
-        //#endregion switchCases
 
         let editRows = [...this.state.editRows];
 
         let sameRow = find(editRows, function (x) {
-            return x.id === cellInstance.id;
+            return x.id === updateRow.id;
         });
 
         if (sameRow) {
             editRows = editRows.filter(function (i) {
-                return i.id != cellInstance.id;
+                return i.id != updateRow.id;
             });
         }
 
-        editRows.push(cellInstance);
-
-        let index = pItems.findIndex(x => x.id === cellInstance.id);
-
-        pItems[index] = cellInstance;
+        editRows.push(updateRow);
 
         this.setState({
             editRows: editRows,
-            paymentsItems: pItems,
+            paymentsItems,
             isFilter: true
         });
     };
@@ -1864,28 +1791,10 @@ class requestPaymentsAddEdit extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
-            let cellInstance = Object.assign({}, mainDoc);
-
-            cellInstance.sitePercentComplete = mainDoc.sitePercentComplete
-            cellInstance.siteQuantityComplete = mainDoc.siteQuantityComplete;
-            cellInstance.sitePaymentPercent = mainDoc.sitePaymentPercent;
-            cellInstance.percentComplete = mainDoc.percentComplete;
-            cellInstance.quantityComplete = mainDoc.quantityComplete;
-            cellInstance.paymentPercent = mainDoc.paymentPercent;
-            cellInstance.comment = mainDoc.comment;
-
-            let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-
-            let cellIndex = pItems.findIndex(c => c.id == cellInstance.id);
-
-            pItems[cellIndex] = cellInstance;
-
             this.setState({
-                paymentsItems: pItems,
                 viewPopUpRows: false,
                 isItemUpdate: true,
-                isLoading: false,
-                isFilter: true
+                isLoading: false
             });
 
         }).catch(res => {
@@ -2006,18 +1915,15 @@ class requestPaymentsAddEdit extends Component {
             });
         } else if (this.state.currentDocument === "requestItems") {
             this.setState({ isLoading: true });
-            let doument = [this.state.currentId];
-            Api.post("DeletePaymentRequestItems", doument).then(result => {
+            Api.post("DeletePaymentRequestItems", this.state.currentId).then(result => {
 
                 let originalData = this.state.paymentsItems;
                 let ids = this.state.currentId;
-                // let newItems = originalData.filter(
-                //     item => !ids.includes(item.id)
-                // );
-
-                originalData = originalData.filter(x => x.id !== this.state.currentId);
+                let newItems = originalData.filter(
+                    item => !ids.includes(item.id)
+                );
                 this.setState({
-                    paymentsItems: originalData,
+                    paymentsItems: newItems,
                     showDeleteModal: false,
                     isLoading: false
                 });
@@ -2058,19 +1964,26 @@ class requestPaymentsAddEdit extends Component {
         let exportFile = "";
 
         if (event.label === "Export") {
-            this.setState({ isView: false, exportFile: "" });
-            let ExportColumnsList = [];
 
+            this.setState({ isView: false, exportFile: "" });
+
+            let ExportColumnsList = [];
+            itemsColumns.filter(i => {
+                if (i.key !== "BtnActions") {
+                    ExportColumnsList.push({ title: i.name, field: i.key });
+                }
+            });
             exportFile = (
                 <Export
                     isExportRequestPayment={true} type={1}
                     key={"Export-1"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
-                    columns={itemsColumns}
+                    columns={ExportColumnsList}
                     fileName={"Request Payments Items"} />
             );
         } else {
             this.setState({ isView: false, exportFile: "" });
+
 
             let VOItemsColumnsList = [];
             VOItemsColumns.filter(i => {
@@ -2080,7 +1993,8 @@ class requestPaymentsAddEdit extends Component {
             });
 
             exportFile = (
-                <Export isExportRequestPayment={true}
+                <Export
+                    isExportRequestPayment={true}
                     key={"Export-2"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
                     columns={VOItemsColumnsList}
@@ -2261,11 +2175,11 @@ class requestPaymentsAddEdit extends Component {
                 pageNumber: pageNumber
             });
 
-            let oldRows = [...this.state.paymentsItems];
+            let prevRows = [...this.state.paymentsItems];
 
-            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
-                const newRows = [...this.state.paymentsItems, ...result];
+                const newRows = [...prevRows, ...result];
 
                 this.setState({
                     paymentsItems: newRows,
@@ -2273,12 +2187,20 @@ class requestPaymentsAddEdit extends Component {
                 });
             }).catch(ex => {
                 this.setState({
-                    paymentsItems: oldRows,
+                    paymentsItems: prevRows,
                     isLoading: false
                 });
             });
         }
     }
+
+    uniqueByKey = (key, xs) =>
+        xs.reduce(([set, ys], x) =>
+            set.has(x[key])
+                ? [set, ys]
+                : [set.add(x[key]), ys.concat([x])]
+            , [new Set, []]
+        )[1];
 
     GetNextData() {
         let pageNumber = this.state.pageNumber + 1;
@@ -2288,21 +2210,25 @@ class requestPaymentsAddEdit extends Component {
             pageNumber: pageNumber
         });
 
-        let oldRows = [...this.state.paymentsItems];
+        let prevRows = [...this.state.paymentsItems];
 
-        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-            const newRows = [...this.state.paymentsItems, ...result];
+        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize)
+            .then(result => {
+                let paymentsItems = result;
+                //const primes = [...prevRows, ...data];
+                paymentsItems = this.uniqueByKey('id', prevRows.concat(paymentsItems));
 
-            this.setState({
-                paymentsItems: newRows,
-                isLoading: false
+                console.log(paymentsItems);
+                this.setState({
+                    paymentsItems,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                this.setState({
+                    paymentsItems: prevRows,
+                    isLoading: false
+                });
             });
-        }).catch(ex => {
-            this.setState({
-                paymentsItems: oldRows,
-                isLoading: false
-            });
-        });
     }
 
     clickHandlerDeleteRows = rows => {
@@ -2325,31 +2251,6 @@ class requestPaymentsAddEdit extends Component {
         } else {
             toast.warn("Please Write Value MoreZane Zero");
         }
-    }
-
-    renderingGrid() {
-
-        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
-            <GridCustom
-                key="Items"
-                data={this.state.paymentsItems}
-                pageSize={this.state.pageSize}
-                groups={this.props.changeStatus ? [
-                    { field: 'wasAdded', title: 'status', type: "text" }
-                    , { field: 'boqType', title: 'boqType', type: "text" }
-                    , { field: 'secondLevel', title: 'boqTypeChild', type: "text" }] : []}
-                actions={[]}
-                isFilter={this.state.isFilter}
-                cells={itemsColumns}
-                rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
-                rowClick={cell => {
-                    this.onRowClick(cell);
-                }}
-                changeValueOfProps={this.changeValueOfProps.bind(this)}
-            />
-        ) : null;
-
-        return ItemsGrid;
     }
 
     render() {
@@ -2480,6 +2381,25 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
+        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
+            <GridSetupWithFilter
+                groupBy={this.props.changeStatus ? [
+                    { key: 'wasAdded', name: 'status' }
+                    , { key: 'boqType', name: 'boqType' }
+                    , { key: 'secondLevel', name: 'boqTypeChild' }] : null}
+                rows={this.state.paymentsItems}
+                isFilter={this.state.isFilter}
+                showCheckbox={isCompany && this.props.changeStatus ? true : false}
+                clickHandlerDeleteRows={this.clickHandlerDeleteRows}
+                pageSize={this.state.pageSize}
+                onRowClick={this.onRowClick}
+                columns={itemsColumns}
+                onGridRowsUpdated={this._onGridRowsUpdated}
+                getCellActions={(column, row) => this.getCellActions(column, row)}
+                key="PRitems"
+                changeValueOfProps={this.changeValueOfProps.bind(this)} />
+
+        ) : null;
 
         const BoqTypeContent = (
             <Fragment>
@@ -2728,8 +2648,6 @@ class requestPaymentsAddEdit extends Component {
             </Fragment>
         ) : (<LoadingSection />);
 
-        let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
-
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -2765,7 +2683,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
                                                                         <input name="subject" className="form-control fsadfsadsa" id="subject"
                                                                             placeholder={Resources.subject[currentLanguage]}
-                                                                            autoComplete="off" value={this.state.document.subject}
+                                                                            autoComplete="off" value={this.state.document.subject || ''}
                                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                             onChange={e => this.handleChange(e, "subject")} />
                                                                         {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
@@ -2793,6 +2711,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                             <div className="proForm datepickerContainer">
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title="docDate"
@@ -2889,8 +2808,6 @@ class requestPaymentsAddEdit extends Component {
                                                                                 touched={touched.contractId}
                                                                                 isClear={false}
                                                                                 name="contractId"
-                                                                                id="contractId"
-                                                                                classDrop="contractId"
                                                                             />
                                                                         </div>
                                                                     )}
@@ -3139,7 +3056,7 @@ class requestPaymentsAddEdit extends Component {
                                                     </button>
                                                 </div>
                                             </div>
-                                            {this.renderingGrid()}
+                                            {ItemsGrid}
 
                                             {this.state.editRows.length > 0 ? (
                                                 <div className="doc-pre-cycle">
@@ -3567,6 +3484,8 @@ class requestPaymentsAddEdit extends Component {
                                             </Fragment> : null
                                         }
 
+
+
                                         <div className="fullWidthWrapper">
                                             {this.state.isLoading === true ? (
                                                 <button
@@ -3654,7 +3573,8 @@ function mapStateToProps(state) {
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId,
         items: state.communication.items,
-        showModal: state.communication.showModal
+        showModal: state.communication.showModal,
+        //docTypeId: state.communication.docTypeId,
     };
 }
 
