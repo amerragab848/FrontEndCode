@@ -15036,7 +15036,7 @@ h1, h2, h3, h4, h5 {
 
 .minimizeSpan {
     position: absolute;
-    right: 40px;
+    right: 125px;
     top: 5px;
     z-index: 19;
     display: flex;
@@ -20497,16 +20497,19 @@ div#markup-panel {
     transform: scale(0);
     transition: all 0.2s ease-in-out;
     z-index: 9999999999;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    overflow: auto;
 }
 
 .grid__column .grid__column--container .closeColumn {
     background: transparent;
-    color: #000;
+    color: #fff;
     border: none;
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 14px;
+    font-size: 17px;
     cursor: pointer;
 }
 
@@ -20527,10 +20530,7 @@ div#markup-panel {
 }
 
 .grid__column--container {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    margin: auto;
     background: #fff;
     border-radius: 5px;
     width: 550px;
@@ -22311,7 +22311,7 @@ tbody.grid-body tr td.text {
     margin-right: 10px;
 }
 
-.btn.disabled {
+.btn.disabled, .disabled {
     pointer-events: none !important
 }
 

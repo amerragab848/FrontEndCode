@@ -22,6 +22,7 @@ export default class CustomGrid extends Component {
             selectedRows: [],
             selectedRow: [],
             copmleteRows: [],
+            groupsCol: [],
             expandedRows: {},
             columnsModal: false,
             ColumnsHideShow: [],
@@ -51,13 +52,10 @@ export default class CustomGrid extends Component {
 
         });
 
-        let ColumnsHideShow = this.props.cells
-        for (var i in ColumnsHideShow) {
-            ColumnsHideShow[i].hidden = false;
-        }
+        let ColumnsHideShow = this.props.cells;
 
         this.setState({
-            ColumnsHideShow
+            ColumnsHideShow: ColumnsHideShow
         });
 
         setTimeout(() => {
@@ -86,27 +84,13 @@ export default class CustomGrid extends Component {
         this.setState({ columnsModal: false })
     }
 
-    handleCheck = (key) => {
-        this.setState({ [key]: !this.state[key], Loading: true })
-        let data = this.state.ColumnsHideShow
-        for (var i in data) {
-            if (data[i].key === key) {
-                let status = data[i].hidden === true ? false : true
-                data[i].hidden = status
-                break;
-            }
-        }
-        setTimeout(() => {
-            this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
-        }, 300);
-    }
-
     ResetShowHide = () => {
         this.setState({ Loading: true })
-        let ColumnsHideShow = this.props.cells
+
+        let ColumnsHideShow = this.state.ColumnsHideShow
         for (var i in ColumnsHideShow) {
             ColumnsHideShow[i].hidden = false;
-            let key = ColumnsHideShow[i].key
+            let key = ColumnsHideShow[i].field
             this.setState({ [key]: false })
         }
         setTimeout(() => {
@@ -116,7 +100,27 @@ export default class CustomGrid extends Component {
                 Loading: false, columnsModal: false
             })
         }, 300)
-    }
+    };
+
+    handleCheck = (key) => {
+        this.setState({ [key]: !this.state[key], Loading: true })
+        let data = this.state.ColumnsHideShow
+        for (var i in data) {
+            if (data[i].field === key) {
+                let status = data[i].hidden === true ? false : true
+                data[i].hidden = status
+                break;
+            }
+        }
+        var gridLocalStor = { columnsList: [], groups: [] };
+        gridLocalStor.columnsList  = JSON.stringify(data);
+        gridLocalStor.groups  = JSON.stringify(this.props.groups);
+
+        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+        setTimeout(() => {
+            this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
+        }, 300);
+    };
 
     ClearFilters = () => {
         var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
@@ -361,18 +365,28 @@ export default class CustomGrid extends Component {
             rows: this.props.data
         });
     };
+   
+    handleGroupEvent = (groups) => {
+        var gridLocalStor = { columnsList: [], groups: [] };
+        gridLocalStor.groups  = JSON.stringify(groups);
+        gridLocalStor.columnsList = JSON.stringify(this.state.columns);
+
+        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+
+        this.setState({ groupsCol: groups }); 
+    }
 
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
-
+ 
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
             return (
                 <div className="grid__content" key={item.field}>
-                    <div className={'ui checkbox checkBoxGray300 count checked'}>
-                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={!this.state[item.field]}
+                    <div className={'ui checkbox checkBoxGray300 count checked  ' + (item.fixed === true ? 'disabled' : '')}>
+                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={!item.hidden}
                             onChange={(e) => this.handleCheck(item.field)} />
-                        <label>{item.name}</label>
+                        <label>{item.title}</label>
                     </div>
                 </div>
             )
@@ -437,7 +451,6 @@ export default class CustomGrid extends Component {
                         </form>
                     </div>
                 </div>
-
                 <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"}>
                     <h2 className="zero">{Resources.filterResults[currentLanguage]}</h2>
                     <button className="filter__close" onClick={this.CloseModeFilter}>x</button>
@@ -511,18 +524,40 @@ export default class CustomGrid extends Component {
                         </div>
                     </div>
                 </div>
-
-                <GridCustom
-                    key={this.props.key}
-                    cells={this.props.cells}
-                    data={this.state.rows}
-                    pageSize={this.props.pageSize}
-                    actions={this.props.actions}
-                    rowActions={this.props.rowActions}
-                    rowClick={cell => this.props.rowClick(cell)}
-                    groups={this.props.groups}
-                    showPicker={this.props.showPicker}
-                />
+                <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+                    <div className="minimizeSpan" >
+                        <div className="H-tableSize" data-toggle="tooltip" title="Minimize Rows" onClick={this.handleMinimize}>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                                <g fill="none" fillRule="evenodd" transform="translate(5 5)">
+                                    <g fill="#CCD2DB" mask="url(#b)">
+                                        <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div className="V-tableSize" data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                                <g fill="none" fillRule="evenodd" transform="translate(5 5)">
+                                    <g fill="#CCD2DB" mask="url(#b)">
+                                        <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <GridCustom
+                        key={this.props.gridKey}
+                        cells={(this.state.columns).filter(i => i.hidden === false)}
+                        data={this.state.rows}
+                        pageSize={this.props.pageSize}
+                        actions={this.props.actions}
+                        rowActions={this.props.rowActions}
+                        rowClick={cell => this.props.rowClick(cell)}
+                        groups={this.props.groups}
+                        handleGroupUpdate={this.handleGroupEvent} 
+                        showPicker={this.props.showPicker}
+                    />
+                </div>
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
                     <div className="grid__column--container">

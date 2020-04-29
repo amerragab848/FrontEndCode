@@ -232,6 +232,7 @@ class requestPaymentsAddEdit extends Component {
             currentStep: 0,
             trees: [],
             showCostCodingTree: false,
+            isEditItems: false,
             showDeleteModal: false,
             userType: userType.uty,
             addDeducation: false,
@@ -257,6 +258,10 @@ class requestPaymentsAddEdit extends Component {
             selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
             selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
+            ColumnsHideShow: [],
+            columns: [],
+            groups: [],
+
             boqTypes: [],
             BoqTypeChilds: [],
             BoqSubTypes: [],
@@ -408,7 +413,6 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-
         if (docId > 0) {
             this.rowActions.push({
                 title: 'Add Cost Coding Tree',
@@ -426,8 +430,7 @@ class requestPaymentsAddEdit extends Component {
             });
         }
         //#endregion rowActions
-    }
-
+    };
     buildColumns(changeStatus) {
         let editPaymentPercent = ({ value, row }) => {
             if (row) {
@@ -441,7 +444,6 @@ class requestPaymentsAddEdit extends Component {
             }
             return null;
         };
-
         let editQuantityComplete = ({ value, row }) => {
             if (row) {
                 return (
@@ -454,7 +456,6 @@ class requestPaymentsAddEdit extends Component {
             }
             return null;
         };
-
         let editPercentComplete = ({ value, row }) => {
             if (row) {
                 return (
@@ -467,7 +468,6 @@ class requestPaymentsAddEdit extends Component {
             }
             return null;
         };
-
         let editSiteQuantityComplete = ({ value, row }) => {
             if (row) {
                 return (
@@ -480,7 +480,6 @@ class requestPaymentsAddEdit extends Component {
             }
             return null;
         };
-
         let editsitePaymentPercent = ({ value, row }) => {
             if (row) {
                 return (
@@ -493,7 +492,6 @@ class requestPaymentsAddEdit extends Component {
             }
             return null;
         };
-
         let editSitePercentComplete = ({ value, row }) => {
             if (row) {
                 return (
@@ -506,7 +504,6 @@ class requestPaymentsAddEdit extends Component {
             }
             return null;
         };
-
         let addCostCodingTree = ({ value, row }) => {
             if (row) {
                 return (
@@ -517,7 +514,6 @@ class requestPaymentsAddEdit extends Component {
             }
             return null;
         };
-
         itemsColumns = [{
             field: "arrange",
             title: Resources["no"][currentLanguage],
@@ -525,6 +521,7 @@ class requestPaymentsAddEdit extends Component {
             groupable: true,
             fixed: true,
             sortable: true,
+            hidden: false,
             type: "text"
         }, {
             field: "itemCode",
@@ -532,98 +529,99 @@ class requestPaymentsAddEdit extends Component {
             width: 10,
             groupable: true,
             fixed: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "details",
             title: Resources["description"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "boqType",
             title: Resources["boqType"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "secondLevel",
             title: Resources["boqTypeChild"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "boqSubType",
             title: Resources["boqSubType"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "quantity",
             title: Resources["boqQuanty"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "revisedQuantity",
             title: Resources["approvedQuantity"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "actualPercentage",
             title: Resources["actualPercentage"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "unitPrice",
             title: Resources["unitPrice"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "unit",
             title: Resources["unit"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "prevoiuseQnty",
             title: Resources["previousQuantity"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "oldPaymentPercent",
             title: Resources["previousPaymentPercent"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "sitePercentComplete",
             title: Resources["sitePercentComplete"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             handleChange: (e, cell) => {
 
                 let cellInstance = Object.assign({}, cell);
 
                 cellInstance.sitePercentComplete = parseFloat(e.target.value);
 
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                let pItems = this.state.paymentsItems;
 
                 let cellIndex = pItems.findIndex(c => c.id == cell.id);
 
@@ -639,20 +637,22 @@ class requestPaymentsAddEdit extends Component {
                 this._onGridRowsUpdated(cell, "sitePercentComplete");
 
             },
-            type: this.props.changeStatus ? "text" : "input"
+            type: "text"
+            //this.props.changeStatus ? "text" : "input"
         }, {
             field: "siteQuantityComplete",
             title: Resources["siteQuantityComplete"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             handleChange: (e, cell) => {
 
                 let cellInstance = Object.assign({}, cell);
 
                 cellInstance.siteQuantityComplete = parseFloat(e.target.value);
 
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                let pItems = this.state.paymentsItems;
 
                 let cellIndex = pItems.findIndex(c => c.id == cell.id);
 
@@ -667,19 +667,21 @@ class requestPaymentsAddEdit extends Component {
 
                 this._onGridRowsUpdated(cell, "siteQuantityComplete");
             },
-            type: this.props.changeStatus ? "text" : "input"
+            type: "text"
+            //this.props.changeStatus ? "text" : "input"
         }, {
             field: "sitePaymentPercent",
             title: Resources["contractPaymentPercent"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             handleChange: (e, cell) => {
                 let cellInstance = Object.assign({}, cell);
 
                 cellInstance.sitePaymentPercent = parseFloat(e.target.value);
 
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                let pItems = this.state.paymentsItems;
 
                 let cellIndex = pItems.findIndex(c => c.id == cell.id);
 
@@ -694,20 +696,22 @@ class requestPaymentsAddEdit extends Component {
 
                 this._onGridRowsUpdated(cell, "sitePaymentPercent");
             },
-            type: this.props.changeStatus ? "text" : "input"
+            type: "text"
+            //this.props.changeStatus ? "text" : "input"
         }, ...(this.props.changeStatus ? [{
             field: "percentComplete",
             title: Resources["percentComplete"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             handleChange: (e, cell) => {
 
                 let cellInstance = Object.assign({}, cell);
 
                 cellInstance.percentComplete = parseFloat(e.target.value);
 
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                let pItems = this.state.paymentsItems;
 
                 let cellIndex = pItems.findIndex(c => c.id == cell.id);
 
@@ -722,20 +726,22 @@ class requestPaymentsAddEdit extends Component {
 
                 this._onGridRowsUpdated(cell, "percentComplete");
             },
-            type: this.props.changeStatus ? "text" : "input"
+            type: "text"
+            //this.props.changeStatus ? "text" : "input"
         }, {
             field: "quantityComplete",
             title: Resources["quantityComplete"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             handleChange: (e, cell) => {
 
                 let cellInstance = Object.assign({}, cell);
 
                 cellInstance.quantityComplete = parseFloat(e.target.value);
 
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                let pItems = this.state.paymentsItems;
 
                 let cellIndex = pItems.findIndex(c => c.id == cell.id);
 
@@ -750,20 +756,22 @@ class requestPaymentsAddEdit extends Component {
 
                 this._onGridRowsUpdated(cell, "quantityComplete");
             },
-            type: this.props.changeStatus ? "text" : "input"
+            type: "text"
+            //this.props.changeStatus ? "text" : "input"
         }, {
             field: "paymentPercent",
             title: Resources["paymentPercent"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             handleChange: (e, cell) => {
 
                 let cellInstance = Object.assign({}, cell);
 
                 cellInstance.paymentPercent = parseFloat(e.target.value);
 
-                let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                let pItems = this.state.paymentsItems;
 
                 let cellIndex = pItems.findIndex(c => c.id == cell.id);
 
@@ -778,34 +786,35 @@ class requestPaymentsAddEdit extends Component {
 
                 this._onGridRowsUpdated(cell, "paymentPercent");
             },
-            type: this.props.changeStatus ? "text" : "input"
+            type: "text"
+            //this.props.changeStatus ? "text" : "input"
         }] : []), {
             field: "wasAdded",
             title: Resources["status"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "totalExcutedPayment",
             title: Resources["totalAmount"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "lastComment",
             title: Resources["comment"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }, {
             field: "itemStatus",
             title: Resources["itemStatus"][currentLanguage],
             width: 10,
             groupable: true,
-            sortable: true,
+            sortable: true, hidden: false,
             type: "text"
         }];
 
@@ -876,8 +885,50 @@ class requestPaymentsAddEdit extends Component {
                 width: 120
             }
         ];
-    }
 
+        var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems"));
+        var currentGP = [];
+        if (selectedCols != null && selectedCols != "undefined") {
+            if (selectedCols.length === 0) {
+
+                var gridLocalStor = { columnsList: [], groups: [] };
+
+                gridLocalStor.columnsList = JSON.stringify(itemsColumns);
+                gridLocalStor.groups = this.props.groups;
+                currentGP = this.props.groups;
+                localStorage.setItem("ReqPaymentsItems", gridLocalStor);
+            }
+            else {
+                var parsingList = JSON.parse(selectedCols.columnsList);
+                for (var item in parsingList) {
+                    for (var i in itemsColumns) {
+                        if (itemsColumns[i].field === parsingList[item].field) {
+                            let status = parsingList[item].hidden
+                            itemsColumns[i].hidden = status
+                            break;
+                        }
+                    }
+                };
+                currentGP = selectedCols.groups;
+
+            }
+        } else {
+            var gridLocalStor = { columnsList: [], groups: [] };
+
+            gridLocalStor.columnsList = JSON.stringify(itemsColumns);
+            gridLocalStor.groups = this.props.groups;
+
+            //localStorage.setItem("ReqPaymentsItems", gridLocalStor);  
+            currentGP = selectedCols.groups;
+
+            localStorage.setItem("ReqPaymentsItems", JSON.stringify(gridLocalStor));
+        };
+        this.setState({
+            ColumnsHideShow: itemsColumns,
+            columns: itemsColumns,
+            groups: JSON.parse(currentGP)
+        });
+    };
     customCellActions(column, row) {
         if (column.key === "BtnActions") {
             const custom = [{
@@ -932,16 +983,14 @@ class requestPaymentsAddEdit extends Component {
             return custom;
 
         }
-    }
-
+    };
     getCellActions(column, row) {
 
         const cellActions = {
             BtnActions: this.customCellActions(column, row)
         };
         return cellActions[column.key];
-    }
-
+    };
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -1007,8 +1056,7 @@ class requestPaymentsAddEdit extends Component {
             this.props.actions.documentForAdding();
             this.buildColumns(false);
         }
-    }
-
+    };
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
             let serverChangeOrder = { ...nextProps.document };
@@ -1032,8 +1080,7 @@ class requestPaymentsAddEdit extends Component {
             };
         }
         return null
-    }
-
+    };
     componentDidUpdate(prevProps, prevState) {
         if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
@@ -1046,8 +1093,7 @@ class requestPaymentsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-    }
-
+    };
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (isCompany === true) {
@@ -1072,8 +1118,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
             this.setState({ isViewMode: false });
         }
-    }
-
+    };
     GetNExtArrange() {
         let original_document = { ...this.state.document };
 
@@ -1091,8 +1136,7 @@ class requestPaymentsAddEdit extends Component {
                 document: updated_document
             });
         });
-    }
-
+    };
     fillDropDowns(isEdit) {
         if (isEdit === false) {
             dataservice.GetDataGrid("GetContractsListForPaymentRequistion?projectId=" + this.state.projectId).then(result => {
@@ -1110,15 +1154,13 @@ class requestPaymentsAddEdit extends Component {
                 });
             });
         }
-    }
-
+    };
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
-    }
-
+    };
     onChangeMessage = value => {
         if (value != null) {
             let original_document = { ...this.state.document };
@@ -1135,7 +1177,6 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
-
     handleChange(e, field) {
 
         let original_document = { ...this.state.document };
@@ -1149,8 +1190,7 @@ class requestPaymentsAddEdit extends Component {
         this.setState({
             document: updated_document
         });
-    }
-
+    };
     handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
 
@@ -1163,8 +1203,7 @@ class requestPaymentsAddEdit extends Component {
         this.setState({
             document: updated_document
         });
-    }
-
+    };
     handleChangeDropDownContract(event, field, selectedValue) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -1214,8 +1253,7 @@ class requestPaymentsAddEdit extends Component {
                 });
             }
         }
-    }
-
+    };
     editPaymentRequistion(event) {
         this.setState({
             isLoading: true
@@ -1236,8 +1274,7 @@ class requestPaymentsAddEdit extends Component {
             });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
-    }
-
+    };
     saveVariationOrder(event) {
         this.setState({
             isLoading: true
@@ -1266,27 +1303,26 @@ class requestPaymentsAddEdit extends Component {
             });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
-    }
-
+    };
     showBtnsSaving() {
         let btn = null;
-        if (this.state.docId === 0) {
-            btn = (
-                <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
-        } else if (this.state.docId > 0) {
-            btn = (
-                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type="submit">
-                    {Resources.next[currentLanguage]}
-                </button>
-            );
-        }
+        // if (this.state.docId === 0) {
+        //     btn = (
+        //         <button className="primaryBtn-1 btn meduimBtn" type="submit">
+        //             {Resources.save[currentLanguage]}
+        //         </button>
+        //     );
+        // } else if (this.state.docId > 0) {
+
+        btn = (
+            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} onClick={e => this.changeCurrentStep(1)}>
+                {Resources.next[currentLanguage]}
+            </button>
+        );
+        //}
 
         return btn;
-    }
-
+    };
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3317) === true ? (
@@ -1299,12 +1335,10 @@ class requestPaymentsAddEdit extends Component {
                 />
             ) : null
         ) : null;
-    }
-
+    };
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
-    }
-
+    };
     fillGridItems = () => {
         let contractId = this.state.document.contractId;
         if (this.props.changeStatus == true) {
@@ -1323,7 +1357,6 @@ class requestPaymentsAddEdit extends Component {
             }
         }
     };
-
     fillSummariesTab = () => {
         let contractId = this.state.document.contractId;
         let interimInvoicedTable = [...this.state.interimInvoicedTable];
@@ -1437,7 +1470,6 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
-
     fillDeductions = () => {
         let deductionObservableArray = [...this.state.deductionObservableArray];
 
@@ -1459,11 +1491,9 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
-
     changeCurrentStep = stepNo => {
         this.setState({ currentStep: stepNo });
     };
-
     saveVariationOrderItem(event) {
 
         let saveDocument = { ...this.state.voItem };
@@ -1483,8 +1513,7 @@ class requestPaymentsAddEdit extends Component {
         }).catch(res => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
-    }
-
+    };
     handleChangeItem(e, field) {
 
         let original_document = { ...this.state.documentDeduction };
@@ -1498,8 +1527,7 @@ class requestPaymentsAddEdit extends Component {
         this.setState({
             documentDeduction: updated_document
         });
-    }
-
+    };
     handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
 
         if (event == null) return;
@@ -1521,8 +1549,7 @@ class requestPaymentsAddEdit extends Component {
                 });
             });
         }
-    }
-
+    };
     onRowClick = (value) => {
 
         let userType = Config.getPayload();
@@ -1552,12 +1579,34 @@ class requestPaymentsAddEdit extends Component {
                 } else {
                     toast.warn(Resources["adminItemEditable"][currentLanguage]);
                 }
+            } else {
+                if (this.state.document.status === true) {
+
+                    let original_document = { ...this.state.currentObject };
+
+                    let updated_document = {};
+
+                    updated_document.sitePaymentPercent = value.sitePaymentPercent;
+                    updated_document.sitePercentComplete = value.sitePercentComplete;
+                    updated_document.siteQuantityComplete = value.siteQuantityComplete;
+                    updated_document.id = value.id;
+
+                    updated_document = Object.assign(original_document, updated_document);
+
+                    this.setState({
+                        viewPopUpRows: true,
+                        currentObject: value
+                    });
+                    this.addCommentModal.show();
+                } else {
+                    toast.warn(Resources["adminItemEditable"][currentLanguage]);
+                }
+
             }
         } else {
             toast.warn(Resources["adminItemEditable"][currentLanguage]);
         }
     };
-
     handleChangeItemDropDownItems(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
         if (event == null) return;
         let original_document = { ...this.state.boqStractureObj };
@@ -1578,12 +1627,53 @@ class requestPaymentsAddEdit extends Component {
                 });
             });
         }
-    }
+    };
+    rowsUpdated = (cell, type) => {
 
+        this.setState({
+            isLoading: true
+        });
+
+        let pItems = this.state.paymentsItems;
+
+        let newValue = this.state.currentObject;
+
+        let sitePercentComplete = 0;
+        let siteQuantityComplete = 0;
+
+        let editRows = [...this.state.editRows];
+
+        let sameRow = find(editRows, function (x) {
+            return x.id === newValue.id;
+        });
+
+        if (sameRow) {
+            editRows = editRows.filter(function (i) {
+                return i.id != newValue.id;
+            });
+        }
+        editRows.push(newValue);
+
+        let index = pItems.findIndex(x => x.id === newValue.id);
+
+        pItems[index] = newValue;
+
+        this.setState({
+            editRows: editRows,
+            paymentsItems: pItems,
+            viewPopUpRows: false,
+            isItemUpdate: true,
+            isLoading: false,
+            isFilter: true,
+            isEditItems: true
+        });
+        this.addCommentModal.hide();
+    };
     _onGridRowsUpdated = (cell, type) => {
         let cellInstance = JSON.parse(JSON.stringify(cell));
 
-        let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+        // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+        let pItems = this.state.paymentsItems;
 
         let newValue = parseFloat(cellInstance[type]);
 
@@ -1665,44 +1755,61 @@ class requestPaymentsAddEdit extends Component {
             isFilter: true
         });
     };
-
     changeValueOfProps = () => {
         this.setState({ isFilter: false });
-    }
-
+    };
     editRowsClick() {
         this.setState({ isLoading: true });
+        let saveDocument = { ...this.state.document };
 
-        let editItems = [...this.state.editRows];
-        editItems.map(i => {
-            if (i.revisedQuantity == 0 && i.siteQuantityComplete > 0) {
-                i.revisedQuantity = 1;
+        saveDocument.docDate = moment(saveDocument.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+
+        saveDocument.projectId = this.state.projectId;
+
+        dataservice.addObject("AddContractsRequestPayment", saveDocument).then(result => {
+            if (result.id) {
+
+                this.setState({
+                    docId: result.id,
+                    isLoading: false
+                });
+
+                let editItems = [...this.state.editRows];
+                editItems.map(i => {
+                    if (i.revisedQuantity == 0 && i.siteQuantityComplete > 0) {
+                        i.revisedQuantity = 1;
+                    }
+                    i.percentComplete = (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
+                    i.sitePercentComplete = (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
+                    i.contractId = this.state.document.contractId;
+                    i.requestId = this.state.docId;
+                    i.projectId = projectId;
+                });
+
+                let api = this.props.changeStatus === true ? "EditContractsRequestPaymentsItems" : "AddContractsRequestPaymentsItemsNewScenario";
+                dataservice.addObject(api, editItems).then(() => {
+
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.setState({
+                        isLoading: false, currentStep: 2
+                    });
+                }).catch(() => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
+                    this.setState({ isLoading: false });
+                });
             }
-            i.percentComplete = (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
-            i.sitePercentComplete = (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
-            i.contractId = this.state.document.contractId;
-            i.requestId = this.state.docId;
-            i.projectId = projectId;
-        });
-
-        let api = this.props.changeStatus === true ? "EditContractsRequestPaymentsItems" : "AddContractsRequestPaymentsItemsNewScenario";
-        dataservice.addObject(api, editItems).then(() => {
-
-            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(res => {
             this.setState({
-                isLoading: false, currentStep: 2
+                isLoading: false
             });
-        }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ isLoading: false });
         });
-    }
 
+    };
     assign = () => {
         this.setState({ showBoqModal: true });
         this.boqTypeModal.show();
     };
-
     addDeduction() {
         this.setState({
             isLoading: true
@@ -1736,8 +1843,7 @@ class requestPaymentsAddEdit extends Component {
             });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
-    }
-
+    };
     assignBoqType = () => {
         let boqStractureObj = { ...this.state.boqStractureObj };
 
@@ -1769,7 +1875,6 @@ class requestPaymentsAddEdit extends Component {
             this.setState({ showBoqModal: false, isLoading: false });
         });
     };
-
     addCommentClick = () => {
         let comment = { ...this.state.comment };
 
@@ -1778,7 +1883,12 @@ class requestPaymentsAddEdit extends Component {
             this.setState({ showCommentModal: false, isLoading: false });
         }
     };
-
+    openModalColumn = () => {
+        this.setState({ columnsModal: true })
+    };
+    closeModalColumn = () => {
+        this.setState({ columnsModal: false })
+    };
     handleChangeForEdit = (e, updated) => {
         let updateRow = this.state.currentObject;
 
@@ -1849,7 +1959,6 @@ class requestPaymentsAddEdit extends Component {
             isLoading: false
         });
     };
-
     editPaymentRequistionItems = () => {
 
         let mainDoc = this.state.currentObject;
@@ -1857,7 +1966,8 @@ class requestPaymentsAddEdit extends Component {
         mainDoc.contractId = this.state.document.contractId;
 
         this.setState({
-            isLoading: true
+            isLoading: true,
+            ColumnsHideShow: this.state.columns
         });
 
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
@@ -1885,7 +1995,8 @@ class requestPaymentsAddEdit extends Component {
                 viewPopUpRows: false,
                 isItemUpdate: true,
                 isLoading: false,
-                isFilter: true
+                isFilter: true,
+                isEditItems: true
             });
 
         }).catch(res => {
@@ -1898,7 +2009,6 @@ class requestPaymentsAddEdit extends Component {
         });
 
     };
-
     handleDropAction(event) {
 
         switch (event.value) {
@@ -1965,20 +2075,17 @@ class requestPaymentsAddEdit extends Component {
         this.setState({
             selectedDropDown: event
         });
-    }
-
+    };
     viewConfirmDelete(id, type) {
         this.setState({
             currentId: id,
             showDeleteModal: true,
             currentDocument: type
         });
-    }
-
+    };
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
-
     clickHandlerContinueMain = () => {
         if (this.state.currentDocument === "deduction") {
             let id = this.state.currentId;
@@ -2053,7 +2160,6 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
-
     handleDropActionForExportFile = event => {
         let exportFile = "";
 
@@ -2094,7 +2200,6 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDownExport: event
         });
     };
-
     updateActualPayments = () => {
         this.setState({ viewUpdatePayment: true });
 
@@ -2119,7 +2224,6 @@ class requestPaymentsAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     };
-
     updatePayemtWithVariationOrderByAdmin = () => {
 
         this.setState({ viewUpdateCalc: true });
@@ -2139,7 +2243,6 @@ class requestPaymentsAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     };
-
     addCostTree = () => {
 
         let costCodingId = this.state.selectedDropDownTrees.value;
@@ -2186,7 +2289,6 @@ class requestPaymentsAddEdit extends Component {
             toast.warn("Please Choose CostCodingTree");
         }
     };
-
     handleDropTrees = event => {
         if (event == null) return;
 
@@ -2194,7 +2296,6 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDownTrees: event
         });
     };
-
     renderEditableValue = cellInfo => {
         return (
             <div style={{ color: "#4382f9 ", padding: "0px 6px", margin: "5px 0px", border: "1px dashed", cursor: "pointer" }} contentEditable suppressContentEditableWarning
@@ -2210,7 +2311,6 @@ class requestPaymentsAddEdit extends Component {
             />
         );
     };
-
     actionHandler = (key, e) => {
         let state = this.state;
 
@@ -2229,7 +2329,6 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({ state, trees: lastData });
     };
-
     AddedItems = () => {
         if (this.state.trees.length > 0) {
             this.setState({ isLoading: true });
@@ -2251,7 +2350,6 @@ class requestPaymentsAddEdit extends Component {
             toast.success("Please Add CostCodingTree");
         }
     };
-
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
@@ -2278,8 +2376,7 @@ class requestPaymentsAddEdit extends Component {
                 });
             });
         }
-    }
-
+    };
     GetNextData() {
         let pageNumber = this.state.pageNumber + 1;
 
@@ -2303,12 +2400,10 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: false
             });
         });
-    }
-
+    };
     clickHandlerDeleteRows = rows => {
         this.viewConfirmDelete(rows, "requestItems");
     };
-
     editAdvancedPayment() {
         if (this.state.advancedPayment != 0) {
 
@@ -2325,22 +2420,21 @@ class requestPaymentsAddEdit extends Component {
         } else {
             toast.warn("Please Write Value MoreZane Zero");
         }
-    }
-
+    };
+ 
     renderingGrid() {
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
+
             <GridCustom
-                key="Items"
+                gridKey='ReqPaymentsItems'
                 data={this.state.paymentsItems}
                 pageSize={this.state.pageSize}
-                groups={this.props.changeStatus ? [
-                    { field: 'wasAdded', title: 'status', type: "text" }
-                    , { field: 'boqType', title: 'boqType', type: "text" }
-                    , { field: 'secondLevel', title: 'boqTypeChild', type: "text" }] : []}
+                groups={this.state.groups}
                 actions={[]}
+                openModalColumn={this.state.columnsModal}
                 isFilter={this.state.isFilter}
-                cells={itemsColumns}
+                cells={this.state.columns} 
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
                 rowClick={cell => {
                     this.onRowClick(cell);
@@ -2350,8 +2444,7 @@ class requestPaymentsAddEdit extends Component {
         ) : null;
 
         return ItemsGrid;
-    }
-
+    };
     render() {
 
         let columns = [];
@@ -3114,6 +3207,7 @@ class requestPaymentsAddEdit extends Component {
                                                         {this.state.paymentsItems.length}
                                                     </span>
                                                 </div>
+
                                                 <div className="filterBTNS">
                                                     <div className="default__dropdown--custom" style={{ marginBottom: "0" }}>
                                                         <div className="default__dropdown">
@@ -3130,6 +3224,7 @@ class requestPaymentsAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div className="rowsPaginations readOnly__disabled">
                                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
@@ -3440,13 +3535,16 @@ class requestPaymentsAddEdit extends Component {
                             validationSchema={validationItemsSchema}
                             enableReinitialize={true}
                             onSubmit={values => {
-                                this.editPaymentRequistionItems();
+                                this.props.changeStatus === true ?
+                                    this.editPaymentRequistionItems() :
+
+                                    this.rowsUpdated();
                             }}>
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                 <Form id="RequestPaymentItemEditForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
                                     <div className="dropWrapper">
                                         {
-                                            Config.IsAllow(3674) ?
+                                            Config.IsAllow(3674) && this.props.changeStatus == true ?
                                                 <Fragment>
                                                     <div className="fillter-item-c fullInputWidth">
                                                         <label className="control-label">
@@ -3457,12 +3555,13 @@ class requestPaymentsAddEdit extends Component {
                                                                 placeholder={Resources.percentComplete[currentLanguage]}
                                                                 autoComplete="off"
                                                                 onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                                defaultValue={this.state.currentObject.percentComplete}
+                                                                value={this.state.currentObject.percentComplete}
                                                                 onChange={e => this.handleChangeForEdit(e, "percentComplete")}
                                                             />
                                                             {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
                                                         </div>
                                                     </div>
+
                                                     <div className="fillter-item-c fullInputWidth">
                                                         <label className="control-label">
                                                             {Resources.quantityComplete[currentLanguage]}
@@ -3472,7 +3571,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 placeholder={Resources.quantityComplete[currentLanguage]}
                                                                 autoComplete="off"
                                                                 onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                                defaultValue={this.state.currentObject.quantityComplete}
+                                                                value={this.state.currentObject.quantityComplete}
                                                                 onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
                                                             />
                                                             {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
@@ -3488,7 +3587,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 placeholder={Resources.paymentPercent[currentLanguage]}
                                                                 autoComplete="off"
                                                                 onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                                defaultValue={this.state.currentObject.paymentPercent}
+                                                                value={this.state.currentObject.paymentPercent}
                                                                 onChange={e => { this.handleChangeForEdit(e, "paymentPercent"); }}
                                                             />
                                                             {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
@@ -3511,7 +3610,7 @@ class requestPaymentsAddEdit extends Component {
                                                             placeholder={Resources.percentComplete[currentLanguage]}
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                            defaultValue={this.state.currentObject.sitePercentComplete}
+                                                            value={this.state.currentObject.sitePercentComplete}
                                                             onChange={e => { this.handleChangeForEdit(e, "sitePercentComplete"); }} />
                                                         {touched.sitePercentComplete ? (<em className="pError"> {errors.sitePercentComplete} </em>) : null}
                                                     </div>
@@ -3528,7 +3627,7 @@ class requestPaymentsAddEdit extends Component {
                                                             placeholder={Resources.siteQuantityComplete[currentLanguage]}
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                            defaultValue={this.state.currentObject.siteQuantityComplete}
+                                                            value={this.state.currentObject.siteQuantityComplete}
                                                             onChange={e => { this.handleChangeForEdit(e, "siteQuantityComplete"); }}
                                                         />
                                                         {touched.siteQuantityComplete ? (<em className="pError">{errors.siteQuantityComplete}</em>) : null}
@@ -3544,26 +3643,28 @@ class requestPaymentsAddEdit extends Component {
                                                             placeholder={Resources.contractPaymentPercent[currentLanguage]}
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                            defaultValue={this.state.currentObject.sitePaymentPercent}
+                                                            value={this.state.currentObject.sitePaymentPercent}
                                                             onChange={e => { this.handleChangeForEdit(e, "sitePaymentPercent"); }}
                                                         />
                                                         {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                     </div>
                                                 </div>
-                                                <div className="fillter-item-c fullInputWidth">
-                                                    <label className="control-label">
-                                                        {Resources.comments[currentLanguage]}
-                                                    </label>
-                                                    <div className={"inputDev ui input"}>
-                                                        <input name="comments" className="form-control fsadfsadsa" id="comments"
-                                                            placeholder={Resources.comments[currentLanguage]}
-                                                            autoComplete="off"
-                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                            defaultValue={this.state.currentObject.lastComment}
-                                                            onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
-                                                        />
+                                                {this.props.changeStatus == true ?
+                                                    <div className="fillter-item-c fullInputWidth">
+                                                        <label className="control-label">
+                                                            {Resources.comments[currentLanguage]}
+                                                        </label>
+                                                        <div className={"inputDev ui input"}>
+                                                            <input name="comments" className="form-control fsadfsadsa" id="comments"
+                                                                placeholder={Resources.comments[currentLanguage]}
+                                                                autoComplete="off"
+                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                value={this.state.currentObject.lastComment}
+                                                                onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    : null}
                                             </Fragment> : null
                                         }
 
@@ -3600,6 +3701,7 @@ class requestPaymentsAddEdit extends Component {
                         clickHandlerCancel={this.clickHandlerCancelMain}
                         clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />
                 ) : null}
+
                 <div className="largePopup largeModal " style={{ display: this.state.showViewHistoryModal ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.ViewHistoryModal = ref)} title={Resources.viewHistory[currentLanguage]}>
                         {viewHistory}
@@ -3641,9 +3743,8 @@ class requestPaymentsAddEdit extends Component {
                 </SkyLight>
             </div>
         );
-    }
+    };
 }
-
 function mapStateToProps(state) {
     return {
         document: state.communication.document,
@@ -3656,12 +3757,11 @@ function mapStateToProps(state) {
         items: state.communication.items,
         showModal: state.communication.showModal
     };
-}
-
+};
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(communicationActions, dispatch)
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(requestPaymentsAddEdit));
