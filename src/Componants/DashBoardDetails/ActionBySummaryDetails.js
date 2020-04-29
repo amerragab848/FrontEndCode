@@ -12,10 +12,7 @@ import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
+const { 
   SingleSelectFilter
 } = Filters;
 
@@ -24,6 +21,7 @@ const dateFormate = ({ value }) => {
 };
 
 class ActionBySummaryDetails extends Component {
+
   constructor(props) {
     super(props); 
     var columnsGrid = [
@@ -145,9 +143,7 @@ class ActionBySummaryDetails extends Component {
       isCustom: true
     };
   }
-   
-  
-
+    
   componentDidMount() {
 
     const query = new URLSearchParams(this.props.location.search);

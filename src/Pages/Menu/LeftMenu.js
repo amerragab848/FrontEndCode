@@ -510,7 +510,7 @@ class LeftMenu extends Component {
                         </div>
                       </div>
                       <ul className="ui accordion MenuUl PM-color zero">
-                        <li>
+                        {/* <li>
                           <a>
                             <span className="ULimg">
                               <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -530,7 +530,7 @@ class LeftMenu extends Component {
                             </span>
                             <span className="UlName">{Resources["workplace"][currentLanguage]}</span>
                           </a>
-                        </li>
+                        </li> */}
 
                         <li className={this.state.rowIndex === 1 ? "ActiveSubLi" : ""}>
                           <a className={this.state.rowIndex === 1 ? "title active" : "title"} onClick={() => this.OpenSubMenu(1, Resources["generalCoordination"][currentLanguage])} >

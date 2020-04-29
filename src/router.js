@@ -217,11 +217,11 @@ const ContractsConditions = AsyncComponent(() =>
 const VariationOrderAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationOrderAddEdit'),
 );
-const RequestPaymentsAddEdit = AsyncComponent(() =>
-    import('./Pages/Contracts/requestPaymentsAddEdit'),
+const requestPaymentsAddEdit_New = AsyncComponent(() =>
+    import('./Pages/Contracts/requestPaymentsAddEdit_New'),
 );
-const requestPaymentsAddEdit_old = AsyncComponent(() =>
-    import('./Pages/Contracts/requestPaymentsAddEdit_old'),
+const requestPaymentsAddEdit = AsyncComponent(() =>
+    import('./Pages/Contracts/requestPaymentsAddEdit')
 );
 
 const PcoAddEdit = AsyncComponent(() => import('./Pages/Contracts/pcoAddEdit'));
@@ -931,8 +931,8 @@ let originalRoutes = [
         component={ProjectIssuesAddEdit}
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
-    <Route key="r-96" path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />,
-    <Route key="r-96" path="/requestPaymentsAddEdit_old" component={requestPaymentsAddEdit_old} />,
+    <Route key="r-96" path="/requestPaymentsAddEdit_New" component={requestPaymentsAddEdit_New} />,
+    <Route key="r-96" path="/requestPaymentsAddEdit" component={requestPaymentsAddEdit} />,
     <Route key="r-97" path="/projectsAddEdit" component={ProjectsAddEdit} />,
     <Route key="r-98" path="/baseAddEdit" component={BaseAddEdit} />,
     <Route
