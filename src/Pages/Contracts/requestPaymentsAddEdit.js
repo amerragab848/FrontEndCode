@@ -3645,8 +3645,7 @@ class requestPaymentsAddEdit extends Component {
                                                         />
                                                         {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                     </div>
-                                                </div>
-                                                {this.props.changeStatus == true ?
+                                                </div> 
                                                     <div className="fillter-item-c fullInputWidth">
                                                         <label className="control-label">
                                                             {Resources.comments[currentLanguage]}
@@ -3660,8 +3659,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
                                                             />
                                                         </div>
-                                                    </div>
-                                                    : null}
+                                                    </div> 
                                             </Fragment> : null
                                         }
 
