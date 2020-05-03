@@ -239,6 +239,28 @@ class FollowUpsSummaryDetails extends Component {
   componentDidMount() {
     this.props.actions.RouteToTemplate();
     Api.get("GetFollowing").then(result => {
+
+      result.forEach(row => {
+
+        let link = "";
+
+        let obj = {
+          docId: row.docId,
+          projectId: row.projectId,
+          projectName: row.projectName,
+          arrange: 0,
+          docApprovalId: 0,
+          isApproveMode: false,
+          perviousRoute: window.location.pathname + window.location.search
+        };
+
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+        row.link = '/' + row.docLink + '?id=' + encodedPaylod;
+      });
+
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
