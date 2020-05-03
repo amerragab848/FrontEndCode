@@ -613,7 +613,7 @@ export default class CustomGrid extends Component {
                     </div>
                     <GridCustom
                         key={this.props.gridKey}
-                        cells={(this.state.columns).filter(i => i.hidden === false)}
+                        cells={(this.state.columns).filter(i => i.hidden != true)}
                         data={this.state.rows}
                         pageSize={this.props.pageSize}
                         actions={this.props.actions}
