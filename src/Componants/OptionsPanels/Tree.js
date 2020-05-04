@@ -138,7 +138,7 @@ function mapStateToProps(state, ownProps) {
     return {
         // document: state.communication.document,
         //isLoading: state.communication.isLoading,
-        projectId: state.communication.projectId
+        //projectId: state.communication.projectId
     };
 }
 
