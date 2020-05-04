@@ -258,9 +258,12 @@ class bogAddEdit extends Component {
         this.actions = [
             {
                 title: 'Assign',
-                handleClick: (values) => {
+                handleClick: value => {
                     if (Config.IsAllow(617)) {
-                        this.setState({ showBoqModal: true });
+                        this.setState({
+                            showBoqModal: true,
+                            selectedRow: value
+                        });
                         this.boqTypeModal.show();
                     } else {
                         toast.warning(Resources["missingPermissions"][currentLanguage]);
@@ -463,7 +466,7 @@ class bogAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            
+
             if (Config.getPayload().uty === "company") {
                 this.setState({ isViewMode: false });
             } else {
@@ -895,7 +898,7 @@ class bogAddEdit extends Component {
         this.setState({ showBoqModal: true, isLoading: true });
         let itemsId = [];
         this.state.selectedRow.forEach(element => {
-            itemsId.push(element.row.id);
+            itemsId.push(element);
         });
         let boq = {
             boqChildTypeId: this.state.selectedBoqTypeChildEdit.value,
@@ -1145,9 +1148,7 @@ class bogAddEdit extends Component {
                 actions={this.actions}
                 rowActions={this.rowActions}
                 rowClick={cell => {
-                    if (!Config.IsAllow(11)) {
-                        toast.warning("you don't have permission");
-                    } else if (cell.field != "select-row" && cell.field != "unitPrice") {
+                    if (cell.field != "select-row" && cell.field != "unitPrice") {
 
                         this.setState({
                             showPopUp: true,
