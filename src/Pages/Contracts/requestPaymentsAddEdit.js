@@ -2637,8 +2637,8 @@ class requestPaymentsAddEdit extends Component {
                             <Fragment>
                                 <td colSpan="3">
                                     <div className="contentCell tableCell-2">
-                                        <a data-toggle="tooltip" title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}>
-                                            {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
+                                        <a data-toggle="tooltip" title={i.description}>
+                                            {i.description }
                                         </a>
                                     </div>
                                 </td>
