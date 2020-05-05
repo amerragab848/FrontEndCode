@@ -63,7 +63,8 @@ class addItemDescription extends Component {
             addItemApi: this.props.addItemApi,
             getItemsApi: this.props.getItemsApi,
             itemTypeTitle: "",
-            collapsed: true
+            collapsed: true,
+            showEquipmentDrop:false
         };
     }
 
@@ -227,7 +228,7 @@ class addItemDescription extends Component {
             <div className="step-content">
                 {this.props.showImportExcel !== false ? (
                     <XSLfile key="boqImport" docId={this.props.docId} docType={this.props.docType} link={Config.getPublicConfiguartion().downloads + this.props.docLink}
-                        header="addManyItems" disabled={this.props.changeStatus ? this.props.docId > 0 ? true : false : false} afterUpload={() => this.fillTable()} />
+                        header="addManyItems" disabled={this.props.changeStatus ? this.props.docId > 0 ? false : true : false} afterUpload={() => this.fillTable()} />
                 ) : null}
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
                     <Formik initialValues={{ ...this.state.itemDescription }} validationSchema={documentItemValidationSchema} enableReinitialize={true}
@@ -284,7 +285,7 @@ class addItemDescription extends Component {
                                                 ) : null}
                                             </div>
                                         </div>
-                                        {this.props.isUnitPrice === undefined ? <div className="linebylineInput valid-input">
+                                        {/* {this.props.isUnitPrice === undefined ? <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources.unitPrice[currentLanguage]}
                                             </label>
@@ -297,7 +298,7 @@ class addItemDescription extends Component {
                                                 />
                                                 {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
                                             </div>
-                                        </div> : null}
+                                        </div> : null} */}
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources["itemCode"][currentLanguage]}
@@ -328,6 +329,7 @@ class addItemDescription extends Component {
                                             <Dropdown title="unit" data={this.state.Units} selectedValue={this.state.selectedUnit}
                                                 handleChange={event => this.handleChangeItemDropDown(event, "unit", "selectedUnit", false, "", "", "")} index="unit" />
                                         </div>
+                                        {this.state.action== 2 || this.state.action == 3?
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources["days"][currentLanguage]}
@@ -342,6 +344,7 @@ class addItemDescription extends Component {
                                                 {errors.days ? (<em className="pError"> {errors.days} </em>) : null}
                                             </div>
                                         </div>
+                                        :null}
                                         {this.props.showBoqType == true ? (
                                             <React.Fragment>
                                                 <div className="linebylineInput valid-input">
@@ -375,7 +378,7 @@ class addItemDescription extends Component {
                                                 name="itemType" index="itemType" />
                                         </div>
 
-                                        {this.state.action == 2 ? (
+                                        {this.state.action == 3 ? (
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown title="equipmentType" data={this.state.equipmentTypes}
                                                     selectedValue={this.state.selectedequipmentType}
