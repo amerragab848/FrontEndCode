@@ -6561,6 +6561,10 @@
         "en": "No File Chosen",
         "ar": "لا يوجد ملف"
     },
+    "noItems": {
+        "en": "No Items",
+        "ar": "عدد الاصناف "
+    },
     "toUpload": {
         "en": "To Upload",
         "ar": "للتحميل "

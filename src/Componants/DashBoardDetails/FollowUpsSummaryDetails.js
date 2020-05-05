@@ -3,7 +3,6 @@ import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
-import GridSetup from "../../Pages/Communication/GridSetupWithFilter";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Resources from "../../resources.json";
 import CryptoJS from "crypto-js";
@@ -45,6 +44,7 @@ let subjectLink = ({ value, row }) => {
 class FollowUpsSummaryDetails extends Component {
   constructor(props) {
     super(props);
+
     var columnsGrid = [
       {
         field: "arrange",
@@ -53,7 +53,21 @@ class FollowUpsSummaryDetails extends Component {
         groupable: true,
         fixed: true,
         sortable: true,
-        type: "text"
+        type: "text",
+        hidden: false
+      },
+      {
+        field: "subject",
+        title: Resources["subject"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text",
+        href: 'link',
+        onClick: () => { },
+        classes: 'bold',
+        showTip: true
       },
       {
         field: "projectName",
@@ -68,15 +82,6 @@ class FollowUpsSummaryDetails extends Component {
         field: "fromCompany",
         title: Resources["fromCompany"][currentLanguage],
         width: 20,
-        groupable: true,
-        fixed: false,
-        sortable: true,
-        type: "text"
-      },
-      {
-        field: "subject",
-        title: Resources["subject"][currentLanguage],
-        width: 10,
         groupable: true,
         fixed: false,
         sortable: true,
@@ -145,8 +150,8 @@ class FollowUpsSummaryDetails extends Component {
         sortable: true,
         type: "date"
       }
+    ];
 
-    ]
     var groups = [
 
     ];
@@ -234,6 +239,28 @@ class FollowUpsSummaryDetails extends Component {
   componentDidMount() {
     this.props.actions.RouteToTemplate();
     Api.get("GetFollowing").then(result => {
+
+      result.forEach(row => {
+
+        let link = "";
+
+        let obj = {
+          docId: row.docId,
+          projectId: row.projectId,
+          projectName: row.projectName,
+          arrange: 0,
+          docApprovalId: 0,
+          isApproveMode: false,
+          perviousRoute: window.location.pathname + window.location.search
+        };
+
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+        row.link = '/' + row.docLink + '?id=' + encodedPaylod;
+      });
+
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
@@ -265,6 +292,7 @@ class FollowUpsSummaryDetails extends Component {
 
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom
+        key='FollowingUpSummary'
         cells={this.state.columns}
         data={this.state.rows}
         groups={this.state.groups}
@@ -292,7 +320,6 @@ class FollowUpsSummaryDetails extends Component {
         }}
       />
     ) : <LoadingSection />;
-
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
