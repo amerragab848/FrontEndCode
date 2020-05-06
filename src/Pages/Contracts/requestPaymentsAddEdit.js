@@ -1003,6 +1003,7 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
+             
             this.props.actions.ExportingData({ items: [] });
 
             dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
@@ -1261,7 +1262,6 @@ class requestPaymentsAddEdit extends Component {
             this.setState({
                 isLoading: false
             });
-
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(res => {
             this.setState({
@@ -1487,6 +1487,9 @@ class requestPaymentsAddEdit extends Component {
         }
     };
     changeCurrentStep = stepNo => {
+        if(stepNo == 1 && this.state.docId > 0){
+            this.fillGridItems();
+        }
         this.setState({ currentStep: stepNo });
     };
     saveVariationOrderItem(event) {
