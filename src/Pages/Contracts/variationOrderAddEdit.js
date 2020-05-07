@@ -31,7 +31,7 @@ var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
-  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).nullable(),
+  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
   contractId: Yup.string().required(Resources["selectContract"][currentLanguage]),
   total: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
   timeExtension: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
@@ -229,31 +229,61 @@ class variationOrderAddEdit extends Component {
         links[i].classList.add("odd");
       }
     }
+    if (this.state.docId > 0) {
+      this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId, this.state.docTypeId, "changeOrder");
+
+      this.fillVoItems();
+
+    } else {
+      let changeOrder = {
+        subject: "",
+        id: 0,
+        projectId: this.state.projectId,
+        arrange: "",
+        docDate: moment(),
+        status: "true",
+        isRaisedPrices: "false",
+        executed: "no",
+        pcoId: "",
+        refDoc: "",
+        total: 0,
+        timeExtensionRequired: 0,
+        contractId: "",
+        pcoId: "",
+        dateApproved: moment()
+      };
+
+      this.setState({ document: changeOrder }, function () {
+        this.GetNExtArrange();
+      });
+      this.fillDropDowns(false);
+      this.props.actions.documentForAdding();
+    }
+
   }
-
-  componentWillReceiveProps(nextProps) {
-
-    if (nextProps.document.id) {
-      
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
       let serverChangeOrder = { ...nextProps.document };
       serverChangeOrder.docDate = serverChangeOrder.docDate != null ? moment(serverChangeOrder.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
       serverChangeOrder.dateApproved = serverChangeOrder.dateApproved != null ? moment(serverChangeOrder.dateApproved).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
       serverChangeOrder.timeExtensionRequired = serverChangeOrder.timeExtensionRequired ? parseFloat(serverChangeOrder.timeExtensionRequired) : 0;
-      serverChangeOrder.isRaisedPrices=serverChangeOrder.isRaisedPrices==false?"false":"true";
-      this.setState({
+      serverChangeOrder.isRaisedPrices = serverChangeOrder.isRaisedPrices == false ? "false" : "true";
+
+      return {
         document: { ...serverChangeOrder },
-        hasWorkflow: nextProps.hasWorkflow,
         voItems: nextProps.items,
-      });
-
-      this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-      this.checkDocumentIsView();
+        hasWorkflow: nextProps.hasWorkflow
+      };
     }
-  }
+    return null
+  };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
+    }
+    if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+      this.fillDropDowns(this.props.document.id > 0 ? true : false);
     }
     if (this.props.items !== prevProps.items) {
       this.setState({ voItems: this.props.items, isLoading: true });
@@ -297,38 +327,38 @@ class variationOrderAddEdit extends Component {
     });
   }
 
-  componentWillMount() {
-    if (this.state.docId > 0) {
-      this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId, this.state.docTypeId, "changeOrder");
+  // componentWillMount() {
+  //   if (this.state.docId > 0) {
+  //     this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId, this.state.docTypeId, "changeOrder");
 
-      this.fillVoItems();
+  //     this.fillVoItems();
 
-    } else {
-      let changeOrder = {
-        subject: "",
-        id: 0,
-        projectId: this.state.projectId,
-        arrange: "",
-        docDate: moment(),
-        status: "true",
-        isRaisedPrices: "false",
-        executed: "no",
-        pcoId: "",
-        refDoc: "",
-        total: 0,
-        timeExtensionRequired: 0,
-        contractId: "",
-        pcoId: "",
-        dateApproved: moment()
-      };
+  //   } else {
+  //     let changeOrder = {
+  //       subject: "",
+  //       id: 0,
+  //       projectId: this.state.projectId,
+  //       arrange: "",
+  //       docDate: moment(),
+  //       status: "true",
+  //       isRaisedPrices: "false",
+  //       executed: "no",
+  //       pcoId: "",
+  //       refDoc: "",
+  //       total: 0,
+  //       timeExtensionRequired: 0,
+  //       contractId: "",
+  //       pcoId: "",
+  //       dateApproved: moment()
+  //     };
 
-      this.setState({ document: changeOrder }, function () {
-        this.GetNExtArrange();
-      });
-      this.fillDropDowns(false);
-      this.props.actions.documentForAdding();
-    }
-  }
+  //     this.setState({ document: changeOrder }, function () {
+  //       this.GetNExtArrange();
+  //     });
+  //     this.fillDropDowns(false);
+  //     this.props.actions.documentForAdding();
+  //   }
+  // }
 
   GetNExtArrange() {
     let original_document = { ...this.state.document };
@@ -472,9 +502,9 @@ class variationOrderAddEdit extends Component {
     saveDocument.dateApproved = moment(saveDocument.dateApproved, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditContractsChangeOrder", saveDocument).then(result => {
-      result.isRaisedPrices= result.isRaisedPrices==false?"false":"true";
-      result.executed=result.executed=="No"?"no":"yes";
-      this.setState({ isLoading: false, voItems: this.props.items,document:result });
+      result.isRaisedPrices = result.isRaisedPrices == false ? "false" : "true";
+      result.executed = result.executed == "No" ? "no" : "yes";
+      this.setState({ isLoading: false, voItems: this.props.items, document: result });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(res => {
       this.setState({ isLoading: true }); toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -809,7 +839,7 @@ class variationOrderAddEdit extends Component {
                                       {Resources.raisedPrices[currentLanguage]}
                                     </label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === "true"  ? "checked" : null}
+                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === "true" ? "checked" : null}
                                         value="true" onChange={e => this.handleChange(e, "isRaisedPrices")}
                                       />
                                       <label> {Resources.yes[currentLanguage]} </label>
@@ -831,7 +861,7 @@ class variationOrderAddEdit extends Component {
                                       <label> {Resources.yes[currentLanguage]} </label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no"  ? "checked" : null}
+                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no" ? "checked" : null}
                                         value="no" onChange={e => this.handleChange(e, "executed")}
                                       />
                                       <label> {Resources.no[currentLanguage]} </label>
@@ -1013,15 +1043,15 @@ class variationOrderAddEdit extends Component {
                 </Fragment>
               }
             </div>
-            <Steps
-              steps_defination={steps_defination}
+
+            <Steps steps_defination={steps_defination}
               exist_link="/changeOrder/"
               docId={this.state.docId}
-              changeCurrentStep={stepNo =>
-                this.changeCurrentStep(stepNo)
-              }
-              stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
-            />
+              changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+              stepNo={this.state.CurrentStep}
+              changeStatus={docId === 0 ? false : true} />
+
+
             {this.props.changeStatus === true ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">

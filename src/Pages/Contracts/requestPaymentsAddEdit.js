@@ -23,12 +23,12 @@ import SkyLight from "react-skylight";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
-//import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Export from "../../Componants/OptionsPanels/Export";
 import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+//import "react-table/react-table.css";
 //#endregion importComponent
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -116,10 +116,10 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-let type = 1;
 const find = require("lodash/find");
-const partialRight = require("lodash/partialRight");
-const pick = require("lodash/pick");
+//let type = 1;
+//const partialRight = require("lodash/partialRight");
+//const pick = require("lodash/pick");
 let itemsColumns = [];
 let VOItemsColumns = [];
 const isCompany = Config.getPayload().uty == "company" ? true : false;
@@ -1003,9 +1003,10 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
+             
             this.props.actions.ExportingData({ items: [] });
 
-            dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
+            dataservice.GetDataList("GetCostCodingTreeByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
                 this.setState({
                     fillDropDownTress: result
                 });
@@ -1261,7 +1262,6 @@ class requestPaymentsAddEdit extends Component {
             this.setState({
                 isLoading: false
             });
-
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(res => {
             this.setState({
@@ -1487,6 +1487,9 @@ class requestPaymentsAddEdit extends Component {
         }
     };
     changeCurrentStep = stepNo => {
+        if(stepNo == 1 && this.state.docId > 0){
+            this.fillGridItems();
+        }
         this.setState({ currentStep: stepNo });
     };
     saveVariationOrderItem(event) {
@@ -2838,7 +2841,7 @@ class requestPaymentsAddEdit extends Component {
             </Fragment>
         ) : (<LoadingSection />);
 
-        let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
+       // let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
 
         return (
             <div className="mainContainer">
