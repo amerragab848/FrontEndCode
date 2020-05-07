@@ -344,7 +344,6 @@ class invoicesForPoAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-//        dataservice.GetDataList('GetNewCostCodingTreeByProjectId?projectId=' + this.state.projectId , 'costCodingTreeName', 'costCodingTreeId').then(result => {
 
     dataservice.GetDataList('GetContractsBoqShowInCostCodingTree?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', 'subject', 'id').then(result => {
 
@@ -583,10 +582,9 @@ class invoicesForPoAddEdit extends Component {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
-
-       // updated_document['costCodingTreeName'] = item.codeTreeTitle;
+ 
        updated_document['costCodingTreeName'] = item.costCodingTreeName;
-       updated_document['costCodingTreeId'] = item.costCodingTreeId;
+       updated_document['costCodingTreeId'] = item.id;
 
         updated_document = Object.assign(original_document, updated_document);
 

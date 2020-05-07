@@ -118,6 +118,8 @@ let perviousRoute = "";
 let arrange = 0;
 let type = 1;
 const find = require("lodash/find");
+const partialRight = require("lodash/partialRight");
+const pick = require("lodash/pick");
 let itemsColumns = [];
 let VOItemsColumns = [];
 const isCompany = Config.getPayload().uty == "company" ? true : false;
@@ -197,6 +199,7 @@ class requestPaymentsAddEdit extends Component {
             showDeleteModal: false,
             userType: userType.uty,
             addDeducation: false,
+            treesLoader: false,
             fillDropDown: [
                 { label: "Add Missing Amendments", value: "1" },
                 { label: "ReCalculator Payment", value: "2" },
@@ -891,14 +894,14 @@ class requestPaymentsAddEdit extends Component {
 
         var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
 
-        var currentGP = [ { field: 'boqType', title: 'boqType', type: "text" }
+        var currentGP = [{ field: 'boqType', title: 'boqType', type: "text" }
             , { field: 'secondLevel', title: 'boqTypeChild', type: "text" }
             , { field: 'boqSubType', title: 'boqSubType', type: "text" }];
 
-        if (selectedCols.length === 0) { 
+        if (selectedCols.length === 0) {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
-            gridLocalStor.groups = JSON.stringify(currentGP);  
+            gridLocalStor.groups = JSON.stringify(currentGP);
             localStorage.setItem("ReqPaymentsItems", JSON.stringify(gridLocalStor));
         }
         else {
@@ -912,9 +915,9 @@ class requestPaymentsAddEdit extends Component {
                     }
                 }
             };
-            currentGP =  JSON.parse(selectedCols.groups);
+            currentGP = JSON.parse(selectedCols.groups);
         }
- 
+
         this.setState({
             ColumnsHideShow: itemsColumns,
             columns: itemsColumns,
@@ -1651,8 +1654,8 @@ class requestPaymentsAddEdit extends Component {
         pItems[index] = newValue;
 
         var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
-       
-        let groups=JSON.parse(selectedCols.groups);
+
+        let groups = JSON.parse(selectedCols.groups);
         this.setState({
             editRows: editRows,
             paymentsItems: pItems,
@@ -2140,21 +2143,26 @@ class requestPaymentsAddEdit extends Component {
             });
         } else {
             if (this.props.changeStatus) {
+                this.setState({ 
+                    treesLoader: true 
+                });
                 dataservice.GetDataGrid("DeleteDistributionItems?id=" + this.state.currentId).then(result => {
+
                     toast.success(Resources["operationSuccess"][currentLanguage]);
+
+                    let originalData = this.state.trees;
+
+                    let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
+
+                    originalData.splice(getIndex, 1);
+
+                    this.setState({
+                        trees: originalData,
+                        treesLoader: false,
+                        showDeleteModal: false
+                    });
                 });
             }
-
-            let originalData = this.state.trees;
-
-            let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
-
-            originalData.splice(getIndex, 1);
-
-            this.setState({
-                trees: originalData,
-                showDeleteModal: false
-            });
         }
     };
     handleDropActionForExportFile = event => {
@@ -2294,16 +2302,20 @@ class requestPaymentsAddEdit extends Component {
         });
     };
     renderEditableValue = cellInfo => {
+        const trees = [...this.state.trees];
+
         return (
+
             <div style={{ color: "#4382f9 ", padding: "0px 6px", margin: "5px 0px", border: "1px dashed", cursor: "pointer" }} contentEditable suppressContentEditableWarning
                 onBlur={e => {
-                    const trees = [...this.state.trees];
+                    //const trees = [...this.state.trees];
                     trees[cellInfo.index][cellInfo.column.id] =
                         e.target.innerHTML;
-                    this.setState({ trees });
+                    this.setState({ trees, treesLoader: false });
+
                 }}
                 dangerouslySetInnerHTML={{
-                    __html: this.state.trees[cellInfo.index].value
+                    __html: this.state.trees[cellInfo.index] ? this.state.trees[cellInfo.index].value : 0
                 }}
             />
         );
@@ -2332,7 +2344,15 @@ class requestPaymentsAddEdit extends Component {
 
             let originalData = this.state.trees;
 
-            originalData = originalData.map(x => (x.value = parseFloat(x.value)));
+            // originalData.map(partialRight(pick(x => {
+            //     x.value = parseFloat(x.value);
+            //     x.id= x.id;
+            //     x.percentageId = x.percentageId ;
+            //     x.qtyCompelete = x.qtyCompelete;
+            //     x.requestId = x.requestId;
+            //     x.requestItemId = x.requestItemId;
+            //     x.costCodingId = x.costCodingId;
+            // })));
 
             dataservice.addObject("AddDistributionQuantity", originalData).then(result => {
 
@@ -3499,7 +3519,9 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         </div>
                         <div className="fullWidthWrapper">
-                            <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
+                            {this.state.treesLoader === false ?
+                                <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
+                                : null}
                         </div>
                         {this.state.isLoading === false ? (
                             <div className="fullWidthWrapper">
@@ -3645,21 +3667,21 @@ class requestPaymentsAddEdit extends Component {
                                                         />
                                                         {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                     </div>
-                                                </div> 
-                                                    <div className="fillter-item-c fullInputWidth">
-                                                        <label className="control-label">
-                                                            {Resources.comments[currentLanguage]}
-                                                        </label>
-                                                        <div className={"inputDev ui input"}>
-                                                            <input name="comments" className="form-control fsadfsadsa" id="comments"
-                                                                placeholder={Resources.comments[currentLanguage]}
-                                                                autoComplete="off"
-                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                                value={this.state.currentObject.lastComment}
-                                                                onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
-                                                            />
-                                                        </div>
-                                                    </div> 
+                                                </div>
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.comments[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input"}>
+                                                        <input name="comments" className="form-control fsadfsadsa" id="comments"
+                                                            placeholder={Resources.comments[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            value={this.state.currentObject.lastComment}
+                                                            onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </Fragment> : null
                                         }
 
