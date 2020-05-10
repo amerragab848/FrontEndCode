@@ -1251,6 +1251,7 @@ class requestPaymentsAddEdit extends Component {
         }
     };
     editPaymentRequistion(event) {
+
         this.setState({
             isLoading: true
         });
@@ -1269,8 +1270,9 @@ class requestPaymentsAddEdit extends Component {
             });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
+
     };
-    saveVariationOrder(event) {
+    savePaymentRequistion(event) {
         this.setState({
             isLoading: true
         });
@@ -1307,12 +1309,12 @@ class requestPaymentsAddEdit extends Component {
         //             {Resources.save[currentLanguage]}
         //         </button>
         //     );
-        // } else if (this.state.docId > 0) {
+        // } else if (this.state.docId > 0) {changeCurrentStep
 
-        btn = (
-            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} onClick={e => this.changeCurrentStep(1)}>
+        btn = ( 
+            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} onClick={e =>this.state.docId === 0?this.changeCurrentStep(1): this.editPaymentRequistion(e)}>
                 {Resources.next[currentLanguage]}
-            </button>
+            </button> 
         );
         //}
 
@@ -1492,7 +1494,7 @@ class requestPaymentsAddEdit extends Component {
         }
         this.setState({ currentStep: stepNo });
     };
-    saveVariationOrderItem(event) {
+    savePaymentRequistionItem(event) {
 
         let saveDocument = { ...this.state.voItem };
 
@@ -2440,8 +2442,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
             toast.warn("Please Write Value MoreZane Zero");
         }
-    };
-
+    }; 
     renderingGrid() {
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
@@ -2840,9 +2841,7 @@ class requestPaymentsAddEdit extends Component {
                 </div>
             </Fragment>
         ) : (<LoadingSection />);
-
-       // let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
-
+ 
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -2862,7 +2861,7 @@ class requestPaymentsAddEdit extends Component {
                                                         if (this.props.showModal) { return; }
 
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                            this.saveVariationOrder();
+                                                            this.savePaymentRequistion();
                                                         } else {
                                                             this.editPaymentRequistion();
                                                         }
@@ -2878,7 +2877,8 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
                                                                         <input name="subject" className="form-control fsadfsadsa" id="subject"
                                                                             placeholder={Resources.subject[currentLanguage]}
-                                                                            autoComplete="off" value={this.state.document.subject}
+                                                                            autoComplete="off" 
+                                                                            value={this.state.document.subject}
                                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                             onChange={e => this.handleChange(e, "subject")} />
                                                                         {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
