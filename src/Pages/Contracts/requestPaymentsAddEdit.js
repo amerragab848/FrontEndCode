@@ -1003,7 +1003,7 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
-             
+
             this.props.actions.ExportingData({ items: [] });
 
             dataservice.GetDataList("GetCostCodingTreeByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
@@ -1311,10 +1311,10 @@ class requestPaymentsAddEdit extends Component {
         //     );
         // } else if (this.state.docId > 0) {changeCurrentStep
 
-        btn = ( 
-            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} onClick={e =>this.state.docId === 0?this.changeCurrentStep(1): this.editPaymentRequistion(e)}>
+        btn = (
+            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} onClick={e => this.state.docId === 0 ? this.changeCurrentStep(1) : this.editPaymentRequistion(e)}>
                 {Resources.next[currentLanguage]}
-            </button> 
+            </button>
         );
         //}
 
@@ -1413,11 +1413,13 @@ class requestPaymentsAddEdit extends Component {
                         let sumtotal = 0;
 
                         trFoot.building = Resources["total"][currentLanguage];
-
+                        let prevTotal = 0;
                         res.map(child => {
-                            var total = child[parent.details];
-
-                            trFoot[parent.details] = child[parent.details];
+                            var total = child[parent.details] ? child[parent.details] : 0;
+                            prevTotal = trFoot[parent.details] ? trFoot[parent.details] : 0;
+                            trFoot[parent.details] = trFoot[parent.details] ? trFoot[parent.details] : 0;
+                            console.log(parent.details, trFoot[parent.details], child[parent.details]);
+                            trFoot[parent.details] = prevTotal + total;
 
                             sumRowTotal += parseFloat(child.rowTotal);
                             sumtotal = total + sumtotal;
@@ -1489,7 +1491,7 @@ class requestPaymentsAddEdit extends Component {
         }
     };
     changeCurrentStep = stepNo => {
-        if(stepNo == 1 && this.state.docId > 0){
+        if (stepNo == 1 && this.state.docId > 0) {
             this.fillGridItems();
         }
         this.setState({ currentStep: stepNo });
@@ -1789,6 +1791,7 @@ class requestPaymentsAddEdit extends Component {
                     i.contractId = this.state.document.contractId;
                     i.requestId = this.state.docId;
                     i.projectId = projectId;
+                    console.log(i);
                 });
 
                 let api = this.props.changeStatus === true ? "EditContractsRequestPaymentsItems" : "AddContractsRequestPaymentsItemsNewScenario";
@@ -2148,8 +2151,8 @@ class requestPaymentsAddEdit extends Component {
             });
         } else {
             if (this.props.changeStatus) {
-                this.setState({ 
-                    treesLoader: true 
+                this.setState({
+                    treesLoader: true
                 });
                 dataservice.GetDataGrid("DeleteDistributionItems?id=" + this.state.currentId).then(result => {
 
@@ -2442,7 +2445,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
             toast.warn("Please Write Value MoreZane Zero");
         }
-    }; 
+    };
     renderingGrid() {
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
@@ -2662,7 +2665,7 @@ class requestPaymentsAddEdit extends Component {
                                 <td colSpan="3">
                                     <div className="contentCell tableCell-2">
                                         <a data-toggle="tooltip" title={i.description}>
-                                            {i.description }
+                                            {i.description}
                                         </a>
                                     </div>
                                 </td>
@@ -2824,11 +2827,9 @@ class requestPaymentsAddEdit extends Component {
                                     </td>
 
                                     {this.state.approvedInvoicesParent.map((data, index) => (
-
                                         <td key={'td-approvedInvoicesParent-' + index}>
                                             {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </td>
-
                                     )
                                     )}
                                     <td>
@@ -2841,7 +2842,7 @@ class requestPaymentsAddEdit extends Component {
                 </div>
             </Fragment>
         ) : (<LoadingSection />);
- 
+
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -2877,7 +2878,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
                                                                         <input name="subject" className="form-control fsadfsadsa" id="subject"
                                                                             placeholder={Resources.subject[currentLanguage]}
-                                                                            autoComplete="off" 
+                                                                            autoComplete="off"
                                                                             value={this.state.document.subject}
                                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                             onChange={e => this.handleChange(e, "subject")} />
