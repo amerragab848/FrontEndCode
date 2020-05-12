@@ -1,7 +1,7 @@
 {
     "BlobStorageContainerName": "project-files-badya",
     "acApp": "AC",
-    "accountCompanyId": "14",
+    "accountCompanyId": "2",
     "azureStorage": true,
     "canSendAlert": "false",
     "cdn": "https://newgiza.azureedge.net",
@@ -11,14 +11,14 @@
     "exportStatic": "https://Badya.procoor.com",
     "fmApp": "FM",
     "hrApp": "HR",
-    "local": "https://BadyaServices.procoor.com/PM",
+    "local": "https://demov4services.procoor.com/PM",
     "loginServer": "https://procoorauthorization.procoor.com",
     "pmApp": "PM",
-    "static": "https://BadyaServices.procoor.com/PM",
-    "downloads": "https://BadyaServices.procoor.com",
-    "dropBoxappKey":"r8iiezlpm1pvlry",
-    "dropBoxToken":"H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
-    "googleDriveClientId":"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
-    "googleDriveKey":"uof5qzvtwpq1dao",
-    "refAutomatic": false 
+    "static": "https://demov4services.procoor.com/PM",
+    "downloads": "https://demov4services.procoor.com",
+    "dropBoxappKey": "r8iiezlpm1pvlry",
+    "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
+    "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
+    "googleDriveKey": "uof5qzvtwpq1dao",
+    "refAutomatic": false
 }

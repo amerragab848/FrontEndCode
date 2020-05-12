@@ -11,6 +11,10 @@
         "en": "English",
         "ar": "Arabic"
     },
+    "doc-gen": {
+        "en": "Create Document",
+        "ar": "انشاء مستند"
+    },
     "approvalModalReject": {
         "en": "Reject",
         "ar": "رفض"
@@ -8477,68 +8481,65 @@
         "en": "Consumption",
         "ar": "الاستهلاك"
     },
-    "exchanges":{
-        "en":"Exchanges",
-        "ar":"التحويل"
+    "exchanges": {
+        "en": "Exchanges",
+        "ar": "التحويل"
     },
-    "drawingContractors":{
-        "en":"DrawingContractors",
-        "ar":"مسحوبات المقاولين"
+    "drawingContractors": {
+        "en": "DrawingContractors",
+        "ar": "مسحوبات المقاولين"
     },
-    "totalPurchased":{
-        "en":"TotalPurchased",
-        "ar":"اجمالى المشتريات"
+    "totalPurchased": {
+        "en": "TotalPurchased",
+        "ar": "اجمالى المشتريات"
     },
-    "totalTranfare":{
-        "en":"TotalTranfare",
-        "ar":"اجمالى التحويلات"
+    "totalTranfare": {
+        "en": "TotalTranfare",
+        "ar": "اجمالى التحويلات"
     },
-    "totalReturned":{
-        "en":"TotalReturned",
-        "ar":"اجمالى المرتجعات"
+    "totalReturned": {
+        "en": "TotalReturned",
+        "ar": "اجمالى المرتجعات"
     },
-    "totalConsumption":{
-        "en":"TotalConsumption",
-        "ar":"اجمالى التحويلات"
+    "totalConsumption": {
+        "en": "TotalConsumption",
+        "ar": "اجمالى التحويلات"
     },
-    "totalExchanges":{
-        "en":"TotalExchanges",
-        "ar":"اجمالى التحويلات"
+    "totalExchanges": {
+        "en": "TotalExchanges",
+        "ar": "اجمالى التحويلات"
     },
-    "totalDrawingContractors":{
-        "en":"TotalDrawingContractors",
-        "ar":"اجمالى مسحوبات المقاولين"
+    "totalDrawingContractors": {
+        "en": "TotalDrawingContractors",
+        "ar": "اجمالى مسحوبات المقاولين"
     },
-    "contractorRefNumber":{
-        "en":"Contractor Ref Number",
-        "ar":"Contractor Ref Number"
+    "contractorRefNumber": {
+        "en": "Contractor Ref Number",
+        "ar": "Contractor Ref Number"
     },
 
-    "CostControlTreeReport":{
-        "en":"Cost Control Tree Report",
-        "ar":"تقرير شجرة تحكم التكلفة"
+    "CostControlTreeReport": {
+        "en": "Cost Control Tree Report",
+        "ar": "تقرير شجرة تحكم التكلفة"
     },
-    "CostCodingReport":{
-        "en":"Cost Coding Report",
-        "ar":"تقرير كود التكلفة"
+    "CostCodingReport": {
+        "en": "Cost Coding Report",
+        "ar": "تقرير كود التكلفة"
     },
-    "expensesCost":{
-        "en":"Expenses Cost",
-        "ar":"تكلفة المصروفات"
+    "expensesCost": {
+        "en": "Expenses Cost",
+        "ar": "تكلفة المصروفات"
     },
-    "filesSettings":{
-        "en":"Files Settings",
-        "ar":"إعدادات الملفات"
+    "filesSettings": {
+        "en": "Files Settings",
+        "ar": "إعدادات الملفات"
     },
-    "originalText":{
-        "en":"Original Text",
-        "ar":"النص الرئيسى"
+    "originalText": {
+        "en": "Original Text",
+        "ar": "النص الرئيسى"
     },
-    "replacmentText":{
-        "en":"Replacment Text",
-        "ar":"النص البديل"
-
+    "replacmentText": {
+        "en": "Replacment Text",
+        "ar": "النص البديل"
     }
-    
-   
 }
