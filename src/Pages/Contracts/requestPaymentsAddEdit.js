@@ -1512,7 +1512,7 @@ class requestPaymentsAddEdit extends Component {
                         res.map(child => {
                             var total = child[parent.details] ? child[parent.details] : 0;
                             prevTotal = trFoot[parent.details] ? trFoot[parent.details] : 0;
-                            trFoot[parent.details] = trFoot[parent.details] ? trFoot[parent.details] : 0; 
+                            trFoot[parent.details] = trFoot[parent.details] ? trFoot[parent.details] : 0;
                             trFoot[parent.details] = prevTotal + total;
 
                             sumRowTotal += parseFloat(child.rowTotal);
@@ -2112,6 +2112,7 @@ class requestPaymentsAddEdit extends Component {
             isLoading: false
         });
     };
+
     editPaymentRequistionItems = () => {
 
         if (this.state.isMultipleItems === true) {
@@ -2120,7 +2121,7 @@ class requestPaymentsAddEdit extends Component {
             var paymentsItems = this.state.paymentsItems;
             ids.forEach(id => {
 
-                let sameRow = find(paymentsItems, function (x) {
+                let originalRow = find(paymentsItems, function (x) {
                     return x.id === id;
                 });
 
@@ -2128,16 +2129,23 @@ class requestPaymentsAddEdit extends Component {
 
                 let sitePercentComplete = 0;
                 let siteQuantityComplete = 0;
-                if (parseFloat(sameRow.revisedQuantity) == 0 && (parseFloat(sameRow.siteQuantityComplete) > 0 || parseFloat(sameRow.sitePercentComplete) > 0)) {
-                    sameRow.revisedQuantity = 1;
+                if (parseFloat(originalRow.revisedQuantity) == 0 && (parseFloat(originalRow.siteQuantityComplete) > 0 || parseFloat(originalRow.sitePercentComplete) > 0)) {
+                    originalRow.revisedQuantity = 1;
                 }
+                
+                updateRow.totalExcutedPayment = originalRow.totalExcutedPayment;
+                updateRow.totalExcuted = originalRow.totalExcuted;
+                updateRow.isChangeOrder = originalRow.isChangeOrder;
+                updateRow.amendmentId = originalRow.amendmentId;
+                updateRow.isAmendment = originalRow.isAmendment;
+                updateRow.comment =updateRow.lastComment;
 
                 if (this.state.isEditingPercentage === true) {
 
-                    updateRow.quantityComplete = (updateRow.percentComplete / 100) * sameRow.revisedQuantity;
+                    updateRow.quantityComplete = (updateRow.percentComplete / 100) * originalRow.revisedQuantity;
                     sitePercentComplete = updateRow.sitePercentComplete;
 
-                    siteQuantityComplete = (updateRow.sitePercentComplete / 100) * sameRow.revisedQuantity;
+                    siteQuantityComplete = (updateRow.sitePercentComplete / 100) * originalRow.revisedQuantity;
                     updateRow.siteQuantityComplete = siteQuantityComplete;
 
                     updateRow.lastComment = updateRow.lastComment;
@@ -2146,23 +2154,21 @@ class requestPaymentsAddEdit extends Component {
 
                 } else {
 
-                    updateRow.percentComplete = (updateRow.quantityComplete / sameRow.revisedQuantity) * 100;
+                    updateRow.percentComplete = (updateRow.quantityComplete / originalRow.revisedQuantity) * 100;
 
-                    updateRow.sitePercentComplete = (updateRow.siteQuantityComplete / sameRow.revisedQuantity) * 100;
-                    // updateRow.percentComplete = updateRow.sitePercentComplete;
-
-
+                    updateRow.sitePercentComplete = (updateRow.siteQuantityComplete / originalRow.revisedQuantity) * 100;
                     updateRow.lastComment = updateRow.lastComment;
 
                     updateRow.id = id;
                 }
-
+                updateRow.requestId = this.state.docId;
+                updateRow.contractId = this.state.document.contractId;
                 listOfItems.push(updateRow);
             });
 
-            let mainDoc = listOfItems;
-            mainDoc.requestId = this.state.docId;
-            mainDoc.contractId = this.state.document.contractId;
+            // let mainDoc = listOfItems;
+            // mainDoc.requestId = this.state.docId;
+            // mainDoc.contractId = this.state.document.contractId;
 
             this.setState({
                 isLoading: true,
@@ -2170,28 +2176,31 @@ class requestPaymentsAddEdit extends Component {
                 ColumnsHideShow: this.state.columns
             });
 
-            dataservice.addObject("EditRequestPaymentMultipleItems", mainDoc).then(result => {
+            dataservice.addObject("EditRequestPaymentMultipleItems", listOfItems).then(result => {
                 if (result) {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
 
-                    let cellInstance = Object.assign({}, mainDoc);
+                    // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
 
-                    cellInstance.sitePercentComplete = mainDoc.sitePercentComplete
-                    cellInstance.siteQuantityComplete = mainDoc.siteQuantityComplete;
-                    cellInstance.sitePaymentPercent = mainDoc.sitePaymentPercent;
-                    cellInstance.percentComplete = mainDoc.percentComplete;
-                    cellInstance.quantityComplete = mainDoc.quantityComplete;
-                    cellInstance.paymentPercent = mainDoc.paymentPercent;
-                    cellInstance.comment = mainDoc.comment;
+                    listOfItems.forEach(mainDoc => {
 
-                    let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                        let cellInstance = Object.assign({}, mainDoc);
 
-                    let cellIndex = pItems.findIndex(c => c.id == cellInstance.id);
+                        cellInstance.sitePercentComplete = mainDoc.sitePercentComplete
+                        cellInstance.siteQuantityComplete = mainDoc.siteQuantityComplete;
+                        cellInstance.sitePaymentPercent = mainDoc.sitePaymentPercent;
+                        cellInstance.percentComplete = mainDoc.percentComplete;
+                        cellInstance.quantityComplete = mainDoc.quantityComplete;
+                        cellInstance.paymentPercent = mainDoc.paymentPercent;
+                        cellInstance.comment = mainDoc.comment;
 
-                    pItems[cellIndex] = cellInstance;
+                        let cellIndex = paymentsItems.findIndex(c => c.id == cellInstance.id);
 
+                        paymentsItems[cellIndex] = cellInstance;
+
+                    });
                     this.setState({
-                        paymentsItems: pItems,
+                        paymentsItems: paymentsItems,
                         viewPopUpRows: false,
                         isItemUpdate: true,
                         isLoading: false,
@@ -3828,7 +3837,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 autoComplete="off"
                                                                 onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                 value={this.state.currentObject.percentComplete}
-                                                                onChange={e => this.multipleHandleChangeForEdit(e, "percentComplete")}
+                                                                onChange={e => this.handleChangeForEdit(e, "percentComplete")}
                                                             />
                                                             {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
                                                         </div>
@@ -3844,7 +3853,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 autoComplete="off"
                                                                 onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                 value={this.state.currentObject.quantityComplete}
-                                                                onChange={e => this.multipleHandleChangeForEdit(e, "quantityComplete")}
+                                                                onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
                                                             />
                                                             {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
                                                         </div>
@@ -3860,7 +3869,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 autoComplete="off"
                                                                 onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                 value={this.state.currentObject.paymentPercent}
-                                                                onChange={e => this.multipleHandleChangeForEdit(e, "paymentPercent")}
+                                                                onChange={e => this.handleChangeForEdit(e, "paymentPercent")}
                                                             />
                                                             {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
                                                         </div>
@@ -3883,7 +3892,7 @@ class requestPaymentsAddEdit extends Component {
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             value={this.state.currentObject.sitePercentComplete}
-                                                            onChange={e => this.multipleHandleChangeForEdit(e, "sitePercentComplete")} />
+                                                            onChange={e => this.handleChangeForEdit(e, "sitePercentComplete")} />
                                                         {touched.sitePercentComplete ? (<em className="pError"> {errors.sitePercentComplete} </em>) : null}
                                                     </div>
                                                 </div>
@@ -3900,7 +3909,7 @@ class requestPaymentsAddEdit extends Component {
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             value={this.state.currentObject.siteQuantityComplete}
-                                                            onChange={e => this.multipleHandleChangeForEdit(e, "siteQuantityComplete")}
+                                                            onChange={e => this.handleChangeForEdit(e, "siteQuantityComplete")}
                                                         />
                                                         {touched.siteQuantityComplete ? (<em className="pError">{errors.siteQuantityComplete}</em>) : null}
                                                     </div>
@@ -3916,7 +3925,7 @@ class requestPaymentsAddEdit extends Component {
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             value={this.state.currentObject.sitePaymentPercent}
-                                                            onChange={e => this.multipleHandleChangeForEdit(e, "sitePaymentPercent")}
+                                                            onChange={e => this.handleChangeForEdit(e, "sitePaymentPercent")}
                                                         />
                                                         {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                     </div>
@@ -3931,7 +3940,7 @@ class requestPaymentsAddEdit extends Component {
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             value={this.state.currentObject.lastComment}
-                                                            onChange={e => this.multipleHandleChangeForEdit(e, "lastComment")}
+                                                            onChange={e => this.handleChangeForEdit(e, "lastComment")}
                                                         />
                                                     </div>
                                                 </div>
