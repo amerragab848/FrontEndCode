@@ -1417,8 +1417,7 @@ class requestPaymentsAddEdit extends Component {
                         res.map(child => {
                             var total = child[parent.details] ? child[parent.details] : 0;
                             prevTotal = trFoot[parent.details] ? trFoot[parent.details] : 0;
-                            trFoot[parent.details] = trFoot[parent.details] ? trFoot[parent.details] : 0;
-                            console.log(parent.details, trFoot[parent.details], child[parent.details]);
+                            trFoot[parent.details] = trFoot[parent.details] ? trFoot[parent.details] : 0; 
                             trFoot[parent.details] = prevTotal + total;
 
                             sumRowTotal += parseFloat(child.rowTotal);
