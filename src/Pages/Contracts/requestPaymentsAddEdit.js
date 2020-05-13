@@ -346,7 +346,7 @@ class requestPaymentsAddEdit extends Component {
             },
             {
                 name: "items",
-                callBackFn: () => this.fillGridItems()
+                callBackFn: null//() => this.fillGridItems()
             },
             {
                 name: "deductions",
@@ -493,6 +493,7 @@ class requestPaymentsAddEdit extends Component {
                     updated_document.sitePaymentPercent = 0;
                     updated_document.sitePercentComplete = 0;
                     updated_document.siteQuantityComplete = 0;
+                    updated_document.lastComment = "";
                     updated_document.id = 0;
                     updated_document.revisedQuantity = 0;
                     updated_document.sitePaymentPercent = 0;
@@ -1726,50 +1727,100 @@ class requestPaymentsAddEdit extends Component {
     };
     rowsUpdated = (cell, type) => {
 
-        this.setState({
-            isLoading: true
-        });
-
-        let pItems = this.state.paymentsItems;
-
-        let newValue = this.state.currentObject;
-
-        let sitePercentComplete = 0;
-        let siteQuantityComplete = 0;
-
-        let editRows = [...this.state.editRows];
-
-        let sameRow = find(editRows, function (x) {
-            return x.id === newValue.id;
-        });
-
-        if (sameRow) {
-            editRows = editRows.filter(function (i) {
-                return i.id != newValue.id;
+        if (this.state.isMultipleItems === true) {
+       
+            this.setState({
+                isLoading: true
             });
-        }
-        editRows.push(newValue);
+        
+            var ids = this.state.multiplePayReqItems;
+            var listOfItems = [];
+            var paymentsItems = this.state.paymentsItems;
+            let editRows = [...this.state.editRows]; 
+            let newValue = this.state.currentObject;
 
-        let index = pItems.findIndex(x => x.id === newValue.id);
-
-        pItems[index] = newValue;
-
-        var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
-
-        let groups = JSON.parse(selectedCols.groups);
-        this.setState({
-            editRows: editRows,
-            paymentsItems: pItems,
-            viewPopUpRows: false,
-            isItemUpdate: true,
-            isLoading: false,
-            isFilter: true,
-            isEditItems: true,
-            groups
-        });
-        this.addCommentModal.hide();
-    };
+            ids.forEach(id => {
+  
+                let sameRow = find(editRows, function (x) {
+                    return x.id === id;
+                });
     
+                if (sameRow) {
+                    editRows = editRows.filter(function (i) {
+                        return i.id != id;
+                    });
+                }
+                newValue.id = id;
+
+                editRows.push(newValue); 
+            });
+            let index = paymentsItems.findIndex(x => x.id === newValue.id);
+
+            paymentsItems[index] = newValue;
+
+            var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
+
+            let groups = JSON.parse(selectedCols.groups);
+            this.setState({
+                editRows: editRows,
+                paymentsItems: paymentsItems,
+                viewPopUpRows: false,
+                isItemUpdate: true,
+                isLoading: false,
+                isFilter: true,
+                isEditItems: true,
+                isEditingPercentage: "true",
+                ColumnsHideShow: this.state.columns,
+                isMultipleItems:false, 
+                groups
+            }); 
+  
+            this.reqPayModal.hide();
+        } else {
+            this.setState({
+                isLoading: true
+            });
+
+            let pItems = this.state.paymentsItems;
+
+            let newValue = this.state.currentObject;
+
+            let sitePercentComplete = 0;
+            let siteQuantityComplete = 0;
+
+            let editRows = [...this.state.editRows];
+
+            let sameRow = find(editRows, function (x) {
+                return x.id === newValue.id;
+            });
+
+            if (sameRow) {
+                editRows = editRows.filter(function (i) {
+                    return i.id != newValue.id;
+                });
+            }
+            editRows.push(newValue);
+
+            let index = pItems.findIndex(x => x.id === newValue.id);
+
+            pItems[index] = newValue;
+
+            var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
+
+            let groups = JSON.parse(selectedCols.groups);
+            this.setState({
+                editRows: editRows,
+                paymentsItems: pItems,
+                viewPopUpRows: false,
+                isItemUpdate: true,
+                isLoading: false,
+                isFilter: true,
+                isEditItems: true,
+                groups
+            });
+            this.addCommentModal.hide();
+        }
+    }; 
     _onGridRowsUpdated = (cell, type) => {
         let cellInstance = JSON.parse(JSON.stringify(cell));
 
@@ -1889,7 +1940,7 @@ class requestPaymentsAddEdit extends Component {
                 });
 
                 let api = this.props.changeStatus === true ? "EditContractsRequestPaymentsItems" : "AddContractsRequestPaymentsItemsNewScenario";
-                dataservice.addObject(api, editItems).then(() => {
+                dataservice.addObject(api, editItems).then((res) => {
 
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.setState({
@@ -2113,7 +2164,6 @@ class requestPaymentsAddEdit extends Component {
             isLoading: false
         });
     };
-
     editPaymentRequistionItems = () => {
 
         if (this.state.isMultipleItems === true) {
@@ -2170,7 +2220,8 @@ class requestPaymentsAddEdit extends Component {
             this.setState({
                 isLoading: true,
                 isEditingPercentage: "true",
-                ColumnsHideShow: this.state.columns
+                ColumnsHideShow: this.state.columns,
+                isMultipleItems:false
             });
 
             dataservice.addObject("EditRequestPaymentMultipleItems", listOfItems).then(result => {
@@ -2201,7 +2252,8 @@ class requestPaymentsAddEdit extends Component {
                         isLoading: false,
                         isFilter: true,
                         isEditItems: true,
-                        isEditingPercentage: "true"
+                        isEditingPercentage: "true",
+                        isMultipleItems:false
                     });
                 } else {
                     this.setState({
@@ -2210,7 +2262,8 @@ class requestPaymentsAddEdit extends Component {
                         isLoading: false,
                         isFilter: true,
                         isEditItems: true,
-                        isEditingPercentage: "true"
+                        isEditingPercentage: "true",
+                        isMultipleItems:false
                     });
                 }
             }).catch(res => {
@@ -3970,7 +4023,7 @@ class requestPaymentsAddEdit extends Component {
 
                             <Formik
                                 initialValues={{ ...this.state.currentObject }}
-                                validationSchema={validationItemsSchema}
+                                //validationSchema={validationItemsSchema}
                                 enableReinitialize={true}
                                 onSubmit={values => {
                                     this.props.changeStatus === true ? this.editPaymentRequistionItems() : this.rowsUpdated();

@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class Steps extends Component {
-  
+
     constructor(props) {
         super(props);
         this.state = {
@@ -25,7 +25,9 @@ class Steps extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.stepNo !== this.state.stepNo ) //&& prevProps.changeStatus === false) 
+        //if (prevProps.stepNo !== this.state.stepNo ) //&& prevProps.changeStatus === false) 
+        //{
+        if (this.state.stepNo !== this.props.stepNo) //&& prevProps.changeStatus === false) 
         {
             this.setCurrentStep(this.props.stepNo);
         }
