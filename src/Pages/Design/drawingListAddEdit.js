@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -14,7 +13,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-// import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -691,22 +689,9 @@ class drawingListAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-
     render() {
-
         const dataGrid =
             this.state.isLoading === false ? (
-                // <GridSetup rows={this.state.rows} 
-                //     columns={this.state.columns}
-                //     showCheckbox={this.state.showCheckbox} 
-                //     minHeight={350}
-                //     onRowClick={this.ShowPopUpForEdit}
-                //     clickHandlerDeleteRows={this.DeleteItem}
-                //     Panels={true} 
-                //     TaskGroupFun={this.TaskGroupFun} 
-                //     ProjectTaskFun={this.ProjectTaskFun}
-                //     single={true}
-                // />
                 <GridCustom
                 cells={this.state.columns}
                 data={this.state.rows}
@@ -864,9 +849,7 @@ class drawingListAddEdit extends Component {
             )
         }
 
-
-
-        return (
+   return (
 
             <div className="mainContainer">
 
@@ -916,11 +899,7 @@ class drawingListAddEdit extends Component {
                         </div>
                     </SkyLightStateless>
                 </div>
-
-
-                {/* {this.state.isLoading ? <LoadingSection /> : null} */}
-
-                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+  <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">

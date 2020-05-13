@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import NotifiMsg from '../publicComponants/NotifiMsg';
 import Api from '../../api'
@@ -8,13 +7,10 @@ import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
 import { withRouter } from "react-router-dom";
-import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-sb' : 'Muli, sans-serif'
 
@@ -57,71 +53,62 @@ const filterStyle = {
 class Timesheet extends Component {
     constructor(props) {
         super(props)
-
         const columnsGrid = [
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'docDate',
+                title: Resources['docDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'description',
+                title: Resources['description'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                filterable: true,
             },
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                filterable: true,
-
             },
             {
-                key: "expenseValue",
-                name: Resources["hours"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'expenseValue',
+                title: Resources['hours'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
             },
             {
-                key: "approvalStatusName",
-                name: Resources["status"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'approvalStatusName',
+                title: Resources['status'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'comment',
+                title: Resources['comment'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
             }
         ];
-
         this.state = {
             startDate: moment(),
             finishDate: moment(),
@@ -184,37 +171,30 @@ class Timesheet extends Component {
         }
 
     }
-
     addRecord() {
         this.props.history.push({
             pathname: 'AddTimeSheet'
         })
     }
-
     addLateTimesheet = () => {
         this.props.history.push({
             pathname: 'LateTimeSheet'
         })
     }
-
     componentDidMount = () => {
         this.GetData("GetAccountsProjectsByIdForList", 'projectName', 'projectId', 'Projects');
     }
-
     ProjectshandleChange = (e) => {
         this.setState({
             projectId: e.value,
         })
     }
-
     startDatehandleChange = (date) => {
         this.setState({ startDate: date });
     }
-
     finishDatehandleChange = (date) => {
         this.setState({ finishDate: date });
     }
-
     ViewReport = () => {
         if (this.state.projectId) {
             this.setState({ btnisLoading: true, Loading: true })
@@ -246,7 +226,6 @@ class Timesheet extends Component {
             );
         }
     }
-
     sendRequest = () => {
         this.setState({ isLoadingsendRequest: true, statusClassSuccess: "disNone" })
         Api.post('GetTimeSheetByRangePending', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: 0, pageSize: 200 }).then(
@@ -255,14 +234,10 @@ class Timesheet extends Component {
             }, this.setState({ statusClassSuccess: "disNone" })
         )
     }
-
     render() {
-
         const btnExport =
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
-
-
-        return (
+   return (
 
             <div className="main__fulldash--container">
                 <div className="resetPassword">
@@ -362,10 +337,31 @@ class Timesheet extends Component {
                     <div className="overTimeWrapper">
                         {this.state.Loading ? <LoadingSection /> : null}
                         {this.state.isLoading == false
-
-                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
-
-                            : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                            ? 
+                            <GridCustom
+                            ref='custom-data-grid'
+                            key="UserTimeSheet"
+                            data={this.state.rows}
+                            pageSize={this.state.rows.length}
+                            groups={[]}
+                            actions={[]}
+                            rowActions={[]}
+                            cells={this.state.columns}
+                            rowClick={() => {  }}
+                        />
+                            : <div className={this.state.isLoading == false ? "disNone" : ""}> 
+                            <GridCustom
+                            ref='custom-data-grid'
+                            key="UserTimeSheet"
+                            data={[]}
+                            pageSize={0}
+                            groups={[]}
+                            actions={[]}
+                            rowActions={[]}
+                            cells={this.state.columns}
+                            rowClick={() => {  }}
+                        />
+                            </div>}
                     </div>
                 </div>
             </div>

@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -27,6 +26,8 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 //const _ = require('lodash')
 let MaxArrange = 1
@@ -89,45 +90,36 @@ class TaskGroupsAddEdit extends Component {
                 index++;
             }
         }
-
-        const columnsGrid = [
+  const columnsGrid = [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: 'arrange',
+                title: Resources['numberAbb'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true,
             },
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: 'companyName',
+                title: Resources['CompanyName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'contactName',
+                title: Resources['ContactName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ]
+
 
         this.state = {
             currentTitle: "sendToWorkFlow",
@@ -163,6 +155,14 @@ class TaskGroupsAddEdit extends Component {
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 951 },
             { name: 'createTransmittal', code: 3037 }, { name: 'sendToWorkFlow', code: 783 }]
         }
+        this.rowActions=[
+            {
+                title:"Delete",
+                handleClick:value=>{
+                    this.DeleteContact(value.id)
+                }
+            }
+        ]
         if (!Config.IsAllow(774) && !Config.IsAllow(775) && !Config.IsAllow(777)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
@@ -265,27 +265,27 @@ class TaskGroupsAddEdit extends Component {
 
     }
 
-    DeleteContact = (rowId, index) => {
-        if (index === undefined) {
+    DeleteContact = (rowId) => {
+        // if (index === undefined) {
             this.setState({
                 showDeleteModal: true,
                 rowId: rowId,
                 DeleteFromLog: true
             })
-        }
-        else {
-            this.setState({
-                showDeleteModal: true,
-                rowId: rowId,
-                index: index
-            })
-        }
+        // }
+        // else {
+        //     this.setState({
+        //         showDeleteModal: true,
+        //         rowId: rowId,
+        //         index: index
+        //     })
+        // }
     }
 
     ConfirmationDelete = () => {
 
         this.setState({ isLoading: true })
-        let IdRow = this.state.rowId[0]
+        let IdRow = this.state.rowId
         let Data = this.state.rows;
         let NewData = []
 
@@ -535,12 +535,17 @@ class TaskGroupsAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    minHeight={350}
-                    clickHandlerDeleteRows={this.DeleteContact}
-                    single={true}
-                />
+                <GridCustom
+                ref='custom-data-grid'
+                key='TaskGroupAddEdit'
+                data={this.state.rows}
+                pageSize={this.state.rows.length}
+                groups={[]}
+                actions={[]}
+                rowActions={this.rowActions}
+                cells={this.state.columns}
+                rowClick={() => { }}
+              />
             ) : <LoadingSection />
 
         const RenderAddContact = () => {

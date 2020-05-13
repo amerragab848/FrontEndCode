@@ -4,9 +4,7 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-//import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
-import GridSetup from "../../Communication/GridSetup";
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
 import dataService from "../../../../src/Dataservice";
@@ -190,12 +188,6 @@ class RiskStatus extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                // <GridSetup
-                //     rows={this.state.rows}
-                //     showCheckbox={false}
-                //     pageSize={this.state.pageSize}
-                //     columns={this.columns}
-                // />
                 <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
                     pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
                 />
@@ -205,11 +197,6 @@ class RiskStatus extends Component {
 
         const btnExport =
             this.state.isLoading === false ? (
-                // <Export
-                //     rows={this.state.isLoading === false ? this.state.rows : []}
-                //     columns={this.columns}
-                //     fileName={"activeProjectsReport"}
-                // />
                 <ExportDetails fieldsItems={this.columns}
                 rows={this.state.rows}
                 fields={this.fields} fileName={'activeProjectsReport'} />

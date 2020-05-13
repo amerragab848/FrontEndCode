@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
-import moment from "moment";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetup";
-import { Filters } from "react-data-grid-addons";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -14,91 +12,65 @@ import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
 class NotCodedPaymentDetails extends Component {
   constructor(props) {
     super(props);
-
-    var columnsGrid = [
+ var columnGrid = [
       {
-        key: "arrange",
-        name: Resources["numberAbb"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: 'arrange',
+        title: Resources['numberAbb'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "number",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      }, {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "currentPaymentDue",
-        name: Resources["paymentDue"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "docCloseDate",
-        name: Resources["docClosedate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'currentPaymentDue',
+        title: Resources['paymentDue'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'docCloseDate',
+        title: Resources['docClosedate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true,
       }
     ];
-
     const filtersColumns = [
       {
         field: "arrange",
@@ -137,27 +109,22 @@ class NotCodedPaymentDetails extends Component {
         isCustom: true
       }
     ];
-
     this.state = {
       pageTitle: Resources["notCodedPaymentSummary"][currentLanguage],
       viewfilter: false,
-      columns: columnsGrid,
+      columns: columnGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
       isCustom: true
     };
   }
-
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);
-
     let action = null;
-
     for (let param of query.entries()) {
       action = param[1];
     }
-
     if (action) {
       Api.get("GetPaymentUserByRange?action=" + action).then(
         result => {
@@ -169,21 +136,17 @@ class NotCodedPaymentDetails extends Component {
       );
     }
   }
-
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
     return this.state.viewfilter;
   }
-
   filterMethodMain = (event, query, apiFilter) => {
     var stringifiedQuery = JSON.stringify(query);
-
     this.setState({
       isLoading: true,
       query: stringifiedQuery
     });
-
     Api.get("").then(result => {
       if (result.length > 0) {
         this.setState({
@@ -204,12 +167,21 @@ class NotCodedPaymentDetails extends Component {
         });
       });
   };
-
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
-      ) : <LoadingSection />;
+       <GridCustom
+        ref='custom-data-grid'
+        key="NotCodedPaymentSummaryDetails"
+        data={this.state.rows}
+        pageSize={this.state.rows.length}
+        groups={[]}
+        actions={[]}
+        rowActions={[]}
+        cells={this.state.columns}
+        rowClick={() => {}}
+      />
+       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />

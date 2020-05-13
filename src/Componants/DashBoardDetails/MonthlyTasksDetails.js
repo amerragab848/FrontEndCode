@@ -5,7 +5,7 @@ import Resources from "../../resources.json";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import moment from "moment";
-import GridSetup from "../../Pages/Communication/GridSetup";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Export from "../OptionsPanels/Export";
 import dataservice from "../../Dataservice";
 import { connect } from "react-redux";
@@ -21,94 +21,86 @@ const dateFormate = ({ value }) => {
 
 class MonthlyTasksDetails extends Component {
   constructor(props) {
-
     super(props);
-
-    const columnsGrid = [
+    const columnGrid = [
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: 'arrange',
+        title: Resources['arrange'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "number",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        filterable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        filterable: true,
-        formatter: dateFormate
       },
       {
-        key: "finishDate",
-        name: Resources["finishDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'finishDate',
+        title: Resources['finishDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
       },
       {
-        key: "bicCompanyName",
-        name: Resources["CompanyName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'bicCompanyName',
+        title: Resources['CompanyName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
       },
       {
-        key: "bicContactName",
-        name: Resources["ContactName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'bicContactName',
+        title: Resources['ContactName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
       },
       {
-        key: "remaining",
-        name: Resources["remaining"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'remaining',
+        title: Resources['remaining'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
       }
     ];
-
     this.state = {
       startDate: moment(),
       finishDate: moment(),
       contactId: "",
-      columns: columnsGrid,
+      columns: columnGrid,
       isLoading: true,
       rows: [],
       btnisLoading: false,
@@ -136,23 +128,23 @@ class MonthlyTasksDetails extends Component {
     this.setState({ finishDate: date });
   };
 
-  ViewReport = () => { 
+  ViewReport = () => {
 
+    this.setState({
+      btnisLoading: true,
+      isLoading: true
+    });
+
+    Api.post("GetMonthlyTaskDetailsByContactId", { startDate: this.state.startDate, finishDate: this.state.finishDate, contactId: this.state.contactId }).then(result => {
       this.setState({
-        btnisLoading: true,
-        isLoading: true
+        rows: result != null ? result : [],
+        isLoading: false,
+        btnisLoading: false,
+        Loading: false,
+        totalRows: result.length
       });
+    });
 
-      Api.post("GetMonthlyTaskDetailsByContactId", { startDate: this.state.startDate, finishDate: this.state.finishDate, contactId: this.state.contactId }).then(result => {
-        this.setState({
-          rows: result != null ? result : [],
-          isLoading: false,
-          btnisLoading: false,
-          Loading: false,
-          totalRows: result.length
-        });
-      });
-   
   };
 
   componentDidMount = () => {
@@ -175,7 +167,18 @@ class MonthlyTasksDetails extends Component {
   render() {
     const btnExport = (<Export rows={this.state.rows} columns={this.state.columns} fileName={Resources["monthlyTasks"][currentLanguage]} />);
 
-    const gridSetup = this.state.isLoading ? <LoadingSection /> : (<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />)
+    const gridSetup = this.state.isLoading ? <LoadingSection /> : (
+      <GridCustom
+        key="MonthlyTaskDetails"
+        data={this.state.rows}
+        pageSize={this.state.rows.length}
+        groups={[]}
+        actions={[]}
+        rowActions={[]}
+        cells={this.state.columns}
+        rowClick={() => { }}
+      />
+    )
     return (
       <div className="mainContainer">
         <div className="resetPassword">
@@ -210,7 +213,7 @@ class MonthlyTasksDetails extends Component {
               </span>
             </div>
             <div className="filterBTNS">{btnExport}</div>
-             <div className="rowsPaginations readOnly__disabled">
+            <div className="rowsPaginations readOnly__disabled">
               <div className="rowsPagiRange">
                 <span>{this.state.rows.length}</span> of
                 <span>{this.state.rows.length}</span>
@@ -271,20 +274,14 @@ class MonthlyTasksDetails extends Component {
     );
   }
 }
-
-
-//export default MonthlyTasksDetails;
-
 function mapStateToProps(state, ownProps) {
   return {
     isLoading: state.communication.isLoading
   };
 }
-
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(communicationActions, dispatch)
   };
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MonthlyTasksDetails));

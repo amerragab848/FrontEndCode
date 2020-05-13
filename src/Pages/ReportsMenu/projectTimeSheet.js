@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import GridSetup from "../Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
 import sumBy from 'lodash/sumBy';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
@@ -107,7 +106,6 @@ class ProjectTimeSheet extends Component {
     }
 
     render() {
-{/* <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> */}
         const dataGrid = this.state.isLoading === false ?
             (
                 this.state.rows.length > 0 ? <GridCustom  cells={this.columnsGrid} data={this.state.rows}  groups={[]}  pageSize={this.state.rows.length}  actions={[]}   rowActions={[]}  rowClick={() => { }}      /> : null

@@ -190,6 +190,7 @@ class requestPaymentsAddEdit extends Component {
         //#region variableofState
 
         this.state = {
+            isLoadingItems: true,
             isItemUpdate: false,
             isFilter: false,
             advancedPayment: null,
@@ -1296,6 +1297,7 @@ class requestPaymentsAddEdit extends Component {
             document: updated_document
         });
     };
+
     handleChangeDropDownContract(event, field, selectedValue) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -1310,7 +1312,7 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.props.changeStatus === false) {
             this.setState({
-                isLoading: true
+                isLoadingItems: true
             });
 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
@@ -1318,7 +1320,7 @@ class requestPaymentsAddEdit extends Component {
 
                     this.setState({
                         paymentsItems: result,
-                        isLoading: false
+                        isLoadingItems: false
                     });
                 });
 
@@ -1432,18 +1434,19 @@ class requestPaymentsAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     };
+
     fillGridItems = () => {
         let contractId = this.state.document.contractId;
         if (this.props.changeStatus == true) {
             let paymentsItems = [...this.state.paymentsItems];
 
             if (paymentsItems.length === 0) {
-                this.setState({ isLoading: true });
+                this.setState({ isLoadingItems: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
                     this.setState({
                         paymentsItems: result != null ? result : [],
-                        isLoading: false,
+                        isLoadingItems: false,
                         isFilter: true
                     });
                 });
@@ -1728,23 +1731,24 @@ class requestPaymentsAddEdit extends Component {
     rowsUpdated = (cell, type) => {
 
         if (this.state.isMultipleItems === true) {
-       
+
             this.setState({
-                isLoading: true
+                isLoadingItems: true
             });
-        
+
             var ids = this.state.multiplePayReqItems;
             var listOfItems = [];
             var paymentsItems = this.state.paymentsItems;
-            let editRows = [...this.state.editRows]; 
+            let editRows = [...this.state.editRows];
             let newValue = this.state.currentObject;
 
+
             ids.forEach(id => {
-  
+
                 let sameRow = find(editRows, function (x) {
                     return x.id === id;
                 });
-    
+
                 if (sameRow) {
                     editRows = editRows.filter(function (i) {
                         return i.id != id;
@@ -1752,7 +1756,7 @@ class requestPaymentsAddEdit extends Component {
                 }
                 newValue.id = id;
 
-                editRows.push(newValue); 
+                editRows.push(newValue);
             });
             let index = paymentsItems.findIndex(x => x.id === newValue.id);
 
@@ -1771,10 +1775,10 @@ class requestPaymentsAddEdit extends Component {
                 isEditItems: true,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
-                isMultipleItems:false, 
+                isMultipleItems: false,
                 groups
-            }); 
-  
+            });
+
             this.reqPayModal.hide();
         } else {
             this.setState({
@@ -1813,14 +1817,15 @@ class requestPaymentsAddEdit extends Component {
                 paymentsItems: pItems,
                 viewPopUpRows: false,
                 isItemUpdate: true,
-                isLoading: false,
+                isLoadingItems: false,
                 isFilter: true,
                 isEditItems: true,
                 groups
             });
             this.addCommentModal.hide();
         }
-    }; 
+    };
+
     _onGridRowsUpdated = (cell, type) => {
         let cellInstance = JSON.parse(JSON.stringify(cell));
 
@@ -2000,7 +2005,7 @@ class requestPaymentsAddEdit extends Component {
     assignBoqType = () => {
         let boqStractureObj = { ...this.state.boqStractureObj };
 
-        this.setState({ showBoqModal: true, isLoading: true });
+        this.setState({ showBoqModal: true, isLoadingItems: true });
 
         dataservice.addObject("EditBoqStarcureRequestItem", boqStractureObj).then(result => {
 
@@ -2021,11 +2026,11 @@ class requestPaymentsAddEdit extends Component {
 
             originalData.push(obj);
 
-            this.setState({ paymentsItems: originalData, showBoqModal: false, isLoading: false });
+            this.setState({ paymentsItems: originalData, showBoqModal: false, isLoadingItems: false });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ showBoqModal: false, isLoading: false });
+            this.setState({ showBoqModal: false, isLoadingItems: false });
         });
     };
     addCommentClick = () => {
@@ -2218,10 +2223,10 @@ class requestPaymentsAddEdit extends Component {
             });
 
             this.setState({
-                isLoading: true,
+                isLoadingItems: true,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
-                isMultipleItems:false
+                isMultipleItems: false
             });
 
             dataservice.addObject("EditRequestPaymentMultipleItems", listOfItems).then(result => {
@@ -2249,21 +2254,21 @@ class requestPaymentsAddEdit extends Component {
                         paymentsItems: paymentsItems,
                         viewPopUpRows: false,
                         isItemUpdate: true,
-                        isLoading: false,
+                        isLoadingItems: false,
                         isFilter: true,
                         isEditItems: true,
                         isEditingPercentage: "true",
-                        isMultipleItems:false
+                        isMultipleItems: false
                     });
                 } else {
                     this.setState({
                         viewPopUpRows: false,
                         isItemUpdate: true,
-                        isLoading: false,
+                        isLoadingItems: false,
                         isFilter: true,
                         isEditItems: true,
                         isEditingPercentage: "true",
-                        isMultipleItems:false
+                        isMultipleItems: false
                     });
                 }
             }).catch(res => {
@@ -2271,7 +2276,7 @@ class requestPaymentsAddEdit extends Component {
                     Resources["operationCanceled"][currentLanguage]
                 );
                 this.setState({
-                    isLoading: false,
+                    isLoadingItems: false,
                     isEditingPercentage: "true"
                 });
             });
@@ -2281,7 +2286,7 @@ class requestPaymentsAddEdit extends Component {
             mainDoc.contractId = this.state.document.contractId;
 
             this.setState({
-                isLoading: true,
+                isLoadingItems: true,
                 ColumnsHideShow: this.state.columns
             });
 
@@ -2309,7 +2314,7 @@ class requestPaymentsAddEdit extends Component {
                     paymentsItems: pItems,
                     viewPopUpRows: false,
                     isItemUpdate: true,
-                    isLoading: false,
+                    isLoadingItems: false,
                     isFilter: true,
                     isEditItems: true
                 });
@@ -2319,7 +2324,7 @@ class requestPaymentsAddEdit extends Component {
                     Resources["operationCanceled"][currentLanguage]
                 );
                 this.setState({
-                    isLoading: false
+                    isLoadingItems: false
                 });
             });
         }
@@ -2427,7 +2432,7 @@ class requestPaymentsAddEdit extends Component {
                 );
             });
         } else if (this.state.currentDocument === "requestItems") {
-            this.setState({ isLoading: true });
+            this.setState({ isLoadingItems: true });
             let doument = [this.state.currentId];
             Api.post("DeletePaymentRequestItems", doument).then(result => {
 
@@ -2441,7 +2446,7 @@ class requestPaymentsAddEdit extends Component {
                 this.setState({
                     paymentsItems: originalData,
                     showDeleteModal: false,
-                    isLoading: false
+                    isLoadingItems: false
                 });
                 toast.success(
                     Resources["operationSuccess"][currentLanguage]
@@ -2453,7 +2458,7 @@ class requestPaymentsAddEdit extends Component {
                 );
                 this.setState({
                     showDeleteModal: false,
-                    isLoading: false
+                    isLoadingItems: false
                 });
             });
         } else {
@@ -2682,12 +2687,13 @@ class requestPaymentsAddEdit extends Component {
             toast.success("Please Add CostCodingTree");
         }
     };
+
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
         if (pageNumber > 0) {
             this.setState({
-                isLoading: true,
+                isLoadingItems: true,
                 pageNumber: pageNumber
             });
 
@@ -2699,21 +2705,22 @@ class requestPaymentsAddEdit extends Component {
 
                 this.setState({
                     paymentsItems: newRows,
-                    isLoading: false
+                    isLoadingItems: false
                 });
             }).catch(ex => {
                 this.setState({
                     paymentsItems: oldRows,
-                    isLoading: false
+                    isLoadingItems: false
                 });
             });
         }
     };
+
     GetNextData() {
         let pageNumber = this.state.pageNumber + 1;
 
         this.setState({
-            isLoading: true,
+            isLoadingItems: true,
             pageNumber: pageNumber
         });
 
@@ -2724,12 +2731,12 @@ class requestPaymentsAddEdit extends Component {
 
             this.setState({
                 paymentsItems: newRows,
-                isLoading: false
+                isLoadingItems: false
             });
         }).catch(ex => {
             this.setState({
                 paymentsItems: oldRows,
-                isLoading: false
+                isLoadingItems: false
             });
         });
     };
@@ -2755,7 +2762,7 @@ class requestPaymentsAddEdit extends Component {
     };
     renderingGrid() {
 
-        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
+        const ItemsGrid = this.state.isLoadingItems === false && this.state.currentStep === 1 ? (
 
             <GridCustom
                 gridKey='ReqPaymentsItems'

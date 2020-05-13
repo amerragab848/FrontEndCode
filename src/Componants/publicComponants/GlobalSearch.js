@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import GridSetup from "../../Pages/Communication/GridSetup";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import Api from '../../api';
@@ -9,6 +8,7 @@ import Calendar from "react-calendar";
 import Dropdown from '../OptionsPanels/DropdownMelcous'
 import dataService from '../../Dataservice'
 import CryptoJS from "crypto-js";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 
 import { connect } from 'react-redux';
@@ -20,12 +20,6 @@ import * as dashboardComponantActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let subject = "test"
-let formatDate = function (date) {
-    if (date != null)
-        return moment(date).format("DD/MM/YYYY");
-    return "No Date"
-}
-
 let publicFonts = currentLanguage === "ar" ? 'cairo-sb' : 'Muli, sans-serif'
 
 
@@ -117,65 +111,57 @@ class GlobalSearch extends Component {
         }
         this.searchColumns = [
             {
-                key: "index",
-                name: Resources["no"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'index',
+                title: Resources['no'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
+            },
+            {
+                field: 'subject',
+                title: Resources['subject'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'statusText',
+                title: Resources['status'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "statusText",
-                name: Resources["status"][currentLanguage],
-                width: 150,
-                draggable: true,
+            },  {
+                field: 'docTypeName',
+                title: Resources['docName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: false,
-                sortDescendingFirst: true,
-                //  formatter:formatStatus
-            }, {
-                key: "docTypeName",
-                name: Resources["docName"][currentLanguage],
-                width: 250,
-                draggable: true,
+            },  {
+                field: 'docDate',
+                title: Resources['docDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            }, {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 200,
-                draggable: true,
+            },  {
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: formatDate
-            }, {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }
         ];
-        this.statusData = [
+         this.statusData = [
             {
                 label: Resources.oppened[currentLanguage], value: 1
             }, {
@@ -185,7 +171,6 @@ class GlobalSearch extends Component {
             },
 
         ]
-
         this.state = {
             subject: subject,
             searchResult: [],
@@ -202,11 +187,8 @@ class GlobalSearch extends Component {
     }
 
     componentWillMount() {
-
         var e = { label: this.props.projectName, value: this.props.projectId };
-
         this.props.actions.RouteToMainDashboard(e);
-
         let searchOptions = {
             subject: this.state.subject,
             fromDate: moment().add(-1, 'Y').format('YYYY/MM/DD'),
@@ -304,9 +286,8 @@ class GlobalSearch extends Component {
         })
 
     }
-    cellClick = (rowId, colID) => {
-        if (colID !== 0) {
-            let rowData = this.state.searchResult[rowId];
+    cellClick = (rowData) => {
+        if (rowData) {
             let obj = {
                 docId: rowData.docId,
                 projectId: rowData.projectId,
@@ -328,15 +309,19 @@ class GlobalSearch extends Component {
     }
     render() {
 
-        const searchGrid = this.state.isLoading === false ? (
-            <GridSetup
-                rows={this.state.searchResult}
-                showCheckbox={false}
-                pageSize={this.state.pageSize}
-                columns={this.searchColumns}
-                cellClick={this.cellClick}
-                key='searchGrid'
-            />) : <LoadingSection />;
+         const searchGrid = this.state.isLoading === false ? (
+            <GridCustom
+                            ref='custom-data-grid'
+                            key="searchGrid"
+                            data={this.state.searchResult}
+                            pageSize={this.state.pageSize}
+                            groups={[]}
+                            actions={[]}
+                            rowActions={[]}
+                            cells={this.searchColumns}
+                            rowClick={(cell) => { this.cellClick(cell) }}
+                        />
+            ) : <LoadingSection />;
 
         return (
             <div className="main__withouttabs mainContainer" >

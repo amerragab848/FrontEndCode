@@ -6,25 +6,13 @@ import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
-import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
 import CryptoJS from "crypto-js";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-const Actions = ({ value }) => {
-    let doc_view = "";
-    doc_view = <div><button  >{Resources["attachments"][currentLanguage]}</button></div>
-    return doc_view;
-};
-
 let publicFonts = currentLanguage === "ar" ? 'cairo-sb' : 'Muli, sans-serif'
-
-
 const filterStyle = {
     control: (styles, { isFocused }) =>
         ({
@@ -61,114 +49,110 @@ const filterStyle = {
     menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db' })
 };
 
-
 class Expenses extends Component {
 
     constructor(props) {
         super(props)
-
-        const columnsGrid = [
-
+ const columnsGrid = [
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'docDate',
+                title: Resources['docDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'description',
+                title: Resources['description'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                filterable: true,
             },
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                filterable: true,
-
             },
             {
-                key: "expenseTypeName",
-                name: Resources["expenseType"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'expenseTypeName',
+                title: Resources['expenseType'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "refCode",
-                name: Resources["referececode"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'refCode',
+                title: Resources['referececode'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'total',
+                title: Resources['total'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "workFlowName",
-                name: Resources["lastWorkFlow"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'workFlowName',
+                title: Resources['lastWorkFlow'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "approvalStatusName",
-                name: Resources["approvalStatus"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'approvalStatusName',
+                title: Resources['approvalStatus'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
-            }
-            , {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: "50%",
-                draggable: true,
+            },
+            {
+                field: 'comment',
+                title: Resources['comment'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
-            }
-            , {
-                key: "statusText",
-                name: Resources["actions"][currentLanguage],
-                width: 120,
-                draggable: true,
+            },
+            {
+                field: 'statusText',
+                title: Resources['actions'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: Actions
             }
         ];
-
+        this.actions=[
+            {
+                title:'Delete',
+                handleClick:values=>{
+                    this.clickHandlerDeleteRowsMain(values)
+                }
+            }
+        ]
         this.state = {
             startDate: moment(),
             finishDate: moment(),
@@ -437,9 +421,31 @@ class Expenses extends Component {
 
                     {this.state.Loading ? <LoadingSection /> : null}
                     {this.state.isLoading == false
-                        ? <GridSetup columns={this.state.columns} rows={this.state.rows} pageSize={this.state.pageSize}
-                            showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} onRowClick={this.RouteHandler.bind(this)} />
-                        : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                        ? 
+                        <GridCustom
+                        ref='custom-data-grid'
+                        key="UserExpenses"
+                        data={this.state.rows}
+                        pageSize={this.state.pageSize}
+                        groups={[]}
+                        actions={this.actions}
+                        rowActions={[]}
+                        cells={this.state.columns}
+                        rowClick={(cell) => { this.RouteHandler(cell) }}
+                    />
+                        :
+                         <div className={this.state.isLoading == false ? "disNone" : ""}> 
+                         <GridCustom
+                        ref='custom-data-grid'
+                        key="UserExpenses"
+                        data={[]}
+                        pageSize={0}
+                        groups={[]}
+                        actions={[]}
+                        rowActions={[]}
+                        cells={this.state.columns}
+                        rowClick={() => {  }}
+                    />  </div>}
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal

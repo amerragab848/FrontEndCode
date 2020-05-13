@@ -12,41 +12,76 @@ let ProjectEpsData = [
         ApiEdit: 'EditProjectStructures',
         ApiGetById: 'GetProjectStructuresById?id=',
         TypeId: 1,
+        // Columns: [
+        //     {
+        //         key: "id",
+        //         visible: false,
+        //         width: 50,
+        //         frozen: true
+        //     },
+        //     {
+        //         key: "titleEn",
+        //         name: Resources["titleEn"][currentLanguage],
+        //         width: 250,
+        //         draggable: true,
+        //         sortable: true,
+        //         resizable: true,
+        //         filterable: true,
+        //         sortDescendingFirst: true
+        //     }, {
+        //         key: "titleAr",
+        //         name: Resources["titleAr"][currentLanguage],
+        //         width: 250,
+        //         draggable: true,
+        //         sortable: true,
+        //         resizable: true,
+        //         filterable: true,
+        //         sortDescendingFirst: true
+        //     },
+        //     {
+        //         key: "projectName",
+        //         name: Resources["projectName"][currentLanguage],
+        //         width: 250,
+        //         draggable: true,
+        //         sortable: true,
+        //         resizable: true,
+        //         filterable: true,
+        //         sortDescendingFirst: true
+        //     }
+        // ],
         Columns: [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "id",
+                title: "",
+                width: 10,
+                fixed: true,
+                type:"check-box"
             },
             {
-                key: "titleEn",
-                name: Resources["titleEn"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'titleEn',
+                title: Resources['titleEn'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'titleAr',
+                title: Resources['titleAr'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }, {
-                key: "titleAr",
-                name: Resources["titleAr"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ],
         ApiFilter: 'GetFilterProjectStructure?',
@@ -81,42 +116,39 @@ let ProjectEpsData = [
         TypeId: 2,
         Columns: [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "id",
+                title: "",
+                width: 10,
+                fixed: true,
+                type:"check-box"
             },
             {
-                key: "titleEn",
-                name: Resources["titleEn"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'titleEn',
+                title: Resources['titleEn'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'titleAr',
+                title: Resources['titleAr'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }, {
-                key: "titleAr",
-                name: Resources["titleAr"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'parentName',
+                title: Resources['areaName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "parentName",
-                name: Resources["areaName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
+            }
         ],
-
         ApiFilter: 'GetFilterProjectStructure?',
         FilterColumns: [
             {
@@ -148,40 +180,38 @@ let ProjectEpsData = [
         TypeId: 3,
         Columns: [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "id",
+                title: "",
+                width: 10,
+                fixed: true,
+                type:"check-box"
             },
             {
-                key: "titleEn",
-                name: Resources["titleEn"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'titleEn',
+                title: Resources['titleEn'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "titleAr",
-                name: Resources["titleAr"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'titleAr',
+                title: Resources['titleAr'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "parentName",
-                name: Resources["locationName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'parentName',
+                title: Resources['locationName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
+            }
         ],
 
         ApiFilter: 'GetFilterProjectStructure?',
@@ -217,40 +247,38 @@ let ProjectEpsData = [
         TypeId: 4,
         Columns: [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "id",
+                title: "",
+                width: 10,
+                fixed: true,
+                type:"check-box"
             },
             {
-                key: "titleEn",
-                name: Resources["titleEn"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'titleEn',
+                title: Resources['titleEn'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "titleAr",
-                name: Resources["titleAr"][currentLanguage],
-                width: 250,
-                draggable: true,
+            },  {
+                field: 'titleAr',
+                title: Resources['titleAr'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "parentName",
-                name: Resources["buildingName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'parentName',
+                title: Resources['buildingName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
+            }
         ],
 
         ApiFilter: 'GetFilterProjectStructure?',

@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../../Pages/Communication/GridSetup";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import config from "../../../../Services/Config";
@@ -18,7 +17,9 @@ import find from "lodash/find";
 import filter from "lodash/filter";
 import Select, { components } from 'react-select';
 import { toast } from "react-toastify";
-import * as AdminstrationActions from '../../../../store/actions/Adminstration'
+import * as AdminstrationActions from '../../../../store/actions/Adminstration';
+import GridCustom from "../../../../Componants/Templates/Grid/CustomGrid";
+
 const publicConfiguarion = config.getPayload();
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedprojectName')
@@ -132,53 +133,63 @@ class ExpensesWorkFlowAddEdit extends Component {
 
         const columnsGrid = [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "id",
+                title: "",
+                width:10,
+                fixed: true,
+                showTip: true,
+                type:"check-box"
             },
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: 'arrange',
+                title: Resources['arrange'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'companyName',
+                title: Resources['CompanyName'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'contactName',
+                title: Resources['ContactName'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'description',
+                title: Resources['description'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
+            }
         ]
-
+      
+        this.actions = [
+            {
+              title:'Delete',
+              handleClick:values=>{
+                this.setState({
+                    selectedRows:values,
+                    showDeleteModal: true
+                }) 
+              }
+            }
+        ]
+       
         this.state = {
             showCheckbox: false,
             columns: columnsGrid.filter(column => column.visible !== false),
@@ -216,13 +227,11 @@ class ExpensesWorkFlowAddEdit extends Component {
         }
 
     }
-
     DocumentDatehandleChange = (date) => {
         this.setState({
             DocumentDate: date
         })
     }
-
     componentWillReceiveProps() {
         console.log(this.props.ProjectReducer.expensesWorkFlowData)
     }
@@ -235,12 +244,12 @@ class ExpensesWorkFlowAddEdit extends Component {
         this.setState({ showDeleteModal: false });
     };
 
-    clickHandlerDeleteRowsMain = (selectedRows) => {
-        this.setState({
-            selectedRows,
-            showDeleteModal: true
-        })
-    }
+    // clickHandlerDeleteRowsMain = (selectedRows) => {
+    //     this.setState({
+    //         selectedRows,
+    //         showDeleteModal: true
+    //     })
+    // }
 
     ConfirmDelete = () => {
         this.setState({
@@ -655,12 +664,17 @@ class ExpensesWorkFlowAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    minHeight={350}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    onRowClick={this.ShowPopUp}
-                />
+                <GridCustom
+                ref='custom-data-grid'
+                key="ExpensesWorkFlowAddEdit"
+                data={this.state.rows}
+                pageSize={this.state.rows.length}
+                groups={[]}
+                actions={this.actions}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={(cell) => { this.ShowPopUp(cell) }}
+            />
             ) : <LoadingSection />
 
         const renderMultiApprovalTable =
