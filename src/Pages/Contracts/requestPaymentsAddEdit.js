@@ -1740,10 +1740,12 @@ class requestPaymentsAddEdit extends Component {
 
             var paymentsItems = this.state.paymentsItems;
             let editRows = [...this.state.editRows];
-            let updateRow = this.state.currentObject;
+            let updateR = this.state.currentObject;
+            let newList = [];
 
             ids.forEach(id => {
-
+                updateR.id = id;
+                let updateRow = Object.assign({}, updateR);
                 let originalRow = find(paymentsItems, function (x) {
                     return x.id === id;
                 });
@@ -1754,33 +1756,28 @@ class requestPaymentsAddEdit extends Component {
                     });
                 }
 
-                updateRow.id = id;
                 if (parseFloat(originalRow.revisedQuantity) == 0 && (parseFloat(originalRow.siteQuantityComplete) > 0 || parseFloat(originalRow.sitePercentComplete) > 0)) {
                     originalRow.revisedQuantity = 1;
                 }
                 updateRow.revisedQuantity = originalRow.revisedQuantity;
-                updateRow.quantityComplete = originalRow.siteQuantityComplete;
-                updateRow.percentComplete = originalRow.sitePercentComplete;
+                updateRow.quantityComplete = updateRow.siteQuantityComplete;
+                updateRow.percentComplete = updateRow.sitePercentComplete;
 
                 updateRow = Object.assign(originalRow, updateRow)
                 editRows.push(updateRow);
-
-
-                let index = paymentsItems.findIndex(x => x.id === id);
-                let newList = [];
-                 
-                newList = paymentsItems.filter(function (i) {
-                    return i.id != id;
+                 paymentsItems.map(function(i) { 
+                    if (i.id === id) {
+                        i = updateRow;
+                    }
                 });
-                paymentsItems = newList.splice(index, 0, updateRow);
-
             });
+            
             var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
 
             let groups = JSON.parse(selectedCols.groups);
             this.setState({
                 editRows: editRows,
-                paymentsItems:newList,
+                paymentsItems: paymentsItems,
                 viewPopUpRows: false,
                 isItemUpdate: true,
                 isLoadingItems: false,

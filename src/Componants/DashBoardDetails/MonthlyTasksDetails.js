@@ -165,6 +165,7 @@ class MonthlyTasksDetails extends Component {
   };
 
   render() {
+    
     const btnExport = (<Export rows={this.state.rows} columns={this.state.columns} fileName={Resources["monthlyTasks"][currentLanguage]} />);
 
     const gridSetup = this.state.isLoading ? <LoadingSection /> : (
