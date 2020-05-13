@@ -1769,6 +1769,7 @@ class requestPaymentsAddEdit extends Component {
         });
         this.addCommentModal.hide();
     };
+    
     _onGridRowsUpdated = (cell, type) => {
         let cellInstance = JSON.parse(JSON.stringify(cell));
 
@@ -2132,13 +2133,13 @@ class requestPaymentsAddEdit extends Component {
                 if (parseFloat(originalRow.revisedQuantity) == 0 && (parseFloat(originalRow.siteQuantityComplete) > 0 || parseFloat(originalRow.sitePercentComplete) > 0)) {
                     originalRow.revisedQuantity = 1;
                 }
-                
+
                 updateRow.totalExcutedPayment = originalRow.totalExcutedPayment;
                 updateRow.totalExcuted = originalRow.totalExcuted;
                 updateRow.isChangeOrder = originalRow.isChangeOrder;
                 updateRow.amendmentId = originalRow.amendmentId;
                 updateRow.isAmendment = originalRow.isAmendment;
-                updateRow.comment =updateRow.lastComment;
+                updateRow.comment = updateRow.lastComment;
 
                 if (this.state.isEditingPercentage === true) {
 
@@ -2166,10 +2167,6 @@ class requestPaymentsAddEdit extends Component {
                 listOfItems.push(updateRow);
             });
 
-            // let mainDoc = listOfItems;
-            // mainDoc.requestId = this.state.docId;
-            // mainDoc.contractId = this.state.document.contractId;
-
             this.setState({
                 isLoading: true,
                 isEditingPercentage: "true",
@@ -2179,8 +2176,6 @@ class requestPaymentsAddEdit extends Component {
             dataservice.addObject("EditRequestPaymentMultipleItems", listOfItems).then(result => {
                 if (result) {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
-
-                    // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
 
                     listOfItems.forEach(mainDoc => {
 
@@ -2208,15 +2203,16 @@ class requestPaymentsAddEdit extends Component {
                         isEditItems: true,
                         isEditingPercentage: "true"
                     });
+                } else {
+                    this.setState({
+                        viewPopUpRows: false,
+                        isItemUpdate: true,
+                        isLoading: false,
+                        isFilter: true,
+                        isEditItems: true,
+                        isEditingPercentage: "true"
+                    });
                 }
-                this.setState({
-                    viewPopUpRows: false,
-                    isItemUpdate: true,
-                    isLoading: false,
-                    isFilter: true,
-                    isEditItems: true,
-                    isEditingPercentage: "true"
-                });
             }).catch(res => {
                 toast.error(
                     Resources["operationCanceled"][currentLanguage]
@@ -3816,10 +3812,7 @@ class requestPaymentsAddEdit extends Component {
                             validationSchema={validationItemsSchema}
                             enableReinitialize={true}
                             onSubmit={values => {
-                                this.props.changeStatus === true ?
-                                    this.editPaymentRequistionItems() :
-
-                                    this.rowsUpdated();
+                                this.props.changeStatus === true ? this.editPaymentRequistionItems() : this.rowsUpdated();
                             }}>
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                 <Form id="RequestPaymentItemEditForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -3980,14 +3973,11 @@ class requestPaymentsAddEdit extends Component {
                                 validationSchema={validationItemsSchema}
                                 enableReinitialize={true}
                                 onSubmit={values => {
-                                    this.props.changeStatus === true ?
-                                        this.editPaymentRequistionItems() :
-
-                                        this.rowsUpdated();
+                                    this.props.changeStatus === true ? this.editPaymentRequistionItems() : this.rowsUpdated();
                                 }}>
                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
 
-                                    <Form id="RequestPaymentItemEditForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                                    <Form id="RequestPaymentItemMultipleEditForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
                                         <div className="proForm first-proform">
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label" style={{ marginRight: "15px" }}  >
