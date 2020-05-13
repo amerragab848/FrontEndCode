@@ -1737,40 +1737,60 @@ class requestPaymentsAddEdit extends Component {
             });
 
             var ids = this.state.multiplePayReqItems;
-            var listOfItems = [];
+
             var paymentsItems = this.state.paymentsItems;
             let editRows = [...this.state.editRows];
-            let newValue = this.state.currentObject;
-
+            let updateRow = this.state.currentObject;
 
             ids.forEach(id => {
 
-                let sameRow = find(editRows, function (x) {
+                let originalRow = find(paymentsItems, function (x) {
                     return x.id === id;
                 });
 
-                if (sameRow) {
+                if (editRows.length > 0) {
                     editRows = editRows.filter(function (i) {
                         return i.id != id;
                     });
                 }
-                newValue.id = id;
 
-                editRows.push(newValue);
+                updateRow.id = id;
+                if (parseFloat(originalRow.revisedQuantity) == 0 && (parseFloat(originalRow.siteQuantityComplete) > 0 || parseFloat(originalRow.sitePercentComplete) > 0)) {
+                    originalRow.revisedQuantity = 1;
+                }
+                updateRow.revisedQuantity = originalRow.revisedQuantity;
+                updateRow.quantityComplete = originalRow.siteQuantityComplete;
+                updateRow.percentComplete = originalRow.sitePercentComplete;
+
+                // updateRow.itemId = originalRow.itemId;
+                // updateRow.itemCode = originalRow.itemCode;
+                // updateRow.quantity = originalRow.quantity;
+                // updateRow.itemType = originalRow.itemType;
+                // updateRow.arrange = originalRow.arrange;
+                // updateRow.totalExcutedPayment = originalRow.totalExcutedPayment;
+                // updateRow.totalExcuted = originalRow.totalExcuted;
+                // updateRow.isChangeOrder = originalRow.isChangeOrder;
+                // updateRow.amendmentId = originalRow.amendmentId;
+                // updateRow.isAmendment = originalRow.isAmendment;
+                // updateRow.comment = updateRow.lastComment;
+                //boqTypeId	boqSubTypeId	actualPercentage boqChildTypeId
+                updateRow = Object.assign(originalRow,updateRow )
+                editRows.push(updateRow);
+
+                let index = paymentsItems.findIndex(x => x.id === id);
+
+                paymentsItems[index] = updateRow;
+
             });
-            let index = paymentsItems.findIndex(x => x.id === newValue.id);
-
-            paymentsItems[index] = newValue;
-
             var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
 
             let groups = JSON.parse(selectedCols.groups);
             this.setState({
                 editRows: editRows,
-                paymentsItems: paymentsItems,
+                paymentsItems,
                 viewPopUpRows: false,
                 isItemUpdate: true,
-                isLoading: false,
+                isLoadingItems: false,
                 isFilter: true,
                 isEditItems: true,
                 isEditingPercentage: "true",
@@ -1788,9 +1808,6 @@ class requestPaymentsAddEdit extends Component {
             let pItems = this.state.paymentsItems;
 
             let newValue = this.state.currentObject;
-
-            let sitePercentComplete = 0;
-            let siteQuantityComplete = 0;
 
             let editRows = [...this.state.editRows];
 
@@ -2663,16 +2680,6 @@ class requestPaymentsAddEdit extends Component {
             this.setState({ isLoading: true });
 
             let originalData = this.state.trees;
-
-            // originalData.map(partialRight(pick(x => {
-            //     x.value = parseFloat(x.value);
-            //     x.id= x.id;
-            //     x.percentageId = x.percentageId ;
-            //     x.qtyCompelete = x.qtyCompelete;
-            //     x.requestId = x.requestId;
-            //     x.requestItemId = x.requestItemId;
-            //     x.costCodingId = x.costCodingId;
-            // })));
 
             dataservice.addObject("AddDistributionQuantity", originalData).then(result => {
 
