@@ -36,7 +36,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     refDoc: Yup.string().required(Resources['selectRefNo'][currentLanguage]),
-    description: Yup.string().required(Resources['timeExtensionRequired'][currentLanguage]),
+    timeExtension: Yup.string().required(Resources['timeExtensionRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     contractId: Yup.string().required(Resources['contractRequired'][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
@@ -778,17 +778,17 @@ class VariationRequestAdd extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.timeExtension[currentLanguage]}</label>
-                                                                    <div className={"ui input inputDev" + (errors.description && touched.description ? (" has-error") : (!errors.description && touched.description ? (" has-success") : "ui input inputDev has-success"))} >
-                                                                        <input type="text" className="form-control" id="description"
-                                                                            value={this.state.document.description || ''}
-                                                                            name="description"
+                                                                    <div className={"ui input inputDev" + (errors.timeExtension && touched.timeExtension ? (" has-error") : (!errors.timeExtension && touched.timeExtension ? (" has-success") : "ui input inputDev has-success"))} >
+                                                                        <input type="text" className="form-control" id="timeExtension"
+                                                                            value={this.state.document.timeExtension || ''}
+                                                                            name="timeExtension"
                                                                             placeholder={Resources.timeExtension[currentLanguage]}
                                                                             onBlur={(e) => {
                                                                                 handleChange(e)
                                                                                 handleBlur(e)
                                                                             }}
-                                                                            onChange={(e) => this.handleChange(e, 'description')} />
-                                                                        {touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                                                                            onChange={(e) => this.handleChange(e, 'timeExtension')} />
+                                                                        {touched.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 {this.props.changeStatus ? <div className="linebylineInput valid-input">
