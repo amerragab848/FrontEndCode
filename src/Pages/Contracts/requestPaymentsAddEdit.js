@@ -1762,24 +1762,17 @@ class requestPaymentsAddEdit extends Component {
                 updateRow.quantityComplete = originalRow.siteQuantityComplete;
                 updateRow.percentComplete = originalRow.sitePercentComplete;
 
-                // updateRow.itemId = originalRow.itemId;
-                // updateRow.itemCode = originalRow.itemCode;
-                // updateRow.quantity = originalRow.quantity;
-                // updateRow.itemType = originalRow.itemType;
-                // updateRow.arrange = originalRow.arrange;
-                // updateRow.totalExcutedPayment = originalRow.totalExcutedPayment;
-                // updateRow.totalExcuted = originalRow.totalExcuted;
-                // updateRow.isChangeOrder = originalRow.isChangeOrder;
-                // updateRow.amendmentId = originalRow.amendmentId;
-                // updateRow.isAmendment = originalRow.isAmendment;
-                // updateRow.comment = updateRow.lastComment;
-                //boqTypeId	boqSubTypeId	actualPercentage boqChildTypeId
-                updateRow = Object.assign(originalRow,updateRow )
+                updateRow = Object.assign(originalRow, updateRow)
                 editRows.push(updateRow);
 
-                let index = paymentsItems.findIndex(x => x.id === id);
 
-                paymentsItems[index] = updateRow;
+                let index = paymentsItems.findIndex(x => x.id === id);
+                let newList = [];
+                 
+                newList = paymentsItems.filter(function (i) {
+                    return i.id != id;
+                });
+                paymentsItems = newList.splice(index, 0, updateRow);
 
             });
             var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
@@ -1787,7 +1780,7 @@ class requestPaymentsAddEdit extends Component {
             let groups = JSON.parse(selectedCols.groups);
             this.setState({
                 editRows: editRows,
-                paymentsItems,
+                paymentsItems:newList,
                 viewPopUpRows: false,
                 isItemUpdate: true,
                 isLoadingItems: false,
@@ -2166,6 +2159,7 @@ class requestPaymentsAddEdit extends Component {
             case "sitePercentComplete":
                 sitePercentComplete = currentvalue;
                 updateRow.sitePercentComplete = sitePercentComplete;
+                updateRow.percentComplete = this.props.changeStatus === false ? sitePercentComplete : updateRow.percentComplete;
 
                 break;
 
@@ -2173,6 +2167,8 @@ class requestPaymentsAddEdit extends Component {
                 siteQuantityComplete = currentvalue;
 
                 updateRow.siteQuantityComplete = siteQuantityComplete;
+
+                updateRow.quantityComplete = this.props.changeStatus === false ? siteQuantityComplete : updateRow.quantityComplete;
 
                 break;
 
@@ -4181,22 +4177,25 @@ class requestPaymentsAddEdit extends Component {
                                                             {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                         </div>
                                                     </div>
-                                                    <div className="fillter-item-c fullInputWidth">
-                                                        <label className="control-label">
-                                                            {Resources.comments[currentLanguage]}
-                                                        </label>
-                                                        <div className={"inputDev ui input"}>
-                                                            <input name="comments" className="form-control fsadfsadsa" id="comments"
-                                                                placeholder={Resources.comments[currentLanguage]}
-                                                                autoComplete="off"
-                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                                value={this.state.currentObject.lastComment}
-                                                                onChange={e => this.state.isMultipleItems === false ? this.handleChangeForEdit(e, "lastComment") : this.multipleHandleChangeForEdit(e, "lastComment")}
-                                                            />
-                                                        </div>
-                                                    </div>
+
                                                 </Fragment> : null
                                             }
+                                            <Fragment>
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.comments[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input"}>
+                                                        <input name="comments" className="form-control fsadfsadsa" id="comments"
+                                                            placeholder={Resources.comments[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            value={this.state.currentObject.lastComment}
+                                                            onChange={e => this.state.isMultipleItems === false ? this.handleChangeForEdit(e, "lastComment") : this.multipleHandleChangeForEdit(e, "lastComment")}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </Fragment>
 
                                             <div className="fullWidthWrapper">
                                                 {this.state.isLoading === true ? (
