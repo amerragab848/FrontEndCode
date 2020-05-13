@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import Resources from '../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import GridSetup from "../Communication/GridSetup"
 import Config from "../../Services/Config";
 import CryptoJS from 'crypto-js';
 import { withRouter } from "react-router-dom";
@@ -11,100 +10,84 @@ import dataservice from "../../Dataservice";
 import * as communicationActions from '../../store/actions/communication';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from "moment";
-//const _ = require('lodash')
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
 
 class requestsTransferItems extends Component {
 
     constructor(props) {
         super(props)
-
-        const columnsGrid = [
+  const columnsGrid = [
             {
-                key: "fromProjectName",
-                name: Resources.fromProject[currentLanguage],
-                width: 250,
-                frozen: true,
-                draggable: true,
+                field: 'fromProjectName',
+                title: Resources['fromProject'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "toProjectName",
-                name: Resources.projectName[currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'toProjectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "approvedQuantity",
-                name: Resources.approvedQuantity[currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'approvedQuantity',
+                title: Resources['approvedQuantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "rejectedQuantity",
-                name: Resources.rejectedQuantity[currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'rejectedQuantity',
+                title: Resources['rejectedQuantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'pendingQuantity',
+                title: Resources['pendingQuantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true,
+            },{
+                field: 'sendDate',
+                title: Resources['sendDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "date",
+                sortable: true,
             }, {
-                key: "pendingQuantity",
-                name: Resources.pendingQuantity[currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'transactionDate',
+                title: Resources['transactionDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "sendDate",
-                name: Resources.sendDate[currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "transactionDate",
-                name: Resources.transactionDate[currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'lastWorkFlow',
+                title: Resources['lastWorkFlow'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            },
-            {
-                key: "lastWorkFlow",
-                name: Resources.lastWorkFlow[currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             },
         ];
 
@@ -174,8 +157,18 @@ class requestsTransferItems extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} onRowClick={this.GoEdit} />
-            ) : <LoadingSection />
+                <GridCustom
+                ref='custom-data-grid'
+                key="RequestTransferItems"
+                data={this.state.rows}
+                pageSize={this.state.rows.length}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={(cell) => { this.GoEdit(cell) }}
+            />
+                ) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'transferToProject'} />
             : null;

@@ -8,7 +8,6 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 //import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
-//import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
 //const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');

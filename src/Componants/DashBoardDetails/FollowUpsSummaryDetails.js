@@ -153,7 +153,6 @@ class FollowUpsSummaryDetails extends Component {
     ];
 
     var groups = [
-
     ];
 
     const filtersColumns = [

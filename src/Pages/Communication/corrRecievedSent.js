@@ -4,324 +4,257 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from '../../api'
-import GridSetup from "./GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../store/actions/communication';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { toast } from "react-toastify";
-import moment from "moment";
 import Filter from "../../Componants/FilterComponent/filterComponent";
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+
 const _ = require('lodash')
 class corrRecievedSent extends Component {
     constructor(props) {
         super(props);
         this.recivedColumns = [
             {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: 'arrange',
+                title: Resources['arrange'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-
+            },
+            {
+                field: 'statusName',
+                title: Resources['status'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }, {
-                key: "statusName",
-                name: Resources["status"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'subject',
+                title: Resources['subject'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-
             }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'fromCompanyName',
+                title: Resources['fromCompany'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "fromCompanyName",
-                name: Resources["fromCompany"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'fromContactName',
+                title: Resources['fromContact'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "fromContactName",
-                name: Resources["fromContact"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'toCompanyName',
+                title: Resources['toCompany'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "toCompanyName",
-                name: Resources["toCompany"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'toContactName',
+                title: Resources['ToContact'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "toContactName",
-                name: Resources["ToContact"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'docDate',
+                title: Resources['sendDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "docDate",
-                name: Resources["sendDate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'docCloseDate',
+                title: Resources['docClosedate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-
             }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'docTypeName',
+                title: Resources['docType'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-
             }, {
-                key: "docTypeName",
-                name: Resources["docType"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'sendingMethod',
+                title: Resources['sendingMethod'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "sendingMethod",
-                name: Resources["sendingMethod"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'refDoc',
+                title: Resources['refDoc'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "refDoc",
-                name: Resources["refDoc"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'lastSendTime',
+                title: Resources['lastSendTime'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "lastSendTime",
-                name: Resources["lastSendTime"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'lastApproveTime',
+                title: Resources['lastApprovedTime'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-
-            }, {
-                key: "lastApproveTime",
-                name: Resources["lastApprovedTime"][currentLanguage],
-                width: 80,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }]
         this.sendColumns = [
             {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: 'arrange',
+                title: Resources['arrange'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-
+            },
+            {
+                field: 'statusName',
+                title: Resources['status'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }, {
-                key: "statusName",
-                name: Resources["status"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'subject',
+                title: Resources['subject'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-
             }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'fromCompanyName',
+                title: Resources['fromCompany'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "fromCompanyName",
-                name: Resources["fromCompany"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'fromContactName',
+                title: Resources['fromContact'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "fromContactName",
-                name: Resources["fromContact"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'toCompanyName',
+                title: Resources['toCompany'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "toCompanyName",
-                name: Resources["toCompany"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'toContactName',
+                title: Resources['ToContact'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "toContactName",
-                name: Resources["ToContact"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'docDate',
+                title: Resources['docDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'sendDate',
+                title: Resources['sendDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-
             }, {
-                key: "sendDate",
-                name: Resources["sendDate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'docCloseDate',
+                title: Resources['docClosedate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-
             }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'docType',
+                title: Resources['docType'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-
             }, {
-                key: "docType",
-                name: Resources["docType"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'sendingMethod',
+                title: Resources['sendingMethod'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "sendingMethod",
-                name: Resources["sendingMethod"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'refDoc',
+                title: Resources['refDoc'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "refDoc",
-                name: Resources["refDoc"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'lastSendTime',
+                title: Resources['lastSendTime'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
             }, {
-                key: "lastSendTime",
-                name: Resources["lastSendTime"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: 'lastApproveTime',
+                title: Resources['lastApprovedTime'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-
-            }, {
-                key: "lastApproveTime",
-                name: Resources["lastApprovedTime"][currentLanguage],
-                width: 80,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }]
         this.sendFiltersColumns = [
             {
@@ -464,7 +397,7 @@ class corrRecievedSent extends Component {
             tabIndex: 0,
             receivedLoading: false,
             sendLoading: false,
-            showDeleteModal:false,
+            showDeleteModal: false,
             receivedRow: [],
             sendRows: [],
             columns: this.sendColumns,
@@ -472,8 +405,17 @@ class corrRecievedSent extends Component {
             viewfilter: false,
             apiFilter: 'CorrespondenceSentFilter',
             pageNumber: 0,
-            pageSize: 200
+            pageSize: 200,
+            selectedRow: []
         }
+        this.actions = [
+            {
+                title: 'Delete',
+                handleClick: values => {
+                    this.clickHandlerDeleteRowsMain(values);
+                }
+            }
+        ]
     }
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
@@ -486,28 +428,26 @@ class corrRecievedSent extends Component {
             }
         }
     };
-
     componentWillReceiveProps(props) {
         if (this.state.projectId != props.projectId)
             this.setState({ projectId: props.projectId })
     }
-
     componentWillMount() {
         this.setState({ receivedLoading: true })
         Api.get('GetCommunicationCorrespondenceReceived?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=200').then(res => {
             let rows = res != null ? res : []
             this.setState({ receivedRow: rows, rows, columns: this.recivedColumns, receivedLoading: false })
-        }).catch(()=>{
+        }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ receivedRow: [], rows:[], columns: this.recivedColumns, receivedLoading: false })
+            this.setState({ receivedRow: [], rows: [], columns: this.recivedColumns, receivedLoading: false })
         })
         this.setState({ sendLoading: true })
         Api.get('GetCommunicationCorrespondenceSent?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=200').then(res => {
             let rows = res != null ? res : []
             this.setState({ sendRows: rows, sendLoading: false, rows })
-        }).catch(()=>{
+        }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ sendRows: [], rows:[], columns: this.sendColumns, sendLoading: false })
+            this.setState({ sendRows: [], rows: [], columns: this.sendColumns, sendLoading: false })
         })
     };
     onClickTabItem(tabIndex) {
@@ -575,13 +515,11 @@ class corrRecievedSent extends Component {
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
-
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     }
-
     ConfirmDelete = () => {
-        if(this.state.tabIndex==0){
+        if (this.state.tabIndex == 0) {
             this.setState({ sendLoading: true })
             Api.post('CommunicationCorrespondenceSentMultipleDelete', this.state.selectedRow).then((res) => {
                 let originalData = [...this.state.rows]
@@ -589,14 +527,14 @@ class corrRecievedSent extends Component {
                     let getIndex = originalData.findIndex(x => x.id === item.id);
                     originalData.splice(getIndex, 1);
                 });
-                this.setState({ rows: originalData,sendRows:originalData, showDeleteModal: false, sendLoading: false });
+                this.setState({ rows: originalData, sendRows: originalData, showDeleteModal: false, sendLoading: false });
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ showDeleteModal: false, sendLoading: false });
             })
         }
-        else{
+        else {
             this.setState({ receivedLoading: true })
             Api.post('CommunicationCorrespondenceReceivedMultipleDelete', this.state.selectedRow).then((res) => {
                 let originalData = [...this.state.rows]
@@ -604,7 +542,7 @@ class corrRecievedSent extends Component {
                     let getIndex = originalData.findIndex(x => x.id === item.id);
                     originalData.splice(getIndex, 1);
                 });
-                this.setState({ rows: originalData,receivedRow:originalData, showDeleteModal: false, receivedLoading: false });
+                this.setState({ rows: originalData, receivedRow: originalData, showDeleteModal: false, receivedLoading: false });
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -615,22 +553,33 @@ class corrRecievedSent extends Component {
 
 
     }
-
     render() {
         const sendGrid = this.state.sendLoading === false ? (
-            <GridSetup
-                rows={this.state.rows}
+            <GridCustom
+                ref='custom-data-grid'
+                key="CorrRecievedSent"
+                data={this.state.rows}
                 pageSize={this.state.pageSize}
-                columns={this.state.columns}
-                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-            />) : <LoadingSection />;
+                groups={[]}
+                actions={this.actions}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={() => { }}
+            />
+        ) : <LoadingSection />;
         const receivedGrid = this.state.receivedLoading === false ? (
-            <GridSetup
-                rows={this.state.rows}
+            <GridCustom
+                ref='custom-data-grid'
+                key="CorrRecievedSent"
+                data={this.state.rows}
                 pageSize={this.state.pageSize}
-                columns={this.state.columns}
-                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-            />) : <LoadingSection />;
+                groups={[]}
+                actions={this.actions}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={() => { }}
+            />
+        ) : <LoadingSection />;
         const sendExport = this.state.sendLoading === false ?
             <Export rows={this.state.sendLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
             : null;

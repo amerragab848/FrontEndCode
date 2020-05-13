@@ -1,23 +1,23 @@
-import React, { Component, Fragment } from "react"; 
-import Api from "../../api";  
+import React, { Component, Fragment } from "react";
+import Api from "../../api";
 import Resources from "../../resources.json";
 //import _ from "lodash"; 
 import { withRouter } from "react-router-dom";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as communicationActions from "../../store/actions/communication"; 
+import * as communicationActions from "../../store/actions/communication";
 import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "../Communication/GridSetup";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel"; 
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import SkyLight from "react-skylight";
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -31,125 +31,102 @@ class Itemize extends Component {
     constructor(props) {
         super(props);
         this.extractDataFromURL(this.props.location.search);
-        let editUnitPrice = ({ value, row }) => {
-            let subject = "";
-            if (row) {
-                return (
-                    <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
-                            {row.unitPrice}
-                        </span>
-                    </a>
-                );
-            }
-            return null;
-        };
-
         this.itemsColumns = [
             {
-                name: Resources["itemize"][currentLanguage],
-                formatter: this.customButton,
-                width: 70,
-                key: "customBtn"
+                field: "id",
+                title: "",
+                width: 10,
+                type: "check-box",
+                fixed: true,
+                showTip: true
             },
             {
-                key: "arrange",
-                name: Resources["no"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: 'arrange',
+                title: Resources['no'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
+            {
+                field: 'itemCode',
+                title: Resources['itemCode'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: 'description',
+                title: Resources['details'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: 'quantity',
+                title: Resources['quantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
+                sortable: true,
+            },
+            {
+                field: 'revisedQuntitty',
+                title: Resources['receivedQuantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
+                sortable: true,
+            },
+            {
+                field: 'unit',
+                title: Resources['unit'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: 'unitPrice',
+                title: Resources['unitPrice'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "input",
+                sortable: true,
+                handleChange: (e, cell) => {
+                    cell.unitPrice = e.target.value;
 
-            {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                },
+                handleBlur: (e, cell) => {
+                    this._onGridRowsUpdated(cell);
+                }
             },
             {
-                key: "description",
-                name: Resources["details"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'total',
+                title: Resources['total'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'resourceCode',
+                title: Resources['resourceCode'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "revisedQuntitty",
-                name: Resources["receivedQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "unit",
-                name: Resources["unit"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                editable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editUnitPrice
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ];
 
@@ -167,11 +144,23 @@ class Itemize extends Component {
             projectName: projectName,
             pageSize: 50,
             arrange: 0,
-            items: [],
+            subItemsGrid: [],
             item: {},
             isLoading: true,
             document: {}
         };
+        this.actions = [{
+            title: 'Delete',
+            handleClick: values => {
+                this.clickHandlerDeleteRowsMain(values)
+            }
+        }]
+        this.rowActions = [{
+            title: 'Folder',
+            handleClick: value => {
+                this.itemization(value);
+            }
+        }]
     }
 
     customButton = () => {
@@ -185,7 +174,6 @@ class Itemize extends Component {
     componentWillMount() {
         this.getTabelData(this.state.parentId);
     }
-
     getTabelData(id) {
         this.setState({ isLoading: true, LoadingPage: true });
         Api.get("GetBoqItem?id=" + id).then(item => {
@@ -204,7 +192,7 @@ class Itemize extends Component {
                         id: item.id,
                         parentId: item.parentId,
                         boqId: item.boqId,
-                        unitPrice: this.state.items.unitPrice,
+                        unitPrice: this.state.item.unitPrice,
                         itemType: item.itemType,
                         itemTypeLabel: "",
                         days: item.days,
@@ -237,7 +225,7 @@ class Itemize extends Component {
         });
     }
 
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate(prevProps) { }
     extractDataFromURL(url) {
         const query = new URLSearchParams(url);
         let index = 0;
@@ -278,7 +266,7 @@ class Itemize extends Component {
         if (props.items) {
             this.setState({ isLoading: true });
             let items = props.items;
-            this.setState({ items, activeTab: "" }, function() {
+            this.setState({ items, activeTab: "" }, function () {
                 this.setState({ isLoading: false });
             });
         }
@@ -287,9 +275,9 @@ class Itemize extends Component {
     checkItemCode = code => {
         Api.get(
             "GetItemCode?itemCode=" +
-                code +
-                "&projectId=" +
-                this.state.projectId
+            code +
+            "&projectId=" +
+            this.state.projectId
         ).then(res => {
             if (res == true) {
                 toast.error(Resources["itemCodeExist"][currentLanguage]);
@@ -342,16 +330,14 @@ class Itemize extends Component {
             search: "?id=" + encodedPaylod
         });
     };
-
-    onRowClick = (value, index, column) => {
+    onRowClick = (value) => {
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
-        } else if (column.key == "customBtn") {
-            this.itemization(value);
-        } else if (column.key != "select-row" && column.key != "unitPrice") {
+        } else {
+            this.setState({ selectedItem: value });
             this.setState({ showPopUp: true, currentMode: "edit" });
             this.simpleDialog.show();
-            this.setState({ selectedItem: value });
+
         }
     };
     clickHandlerDeleteRowsMain = selectedRows => {
@@ -382,52 +368,32 @@ class Itemize extends Component {
             btnText: "save"
         });
     };
-
-    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    _onGridRowsUpdated = (cell, value) => {
         this.setState({ isLoading: true });
+        if (cell) {
+            Api.post(
+                "EditBoqItemChildUnitPrice?id=" +
+                cell.id +
+                "&parentId=" +
+                this.state.parentId +
+                "&unitPrice=" +
+                cell.unitPrice
+            )
+                .then(() => {
+                    toast.success(
+                        Resources["operationSuccess"][currentLanguage]
+                    );
+                    this.setState({ isLoading: false });
+                })
+                .catch(() => {
+                    toast.error(
+                        Resources["operationCanceled"][currentLanguage]
+                    );
+                    this.setState({ isLoading: false });
+                });
+        }
 
-        let updateRow = this.state.items[fromRow];
-
-        this.setState(
-            state => {
-                const items = state.items.slice();
-                for (let i = fromRow; i <= toRow; i++) {
-                    items[i] = { ...items[i], ...updated };
-                }
-                return { items };
-            },
-            function() {
-                if (
-                    updateRow[Object.keys(updated)[0]] !==
-                    updated[Object.keys(updated)[0]]
-                ) {
-                    updateRow[Object.keys(updated)[0]] =
-                        updated[Object.keys(updated)[0]];
-                    Api.post(
-                        "EditBoqItemChildUnitPrice?id=" +
-                            this.state.items[fromRow].id +
-                            "&parentId=" +
-                            this.state.parentId +
-                            "&unitPrice=" +
-                            updated.unitPrice
-                    )
-                        .then(() => {
-                            toast.success(
-                                Resources["operationSuccess"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        })
-                        .catch(() => {
-                            toast.error(
-                                Resources["operationCanceled"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        });
-                }
-            }
-        );
     };
-
     changeTab = activeTab => {
         if (activeTab === "one") {
         } else if (activeTab === "many") {
@@ -440,52 +406,51 @@ class Itemize extends Component {
     render() {
         const subItemsGrid =
             this.state.isLoading === false ? (
-                <GridSetup
-                    rows={this.state.items}
-                    showCheckbox={true}
+                <GridCustom
+                    ref='custom-data-grid'
+                    key='sub-items'
+                    data={this.state.items}
                     pageSize={this.state.pageSize}
-                    onRowClick={this.onRowClick}
-                    columns={this.itemsColumns}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    onRowsSelected={this.onRowsSelected}
-                    onRowsDeselected={this.onRowsDeselected}
-                    onGridRowsUpdated={this._onGridRowsUpdated}
-                    key="sub-items"
+                    groups={[]}
+                    actions={this.actions}
+                    rowActions={this.rowActions}
+                    cells={this.itemsColumns}
+                    rowClick={cell => this.onRowClick(cell)}
                 />
             ) : (
-                <LoadingSection />
-            );
+                    <LoadingSection />
+                );
         const itemTable = this.state.isLoading ? null : this.state.item !=
-          null ? (
-            <table className="taskAdminTable">
-                <thead>
-                    <tr>
-                        <th>{Resources["no"][currentLanguage]}</th>
-                        <th>{Resources["itemCode"][currentLanguage]}</th>
-                        <th>{Resources["details"][currentLanguage]}</th>
-                        <th>{Resources["quantity"][currentLanguage]}</th>
-                        <th>{Resources["revQuantity"][currentLanguage]}</th>
-                        <th>{Resources["unit"][currentLanguage]}</th>
-                        <th>{Resources["unitPrice"][currentLanguage]}</th>
-                        <th>{Resources["total"][currentLanguage]}</th>
-                        <th>{Resources["resourceCode"][currentLanguage]}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr key={"table"}>
-                        <td>{this.state.item.arrange} </td>
-                        <td>{this.state.item.itemCode} </td>
-                        <td>{this.state.item.description} </td>
-                        <td>{this.state.item.quantity} </td>
-                        <td>{this.state.item.revisedQuantity} </td>
-                        <td>{this.state.item.unit} </td>
-                        <td>{this.state.item.unitPrice} </td>
-                        <td>{this.state.item.total} </td>
-                        <td>{this.state.item.resourceCode} </td>
-                    </tr>
-                </tbody>
-            </table>
-        ) : null;
+            null ? (
+                <table className="taskAdminTable">
+                    <thead>
+                        <tr>
+                            <th>{Resources["no"][currentLanguage]}</th>
+                            <th>{Resources["itemCode"][currentLanguage]}</th>
+                            <th>{Resources["details"][currentLanguage]}</th>
+                            <th>{Resources["quantity"][currentLanguage]}</th>
+                            <th>{Resources["revQuantity"][currentLanguage]}</th>
+                            <th>{Resources["unit"][currentLanguage]}</th>
+                            <th>{Resources["unitPrice"][currentLanguage]}</th>
+                            <th>{Resources["total"][currentLanguage]}</th>
+                            <th>{Resources["resourceCode"][currentLanguage]}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr key={"table"}>
+                            <td>{this.state.item.arrange} </td>
+                            <td>{this.state.item.itemCode} </td>
+                            <td>{this.state.item.description} </td>
+                            <td>{this.state.item.quantity} </td>
+                            <td>{this.state.item.revisedQuantity} </td>
+                            <td>{this.state.item.unit} </td>
+                            <td>{this.state.item.unitPrice} </td>
+                            <td>{this.state.item.total} </td>
+                            <td>{this.state.item.resourceCode} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            ) : null;
 
         const editItemContent = (
             <React.Fragment>
@@ -591,14 +556,14 @@ class Itemize extends Component {
                     </ul>
                 </div>
                 <div className="document-fields">
-                    {this.state.isLoading ? null : itemTable}
+                    {this.state.isLoading == true ? null : itemTable}
                 </div>
                 {this.state.activeTab == "one"
                     ? addItemContent
                     : this.state.activeTab == "many"
-                    ? addManyItems
-                    : null}
-                {this.state.items.length > 0 ? subItemsGrid : null}
+                        ? addManyItems
+                        : null}
+                {this.props.items.length > 0 ? subItemsGrid : null}
                 <div
                     className="largePopup largeModal "
                     style={{
@@ -620,7 +585,7 @@ class Itemize extends Component {
                     <div
                         className={
                             this.state.isViewMode === true &&
-                            this.state.CurrStep != 3
+                                this.state.CurrStep != 3
                                 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
                                 : "documents-stepper noTabs__document one__tab one_step"
                         }>
@@ -637,8 +602,8 @@ class Itemize extends Component {
                                 {this.state.LoadingPage ? (
                                     <LoadingSection />
                                 ) : (
-                                    <Fragment>{Step_2}</Fragment>
-                                )}
+                                        <Fragment>{Step_2}</Fragment>
+                                    )}
                             </div>
                         </div>
                     </div>

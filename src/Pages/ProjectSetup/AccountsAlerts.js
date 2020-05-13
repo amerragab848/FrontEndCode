@@ -3,7 +3,6 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "../Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
 import config from "../../Services/Config";
 import Resources from "../../resources.json";
@@ -15,7 +14,7 @@ import dataservice from "../../Dataservice"
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
 import { SkyLightStateless } from 'react-skylight';
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedProject')
@@ -60,55 +59,51 @@ class AccountsAlerts extends Component {
             toast.warn(Resources['missingPermissions'][currentLanguage])
             this.props.history.goBack()
         }
-
-        const columnsGrid = [
+  const columnsGrid = [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "id",
+                title: "",
+                width: 10,
+                type: "check-box",
+                fixed:true,
+                width:10
             },
             {
-                key: "redAlertDays",
-                name: Resources["redAlert"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'redAlertDays',
+                title: Resources['redAlert'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'yellowAlertDays',
+                title: Resources['yellowAlert'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }, {
-                key: "yellowAlertDays",
-                name: Resources["yellowAlert"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'greenAlertDays',
+                title: Resources['GreenAlert'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "greenAlertDays",
-                name: Resources["GreenAlert"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'docType',
+                title: Resources['docType'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "docType",
-                name: Resources["docType"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
+            }
         ]
-
         const FilterColumns = [
             {
                 field: "docType",
@@ -117,7 +112,6 @@ class AccountsAlerts extends Component {
                 isCustom: true
             }
         ]
-
         this.state = {
             showCheckbox: false,
             columns: columnsGrid.filter(column => column.visible !== false),
@@ -140,8 +134,15 @@ class AccountsAlerts extends Component {
             SelectedDocumentTypeDrop: {},
 
         }
+        this.actions=[
+            {
+                title:"Delete",
+                handleClick:values=>{
+                    this.clickHandlerDeleteRowsMain(values)
+                }
+            }
+        ]
     }
-
     componentDidMount = () => {
         Api.get('GetAccountsAlerts?projectId=' + CurrProject + '&pageNumber=0&pageSize=200').then(
             res => {
@@ -187,7 +188,7 @@ class AccountsAlerts extends Component {
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
         this.setState({
-            selectedRows,
+            selectedRows:selectedRows,
             showDeleteModal: true
         })
     }
@@ -340,11 +341,17 @@ class AccountsAlerts extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    onRowClick={this.onRowClick.bind(this)}
-                />
+                <GridCustom
+                ref='custom-data-grid'
+                key='AccountsAlert'
+                data={this.state.rows}
+                pageSize={this.state.rows.length}
+                groups={[]}
+                actions={this.actions}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={cell => { this.onRowClick(cell)}}
+              />
             ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
@@ -476,7 +483,6 @@ class AccountsAlerts extends Component {
                                                         </div>
                                                     </Fragment>
                                                     : null}
-
                                                 <div className="linebylineInput fullInputWidth">
                                                     <label className="control-label">{Resources['redAlertDays'][currentLanguage]}</label>
                                                     <div className={'ui input inputDev ' + (errors.HighAlert && touched.HighAlert ? 'has-error' : null) + ' '}>
@@ -566,11 +572,8 @@ class AccountsAlerts extends Component {
                                     </Form>
                                 )}
                             </Formik>
-
-
-                        </SkyLightStateless>
+    </SkyLightStateless>
                     </div>
-
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
                             title={Resources['smartDeleteMessage'][currentLanguage].content}

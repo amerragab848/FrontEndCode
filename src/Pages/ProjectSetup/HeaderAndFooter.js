@@ -2,7 +2,6 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "../Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
 import config from "../../Services/Config";
 import Resources from "../../resources.json";
@@ -19,11 +18,10 @@ import * as communicationActions from "../../store/actions/communication";
 import Dropzone from 'react-dropzone';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import api from '../../api'
-import { tr } from 'date-fns/locale';
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
-
 
 const ValidtionSchema = Yup.object().shape({
     type: Yup.string().required(Resources['isRequiredField'][currentLanguage]).nullable(true)
@@ -37,36 +35,35 @@ class HeaderAndFooter extends Component {
             toast.warn(Resources['missingPermissions'][currentLanguage])
             this.props.history.goBack()
         }
-
         const columnsGrid = [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "id",
+                title: "",
+                width: 10,
+                fixed: true,
+                showTip:true,
+                type:"check-box"
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'description',
+                title: Resources['description'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "type",
-                name: Resources["type"][currentLanguage],
-                width: 250,
-                draggable: true,
+            },
+            {
+                field: 'type',
+                title: Resources['type'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ]
-
-        const FilterColumns = [
+ const FilterColumns = [
             {
                 field: "description",
                 name: "description",
@@ -106,6 +103,14 @@ class HeaderAndFooter extends Component {
             selectedType: null,
             selectedId: 0
         }
+        this.actions=[
+            {
+                title:"Delete",
+                handleClick:values=>{
+                    this.clickHandlerDeleteRowsMain(values)
+                }
+            }
+        ]
     }
 
     componentDidMount() {
@@ -210,7 +215,6 @@ class HeaderAndFooter extends Component {
 
     AddEditAction = (values, actions) => {
         this.setState({ isLoading: true })
-
         let projectId = window.localStorage.getItem("lastSelectedProject") ? window.localStorage.getItem("lastSelectedProject") : null;
         var objServer = {
             id: this.state.selectedId,
@@ -218,9 +222,7 @@ class HeaderAndFooter extends Component {
             description: this.state.document.description,
             type: this.state.document.type
         };
-
         let url = this.state.IsEditModel ? "EditProjectHeaderFooter" : "addProjectHeaderFooter";
-
         dataservice.addObject(url, objServer).then(res => {
             var storageApi = config.getPublicConfiguartion().azureStorage ? '/BlobUpload' :
                 (this.state.IsEditModel == true ? '/UploadFilesByDocId?docId=' + res.id : '/UploadFiles');
@@ -228,7 +230,6 @@ class HeaderAndFooter extends Component {
             if (this.state.uploadedImage) {
                 let formData = new FormData();
                 formData.append("file", this.state.uploadedImage[0]);
-
                 let header = {};
                 header.docId = res.id;
                 header.docTypeId = 3;
@@ -297,11 +298,17 @@ class HeaderAndFooter extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ?
-            <GridSetup rows={this.state.rows} columns={this.state.columns}
-                showCheckbox={this.state.showCheckbox}
-                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                onRowClick={this.onRowClick.bind(this)}
-            />
+            <GridCustom
+            ref='custom-data-grid'
+            key='HeaderAndFooter'
+            data={this.state.rows}
+            pageSize={this.state.rows.length}
+            groups={[]}
+            actions={this.actions}
+            rowActions={[]}
+            cells={this.state.columns}
+            rowClick={cell => { this.onRowClick(cell)}}
+          />
             : null
 
         const btnExport = this.state.isLoading === false ?

@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-// import GridSetup from "../Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
 import sumBy from 'lodash/sumBy';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";

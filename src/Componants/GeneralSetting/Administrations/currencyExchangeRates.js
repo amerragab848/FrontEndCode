@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../publicComponants/LoadingSection";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../Pages/Communication/GridSetup";
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import { Formik, Form } from 'formik';
@@ -13,11 +12,9 @@ import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
 import DropdownMelcous from '../../../Componants/OptionsPanels/DropdownMelcous';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker';
-import moment from 'moment'
+import moment from 'moment';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
 
 const validationDeductionSchema = Yup.object().shape({
     currency: Yup.string().required(Resources['currency'][currentLanguage]),
@@ -26,57 +23,49 @@ const validationDeductionSchema = Yup.object().shape({
 })
 
 class currencyExchangeRates extends Component {
-
     constructor(props) {
-
         super(props)
-
-        const columnsGrid = [
+        const columnGrid = [
             {
-                key: "currencyName",
-                name: Resources["currency"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'currencyName',
+                title: Resources['currency'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "rate",
-                name: Resources["currencyRates"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'rate',
+                title: Resources['currencyRates'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "addedByName",
-                name: Resources["addedBy"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: 'addedByName',
+                title: Resources['addedBy'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "addedDate",
-                name: Resources["addedDate"][currentLanguage],
-                width: 250,
-                draggable: true,
+            },
+            {
+                field: 'addedDate',
+                title: Resources['addedDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }
         ]
-
         this.state = {
             showCheckbox: false,
-            columns: columnsGrid.filter(column => column.visible !== false),
+            columns: columnGrid,
             isLoading: true,
             rows: [],
             selectedRow: 0,
@@ -86,7 +75,15 @@ class currencyExchangeRates extends Component {
             addedDate: moment(),
             CurrencyData: [],
         }
-
+        this.rowActions = [
+            {
+                title: 'Delete',
+                handleClick: values => {
+                    this.setState({ selectedRow: values.id, showDeleteModal: true });
+                },
+                classes: ''
+            }
+        ]
         if (!config.IsAllow(3744) && !config.IsAllow(3745)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.goBack();
@@ -105,11 +102,6 @@ class currencyExchangeRates extends Component {
             });
         });
     }
-
-    clickHandlerDeleteRowsMain = (selectedRow) => {
-        this.setState({ selectedRow, showDeleteModal: true });
-    }
-
     ConfirmDelete = () => {
         this.setState({ isLoading: true });
         dataservice.GetDataGridPost('DeleteCurrencyRate?currencyId=' + this.state.selectedRow).then(res => {
@@ -148,10 +140,18 @@ class currencyExchangeRates extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ?
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox} single={true}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                /> : <LoadingSection />
+                <GridCustom
+                    ref='custom-data-grid'
+                    key="CurrencyExchangeRates"
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={[]}
+                    rowActions={this.rowActions}
+                    cells={this.state.columns}
+                    rowClick={() => { }}
+                />
+                : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []}
@@ -167,28 +167,21 @@ class currencyExchangeRates extends Component {
                                 currency: '',
                                 currencyRates: '',
                             }}
-
                             enableReinitialize={true}
                             validationSchema={validationDeductionSchema}
                             onSubmit={(values) => {
                                 this.AddCurrency(values)
                             }}>
-
                             {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                                 <Form onSubmit={handleSubmit}>
-
-
                                     <div className='document-fields'>
-
                                         <div className="proForm datepickerContainer">
-
                                             <div className="linebylineInput valid-input">
                                                 <DropdownMelcous title="currency" data={this.state.CurrencyData} name="currency"
                                                     handleChange={(e) => this.setState({ selecturrency: e })}
                                                     selectedValue={values.currency} onChange={setFieldValue} onBlur={setFieldTouched}
                                                     error={errors.currency} touched={touched.currency} value={values.currency} />
                                             </div>
-
                                             <div className="linebylineInput valid-input fullInputWidth">
                                                 <label className="control-label">{Resources['currencyRates'][currentLanguage]}</label>
                                                 <div className={"inputDev ui input" + (errors.currencyRates && touched.currencyRates ? (" has-error") : !errors.currencyRates && touched.currencyRates ? (" has-success") : " ")} >

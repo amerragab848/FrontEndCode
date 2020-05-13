@@ -9,50 +9,41 @@ let widgets = [
     apiDetails: "GetTotalPoDetails?projectId=",
     columns: [
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 350,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 180,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 200,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      }
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+    },
+    {
+      field: 'statusName',
+      title: Resources['status'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: false,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'projectName',
+    title: Resources['projectName'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+}
     ],
     filterApi: "",
     filters: [
@@ -90,72 +81,59 @@ let widgets = [
     apiDetails: "GetTotalMaterialRequestCountingForProject?projectId=",
     columns: [
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 200,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 350,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "companyName",
-        name: Resources["CompanyName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "disciplineName",
-        name: Resources["descipline"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      }
+        field: 'arrange',
+        title: Resources['arrange'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+    },
+    {
+      field: 'projectName',
+      title: Resources['projectName'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: false,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'subject',
+    title: Resources['subject'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'companyName',
+  title: Resources['CompanyName'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'disciplineName',
+  title: Resources['descipline'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+}
     ],
     filterApi: "",
     filters: [
@@ -203,72 +181,59 @@ let widgets = [
     apiDetails: "GetTotalPaymentDetailsForProject?projectId=",
     columns: [
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 350,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 200,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "contractName",
-        name: Resources["contractSubject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "totalEarned",
-        name: Resources["totalEarned"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      }
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+    },
+    {
+      field: 'statusName',
+      title: Resources['status'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: false,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'projectName',
+    title: Resources['projectName'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'contractName',
+  title: Resources['contractSubject'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'totalEarned',
+  title: Resources['totalEarned'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+}
     ],
     filterApi: "",
     filters: [
@@ -316,198 +281,159 @@ let widgets = [
     key: "0-2-1",
     apiDetails: "GetApprocalStatusDetails?status=true&projectId=",
     columns: [
-      {
-        key: "refNo",
-        name: Resources["refNo"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "statusName",
-        name: Resources["statusName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "approvalStatusName",
-        name: Resources["approvalStatus"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "approvedDate",
-        name: Resources["approvedDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "lastWorkFlow",
-        name: Resources["lastWorkFlow"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "contractName",
-        name: Resources["contractName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "duration",
-        name: Resources["duration"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docCloseDate",
-        name: Resources["docClosedate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "cycleDate",
-        name: Resources["cycleDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "cycleCloseDate",
-        name: Resources["cycleCloseDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "submittalType",
-        name: Resources["submittalType"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "cyclesCount",
-        name: Resources["cyclesCount"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "disciplineName",
-        name: Resources["disciplineName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "area",
-        name: Resources["area"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "location",
-        name: Resources["location"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      }
+    {
+      field: 'refNo',
+      title: Resources['refNo'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: true,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'statusName',
+    title: Resources['statusName'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'subject',
+  title: Resources['subject'][currentLanguage],
+  width: 20,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'approvalStatusName',
+  title: Resources['approvalStatus'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'approvedDate',
+  title: Resources['approvedDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'lastWorkFlow',
+  title: Resources['lastWorkFlow'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'contractName',
+  title: Resources['contractName'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'duration',
+  title: Resources['duration'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'docCloseDate',
+  title: Resources['docClosedate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'cycleDate',
+  title: Resources['cycleDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'cycleCloseDate',
+  title: Resources['cycleCloseDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'submittalType',
+  title: Resources['submittalType'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'cyclesCount',
+  title: Resources['cyclesCount'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'disciplineName',
+  title: Resources['disciplineName'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'area',
+  title: Resources['area'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'location',
+  title: Resources['location'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+}
     ],
     filterApi: "",
     filters: [
@@ -621,52 +547,43 @@ let widgets = [
     title: "openedSubmittals",
     key: "0-2-2",
     apiDetails: "GetOpenedDocumentsDetails?docType=42&projectId=",
-    columns: [
+     columns: [
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      }
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+    },
+    {
+      field: 'statusName',
+      title: Resources['status'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: false,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'projectName',
+    title: Resources['projectName'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+}
     ],
     filterApi: "",
     filters: [
@@ -703,197 +620,158 @@ let widgets = [
     apiDetails: "GetApprocalStatusDetails?status=false&projectId=",
     columns: [
       {
-        key: "refNo",
-        name: Resources["refNo"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "statusName",
-        name: Resources["statusName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "approvalStatusName",
-        name: Resources["approvalStatus"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "approvedDate",
-        name: Resources["approvedDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "lastWorkFlow",
-        name: Resources["lastWorkFlow"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "contractName",
-        name: Resources["contractName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "duration",
-        name: Resources["duration"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "docCloseDate",
-        name: Resources["docClosedate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "cycleDate",
-        name: Resources["cycleDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "cycleCloseDate",
-        name: Resources["cycleCloseDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
-      },
-      {
-        key: "submittalType",
-        name: Resources["submittalType"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "cyclesCount",
-        name: Resources["cyclesCount"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "disciplineName",
-        name: Resources["disciplineName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "area",
-        name: Resources["area"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      },
-      {
-        key: "location",
-        name: Resources["location"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
-      }
+        field: 'refNo',
+        title: Resources['refNo'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+    },
+    {
+      field: 'statusName',
+      title: Resources['statusName'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: false,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'subject',
+    title: Resources['subject'][currentLanguage],
+    width: 20,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'approvalStatusName',
+  title: Resources['approvalStatus'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'approvedDate',
+  title: Resources['approvedDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'lastWorkFlow',
+  title: Resources['lastWorkFlow'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'contractName',
+  title: Resources['contractName'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'duration',
+  title: Resources['duration'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'docCloseDate',
+  title: Resources['docClosedate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'cycleDate',
+  title: Resources['cycleDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'cycleCloseDate',
+  title: Resources['cycleCloseDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+{
+  field: 'submittalType',
+  title: Resources['submittalType'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'cyclesCount',
+  title: Resources['cyclesCount'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'disciplineName',
+  title: Resources['disciplineName'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'area',
+  title: Resources['area'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'location',
+  title: Resources['location'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+}
     ],
     filterApi: "",
     filters: [
@@ -1009,49 +887,40 @@ let widgets = [
     apiDetails: "GetOpenedDocumentsDetails?docType=19&projectId=",
     columns: [
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 350,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
       },
       {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 200,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 200,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       }
     ],
     filterApi: "",
@@ -1087,51 +956,42 @@ let widgets = [
     title: "openedIR",
     key: "0-3-2",
     apiDetails: "GetOpenedDocumentsDetails?docType=25&projectId=",
-    columns: [
+     columns: [
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
       },
       {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       }
     ],
     filterApi: "",
@@ -1169,219 +1029,175 @@ let widgets = [
     apiDetails: "GetTotalPaymentDetailsForProject?projectId=",
     columns: [
       {
-        key: "statusName",
-        name: Resources["statusName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'statusName',
+        title: Resources['statusName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "fromCompanyName",
-        name: Resources["fromCompany"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'fromCompanyName',
+        title: Resources['fromCompany'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "fromContactName",
-        name: Resources["fromContact"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'fromContactName',
+        title: Resources['fromContact'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "toCompanyName",
-        name: Resources["toCompany"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'toCompanyName',
+        title: Resources['toCompany'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "toContactName",
-        name: Resources["ToContact"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'toContactName',
+        title: Resources['ToContact'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "sendDate",
-        name: Resources["sendDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'sendDate',
+        title: Resources['sendDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       },
       {
-        key: "docCloseDate",
-        name: Resources["docClosedate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docCloseDate',
+        title: Resources['docClosedate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       },
       {
-        key: "building",
-        name: Resources["Building"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'building',
+        title: Resources['Building'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       },
       {
-        key: "answerDate",
-        name: Resources["answerDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'answerDate',
+        title: Resources['answerDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "refDoc",
-        name: Resources["refDoc"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'refDoc',
+        title: Resources['refDoc'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "discipline",
-        name: Resources["disciplineTitle"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'discipline',
+        title: Resources['disciplineTitle'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "requiredDate",
-        name: Resources["requiredDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'requiredDate',
+        title: Resources['requiredDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       },
       {
-        key: "cycleNo",
-        name: Resources["cycleNo"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'cycleNo',
+        title: Resources['cycleNo'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "openedBy",
-        name: Resources["openedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'openedBy',
+        title: Resources['openedBy'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "closedBy",
-        name: Resources["closedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'closedBy',
+        title: Resources['closedBy'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "lastEditBy",
-        name: Resources["lastEdit"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'lastEditBy',
+        title: Resources['lastEdit'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "lastEditDate",
-        name: Resources["lastEditDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'lastEditDate',
+        title: Resources['lastEditDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       }
     ],
     filterApi: "",
@@ -1507,51 +1323,42 @@ let widgets = [
     title: "openedTransmittals",
     key: "0-3-4",
     apiDetails: "GetOpenedDocumentsDetails?docType=28&projectId=",
-    columns: [
+     columns: [
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
       },
       {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       }
     ],
     filterApi: "",
@@ -1587,62 +1394,51 @@ let widgets = [
     title: "countinspectionPanding",
     key: "0-4-1",
     apiDetails: "GetCountInspectionDetails?status=null&projectId=",
-    columns: [
+   columns: [
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'arrange',
+        title: Resources['arrange'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       }
     ],
     filterApi: "",
@@ -1684,62 +1480,51 @@ let widgets = [
     title: "countinspectionReject",
     key: "0-4-2",
     apiDetails: "GetCountInspectionDetails?status=false&projectId=",
-    columns: [
+   columns: [
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'arrange',
+        title: Resources['arrange'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       }
     ],
     filterApi: "",
@@ -1783,60 +1568,49 @@ let widgets = [
     apiDetails: "GetCountInspectionDetails?status=false&projectId=",
     columns: [
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'arrange',
+        title: Resources['arrange'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "statusName",
-        name: Resources["status"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter",
-        formatter: "dateFormate"
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
       }
     ],
     filterApi: "",

@@ -4,11 +4,11 @@ import Api from "../../../api";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export";
 import Filter from "../../FilterComponent/filterComponent";
-import GridSetup from "../../../Pages/Communication/GridSetup";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import { toast } from "react-toastify";
+import GridCustom from "../../../Componants/Templates/Grid/CustomCommonLogGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -87,68 +87,60 @@ class Index extends Component {
                 name: Resources["lastModified"][currentLanguage]
             }
         ];
-
-        const columnsGrid = [
+ const columnsGrid = [
             {
-                formatter: this.customButton,
-                key: 'customBtn',
-                width: 80
-            },
-            {
-                key: "id",
-                visible: false,
-                width: 20,
-                frozen: true
-            },
-            {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: 'companyName',
+                title: Resources['CompanyName'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "roleTitle",
-                name: Resources["companyRole"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'roleTitle',
+                title: Resources['companyRole'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "disciplineTitle",
-                name: Resources["disciplineTitle"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'disciplineTitle',
+                title: Resources['disciplineTitle'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "keyContactName",
-                name: Resources["KeyContact"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'keyContactName',
+                title: Resources['KeyContact'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "location",
-                name: Resources["location"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'location',
+                title: Resources['location'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'contactsTel',
+                title: Resources['Telephone'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             },
             {
                 key: "contactsTel",
@@ -161,58 +153,43 @@ class Index extends Component {
                 sortDescendingFirst: true
             },
             {
-                key: "contactsMobile",
-                name: Resources["Mobile"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'contactsFax',
+                title: Resources['Fax'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "contactsFax",
-                name: Resources["Fax"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'grade',
+                title: Resources['Grade'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "grade",
-                name: Resources["Grade"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'enteredBy',
+                title: Resources['enteredBy'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "enteredBy",
-                name: Resources["enteredBy"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'lastModified',
+                title: Resources['lastModified'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "lastModified",
-                name: Resources["lastModified"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ];
-       
-        this.state = {
+      this.state = {
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
             rows: [],
@@ -227,6 +204,20 @@ class Index extends Component {
             Previous: false,
             rowSelectedId: ''
         };
+        this.rowActions = [
+            {
+                title: 'Delete',
+                handleClick: value => {
+                   this.clickHandlerDeleteRowsMain(value.id)
+                }
+            },
+            {
+                title: 'Contacts',
+                handleClick: value => {
+                    this.props.history.push('/contacts/'+value.keyContact);
+                }
+            }
+        ]
     }
     customButton = () => {
         return <button className="companies_icon" onClick={this.clickHandler} ><i className="fa fa-users"></i></button>;
@@ -258,16 +249,26 @@ class Index extends Component {
         }
     }
 
-    cellClick = (rowID, colID) => {
-        let id = this.state.rows[rowID]['id']
-        if (colID == 1)
-            this.viewContact(id)
-        else if (!Config.IsAllow(1257)) {
+    // cellClick = (rowID, colID) => {
+    //     let id = this.state.rows[rowID]['id']
+    //     if (colID == 1)
+    //         this.viewContact(id)
+    //     else if (!Config.IsAllow(1257)) {
+    //         toast.warning("you don't have permission");
+    //     }
+    //     else if (colID != 0) {
+    //         this.props.history.push({
+    //             pathname: "/AddEditCompany/" + id,
+    //         });
+    //     }
+    // }
+    cellClick = (row) => {
+         if (!Config.IsAllow(1257)) {
             toast.warning("you don't have permission");
         }
-        else if (colID != 0) {
+        else  {
             this.props.history.push({
-                pathname: "/AddEditCompany/" + id,
+                pathname: "/AddEditCompany/" + row.id,
             });
         }
     }
@@ -423,18 +424,21 @@ class Index extends Component {
         }
         else
             toast.warning("you don't have permission");
-
     }
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={true}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    viewContactHandler={this.clickHandler}
-                    cellClick={this.cellClick}
-                    single={true}
-                />
+                <GridCustom
+                            ref='custom-data-grid'
+                            key="CompaniesIndex"
+                            data={this.state.rows}
+                            pageSize={this.state.rows.length}
+                            groups={[]}
+                            actions={[]}
+                            rowActions={this.rowActions}
+                            cells={this.state.columns}
+                            rowClick={(cell) => { this.cellClick(cell) }}
+                        />
             ) : <LoadingSection />;
 
         const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} /> : null;

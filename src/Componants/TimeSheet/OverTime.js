@@ -7,81 +7,68 @@ import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from '../../resources.json';
 import DatePicker from '../OptionsPanels/DatePicker'
 import moment from 'moment';
-import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-
  class OverTime extends Component {
     constructor(props) {
         super(props)
-
-        const columnsGrid = [
+ const columnsGrid = [
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'docDate',
+                title: Resources['docDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'description',
+                title: Resources['description'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                filterable: true,
             },
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                filterable: true,
-
             },
             {
-                key: "totalHours",
-                name: Resources["overtimeHours"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'totalHours',
+                title: Resources['overtimeHours'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
             },
             {
-                key: "approvalStatusName",
-                name: Resources["status"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'approvalStatusName',
+                title: Resources['status'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: "50%",
-                draggable: true,
+                field: 'comment',
+                title: Resources['comment'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-
             }
         ];
 
@@ -302,9 +289,31 @@ const dateFormate = ({ value }) => {
                         {this.state.Loading ? <LoadingSection /> : null}
                         {this.state.isLoading == false
 
-                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} showCheckbox={false} />
-
-                            : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+                            ? 
+                            <GridCustom
+                            ref='custom-data-grid'
+                            key="OverTime"
+                            data={this.state.rows}
+                            pageSize={this.state.rows.length}
+                            groups={[]}
+                            actions={[]}
+                            rowActions={[]}
+                            cells={this.state.columns}
+                            rowClick={() => {  }}
+                        />
+                            : <div className={this.state.isLoading == false ? "disNone" : ""}> 
+                            <GridCustom
+                            ref='custom-data-grid'
+                            key="OverTime"
+                            data={[]}
+                            pageSize={0}
+                            groups={[]}
+                            actions={[]}
+                            rowActions={[]}
+                            cells={this.state.columns}
+                            rowClick={() => {  }}
+                        />
+                            </div>}
                     </div>
                 </div>
             </div>

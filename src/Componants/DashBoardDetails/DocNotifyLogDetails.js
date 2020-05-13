@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetup";
-import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { connect } from "react-redux";
@@ -15,233 +12,86 @@ import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const { SingleSelectFilter } = Filters;
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-const statusButton = ({ value, row }) => {
-  let doc_view = "";
-  if (row) {
-    if (row.readStatus === true) {
-      doc_view = <div style={{ textAlign: 'center', margin: '4px auto', padding: '4px 10px', borderRadius: '26px', backgroundColor: '#5FD45F', width: '100%', color: '#fff', fontSize: '12px' }}>{Resources["read"][currentLanguage]}</div>
-    } else {
-      doc_view = <div style={{ textAlign: 'center', padding: '4px 10px', margin: '4px auto', borderRadius: '26px', backgroundColor: '#E74C3C', width: '100%', color: '#FFF' }}>{Resources["unRead"][currentLanguage]}</div>
-    }
-    return doc_view;
-  }
-  return null;
-};
-// cellClick = (cell) => {
-//   //if (cell.status !== true) Api.get("UpdateStatusInbox?id=" + cell.id);
-// }
-let subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.id,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
-
 class DocNotifyLogDetails extends Component {
   constructor(props) {
-
     super(props);
-
-    var columnsGrid = [
+    var columnGrid = [
       {
-        key: "readStatusText",
-        name: Resources["statusName"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: 'readStatusText',
+        title: Resources['statusName'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: statusButton
-      },
-      {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        fixed: true,
+        type: "text",
+        classes: 'gridBtns'
+      }, {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        fixed: false,
+        groupable: true,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: subjectLink
-      },
-      {
-        key: "creationDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        showTip: true,
+        classes: ' bold elipsisPadd',
+        onRightClick: cell => { this.cellClick(cell) },
+        href: 'link'
+      }, {
+        field: 'creationDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 20,
+        groupable: true,
+        showTip: true,
+        fixed: false,
+        type: "date",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
-      },
-      {
-        key: "openedBy",
-        name: Resources["openedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
+      }, {
+        field: 'openedBy',
+        title: Resources['openedBy'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        showTip: true,
+      }, {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "docType",
-        name: Resources["docType"][currentLanguage],
-        width: 150,
-        draggable: true,
+        href: 'link'
+      }, {
+        field: 'docType',
+        title: Resources['docType'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "refDoc",
-        name: Resources["docNo"][currentLanguage],
-        width: 150,
-        draggable: true,
+        type: "text",
+      }, {
+        field: 'refDoc',
+        title: Resources['docNo'][currentLanguage],
+        width: 20,
+        fixed: false,
+        groupable: true,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "dueDate",
-        name: Resources["dueDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        showTip: true,
+      }, {
+        field: 'dueDate',
+        title: Resources['dueDate'][currentLanguage],
+        width: 20,
+        fixed: false,
+        groupable: true,
+        type: "date",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        showTip: true,
       }
     ];
-    //  this.columnGrid = [
-    //   {
-    //     title: Resources['statusName'][currentLanguage],
-    //     width: 10,
-    //     groupable: true,
-    //     sortable: true,
-    //     fixed: true,
-    //     type: "text",
-    //     classes: 'gridBtns status '
-    //   }, {
-    //     field: 'subject',
-    //     title: Resources['subject'][currentLanguage],
-    //     width: 20,
-    //     fixed: true,
-    //     groupable: true,
-    //     type: "text",
-    //     sortable: true,
-    //     showTip: true,
-    //     classes: ' bold elipsisPadd',
-    //     onRightClick: cell => { this.cellClick(cell) },
-    //     href: 'link',
-    //   }, {
-    //     field: 'creationDate',
-    //     title: Resources['docDate'][currentLanguage],
-    //     width: 20,
-    //     groupable: true,
-    //     showTip: true,
-    //     fixed: false,
-    //     type: "date",
-    //     sortable: true,
-    //   }, {
-    //     field: 'openedBy',
-    //     title: Resources['openedBy'][currentLanguage],
-    //     width: 20,
-    //     groupable: true,
-    //     fixed: false,
-    //     type: "text",
-    //     sortable: true,
-    //     showTip: true,
-    //   }, {
-    //     field: 'projectName',
-    //     title: Resources['projectName'][currentLanguage],
-    //     width: 20,
-    //     groupable: true,
-    //     fixed: false,
-    //     type: "text",
-    //     sortable: true,
-    //      href: 'link'
-    //   }, {
-    //     field: 'docType',
-    //     title: Resources['docType'][currentLanguage],
-    //     width: 10,
-    //     groupable: true,
-    //     fixed: false,
-    //     sortable: true,
-    //     type: "text",
-    //   }, {
-    //     field: 'refDoc',
-    //     title: Resources['docNo'][currentLanguage],
-    //     width: 20,
-    //     fixed: true,
-    //     groupable: true,
-    //     type: "text",
-    //     sortable: true,
-    //     showTip: true,
-    //     classes: ' bold elipsisPadd',
-    //     onRightClick: cell => { this.cellClick(cell) },
-    //     href: 'link',
-    //   }, {
-    //     field: 'dueDate',
-    //     title: Resources['dueDate'][currentLanguage],
-    //     width: 20,
-    //     fixed: true,
-    //     groupable: true,
-    //     type: "date",
-    //     sortable: true,
-    //     showTip: true,
-    //     classes: ' bold elipsisPadd'
-       
-    //   }
-    // ];
- 
     const filtersColumns = [
       {
         field: "readStatusText",
@@ -292,11 +142,10 @@ class DocNotifyLogDetails extends Component {
         isCustom: true
       }
     ];
-
     this.state = {
       pageTitle: Resources["docNotify"][currentLanguage],
       viewfilter: false,
-      columns: columnsGrid,
+      columns: columnGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
@@ -309,12 +158,44 @@ class DocNotifyLogDetails extends Component {
     this.props.actions.RouteToTemplate();
 
     Api.get("GetNotifyRequestsDocApprove").then(result => {
+      result.forEach(row => {
 
+        let doc_view = "";
+
+        if (row) {
+
+          let obj = {
+            docId: row.id,
+            projectId: row.projectId,
+            projectName: row.projectName,
+            arrange: row.arrange,
+            docApprovalId: row.accountDocWorkFlowId,
+            isApproveMode: true,
+            perviousRoute: window.location.pathname + window.location.search
+          };
+
+          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+          doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
+
+          row.link = doc_view;
+
+        }
+
+
+      });
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
       });
     });
+    setTimeout(() => {
+      var gridBtns = document.querySelectorAll('.gridBtns');
+      for (let i = 0; i < gridBtns.length; i++) {
+        if (gridBtns[i].textContent.toLowerCase() == 'Read'.toLocaleLowerCase()) { gridBtns[i].classList.add('Read'); }
+        else { gridBtns[i].classList.add('UnRead'); }
+      }
+    }, 1000);
   }
 
   hideFilter(value) {
@@ -378,18 +259,16 @@ class DocNotifyLogDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-         <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false} />
-      //   <GridCustom
-      //   ref='custom-data-grid'
-      //   key="ClosedSummaryDetails"
-      //   data={this.state.rows}
-      //   pageSize={this.state.rows.length}
-      //   groups={[]}
-      //   actions={[]}
-      //   rowActions={[]}
-      //   cells={this.columnGrid}
-      //   rowClick={(cell) => { this.onRowClick(cell) }}
-      // />
+        <GridCustom
+          key="DocNotifyLogDetails"
+          data={this.state.rows}
+          pageSize={this.state.rows.length}
+          groups={[]}
+          actions={[]}
+          rowActions={[]}
+          cells={this.state.columns}
+          rowClick={(cell) => { this.onRowClick(cell) }}
+        />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
@@ -401,6 +280,7 @@ class DocNotifyLogDetails extends Component {
         filtersColumns={this.state.filtersColumns}
         apiFilter={this.state.apiFilter}
         filterMethod={this.filterMethodMain}
+        key="DocNotify"
       /> : <LoadingSection />;
 
     return (
@@ -492,18 +372,14 @@ class DocNotifyLogDetails extends Component {
     );
   }
 }
-
-
 function mapStateToProps(state, ownProps) {
   return {
     showModal: state.communication.showModal
   };
 }
-
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(communicationActions, dispatch)
   };
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(DocNotifyLogDetails);

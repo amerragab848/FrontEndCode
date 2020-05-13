@@ -3,9 +3,7 @@ import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import moment from "moment";
-import GridSetup from "../../Pages/Communication/GridSetup";
-import { Filters } from "react-data-grid-addons";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { withRouter } from "react-router-dom";
@@ -15,131 +13,74 @@ import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-
-const subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.docId,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/invoicesForPoAddEdit" + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
-
-
 class NotCodedInvoicesSummaryDetails extends Component {
   constructor(props) {
     super(props);
-
-    var columnsGrid = [
+  var columnGrid = [
       {
-        key: "projectCode",
-        name: Resources["numberAbb"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: 'projectCode',
+        title: Resources['numberAbb'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: subjectLink
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "total",
-        name: Resources["total"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'total',
+        title: Resources['total'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "number",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "balance",
-        name: Resources["balance"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'balance',
+        title: Resources['balance'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "docCloseDate",
-        name: Resources["docClosedate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'docCloseDate',
+        title: Resources['docClosedate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
       }
     ];
-
     const filtersColumns = [
       {
         field: "projectCode",
@@ -184,11 +125,10 @@ class NotCodedInvoicesSummaryDetails extends Component {
         isCustom: true
       }
     ];
-
     this.state = {
       pageTitle: Resources["notCodedInvoicesSummary"][currentLanguage],
       viewfilter: false,
-      columns: columnsGrid,
+      columns: columnGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
@@ -197,21 +137,15 @@ class NotCodedInvoicesSummaryDetails extends Component {
   }
 
   componentDidMount() {
-
     this.props.actions.RouteToTemplate();
-
     const query = new URLSearchParams(this.props.location.search);
-
     let action = null;
-
     for (let param of query.entries()) {
       action = param[1];
     }
-
     if (action) {
       Api.get("GetInvoicesUserByRange?action=" + action).then(
         result => {
-
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
@@ -279,8 +213,18 @@ class NotCodedInvoicesSummaryDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} onRowClick={this.onRowClick} columns={this.state.columns} showCheckbox={false} />
-      ) : <LoadingSection />;
+        <GridCustom
+        ref='custom-data-grid'
+        key="NotCodedInvoicesSummaryDetails"
+        data={this.state.rows}
+        pageSize={this.state.rows.length}
+        groups={[]}
+        actions={[]}
+        rowActions={[]}
+        cells={this.state.columns}
+        rowClick={() => {}}
+      />
+        ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />

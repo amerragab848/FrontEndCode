@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import Filter from '../../Componants/FilterComponent/filterComponent'
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "../Communication/GridSetup"
 import { SkyLightStateless } from 'react-skylight';
 import { withRouter } from "react-router-dom";
 import Export from '../../Componants/OptionsPanels/Export';
@@ -14,65 +13,68 @@ import * as communicationActions from '../../store/actions/communication';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from "moment";
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
+
 let docId = 0;
 const find = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+
 let cashFlowTable2 = []
 
 class budgetCashFlow extends Component {
 
     constructor(props) {
         super(props)
-
         const columnsGrid = [
             {
-                key: "projectName",
-                name: Resources.projectName[currentLanguage],
-                width: 400,
-                frozen: true,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                field: "id",
+                title: "",
+                width: 10,
+                type: "check-box",
+                width: 10,
+                fixed: true,
+                showTip: true
             },
             {
-                key: "date",
-                name: Resources.docDate[currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "cashIn",
-                name: Resources.estimatedCashIn[currentLanguage],
-                width: 400,
-                draggable: true,
+                field: 'date',
+                title: Resources['docDate'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "cashOut",
-                name: Resources.estimatedCashOut[currentLanguage],
-                width: 400,
-                draggable: true,
+                field: 'cashIn',
+                title: Resources['estimatedCashIn'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'cashOut',
+                title: Resources['estimatedCashOut'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             },
         ];
+
 
         const filtersColumns = [
             {
@@ -106,7 +108,7 @@ class budgetCashFlow extends Component {
             isLoading: true,
             rows: [],
             columns: columnsGrid.filter(column => column.visible !== false),
-            selectedRows: [],
+            selectedRows: null,
             filtersColumns: filtersColumns,
             viewfilter: false,
             totalRows: 0,
@@ -115,7 +117,6 @@ class budgetCashFlow extends Component {
             projectId: this.props.projectId,
             docId: docId,
             pageTitle: Resources['cashFlow'][currentLanguage],
-            // api: 'GetAllBudgetCashFlowForGrid?',
             IsActiveShow: false,
             rowSelectedId: '',
             showPopup: false,
@@ -128,6 +129,12 @@ class budgetCashFlow extends Component {
             showTable: false,
             cashFlowTable: [],
         }
+        this.actions = [{
+            title: 'Delete',
+            handleClick: values => {
+                this.DeleteItem(values)
+            }
+        }]
     }
 
     componentWillMount() {
@@ -215,40 +222,31 @@ class budgetCashFlow extends Component {
             showPopup: true
         })
     }
-
+    
     ConfirmDeleteAccount = () => {
-        let id = '';
-        this.setState({ showDeleteModal: true })
-        let rowsData = this.state.rows;
-        this.state.rowSelectedId.map(i => {
-            id = i
-        })
-        let userName = find(rowsData, { 'id': id })
-        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'DElETE').then(
-            Api.post('accountDeleteById?id=' + id)
-                .then(result => {
-                    let originalRows = this.state.rows;
-                    this.state.rowSelectedId.map(i => {
-                        originalRows = originalRows.filter(r => r.id !== i);
-                    });
-                    this.setState({
-                        rows: originalRows,
-                        totalRows: originalRows.length,
-                        isLoading: false,
-                        showDeleteModal: false,
-                        IsActiveShow: false
-                    });
+        this.setState({ isLoading: true })
+        Api.post('DeleteMultipleCashFlow', this.state.selectedRows)
+            .then(result => {
+                let originalRows = this.state.rows;
+                this.state.selectedRows.map(i => {
+                    originalRows = originalRows.filter(r => r.id !== i);
+                });
+                toast.success(Resources.operationSuccess[currentLanguage])
+                this.setState({
+                    rows: originalRows,
+                    totalRows: originalRows.length,
+                    isLoading: false,
+                    showDeleteModal: false,
+                    IsActiveShow: false
+                });
+            })
+            .catch(ex => {
+                this.setState({
+                    showDeleteModal: false,
+                    IsActiveShow: false,
+                    isLoading: false,
                 })
-                .catch(ex => {
-                    this.setState({
-                        showDeleteModal: false,
-                        IsActiveShow: false
-                    })
-                })
-        ).catch(ex => { })
-        this.setState({
-            isLoading: true,
-        })
+            })
     }
 
     filterMethodMain = (event, query, apiFilter) => {
@@ -301,7 +299,7 @@ class budgetCashFlow extends Component {
 
         this.setState({
             showDeleteModal: true,
-            selectedRows
+            selectedRows: selectedRows
         })
     }
 
@@ -391,10 +389,16 @@ class budgetCashFlow extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    clickHandlerDeleteRows={this.DeleteItem}
-                    single={false}
+                <GridCustom
+                    ref='custom-data-grid'
+                    key='BudgetCashFlow'
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={this.actions}
+                    rowActions={[]}
+                    cells={this.state.columns}
+                    rowClick={() => {}}
                 />
             ) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
@@ -462,7 +466,7 @@ class budgetCashFlow extends Component {
                             <button className="primaryBtn-1 btn mediumBtn" onClick={this.showPopupAdd.bind(this)}>NEW</button>
                         </div>
 
-                         <div className="rowsPaginations readOnly__disabled">
+                        <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
                                 <span>0</span> - <span>{this.state.pageSize}</span> of <span> {this.state.totalRows}</span>
                             </div>
