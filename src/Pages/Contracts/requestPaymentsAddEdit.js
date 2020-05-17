@@ -2133,12 +2133,12 @@ class requestPaymentsAddEdit extends Component {
 
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
-        let currentvalue = parseFloat(e.target.value);
+        let currentvalue = e.target.value == "" ? 0 : parseFloat(e.target.value);
 
         switch (updated) {
 
             case "quantityComplete":
-                updateRow.quantityComplete = currentvalue;
+                updateRow.quantityComplete = currentvalue ;
                 break;
 
             case "sitePaymentPercent":
@@ -4195,7 +4195,7 @@ class requestPaymentsAddEdit extends Component {
                                             </Fragment>
 
                                             <div className="fullWidthWrapper">
-                                                {this.state.isLoading === true ? (
+                                                {this.state.isLoadingItems === true ? (
                                                     <button
                                                         className="primaryBtn-1 btn  disabled"
                                                         disabled="disabled">
