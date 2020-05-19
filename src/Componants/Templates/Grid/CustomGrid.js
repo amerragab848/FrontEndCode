@@ -160,7 +160,8 @@ export default class CustomGrid extends Component {
     };
 
     handleCheck = (key) => {
-        this.setState({ [key]: !this.state[key], Loading: true })
+        this.setState({ [key]: !this.state[key], Loading: true });
+        console.log(this.state.ColumnsHideShow)
         let data = this.state.ColumnsHideShow
         for (var i in data) {
             if (data[i].field === key) {
@@ -181,8 +182,13 @@ export default class CustomGrid extends Component {
 
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
+        let showColumn = data.filter(i => i.hidden === false);
+        console.log(showColumn)
         setTimeout(() => {
-            this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
+            this.setState({
+                columns: showColumn,
+                Loading: false
+            })
         }, 300);
     };
 
@@ -237,7 +243,7 @@ export default class CustomGrid extends Component {
 
         gridLocalStor.Filters = JSON.stringify(newFilterLst);
 
-        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor)); 
+        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
     };
@@ -309,7 +315,7 @@ export default class CustomGrid extends Component {
             var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
 
             gridLocalStor.Filters = JSON.stringify(newFilterLst);
-            gridLocalStor.columnsList = JSON.stringify(this.state.columns); 
+            gridLocalStor.columnsList = JSON.stringify(this.state.columns);
             gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : this.props.groups);
 
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
@@ -484,7 +490,7 @@ export default class CustomGrid extends Component {
             return (
                 <div className="grid__content" key={item.field}>
                     <div className={'ui checkbox checkBoxGray300 count checked  ' + (item.fixed === true ? 'disabled' : '')}>
-                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={!item.hidden}
+                        <input name="CheckBox" type="checkbox" id={item.field} checked={!item.hidden}
                             onChange={(e) => this.handleCheck(item.field)} />
                         <label>{item.title}</label>
                     </div>

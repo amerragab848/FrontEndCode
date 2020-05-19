@@ -13,8 +13,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "../Communication/GridSetup";
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal"; 
 import GridCustom from 'react-customized-grid';
 import 'react-customized-grid/main.css';
 import Config from "../../Services/Config.js";
@@ -28,6 +27,7 @@ import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 

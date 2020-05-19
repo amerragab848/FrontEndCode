@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
-import Export from "../../OptionsPanels/Export";
-//import GridSetupWithFilter from "../../../Pages/Communication/GridSetupWithFilter";
+import Export from "../../OptionsPanels/Export"; 
 import GridCustom from "../../Templates/Grid/CustomGrid";
 
 import Resources from "../../../resources.json";

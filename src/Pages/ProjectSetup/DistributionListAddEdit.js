@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridCustom from 'react-customized-grid';
-import GridSetup from "../Communication/GridSetup";
+ 
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
