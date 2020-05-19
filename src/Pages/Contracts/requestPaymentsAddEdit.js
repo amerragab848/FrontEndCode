@@ -3027,7 +3027,7 @@ class requestPaymentsAddEdit extends Component {
                 </header>
                 {btnExportApprovedInvoices}
                 <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
-                    <table className="attachmentTable " key="summaryOfApprovedInvoices">
+                    <table className="attachmentTable attachmentTableAuto" key="summaryOfApprovedInvoices">
                         <thead>
                             <tr>
                                 <th width="15%">
@@ -3042,7 +3042,7 @@ class requestPaymentsAddEdit extends Component {
                                         </div>
                                     </th>
                                 ))}
-                                <th width="10%">
+                                <th>
                                     <div className="headCell">
                                         {Resources["total"][currentLanguage]}
                                     </div>
