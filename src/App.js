@@ -81,17 +81,17 @@ class App extends Component {
             .then(e => {
                 currentLanguage === "ar"
                     ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
-                          this.setState({
-                              cssLoaded: true,
-                              isComplete: true
-                          });
-                      })
+                        this.setState({
+                            cssLoaded: true,
+                            isComplete: true
+                        });
+                    })
                     : import("./Styles/scss/en-us/layout.css").then(css => {
-                          this.setState({
-                              cssLoaded: true,
-                              isComplete: true
-                          });
-                      });
+                        this.setState({
+                            cssLoaded: true,
+                            isComplete: true
+                        });
+                    });
             });
     }
 
@@ -107,18 +107,16 @@ class App extends Component {
 
         return this.state.cssLoaded ? (
             <Provider store={store}>
-                {/* <ErrorHandler> */}
-                    <div>
-                        {showComp}
-                        <ToastContainer autoClose={3000} />
-                    </div>
-                {/* </ErrorHandler> */}
+                <div>
+                    {showComp}
+                    <ToastContainer autoClose={3000} />
+                </div>
             </Provider>
         ) : (
-            <div style={loadingStyle.container}>
-                <span style={loadingStyle.spinner}></span>
-            </div>
-        );
+                <div style={loadingStyle.container}>
+                    <span style={loadingStyle.spinner}></span>
+                </div>
+            );
     }
 }
 

@@ -234,8 +234,8 @@ class ProjectTaskAddEdit extends Component {
         estimatedTime: "1",
         originalEstimatedTime: "",
         parentEstimateTime: null,
-        suspeneded: "false",
-        isTransfer: "true",
+        suspeneded: "true",
+        isTransfer: "false",
         taskId: null,
         id: 0
       };
@@ -347,7 +347,13 @@ class ProjectTaskAddEdit extends Component {
       document: original_document
     });
   }
-
+  handleCheck(e,field){
+    let original_document = { ...this.state.document };
+    original_document[field] = e.target.checked;
+   this.setState({
+      document: original_document
+    });
+  }
   handleChangeCycle(e, field) {
 
     let original_document = { ...this.state.cycleDocument };
@@ -503,7 +509,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   saveAndExit(event) {
-    this.props.history.push("/ProjectTasks/" + this.state.projectId);
+     this.props.history.push("/ProjectTasks/" + this.state.projectId);
   }
 
   showBtnsSaving() {
@@ -795,14 +801,14 @@ class ProjectTaskAddEdit extends Component {
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
                                 <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === true || this.state.document.suspeneded === "true" ? "checked" :null }
-                                  value="false" onChange={e => this.handleChange(e, "suspeneded")} />
+                                  value="false" onChange={e => this.handleCheck(e, "suspeneded")} />
                                 <label>
                                   {Resources.suspeneded[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
                                 <input type="radio" name="taskActivity" defaultChecked={this.state.document.isTransfer === true || this.state.document.isTransfer === "true" ? "checked" : null}
-                                  value="true" onChange={e => this.handleChange(e, "isTransfer")} />
+                                  value="true" onChange={e => this.handleCheck(e, "isTransfer")} />
                                 <label>
                                   {Resources.resumed[currentLanguage]}
                                 </label>

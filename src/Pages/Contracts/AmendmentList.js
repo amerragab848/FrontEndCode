@@ -1,13 +1,11 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import GridSetup from "../Communication/GridSetup";
+ 
 import Resources from "../../resources.json";
 import Api from '../../api'
 import { toast } from "react-toastify";
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
-import moment from "moment";
 import dataservice from "../../Dataservice";
-import Config from "../../Services/Config.js";
 import Export from "../../Componants/OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import { Formik, Form } from 'formik';
@@ -18,18 +16,12 @@ import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let selectedRows = [];
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 
+let selectedRows = [];
+ 
 const ValidtionSchema = Yup.object().shape({
     selectedContract: Yup.string().required(Resources['selectContract'][currentLanguage]).nullable(true)
 })
-
-let customButton = () => {
-    return <button className="companies_icon" style={{ cursor: 'pointer' }}><i className="fa fa-info" ></i></button>;
-}
 
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
@@ -237,19 +229,7 @@ class AmendmentList extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     }
-
-    // onRowsSelected = selectedRows => {
-    //     this.setState({
-    //         selectedRow: selectedRows
-    //     });
-    // }
-
-    // onRowsDeselected = () => {
-    //     this.setState({
-    //         selectedRow: []
-    //     });
-    // }
-
+ 
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
 

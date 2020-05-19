@@ -3,73 +3,86 @@ import Api from "../../../../api";
 import LoadingSection from "../../../../Componants/publicComponants/LoadingSection";
 import Export from "../../../OptionsPanels/Export"; 
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../../Pages/Communication/GridSetup"; 
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
+import GridCustom from "../../../../Componants/Templates/Grid/CustomGrid";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"); 
 
 class permissionsGroups extends Component {
     constructor(props) {
         super(props);
-        const columnsGrid = [
+          const columnGrid = [
             {
-                key: "userName",
-                name: Resources["UserName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: 'userName',
+                title: Resources['UserName'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'contactName',
+                title: Resources['ContactName'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },   {
+                field: 'empCode',
+                title: Resources['employeeCode'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             },  {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: 'SupervisorCompanyName',
+                title: Resources['SupervisorCompany'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },  {
-                key: "empCode",
-                name: Resources["employeeCode"][currentLanguage],
-                width: 150,
-                draggable: true,
+            }, {
+                field: 'supervisorName',
+                title: Resources['SupervisorName'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },  {
-                key: "SupervisorCompanyName",
-                name: Resources["SupervisorCompany"][currentLanguage],
-                width: 150,
-                draggable: true,
+            }, {
+                field: 'groupName',
+                title: Resources['GroupName'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },  {
-                key: "supervisorName",
-                name: Resources["SupervisorName"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },  {
-                key: "groupName",
-                name: Resources["GroupName"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
             }
         ];
+        this.rowActions=[
+            {
+                title:'Delete',
+                handleClick:values=>{
+                    this.setState({ showDeleteModal: true, row: values })
+                },
+                classes:''
+            }
+        ]
+
         this.state = {
-            columns: columnsGrid,
+            columns: columnGrid,
             isLoading: true,
             groupId:props.match.params.groupId,
             currentTitle: 'add',
             rows: [],
+            row:{},
             selectedRows: [],
             groupList: [],
             totalRows: 0
@@ -81,9 +94,7 @@ class permissionsGroups extends Component {
             })
         }
     }
-
-
-    deleteGroupName = (rowId) => {
+   deleteGroupName = (rowId) => {
         this.setState({ showDeleteModal: true, rowId: rowId })
     }
 
@@ -98,13 +109,13 @@ class permissionsGroups extends Component {
     };
  
     ConfirmdeleteAccount = () => {
-        if (this.state.rowId[0] != null) {
+        if (this.state.row.id != null) {
             this.setState({ isLoading: true , showDeleteModal: false })
-            Api.get('DeleteAccountsGroup?id=' + this.state.rowId[0]).then(() => {
+            Api.get('DeleteAccountsGroup?id=' + this.state.row.id).then(() => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let rows = []
                 this.state.rows.forEach(element => {
-                    if (element.id != this.state.rowId[0]) {
+                    if (element.id != this.state.row.id) {
                         rows.push(element)
                     }
                 })
@@ -132,29 +143,32 @@ class permissionsGroups extends Component {
 
     }
 
-    onRowClick(value, index, column) {
+    onRowClick(value) {
         this.setState({
             selectedRow: value,
             isLoading: true
         })
-        if (column.key != 'select-row') {
+        // if (column.key != 'select-row') {
             this.props.history.push({
                 pathname: "/EditAccount",
                 search: "?id=" + value.id
             });
-        }
-
+    // }
     } 
-
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows}
-                    columns={this.state.columns}
-                    clickHandlerDeleteRows={selectedRows=>this.deleteGroupName(selectedRows)}
-                    single={true}
-                    onRowClick={(value, index, column) => this.onRowClick(value, index, column)}
-                />
+                <GridCustom
+                ref='custom-data-grid'
+                key="AccountsGroup"
+                data={this.state.rows}
+                pageSize={this.state.rows.length}
+                groups={[]}
+                actions={[]}
+                rowActions={this.rowActions}
+                cells={this.state.columns}
+                rowClick={(cell) => {this.onRowClick(cell)}}
+              />
             ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?

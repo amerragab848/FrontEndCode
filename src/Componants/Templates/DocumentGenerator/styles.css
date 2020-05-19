@@ -1,0 +1,595 @@
+.mainContainer.generator {
+    min-height: 90vh;
+    padding-left: 130px;
+    padding-right: 40px;
+    padding-top: 72px;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(100%, #f5f5f6),
+        color-stop(26%, #f5f5f6),
+        color-stop(0, #fafbfc),
+        color-stop(0, #fafbfc)
+    );
+    background-image: linear-gradient(
+        180deg,
+        #f5f5f6 100%,
+        #f5f5f6 0,
+        #fafbfc 0,
+        #fafbfc 0
+    );
+    background: #fafbfc;
+}
+
+.mainContainer.generator .documents-stepper {
+    background: #fff;
+}
+
+.mainContainer.generator .submittalHead {
+    width: 100%;
+    height: 108px;
+    background-color: #fff;
+    -ms-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.mainContainer.generator .submittalHead h2 {
+    color: #252833;
+    line-height: 1.18;
+    letter-spacing: -1.1px;
+    font-family: font-b;
+    font-size: 34px;
+}
+
+.mainContainer.generator .submittalHead h2 span {
+    color: #858d9e;
+    line-height: 1.43;
+    letter-spacing: -0.2px;
+    font-family: font-opens;
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+}
+
+.mainContainer.generator .submittalHead .SubmittalHeadClose {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+}
+
+.mainContainer.generator svg:not(:root) {
+    overflow: hidden;
+}
+
+.mainContainer.generator .noTabs__document .doc-container {
+    background: #fff;
+    flex-flow: column;
+    display: flex;
+    border-radius: 4px;
+    position: relative;
+    border: 1px solid #e9ecf0;
+    border-top-color: transparent;
+    min-height: 71vh;
+    flex-direction: row;
+}
+
+.mainContainer.generator .noTabs__document .doc-container .step-content {
+    border-right: 0;
+    background-color: #fff;
+    display: block;
+    position: unset !important;
+    z-index: unset !important;
+    width: 100%;
+    padding: 0 40px 80px 40px;
+    flex: 0.75;
+}
+
+.mainContainer.generator .documents-stepper .doc-container .subiTabsContent {
+    width: 100%;
+}
+
+.mainContainer.generator
+    .noTabs__document
+    .doc-container
+    .step-content
+    .document-fields {
+    padding: 36px 0 14px;
+}
+
+.mainContainer.generator div#editor {
+    height: 100%;
+    flex: 0.25;
+    min-height: 71vh;
+    margin-top: 0;
+}
+
+.mainContainer.generator
+    .noTabs__document
+    .doc-container
+    .step-content
+    .document-fields
+    .linebylineInput {
+    margin-bottom: 20px;
+    width: 48%;
+}
+
+.mainContainer.generator
+    .noTabs__document
+    .doc-container
+    .step-content
+    .document-fields
+    .first-proform
+    .linebylineInput {
+    width: 100%;
+}
+
+.mainContainer.generator .linebylineInput {
+    display: inline-flex;
+    align-items: flex-start;
+    flex-flow: column;
+}
+
+.mainContainer.generator .proForm.editor .control-label {
+    font-family: font-b;
+    font-size: 13px;
+    line-height: 1.54;
+    letter-spacing: normal;
+    color: #5e6475;
+    position: relative;
+    z-index: 11;
+    margin-bottom: -10px;
+    margin-left: 13px;
+    padding: 0 5px;
+    cursor: text;
+}
+
+.mainContainer.generator .control-label:after {
+    top: 45%;
+    height: 5px;
+}
+
+.mainContainer.generator .control-label:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: #fff;
+    z-index: -1;
+}
+
+.mainContainer.generator .ui.input.inputDev {
+    padding-bottom: 0;
+}
+
+.mainContainer.generator .ui.input.inputDev {
+    position: relative;
+    display: inline-block;
+    -webkit-transition: 0.5s ease;
+    transition: 0.5s ease;
+    border-radius: 4px;
+}
+
+.mainContainer.generator .proForm.editor.first-proform .ui.input.inputDev {
+    display: block;
+    width: 100%;
+}
+
+.mainContainer.generator .proForm.editor .ui.input.inputDev input {
+    height: 48px;
+    border-radius: 4px;
+    width: 360px;
+    border: 2px solid #e9ecf0;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    color: #3e4352;
+    background-color: #fff;
+    font-size: 14px;
+    text-align: left;
+    padding: 0 14px;
+    cursor: grab;
+}
+
+.mainContainer.generator
+    .proForm.editor.first-proform
+    .ui.input.inputDev
+    input {
+    width: 100%;
+}
+
+.mainContainer.generator .proForm.editor {
+    margin-top: 12px;
+    min-height: 16px;
+    border-style: dashed;
+    border-color: #efefef;
+    padding: 16px;
+    cursor: grab;
+}
+
+.mainContainer.generator .proForm.editor.no-border {
+    border: none;
+    padding: 0;
+}
+
+.mainContainer.generator
+    .noTabs__document
+    .doc-container
+    .step-content
+    .document-fields
+    .proForm.first-proform {
+    max-width: 786px;
+}
+
+.mainContainer.generator
+    .noTabs__document
+    .doc-container
+    .step-content
+    .document-fields
+    .proForm.first-proform
+    .linebylineInput:last-of-type {
+    flex-flow: row;
+    margin-bottom: 0;
+}
+
+.mainContainer.generator .first-proform .linebylineInput:nth-child(2) > label {
+    margin: 0 8px 0 0;
+}
+
+.mainContainer.generator .first-proform label + .ui.checkbox {
+    margin-top: 0;
+}
+
+.mainContainer.generator .ui.radio.checkbox {
+    margin-bottom: 5px;
+    min-height: 15px;
+}
+
+.mainContainer.generator label + .ui.checkbox {
+    margin-top: 14px;
+}
+
+.mainContainer.generator .ui.checkbox input[type='checkbox'],
+.mainContainer.generator .ui.checkbox input[type='radio'] {
+    right: 0 !important;
+    width: 100% !important;
+}
+
+.mainContainer.generator .ui.checkbox input[type='checkbox'],
+.mainContainer.generator .ui.checkbox input[type='radio'] {
+    width: 20px;
+    height: 20px;
+}
+
+.mainContainer.generator
+    .documents-stepper
+    .doc-container
+    .step-content
+    .document-fields
+    .proForm
+    .linebylineInput
+    .radioBoxBlue
+    label {
+    padding-left: 35px;
+    padding-right: 15px;
+}
+
+.mainContainer.generator .ui.checkbox .box,
+.mainContainer.generator .ui.checkbox label,
+.mainContainer.generator .ui.radio.checkbox .box,
+.mainContainer.generator .ui.radio.checkbox label {
+    padding-left: 28px;
+}
+
+.mainContainer.generator
+    .ui.radio.checkbox.radioBoxBlue
+    input:checked
+    ~ label:before {
+    border: 2px solid #3570e6;
+}
+
+.mainContainer.generator .ui.checkbox .box:before,
+.mainContainer.generator .ui.checkbox label:before,
+.mainContainer.generator .ui.radio.checkbox .box:after,
+.mainContainer.generator .ui.radio.checkbox .box:before,
+.mainContainer.generator .ui.radio.checkbox label:after,
+.mainContainer.generator .ui.radio.checkbox label:before {
+    width: 20px;
+    height: 20px;
+}
+
+.mainContainer.generator .radioBoxBlue.ui.checkbox label:before {
+    border: 2px solid #ccd2db;
+}
+
+.mainContainer.generator
+    .ui.radio.checkbox.radioBoxBlue
+    input:checked
+    ~ label:after {
+    background-color: #3570e6;
+}
+
+.mainContainer.generator .document-canvas {
+    min-height: 50vh;
+}
+
+.mainContainer.generator
+    .proForm
+    .customDatepicker
+    .inputDev.ui.input.input-group.date.NormalInputDate:after {
+    content: '';
+    position: absolute;
+    background-image: url(./date-pickericon.c2842e30.svg);
+    right: 10px;
+    background-size: 100% 100%;
+    width: 16px;
+    height: 16px;
+    top: calc(50% - 8px);
+    z-index: 0;
+}
+
+.mainContainer.generator .mix_dropdown {
+    width: 100% !important;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+.mainContainer.generator .proForm .mix_dropdown label {
+    font-family: font-openb;
+}
+
+.mainContainer.generator .supervisor__company {
+    display: flex;
+}
+
+.mainContainer.generator .dropWrapper .fillter-item-c,
+.mainContainer.generator
+    .linebylineInput
+    .fillter-status.fillter-item-c.new_height,
+.mainContainer.generator .new_height {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+.mainContainer.generator
+    .supervisor__company
+    .super_company
+    .fillter-status.fillter-item-c
+    .mainContainer.generator
+    .customD_Menu,
+.mainContainer.generator
+    .supervisor__company
+    .super_name
+    .fillter-status.fillter-item-c
+    .customD_Menu {
+    width: 271px !important;
+}
+
+.mainContainer.generator .companyName1 {
+    position: relative;
+}
+
+.mainContainer.generator .css-1pcexqc-container {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.mainContainer.generator .companyName1:before {
+    content: '';
+    position: absolute;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAU1JREFUOBHFkrFKA0EQhuffS/SIAduUphE7Wy0FX0IEYxGxUqxCSGVpsLANFuIL6BuIjaSyEV/Azs7KHHfe7Y6zFzaul00nuHA3M9/98+8uN0T/veAOcNjtbTHRIxPHjoUiQFkEtXtzPXyy32szEbDGbGIFDBn4mHEvkd1WjTEDQ9wWXDFwwkiNwLRBhloO2Qjidyzzq0lp4POfE3iUtd6Xjm0PiR/GIu77zOZBAzRXTuKUlnxxGtMXFUnDZwsNeJLcJ8w7vhifeKCYDny20EDV6x1w/ms3ldPEVLulDl5BGzLQ2PT1injs1y4PGkDnl8y850Q25qC7iHDqM5urKpjWdpjwrGpR2z4EvEgdHLDgCayJ/PfsdnTxZvNOt5cJCK45A1PoYwDrDG7IeJ/ZLgNqiWGzSHFUdZkzEEFf7l/qZGSvykTKKeHzsv7L1zdUqGTCcQoTrAAAAABJRU5ErkJggg==);
+    left: 7px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    top: calc(50% - 8px);
+    z-index: 9;
+}
+
+.mainContainer.generator .css-sbntoc-control {
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    box-shadow: none;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    position: relative;
+    box-sizing: border-box;
+    height: 48px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    width: 271px;
+    transition: all 0.4s ease-in-out 0s;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(233, 236, 240);
+    border-image: initial;
+    outline: 0px !important;
+}
+
+.mainContainer.generator .css-1hwfws3 {
+    -webkit-box-align: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    box-sizing: border-box;
+    flex: 1 1 0%;
+    padding: 2px 8px;
+    overflow: hidden;
+}
+
+.mainContainer.generator .css-mc5y5a-singleValue {
+    color: rgb(37, 40, 51);
+    margin-left: 2px;
+    margin-right: 2px;
+    max-width: calc(100% - 8px);
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 50%;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+    font-size: 13px;
+    width: 100%;
+    font-family: Muli, sans-serif;
+    left: 27px;
+    right: auto;
+    overflow: hidden;
+}
+
+.mainContainer.generator .css-1jsskz2 {
+    padding-bottom: 2px;
+    padding-top: 2px;
+    visibility: visible;
+    color: rgb(51, 51, 51);
+    box-sizing: border-box;
+    max-width: 100%;
+    margin: 2px 0px 2px 22px;
+}
+
+.mainContainer.generator .dropWrapper .fillter-item-c,
+.mainContainer.generator
+    .linebylineInput
+    .fillter-status.fillter-item-c.new_height,
+.mainContainer.generator .new_height {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+.mainContainer.generator .contactName1 {
+    position: relative;
+}
+
+.mainContainer.generator .css-kew30o-control {
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: rgb(233, 236, 240);
+    box-shadow: none;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    min-height: 38px;
+    position: relative;
+    box-sizing: border-box;
+    width: 271px;
+    height: 48px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    transition: all 0.4s ease-in-out 0s;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(233, 236, 240);
+    border-image: initial;
+    outline: 0px !important;
+}
+
+.mainContainer.generator .css-145t3ae-singleValue {
+    color: rgb(37, 40, 51);
+    margin-left: 2px;
+    margin-right: 2px;
+    max-width: calc(100% - 8px);
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 50%;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+    font-size: 14px;
+    width: 100%;
+    font-family: Muli, sans-serif;
+    left: 27px;
+    right: auto;
+    overflow: hidden;
+}
+
+.mainContainer.generator .contactName1:before {
+    content: '';
+    position: absolute;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAahJREFUOBGtU79LQlEUPudqaBQ1ObUJbYF/RGRBS0M5RVZiZiEEEZaTQ6AWNFRQPBEzaEhqiWiw/oQgorHAaBJqMfBH2PN0rnnjpY8a6gz3nHfO93333ve+B/DHQDN+KBTtKVbLu0gwRogIBGd2AQualii24q2tDfn8Wi0nWNlDCClgNkv43upQ5pG/FW8qAIAjDDw+TCYWJcHrD3ezmOy1hWjryAZBF68Fw0zWstcW5gIMI+Q9m2GsVU9l8ysgPLKCOxhcjVVsdqJSeYgl84pkzOYCINYB6qelGhWgVpF4ixCWcSNR1V/HVA2VZwNh17sOoygIrUJcpPbjN2pmzG0CvvnIgK7rbgJwMdAhwQT0gihu2RC5Ay1xZyrgDUQGqa6vANGwBLB/ikR036z7ue5tEBGveLaZ0eK5xkwu/J3TDJhm2gMK2BI2cZLeiT3LmYqZ0JqDqjTBuGU+kZPNdZRJbkw2rjDlD9cYuOfs61yKRqN1RTLL2WzWcn55vc2bzbHROj59QGRlpaffyFLQ4/HoCJjnqza+oDKSdM2PO387DfJvJt/tf8QH4pqRbhmzf44AAAAASUVORK5CYII=);
+    left: 7px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    top: calc(50% - 8px);
+    z-index: 9;
+}
+
+.mainContainer.generator .css-16pqwjk-indicatorContainer {
+    color: rgb(204, 204, 204);
+    display: flex;
+    box-sizing: border-box;
+    padding: 8px;
+    transition: color 150ms ease 0s;
+}
+
+.mainContainer.generator .css-1wy0on6 {
+    -webkit-box-align: center;
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.mainContainer.generator
+    .noTabs__document
+    .doc-container
+    .step-content
+    .doc-pre-cycle
+    .slider-Btns,
+.mainContainer.generator
+    .noTabs__document
+    .doc-container
+    .step-content
+    .slider-Btns {
+    padding-top: 55px;
+    padding-left: 0;
+}
+
+.mainContainer.generator .primaryBtn-1 {
+    background-color: #4382f9;
+    color: #fff;
+    border: none;
+    min-width: 80px;
+    height: 36px;
+}
+
+.mainContainer.generator .btn,
+.mainContainer.generator .button {
+    border-radius: 4px;
+    font-family: font-sb;
+    font-size: 13px;
+    border: 1px solid transparent;
+    padding: 0 16px;
+    cursor: pointer;
+    text-transform: capitalize;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
+    height: 36px;
+    font-size: 14px;
+}
+
+.mainContainer.generator button:disabled {
+    opacity: 0.7;
+}

@@ -3,7 +3,7 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from "../../api";
 import Resources from "../../resources.json";
 import moment from "moment";
-import GridSetup from "../../Pages/Communication/GridSetup";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Export from "../OptionsPanels/Export";
 import DashBoardDefenition from "./DashBoardDefenition";
 import Filter from "../FilterComponent/filterComponent";
@@ -19,66 +19,26 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
-
-const subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.id,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" + route + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
-
 let route = null;
-
 class DashBoardCounterLog extends Component {
-
   constructor(props) {
-
     super(props);
-
     const query = new URLSearchParams(this.props.location.search);
-
     let key = null;
-
     let getkeyDetails = null;
-
     for (let param of query.entries()) {
       key = param[1];
     }
-
     if (key) {
       getkeyDetails = DashBoardDefenition.find(i => i.key === key);
-
       route = getkeyDetails.RouteEdit;
-
       getkeyDetails.columns.forEach(item => {
         if (item.formatter === 'dateFormate') {
           item.formatter = dateFormate;
         }
-
-        if (item.formatter === 'subjectLink') {
-          item.formatter = subjectLink;
-        }
       });
-
       this.state = {
+        gridKey: getkeyDetails.key,
         columns: getkeyDetails.columns,
         RouteEdit: getkeyDetails.RouteEdit,
         rows: [],
@@ -94,23 +54,36 @@ class DashBoardCounterLog extends Component {
 
   componentWillMount = () => {
     this.props.actions.RouteToTemplate();
-    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId; 
+    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
     var e = { label: this.props.projectName, value: projectId };
-    //this.props.actions.RouteToDashboardProject(e);
   };
 
   componentDidMount() {
     if (this.state.apiDetails) {
       let spliteData = this.state.apiDetails.split("-");
-
       if (spliteData.length > 1) {
         let data = spliteData[1].split("&");
         let obj = {};
-
         obj.pageNumber = data[0].split("=")[1];
         obj.pageSize = data[1].split("=")[1];
-
         Api.post(spliteData[0], obj).then(result => {
+          result.forEach(row => {
+            if (row) {
+              let obj = {
+                docId: row.id,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: row.arrange,
+                docApprovalId: row.accountDocWorkFlowId,
+                isApproveMode: true,
+                perviousRoute: window.location.pathname + window.location.search
+              };
+
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+              row.link = "/" + route + "?id=" + encodedPaylod
+            }
+          })
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
@@ -118,6 +91,23 @@ class DashBoardCounterLog extends Component {
         });
       } else {
         Api.get(this.state.apiDetails).then(result => {
+          result.forEach(row => {
+            if (row) {
+              let obj = {
+                docId: row.id,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: row.arrange,
+                docApprovalId: row.accountDocWorkFlowId,
+                isApproveMode: true,
+                perviousRoute: window.location.pathname + window.location.search
+              };
+
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+              row.link = "/" + route + "?id=" + encodedPaylod
+            }
+          })
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
@@ -155,9 +145,19 @@ class DashBoardCounterLog extends Component {
 
   render() {
     const dataGrid =
-      this.state.isLoading === false ? (<GridSetup rows={this.state.rows}
-        onRowClick={this.onRowClick}
-        columns={this.state.columns} showCheckbox={this.state.ShowCheckbox} />) : (<LoadingSection />);
+      this.state.isLoading === false ? (
+        <GridCustom
+          ref='custom-data-grid'
+          key={"DashBoardCounterLog-" + this.state.gridKey}
+          data={this.state.rows}
+          pageSize={this.state.rows.length}
+          groups={[]}
+          actions={[]}
+          rowActions={[]}
+          cells={this.state.columns}
+          rowClick={(cell) => { this.onRowClick(cell) }}
+        />
+      ) : (<LoadingSection />);
 
     const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources[this.state.pageTitle][currentLanguage]} />
     ) : (<LoadingSection />);

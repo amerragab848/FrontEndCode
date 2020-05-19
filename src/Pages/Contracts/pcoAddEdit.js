@@ -18,9 +18,9 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'; 
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 //import SkyLight from "react-skylight";
 
 var steps_defination = [];
@@ -116,7 +116,9 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
+
 const find = require('lodash/find')
+
 class pcoAddEdit extends Component {
 
     constructor(props) {
@@ -148,6 +150,7 @@ class pcoAddEdit extends Component {
             currIndex: 1,
             pageSize: 500,
             pageNumber: 0,
+            CurrStep: 0,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -190,7 +193,7 @@ class pcoAddEdit extends Component {
                 resourceCode: '',
                 equipmenttypeId: '',
                 dueBack: moment()
-            }, 
+            },
             voItemToEdit: {
                 id: 0,
                 description: '',
@@ -231,6 +234,7 @@ class pcoAddEdit extends Component {
                 this.state.perviousRoute
             );
         }
+
         steps_defination = [
             {
                 name: "pco",
@@ -603,7 +607,7 @@ class pcoAddEdit extends Component {
     }
 
     changeCurrentStep = stepNo => {
-        this.setState({ CurrentStep: stepNo });
+        this.setState({ CurrStep: stepNo });
     };
 
     saveVariationOrderItem(event) {
@@ -634,6 +638,7 @@ class pcoAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
+
     EditVariationOrderItem(event) {
         let saveDocument = { ...this.state.voItemToEdit };
 
@@ -687,6 +692,7 @@ class pcoAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
+
     handleChangeItem(e, field, isEdit) {
         if (isEdit == true) {
             let original_document = { ...this.state.voItemToEdit };
@@ -762,7 +768,6 @@ class pcoAddEdit extends Component {
 
     addVariationDraw() {
         return (
-
             <Fragment>
                 <Formik
                     initialValues={{ ...this.state.voItem }}
@@ -770,7 +775,7 @@ class pcoAddEdit extends Component {
                     enableReinitialize={true}
                     onSubmit={(values) => {
                         this.saveVariationOrderItem()
-                    }}                >
+                    }}>
                     {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
                         <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate">
                             <div className='document-fields'>
@@ -986,6 +991,7 @@ class pcoAddEdit extends Component {
             });
         });
     }
+
     viewModelToEdit(id, row) {
 
         var unitObj = {};
@@ -1008,7 +1014,7 @@ class pcoAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.pco[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.CurrentStep == 0 ?
+                            {this.state.CurrStep === 0 ?
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
@@ -1019,13 +1025,14 @@ class pcoAddEdit extends Component {
                                                     enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
                                                         if (this.props.showModal) { return; }
-
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveVariationOrder();
                                                         } else {
-                                                            if (this.props.changeStatus)
+                                                            if (this.props.changeStatus) {
                                                                 this.editVariationOrder();
-                                                            this.changeCurrentStep(1);
+                                                            } else {
+                                                                this.changeCurrentStep(1);
+                                                            }
                                                         }
                                                     }}>
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -1074,7 +1081,6 @@ class pcoAddEdit extends Component {
                                                                         {touched.description ? (<em className="pError">{errors.description}</em>) : null}
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='docDate'
                                                                         onChange={e => setFieldValue('docDate', e)}
@@ -1085,7 +1091,6 @@ class pcoAddEdit extends Component {
                                                                         startDate={this.state.document.docDate}
                                                                         handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
                                                                         title="fromCompany"
@@ -1103,10 +1108,8 @@ class pcoAddEdit extends Component {
                                                                         name="companyId"
                                                                         id="companyId" />
                                                                 </div>
-
                                                                 {this.props.changeStatus === true ?
                                                                     <div className="linebylineInput valid-input">
-
                                                                         <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
                                                                         <div className="ui input inputDev"  >
                                                                             <input type="text" className="form-control" id="contractPotitle" readOnly
@@ -1158,7 +1161,6 @@ class pcoAddEdit extends Component {
                                                                             onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                     </div>
                                                                 </div>
-
                                                                 {this.props.changeStatus === true ?
                                                                     <Fragment>
                                                                         <div className="linebylineInput valid-input">
@@ -1202,7 +1204,6 @@ class pcoAddEdit extends Component {
                                                                                 selectedValue={this.state.selectedCVR}
                                                                                 handleChange={event => this.handleChangeDropDown(event, 'cvrId', 'selectedCVR', false)}
                                                                                 index="cvrId"
-
                                                                                 isClear={false}
                                                                                 name="cvrId" />
                                                                         </div>
@@ -1219,7 +1220,6 @@ class pcoAddEdit extends Component {
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'profit')} />
                                                                         {touched.profit ? (<em className="pError">{errors.profit}</em>) : null}
-
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
@@ -1235,7 +1235,6 @@ class pcoAddEdit extends Component {
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'overHead')} />
                                                                         {touched.overHead ? (<em className="pError">{errors.overHead}</em>) : null}
-
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
@@ -1252,12 +1251,9 @@ class pcoAddEdit extends Component {
                                                                                 handleBlur(e)
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'timeExtensionRequired')} />
-
                                                                         {touched.timeExtensionRequired ? (<em className="pError">{errors.timeExtensionRequired}</em>) : null}
-
                                                                     </div>
                                                                 </div>
-
                                                             </div>
                                                             <div className="slider-Btns">
                                                                 {this.state.isLoading ?
@@ -1285,15 +1281,12 @@ class pcoAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </Fragment>
                                 :
                                 <Fragment>
-
                                     <div className="subiTabsContent feilds__top">
                                         {this.addVariationDraw()}
-
                                         <div className="doc-pre-cycle">
                                             <div class="submittalFilter">
                                                 <div class="subFilter">
@@ -1331,7 +1324,8 @@ class pcoAddEdit extends Component {
                                 changeCurrentStep={stepNo =>
                                     this.changeCurrentStep(stepNo)
                                 }
-                                stepNo={this.state.CurrStep} changeStatus={docId === 0 ? false : true}
+                                stepNo={this.state.CurrStep}
+                                changeStatus={docId === 0 ? false : true}
                             />
                         </div>
                         {

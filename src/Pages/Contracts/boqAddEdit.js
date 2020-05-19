@@ -140,7 +140,7 @@ class bogAddEdit extends Component {
             },
             {
                 field: "boqTypeChild",
-                title: Resources["boqSubType"][currentLanguage],
+                title: Resources["boqTypeChild"][currentLanguage],
                 width: 8,
                 groupable: true,
                 fixed: false,
@@ -149,7 +149,7 @@ class bogAddEdit extends Component {
             },
             {
                 field: "boqSubType",
-                title: Resources["boqTypeChild"][currentLanguage],
+                title: Resources["boqSubType"][currentLanguage],
                 width: 8,
                 groupable: true,
                 fixed: false,
@@ -258,9 +258,12 @@ class bogAddEdit extends Component {
         this.actions = [
             {
                 title: 'Assign',
-                handleClick: (values) => {
+                handleClick: value => {
                     if (Config.IsAllow(617)) {
-                        this.setState({ showBoqModal: true });
+                        this.setState({
+                            showBoqModal: true,
+                            selectedRow: value
+                        });
                         this.boqTypeModal.show();
                     } else {
                         toast.warning(Resources["missingPermissions"][currentLanguage]);
@@ -463,17 +466,22 @@ class bogAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(617) || this.props.document.contractId !== null) {
-                this.setState({ isViewMode: true });
-            } else if (this.state.isApproveMode !== true && Config.IsAllow(617)) {
-                if (this.props.hasWorkflow === false && Config.IsAllow(617)) {
-                    if (this.props.document.status !== false && Config.IsAllow(617)) {
-                        this.setState({ isViewMode: false });
+
+            if (Config.getPayload().uty === "company") {
+                this.setState({ isViewMode: false });
+            } else {
+                if (!Config.IsAllow(617) && this.props.document.contractId !== null) {
+                    this.setState({ isViewMode: true });
+                } else if (this.state.isApproveMode !== true && Config.IsAllow(617)) {
+                    if (this.props.hasWorkflow === false && Config.IsAllow(617)) {
+                        if (this.props.document.status !== false && Config.IsAllow(617)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
@@ -890,7 +898,7 @@ class bogAddEdit extends Component {
         this.setState({ showBoqModal: true, isLoading: true });
         let itemsId = [];
         this.state.selectedRow.forEach(element => {
-            itemsId.push(element.row.id);
+            itemsId.push(element);
         });
         let boq = {
             boqChildTypeId: this.state.selectedBoqTypeChildEdit.value,
@@ -1140,9 +1148,7 @@ class bogAddEdit extends Component {
                 actions={this.actions}
                 rowActions={this.rowActions}
                 rowClick={cell => {
-                    if (!Config.IsAllow(11)) {
-                        toast.warning("you don't have permission");
-                    } else if (cell.field != "select-row" && cell.field != "unitPrice") {
+                    if (cell.field != "select-row" && cell.field != "unitPrice") {
 
                         this.setState({
                             showPopUp: true,
@@ -2244,11 +2250,11 @@ class bogAddEdit extends Component {
                                                 .value
                                             : "",
                                     discipline:
-                                    this.state.selectedDiscipline != undefined ?
-                                        (this.state.selectedDiscipline.value != "0"
-                                            ? this.state.selectedDiscipline
-                                                .value
-                                            : ""):"",
+                                        this.state.selectedDiscipline != undefined ?
+                                            (this.state.selectedDiscipline.value != "0"
+                                                ? this.state.selectedDiscipline
+                                                    .value
+                                                : "") : "",
                                     status: this.props.changeStatus
                                         ? this.props.document.status
                                         : true,

@@ -334,14 +334,21 @@ class EditAccount extends Component {
                                                             {touched.userName ? (<em className="pError">{errors.userName}</em>) : null}
                                                         </div>
                                                     </div>
+
                                                     <div className="linebylineInput">
                                                         <label data-toggle="tooltip" title={Resources['active'][currentLanguage]} className="control-label"> {Resources['active'][currentLanguage]} </label>
                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                            <input type="radio" defaultChecked name="active" defaultChecked={values.active ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('active', e.target.value) }} />
+                                                            {/* <input type="radio" name="active" Checked={values.active ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('active', e.target.value) }} /> */}
+                                                            <input type="radio" name="active" value={values.active} checked={values.active === true}
+                                                                onChange={() => setFieldValue('active', true)}
+                                                            />
                                                             <label>{Resources['yes'][currentLanguage]}</label>
                                                         </div>
                                                         <div className="ui checkbox radio radioBoxBlue checked">
-                                                            <input type="radio" name="active" value="false" defaultChecked={values.active ? null : 'checked'} onChange={(e) => { setFieldValue('active', e.target.value) }} />
+                                                            {/* <input type="radio" name="active" value="false" Checked={values.active ? null : 'checked'} onChange={(e) => { setFieldValue('active', e.target.value) }} /> */}
+                                                            <input type="radio" name="active" value={values.active} checked={values.active === false}
+                                                                onChange={() => setFieldValue('active', false)}
+                                                            />
                                                             <label> {Resources['no'][currentLanguage]}</label>
                                                         </div>
                                                     </div>

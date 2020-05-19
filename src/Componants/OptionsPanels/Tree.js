@@ -22,33 +22,18 @@ class Tree extends Component {
             isEdit: false,
             parentId: "",
             isLoading: false,
-            ApiDrawTree: 'GetCostTreeByProjectId?projectId=',
+            ApiDrawTree: 'GetNewCostCodingTreeByProjectId?projectId=',
             isExpenses: this.props.isExpenses ? this.props.isExpenses : false
         };
         this.printChild = this.printChild.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-
-        // if (nextProps.projectId !== "0") {
-        //     dataservice.GetDataGrid(this.state.ApiDrawTree + nextProps.projectId).then(result => {
-        //         this.setState({
-        //             trees: result,
-        //             projectId: nextProps.projectId
-        //         })
-        //     })
-        // }
-        // else if (nextProps.projectid) {
-        //     dataservice.GetDataGrid(this.state.ApiDrawTree + nextProps.projectid).then(result => {
-        //         this.setState({
-        //             trees: result,
-        //             projectId: nextProps.projectid
-        //         })
-        //     })
-        // }
+ 
     }
 
     componentDidMount() {
+      
         if (this.props.isExpenses) {
             dataservice.GetDataGrid(this.state.ApiDrawTree + this.props.projectid).then(result => {
                 this.setState({
@@ -97,7 +82,7 @@ class Tree extends Component {
                                     <i className="dropdown icon" />
                                 </span>
 
-                                <span className="accordionTitle" onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle}</span>
+                                <span className="accordionTitle" onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle !=null? item.codeTreeTitle:item.costCodingTreeName}</span>
                             </div>
                         </div>
                         <div className="epsContent">
@@ -132,7 +117,7 @@ class Tree extends Component {
                                             <span className="dropArrow">
                                                 <i className="dropdown icon" />
                                             </span>
-                                            <span className="accordionTitle" onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle}</span>
+                                            <span className="accordionTitle" onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle?item.codeTreeTitle:item.costCodingTreeName}</span>
                                         </div>
                                     </div>
                                     <div className="epsContent">
@@ -153,7 +138,7 @@ function mapStateToProps(state, ownProps) {
     return {
         // document: state.communication.document,
         //isLoading: state.communication.isLoading,
-        projectId: state.communication.projectId
+        //projectId: state.communication.projectId
     };
 }
 

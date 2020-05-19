@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -25,7 +24,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from "../../api";
-
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -49,180 +48,162 @@ const validationSchema = Yup.object().shape({
 })
 
 class projectEstimateAddEdit extends Component {
-
     constructor(props) {
-
         const columnsGrid = [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field:"id",
+                title:"",
+                type:"check-box",
+                fixed:true,
+                showTip:true,
+                width:10
             },
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: 'arrange',
+                title: Resources['numberAbb'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: 'description',
+                title: Resources['description'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "boqType",
-                name: Resources["boqType"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: 'boqType',
+                title: Resources['boqType'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "boqSubType",
-                name: Resources["boqSubType"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'boqSubType',
+                title: Resources['boqSubType'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "unit",
-                name: Resources["unit"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'unit',
+                title: Resources['unit'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "estimationItemTypeName",
-                name: Resources["itemType"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'estimationItemTypeName',
+                title: Resources['itemType'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'unitPrice',
+                title: Resources['unitPrice'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "newUnitPrice",
-                name: Resources["newUnitPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'newUnitPrice',
+                title: Resources['newUnitPrice'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'quantity',
+                title: Resources['quantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-
-            {
-                key: "days",
-                name: Resources["days"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'days',
+                title: Resources['days'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "tax",
-                name: Resources["factors"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'total',
+                title: Resources['total'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "totalWithTax",
-                name: Resources["totalAfterTax"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'tax',
+                title: Resources['factors'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "currencyName",
-                name: Resources["currency"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'totalWithTax',
+                title: Resources['totalAfterTax'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "ratio",
-                name: Resources["currencyRates"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'currencyName',
+                title: Resources['currency'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "currencyTotal",
-                name: Resources["currencyTotal"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'ratio',
+                title: Resources['currencyRates'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+            },
+            {
+                field: 'currencyTotal',
+                title: Resources['currencyTotal'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }
         ]
         super(props)
-
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
@@ -244,7 +225,6 @@ class projectEstimateAddEdit extends Component {
             }
             index++;
         }
-
         this.state = {
             showCheckbox: true,
             columns: columnsGrid.filter(column => column.visible !== false),
@@ -288,6 +268,12 @@ class projectEstimateAddEdit extends Component {
             rowSelectedId: [],
             SelectedCurrency: { label: Resources.pleaseSelectCurrency[currentLanguage], value: "0" },
         }
+        this.actions=[{
+            title:'Delete',
+            handleClick:values=>{
+                this.CurrencyShowBtn(values);
+            }
+        }]
     }
 
     checkDocumentIsView() {
@@ -823,10 +809,17 @@ class projectEstimateAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox} minHeight={350}
-                    NoShowDeletedBar={true} onRowClick={this.ShowPopUp}
-                    clickHandlerDeleteRows={this.CurrencyShowBtn} />
+                <GridCustom
+                ref='custom-data-grid'
+                key="ProjectEstimateAddEdit"
+                data={this.state.rows}
+                pageSize={this.state.rows.length}
+                groups={[]}
+                actions={this.actions}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={ ()=>{} }
+            />
             ) : <LoadingSection />
 
         let SecondStepItems = () => {

@@ -2,133 +2,87 @@ import React, { Component } from "react";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from "../../api";
 import Resources from "../../resources.json";
-import moment from "moment";
-import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import CryptoJS from "crypto-js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import * as communicationActions from '../../store/actions/communication';
-
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-
-const subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.id,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/ProjectTaskAddEdit" + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
-
 
 class MonitorTasks extends Component {
   constructor(props) {
     super(props);
-
-    const columnsGrid = [
+    const columnGrid = [
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: 'arrange',
+        title: Resources['arrange'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        fixed: true,
+        type: "text"
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: subjectLink
+        fixed: false,
+        type: "text",
+        classes: 'bold',
+        showTip: true,
+        classes: ' bold elipsisPadd',
+        href: 'link'
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        filterable: true
+        fixed: false,
+        type: "text"
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        filterable: true,
-        formatter: dateFormate
+        fixed: false,
+        type: "date"
       },
       {
-        key: "finishDate",
-        name: Resources["finishDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'finishDate',
+        title: Resources['finishDate'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        fixed: false,
+        type: "date"
       },
       {
-        key: "bicCompanyName",
-        name: Resources["CompanyName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'bicCompanyName',
+        title: Resources['CompanyName'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        fixed: false,
+        type: "text"
       },
       {
-        key: "bicContactName",
-        name: Resources["ContactName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'remaining',
+        title: Resources['remaining'][currentLanguage],
+        width: 10,
+        groupable: true,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "remaining",
-        name: Resources["remaining"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        fixed: false,
+        type: "text"
       }
     ];
-
     const filtersColumns = [
       {
         field: "arrange",
@@ -179,9 +133,8 @@ class MonitorTasks extends Component {
         isCustom: true
       }
     ];
-
     this.state = {
-      columns: columnsGrid,
+      columns: columnGrid,
       rows: [],
       totalRows: 0,
       isLoading: true,
@@ -192,10 +145,26 @@ class MonitorTasks extends Component {
   }
 
   componentDidMount = () => {
-
     this.props.actions.RouteToTemplate();
-
     Api.get("GetMonitorTaskDetails").then(result => {
+      result.forEach(row => {
+        if (row) {
+          let obj = {
+            docId: row.id,
+            projectId: row.projectId,
+            projectName: row.projectName,
+            arrange: row.arrange,
+            docApprovalId: row.accountDocWorkFlowId,
+            isApproveMode: true,
+            perviousRoute: window.location.pathname + window.location.search
+          };
+
+          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+          row.link = "/ProjectTaskAddEdit" + "?id=" + encodedPaylod
+
+        }
+      });
       this.setState({
         renderGrid: true,
         rows: result != null ? result : [],
@@ -230,13 +199,11 @@ class MonitorTasks extends Component {
         });
       });
   };
-
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
     return this.state.viewfilter;
   }
-
   onRowClick = (obj) => {
     if (this.state.RouteEdit !== '') {
       let objRout = {
@@ -256,10 +223,19 @@ class MonitorTasks extends Component {
       });
     }
   }
-
   render() {
-
-    const dataGrid = this.state.isLoading === false ? (<GridSetup onRowClick={this.onRowClick} rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />) : <LoadingSection />;
+    const dataGrid = this.state.isLoading === false ? (
+      <GridCustom
+        key="MonitorTask"
+        data={this.state.rows}
+        pageSize={this.state.rows.length}
+        groups={[]}
+        actions={[]}
+        rowActions={[]}
+        cells={this.state.columns}
+        rowClick={(cell) => { this.onRowClick(cell) }}
+      />
+    ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
@@ -345,7 +321,7 @@ class MonitorTasks extends Component {
             </div>
           </div>
           <div className="filterBTNS">{btnExport}</div>
-           <div className="rowsPaginations readOnly__disabled">
+          <div className="rowsPaginations readOnly__disabled">
             <div className="rowsPagiRange">
               <span>{this.state.rows.length}</span> of
                 <span>{this.state.rows.length}</span>
@@ -362,19 +338,15 @@ class MonitorTasks extends Component {
     );
   }
 }
-
-
-
 function mapStateToProps(state) {
   return {
-      document: state.communication.document,
-      showModal: state.communication.showModal
+    document: state.communication.document,
+    showModal: state.communication.showModal
   }
 }
-
 function mapDispatchToProps(dispatch) {
   return {
-      actions: bindActionCreators(communicationActions, dispatch)
+    actions: bindActionCreators(communicationActions, dispatch)
   };
 }
 

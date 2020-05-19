@@ -13,6 +13,11 @@ const Chart = AsyncComponent(() =>
     import('./Componants/ChartsWidgets/BarChartComp'),
 );
 
+//Document Generator
+const DocGen = AsyncComponent(() =>
+    import('./Componants/Templates/DocumentGenerator'),
+);
+
 //Communication
 
 const CommonLog = AsyncComponent(() =>
@@ -197,7 +202,7 @@ const SiteInstructionsAddEdit = AsyncComponent(() =>
 );
 const ProjectPicturesAddEdit = AsyncComponent(() =>
     import('./Pages/TechnicalOffice/projectPicturesAddEdit'),
-); 
+);
 const DailyReportsAddEdit = AsyncComponent(() =>
     import('./Pages/TechnicalOffice/dailyReportsAddEdit'),
 );
@@ -217,11 +222,11 @@ const ContractsConditions = AsyncComponent(() =>
 const VariationOrderAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationOrderAddEdit'),
 );
-const RequestPaymentsAddEdit = AsyncComponent(() =>
-    import('./Pages/Contracts/requestPaymentsAddEdit'),
+const requestPaymentsAddEdit_New = AsyncComponent(() =>
+    import('./Pages/Contracts/requestPaymentsAddEdit_New'),
 );
-const NewRequestPaymentsAddEdit = AsyncComponent(() =>
-    import('./Pages/Contracts/NewrequestPaymentsAddEdit'),
+const requestPaymentsAddEdit = AsyncComponent(() =>
+    import('./Pages/Contracts/requestPaymentsAddEdit'),
 );
 
 const PcoAddEdit = AsyncComponent(() => import('./Pages/Contracts/pcoAddEdit'));
@@ -248,7 +253,9 @@ const PaymentRequisitionList = AsyncComponent(() =>
     import('./Pages/Contracts/Schedule'),
 );
 
-const PaymentCertification = AsyncComponent(() => import('./Pages/Contracts/PaymentCertificationAddEdit'));
+const PaymentCertification = AsyncComponent(() =>
+    import('./Pages/Contracts/PaymentCertificationAddEdit'),
+);
 
 //Dashboard Details
 
@@ -412,7 +419,7 @@ const PurchaseOrderAddEdit = AsyncComponent(() =>
 );
 const SiteRequestAddEdit = AsyncComponent(() =>
     import('./Pages/Procurement/materialRequestAddEdit'),
-); 
+);
 const MaterialDeliveryAddEdit = AsyncComponent(() =>
     import('./Pages/Procurement/materialDeliveryAddEdit'),
 );
@@ -431,7 +438,7 @@ const MaterialReturnedAddEdit = AsyncComponent(() =>
 const MaterialReleaseAddEdit = AsyncComponent(() =>
     import('./Pages/Procurement/materialReleaseAddEdit'),
 );
- 
+
 //Quality Control
 
 const InspectionRequestAddEdit = AsyncComponent(() =>
@@ -542,7 +549,7 @@ const PettyCashAddEdit = AsyncComponent(() =>
 
 const AddEditModificationDrawing = AsyncComponent(() =>
     import('./Pages/Design/addEditModificationDrawing'),
-); 
+);
 const DrawingListAddEdit = AsyncComponent(() =>
     import('./Pages/Design/drawingListAddEdit'),
 );
@@ -629,7 +636,11 @@ let setupRoutes = ProjectSetupRoutes.map((item, index) => {
 let originalRoutes = [
     <Route key="r-1" exact path="/" component={DashBoard} />,
     <Route key="r-2" path="/LettersAddEdit" component={LettersAddEdit} />,
-    <Route key="r-2" path="/TenderAnalysisAddEdit" component={TenderAnalysisAddEdit} />,
+    <Route
+        key="r-2"
+        path="/TenderAnalysisAddEdit"
+        component={TenderAnalysisAddEdit}
+    />,
     <Route key="r-kk" path="/logs/:document/:project" component={Logs} />,
     <Route key="r-3" path="/ActionByAlerts" component={ActionByAlerts} />,
     <Route
@@ -745,7 +756,11 @@ let originalRoutes = [
     />,
     <Route key="r-33" path="/MonitorTasks" component={MonitorTasks} />,
     <Route key="r-34" path="/AddTimeSheet" component={AddTimeSheet} />,
-    <Route key="r-34" path="/PettyCashAddEdit/:id?/:projectId?" component={PettyCashAddEdit} />,
+    <Route
+        key="r-34"
+        path="/PettyCashAddEdit/:id?/:projectId?"
+        component={PettyCashAddEdit}
+    />,
     <Route key="r-35" path="/AddOverTime" component={AddOverTime} />,
     <Route key="r-36" path="/AddLateTimeSheet" component={AddLateTimeSheet} />,
     <Route key="r-37" path="/OverTime" component={OverTime} />,
@@ -893,7 +908,11 @@ let originalRoutes = [
         component={AddEditModificationDrawing}
     />,
     <Route key="r-82" path="/AccountsAlerts" component={AccountsAlerts} />,
-    <Route key="r-82" path="/HeaderAndFooter/:id" component={HeaderAndFooter} />,
+    <Route
+        key="r-82"
+        path="/HeaderAndFooter/:id"
+        component={HeaderAndFooter}
+    />,
     <Route
         key="r-83"
         path="/projectPicturesAddEdit"
@@ -918,7 +937,7 @@ let originalRoutes = [
     />,
     <Route key="r-89" path="/EpsPermission" component={EpsPermission} />,
     <Route key="r-90" path="/pcoAddEdit" component={PcoAddEdit} />,
-    
+
     <Route key="r-92" path="/riskAddEdit" component={RiskAddEdit} />,
     <Route
         key="r-93"
@@ -931,8 +950,16 @@ let originalRoutes = [
         component={ProjectIssuesAddEdit}
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
-    <Route key="r-96" path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />,
-    <Route key="r-96" path="/NewRequestPaymentsAddEdit" component={NewRequestPaymentsAddEdit} />,
+    <Route
+        key="r-96"
+        path="/requestPaymentsAddEdit_New"
+        component={requestPaymentsAddEdit_New}
+    />,
+    <Route
+        key="r-96"
+        path="/requestPaymentsAddEdit"
+        component={requestPaymentsAddEdit}
+    />,
     <Route key="r-97" path="/projectsAddEdit" component={ProjectsAddEdit} />,
     <Route key="r-98" path="/baseAddEdit" component={BaseAddEdit} />,
     <Route
@@ -1023,7 +1050,11 @@ let originalRoutes = [
     />,
     <Route key="r-120" path="/ProjectsList" component={ProjectsList} />,
     <Route key="r-121" path="/CashFlowReport" component={CashFlowReport} />,
-    <Route key="r-190" path="/ProjectDocumentStatus" component={ProjectDocumentStatus} />,
+    <Route
+        key="r-190"
+        path="/ProjectDocumentStatus"
+        component={ProjectDocumentStatus}
+    />,
     <Route key="r-190" path="/ContractsStatus" component={ContractsStatus} />,
     <Route
         key="r-122"
@@ -1174,7 +1205,7 @@ let originalRoutes = [
         component={MaterialDeliveryAddEdit}
     />,
     <Route key="r-162" path="/BarChartComp" component={Chart} />,
-    
+
     <Route
         key="r-164"
         path="/TransferInventory"
@@ -1194,7 +1225,7 @@ let originalRoutes = [
         key="r-167"
         path="/materialReleaseAddEdit"
         component={MaterialReleaseAddEdit}
-    />, 
+    />,
     <Route key="r-169" path="/ExportDetails" component={ExportDetails} />,
     <Route
         key="r-171"
@@ -1211,7 +1242,7 @@ let originalRoutes = [
     />,
     <Route key="r-176" path="/specSectionChild" component={SpecSectionChild} />,
     <Route key="r-177" path="/RiskRealisation" component={RiskRealisation} />,
-     
+
     <Route
         key="r-179"
         path="/dailyReportsAddEdit"
@@ -1247,7 +1278,12 @@ let originalRoutes = [
         component={CollectedInvoices}
     />,
     <Route key="r-188" path="/LateTimeSheet" component={LateTimeSheet} />,
-    <Route key="r-188" path="/PaymentCertificationAddEdit" component={PaymentCertification} />
+    <Route
+        key="r-188"
+        path="/PaymentCertificationAddEdit"
+        component={PaymentCertification}
+    />,
+    <Route key="r-189" path="/:docType/gen/:projectId" component={DocGen} />,
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];
@@ -1255,7 +1291,11 @@ originalRoutes = [...originalRoutes, ...setupRoutes];
 let routes = (
     <Switch>
         {originalRoutes.map((item, index) => item)}
-        <Route key={'commonLog-i'} path="/:document/:projectId" component={CommonLog} />
+        <Route
+            key={'commonLog-i'}
+            path="/:document/:projectId"
+            component={CommonLog}
+        />
     </Switch>
 );
 export default routes;

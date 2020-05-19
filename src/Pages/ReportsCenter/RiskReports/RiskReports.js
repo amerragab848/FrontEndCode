@@ -4,9 +4,8 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-//import Export from "../../../Componants/OptionsPanels/Export";
+ 
 import ExportDetails from "../ExportReportCenterDetails";
-import GridSetup from "../../Communication/GridSetup";
 import GridCustom from 'react-customized-grid';
 import dataService from "../../../../src/Dataservice";
 
@@ -71,6 +70,7 @@ class RiskReports extends Component {
                 "type": "text"
             }
         ];
+
         this.fields = [{
             title:  Resources["type"][currentLanguage],
             value: "",
@@ -434,6 +434,7 @@ class RiskReports extends Component {
             </div>
         );
     }
+    
 }
 
 export default RiskReports;

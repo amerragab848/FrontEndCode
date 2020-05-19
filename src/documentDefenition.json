@@ -4480,7 +4480,7 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": false,
+        "isCustom": true,
         "exportDataType": "s"
       },
       {
@@ -7709,6 +7709,18 @@
         "cellTemplate": "",
         "isCustom": false,
         "exportDataType": "n"
+      },
+      {
+        "field": "noItems",
+        "friendlyName": "noItems",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
       },
       {
         "field": "currentPaymentDue",

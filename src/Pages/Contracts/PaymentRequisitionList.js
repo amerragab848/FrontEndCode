@@ -95,12 +95,12 @@ class PaymentRequisitionList extends Component {
         ]
 
         let ExportColumns = [
-            { key: 'arrange', name: Resources['arrange'][currentLanguage] },
-            { key: 'subject', name: Resources['subject'][currentLanguage] },
-            { key: 'totalEarned', name: Resources['totalEarned'][currentLanguage] },
-            { key: 'docDate', name: Resources['docDate'][currentLanguage] },
-            { key: 'currentPaymentDue', name: Resources['currentPaymentDue'][currentLanguage] },
-            { key: 'balanceToFinish', name: Resources['balanceToFinish'][currentLanguage] },
+            { field: 'arrange', title: Resources['arrange'][currentLanguage] },
+            { field: 'subject', title: Resources['subject'][currentLanguage] },
+            { field: 'totalEarned', title: Resources['totalEarned'][currentLanguage] },
+            { field: 'docDate', title: Resources['docDate'][currentLanguage] },
+            { field: 'currentPaymentDue', title: Resources['currentPaymentDue'][currentLanguage] },
+            { field: 'balanceToFinish', title: Resources['balanceToFinish'][currentLanguage] },
         ]
 
         return (

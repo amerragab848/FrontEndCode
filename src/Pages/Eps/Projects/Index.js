@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Api from "../../../api";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
-import GridSetup from "../../../Pages/Communication/GridSetup";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../../Componants/publicComponants/ConfirmationModal"
@@ -15,8 +14,8 @@ import SkyLight from 'react-skylight';
 import dataservice from "../../../Dataservice";
 import Recycle from '../../../Styles/images/attacheRecycle.png'
 import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument";
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 
-//const _ = require('lodash')
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const validationSchema = Yup.object().shape({
@@ -44,48 +43,34 @@ class Index extends Component {
         }
         const columnsGrid = [
             {
-                formatter: this.customButton,
-                key: 'customBtn1',
-                width: 150,
-            },
-            {
-                key: "id",
-                visible: false,
+                field: 'job',
+                title: Resources['job'][currentLanguage],
                 width: 20,
-                frozen: true
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true,
             },
             {
-                key: "job",
-                name: Resources["job"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: 'statusName',
+                title: Resources['projectStatus'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "statusName",
-                name: Resources["projectStatus"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ];
-        this.state = {
+       this.state = {
             epsId: epsId,
             epsName: epsName,
             showModal: false,
@@ -101,7 +86,70 @@ class Index extends Component {
             selectedAccounts: []
 
         };
+        this.rowActions = [
+            {
+                title: 'Delete',
+                handleClick: value => {
+                   this.clickHandlerDeleteRowsMain(value.id)
+                }
+            },
+            {
+                title: 'Merge Projects',
+                handleClick: value => {
+                    if (!Config.IsAllow(522)) {
+                        toast.success(Resources["missingPermissions"][currentLanguage]);
+                    }
+                    else {
+                        this.setState({selectedprojectId:value.id, currentComponent: 'mergeProjects', currentTitle: 'mergeProjects' })
+                        dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + value.id, 'projectName', 'id').then(result => {
+                            this.simpleDialog.show()
+                            this.setState({
+                                showModal: true, exceptProjects: result, isLoading: false
+                            });
+                        })
+                    }
+                }
+            },
+            {
+                title:'Change Eps',
+                handleClick:value=>{
 
+                }
+            },
+            {
+                title:'Add Accounts',
+                handleClick:value=>{
+                    if (!Config.IsAllow(522)) {
+                        toast.success(Resources["missingPermissions"][currentLanguage]);
+                    }
+                    else {
+                        this.setState({selectedprojectId:value.id, isLoading: true, currentComponent: 'addAccounts', currentTitle: 'selectAccounts' })
+                        dataservice.GetDataList('GetAccountsNotAssignProject?projectId=' + value.id, 'contactName', 'accountId').then(res => {
+                            this.setState({ accountsData: res, isLoading: false })
+                        })
+                        this.setState({ isLoading: true })
+                        Api.get("GetAccountsProjectsByProjectId?projectId=" + value.id).then(res =>
+                            this.setState({
+                                accountsDataList: res,
+                                LoadingTable: true,
+                                isLoading: false,
+                                showModal: true,
+                                rowId: '',
+                                index: ''
+                            })).catch(() => {
+                                this.setState({
+                                    accountsDataList: [],
+                                    isLoading: false
+                                })
+                                toast.error(Resources["operationCanceled"][currentLanguage]);
+                            })
+                        this.setState({ LoadingTable: false })
+                        this.simpleDialog.show()
+                    }
+                }
+            }
+        ]
+   
         this.Actions = [
             {
                 icon: "fa fa-pencil",
@@ -250,6 +298,24 @@ class Index extends Component {
             });
         }
     }
+    onRowClick = (value) => {
+        let id = value['id']
+         if (!Config.IsAllow(11)) {
+            toast.warning("you don't have permission");
+        }
+        else {
+            let obj = {
+                docId: id,
+                epsId: this.state.epsId
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+            this.props.history.push({
+                pathname: "/projectsAddEdit",
+                search: "?id=" + encodedPaylod
+            });
+        }
+    }
 
     addRecord = () => {
         if (Config.IsAllow(1256)) {
@@ -355,15 +421,17 @@ class Index extends Component {
         })
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={true}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    viewContactHandler={this.clickHandler}
-                    onRowClick={this.onRowClick}
-                    single={true}
-                    getCellActions={this.getCellActions}
-
-                />
+                <GridCustom
+                ref='custom-data-grid'
+                key="ProjectsIndex"
+                data={this.state.rows}
+                pageSize={this.state.rows.length}
+                groups={[]}
+                actions={[]}
+                rowActions={this.rowActions}
+                cells={this.state.columns}
+                rowClick={(cell) => { this.onRowClick(cell) }}
+            />
             ) : <LoadingSection />;
         const mergeProjects = <React.Fragment>
             <Formik

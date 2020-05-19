@@ -20,12 +20,16 @@ export default class CustomGrid extends Component {
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             selectedIndexes: [],
             selectedRows: [],
+            localStorFiltersList: [],
             selectedRow: [],
             copmleteRows: [],
+            groupsList: this.props.groups || [],
             expandedRows: {},
             columnsModal: false,
+            filterLoading: false,
             ColumnsHideShow: [],
             Loading: false,
+            GridLoading: true,
             filteredRows: this.props.data,
             setFilters: {},
             filters: [],
@@ -50,23 +54,74 @@ export default class CustomGrid extends Component {
             }
 
         });
+        var filters = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
-        let ColumnsHideShow = this.props.cells
-        for (var i in ColumnsHideShow) {
-            ColumnsHideShow[i].hidden = false;
+        if (filters.Filters) {
+            let rows = [...this.state.filteredRows];
+            var parsedFilters = JSON.parse(filters.Filters)
+            var obj = {};
+            this.setState({ filterLoading: true })
+
+            parsedFilters.forEach(element => {
+                if (element.value) {
+                    obj[element.key] = element.value;
+
+                    state[element.index + "-column"] = element.value;
+                }
+            });
+
+            this.getRowsFilter(rows, obj, 0);
+
+            state.filterLoading = false;
+
+        }
+        this.setState({ GridLoading: true })
+
+        var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+
+        var currentGP = [];
+
+        let ColumnsHideShow = this.props.cells;
+        let itemsColumns = this.props.cells;
+
+        if (selectedCols.length === 0) {
+            var gridLocalStor = { columnsList: [], groups: [] };
+            gridLocalStor.columnsList = JSON.stringify(itemsColumns);
+            gridLocalStor.groups = JSON.stringify(currentGP);
+            localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+        }
+        else {
+            var parsingList = JSON.parse(selectedCols.columnsList);
+            for (var item in parsingList) {
+                for (var i in itemsColumns) {
+                    if (itemsColumns[i].field === parsingList[item].field) {
+                        let status = parsingList[item].hidden
+                        itemsColumns[i].hidden = status
+                        break;
+                    }
+                }
+            };
+            currentGP = JSON.parse(selectedCols.groups);
         }
 
         this.setState({
-            ColumnsHideShow
+            ColumnsHideShow: itemsColumns,
+            columns: itemsColumns,
+            groups: currentGP,
+            groupsList: currentGP,
+            setFilters: filters.Filters ? obj : {},
+            GridLoading: false
         });
 
         setTimeout(() => {
-            this.setState(state);
+            this.setState(
+                state
+            );
         }, 500);
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.isFilter && !isEqual(this.state.rows, this.props.data)) {
+        if (this.props.isFilter && isEqual(this.state.rows, this.props.data)) {
             this.props.changeValueOfProps();
             this.setState({
                 rows: this.props.data
@@ -86,27 +141,13 @@ export default class CustomGrid extends Component {
         this.setState({ columnsModal: false })
     }
 
-    handleCheck = (key) => {
-        this.setState({ [key]: !this.state[key], Loading: true })
-        let data = this.state.ColumnsHideShow
-        for (var i in data) {
-            if (data[i].key === key) {
-                let status = data[i].hidden === true ? false : true
-                data[i].hidden = status
-                break;
-            }
-        }
-        setTimeout(() => {
-            this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
-        }, 300);
-    }
-
     ResetShowHide = () => {
         this.setState({ Loading: true })
-        let ColumnsHideShow = this.props.cells
+
+        let ColumnsHideShow = this.state.ColumnsHideShow
         for (var i in ColumnsHideShow) {
             ColumnsHideShow[i].hidden = false;
-            let key = ColumnsHideShow[i].key
+            let key = ColumnsHideShow[i].field
             this.setState({ [key]: false })
         }
         setTimeout(() => {
@@ -116,7 +157,40 @@ export default class CustomGrid extends Component {
                 Loading: false, columnsModal: false
             })
         }, 300)
-    }
+    };
+
+    handleCheck = (key) => {
+        this.setState({ [key]: !this.state[key], Loading: true });
+        console.log(this.state.ColumnsHideShow)
+        let data = this.state.ColumnsHideShow
+        for (var i in data) {
+            if (data[i].field === key) {
+                let status = data[i].hidden === true ? false : true
+                data[i].hidden = status
+                break;
+            }
+        }
+        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+
+
+        gridLocalStor.columnsList = JSON.stringify(data);
+        gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : this.props.groups);
+
+        let newFilterLst = this.state.localStorFiltersList;
+
+        gridLocalStor.Filters = JSON.stringify(newFilterLst);
+
+        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+
+        let showColumn = data.filter(i => i.hidden === false);
+        console.log(showColumn)
+        setTimeout(() => {
+            this.setState({
+                columns: showColumn,
+                Loading: false
+            })
+        }, 300);
+    };
 
     ClearFilters = () => {
         var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
@@ -159,6 +233,17 @@ export default class CustomGrid extends Component {
                 state[index + "-column"] = moment().format("DD/MM/YYYY");
             }
         });
+
+        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+
+        gridLocalStor.groups = JSON.stringify(this.state.groupsList);
+        gridLocalStor.columnsList = JSON.stringify(this.state.columns);
+
+        let newFilterLst = this.state.localStorFiltersList;
+
+        gridLocalStor.Filters = JSON.stringify(newFilterLst);
+
+        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
     };
@@ -220,17 +305,32 @@ export default class CustomGrid extends Component {
 
             let rows = [...this.state.filteredRows];
 
-            this.getRowsFilter(rows, newFilters);
+            this.getRowsFilter(rows, newFilters, index);
+            let newFilterLst = this.state.localStorFiltersList;
+
+            const i = newFilterLst.findIndex(x => x.index === index);
+            if (i > -1) newFilterLst[i] = { key: filter.key, index: index, value: newFilters[filter.key] };
+            else newFilterLst.push({ key: filter.key, index: index, value: newFilters[filter.key] })
+
+            var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+
+            gridLocalStor.Filters = JSON.stringify(newFilterLst);
+            gridLocalStor.columnsList = JSON.stringify(this.state.columns);
+            gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : this.props.groups);
+
+            localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
             this.setState({
                 isFilter: false,
                 setFilters: newFilters,
-                Loading: false
+                localStorFiltersList: newFilterLst,
+                Loading: false,
+                [index + "-column"]: newFilters[filter.column.key]
             });
         }
     }
 
-    getRowsFilter = (rows, _filters) => {
+    getRowsFilter = (rows, _filters, index) => {
 
         if (this.state.filteredRows.length > 0) {
 
@@ -285,9 +385,10 @@ export default class CustomGrid extends Component {
                     });
                     if (matched > 0) rowsList.push(row);
                 });
+                let newRows = Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows;
 
                 this.setState({
-                    rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
+                    rows: newRows,
                     Loading: false
                 });
 
@@ -337,9 +438,12 @@ export default class CustomGrid extends Component {
                     if (matched > 0) rowsList.push(row);
                 });
 
+                let newRows = Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows;
+
                 this.setState({
-                    rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
-                    Loading: false
+                    rows: newRows,
+                    Loading: false,
+                    //[index + "-column"] :'sokary'
                 });
             }
         }
@@ -362,6 +466,22 @@ export default class CustomGrid extends Component {
         });
     };
 
+    handleGroupEvent = (groups) => {
+
+        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+
+        gridLocalStor.groups = JSON.stringify(groups);
+        gridLocalStor.columnsList = JSON.stringify(this.state.columns);
+
+        let newFilterLst = this.state.localStorFiltersList;
+
+        gridLocalStor.Filters = JSON.stringify(newFilterLst);
+
+        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+
+        this.setState({ groupsList: groups });
+    }
+
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
@@ -369,10 +489,10 @@ export default class CustomGrid extends Component {
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
             return (
                 <div className="grid__content" key={item.field}>
-                    <div className={'ui checkbox checkBoxGray300 count checked'}>
-                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={!this.state[item.field]}
+                    <div className={'ui checkbox checkBoxGray300 count checked  ' + (item.fixed === true ? 'disabled' : '')}>
+                        <input name="CheckBox" type="checkbox" id={item.field} checked={!item.hidden}
                             onChange={(e) => this.handleCheck(item.field)} />
-                        <label>{item.name}</label>
+                        <label>{item.title}</label>
                     </div>
                 </div>
             )
@@ -383,61 +503,66 @@ export default class CustomGrid extends Component {
                     <div className="filter__more" style={{ padding: 0 }}>
                         <button className="filter__more--btn" onClick={this.showFilterMore}>{Resources.seeAll[currentLanguage]}</button>
                     </div>
-                    <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
-                        <form id="signupForm1" method="post" className="proForm readOnly__disabled" action="" noValidate="noValidate">
-                            {columns.map((column, index) => {
-                                let classX = arrColumn.findIndex(x => x == column.field) > -1 ? "small__input--width " : "medium__input--width";
-                                if (column.type === "date") {
-                                    return column.sortable === true && index <= 5 ? (
-                                        <div className={"form-group linebylineInput " + classX} key={index}>
-                                            <label className="control-label" htmlFor={column.field}>
-                                                {column.title}
-                                            </label>
-                                            <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
-                                                <input type="text" autoComplete="off" key={index} placeholder={column.title}
-                                                    onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)} value={this.state[index + "-column"]}
-                                                    onClick={() => this.changeDate(index, column.type)} />
+                    {this.state.filterLoading == false ?
+                        <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
+                            <form id="signupForm1" method="post" className="proForm readOnly__disabled" action="" noValidate="noValidate">
+                                {columns.map((column, index) => {
+                                    let classX = arrColumn.findIndex(x => x == column.field) > -1 ? "small__input--width " : "medium__input--width";
+                                    if (column.type === "date") {
+                                        return column.sortable === true && index <= 5 ? (
+                                            <div className={"form-group linebylineInput " + classX} key={index}>
+                                                <label className="control-label" htmlFor={column.field}>
+                                                    {column.title + this.state[index + "-column"]}
+                                                </label>
+                                                <div className={"ui input inputDev "} style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
+                                                    <input type="text" autoComplete="off" key={index} placeholder={column.title}
+                                                        onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)}
+                                                        value={this.state[index + "-column"]}
+                                                        onClick={() => this.changeDate(index, column.type)} />
 
-                                                {this.state.currentData === index && this.state.currentData != 0 ?
-                                                    (<div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
-                                                        <Calendar onChange={date => this.onChange(date, index, column.title, column.type, column.field)} selectRange={true} />
-                                                    </div>) : null}
+                                                    {this.state.currentData === index && this.state.currentData != 0 ?
+                                                        (<div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
+                                                            <Calendar onChange={date => this.onChange(date, index, column.title, column.type, column.field)} selectRange={true} />
+                                                        </div>) : null}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : null;
-                                } else if (column.type === "number") {
-                                    return column.sortable === true && index <= 5 ? (
-                                        <div className={"form-group linebylineInput " + classX} key={index}>
-                                            <label className="control-label" htmlFor={column.field}>
-                                                {column.title}
-                                            </label>
-                                            <div className="ui input inputDev">
-                                                <input autoComplete="off" placeholder={column.title} key={index} type="number" className="form-control"
-                                                    id={column.field} name={column.field} onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)} />
+                                        ) : null;
+                                    } else if (column.type === "number") {
+                                        return column.sortable === true && index <= 5 ? (
+                                            <div className={"form-group linebylineInput " + classX} key={index}>
+                                                <label className="control-label" htmlFor={column.field}>
+                                                    {column.title}
+                                                </label>
+                                                <div className="ui input inputDev">
+                                                    <input autoComplete="off" placeholder={column.title} key={index} type="number" className="form-control"
+                                                        id={column.field} name={column.field} onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)} />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : null;
-                                } else {
-                                    return column.sortable === true && index <= 5 ? (
-                                        <div className={"form-group linebylineInput " + classX} key={index}>
-                                            <label className="control-label" htmlFor={column.field}>
-                                                {column.title}
-                                            </label>
-                                            <div className="ui input inputDev">
-                                                <input autoComplete="off" placeholder={column.title} key={index} type="text" className="form-control"
-                                                    id={column.field} name={column.field} onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)} />
+                                        ) : null;
+                                    } else {
+                                        return column.sortable === true && index <= 5 ? (
+                                            <div className={"form-group linebylineInput " + classX} key={index}>
+                                                <label className="control-label" htmlFor={column.field}>
+                                                    {column.title}
+                                                </label>
+                                                <div className={"ui input inputDev test" + (this.state[index + "-column"])}>
+                                                    <input autoComplete="off" placeholder={column.title} key={index} type="text" className="form-control"
+                                                        id={column.field} name={column.field}
+                                                        value={this.state[index + "-column"]}
+                                                        onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)} />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : null;
-                                }
-                            })}
-                            <button style={{ marginBottom: '0' }} className="defaultBtn btn" onClick={this.resetModeFilter} type="button">
-                                {Resources.resetAll[currentLanguage]}
-                            </button>
-                        </form>
-                    </div>
+                                        ) : null;
+                                    }
+                                })}
+                                <button style={{ marginBottom: '0' }} className="defaultBtn btn" onClick={this.resetModeFilter} type="button">
+                                    {Resources.resetAll[currentLanguage]}
+                                </button>
+                            </form>
+                        </div>
+                        : <span className={"res__load"}></span>
+                    }
                 </div>
-
                 <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"}>
                     <h2 className="zero">{Resources.filterResults[currentLanguage]}</h2>
                     <button className="filter__close" onClick={this.CloseModeFilter}>x</button>
@@ -511,18 +636,41 @@ export default class CustomGrid extends Component {
                         </div>
                     </div>
                 </div>
-
-                <GridCustom
-                    key={this.props.key}
-                    cells={this.props.cells}
-                    data={this.state.rows}
-                    pageSize={this.props.pageSize}
-                    actions={this.props.actions}
-                    rowActions={this.props.rowActions}
-                    rowClick={cell => this.props.rowClick(cell)}
-                    groups={this.props.groups}
-                    showPicker={this.props.showPicker}
-                />
+                <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+                    <div className="minimizeSpan" >
+                        <div className="H-tableSize" data-toggle="tooltip" title="Minimize Rows" onClick={this.handleMinimize}>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                                <g fill="none" fillRule="evenodd" transform="translate(5 5)">
+                                    <g fill="#CCD2DB" mask="url(#b)">
+                                        <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div className="V-tableSize" data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                                <g fill="none" fillRule="evenodd" transform="translate(5 5)">
+                                    <g fill="#CCD2DB" mask="url(#b)">
+                                        <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    {this.state.GridLoading === false ?
+                        < GridCustom
+                            key={this.props.gridKey}
+                            cells={(this.state.columns).filter(i => i.hidden != true)}
+                            data={this.state.rows}
+                            pageSize={this.props.pageSize}
+                            actions={this.props.actions}
+                            rowActions={this.props.rowActions}
+                            rowClick={cell => this.props.rowClick(cell)}
+                            groups={this.state.groupsList}
+                            handleGroupUpdate={this.handleGroupEvent}
+                            showPicker={this.props.showPicker}
+                        /> : null}
+                </div>
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
                     <div className="grid__column--container">

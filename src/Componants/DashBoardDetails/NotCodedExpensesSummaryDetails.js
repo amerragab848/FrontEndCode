@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import moment from "moment";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetup";
-import { Filters } from "react-data-grid-addons";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -13,92 +11,65 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-
 class NotCodedExpensesSummaryDetails extends Component {
   constructor(props) {
     super(props);
-
-    var columnsGrid = [
+   this.columnGrid = [
       {
-        key: "description",
-        name: Resources["description"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: 'description',
+        title: Resources['description'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "expenseTypeName",
-        name: Resources["expenseType"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'expenseTypeName',
+        title: Resources['expenseType'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "total",
-        name: Resources["total"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'total',
+        title: Resources['total'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "number",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "unitRate",
-        name: Resources["unitRate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'unitRate',
+        title: Resources['unitRate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
       },
       {
-        key: "docDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
       }
     ];
-
     const filtersColumns = [
       {
         field: "description",
@@ -137,30 +108,22 @@ class NotCodedExpensesSummaryDetails extends Component {
         isCustom: true
       }
     ];
-
     this.state = {
       pageTitle: Resources["notCodedExpensesSummary"][currentLanguage],
       viewfilter: false,
-      columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
       isCustom: true
     };
   }
-
   componentDidMount() {
-
     this.props.actions.RouteToTemplate();
-
     const query = new URLSearchParams(this.props.location.search);
-
     let action = null;
-
     for (let param of query.entries()) {
       action = param[1];
     }
-
     if (action) {
       Api.get("GetNotCodedExpensesSummaryDetail?action=" + action).then(result => {
         this.setState({
@@ -179,13 +142,24 @@ class NotCodedExpensesSummaryDetails extends Component {
   }
 
   render() {
+    console.log("rows...",this.state.rows);
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+        <GridCustom
+        ref='custom-data-grid'
+        key="NotCodedExpensesSummaryDetails"
+        data={this.state.rows}
+        pageSize={this.state.rows.length}
+        groups={[]}
+        actions={[]}
+        rowActions={[]}
+        cells={this.columnGrid}
+        rowClick={() => {}}
+      />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
-      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columnGrid} fileName={this.state.pageTitle} />
       : <LoadingSection />;
 
     const ComponantFilter = this.state.isLoading === false ?
