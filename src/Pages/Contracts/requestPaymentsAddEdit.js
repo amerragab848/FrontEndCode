@@ -891,7 +891,7 @@ class requestPaymentsAddEdit extends Component {
         var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
 
         var currentGP = [
-            { field: 'itemStatus', title: 'itemStatus', type: "text" },
+            { field: 'wasAdded', title: 'status', type: "text" },
             { field: 'boqType', title: 'boqType', type: "text" },
             { field: 'secondLevel', title: 'boqTypeChild', type: "text" }
         ];
@@ -2253,6 +2253,7 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
+    
     handleDropAction(event) {
 
         switch (event.value) {
@@ -2320,6 +2321,7 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDown: event
         });
     };
+    
     viewConfirmDelete(id, type) {
         this.setState({
             currentId: id,
@@ -2327,9 +2329,11 @@ class requestPaymentsAddEdit extends Component {
             currentDocument: type
         });
     };
+    
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
+    
     clickHandlerContinueMain = () => {
         if (this.state.currentDocument === "deduction") {
             let id = this.state.currentId;
@@ -2409,6 +2413,7 @@ class requestPaymentsAddEdit extends Component {
             }
         }
     };
+    
     handleDropActionForExportFile = event => {
         let exportFile = "";
 
@@ -2449,6 +2454,7 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDownExport: event
         });
     };
+    
     updateActualPayments = () => {
         this.setState({ viewUpdatePayment: true });
 
@@ -2473,6 +2479,7 @@ class requestPaymentsAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     };
+    
     updatePayemtWithVariationOrderByAdmin = () => {
 
         this.setState({ viewUpdateCalc: true });
@@ -2492,6 +2499,7 @@ class requestPaymentsAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     };
+    
     addCostTree = () => {
 
         let costCodingId = this.state.selectedDropDownTrees.value;
@@ -2538,6 +2546,7 @@ class requestPaymentsAddEdit extends Component {
             toast.warn("Please Choose CostCodingTree");
         }
     };
+    
     handleDropTrees = event => {
         if (event == null) return;
 
@@ -2545,6 +2554,7 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDownTrees: event
         });
     };
+    
     renderEditableValue = cellInfo => {
         const trees = [...this.state.trees];
 
@@ -2564,6 +2574,7 @@ class requestPaymentsAddEdit extends Component {
             />
         );
     };
+    
     actionHandler = (key, e) => {
         let state = this.state;
 
@@ -2582,6 +2593,7 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({ state, trees: lastData });
     };
+    
     AddedItems = () => {
         if (this.state.trees.length > 0) {
             this.setState({ isLoading: true });
@@ -2656,9 +2668,11 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
+
     clickHandlerDeleteRows = rows => {
         this.viewConfirmDelete(rows, "requestItems");
     };
+
     editAdvancedPayment() {
         if (this.state.advancedPayment != 0) {
 
@@ -2676,6 +2690,7 @@ class requestPaymentsAddEdit extends Component {
             toast.warn("Please Write Value MoreZane Zero");
         }
     };
+
     renderingGrid() {
 
         const ItemsGrid = this.state.isLoadingItems === false && this.state.currentStep === 1 ? (

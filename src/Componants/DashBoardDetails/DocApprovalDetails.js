@@ -62,7 +62,7 @@ class DocApprovalDetails extends Component {
         fixed: false,
         width: 16,
         sortable: true,
-        type: "text"
+        type: "number"
       },
       {
         field: "arrange",
@@ -309,7 +309,7 @@ class DocApprovalDetails extends Component {
           setTimeout(() => {
             var tableRow = document.querySelectorAll('.grid-body  tr');
             for (let x = 0; x < tableRow.length; x++) {
-              if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
+              if (x === index){ tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead');}
             }
           }, 500);
         });
@@ -353,7 +353,7 @@ class DocApprovalDetails extends Component {
           setTimeout(() => {
             var tableRow = document.querySelectorAll('.grid-body  tr');
             for (let x = 0; x < tableRow.length; x++) {
-              if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.readStatus === true ? 'Read' : 'UnRead');
+              if (x === index) {tableRow[x].querySelector('.gridBtns.status ').classList.add(row.readStatus === true ? 'Read' : 'UnRead');}
             }
           }, 500);
         });

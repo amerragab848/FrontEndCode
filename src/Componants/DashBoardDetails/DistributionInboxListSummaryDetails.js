@@ -14,26 +14,7 @@ import * as communicationActions from "../../store/actions/communication";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const { SingleSelectFilter } = Filters;
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-const statusButton = ({ value, row }) => {
-  let doc_view = "";
-  if (row) {
-    if (row.status === true) {
-      doc_view = <div style={{ textAlign: 'center', margin: '4px auto', padding: '4px 10px', borderRadius: '26px', backgroundColor: '#5FD45F', width: '100%', color: '#fff', fontSize: '12px' }}>{Resources["read"][currentLanguage]}</div>
-    } else {
-      doc_view = <div style={{ textAlign: 'center', padding: '4px 10px', margin: '4px auto', borderRadius: '26px', backgroundColor: '#E74C3C', width: '100%', color: '#FFF', fontSize: '12px' }}>{Resources["unRead"][currentLanguage]}</div>
-    }
-    return doc_view;
-  }
-  return null;
-};
-
+  
 class DistributionInboxListSummaryDetails extends Component {
   constructor(props) {
     super(props);
@@ -80,8 +61,7 @@ class DistributionInboxListSummaryDetails extends Component {
     ];
 
     this.state = {
-      viewfilter: false,
-      // columns: columnsGrid,
+      viewfilter: false, 
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
@@ -156,6 +136,7 @@ class DistributionInboxListSummaryDetails extends Component {
     this.props.actions.RouteToTemplate();
 
     const query = new URLSearchParams(this.props.location.search);
+
     for (let param of query.entries()) {
       if (param[0] === "id") {
         id = param[1];
@@ -213,7 +194,7 @@ class DistributionInboxListSummaryDetails extends Component {
       });
       this.columnsGrid[0].field = 'statusText';
       if (action) {
-        Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + 200).then(result => {
+        Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + 1000).then(result => {
           if (result) {
             result.forEach((row, index) => {
               let spliteLink = row.docView.split('/');
@@ -247,35 +228,7 @@ class DistributionInboxListSummaryDetails extends Component {
       }
     }
   }
-
-  subjectLink = (row) => {
-    let doc_view = "";
-    let subject = "";
-    if (row) {
-
-      let spliteLink = row.docView.split('/');
-
-      let obj = {
-        docId: spliteLink[1],
-        projectId: row.projectId,
-        projectName: row.projectName,
-        arrange: row.arrange,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute: window.location.pathname + window.location.search
-      };
-
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-      doc_view = "/" + spliteLink[0] + "?id=" + encodedPaylod
-      subject = row.subject;
-
-      //row.href = doc_view
-      // return <a href={doc_view}> {subject} </a>;
-    }
-    return null;
-  };
-
+ 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
@@ -361,12 +314,12 @@ class DistributionInboxListSummaryDetails extends Component {
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
 
-    const ComponantFilter = this.state.isLoading === false ?
-      <Filter
-        filtersColumns={this.state.filtersColumns}
-        apiFilter={this.state.apiFilter}
-        filterMethod={this.filterMethodMain}
-      /> : <LoadingSection />;
+    // const ComponantFilter = this.state.isLoading === false ?
+    //   <Filter
+    //     filtersColumns={this.state.filtersColumns}
+    //     apiFilter={this.state.apiFilter}
+    //     filterMethod={this.filterMethodMain}
+    //   /> : <LoadingSection />;
 
 
     return (
