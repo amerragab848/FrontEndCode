@@ -14295,6 +14295,10 @@ h1, h2, h3, h4, h5 {
 .card-status .card-box .box-statue {
     text-align: center;
     position: relative;
+    min-height: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card-status .card-box .box-statue h5 {
