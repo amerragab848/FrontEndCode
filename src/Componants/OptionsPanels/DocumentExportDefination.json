@@ -2117,6 +2117,95 @@
             "ContactName"
         ]
     },
+    "72": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "comment",
+                "value": "comment",
+                "type": "S"
+            },
+            {
+                "name": "purchaseOrder",
+                "value": "purchaseOrderName",
+                "type": "S"
+            },
+            {
+                "name":"CompanyName",
+                "value":"companyName",
+                "type":"S"
+            },
+            {
+                "name":"BOQCostCoding",
+                "value":"boqName",
+                "type":"S"
+            },
+            {
+                "name":"costCodingTree",
+                "value":"costCodingTreeName",
+                "type":"S"
+            },
+            {
+"name":"collectedStatus",
+"value":"collectedStatus",
+"type":"S"
+            },
+            {
+                "name":"canceled",
+                "value":"cancelled",
+                "type":"S"
+            },
+            {
+                "name":"transactionTypeName",
+                "value":"transactionTypeTitle",
+                "type":"S"
+            },
+            {
+                "name":"approvalStatusName",
+                "value":"approvalStatusName",
+                "type":"S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "details",
+            "resourceCode",
+            "quantity",
+            "unitPrice",
+            "total",
+            "days",
+            "quantityComplete"
+        ],
+        "friendlyNames": [
+            "number",
+            "details",
+            "resourceCode",
+            "quantity",
+            "unitPrice",
+            "total",
+            "days",
+            "quantityComplete"
+        ]
+    },
     "114": {
         "fields": [
             {

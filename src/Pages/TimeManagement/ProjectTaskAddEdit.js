@@ -800,8 +800,8 @@ class ProjectTaskAddEdit extends Component {
                                 {Resources.taskActivity[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === true || this.state.document.suspeneded === "true" ? "checked" :null }
-                                  value="false" onChange={e => this.handleCheck(e, "suspeneded")} />
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspended === true || this.state.document.suspended === "true" ? "checked" :null }
+                                  value="false" onChange={e => this.handleCheck(e, "suspended")} />
                                 <label>
                                   {Resources.suspeneded[currentLanguage]}
                                 </label>
