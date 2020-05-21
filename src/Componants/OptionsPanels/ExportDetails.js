@@ -812,7 +812,7 @@ class ExportDetails extends Component {
                         <h5 className="zero">
                           <img style={{ margin: '0 3px' }} src={cycle.statusVal == null ? pending : cycle.statusVal === true ? approval : declined} />
                           {cycle.status}</h5>
-                        <p>{moment(cycle.creationDate).format('DD-MM-YYYY')}</p>
+                        <p>{moment(cycle.date).format('DD-MM-YYYY')}</p>
                       </div>
                     </div>
                   </div>
