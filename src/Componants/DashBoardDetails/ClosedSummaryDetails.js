@@ -1,58 +1,24 @@
+import CryptoJS from 'crypto-js';
+import moment from "moment";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
 import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export";
-import Filter from "../FilterComponent/filterComponent";
-
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-import { Filters } from "react-data-grid-addons";
-import moment from "moment";
 import Resources from "../../resources.json";
-import CryptoJS from 'crypto-js';
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
+import Filter from "../FilterComponent/filterComponent";
+import Export from "../OptionsPanels/Export";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
-
-const subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.docId,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
-
+ 
 
 class ClosedSummaryDetails extends Component {
   constructor(props) {
@@ -180,14 +146,8 @@ class ClosedSummaryDetails extends Component {
     }
 
     if (action) {
-      Api.get(
-        "SelectDocTypeByProjectIdClosedByAction?action=" +
-        action +
-        "&pageNumber=" +
-        0
-      ).then(result => {
-        result.forEach((row) => {
-          // let spliteLink = row.docLink.split('/');
+      Api.get("SelectDocTypeByProjectIdClosedByAction?action=" + action + "&pageNumber=" + 0).then(result => {
+        result.forEach((row) => { 
 
           let obj = {
             docId: row.docId,

@@ -891,7 +891,7 @@ class requestPaymentsAddEdit extends Component {
         var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
 
         var currentGP = [
-            { field: 'itemStatus', title: 'itemStatus', type: "text" },
+            { field: 'wasAdded', title: 'status', type: "text" },
             { field: 'boqType', title: 'boqType', type: "text" },
             { field: 'secondLevel', title: 'boqTypeChild', type: "text" }
         ];
@@ -1228,7 +1228,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoadingItems: true
             });
 
-            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" +
                 this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
                     this.setState({
@@ -1355,7 +1355,7 @@ class requestPaymentsAddEdit extends Component {
 
             if (paymentsItems.length === 0) {
                 this.setState({ isLoadingItems: true });
-                dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
                     this.setState({
                         paymentsItems: result != null ? result : [],
@@ -2253,6 +2253,7 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
+
     handleDropAction(event) {
 
         switch (event.value) {
@@ -2320,6 +2321,7 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDown: event
         });
     };
+
     viewConfirmDelete(id, type) {
         this.setState({
             currentId: id,
@@ -2327,9 +2329,11 @@ class requestPaymentsAddEdit extends Component {
             currentDocument: type
         });
     };
+
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
+
     clickHandlerContinueMain = () => {
         if (this.state.currentDocument === "deduction") {
             let id = this.state.currentId;
@@ -2409,6 +2413,7 @@ class requestPaymentsAddEdit extends Component {
             }
         }
     };
+
     handleDropActionForExportFile = event => {
         let exportFile = "";
 
@@ -2449,6 +2454,7 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDownExport: event
         });
     };
+
     updateActualPayments = () => {
         this.setState({ viewUpdatePayment: true });
 
@@ -2473,6 +2479,7 @@ class requestPaymentsAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     };
+
     updatePayemtWithVariationOrderByAdmin = () => {
 
         this.setState({ viewUpdateCalc: true });
@@ -2492,6 +2499,7 @@ class requestPaymentsAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     };
+
     addCostTree = () => {
 
         let costCodingId = this.state.selectedDropDownTrees.value;
@@ -2538,6 +2546,7 @@ class requestPaymentsAddEdit extends Component {
             toast.warn("Please Choose CostCodingTree");
         }
     };
+
     handleDropTrees = event => {
         if (event == null) return;
 
@@ -2545,6 +2554,7 @@ class requestPaymentsAddEdit extends Component {
             selectedDropDownTrees: event
         });
     };
+
     renderEditableValue = cellInfo => {
         const trees = [...this.state.trees];
 
@@ -2564,6 +2574,7 @@ class requestPaymentsAddEdit extends Component {
             />
         );
     };
+
     actionHandler = (key, e) => {
         let state = this.state;
 
@@ -2582,6 +2593,7 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({ state, trees: lastData });
     };
+
     AddedItems = () => {
         if (this.state.trees.length > 0) {
             this.setState({ isLoading: true });
@@ -2613,7 +2625,7 @@ class requestPaymentsAddEdit extends Component {
 
             let oldRows = [...this.state.paymentsItems];
 
-            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
                 const newRows = [...this.state.paymentsItems, ...result];
 
@@ -2641,7 +2653,7 @@ class requestPaymentsAddEdit extends Component {
 
             let oldRows = [...this.state.paymentsItems];
 
-            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 const newRows = [...this.state.paymentsItems, ...result];
 
                 this.setState({
@@ -2656,9 +2668,11 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
+
     clickHandlerDeleteRows = rows => {
         this.viewConfirmDelete(rows, "requestItems");
     };
+
     editAdvancedPayment() {
         if (this.state.advancedPayment != 0) {
 
@@ -2676,6 +2690,7 @@ class requestPaymentsAddEdit extends Component {
             toast.warn("Please Write Value MoreZane Zero");
         }
     };
+
     renderingGrid() {
 
         const ItemsGrid = this.state.isLoadingItems === false && this.state.currentStep === 1 ? (
@@ -3027,7 +3042,7 @@ class requestPaymentsAddEdit extends Component {
                 </header>
                 {btnExportApprovedInvoices}
                 <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
-                    <table className="attachmentTable " key="summaryOfApprovedInvoices">
+                    <table className="attachmentTable attachmentTableAuto" key="summaryOfApprovedInvoices">
                         <thead>
                             <tr>
                                 <th width="15%">
@@ -3042,7 +3057,7 @@ class requestPaymentsAddEdit extends Component {
                                         </div>
                                     </th>
                                 ))}
-                                <th width="10%">
+                                <th>
                                     <div className="headCell">
                                         {Resources["total"][currentLanguage]}
                                     </div>

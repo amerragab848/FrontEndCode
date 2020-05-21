@@ -108,6 +108,7 @@ class SendByEmails extends Component {
 
   SendEmailHandler = (values, { resetForm }) => {
     var emailObj = { ...this.state.emailObj };
+    emailObj.docLink = window.location.href;
     this.setState({
       isLoading: true
     })

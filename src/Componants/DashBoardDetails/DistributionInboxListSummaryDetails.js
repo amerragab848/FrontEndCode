@@ -14,26 +14,7 @@ import * as communicationActions from "../../store/actions/communication";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const { SingleSelectFilter } = Filters;
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-const statusButton = ({ value, row }) => {
-  let doc_view = "";
-  if (row) {
-    if (row.status === true) {
-      doc_view = <div style={{ textAlign: 'center', margin: '4px auto', padding: '4px 10px', borderRadius: '26px', backgroundColor: '#5FD45F', width: '100%', color: '#fff', fontSize: '12px' }}>{Resources["read"][currentLanguage]}</div>
-    } else {
-      doc_view = <div style={{ textAlign: 'center', padding: '4px 10px', margin: '4px auto', borderRadius: '26px', backgroundColor: '#E74C3C', width: '100%', color: '#FFF', fontSize: '12px' }}>{Resources["unRead"][currentLanguage]}</div>
-    }
-    return doc_view;
-  }
-  return null;
-};
-
+  
 class DistributionInboxListSummaryDetails extends Component {
   constructor(props) {
     super(props);
@@ -80,14 +61,17 @@ class DistributionInboxListSummaryDetails extends Component {
     ];
 
     this.state = {
-      viewfilter: false,
-      // columns: columnsGrid,
+      viewfilter: false, 
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
       isCustom: true,
       pageTitle: "",
-      apiFilter: ""
+      apiFilter: "",
+      pageSize: 5,
+      pageNumber: 0,
+      totalRows: 0,
+      action:null
     };
 
     this.columnsGrid = [
@@ -148,7 +132,61 @@ class DistributionInboxListSummaryDetails extends Component {
       }
     ];
   }
+  GetNextData() {
+    let pageNumber = this.state.pageNumber + 1;
 
+    this.setState({
+      isLoading: true,
+      pageNumber: pageNumber
+    });
+    let url = "GetDocApprovalDetailsDistributionList?action="+ this.state.action  + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+     Api.get(url).then(result => {
+      let oldRows = this.state.rows;
+      const newRows = [...oldRows, ...result.data]; // arr3 ==> [1,2,3,3,4,5]
+      this.setState({
+        rows: newRows,
+        totalRows: newRows.length,
+        pageSize: this.state.pageSize,
+        isLoading: false
+      });
+    }).catch(ex => {
+      let oldRows = this.state.rows;
+      this.setState({
+        rows: oldRows,
+        isLoading: false
+      });
+    });;
+  }
+
+  GetPrevoiusData() {
+    let pageNumber = this.state.pageNumber - 1;
+    let pageSize = this.state.pageSize;
+
+    this.setState({
+      isLoading: true,
+      pageNumber: pageNumber
+    });
+
+    let url = "GetDocApprovalDetailsDistributionList?action="+ this.state.action  + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+
+    Api.get(url).then(result => {
+      let oldRows = [];// this.state.rows;
+      const newRows = [...oldRows, ...result.data];
+
+      this.setState({
+        rows: newRows,
+        totalRows: newRows.length,
+        pageSize: pageSize,
+        isLoading: false
+      });
+    }).catch(ex => {
+      let oldRows = this.state.rows;
+      this.setState({
+        rows: oldRows,
+        isLoading: false
+      });
+    });;
+  }
   componentDidMount() {
     let id = null;
     let action = null;
@@ -156,6 +194,7 @@ class DistributionInboxListSummaryDetails extends Component {
     this.props.actions.RouteToTemplate();
 
     const query = new URLSearchParams(this.props.location.search);
+
     for (let param of query.entries()) {
       if (param[0] === "id") {
         id = param[1];
@@ -167,14 +206,15 @@ class DistributionInboxListSummaryDetails extends Component {
 
     if (id === "0") {
       this.setState({
-        pageTitle: Resources["inboxSummary"][currentLanguage]
+        pageTitle: Resources["inboxSummary"][currentLanguage],
+        action:action
       });
 
       this.columnsGrid[0].field = 'readUnread';
       if (action) {
         Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
           if (result) {
-            result.forEach((row, index) => {
+            result.data.forEach((row, index) => {
               let doc_view = "";
               let subject = "";
               let spliteLink = row.docView.split('/');
@@ -202,20 +242,22 @@ class DistributionInboxListSummaryDetails extends Component {
             });
           }
           this.setState({
-            rows: result,
+            rows: result.data,
+            totalRows: result.total,
             isLoading: false
           });
         })
       }
     } else {
       this.setState({
-        pageTitle: Resources["distributionSummary"][currentLanguage]
+        pageTitle: Resources["distributionSummary"][currentLanguage],
+        action:action
       });
       this.columnsGrid[0].field = 'statusText';
       if (action) {
-        Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + 200).then(result => {
+        Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + this.state.pageSize).then(result => {
           if (result) {
-            result.forEach((row, index) => {
+            result.data.forEach((row, index) => {
               let spliteLink = row.docView.split('/');
 
               let obj = {
@@ -240,42 +282,15 @@ class DistributionInboxListSummaryDetails extends Component {
             });
           }
           this.setState({
-            rows: result != null ? result : [],
+            rows: result != null ? result.data : [],
+            totalRows: result.total,
             isLoading: false
           });
         });
       }
     }
   }
-
-  subjectLink = (row) => {
-    let doc_view = "";
-    let subject = "";
-    if (row) {
-
-      let spliteLink = row.docView.split('/');
-
-      let obj = {
-        docId: spliteLink[1],
-        projectId: row.projectId,
-        projectName: row.projectName,
-        arrange: row.arrange,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute: window.location.pathname + window.location.search
-      };
-
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-      doc_view = "/" + spliteLink[0] + "?id=" + encodedPaylod
-      subject = row.subject;
-
-      //row.href = doc_view
-      // return <a href={doc_view}> {subject} </a>;
-    }
-    return null;
-  };
-
+ 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
@@ -361,12 +376,12 @@ class DistributionInboxListSummaryDetails extends Component {
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
 
-    const ComponantFilter = this.state.isLoading === false ?
-      <Filter
-        filtersColumns={this.state.filtersColumns}
-        apiFilter={this.state.apiFilter}
-        filterMethod={this.filterMethodMain}
-      /> : <LoadingSection />;
+    // const ComponantFilter = this.state.isLoading === false ?
+    //   <Filter
+    //     filtersColumns={this.state.filtersColumns}
+    //     apiFilter={this.state.apiFilter}
+    //     filterMethod={this.filterMethodMain}
+    //   /> : <LoadingSection />;
 
 
     return (
@@ -376,11 +391,28 @@ class DistributionInboxListSummaryDetails extends Component {
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
           </div>
+
           <div className="filterBTNS">
             {btnExport}
           </div>
+
           <div className="rowsPaginations readOnly__disabled">
-            <div className="linebylineInput valid-input">
+            <div className="rowsPagiRange">
+              <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -
+                <span>
+                {this.state.pageSize * this.state.pageNumber + this.state.pageSize}
+              </span>
+              {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
+              <span> {this.state.totalRows}</span>
+            </div>
+            <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
+            <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+              <i className="angle right icon" />
+            </button>
+          </div>
+        </div>
+        <div style={{display: 'flex', paddingLeft: '24px'}}>
+<div className="linebylineInput valid-input">
               <label className="control-label"> {Resources.totalDocs[currentLanguage]} </label>
               <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
                 <input type="text" className="form-control" id="totalDocs" value={this.state.rows.length} readOnly name="totalDocs"
@@ -394,8 +426,7 @@ class DistributionInboxListSummaryDetails extends Component {
                   readOnly name="readedDocs" placeholder={Resources.readedDocs[currentLanguage]} />
               </div>
             </div>
-          </div>
-        </div>
+</div>
         <div>{dataGrid}</div>
       </div>
     );

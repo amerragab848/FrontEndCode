@@ -358,6 +358,8 @@ class CommonLog extends Component {
           });
         } else {
           this.setState({
+            rows: [],
+            totalRows: 0,
             isLoading: false
           });
         }
