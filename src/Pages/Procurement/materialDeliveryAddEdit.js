@@ -318,13 +318,27 @@ class materialDeliveryAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice
-            .GetDataListCached(
+        dataservice.GetDataListCached(
                 "GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId,
                 "companyName",
                 "companyId", 'companies', this.state.projectId, "projectId"
             )
             .then(result => {
+                if (isEdit) {
+                    let id = this.props.document.contractId;
+                    let selectedValue = {};
+                    if (id) {
+                        selectedValue = find(result, function (i) {
+                            return i.value === id;
+                        });
+                        // this.setState({ selectedContractId: selectedValue });
+                    }
+                }
+                // this.setState({ contractPoData: [...result] });
+            });
+
+            dataservice.GetDataList(
+                "GetPoContractForList?projectId= " + this.state.projectId,"subject","id").then(result => {
                 if (isEdit) {
                     let id = this.props.document.contractId;
                     let selectedValue = {};

@@ -296,7 +296,6 @@ class budgetCashFlow extends Component {
     };
 
     DeleteItem = (selectedRows) => {
-
         this.setState({
             showDeleteModal: true,
             selectedRows: selectedRows

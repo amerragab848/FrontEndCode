@@ -594,9 +594,6 @@ class invoicesForPoAddEdit extends Component {
     }
 
     OnBlurTaxesValue = (e, index) => {
-    }
-
-    HandleChangeTaxesValue = (e, index) => {
         let data = this.state.InvoicesItems
         let element = data[index]
         let quantityComplete = data[index]['minQnty']
@@ -604,18 +601,48 @@ class invoicesForPoAddEdit extends Component {
         let maxQnty = data[index]['maxQnty']
         let value = parseInt(e.target.value)
         if (value > maxQnty) {
-            e.target.value = quantityComplete
+            // e.target.value = quantityComplete
+            toast.warn("value can not be more than "+maxQnty);
         }
         else if (value < minQnty) {
-            e.target.value = quantityComplete
-        }
-        else {
-            if (e.target.value === '') {
-                e.target.value = quantityComplete
-            }
-            data[index]['quantityComplete'] = e.target.value
+            // e.target.value = quantityComplete
+            toast.warn("value can not be less than "+minQnty);
+        }else{
+   Api.post("EditContractsInvoicesForPoItems",element).then(res=>{
+       toast.success(Resources.operationSuccess[currentLanguage])
+       let data=this.state.InvoicesItems;
+       data.splice(index,1,res);
+
+            this.setState({
+                InvoicesItems:data
+            })
+        })
+    }
+    }
+
+    HandleChangeTaxesValue = (e, index) => {
+         let data = this.state.InvoicesItems
+        // let element = data[index]
+        // let quantityComplete = data[index]['minQnty']
+        // let minQnty = data[index]['minQnty']
+        // let maxQnty = data[index]['maxQnty']
+        // let value = parseInt(e.target.value)
+        // if (value > maxQnty) {
+        //     e.target.value = quantityComplete
+        // }
+        // else if (value < minQnty) {
+        //     e.target.value = quantityComplete
+        // }
+        // else {
+        //     if (e.target.value === '') {
+        //         e.target.value = quantityComplete
+        //     }
+        //     data[index]['quantityComplete'] = e.target.value
+        //     this.setState({ InvoicesItems: data })
+        // }
+           data[index]['quantityComplete'] = e.target.value
             this.setState({ InvoicesItems: data })
-        }
+            
     }
 
     EditDeduction = (obj) => {
