@@ -68,13 +68,24 @@ class DistributionInboxListSummaryDetails extends Component {
       isCustom: true,
       pageTitle: "",
       apiFilter: "",
-      pageSize: 5,
+      pageSize: 500,
       pageNumber: 0,
       totalRows: 0,
       action:null
     };
-
+    this.actions = [
+      {
+        title: 'updateStatus',
+        handleClick: value => {
+          if (value.status !== true) {
+            Api.get("UpdateStatusInbox?id=" + value.id);
+          }
+        },
+        classes: '',
+      }
+    ];
     this.columnsGrid = [
+      //{ title: '', type: 'check-box', fixed: true, field: 'id', hidden: false }, 
       {
         title: Resources['statusName'][currentLanguage],
         width: 10,
@@ -364,8 +375,8 @@ class DistributionInboxListSummaryDetails extends Component {
           key="ClosedSummaryDetails"
           data={this.state.rows}
           pageSize={this.state.rows.length}
-          groups={[]}
-          actions={[]}
+          groups={[]} 
+          actions={[]} 
           rowActions={[]}
           cells={this.columnsGrid}
           rowClick={(cell) => { this.onRowClick(cell) }}
