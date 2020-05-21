@@ -14,7 +14,8 @@ import * as communicationActions from "../../store/actions/communication";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-  
+
+const find = require("lodash/find");
 class DistributionInboxListSummaryDetails extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +62,7 @@ class DistributionInboxListSummaryDetails extends Component {
     ];
 
     this.state = {
-      viewfilter: false, 
+      viewfilter: false,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
@@ -71,22 +72,36 @@ class DistributionInboxListSummaryDetails extends Component {
       pageSize: 500,
       pageNumber: 0,
       totalRows: 0,
-      action:null
+      action: null
     };
     this.actions = [
       {
-        title: 'updateStatus',
-        handleClick: value => {
-          if (value.status !== true) {
-            Api.get("UpdateStatusInbox?id=" + value.id);
-          }
+        title: 'Update',
+        handleClick: values => {
+ 
+          this.setState({
+            isLoading: true 
+          });
+
+          values.forEach((row) => {  
+            let item = find(this.state.rows, function (x) {
+              return x.id == row;
+           }); 
+            if (item.status !== true) {
+              Api.get("UpdateStatusInbox?id=" + row);
+            } 
+            this.setState({
+              isLoading: false 
+            });
+          });
         },
         classes: '',
       }
     ];
     this.columnsGrid = [
-      //{ title: '', type: 'check-box', fixed: true, field: 'id', hidden: false }, 
+      { field: 'id', title: '', type: 'check-box', fixed: true, hidden: false },
       {
+
         title: Resources['statusName'][currentLanguage],
         width: 10,
         groupable: true,
@@ -98,7 +113,7 @@ class DistributionInboxListSummaryDetails extends Component {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
         width: 20,
-        fixed: true,
+        fixed: false,
         groupable: true,
         type: "text",
         sortable: true,
@@ -150,8 +165,8 @@ class DistributionInboxListSummaryDetails extends Component {
       isLoading: true,
       pageNumber: pageNumber
     });
-    let url = "GetDocApprovalDetailsDistributionList?action="+ this.state.action  + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
-     Api.get(url).then(result => {
+    let url = "GetDocApprovalDetailsDistributionList?action=" + this.state.action + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+    Api.get(url).then(result => {
       let oldRows = this.state.rows;
       const newRows = [...oldRows, ...result.data]; // arr3 ==> [1,2,3,3,4,5]
       this.setState({
@@ -178,7 +193,7 @@ class DistributionInboxListSummaryDetails extends Component {
       pageNumber: pageNumber
     });
 
-    let url = "GetDocApprovalDetailsDistributionList?action="+ this.state.action  + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
+    let url = "GetDocApprovalDetailsDistributionList?action=" + this.state.action + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
 
     Api.get(url).then(result => {
       let oldRows = [];// this.state.rows;
@@ -218,7 +233,7 @@ class DistributionInboxListSummaryDetails extends Component {
     if (id === "0") {
       this.setState({
         pageTitle: Resources["inboxSummary"][currentLanguage],
-        action:action
+        action: action
       });
 
       this.columnsGrid[0].field = 'readUnread';
@@ -262,9 +277,9 @@ class DistributionInboxListSummaryDetails extends Component {
     } else {
       this.setState({
         pageTitle: Resources["distributionSummary"][currentLanguage],
-        action:action
+        action: action
       });
-      this.columnsGrid[0].field = 'statusText';
+      this.columnsGrid[1].field = 'statusText';
       if (action) {
         Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + this.state.pageSize).then(result => {
           if (result) {
@@ -301,7 +316,7 @@ class DistributionInboxListSummaryDetails extends Component {
       }
     }
   }
- 
+
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
@@ -375,8 +390,8 @@ class DistributionInboxListSummaryDetails extends Component {
           key="ClosedSummaryDetails"
           data={this.state.rows}
           pageSize={this.state.rows.length}
-          groups={[]} 
-          actions={[]} 
+          groups={[]}
+          actions={this.actions}
           rowActions={[]}
           cells={this.columnsGrid}
           rowClick={(cell) => { this.onRowClick(cell) }}
@@ -422,22 +437,22 @@ class DistributionInboxListSummaryDetails extends Component {
             </button>
           </div>
         </div>
-        <div style={{display: 'flex', paddingLeft: '24px'}}>
-<div className="linebylineInput valid-input">
-              <label className="control-label"> {Resources.totalDocs[currentLanguage]} </label>
-              <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
-                <input type="text" className="form-control" id="totalDocs" value={this.state.rows.length} readOnly name="totalDocs"
-                  placeholder={Resources.totalDocs[currentLanguage]} />
-              </div>
+        <div style={{ display: 'flex', paddingLeft: '24px' }}>
+          <div className="linebylineInput valid-input">
+            <label className="control-label"> {Resources.totalDocs[currentLanguage]} </label>
+            <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
+              <input type="text" className="form-control" id="totalDocs" value={this.state.rows.length} readOnly name="totalDocs"
+                placeholder={Resources.totalDocs[currentLanguage]} />
             </div>
-            <div className="linebylineInput valid-input">
-              <label className="control-label"> {Resources.readedDocs[currentLanguage]} </label>
-              <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
-                <input type="text" className="form-control" id="readedDocs" value={this.state.rows.filter(x => x.status === true).length}
-                  readOnly name="readedDocs" placeholder={Resources.readedDocs[currentLanguage]} />
-              </div>
+          </div>
+          <div className="linebylineInput valid-input">
+            <label className="control-label"> {Resources.readedDocs[currentLanguage]} </label>
+            <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
+              <input type="text" className="form-control" id="readedDocs" value={this.state.rows.filter(x => x.status === true).length}
+                readOnly name="readedDocs" placeholder={Resources.readedDocs[currentLanguage]} />
             </div>
-</div>
+          </div>
+        </div>
         <div>{dataGrid}</div>
       </div>
     );
