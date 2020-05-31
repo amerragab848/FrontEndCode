@@ -3045,7 +3045,7 @@ class requestPaymentsAddEdit extends Component {
                     <table className="attachmentTable attachmentTableAuto" key="summaryOfApprovedInvoices">
                         <thead>
                             <tr>
-                                <th width="15%">
+                                <th>
                                     <div className="headCell">
                                         {Resources["JobBuilding"][currentLanguage]}
                                     </div>
