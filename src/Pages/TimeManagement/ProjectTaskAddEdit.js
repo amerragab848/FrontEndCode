@@ -795,25 +795,27 @@ class ProjectTaskAddEdit extends Component {
                                 </div>
                               </div>
                             </div>
+                       
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.taskActivity[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspended === true || this.state.document.suspended === "true" ? "checked" :null }
-                                  value="false" onChange={e => this.handleCheck(e, "suspended")} />
-                                <label>
-                                  {Resources.suspeneded[currentLanguage]}
-                                </label>
-                              </div>
-                              <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.isTransfer === true || this.state.document.isTransfer === "true" ? "checked" : null}
-                                  value="true" onChange={e => this.handleCheck(e, "isTransfer")} />
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspended === false ? null : "checked"} value="true"
+                                  onChange={e => this.handleChange(e, "suspended")} />
                                 <label>
                                   {Resources.resumed[currentLanguage]}
                                 </label>
                               </div>
+                              <div className="ui checkbox radio radioBoxBlue">
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspended === false ? "checked" : null} value="false"
+                                  onChange={e => this.handleChange(e, "suspended")} />
+                                <label>
+                                  {Resources.suspeneded[currentLanguage]}
+                                </label>
+                              </div>
                             </div>
+ 
                           </div>
                           <div className="slider-Btns">
                             {this.state.isLoading ?

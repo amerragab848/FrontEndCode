@@ -57,7 +57,7 @@ class LateTimeSheetAddEdit extends Component {
         this.setState({
             selectedDate: today
         })
-        dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "id").then(result => {
+        dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "projectId").then(result => {
             this.setState({ projects: [...result] })
         });
         dataservice.GetDataList("GetAccountsDefaultList?listType=country&pageNumber=0&pageSize=10000", "title", "id").then(result => {
