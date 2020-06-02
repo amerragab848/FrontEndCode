@@ -1037,7 +1037,7 @@ class materialRequestAddEdit extends Component {
                         {Resources.save[currentLanguage]}
                     </button>
                 );
-            } else if (this.state.docId > 0 && this.props.changeStatus === false) {
+            } else if (this.state.docId > 0 && this.props.changeStatus === true) {
                 btn = (
                     <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
                         {Resources.next[currentLanguage]}
@@ -2161,7 +2161,7 @@ class materialRequestAddEdit extends Component {
                     link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/SiteRequest.xlsx"}
                     header="addManyItems"
                     disabled={this.state.isViewMode}
-                    afterUpload={() => this.GetBoqItemsStracture()}
+                    afterUpload={() => this.GetBoqItemsStracture(this.props.document.boqId)}
                 /> : null}
                 <div class="submittalFilter">
                     <div class="subFilter">

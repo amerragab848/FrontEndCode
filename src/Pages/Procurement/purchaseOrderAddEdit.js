@@ -11,6 +11,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import TextEditor from "../../Componants/OptionsPanels/TextEditor";
 import dataservice from "../../Dataservice";
+import Api from "../../api";
 import * as communicationActions from "../../store/actions/communication";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
@@ -674,7 +675,27 @@ class PurchaseOrderAddEdit extends Component {
             [selectedValue]: event
         });
     }
-
+    changeItemDropDownDetails(event) {
+        let original_document = { ...this.state.purchaseOrderItems };
+        let updated_document = {};
+        updated_document.details = event.label;
+        updated_document.resourceCode = event.resourceCode;
+        updated_document.unit = event.unit;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            purchaseOrderItems: updated_document,
+        });
+    }
+    changeItemDropDownItemType(event) {
+        let original_document = { ...this.state.purchaseOrderItems };
+        let updated_document = {};
+        updated_document.itemType = event.value;
+        updated_document.action = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            purchaseOrderItems: updated_document,
+        });
+    }
     handleChangeDropDownItems(
         event,
         field,
@@ -704,7 +725,11 @@ class PurchaseOrderAddEdit extends Component {
             [selectedValue]: event
         });
     }
-
+    getcontractsBoqItems(e){
+        Api.get(`getContractsBoqItemsBySpecsId?boqId=${this.state.selectedBoq.value}&specsId=${e.value}`).then(result=>{
+            this.setState({BoqData:result})
+        })
+    }
     handleChangeDropDownItemsForBoq(
         event,
         field,
@@ -716,33 +741,31 @@ class PurchaseOrderAddEdit extends Component {
         subDatasource
     ) {
         if (event == null) return;
-
         if (field === "specsId") {
             specsId = event.value;
         } else if (field === "boqId") {
             boqId = event.value;
         }
 
-        if (boqId != "" && specsId != "") {
-            dataservice
-                .GetDataGrid(
-                    "GetContractsBoqItemsBySpecsId?boqId=" +
-                    boqId +
-                    "&specsId=" +
-                    specsId
-                )
-                .then(result => {
-                    result.map(item => {
-                        item.orderType = "PurchaseOrder";
-                        return null;
-                    });
+        // if (boqId != "" && specsId != "") {
+        //     dataservice
+        //         .GetDataGrid(
+        //             "GetContractsBoqItemsBySpecsId?boqId=" +
+        //             boqId +
+        //             "&specsId=" +
+        //             specsId
+        //         )
+        //         .then(result => {
+        //             result.map(item => {
+        //                 item.orderType = "PurchaseOrder";
+        //                 return null;
+        //             });
 
-                    this.setState({
-                        BoqData: result
-                    });
-                });
-        }
-
+        //             this.setState({
+        //                 BoqData: result
+        //             });
+        //         });
+        // }
         this.setState({
             [selectedValue]: event
         });
@@ -849,24 +872,33 @@ class PurchaseOrderAddEdit extends Component {
                 }
             });
 
-        dataservice
-            .GetDataList(
-                "GetDescriptionForDrop?projectId=" + projectId,
-                "description",
-                "id"
-            )
-            .then(result => {
-                this.setState({
-                    descriptions: result
-                });
+        // dataservice.GetDataList("GetDescriptionForDrop?projectId=" + projectId,"description","id")
+        //      .then(result => {
+        //         this.setState({
+        //             descriptions: result
+        //         });
+        //     });
+        Api.get("GetDescriptionForDrop?projectId=" + projectId).then(result => {
+            let data = [];
+            result.forEach(item => {
+                let obj = {};
+                obj.label = item.resourceDes;
+                obj.value = item.id;
+                obj.resourceCode = item.resourceCode;
+                obj.unit = item.unit;
+                data.push(obj);
+            })
+            this.setState({
+                descriptions: data
             });
+        })
 
         dataservice
             .GetDataListCached(
                 "GetAccountsDefaultListForList?listType=estimationitemtype",
                 "title",
                 "action",
-                 'defaultLists', "estimationitemtype", "listType"
+                'defaultLists', "estimationitemtype", "listType"
             )
             .then(result => {
                 this.setState({
@@ -878,7 +910,7 @@ class PurchaseOrderAddEdit extends Component {
             .GetDataListCached(
                 "GetAccountsDefaultListForList?listType=specssection",
                 "title",
-                "id",'defaultLists', "specssection", "listType"
+                "id", 'defaultLists', "specssection", "listType"
             )
             .then(result => {
                 this.setState({
@@ -890,7 +922,7 @@ class PurchaseOrderAddEdit extends Component {
             .GetDataListCached(
                 "GetAccountsDefaultListForList?listType=equipmentType",
                 "title",
-                "id",'defaultLists', "equipmentType", "listType"
+                "id", 'defaultLists', "equipmentType", "listType"
             )
             .then(result => {
                 this.setState({
@@ -902,7 +934,7 @@ class PurchaseOrderAddEdit extends Component {
             .GetDataListCached(
                 "GetAccountsDefaultListForList?listType=unit",
                 "title",
-                "id",'defaultLists', "unit", "listType"
+                "id", 'defaultLists', "unit", "listType"
             )
             .then(result => {
                 this.setState({
@@ -1134,6 +1166,7 @@ class PurchaseOrderAddEdit extends Component {
                                             "selectedDescription",
                                             ""
                                         );
+                                        this.changeItemDropDownDetails(event);
                                     }}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
@@ -1279,6 +1312,7 @@ class PurchaseOrderAddEdit extends Component {
                                         "selectedItemType",
                                         ""
                                     );
+                                    this.changeItemDropDownItemType(event);
                                 }}
                                 onChange={setFieldValue}
                                 onBlur={setFieldTouched}
@@ -1754,6 +1788,7 @@ class PurchaseOrderAddEdit extends Component {
                                                 "selectedItemType",
                                                 ""
                                             );
+                                            this.changeItemDropDownItemType(event);
                                         }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
@@ -2033,7 +2068,7 @@ class PurchaseOrderAddEdit extends Component {
                                 readOnly
                                 value={this.state.document.arrange}
                                 placeholder={Resources.arrange[currentLanguage]}
-                                onChange={e => this.handleChange(e, "arrange")}
+                                onChange={(e) => {this.handleChange(e, "arrange")}}
                                 onBlur={e => {
                                     handleChange(e);
                                     handleBlur(e);
@@ -2060,6 +2095,7 @@ class PurchaseOrderAddEdit extends Component {
                                 "selectedSpecssection",
                                 ""
                             );
+                            this.getcontractsBoqItems(event);
                         }}
                         onChange={setFieldValue}
                         onBlur={setFieldTouched}
@@ -2162,29 +2198,38 @@ class PurchaseOrderAddEdit extends Component {
                     );
                 });
         } else {
-            dataservice
-                .addObject(
-                    "AddMultipleContractsOrderForPo?docId=" + this.state.docId,
-                    this.state.itemBoq
-                )
-                .then(result => {
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
+           let arr = this.state.BoqData.filter(x=>x.quantity > 0);
+           let finalArray=[];
+           arr.forEach(item=>{
+               let obj={};
+               obj.purchaseId=this.state.docId;
+               obj.docId=this.state.docId;
+               obj.itemType=item.itemType;
+               obj.details=item.details;
+               obj.unitPrice=item.unitPrice;
+               obj.quantity=item.quantity;
+               obj.resourceCode=item.resourceCode;
+               obj.arrange=item.arrange;
+               obj.itemCode=item.itemCode;
+               obj.dueBack=moment(item.dueBack,"YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+               item.days==null?obj.days=1:obj.days=item.days;
+               finalArray.push(obj);
+           })
+           this.setState({itemBoq:finalArray})
+           if(finalArray.length > 0){
+            dataservice.addObject("AddMultipleContractsOrderForPo?docId=" + this.state.docId,finalArray
+                ).then(result => {toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.setState({
                         purchaseOrderDataItems: result,
                         isLoading: false
                     });
-                })
-                .catch(ex => {
-                    this.setState({
-                        isLoading: false
-                    });
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                            .successTitle
-                    );
+                }).catch(ex => {
+                    this.setState({isLoading: false});
+                    toast.error(Resources["operationCanceled"][currentLanguage].successTitle);
                 });
+            }else{
+                toast.error("There are no contracts in this boq and specification");
+            }
         }
     };
 

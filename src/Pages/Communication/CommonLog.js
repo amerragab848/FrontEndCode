@@ -132,11 +132,8 @@ class CommonLog extends Component {
   };
 
   addRecord() {
-
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
-
       let addView = this.state.routeAddEdit;
-
       let obj = {
         docId: 0,
         projectId: this.props.projectId,

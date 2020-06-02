@@ -237,7 +237,7 @@ class materialReleaseAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            let url = "GetLogsMaterialRetuenForEdit?id=" + this.state.docId;
+            let url = "GetLogsMaterialReleasesForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialRelease')
         }
         else {
@@ -938,14 +938,15 @@ class materialReleaseAddEdit extends Component {
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources['resourceCode'][currentLanguage]}  </label>
                                                 <div className="inputDev ui input has-success">
-                                                    <input className="form-control" readOnly value={this.state.ItemDescriptionInfo.resourceCode} />
+                                                    <input className="form-control"  placeholder={Resources['resourceCode'][currentLanguage]}
+                                                     readOnly value={this.state.ItemDescriptionInfo.resourceCode} />
                                                 </div>
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['returnedQuantity'][currentLanguage]} </label>
+                                                <label className="control-label">{Resources['releasedQuantity'][currentLanguage]} </label>
                                                 <div className={"inputDev ui input " + (errors.returnedQuantity ? 'has-error' : !errors.returnedQuantity && touched.returnedQuantity ? (" has-success") : " ")}>
-                                                    <input name='returnedQuantity' className="form-control" autoComplete='off' placeholder={Resources['returnedQuantity'][currentLanguage]}
+                                                    <input name='returnedQuantity' className="form-control" autoComplete='off' placeholder={Resources['releasedQuantity'][currentLanguage]}
                                                         value={this.state.quantity} onChange={e => this.setState({ quantity: e.target.value })}
                                                         onBlur={(e) => {
                                                             handleBlur(e)
@@ -1059,7 +1060,7 @@ class materialReleaseAddEdit extends Component {
                         </div>
                         <div className="doc-pre-cycle">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>NEXT STEP</button>
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => {this.props.history.push("/materialRelease/2")}}>Finish</button>
                             </div>
                         </div>
                     </div>
@@ -1114,14 +1115,15 @@ class materialReleaseAddEdit extends Component {
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['resourceCode'][currentLanguage]}  </label>
                                             <div className="inputDev ui input has-success">
-                                                <input className="form-control" readOnly value={this.state.objItemForEdit.resourceCode} />
+                                                <input className="form-control" readOnly placeholder={Resources['resourceCode'][currentLanguage]}
+                                                 value={this.state.objItemForEdit.resourceCode} />
                                             </div>
                                         </div>
 
                                         <div className="linebylineInput valid-input">
-                                            <label className="control-label">{Resources['returnedQuantity'][currentLanguage]} </label>
+                                            <label className="control-label">{Resources['releasedQuantity'][currentLanguage]} </label>
                                             <div className={"inputDev ui input " + (errors.returnedQuantity ? 'has-error' : !errors.returnedQuantity && touched.returnedQuantity ? (" has-success") : " ")}>
-                                                <input name='returnedQuantity' className="form-control" autoComplete='off' placeholder={Resources['returnedQuantity'][currentLanguage]}
+                                                <input name='returnedQuantity' className="form-control" autoComplete='off' placeholder={Resources['releasedQuantity'][currentLanguage]}
                                                     value={this.state.objItemForEdit.quantity} onChange={e => this.HandleChangeItemsForEdit('quantity', e)}
                                                     onBlur={(e) => {
                                                         handleBlur(e)
