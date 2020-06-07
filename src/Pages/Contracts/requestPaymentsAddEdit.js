@@ -536,101 +536,101 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "itemCode",
                 title: Resources["itemCode"][currentLanguage],
-                width: 10,
+                width: 4,
                 groupable: true,
                 fixed: true,
                 sortable: true, hidden: false,
-                type: "number"
+                type: "number",
+                showTip: true
             }, {
                 field: "details",
                 title: Resources["description"][currentLanguage],
-                width: 10,
+                width: 15,
                 groupable: true,
                 sortable: true, hidden: false,
-                type: "text"
+                type: "text",
+                showTip: true
             }, {
                 field: "boqType",
                 title: Resources["boqType"][currentLanguage],
-                width: 10,
+                width: 8,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "secondLevel",
                 title: Resources["boqTypeChild"][currentLanguage],
-                width: 10,
+                width: 8,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "boqSubType",
                 title: Resources["boqSubType"][currentLanguage],
-                width: 10,
+                width: 8,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "quantity",
                 title: Resources["boqQuanty"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "revisedQuantity",
                 title: Resources["approvedQuantity"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "actualPercentage",
                 title: Resources["actualPercentage"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "unitPrice",
                 title: Resources["unitPrice"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "unit",
                 title: Resources["unit"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "prevoiuseQnty",
                 title: Resources["previousQuantity"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "oldPaymentPercent",
                 title: Resources["previousPaymentPercent"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "sitePercentComplete",
                 title: Resources["sitePercentComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 handleChange: (e, cell) => {
 
                     let cellInstance = Object.assign({}, cell);
 
-                    cellInstance.sitePercentComplete = parseFloat(e.target.value);
-
-                    // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                    cellInstance.sitePercentComplete = parseFloat(e.target.value); 
                     let pItems = this.state.paymentsItems;
 
                     let cellIndex = pItems.findIndex(c => c.id == cell.id);
@@ -642,25 +642,21 @@ class requestPaymentsAddEdit extends Component {
                         isFilter: true
                     });
                 },
-                handleBlur: (e, cell) => {
-
-                    this._onGridRowsUpdated(cell, "sitePercentComplete");
-
+                handleBlur: (e, cell) => { 
+                    this._onGridRowsUpdated(cell, "sitePercentComplete"); 
                 },
                 type: "number"
             }, {
                 field: "siteQuantityComplete",
                 title: Resources["siteQuantityComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 handleChange: (e, cell) => {
 
                     let cellInstance = Object.assign({}, cell);
 
-                    cellInstance.siteQuantityComplete = parseFloat(e.target.value);
-
-                    // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                    cellInstance.siteQuantityComplete = parseFloat(e.target.value); 
                     let pItems = this.state.paymentsItems;
 
                     let cellIndex = pItems.findIndex(c => c.id == cell.id);
@@ -672,15 +668,14 @@ class requestPaymentsAddEdit extends Component {
                         isFilter: true
                     });
                 },
-                handleBlur: (e, cell) => {
-
+                handleBlur: (e, cell) => { 
                     this._onGridRowsUpdated(cell, "siteQuantityComplete");
                 },
                 type: "number"
             }, {
                 field: "sitePaymentPercent",
                 title: Resources["contractPaymentPercent"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 handleChange: (e, cell) => {
@@ -706,16 +701,14 @@ class requestPaymentsAddEdit extends Component {
             }, ...(this.props.changeStatus ? [{
                 field: "percentComplete",
                 title: Resources["percentComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 handleChange: (e, cell) => {
 
                     let cellInstance = Object.assign({}, cell);
 
-                    cellInstance.percentComplete = parseFloat(e.target.value);
-
-                    // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+                    cellInstance.percentComplete = parseFloat(e.target.value); 
                     let pItems = this.state.paymentsItems;
 
                     let cellIndex = pItems.findIndex(c => c.id == cell.id);
@@ -735,7 +728,7 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "quantityComplete",
                 title: Resources["quantityComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 handleChange: (e, cell) => {
@@ -743,8 +736,7 @@ class requestPaymentsAddEdit extends Component {
                     let cellInstance = Object.assign({}, cell);
 
                     cellInstance.quantityComplete = parseFloat(e.target.value);
-
-                    // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+ 
                     let pItems = this.state.paymentsItems;
 
                     let cellIndex = pItems.findIndex(c => c.id == cell.id);
@@ -764,7 +756,7 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "paymentPercent",
                 title: Resources["paymentPercent"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 handleChange: (e, cell) => {
@@ -800,7 +792,7 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "totalExcutedPayment",
                 title: Resources["totalAmount"][currentLanguage],
-                width: 10,
+                width: 5,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
@@ -814,7 +806,7 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "itemStatus",
                 title: Resources["itemStatus"][currentLanguage],
-                width: 10,
+                width: 8,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"

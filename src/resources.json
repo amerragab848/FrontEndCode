@@ -6174,11 +6174,11 @@
         "ar": "نسبة التنفيذ"
     },
     "sitePercentComplete": {
-        "en": "Contractor's Percent Complete",
+        "en": "Cont.'s Percent Complete",
         "ar": "نسبة التنفيذ للمقاول"
     },
     "siteQuantityComplete": {
-        "en": "Contractor's Qty Complete",
+        "en": "Cont.'s Qty Complete",
         "ar": "كمية التنفيذ للمقاول"
     },
     "matrialStoredAmount": {
@@ -8362,8 +8362,8 @@
         "ar": "يجب عليك الحفظ فى صفحة التوقيت"
     },
     "contractPaymentPercent": {
-        "en": "Contractor's Payment Percent",
-        "ar": "Contractor's Payment Percent"
+        "en": "Cont.'s Payment Percent",
+        "ar": "Cont.'s Payment Percent"
     },
     "amountRequired": {
         "en": "Please insert Amount",

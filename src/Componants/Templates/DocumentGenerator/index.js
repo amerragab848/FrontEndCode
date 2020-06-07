@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
-
-import ContentEditable from 'react-contenteditable';
-
-import { Editor, Frame, useNode, Canvas, useEditor } from '@craftjs/core';
-
-import { v1 as uuidv1 } from 'uuid';
-
+import React, { Component } from 'react'; 
+import ContentEditable from 'react-contenteditable'; 
+import { Editor, Frame, useNode, Canvas, useEditor } from '@craftjs/core'; 
+import { v1 as uuidv1 } from 'uuid'; 
 import './styles.css';
 
-import { ReactComponent as CloseIcon } from './close.svg';
-import { ReactComponent as ChevronDownIcon } from './chevron-down.svg';
+// import { ReactComponent as CloseIcon } from './close.svg';
+// import { ReactComponent as ChevronDownIcon } from './chevron-down.svg';
 
 const Container = ({ children }) => {
     const {
@@ -185,7 +181,7 @@ const SystemDropDowns = () => {
                                                 <div
                                                     aria-hidden="true"
                                                     class="css-16pqwjk-indicatorContainer">
-                                                    <ChevronDownIcon />
+                                                    {/* <ChevronDownIcon /> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -251,7 +247,7 @@ const SystemDropDowns = () => {
                                                 <div
                                                     aria-hidden="true"
                                                     class="css-16pqwjk-indicatorContainer">
-                                                    <ChevronDownIcon />
+                                                    {/* <ChevronDownIcon /> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -422,7 +418,7 @@ class DocGen extends Component {
                             <div
                                 className="SubmittalHeadClose"
                                 onClick={() => this.close()}>
-                                <CloseIcon />
+                                {/* <CloseIcon /> */}
                             </div>
                         </div>
                         <div className="doc-container">

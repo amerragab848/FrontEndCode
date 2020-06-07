@@ -9,8 +9,7 @@ import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import GridCustom from 'react-customized-grid';
-import ExportDetails from "../ExportReportCenterDetails";
-import "react-customized-grid/main.css";
+import ExportDetails from "../ExportReportCenterDetails"; 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
