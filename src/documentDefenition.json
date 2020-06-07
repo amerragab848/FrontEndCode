@@ -219,7 +219,8 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetLettersById",
     "filterApi": "LettersFilters",
     "filters": [
       {
@@ -490,7 +491,8 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationEmailsForEdit", 
     "filterApi": "emailsFilter",
     "filters": [
       {
@@ -783,7 +785,8 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationInternalMemoForEdit",  
     "filterApi": "InternalMemoFilter",
     "filters": [
       {
@@ -1112,7 +1115,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationMeetingAgendaForEdit",  
+
     "filterApi": "MeetingAgendFilter",
     "filters": [
       {
@@ -1477,7 +1482,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",   
+     "forEditApi":"GetCommunicationNCRsForEdit",  
+
     "filterApi": "nCRFilter",
     "filters": [
       {
@@ -1825,7 +1832,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetPhoneById",  
+
     "filterApi": "PhonsFilter",
     "filters": [
       {
@@ -2141,7 +2150,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationProposalForEdit",  
+
     "filterApi": "ProposalFilter",
     "filters": [
       {
@@ -2452,7 +2463,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetRequestProposalById",  
+
     "filterApi": "RequestProposalFilter",
     "filters": [
       {
@@ -2767,7 +2780,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationReportForEdit",  
+
     "filterApi": "ReportsFilter",
     "filters": [
       {
@@ -3150,7 +3165,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationRfiForEdit",  
+
     "filterApi": "CommunicationRFIFilter",
     "filters": [
       {
@@ -3545,7 +3562,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationTransmittalForEdit",  
+
     "filterApi": "TransmittalFilter",
     "filters": [
       {
@@ -3933,7 +3952,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationMeetingMinutesForEdit",  
+
     "filterApi": "MeetingMinutesFilter",
     "filters": [
       {
@@ -4310,7 +4331,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetCommunicationMeetingMinutesForEdit",  
+
     "filterApi": "MeetingMinutesFilter",
     "filters": [
       {
@@ -4615,7 +4638,9 @@
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],
+    ],"forEditApi":"GetBoqForEdit",
+    "forEditApi":"GetBoqForEdit",  
+
     "filterApi": "BoqFilter",
     "filters": [
       {
@@ -4933,6 +4958,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit", 
     "filterApi": "ChangeOrderFilter",
     "filters": [
       {
@@ -5274,6 +5300,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ClientModificationFilter",
     "filters": [
       {
@@ -5651,6 +5678,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ProjectContractFilter",
     "filters": [
       {
@@ -5848,6 +5876,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "BoqFilter",
     "filters": [
       {
@@ -6169,6 +6198,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "InvoiceForPoFilter",
     "filters": [
       {
@@ -6570,6 +6600,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ContractPcoFilter",
     "filters": [
       {
@@ -6827,6 +6858,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ProjectIssuesFilter",
     "filters": [
       {
@@ -7210,6 +7242,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ContractsPurchaseOrderFilter",
     "filters": [
       {
@@ -7538,6 +7571,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ContractsQsFilter",
     "filters": [
       {
@@ -7879,6 +7913,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "RequestPaymentFilter",
     "filters": [
       {
@@ -8255,6 +8290,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "SiteRequestFilter",
     "filters": [
       {
@@ -8578,6 +8614,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "VariationRequestFilter",
     "filters": [
       {
@@ -8895,6 +8932,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "LogsDrawingsFilter",
     "filters": [
       {
@@ -9236,6 +9274,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "LogsDrawingsFilter",
     "filters": [
       {
@@ -9433,6 +9472,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "DesignDrawingListFilter",
     "filters": [
       {
@@ -9606,6 +9646,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "DesignDrawingPhasesFilter",
     "filters": [
       {
@@ -9778,6 +9819,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "DesignDrawingListFilter",
     "filters": [
       {
@@ -9930,6 +9972,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "EstimationBaseFilter",
     "filters": [
       {
@@ -10016,6 +10059,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ProjectProjectsExpensesFilter",
     "filters": [
       {
@@ -10180,6 +10224,7 @@
         "exportDataType": "n"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "EstimationBudgetfileFilter",
     "filters": [
       {
@@ -10447,6 +10492,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "EstimationProjectEstimateFilter",
     "filters": [
       {
@@ -10714,6 +10760,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "EstimationTenderAnalysisFilter",
     "filters": [
       {
@@ -10982,6 +11029,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ScheduleFilter",
     "filters": [
       {
@@ -11251,6 +11299,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "PrimaveraFilter",
     "filters": [
       {
@@ -11640,6 +11689,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ClientSelectionFilter",
     "filters": [
       {
@@ -12113,6 +12163,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "CommunicationRequestFilter",
     "filters": [
       {
@@ -12453,6 +12504,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "LogsMaterialDeliveryFilter",
     "filters": [
       {
@@ -12866,6 +12918,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "MaterialRequestFilter",
     "filters": [
       {
@@ -13247,6 +13300,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "InvoiceForPoFilterAll",
     "filters": [
       {
@@ -13634,6 +13688,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "CommunicationRequestFilterAll",
     "filters": [
       {
@@ -13973,6 +14028,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "SiteInstructionFilter",
     "filters": [
       {
@@ -14324,6 +14380,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "NCRFilterAll",
     "filters": [
       {
@@ -14711,6 +14768,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "MaterialRequestFilterAll",
     "filters": [
       {
@@ -15094,6 +15152,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "LogsMaterialInventoryFilter",
     "filters": [
       {
@@ -15415,6 +15474,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "LogsMaterialReleaseFilter",
     "filters": [
       {
@@ -15738,6 +15798,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "LogsMaterialReturnedFilter",
     "filters": [
       {
@@ -16049,6 +16110,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "PunchListFilter",
     "filters": [
       {
@@ -16366,6 +16428,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "SiteInstructionFilter",
     "filters": [
       {
@@ -16761,6 +16824,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "SubmittalsFilter",
     "filters": [
       {
@@ -17069,6 +17133,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ApprovedLastCycleFilter",
     "filters": [
       {
@@ -17343,6 +17408,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "LogsubmittalSetsFilter",
     "filters": [
       {
@@ -17552,6 +17618,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "getProjectTaskGroupsFilter",
     "filters": [
       {
@@ -17725,6 +17792,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ProjectDistributionListFilter",
     "filters": [
       {
@@ -17973,6 +18041,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "TransmittalFilter",
     "filters": [
       {
@@ -18218,6 +18287,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ProjectWorkFlowFilter",
     "filters": [
       {
@@ -18382,6 +18452,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "PicturesFilters",
     "filters": [
       {
@@ -18661,6 +18732,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "ClaimsFilters",
     "filters": [
       {
@@ -18918,6 +18990,7 @@
         "exportDataType": "s"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "DailyReportsFilter",
     "filters": [
       {
@@ -19105,6 +19178,7 @@
         "exportDataType": "d"
       }
     ],
+    "forEditApi":"GetBoqForEdit",
     "filterApi": "FilterPaymentCertification",
     "filters": [
       {

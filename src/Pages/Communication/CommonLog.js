@@ -14,6 +14,8 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
+import ExportDetails from "../../Componants/OptionsPanels/ExportDetails";
+import SkyLight from "react-skylight";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
@@ -45,9 +47,11 @@ class CommonLog extends Component {
       query: "",
       isCustom: true,
       showDeleteModal: false,
+      showExportModal: false,
       selectedRows: [],
       minimizeClick: false,
       documentObj: {},
+      exportDocument: {},
       match: props.match, export: false
     };
     this.actions = [
@@ -63,7 +67,22 @@ class CommonLog extends Component {
       }
     ];
 
-    this.rowActions = [];
+    this.rowActions = [
+      {
+        title: 'Export Doc & Attachments',
+        handleClick: value => { 
+          let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
+          let documentObj = this.state.documentObj
+          this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle); 
+
+          this.setState({
+            showExportModal: true 
+          });
+        }
+        
+      }
+    ];    
+    this.ClosxMX = this.ClosxMX.bind(this); 
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
   };
@@ -110,6 +129,10 @@ class CommonLog extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.match !== this.props.match) {
       this.renderComponent(this.props.match.params.document, this.props.projectId, true);
+    }
+
+    if (this.props.document.id > 0) {
+      this.ExportDetailsDialog.show();
     }
 
     if (this.props.projectId !== prevProps.projectId) {
@@ -320,8 +343,8 @@ class CommonLog extends Component {
 
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
- 
-   
+
+
         if (result.data.length > 0) {
           result.data.forEach(row => {
             let subject = "";
@@ -346,7 +369,7 @@ class CommonLog extends Component {
             }
             row.link = subject;
           });
- 
+
 
           this.setState({
             rows: result.data,
@@ -539,8 +562,7 @@ class CommonLog extends Component {
     }).catch(ex => {
       this.setState({ isLoading: false });
     });
-  };
-
+  }; 
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -558,16 +580,13 @@ class CommonLog extends Component {
       this.state.projectId,
       !this.state.isCustom
     );
-  };
-
+  }; 
   openModalColumn = () => {
     this.setState({ columnsModal: true })
-  };
-
+  }; 
   closeModalColumn = () => {
     this.setState({ columnsModal: false })
-  };
-
+  }; 
   ResetShowHide = () => {
     this.setState({ Loading: true })
     let ColumnsHideShow = this.state.ColumnsHideShow
@@ -583,8 +602,7 @@ class CommonLog extends Component {
         Loading: false, columnsModal: false
       })
     }, 300)
-  };
-
+  }; 
   handleCheck = (key) => {
     this.setState({ [key]: !this.state[key], Loading: true })
     let data = this.state.ColumnsHideShow
@@ -599,7 +617,11 @@ class CommonLog extends Component {
       this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
     }, 300);
   };
+  ClosxMX() {
+    if(this.props != undefined){this.props.actions.clearCashDocument();}
 
+    this.setState({ showExportModal: false });
+  };
   render() {
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
       return (
@@ -794,10 +816,26 @@ class CommonLog extends Component {
             </div>
           </div>
         </div>
+
+        {(this.props.document.id > 0 && this.state.showExportModal == true) ? (
+          <div className="largePopup largeModal " >
+            <SkyLight hideOnOverlayClicked
+              beforeClose={this.ClosxMX}
+              ref={ref => (this.ExportDetailsDialog = ref)}
+              title={"export"} >
+              <div>
+                <ExportDetails
+                  docTypeId={this.state.documentObj.docTyp}
+                  document={this.state.exportDocument}
+                  documentName={this.state.documentObj.documentTitle}
+                />
+              </div>
+            </SkyLight>
+          </div>
+        ) : null}
       </Fragment>
     );
   };
-
 }
 
 function mapStateToProps(state, ownProps) {
@@ -806,7 +844,8 @@ function mapStateToProps(state, ownProps) {
     showLeftMenu: state.communication.showLeftMenu,
     showSelectProject: state.communication.showSelectProject,
     projectName: state.communication.projectName,
-    moduleName: state.communication.moduleName
+    moduleName: state.communication.moduleName,
+    document: state.communication.document
   };
 }
 

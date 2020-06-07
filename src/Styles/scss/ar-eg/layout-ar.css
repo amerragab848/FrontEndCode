@@ -21190,6 +21190,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .attachmentTable.attachmentTableAuto tbody tr td {
     padding: 0 6px !important;
+    white-space: nowrap;
+    width: auto !important
 }
 
 .gmTeoB {
