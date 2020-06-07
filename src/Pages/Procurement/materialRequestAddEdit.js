@@ -114,7 +114,21 @@ const materialSchema = Yup.object().shape({
         .required(Resources["boqLog"][currentLanguage])
         .nullable(true)
 });
+const normalItemsSchema = Yup.object().shape({
+    details: Yup.string().required(
+        Resources["descriptionRequired"][currentLanguage]
+    ),
+    quantity: Yup.number().min(1, Resources['numbersGreaterThanZero'][currentLanguage])
+        .required(Resources["quantityRequired"][currentLanguage])
+        .nullable(true),
+    resourceCode: Yup.string()
+        .required(Resources["resourceCodeRequired"][currentLanguage])
+        .nullable(true),
+    unit: Yup.string()
+        .required(Resources["unitSelection"][currentLanguage])
+        .nullable(true)
 
+});
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -405,7 +419,34 @@ class materialRequestAddEdit extends Component {
             CurrStep: 0,
             updatedItem: null,
             contractLoading: false,
-            showPoModal: false
+            showPoModal: false,
+            inventoryTable: [],
+            showInventory: false,
+            normalItems: {
+                requestId: null,
+                details: null,
+                arrange: null,
+                unit: null,
+                quantity: null,
+                stock: null,
+                resourceCode: null,
+                itemType: null,
+                action: null,
+                days: null,
+                revQuantity: null,
+                itemCode: null,
+                unitPrice: null
+            },
+            itemTypesList: [],
+            unitsList: [],
+            selectedItemType: null,
+            selectedUnit: null,
+            inventoryFilter: {
+                description: null,
+                resourceCode: null
+            },
+            updatedItemsInventoryTable: [],
+            updatedItemInventoryTable: null
         };
 
         if (!Config.IsAllow(116) && !Config.IsAllow(117) && !Config.IsAllow(118)) {
@@ -445,6 +486,55 @@ class materialRequestAddEdit extends Component {
                     <div
                         dangerouslySetInnerHTML={{
                             __html: this.state.items[cellInfo.index][
+                                cellInfo.column.id
+                            ]
+                        }}
+                    />
+                );
+            }
+        } else {
+            return (
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: this.state.items[cellInfo.index][
+                            cellInfo.column.id
+                        ]
+                    }}
+                />
+            );
+        }
+    };
+    renderEditableInventoryfilter = cellInfo => {
+        if (Config.IsAllow(117)) {
+            if (cellInfo.original.parentId == null) {
+                return (
+                    <div style={{ color: "#4382f9 ", padding: "0px 6px", margin: "5px 0px", border: "1px dashed", cursor: "pointer" }}
+                        contentEditable suppressContentEditableWarning
+                        onBlur={e => {
+                            const inventoryTable = [...this.state.inventoryTable];
+                            inventoryTable[cellInfo.index][cellInfo.column.id] =
+                                e.target.innerHTML;
+                            const updatedItemInventoryTable = inventoryTable[cellInfo.index];
+                            const updatedItemsInventoryTable = this.state.updatedItemsInventoryTable;
+                            let index = updatedItemsInventoryTable.findIndex(
+                                item => item.id == updatedItemInventoryTable.id
+                            );
+                            if (index != -1) updatedItemsInventoryTable[index] = updatedItemInventoryTable;
+                            else updatedItemsInventoryTable.push(updatedItemInventoryTable);
+                            this.setState({ inventoryTable, updatedItemInventoryTable, updatedItemsInventoryTable });
+                        }}
+                        dangerouslySetInnerHTML={{
+                            __html: this.state.inventoryTable[cellInfo.index][
+                                cellInfo.column.id
+                            ]
+                        }}
+                    />
+                );
+            } else {
+                return (
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: this.state.inventoryTable[cellInfo.index][
                                 cellInfo.column.id
                             ]
                         }}
@@ -530,6 +620,12 @@ class materialRequestAddEdit extends Component {
     };
 
     componentDidMount() {
+        dataservice.GetDataList("GetaccountsDefaultListWithAction?listType=estimationitemtype", "title", "action").then(result => {
+            this.setState({ itemTypesList: result });
+        });
+        dataservice.GetDataList("GetAccountsDefaultList?listType=unit&pageNumber=" + 0 + "&pageSize=10000", "title", "title").then(result => {
+            this.setState({ unitsList: result });
+        });
         var links = document.querySelectorAll(
             ".noTabs__document .doc-container .linebylineInput"
         );
@@ -625,7 +721,22 @@ class materialRequestAddEdit extends Component {
                 this.state.pageSize
             ).then(res => {
                 if (res) {
-                    this.setState({ _items: res });
+                    let maxArrange = Math.max.apply(Math, res.map(function (o) { return o.arrange; }))
+                    let resetNormal = {
+                        details: null,
+                        arrange: maxArrange + 1,
+                        unit: null,
+                        quantity: null,
+                        stock: null,
+                        resourceCode: null,
+                        itemType: null,
+                        action: null,
+                        days: null,
+                        revQuantity: null,
+                        itemCode: null,
+                        unitPrice: null
+                    }
+                    this.setState({ _items: res, normalItems: resetNormal });
                     this.props.actions.ExportingData({ items: res });
                 }
             });
@@ -904,6 +1015,52 @@ class materialRequestAddEdit extends Component {
             })
             .catch(() => this.setState({ items: [], isLoading: false }));
     }
+    fillInventoryItemsFilterTable() {
+        let obj = { ...this.state.inventoryFilter };
+        let obje = {};
+        Object.entries(obj).reduce((a, [key, val]) => {
+            if (val) {
+                obje[key] = val;
+            }
+        }, []);
+        console.log("obje", obje)
+        let StringfiedObj = JSON.stringify(obje);
+        this.setState({ isLoading: true })
+        Api.get(`GetInventoryListByFilter?projectId=${this.state.projectId}&query=${StringfiedObj}`).then(res => {
+            this.setState({
+                inventoryTable: res,
+                isLoading: false
+            })
+        })
+    }
+    handleChangeInventoryFilterInput(e, field) {
+        let original_document = { ...this.state.inventoryFilter };
+        let updated_document = {};
+        updated_document[field] = e.target.value;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            inventoryFilter: updated_document
+        });
+    }
+    handleChangeNormalInput(e, field) {
+        let original_document = { ...this.state.normalItems };
+        let updated_document = {};
+        updated_document[field] = e.target.value;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            normalItems: updated_document
+        });
+    }
+    handleChangeNormalDropdown(event, field, selected) {
+        let original_document = { ...this.state.normalItems };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            normalItems: updated_document,
+            [selected]: event
+        });
+    }
 
     handleChange(e, field) {
         let original_document = { ...this.state.document };
@@ -1109,7 +1266,95 @@ class materialRequestAddEdit extends Component {
                 break;
         }
     }
+    addOneItem = () => {
+        let length = this.state.updatedItems.length;
+        let item = this.state.normalItems;
+        if (item.quantity > 0) {
+            this.setState({ isLoading: true });
+            item.requestId = this.state.docId;
+            Api.post("AddContractsSiteRequestItems", item).then(() => {
+                const _items = this.state._items;
+                _items.push(item);
+                let maxArrange = Math.max.apply(Math, _items.map(function (o) { return o.arrange; }))
+                let resetNormal = {
+                    details: null,
+                    arrange: maxArrange + 1,
+                    unit: null,
+                    quantity: null,
+                    stock: null,
+                    resourceCode: null,
+                    itemType: null,
+                    action: null,
+                    days: null,
+                    revQuantity: null,
+                    itemCode: null,
+                    unitPrice: null
+                }
+                this.setState({
+                    _items,
+                    normalItems: resetNormal,
+                    isLoading: false,
+                    updatedItems: [],
+                    showChildren: false
 
+                });
+                this.props.actions.resetItems(_items);
+
+                let items = [];
+                this.state.items.forEach(element => {
+                    items.push({ ...element, quantity: 0, stock: 0 });
+                });
+                this.setState({ items });
+
+            });
+        }
+
+    };
+    addManyItem = () => {
+        let length = this.state.updatedItemsInventoryTable.length;
+        this.state.updatedItemsInventoryTable.forEach((item, index) => {
+            if (item.quantity > 0) {
+                this.setState({ isLoading: true });
+                item.requestId = this.state.docId;
+                item.days == null ? item.days = 1 : item.days = item.days;
+                item.details = item.description;
+                Api.post("AddContractsSiteRequestItems", item).then(() => {
+                    const _items = this.state._items;
+                    _items.push(item);
+                    this.setState({
+                        _items,
+                        isLoading: false,
+                        updatedItemsInventoryTable: [],
+                        showChildren: false
+                    });
+                    this.props.actions.resetItems(_items);
+                    if (index == length - 1) {
+                        let inventoryTable = [];
+                        this.state.inventoryTable.forEach(element => {
+                            inventoryTable.push({ ...element, quantity: 0, stock: 0 });
+                        });
+                        this.setState({ inventoryTable });
+                    }
+                });
+            }
+        });
+        let maxArrange = Math.max.apply(Math, this.state._items.map(function (o) { return o.arrange; }))
+        let resetNormal = {
+            details: null,
+            arrange: maxArrange + 1,
+            unit: null,
+            quantity: null,
+            stock: null,
+            resourceCode: null,
+            itemType: null,
+            action: null,
+            days: null,
+            revQuantity: null,
+            itemCode: null,
+            unitPrice: null
+        }
+        this.setState({ normalItems: resetNormal })
+    };
     addItem = () => {
         let length = this.state.updatedItems.length;
         this.state.updatedItems.forEach((item, index) => {
@@ -1137,6 +1382,373 @@ class materialRequestAddEdit extends Component {
             }
         });
     };
+    renderNormalItems = () => {
+        return (
+            <Formik
+                enableReinitialize={true}
+                initialValues={{ ...this.state.normalItems }}
+                validationSchema={normalItemsSchema}
+                onSubmit={() => {
+                    this.addOneItem();
+                }}>
+                {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
+                    <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate">
+                        <div className="linebylineInput fullInputWidth">
+                            <label className="control-label">
+                                {Resources["description"][currentLanguage]}{" "}
+                            </label>
+                            <div className={"inputDev ui input " + (errors.details ? "has-error" : !errors.details && touched.details ? " has-success" : " ")}>
+                                <input name="details"
+                                    className="form-control"
+                                    id="details"
+                                    placeholder={
+                                        Resources["description"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.normalItems.details}
+                                    value={this.state.normalItems.details}
+                                    onChange={e => this.handleChangeNormalInput(e, "details")}
+                                />
+                                {errors.details ? (
+                                    <em className="pError">
+                                        {errors.details}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className="linebylineInput fullInputWidth">
+                            <label className="control-label">
+                                {Resources["quantity"][currentLanguage]}{" "}
+                            </label>
+                            <div
+                                className={
+                                    "inputDev ui input " +
+                                    (errors.quantity
+                                        ? "has-error"
+                                        : !errors.quantity &&
+                                            touched.quantity
+                                            ? " has-success"
+                                            : " ")
+                                }>
+                                <input
+                                    name="quantity"
+                                    className="form-control"
+                                    id="quantity"
+                                    placeholder={
+                                        Resources["quantity"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.normalItems.quantity}
+                                    value={this.state.normalItems.quantity}
+                                    onChange={e => this.handleChangeNormalInput(e, "quantity")}
+                                />
+                                {errors.quantity ? (
+                                    <em className="pError">
+                                        {errors.quantity}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className="linebylineInput fullInputWidth">
+                            <label className="control-label">
+                                {Resources["stock"][currentLanguage]}{" "}
+                            </label>
+                            <div
+                                className={
+                                    "inputDev ui input " +
+                                    (errors.stock
+                                        ? "has-error"
+                                        : !errors.stock &&
+                                            touched.stock
+                                            ? " has-success"
+                                            : " ")
+                                }>
+                                <input
+                                    name="stock"
+                                    className="form-control"
+                                    id="stock"
+                                    placeholder={
+                                        Resources["stock"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.normalItems.stock}
+                                    value={this.state.normalItems.stock}
+                                    onChange={e => this.handleChangeNormalInput(e, "stock")}
+                                />
+                                {errors.stock ? (
+                                    <em className="pError">
+                                        {errors.stock}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className="linebylineInput">
+                            <label className="control-label">
+                                {Resources["arrange"][currentLanguage]}{" "}
+                            </label>
+                            <div
+                                className={
+                                    "inputDev ui input " +
+                                    (errors.arrange
+                                        ? "has-error"
+                                        : !errors.arrange &&
+                                            touched.arrange
+                                            ? " has-success"
+                                            : " ")
+                                }>
+                                <input
+                                    name="arrange"
+                                    className="form-control"
+                                    id="arrange"
+                                    placeholder={
+                                        Resources["arrange"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.normalItems.arrange}
+                                    value={this.state.normalItems.arrange}
+                                    onChange={e => this.handleChangeNormalInput(e, "arrange")}
+                                />
+                                {errors.arrange ? (
+                                    <em className="pError">
+                                        {errors.arrange}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className="linebylineInput">
+                            <label className="control-label">
+                                {Resources["itemCode"][currentLanguage]}{" "}
+                            </label>
+                            <div
+                                className={
+                                    "inputDev ui input " +
+                                    (errors.itemCode
+                                        ? "has-error"
+                                        : !errors.itemCode &&
+                                            touched.itemCode
+                                            ? " has-success"
+                                            : " ")
+                                }>
+                                <input
+                                    name="itemCode"
+                                    className="form-control"
+                                    id="itemCode"
+                                    placeholder={
+                                        Resources["itemCode"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.normalItems.itemCode}
+                                    value={this.state.normalItems.itemCode}
+                                    onChange={e => this.handleChangeNormalInput(e, "itemCode")}
+                                />
+                                {errors.itemCode ? (
+                                    <em className="pError">
+                                        {errors.itemCode}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className="linebylineInput valid-input">
+                            <Dropdown
+                                title="itemType"
+                                data={this.state.itemTypesList}
+                                selectedValue={this.state.selectedItemType}
+                                value={this.state.normalItems.selectedItemType}
+                                handleChange={event => {
+                                    this.handleChangeNormalDropdown(event, "itemType", "selectedItemType");
+                                }}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.itemType}
+                                touched={touched.itemType}
+                            />
+                        </div>
+                        <div className="linebylineInput">
+                            <label className="control-label">
+                                {Resources["resourceCode"][currentLanguage]}{" "}
+                            </label>
+                            <div
+                                className={
+                                    "inputDev ui input " +
+                                    (errors.resourceCode
+                                        ? "has-error"
+                                        : !errors.resourceCode &&
+                                            touched.resourceCode
+                                            ? " has-success"
+                                            : " ")
+                                }>
+                                <input
+                                    name="resourceCode"
+                                    className="form-control"
+                                    id="resourceCode"
+                                    placeholder={
+                                        Resources["resourceCode"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.normalItems.resourceCode}
+                                    value={this.state.normalItems.resourceCode}
+                                    onChange={e => this.handleChangeNormalInput(e, "resourceCode")}
+                                />
+                                {errors.resourceCode ? (
+                                    <em className="pError">
+                                        {errors.resourceCode}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className="linebylineInput valid-input">
+                            <Dropdown
+                                title="unit"
+                                data={this.state.unitsList}
+                                selectedValue={this.state.selectedUnit}
+                                value={this.state.selectedUnit}
+                                handleChange={event => {
+                                    this.handleChangeNormalDropdown(event, "unit", "selectedUnit")
+                                }}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.unit}
+                                touched={touched.unit}
+                            />
+                        </div>
+                        <div className="slider-Btns">
+                            {this.state.isLoading ? (
+                                <button className="primaryBtn-1 btn disabled">
+                                    <div className="spinner">
+                                        <div className="bounce1" />
+                                        <div className="bounce2" />
+                                        <div className="bounce3" />
+                                    </div>
+                                </button>
+                            ) : (
+                                    <button
+                                        className="primaryBtn-1 btn meduimBtn"
+                                        type="submit">
+
+                                        {Resources.add[currentLanguage]}
+                                    </button>
+                                )}
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        );
+    };
+    renderInventory = () => {
+        return (
+            <div>
+                <div className="proForm datepickerContainer">
+                    <div className="linebylineInput ">
+                        <label className="control-label">
+                            {Resources["description"][currentLanguage]}{" "}
+                        </label>
+                        <div className={"inputDev ui input "}>
+                            <input name="description" className="form-control" id="description" placeholder={Resources["description"][currentLanguage]}
+                                defaultValue={this.state.inventoryFilter.description}
+                                onChange={e => this.handleChangeInventoryFilterInput(e, "description")}
+                            />
+                        </div>
+                    </div>
+                    <div className="linebylineInput ">
+                        <label className="control-label">
+                            {Resources["resourceCode"][currentLanguage]}{" "}
+                        </label>
+                        <div className={"inputDev ui input "}>
+                            <input name="resourceCode" className="form-control" id="resourceCode" placeholder={Resources["resourceCode"][currentLanguage]} defaultValue={this.state.inventoryFilter.resourceCode}
+                                onChange={e => this.handleChangeInventoryFilterInput(e, "resourceCode")}
+                            />
+                        </div>
+                    </div>
+                    <div className="slider-Btns">
+                        {this.state.isLoading ? (
+                            <button className="primaryBtn-1 btn disabled">
+                                <div className="spinner">
+                                    <div className="bounce1" />
+                                    <div className="bounce2" />
+                                    <div className="bounce3" />
+                                </div>
+                            </button>
+                        ) : (
+                                <button
+                                    className="primaryBtn-1 btn meduimBtn"
+                                    type="submit"
+                                    onClick={() => this.fillInventoryItemsFilterTable()}>
+                                    {Resources.search[currentLanguage]}
+                                </button>
+                            )}
+                    </div>
+                </div>
+                <ReactTable
+                    data={this.state.inventoryTable}
+                    columns={[
+                        {
+                            Header: Resources.description[currentLanguage],
+                            accessor: "description"
+                        },
+                        {
+                            Header: Resources.resourceCode[currentLanguage],
+                            accessor: "resourceCode"
+                        },
+                        {
+                            Header: Resources.unit[currentLanguage],
+                            accessor: "unit"
+                        },
+                        {
+                            Header: Resources.unitPrice[currentLanguage],
+                            accessor: "unitPrice"
+                        },
+                        {
+                            Header: Resources.quantity[currentLanguage],
+                            accessor: "quantity",
+                            Cell: this.renderEditableInventoryfilter
+                        },
+                        {
+                            Header: Resources.itemCode[currentLanguage],
+                            accessor: "itemCode"
+                        }
+                    ]}
+                    defaultPageSize={5}
+                    className="-striped -highlight"
+                />
+                <div className="slider-Btns">
+                    {this.state.isLoading ? (
+                        <button className="primaryBtn-1 btn disabled">
+                            <div className="spinner">
+                                <div className="bounce1" />
+                                <div className="bounce2" />
+                                <div className="bounce3" />
+                            </div>
+                        </button>
+                    ) : (
+                            <button
+                                className="primaryBtn-1 btn meduimBtn"
+                                type="submit"
+                                onClick={() => this.addManyItem()}>
+                                {Resources.add[currentLanguage]}
+                            </button>
+                        )}
+                </div>
+            </div>
+        )
+    }
 
     addChild = () => {
         let length = this.state.updatedchilderns.length;
@@ -2088,74 +2700,109 @@ class materialRequestAddEdit extends Component {
                     <h2 className="zero">{Resources.items[currentLanguage]}</h2>
                 </header>
                 <div>
-                    <ReactTable
-                        data={this.state.items}
-                        columns={[
-                            {
-                                Cell: props => {
-                                    if (props.original.childerns.length > 0)
-                                        return (
-                                            <i
-                                                className="fa fa-plus-circle"
-                                                onClick={e => this.showChildern(props.original.childerns, e)}
-                                            />
-                                        );
-                                    else return null;
-                                },
-                                width: 30
-                            },
-                            {
-                                Header: Resources.numberAbb[currentLanguage],
-                                accessor: "arrange"
-                            },
-                            {
-                                Header: Resources.description[currentLanguage],
-                                accessor: "details"
-                            },
-                            {
-                                Header: Resources.unit[currentLanguage],
-                                accessor: "unit"
-                            },
-                            {
-                                Header: Resources.quantity[currentLanguage],
-                                accessor: "quantity",
-                                Cell: this.renderEditable
-                            },
-                            {
-                                Header: Resources.stock[currentLanguage],
-                                accessor: "stock",
-                                Cell: this.renderEditable
-                            },
-                            {
-                                Header: Resources.resourceCode[currentLanguage],
-                                accessor: "resourceCode"
-                            },
-                            {
-                                Header: Resources.itemCode[currentLanguage],
-                                accessor: "itemCode"
-                            }
-                        ]}
-                        defaultPageSize={5}
-                        className="-striped -highlight"
-                    />
-                    <div className="slider-Btns">
-                        {this.state.isLoading ? (
-                            <button className="primaryBtn-1 btn disabled">
-                                <div className="spinner">
-                                    <div className="bounce1" />
-                                    <div className="bounce2" />
-                                    <div className="bounce3" />
-                                </div>
-                            </button>
-                        ) : (
-                                <button
-                                    className="primaryBtn-1 btn meduimBtn"
-                                    type="submit"
-                                    onClick={() => this.addItem()}>
-                                    {Resources.add[currentLanguage]}
-                                </button>
-                            )}
+                    <div className="proForm first-proform letterFullWidth radio__only">
+                        <div className="linebylineInput valid-input">
+                            <div className="ui checkbox radio radioBoxBlue">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    defaultChecked={
+                                        this.state.showInventory === true
+                                            ? null
+                                            : "checked"
+                                    }
+                                    value="false"
+                                    onChange={e =>
+                                        this.setState({
+                                            showInventory: false
+                                        })
+                                    }
+                                />
+                                <label>
+                                    {
+                                        Resources.normal[
+                                        currentLanguage
+                                        ]
+                                    }
+                                </label>
+                            </div>
+                            <div className="ui checkbox radio radioBoxBlue">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    defaultChecked={
+                                        this.state.showInventory === true
+                                            ? "checked"
+                                            : null
+                                    }
+                                    value="true"
+                                    onChange={e =>
+                                        this.setState({
+                                            showInventory: true
+                                        })
+                                    }
+                                />
+                                <label>
+                                    {Resources.fromInventory[currentLanguage]}
+                                </label>
+                            </div>
+                        </div>
                     </div>
+                    {
+                        this.state.showInventory == true ? this.renderInventory() :
+                            this.renderNormalItems()
+
+                        // <ReactTable
+                        //     data={this.state.items}
+                        //     columns={[
+                        //         {
+                        //             Cell: props => {
+                        //                 if (props.original.childerns.length > 0)
+                        //                     return (
+                        //                         <i
+                        //                             className="fa fa-plus-circle"
+                        //                             onClick={e => this.showChildern(props.original.childerns, e)}
+                        //                         />
+                        //                     );
+                        //                 else return null;
+                        //             },
+                        //             width: 30
+                        //         },
+                        //         {
+                        //             Header: Resources.numberAbb[currentLanguage],
+                        //             accessor: "arrange"
+                        //         },
+                        //         {
+                        //             Header: Resources.description[currentLanguage],
+                        //             accessor: "details"
+                        //         },
+                        //         {
+                        //             Header: Resources.unit[currentLanguage],
+                        //             accessor: "unit"
+                        //         },
+                        //         {
+                        //             Header: Resources.quantity[currentLanguage],
+                        //             accessor: "quantity",
+                        //             Cell: this.renderEditable
+                        //         },
+                        //         {
+                        //             Header: Resources.stock[currentLanguage],
+                        //             accessor: "stock",
+                        //             Cell: this.renderEditable
+                        //         },
+                        //         {
+                        //             Header: Resources.resourceCode[currentLanguage],
+                        //             accessor: "resourceCode"
+                        //         },
+                        //         {
+                        //             Header: Resources.itemCode[currentLanguage],
+                        //             accessor: "itemCode"
+                        //         }
+                        //     ]}
+                        //     defaultPageSize={5}
+                        //     className="-striped -highlight"
+                        // />
+                    }
                 </div>
                 {Config.IsAllow(117) ? <XSLfile key="boqImport" docId={this.state.docId} docType="siteRequest"
                     link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/SiteRequest.xlsx"}
@@ -2219,165 +2866,153 @@ class materialRequestAddEdit extends Component {
                             }
                             this.addContract(values);
                         }}>
-                        {({
-                            errors,
-                            touched,
-                            setFieldTouched,
-                            setFieldValue,
-                            handleBlur,
-                            handleChange,
-                            values
-                        }) => (
-                                <Form
-                                    id="signupForm1"
-                                    className="proForm customProform"
-                                    noValidate="novalidate">
-                                    <div className="fillter-item-c">
-                                        <label className="control-label">
-                                            {Resources["subject"][currentLanguage]}{" "}
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.subject
-                                                    ? "has-error"
-                                                    : !errors.subject &&
-                                                        touched.subject
-                                                        ? " has-success"
-                                                        : " ")
-                                            }>
-                                            <input
-                                                name="subject"
-                                                className="form-control"
-                                                id="subject"
-                                                placeholder={
-                                                    Resources["subject"][
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                                autoComplete="off"
-                                                onBlur={handleBlur}
-                                                defaultValue={values.subject}
-                                                onChange={e => handleChange(e)}
-                                            />
-                                            {errors.subject ? (
-                                                <em className="pError">
-                                                    {errors.subject}
-                                                </em>
-                                            ) : null}
-                                        </div>
+                        {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
+                            <Form id="signupForm1" className="proForm customProform" noValidate="novalidate">
+                                <div className="fillter-item-c">
+                                    <label className="control-label">
+                                        {Resources["subject"][currentLanguage]}{" "}
+                                    </label>
+                                    <div
+                                        className={
+                                            "inputDev ui input " +
+                                            (errors.subject
+                                                ? "has-error"
+                                                : !errors.subject &&
+                                                    touched.subject
+                                                    ? " has-success"
+                                                    : " ")
+                                        }>
+                                        <input
+                                            name="subject"
+                                            className="form-control"
+                                            id="subject"
+                                            placeholder={
+                                                Resources["subject"][
+                                                currentLanguage
+                                                ]
+                                            }
+                                            autoComplete="off"
+                                            onBlur={handleBlur}
+                                            defaultValue={values.subject}
+                                            onChange={e => handleChange(e)}
+                                        />
+                                        {errors.subject ? (
+                                            <em className="pError">
+                                                {errors.subject}
+                                            </em>
+                                        ) : null}
                                     </div>
-                                    <div className="fillter-item-c">
-                                        <label className="control-label">
-                                            {Resources.status[currentLanguage]}
+                                </div>
+                                <div className="fillter-item-c">
+                                    <label className="control-label">
+                                        {Resources.status[currentLanguage]}
+                                    </label>
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input
+                                            type="radio"
+                                            name="status"
+                                            defaultChecked={
+                                                values.status === false
+                                                    ? null
+                                                    : "checked"
+                                            }
+                                            value="true"
+                                            onChange={e =>
+                                                setFieldValue("status", true)
+                                            }
+                                        />
+                                        <label>
+                                            {Resources.oppened[currentLanguage]}
                                         </label>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="status"
-                                                defaultChecked={
-                                                    values.status === false
-                                                        ? null
-                                                        : "checked"
-                                                }
-                                                value="true"
-                                                onChange={e =>
-                                                    setFieldValue("status", true)
-                                                }
-                                            />
-                                            <label>
-                                                {Resources.oppened[currentLanguage]}
-                                            </label>
-                                        </div>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="status"
-                                                defaultChecked={
-                                                    values.status === false
-                                                        ? "checked"
-                                                        : null
-                                                }
-                                                value="false"
-                                                onChange={e =>
-                                                    setFieldValue("status", false)
-                                                }
-                                            />
-                                            <label>
-                                                {Resources.closed[currentLanguage]}
-                                            </label>
-                                        </div>
                                     </div>
-                                    <DatePicker
-                                        title="docDate"
-                                        name="documentDate"
-                                        startDate={values.docDate}
-                                        handleChange={e =>
-                                            setFieldValue("docDate", e)
-                                        }
-                                    />
-                                    <DatePicker
-                                        title="completionDate"
-                                        name="completionDate"
-                                        startDate={values.completionDate}
-                                        handleChange={e =>
-                                            setFieldValue("completionDate", e)
-                                        }
-                                    />
-                                    <div className="fillter-item-c">
-                                        <label className="control-label">
-                                            {Resources.reference[currentLanguage]}
+                                    <div className="ui checkbox radio radioBoxBlue">
+                                        <input
+                                            type="radio"
+                                            name="status"
+                                            defaultChecked={
+                                                values.status === false
+                                                    ? "checked"
+                                                    : null
+                                            }
+                                            value="false"
+                                            onChange={e =>
+                                                setFieldValue("status", false)
+                                            }
+                                        />
+                                        <label>
+                                            {Resources.closed[currentLanguage]}
                                         </label>
-                                        <div className="ui input inputDev">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="reference"
-                                                defaultValue={values.reference}
-                                                name="reference"
-                                                onChange={e => handleChange(e)}
-                                                placeholder={
-                                                    Resources.reference[
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                        </div>
-                                        <div
-                                            className={
-                                                "slider-Btns fullWidthWrapper textLeft "
-                                            }>
-                                            {this.state.contractLoading ===
-                                                false ? (
-                                                    <button
-                                                        className={"primaryBtn-1 btn "}
-                                                        type="submit">
-                                                        {
-                                                            Resources.save[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                    </button>
-                                                ) : (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
-                                                        </div>
-                                                    </button>
-                                                )}
-                                        </div>
                                     </div>
-                                </Form>
-                            )}
+                                </div>
+                                <DatePicker
+                                    title="docDate"
+                                    name="documentDate"
+                                    startDate={values.docDate}
+                                    handleChange={e =>
+                                        setFieldValue("docDate", e)
+                                    }
+                                />
+                                <DatePicker
+                                    title="completionDate"
+                                    name="completionDate"
+                                    startDate={values.completionDate}
+                                    handleChange={e =>
+                                        setFieldValue("completionDate", e)
+                                    }
+                                />
+                                <div className="fillter-item-c">
+                                    <label className="control-label">
+                                        {Resources.reference[currentLanguage]}
+                                    </label>
+                                    <div className="ui input inputDev">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="reference"
+                                            defaultValue={values.reference}
+                                            name="reference"
+                                            onChange={e => handleChange(e)}
+                                            placeholder={
+                                                Resources.reference[
+                                                currentLanguage
+                                                ]
+                                            }
+                                        />
+                                    </div>
+                                    <div
+                                        className={
+                                            "slider-Btns fullWidthWrapper textLeft "
+                                        }>
+                                        {this.state.contractLoading ===
+                                            false ? (
+                                                <button
+                                                    className={"primaryBtn-1 btn "}
+                                                    type="submit">
+                                                    {
+                                                        Resources.save[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="primaryBtn-1 btn  disabled"
+                                                    disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                            )}
+                                    </div>
+                                </div>
+                            </Form>
+                        )}
                     </Formik>
                 </div>
             </React.Fragment>
         );
-
         const purchaseOrder = (
             <React.Fragment>
                 <div className="dropWrapper">
