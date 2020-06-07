@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
-import "react-table/react-table.css"; 
+import "react-table/react-table.css";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -13,7 +14,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -432,11 +433,11 @@ class MaterialInventoryAddEdit extends Component {
                 let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
 
                 result.forEach(item => {
-                    setDataChart.push({ stack: stacks[0], name: moment(item.docDate).format("DD/MM/YYYY"), value: item.approvedQuantity });
-                    setDataChart.push({ stack: stacks[1], name: moment(item.docDate).format("DD/MM/YYYY"), value: item.rejectedQuantity });
-                    setDataChart.push({ stack: stacks[2], name: moment(item.docDate).format("DD/MM/YYYY"), value: item.pendingQuantity });
+                    setDataChart.push({ stack: stacks[0], name: stacks[0], value: item.approvedQuantity });
+                    setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
+                    setDataChart.push({ stack: stacks[2], name:stacks[2], value: item.pendingQuantity });
                 });
-
+                // moment(item.docDate).format("DD/MM/YYYY")
                 this.setState({
                     purchasedData: result,
                     purchasedDataForChart: setDataChart
@@ -449,12 +450,12 @@ class MaterialInventoryAddEdit extends Component {
                 let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
 
                 result.forEach(item => {
-                    setDataChart.push({ stack: stacks[0], name: moment(item.docDate).format("DD/MM/YYYY"), value: item.approvedQuantity });
-                    setDataChart.push({ stack: stacks[1], name: moment(item.docDate).format("DD/MM/YYYY"), value: item.rejectedQuantity });
-                    setDataChart.push({ stack: stacks[2], name: moment(item.docDate).format("DD/MM/YYYY"), value: item.pendingQuantity });
+                    setDataChart.push({ stack: stacks[0], name: stacks[0], value: item.approvedQuantity });
+                    setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
+                    setDataChart.push({ stack: stacks[2], name: stacks[2], value: item.pendingQuantity });
                 });
 
-
+                // name: moment(item.docDate).format("DD/MM/YYYY")
                 this.setState({
                     transferedData: result,
                     transferedDataForChart: setDataChart
@@ -785,7 +786,6 @@ class MaterialInventoryAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-
     render() {
 
 
@@ -840,6 +840,24 @@ class MaterialInventoryAddEdit extends Component {
                                 : null
                         }
                         <div className="step-content">
+                        <XSLfile
+                        key="MaterialInventory"
+                        docId={projectId}
+                        docType={this.state.docTypeId}
+                        link={
+                            Config.getPublicConfiguartion().downloads +
+                            "/downloads/excel/inventory.xlsx"
+                        }
+                        header="addManyItems"
+                        disabled={
+                            this.props.changeStatus
+                                ? this.props.docId === 0
+                                    ? true
+                                    : false
+                                : false
+                        }
+                        afterUpload={() => this.saveAndExit()}
+                    />
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
@@ -859,18 +877,20 @@ class MaterialInventoryAddEdit extends Component {
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                     {this.props.changeStatus === false ?
-                                                        <div className="proForm first-proform letterFullWidth radio__only">
-                                                            <div className="linebylineInput valid-input">
-                                                                <div className="ui checkbox radio radioBoxBlue">
-                                                                    <input type="radio" name="status" defaultChecked={this.state.status === false ? null : 'checked'} value="true" onChange={e => this.setState({ activeTab: 0 })} />
-                                                                    <label>New Item</label>
-                                                                </div>
-                                                                <div className="ui checkbox radio radioBoxBlue">
-                                                                    <input type="radio" name="status" defaultChecked={this.state.status === false ? 'checked' : null} value="false" onChange={e => this.setState({ activeTab: 1 })} />
-                                                                    <label>Add To Item</label>
+                                                        <>
+                                                            <div className="proForm first-proform letterFullWidth radio__only">
+                                                                <div className="linebylineInput valid-input">
+                                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                                        <input type="radio" name="status" defaultChecked={this.state.status === false ? null : 'checked'} value="true" onChange={e => this.setState({ activeTab: 0 })} />
+                                                                        <label>New Item</label>
+                                                                    </div>
+                                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                                        <input type="radio" name="status" defaultChecked={this.state.status === false ? 'checked' : null} value="false" onChange={e => this.setState({ activeTab: 1 })} />
+                                                                        <label>Add To Item</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </>
                                                         : null
                                                     }
                                                     {

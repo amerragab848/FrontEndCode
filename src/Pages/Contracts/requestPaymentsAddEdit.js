@@ -1202,7 +1202,6 @@ class requestPaymentsAddEdit extends Component {
             document: updated_document
         });
     };
-
     handleChangeDropDownContract(event, field, selectedValue) {
         if (event == null) return;
         let original_document = { ...this.state.document };
