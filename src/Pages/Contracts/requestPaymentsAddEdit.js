@@ -1974,7 +1974,7 @@ class requestPaymentsAddEdit extends Component {
 
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
-        let currentvalue = parseFloat(e.target.value);
+        let currentvalue = e.target.value == "" ? "" : ( (e.target.value[e.target.value.length - 1] == "." ? e.target.value : parseFloat(e.target.value)));
 
         if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
             updateRow.revisedQuantity = 1;
@@ -1983,7 +1983,7 @@ class requestPaymentsAddEdit extends Component {
         switch (updated) {
 
             case "quantityComplete":
-                updateRow.percentComplete = (currentvalue / updateRow.revisedQuantity) * 100;
+                updateRow.percentComplete = ((currentvalue / updateRow.revisedQuantity) * 100);
                 updateRow.quantityComplete = currentvalue;
                 break;
 
@@ -1997,13 +1997,13 @@ class requestPaymentsAddEdit extends Component {
                 break;
 
             case "percentComplete":
-                updateRow.quantityComplete = (currentvalue / 100) * updateRow.revisedQuantity;
+                updateRow.quantityComplete = ((currentvalue / 100) * updateRow.revisedQuantity);
                 updateRow.percentComplete = currentvalue;
                 break;
 
             case "sitePercentComplete":
                 sitePercentComplete = currentvalue;
-                siteQuantityComplete = (currentvalue / 100) * updateRow.revisedQuantity;
+                siteQuantityComplete = ((currentvalue / 100) * updateRow.revisedQuantity);
 
                 updateRow.siteQuantityComplete = siteQuantityComplete;
                 updateRow.quantityComplete = siteQuantityComplete;
@@ -2014,7 +2014,7 @@ class requestPaymentsAddEdit extends Component {
                 break;
 
             case "siteQuantityComplete":
-                sitePercentComplete = (currentvalue / updateRow.revisedQuantity) * 100;
+                sitePercentComplete = ((currentvalue / updateRow.revisedQuantity) * 100);
                 siteQuantityComplete = currentvalue;
 
                 updateRow.sitePercentComplete = sitePercentComplete;
@@ -2044,7 +2044,7 @@ class requestPaymentsAddEdit extends Component {
 
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
-        let currentvalue = e.target.value == "" ? 0 : parseFloat(e.target.value);
+        let currentvalue = e.target.value == "" ? "" : ( (e.target.value[e.target.value.length - 1] == "." ? e.target.value : parseFloat(e.target.value)));
 
         switch (updated) {
 

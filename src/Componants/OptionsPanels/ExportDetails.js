@@ -284,14 +284,19 @@ class ExportDetails extends Component {
                 <span>Uploaded by</span>
               </div>
             </th>
+            <th style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}>
+              <div className="headCell tableCell-4">
+                <span>Download</span>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
           {this.props.files.map((file, index) => {
-            return (<tr key={index}>
+            return (<tr key={index}> 
               <td>
                 <div className="contentCell tableCell-2">
-                  <a className="pdfPopup various zero">{file.fileName}</a>
+                <a className="pdfPopup various zero">{file.fileNameDisplay}</a>
                 </div>
               </td>
               <td>
@@ -301,7 +306,12 @@ class ExportDetails extends Component {
               </td>
               <td>
                 <div className="contentCell tableCell-4">
-                  <p className="zero">{file.uploadBy}</p>
+                  <p className="zero">{file.uploadedBy}</p>
+                </div>
+              </td> 
+              <td>
+                <div className="contentCell tableCell-4">
+                  <a href={file.parentAttachFile}>{file.fileNameDisplay}</a>
                 </div>
               </td>
             </tr>
@@ -524,6 +534,11 @@ class ExportDetails extends Component {
                     <span>{Resources.uploadedBy[currentLanguage]}</span>
                   </div>
                 </th>
+                <th>
+                  <div className="headCell tableCell-4">
+                    <span>{Resources.download[currentLanguage]}</span>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -546,7 +561,11 @@ class ExportDetails extends Component {
                         <p className="zero">{file.uploadedBy}</p>
                       </div>
                     </td>
-
+                    <td>
+                      <div className="contentCell tableCell-4">
+                        <a href={file.parentAttachFile}>{file.fileNameDisplay}</a>
+                      </div>
+                    </td>
                   </tr>
                 )
               })}
@@ -567,8 +586,8 @@ class ExportDetails extends Component {
             <div>
               {this.props.files.map((file, index) => {
                 return (
-                  <p><span>{(index + 1) + '-'}</span> {file.fileNameDisplay}</p>
-                )
+                  <a href={file.parentAttachFile}>{(index + 1) + ' - ' + file.fileNameDisplay}</a>
+                  )
               })}
             </div>
           </div>
@@ -676,7 +695,7 @@ class ExportDetails extends Component {
   exportPDFFile() {
     if (this.state.isExcel === true) return;
 
-    let formatData = moment(this.props.document.docDate?this.props.document.docDate:this.props.document.documentDate).format('DD/MM/YYYY');
+    let formatData = moment(this.props.document.docDate ? this.props.document.docDate : this.props.document.documentDate).format('DD/MM/YYYY');
     let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
     let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
     return (
