@@ -16,7 +16,7 @@ export default class CustomGrid extends Component {
 
         this.state = {
             columns: this.props.cells,
-            rows: this.props.data,
+            rows: [],//this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             selectedIndexes: [],
             selectedRows: [],
@@ -29,7 +29,7 @@ export default class CustomGrid extends Component {
             filterLoading: false,
             ColumnsHideShow: [],
             Loading: false,
-            GridLoading: true,
+            GridLoading: this.props.data.length > 0 ? false : true,
             filteredRows: this.props.data,
             setFilters: {},
             filters: [],
@@ -40,7 +40,7 @@ export default class CustomGrid extends Component {
             date: new Date(),
             setDate: moment(new Date()).format("DD/MM/YYYY"),
             fieldDate: {},
-            isFilter: false,
+            //isFilter: false,
             showPicker: false
         };
     }
@@ -68,22 +68,19 @@ export default class CustomGrid extends Component {
 
                     state[element.index + "-column"] = element.value;
                 }
-            });
-
-            this.getRowsFilter(rows, obj, 0);
-
+            }); 
+            this.getRowsFilter(rows, obj, 0); 
             state.filterLoading = false;
-
         }
+
         this.setState({ GridLoading: true })
 
         var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
         var currentGP = [];
 
-        let ColumnsHideShow = this.props.cells;
-        let itemsColumns = this.props.cells;
-
+        //let ColumnsHideShow = this.props.cells;
+        let itemsColumns = this.props.cells; 
         if (selectedCols.length === 0) {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
@@ -121,9 +118,11 @@ export default class CustomGrid extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.isFilter && isEqual(this.state.rows, this.props.data)) {
-            this.props.changeValueOfProps();
+        //if (this.props.isFilter === true &&
+        if (isEqual(this.state.rows, this.props.data)) {
+            //this.props.changeValueOfProps();
             this.setState({
+                //isFilter: this.props.isFilter,
                 rows: this.props.data
             })
         }
@@ -321,7 +320,7 @@ export default class CustomGrid extends Component {
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
             this.setState({
-                isFilter: false,
+                //isFilter: false,
                 setFilters: newFilters,
                 localStorFiltersList: newFilterLst,
                 Loading: false,
@@ -657,7 +656,7 @@ export default class CustomGrid extends Component {
                             </svg>
                         </div>
                     </div>
-                    {this.state.GridLoading === false ?
+                    {/* {this.state.GridLoading === false ? */}
                         < GridCustom
                             key={this.props.gridKey}
                             cells={(this.state.columns).filter(i => i.hidden != true)}
@@ -669,7 +668,8 @@ export default class CustomGrid extends Component {
                             groups={this.state.groupsList}
                             handleGroupUpdate={this.handleGroupEvent}
                             showPicker={this.props.showPicker}
-                        /> : null}
+                        /> 
+                        {/* : null} */}
                 </div>
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>

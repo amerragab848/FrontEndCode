@@ -191,9 +191,10 @@ class requestPaymentsAddEdit extends Component {
 
         this.state = {
             noItems: 0,
-            isLoadingItems: true,
+            gridLoader: false,
+            isLoadingItems: false,
             isItemUpdate: false,
-            isFilter: false,
+            //isFilter: false,
             advancedPayment: null,
             currentStep: 0,
             trees: [],
@@ -202,6 +203,8 @@ class requestPaymentsAddEdit extends Component {
             userType: userType.uty,
             addDeducation: false,
             treesLoader: false,
+            isMultipleItems: false,
+            isEditingPercentage: "true",
             editItemsLoading: false,
             fillDropDown: [
                 { label: "Add Missing Amendments", value: "1" },
@@ -232,40 +235,7 @@ class requestPaymentsAddEdit extends Component {
             documentDeduction: {},
             interimInvoicedTable: [],
             approvedInvoicesParent: [],
-            approvedInvoicesChilds: [], isItemUpdate: false,
-            isFilter: false,
-            isMultipleItems: false,
-            isEditingPercentage: "true",
-            advancedPayment: null,
-            currentStep: 0,
-            trees: [],
-            showCostCodingTree: false,
-            isEditItems: false,
-            showDeleteModal: false,
-            userType: userType.uty,
-            addDeducation: false,
-            fillDropDown: [
-                { label: "Add Missing Amendments", value: "1" },
-                { label: "ReCalculator Payment", value: "2" },
-                { label: "Update Items From VO", value: "3" },
-                { label: "Add Missing Items", value: "4" },
-                { label: "Edit Advanced Payment Amount", value: "5" },
-                { label: "Calculate Interim Invoice", value: "6" },
-                { label: "Add Deductions", value: "7" },
-                { label: "Update Advance Payment Amount", value: "8" }
-            ],
-            selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
-            selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
-            fillDropDownTress: [],
-            fillDropDownExport: [
-                { label: "Export", value: "1" },
-                { label: "ExportAsVo", value: "2" }
-            ],
-            selectedDropDown: [{ label: "Admin Actions", value: "0" }],
-            selectedDropDownExport: [{ label: "Export File", value: "0" }],
-            selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
-            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
+            approvedInvoicesChilds: [],
             ColumnsHideShow: [],
             columns: [],
             groups: [],
@@ -348,7 +318,7 @@ class requestPaymentsAddEdit extends Component {
             },
             {
                 name: "items",
-                callBackFn: null//() => this.fillGridItems()
+                callBackFn: null
             },
             {
                 name: "deductions",
@@ -626,25 +596,6 @@ class requestPaymentsAddEdit extends Component {
                 width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
-                handleChange: (e, cell) => {
-
-                    let cellInstance = Object.assign({}, cell);
-
-                    cellInstance.sitePercentComplete = parseFloat(e.target.value); 
-                    let pItems = this.state.paymentsItems;
-
-                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                    pItems[cellIndex] = cellInstance;
-
-                    this.setState({
-                        paymentsItems: pItems,
-                        isFilter: true
-                    });
-                },
-                handleBlur: (e, cell) => { 
-                    this._onGridRowsUpdated(cell, "sitePercentComplete"); 
-                },
                 type: "number"
             }, {
                 field: "siteQuantityComplete",
@@ -652,25 +603,6 @@ class requestPaymentsAddEdit extends Component {
                 width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
-                handleChange: (e, cell) => {
-
-                    let cellInstance = Object.assign({}, cell);
-
-                    cellInstance.siteQuantityComplete = parseFloat(e.target.value); 
-                    let pItems = this.state.paymentsItems;
-
-                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                    pItems[cellIndex] = cellInstance;
-
-                    this.setState({
-                        paymentsItems: pItems,
-                        isFilter: true
-                    });
-                },
-                handleBlur: (e, cell) => { 
-                    this._onGridRowsUpdated(cell, "siteQuantityComplete");
-                },
                 type: "number"
             }, {
                 field: "sitePaymentPercent",
@@ -678,25 +610,6 @@ class requestPaymentsAddEdit extends Component {
                 width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
-                handleChange: (e, cell) => {
-                    let cellInstance = Object.assign({}, cell);
-
-                    cellInstance.sitePaymentPercent = parseFloat(e.target.value);
-                    let pItems = this.state.paymentsItems;
-
-                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                    pItems[cellIndex] = cellInstance;
-
-                    this.setState({
-                        paymentsItems: pItems,
-                        isFilter: true
-                    });
-                },
-                handleBlur: (e, cell) => {
-
-                    this._onGridRowsUpdated(cell, "sitePaymentPercent");
-                },
                 type: "number"
             }, ...(this.props.changeStatus ? [{
                 field: "percentComplete",
@@ -704,26 +617,6 @@ class requestPaymentsAddEdit extends Component {
                 width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
-                handleChange: (e, cell) => {
-
-                    let cellInstance = Object.assign({}, cell);
-
-                    cellInstance.percentComplete = parseFloat(e.target.value); 
-                    let pItems = this.state.paymentsItems;
-
-                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                    pItems[cellIndex] = cellInstance;
-
-                    this.setState({
-                        paymentsItems: pItems,
-                        isFilter: true
-                    });
-                },
-                handleBlur: (e, cell) => {
-
-                    this._onGridRowsUpdated(cell, "percentComplete");
-                },
                 type: "number"
             }, {
                 field: "quantityComplete",
@@ -731,27 +624,6 @@ class requestPaymentsAddEdit extends Component {
                 width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
-                handleChange: (e, cell) => {
-
-                    let cellInstance = Object.assign({}, cell);
-
-                    cellInstance.quantityComplete = parseFloat(e.target.value);
- 
-                    let pItems = this.state.paymentsItems;
-
-                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                    pItems[cellIndex] = cellInstance;
-
-                    this.setState({
-                        paymentsItems: pItems,
-                        isFilter: true
-                    });
-                },
-                handleBlur: (e, cell) => {
-
-                    this._onGridRowsUpdated(cell, "quantityComplete");
-                },
                 type: "number"
             }, {
                 field: "paymentPercent",
@@ -759,28 +631,6 @@ class requestPaymentsAddEdit extends Component {
                 width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
-                handleChange: (e, cell) => {
-
-                    let cellInstance = Object.assign({}, cell);
-
-                    cellInstance.paymentPercent = parseFloat(e.target.value);
-
-                    // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-                    let pItems = this.state.paymentsItems;
-
-                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
-
-                    pItems[cellIndex] = cellInstance;
-
-                    this.setState({
-                        paymentsItems: pItems,
-                        isFilter: true
-                    });
-                },
-                handleBlur: (e, cell) => {
-
-                    this._onGridRowsUpdated(cell, "paymentPercent");
-                },
                 type: "number"
             }] : []), {
                 field: "wasAdded",
@@ -1202,6 +1052,7 @@ class requestPaymentsAddEdit extends Component {
             document: updated_document
         });
     };
+
     handleChangeDropDownContract(event, field, selectedValue) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -1216,17 +1067,16 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.props.changeStatus === false) {
             this.setState({
-                isLoadingItems: true
+                gridLoader: true
             });
 
-            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" +
-                this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
-                    this.setState({
-                        paymentsItems: result,
-                        isLoadingItems: false
-                    });
+                this.setState({
+                    paymentsItems: result,
+                    gridLoader: false
                 });
+            });
 
             let contract = find(this.state.contractsPool, function (x) {
                 return x.id == event.value;
@@ -1345,13 +1195,13 @@ class requestPaymentsAddEdit extends Component {
             let paymentsItems = [...this.state.paymentsItems];
 
             if (paymentsItems.length === 0) {
-                this.setState({ isLoadingItems: true });
+                this.setState({ gridLoader: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-
+                    let items = result != null ? result : [];
+                    alert(items.length);
                     this.setState({
-                        paymentsItems: result != null ? result : [],
-                        isLoadingItems: false,
-                        isFilter: true
+                        paymentsItems: items,
+                        gridLoader: false 
                     });
                 });
             }
@@ -1632,12 +1482,13 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
+
     rowsUpdated = (cell, type) => {
 
         if (this.state.isMultipleItems === true) {
 
             this.setState({
-                isLoadingItems: true
+                gridLoader: true
             });
 
             var ids = this.state.multiplePayReqItems;
@@ -1675,21 +1526,21 @@ class requestPaymentsAddEdit extends Component {
                 });
             });
 
-            var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
+            //var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
 
-            let groups = JSON.parse(selectedCols.groups);
+            //let groups = JSON.parse(selectedCols.groups);
             this.setState({
                 editRows: editRows,
                 paymentsItems: paymentsItems,
                 viewPopUpRows: false,
                 isItemUpdate: true,
-                isLoadingItems: false,
-                isFilter: true,
+                gridLoader: false,
+                //isFilter: true,
                 isEditItems: true,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
-                isMultipleItems: false,
-                groups
+                isMultipleItems: false//,
+                //groups
             });
 
             this.reqPayModal.hide();
@@ -1719,112 +1570,26 @@ class requestPaymentsAddEdit extends Component {
 
             pItems[index] = newValue;
 
-            var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
-
-            let groups = JSON.parse(selectedCols.groups);
+            // var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || []; 
+            // let groups = JSON.parse(selectedCols.groups);
             this.setState({
                 editRows: editRows,
                 paymentsItems: pItems,
                 viewPopUpRows: false,
                 isItemUpdate: true,
-                isLoadingItems: false,
-                isFilter: true,
-                isEditItems: true,
-                groups
+                gridLoader: false,
+                //isFilter: true,
+                isEditItems: true//,
+                //   groups
             });
             this.addCommentModal.hide();
         }
     };
 
-    _onGridRowsUpdated = (cell, type) => {
-        let cellInstance = JSON.parse(JSON.stringify(cell));
+    // changeValueOfProps = () => {
+    //     this.setState({ isFilter: false });
+    // };
 
-        // let pItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
-        let pItems = this.state.paymentsItems;
-
-        let newValue = parseFloat(cellInstance[type]);
-
-        let sitePercentComplete = 0;
-        let siteQuantityComplete = 0;
-        if (parseFloat(cellInstance.revisedQuantity) == 0 && (parseFloat(cellInstance.siteQuantityComplete) > 0 || parseFloat(cellInstance.sitePercentComplete) > 0)) {
-            cellInstance.revisedQuantity = 1;
-        }
-
-        //#region switchCases
-
-        switch (type) {
-
-            case "quantityComplete":
-
-                cellInstance.percentComplete = parseFloat((newValue / cellInstance.revisedQuantity) * 100);
-                cellInstance.quantityComplete = parseFloat(newValue);
-                break;
-
-            case "sitePaymentPercent":
-
-                cellInstance.paymentPercent = parseFloat(newValue);
-                cellInstance.sitePaymentPercent = parseFloat(newValue);
-                break;
-
-            case "percentComplete":
-
-                cellInstance.quantityComplete = parseFloat((newValue / 100) * cellInstance.revisedQuantity);
-                cellInstance.percentComplete = parseFloat(newValue);
-                break;
-
-            case "sitePercentComplete":
-                sitePercentComplete = parseFloat(newValue);
-                siteQuantityComplete = parseFloat((newValue / 100) * cellInstance.revisedQuantity);
-
-                cellInstance.siteQuantityComplete = siteQuantityComplete;
-                cellInstance.quantityComplete = siteQuantityComplete;
-
-                cellInstance.percentComplete = sitePercentComplete;
-                cellInstance.sitePercentComplete = sitePercentComplete;
-                break;
-
-            case "siteQuantityComplete":
-                sitePercentComplete = parseFloat((newValue / cellInstance.revisedQuantity) * 100);
-                siteQuantityComplete = parseFloat(newValue);
-
-                cellInstance.sitePercentComplete = sitePercentComplete;
-                cellInstance.percentComplete = sitePercentComplete;
-
-                cellInstance.quantityComplete = siteQuantityComplete;
-                cellInstance.siteQuantityComplete = siteQuantityComplete;
-
-                break;
-        }
-
-        //#endregion switchCases
-
-        let editRows = [...this.state.editRows];
-
-        let sameRow = find(editRows, function (x) {
-            return x.id === cellInstance.id;
-        });
-
-        if (sameRow) {
-            editRows = editRows.filter(function (i) {
-                return i.id != cellInstance.id;
-            });
-        }
-
-        editRows.push(cellInstance);
-
-        let index = pItems.findIndex(x => x.id === cellInstance.id);
-
-        pItems[index] = cellInstance;
-
-        this.setState({
-            editRows: editRows,
-            paymentsItems: pItems,
-            isFilter: true
-        });
-    };
-    changeValueOfProps = () => {
-        this.setState({ isFilter: false });
-    };
     editRowsClick() {
         this.setState({ isLoading: true });
         let saveDocument = { ...this.state.document };
@@ -1965,7 +1730,7 @@ class requestPaymentsAddEdit extends Component {
 
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
-        let currentvalue = e.target.value == "" ? "" : ( (e.target.value[e.target.value.length - 1] == "." ? e.target.value : parseFloat(e.target.value)));
+        let currentvalue = e.target.value == "" ? "" : ((e.target.value[e.target.value.length - 1] == "." ? e.target.value : parseFloat(e.target.value)));
 
         if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
             updateRow.revisedQuantity = 1;
@@ -2035,7 +1800,7 @@ class requestPaymentsAddEdit extends Component {
 
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
-        let currentvalue = e.target.value == "" ? "" : ( (e.target.value[e.target.value.length - 1] == "." ? e.target.value : parseFloat(e.target.value)));
+        let currentvalue = e.target.value == "" ? "" : ((e.target.value[e.target.value.length - 1] == "." ? e.target.value : parseFloat(e.target.value)));
 
         switch (updated) {
 
@@ -2138,6 +1903,7 @@ class requestPaymentsAddEdit extends Component {
             });
 
             this.setState({
+                gridLoader: true,
                 isLoadingItems: true,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
@@ -2170,6 +1936,7 @@ class requestPaymentsAddEdit extends Component {
                         viewPopUpRows: false,
                         isItemUpdate: true,
                         isLoadingItems: false,
+                        gridLoader: false,
                         isFilter: true,
                         isEditItems: true,
                         isEditingPercentage: "true",
@@ -2180,6 +1947,7 @@ class requestPaymentsAddEdit extends Component {
                         viewPopUpRows: false,
                         isItemUpdate: true,
                         isLoadingItems: false,
+                        gridLoader: false,
                         isFilter: true,
                         isEditItems: true,
                         isEditingPercentage: "true",
@@ -2187,11 +1955,10 @@ class requestPaymentsAddEdit extends Component {
                     });
                 }
             }).catch(res => {
-                toast.error(
-                    Resources["operationCanceled"][currentLanguage]
-                );
+                toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({
                     isLoadingItems: false,
+                    gridLoader: false,
                     isEditingPercentage: "true"
                 });
             });
@@ -2201,6 +1968,7 @@ class requestPaymentsAddEdit extends Component {
             mainDoc.contractId = this.state.document.contractId;
 
             this.setState({
+                gridLoader: true,
                 isLoadingItems: true,
                 ColumnsHideShow: this.state.columns
             });
@@ -2229,15 +1997,14 @@ class requestPaymentsAddEdit extends Component {
                     paymentsItems: pItems,
                     viewPopUpRows: false,
                     isItemUpdate: true,
+                    gridLoader: false,
                     isLoadingItems: false,
                     isFilter: true,
                     isEditItems: true
                 });
 
             }).catch(res => {
-                toast.error(
-                    Resources["operationCanceled"][currentLanguage]
-                );
+                toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({
                     isLoadingItems: false
                 });
@@ -2357,10 +2124,6 @@ class requestPaymentsAddEdit extends Component {
 
                 let originalData = this.state.paymentsItems;
                 let ids = this.state.currentId;
-                // let newItems = originalData.filter(
-                //     item => !ids.includes(item.id)
-                // );
-
                 originalData = originalData.filter(x => x.id !== this.state.currentId);
                 this.setState({
                     paymentsItems: originalData,
@@ -2610,7 +2373,7 @@ class requestPaymentsAddEdit extends Component {
 
         if (pageNumber > 0) {
             this.setState({
-                isLoadingItems: true,
+                gridLoader: true,
                 pageNumber: pageNumber
             });
 
@@ -2622,12 +2385,12 @@ class requestPaymentsAddEdit extends Component {
 
                 this.setState({
                     paymentsItems: newRows,
-                    isLoadingItems: false
+                    gridLoader: false
                 });
             }).catch(ex => {
                 this.setState({
                     paymentsItems: oldRows,
-                    isLoadingItems: false
+                    gridLoader: false
                 });
             });
         }
@@ -2638,7 +2401,7 @@ class requestPaymentsAddEdit extends Component {
             let pageNumber = this.state.pageNumber + 1;
 
             this.setState({
-                isLoadingItems: true,
+                gridLoader: true,
                 pageNumber: pageNumber
             });
 
@@ -2649,12 +2412,12 @@ class requestPaymentsAddEdit extends Component {
 
                 this.setState({
                     paymentsItems: newRows,
-                    isLoadingItems: false
+                    gridLoader: false
                 });
             }).catch(ex => {
                 this.setState({
                     paymentsItems: oldRows,
-                    isLoadingItems: false
+                    gridLoader: false
                 });
             });
         }
@@ -2684,7 +2447,7 @@ class requestPaymentsAddEdit extends Component {
 
     renderingGrid() {
 
-        const ItemsGrid = this.state.isLoadingItems === false && this.state.currentStep === 1 ? (
+        const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
 
             <GridCustom
                 gridKey='ReqPaymentsItems'
@@ -2693,15 +2456,11 @@ class requestPaymentsAddEdit extends Component {
                 groups={this.state.groups}
                 actions={this.actions}
                 openModalColumn={this.state.columnsModal}
-                isFilter={this.state.isFilter}
                 cells={this.state.columns}
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
-                rowClick={cell => {
-                    this.onRowClick(cell);
-                }}
-                changeValueOfProps={this.changeValueOfProps.bind(this)}
+                rowClick={cell => { this.onRowClick(cell); }}
             />
-        ) : null;
+        ) : <div style={{ position: 'relative' }}><LoadingSection isCustomLoader={true} /></div>;
 
         return ItemsGrid;
     };
