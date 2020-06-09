@@ -40,7 +40,8 @@ export default class CustomGrid extends Component {
             date: new Date(),
             setDate: moment(new Date()).format("DD/MM/YYYY"),
             fieldDate: {},
-            showPicker: false
+            showPicker: false,
+            isFilter: false
         };
     }
 
@@ -115,25 +116,26 @@ export default class CustomGrid extends Component {
         }, 500);
     }
     static getDerivedStateFromProps(nextProps, state) {
-        if (nextProps.isFilter !== state.isFilter) {
+        //if (nextProps.isFilter !== state.isFilter) {
+        if (nextProps.isFilter == true && isEqual(state.rows, nextProps.data)) {
+
+            console.log('getDerivedStateFromProps...',nextProps.isFilter,'prevState...',state.isFilter);
             return {
-                isFilter: nextProps.isFilter,
+               // isFilter: nextProps.isFilter,
                 rows: nextProps.data
             }
         }
         return null
     }
 
-    // componentDidUpdate(prevProps, prevState) {
-    //     //if (this.props.isFilter === true &&
-    //     if (this.props.isFilter != prevState.isFilter) {
-    //         //this.props.changeValueOfProps();
-    //         this.setState({
-    //             isFilter: this.props.isFilter,
-    //             rows: this.props.data
-    //         })
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevState) {
+        //if (this.props.isFilter === true &&
+        if (this.props.isFilter != prevState.isFilter) {
+            console.log('Grid componentDidUpdate',this.props.isFilter,'prevState...',prevState.isFilter);
+            this.props.changeValueOfProps();
+
+        }
+    }
 
     resetDate = () => {
         this.setState({ currentData: 0 });
@@ -266,7 +268,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ state, currentData: 0 });
     };
- 
+
     saveFilter(event, index, name, type, key) {
 
         if (this.state.filteredRows.length > 0) {

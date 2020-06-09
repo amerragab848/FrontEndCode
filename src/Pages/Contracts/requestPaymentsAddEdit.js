@@ -191,7 +191,7 @@ class requestPaymentsAddEdit extends Component {
 
         this.state = {
             noItems: 0,
-            gridLoader: false,
+            gridLoader: true,
             isLoadingItems: false,
             isItemUpdate: false,
             isFilter: false,
@@ -256,7 +256,7 @@ class requestPaymentsAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             pageNumber: 0,
-            pageSize: 2000,
+            pageSize: 1000,
             docId: docId,
             docTypeId: 71,
             projectId: projectId,
@@ -510,8 +510,7 @@ class requestPaymentsAddEdit extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true, hidden: false,
-                type: "number",
-                showTip: true
+                type: "text" 
             }, {
                 field: "details",
                 title: Resources["description"][currentLanguage],
@@ -1198,10 +1197,11 @@ class requestPaymentsAddEdit extends Component {
                 this.setState({ gridLoader: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     let items = result != null ? result : [];
-                    alert(items.length);
+                    
                     this.setState({
                         paymentsItems: items,
-                        gridLoader: false
+                        gridLoader: false,
+                        isFilter:true
                     });
                 });
             }
@@ -1586,8 +1586,10 @@ class requestPaymentsAddEdit extends Component {
         }
     };
 
-    changeValueOfProps = (isFilter) => {
-        this.setState({ isFilter });
+    changeValueOfProps = () => {
+        
+        console.log('changeValueOfProps...',this.state.isFilter,'rows...',this.state.gridLoader);
+        this.setState({ isFilter: false });
     };
 
     editRowsClick() {
@@ -2460,6 +2462,8 @@ class requestPaymentsAddEdit extends Component {
                 isFilter={this.state.isFilter}
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
                 rowClick={cell => { this.onRowClick(cell); }}
+                changeValueOfProps={this.changeValueOfProps.bind(this)}
+
             />
         ) : <div style={{ position: 'relative' }}><LoadingSection isCustomLoader={true} /></div>;
 
