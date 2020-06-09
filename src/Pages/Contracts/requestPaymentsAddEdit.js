@@ -194,7 +194,7 @@ class requestPaymentsAddEdit extends Component {
             gridLoader: false,
             isLoadingItems: false,
             isItemUpdate: false,
-            //isFilter: false,
+            isFilter: false,
             advancedPayment: null,
             currentStep: 0,
             trees: [],
@@ -1201,7 +1201,7 @@ class requestPaymentsAddEdit extends Component {
                     alert(items.length);
                     this.setState({
                         paymentsItems: items,
-                        gridLoader: false 
+                        gridLoader: false
                     });
                 });
             }
@@ -1535,7 +1535,7 @@ class requestPaymentsAddEdit extends Component {
                 viewPopUpRows: false,
                 isItemUpdate: true,
                 gridLoader: false,
-                //isFilter: true,
+                isFilter: true,
                 isEditItems: true,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
@@ -1578,7 +1578,7 @@ class requestPaymentsAddEdit extends Component {
                 viewPopUpRows: false,
                 isItemUpdate: true,
                 gridLoader: false,
-                //isFilter: true,
+                isFilter: true,
                 isEditItems: true//,
                 //   groups
             });
@@ -1586,9 +1586,9 @@ class requestPaymentsAddEdit extends Component {
         }
     };
 
-    // changeValueOfProps = () => {
-    //     this.setState({ isFilter: false });
-    // };
+    changeValueOfProps = (isFilter) => {
+        this.setState({ isFilter });
+    };
 
     editRowsClick() {
         this.setState({ isLoading: true });
@@ -2446,8 +2446,8 @@ class requestPaymentsAddEdit extends Component {
     };
 
     renderingGrid() {
-
-        const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
+        // 
+        const ItemsGrid =this.state.gridLoader === false && this.state.currentStep === 1 ? (
 
             <GridCustom
                 gridKey='ReqPaymentsItems'
@@ -2457,6 +2457,7 @@ class requestPaymentsAddEdit extends Component {
                 actions={this.actions}
                 openModalColumn={this.state.columnsModal}
                 cells={this.state.columns}
+                isFilter={this.state.isFilter}
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
                 rowClick={cell => { this.onRowClick(cell); }}
             />
