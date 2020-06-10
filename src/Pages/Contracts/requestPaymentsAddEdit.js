@@ -256,7 +256,7 @@ class requestPaymentsAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             pageNumber: 0,
-            pageSize: 1000,
+            pageSize: 4,
             docId: docId,
             docTypeId: 71,
             projectId: projectId,
@@ -509,16 +509,17 @@ class requestPaymentsAddEdit extends Component {
                 width: 4,
                 groupable: true,
                 fixed: true,
-                sortable: true, hidden: false,
+                sortable: true, 
+                hidden: false,
                 type: "text" 
             }, {
-                field: "details",
+                field: "subject",
                 title: Resources["description"][currentLanguage],
                 width: 15,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text",
-                showTip: true
+                //showTip: true
             }, {
                 field: "boqType",
                 title: Resources["boqType"][currentLanguage],
@@ -538,7 +539,8 @@ class requestPaymentsAddEdit extends Component {
                 title: Resources["boqSubType"][currentLanguage],
                 width: 8,
                 groupable: true,
-                sortable: true, hidden: false,
+                sortable: true, 
+                hidden: true,
                 type: "text"
             }, {
                 field: "quantity",
@@ -559,8 +561,8 @@ class requestPaymentsAddEdit extends Component {
                 title: Resources["actualPercentage"][currentLanguage],
                 width: 6,
                 groupable: true,
-                sortable: true, hidden: false,
-                type: "text"
+                sortable: true, hidden: true,
+                type: "number"
             }, {
                 field: "unitPrice",
                 title: Resources["unitPrice"][currentLanguage],
@@ -573,7 +575,7 @@ class requestPaymentsAddEdit extends Component {
                 title: Resources["unit"][currentLanguage],
                 width: 6,
                 groupable: true,
-                sortable: true, hidden: false,
+                sortable: true, hidden: true,
                 type: "text"
             }, {
                 field: "prevoiuseQnty",
@@ -634,9 +636,9 @@ class requestPaymentsAddEdit extends Component {
             }] : []), {
                 field: "wasAdded",
                 title: Resources["status"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
-                sortable: true, hidden: false,
+                sortable: true, hidden: true,
                 type: "text"
             }, {
                 field: "totalExcutedPayment",
@@ -650,14 +652,14 @@ class requestPaymentsAddEdit extends Component {
                 title: Resources["comment"][currentLanguage],
                 width: 10,
                 groupable: true,
-                sortable: true, hidden: false,
+                sortable: true, hidden: true,
                 type: "text"
             }, {
                 field: "itemStatus",
                 title: Resources["itemStatus"][currentLanguage],
-                width: 8,
+                width: 7,
                 groupable: true,
-                sortable: true, hidden: false,
+                sortable: true, hidden: true,
                 type: "text"
             }];
 
@@ -1579,8 +1581,7 @@ class requestPaymentsAddEdit extends Component {
                 isItemUpdate: true,
                 gridLoader: false,
                 isFilter: true,
-                isEditItems: true//,
-                //   groups
+                isEditItems: true 
             });
             this.addCommentModal.hide();
         }
@@ -2410,7 +2411,7 @@ class requestPaymentsAddEdit extends Component {
             let oldRows = [...this.state.paymentsItems];
 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-                const newRows = [...this.state.paymentsItems, ...result];
+                const newRows = [...oldRows, ...result];
 
                 this.setState({
                     paymentsItems: newRows,

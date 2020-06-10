@@ -4,6 +4,7 @@ import Calendar from "react-calendar";
 import moment from "moment";
 import Resources from "../../../resources.json";
 import { isEqual } from 'lodash';
+import LoadingSection from "../../publicComponants/LoadingSection";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -29,7 +30,7 @@ export default class CustomGrid extends Component {
             filterLoading: false,
             ColumnsHideShow: [],
             Loading: false,
-            GridLoading: true,
+            GridLoading: false,
             filteredRows: this.props.data,
             setFilters: {},
             filters: [],
@@ -73,7 +74,7 @@ export default class CustomGrid extends Component {
             state.filterLoading = false;
         }
 
-        //this.setState({ GridLoading: true })
+        this.setState({ GridLoading: true })
 
         var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
@@ -85,6 +86,7 @@ export default class CustomGrid extends Component {
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+            console.log('first time....', itemsColumns);
         }
         else {
             var parsingList = JSON.parse(selectedCols.columnsList);
@@ -115,25 +117,25 @@ export default class CustomGrid extends Component {
             );
         }, 500);
     }
-    static getDerivedStateFromProps(nextProps, state) {
-        //if (nextProps.isFilter !== state.isFilter) {
-        if (nextProps.isFilter == true && isEqual(state.rows, nextProps.data)) {
 
-            console.log('getDerivedStateFromProps...',nextProps.isFilter,'prevState...',state.isFilter);
+    static getDerivedStateFromProps(nextProps, state) {
+
+        if (nextProps.isFilter && isEqual(state.rows, nextProps.data)) {
             return {
-               // isFilter: nextProps.isFilter,
-                rows: nextProps.data
+                rows: nextProps.data,
+                GridLoading: true
             }
         }
         return null
     }
-
+ 
     componentDidUpdate(prevProps, prevState) {
-        //if (this.props.isFilter === true &&
-        if (this.props.isFilter != prevState.isFilter) {
-            console.log('Grid componentDidUpdate',this.props.isFilter,'prevState...',prevState.isFilter);
-            this.props.changeValueOfProps();
+        if (this.props.isFilter && isEqual(prevState.rows, this.props.data)) {
 
+            this.props.changeValueOfProps();
+            this.setState({
+                GridLoading: false
+            });
         }
     }
 
@@ -397,7 +399,6 @@ export default class CustomGrid extends Component {
                 });
 
             } else {
-
                 rows.forEach(row => {
                     matched = 0;
                     Object.keys(filters).forEach(key => {
@@ -446,8 +447,7 @@ export default class CustomGrid extends Component {
 
                 this.setState({
                     rows: newRows,
-                    Loading: false,
-                    //[index + "-column"] :'sokary'
+                    Loading: false
                 });
             }
         }
@@ -663,19 +663,18 @@ export default class CustomGrid extends Component {
                     </div>
 
                     {this.state.GridLoading === false ?
-                        < GridCustom
+                        (< GridCustom
                             key={this.props.gridKey}
                             cells={(this.state.columns).filter(i => i.hidden != true)}
-                            data={this.state.rows}
-                            pageSize={this.props.pageSize}
+                            data={this.state.rows} 
                             actions={this.props.actions}
                             rowActions={this.props.rowActions}
                             rowClick={cell => this.props.rowClick(cell)}
                             groups={this.state.groupsList}
                             handleGroupUpdate={this.handleGroupEvent}
                             showPicker={this.props.showPicker}
-                        />
-                        : null}
+                        />)
+                        : <LoadingSection />}
 
                 </div>
 
