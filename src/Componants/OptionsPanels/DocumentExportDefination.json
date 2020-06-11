@@ -437,6 +437,75 @@
             "answer"
         ]
     },
+    "51": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "orderFromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "orderFromContact",
+                "value": "orderFromContactName",
+                "type": "S"
+            },
+            {
+                "name": "siteRequest",
+                "value": "siteRequestName",
+                "type": "S"
+            },
+            {
+                "name": "materialReleaseType",
+                "value": "materialReleaseName",
+                "type": "S"
+            },
+            {
+                "name":"boqLog",
+                "value":"boqName",
+                "type":"S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "resourceCode",
+            "areaName",
+            "locationName",
+            "remarks"
+        ],
+        "friendlyNames": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "resourceCode",
+            "area",
+            "location",
+            "remarks"
+        ]
+    },
     "109": {
         "fields": [
             {

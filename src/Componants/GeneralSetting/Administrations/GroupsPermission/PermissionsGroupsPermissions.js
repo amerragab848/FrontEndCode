@@ -22,7 +22,9 @@ class PermissionsGroupsPermissions extends Component {
             checkedAll: false,
             groupName: '',
             disabled: true,
-            status: 0
+            status: 0,
+            userPermissions: [],
+            selectedValuePermissions:[]
         }
         if (config.getPayload().uty != 'company') {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -60,42 +62,39 @@ class PermissionsGroupsPermissions extends Component {
 
     }
 
-    checkedAll = () => {
+    checkedAll = (e) => {
 
-        this.state[this.state.selectedDocument.value].forEach(item => {
-            this.setState({ [item.code]: !this.state.checkedAll })
-        })
-        this.setState({ checkedAll: !this.state.checkedAll })
+        // this.state[this.state.selectedDocument.value].forEach(item => {
+        //     this.setState({ [item.code]: !this.state.checkedAll })
+        // })
+        let checkAll=this.state.selectedValuePermissions;
+        checkAll.forEach(item=>{
+         item.value=e.target.checked?true:false;
+          })
+        this.setState({ checkedAll: !this.state.checkedAll,selectedValuePermissions:checkAll })
 
     }
 
     handleCheck = (code) => {
-        this.setState({ [code]: !this.state[code] })
+        //Ahmed Yousry
+       let permissionsCopy=this.state.selectedValuePermissions;
+       permissionsCopy.forEach(item=>{
+          if(item.code==code){
+              item.value=!item.value;
+          }
+      })
+        //End Ahmed Yousry
+        this.setState({ 
+            [code]: !this.state[code],
+            selectedValuePermissions:permissionsCopy
+         });
     }
-
     addEditPermission = () => {
         if (this.state.selectedDocument.value != -1) {
             let group = []
-            if (this.state.status == 1) {
-                this.state[this.state.selectedDocument.value].forEach(item => {
-                    // if (this.state[item.code] == true) {
-                    //     group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId });
-                    // }
-
-                        group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId });
-                    
-                })
-            }
-            else {
-                this.state[this.state.selectedDocument.value].forEach(item => {
-                    // if (this.state[item.code] == true) {
-                    //     group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId });
-                    // }
-                  
-                        group.push({ permissionId: item.code, permissionValue: this.state[item.code], groupId: this.state.groupId });
-                    
-                })
-            }
+            this.state.selectedValuePermissions.forEach(item => {
+                group.push({ permissionId: item.code, permissionValue: item.value, groupId: this.state.groupId });
+            })
             this.setState({ isLoading: true })
             let url = this.state.status == 0 ? 'AddGroupsPermissions' : 'EditGroupsPermissions'
             Api.post(url, group).then(() => {
@@ -107,7 +106,6 @@ class PermissionsGroupsPermissions extends Component {
             })
         }
     }
-
     changeSelect = (event) => {
         this.setState({ selectedDocument: event })
         let documentPermission = [];
@@ -121,9 +119,7 @@ class PermissionsGroupsPermissions extends Component {
         this.setState({ isLoading: true })
 
         Api.post('GetGroupsPermissionsV5', doc).then(res => {
-
             if (!isEmpty(res)) {
-                console.log(res)
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
                 })
@@ -133,20 +129,28 @@ class PermissionsGroupsPermissions extends Component {
             else {
                 this.setState({ isLoading: false, disabled: false, status: 0, checkedAll: false })
             }
+            //Ahmed
+            let results = this.state[this.state.selectedDocument.value] ? this.state[this.state.selectedDocument.value] : [];
+            results.forEach(item=>{
+                let checkPermission = res.filter(x => x.permissionId == item.code);
+                    item.value=checkPermission.length > 0 ?checkPermission[0].permissionValue : false
+            })
+            this.setState({
+                selectedValuePermissions:results
+            })
+            //End Ahmed
         }).catch(() => {
             this.setState({ isLoading: false, disabled: false, status: 0, checkedAll: false })
         })
     }
-
-    drawItems() {
-
-        let results = this.state[this.state.selectedDocument.value] ? this.state[this.state.selectedDocument.value] : [];
-        if (!isEmpty(results)) {
-            return (results.map(item => {
+ drawItems() {
+        if (this.state.selectedValuePermissions.length > 0) {
+            return (this.state.selectedValuePermissions.map(item => {
                 return (
                     <div className="project__Permissions--type " key={item.code}>
                         <div id="allSelected" className="ui checkbox checkBoxGray300 checked " >
-                            <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state[item.code]}
+
+                            <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={item.value}
                                 onChange={(e) => this.handleCheck(item.code)} />
                             <label>{item.title[currentLanguage]}</label>
                         </div>
