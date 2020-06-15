@@ -256,7 +256,7 @@ class requestPaymentsAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             pageNumber: 0,
-            pageSize: 4,
+            pageSize: 1500,
             docId: docId,
             docTypeId: 71,
             projectId: projectId,
@@ -1724,6 +1724,7 @@ class requestPaymentsAddEdit extends Component {
     closeModalColumn = () => {
         this.setState({ columnsModal: false })
     };
+    
     handleChangeForEdit = (e, updated) => {
         let updateRow = this.state.currentObject;
 

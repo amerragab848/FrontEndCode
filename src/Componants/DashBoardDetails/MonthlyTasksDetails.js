@@ -168,7 +168,7 @@ class MonthlyTasksDetails extends Component {
     
     const btnExport = (<Export rows={this.state.rows} columns={this.state.columns} fileName={Resources["monthlyTasks"][currentLanguage]} />);
 
-    const gridSetup = this.state.isLoading ? <LoadingSection /> : (
+    const gridCustom = this.state.isLoading ? <LoadingSection /> : (
       <GridCustom
         key="MonthlyTaskDetails"
         data={this.state.rows}
@@ -268,7 +268,7 @@ class MonthlyTasksDetails extends Component {
             </div>
           </div>
           <div>
-            {gridSetup}
+            {gridCustom}
           </div>
         </div>
       </div>
