@@ -1539,6 +1539,7 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: false,
                 isFilter: true,
                 isEditItems: true,
+                isLoading : false,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
                 isMultipleItems: false//,
@@ -1581,7 +1582,8 @@ class requestPaymentsAddEdit extends Component {
                 isItemUpdate: true,
                 gridLoader: false,
                 isFilter: true,
-                isEditItems: true 
+                isEditItems: true ,
+                isLoading : false
             });
             this.addCommentModal.hide();
         }
@@ -1877,7 +1879,12 @@ class requestPaymentsAddEdit extends Component {
                 updateRow.isAmendment = originalRow.isAmendment;
                 updateRow.comment = updateRow.lastComment;
                 updateRow.revisedQuantity = originalRow.revisedQuantity;
-                updateRow.itemId = originalRow.itemId;
+                updateRow.sitePaymentPercent = Config.IsAllow(3673) ?  updateRow.sitePaymentPercent : originalRow.sitePaymentPercent; 
+                updateRow.sitePercentComplete =  Config.IsAllow(3673) ? updateRow.sitePercentComplete :originalRow.sitePercentComplete; 
+                updateRow.siteQuantityComplete = Config.IsAllow(3673) ? updateRow.siteQuantityComplete :originalRow.siteQuantityComplete; 
+                updateRow.percentComplete = Config.IsAllow(3674) ?   updateRow.percentComplete :originalRow.percentComplete; 
+                updateRow.quantityComplete =  Config.IsAllow(3674) ?  updateRow.quantityComplete :originalRow.quantityComplete;  
+                updateRow.paymentPercent =  Config.IsAllow(3674) ?  updateRow.paymentPercent :originalRow.paymentPercent;  
 
                 if (this.state.isEditingPercentage === true) {
 
@@ -1929,6 +1936,7 @@ class requestPaymentsAddEdit extends Component {
                         cellInstance.quantityComplete = mainDoc.quantityComplete;
                         cellInstance.paymentPercent = mainDoc.paymentPercent;
                         cellInstance.comment = mainDoc.comment;
+                        cellInstance.totalExcutedPayment = mainDoc.totalExcutedPayment;
 
                         let cellIndex = paymentsItems.findIndex(c => c.id == cellInstance.id);
 

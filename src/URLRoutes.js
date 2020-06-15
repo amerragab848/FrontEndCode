@@ -139,6 +139,13 @@ var routes = [
         settings: { ProjectReports: true, permission: 3679, order: 4 }
     },
     {
+        route: "reqPaymInvoicesRpt",
+        moduleId: "ContractsPOReports/reqPaymInvoicesRpt",
+        title: "reqPaymInvoicesRpt",
+        nav: true,
+        settings: { ContractsPo: true, permission: 3679, order: 8 }
+    },
+    {
         route: "projectsAchievements",
         moduleId: "ProjectReports/projectsAchievements",
         title: "projectsAchievments",

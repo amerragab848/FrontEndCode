@@ -1173,9 +1173,21 @@
         "en": "Total Amount",
         "ar": "اجمالى القيمة"
     },
+    "currentTotalAmount": {
+        "en": "Current Total Amount",
+        "ar": "اجمالى القيمة"
+    },
+    "prevoiuseTotalAmount": {
+        "en": "Previous Total Amount",
+        "ar": "اجمالى القيمة"
+    }, 
     "quantityChange": {
         "en": "Change Quantity",
         "ar": "تعديل الكمية"
+    },
+    "currentQuantity": {
+        "en": "Current Quantity",
+        "ar": " الكميةالحاليه"
     },
     "codingTree": {
         "en": "Coding Tree",
@@ -6344,6 +6356,10 @@
     "projectsBackLog": {
         "en": "Projects Back Log",
         "ar": "سجل المشروعات"
+    },
+    "reqPaymInvoicesRpt": {
+        "en": "Request Payments Invoices RPT",
+        "ar": "تقرير فواتير المستخلصات"
     },
     "quarter": {
         "en": "Quarter",
