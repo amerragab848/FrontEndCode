@@ -142,6 +142,9 @@ const ContractsStatus = AsyncComponent(() =>
 const ProjectBackLog = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/projectBackLog'),
 );
+const reqPaymInvoicesRpt = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/ContractsPOReports/reqPaymInvoicesRpt'),
+);
 const ProjectsAchievements = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/projectsAchievements'),
 );
@@ -222,9 +225,11 @@ const ContractsConditions = AsyncComponent(() =>
 const VariationOrderAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationOrderAddEdit'),
 );
+
 const requestPaymentsAddEdit_New = AsyncComponent(() =>
     import('./Pages/Contracts/requestPaymentsAddEdit_New'),
 );
+
 const requestPaymentsAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/requestPaymentsAddEdit'),
 );
@@ -1110,7 +1115,7 @@ let originalRoutes = [
         path="/AccountsGroup/:groupId"
         component={AccountsGroup}
     />,
-    <Route key="r-136" path="/projectBackLog" component={ProjectBackLog} />,
+    <Route key="r-136" path="/projectBackLog" component={ProjectBackLog} />, 
     <Route
         key="r-137"
         path="/projectsAchievements"
@@ -1284,6 +1289,8 @@ let originalRoutes = [
         component={PaymentCertification}
     />,
     <Route key="r-189" path="/:docType/gen/:projectId" component={DocGen} />,
+    
+    <Route key="r-190" path="Pages/ReportsCenter/ContractsPOReports/reqPaymInvoicesRpt" component={reqPaymInvoicesRpt} />,
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

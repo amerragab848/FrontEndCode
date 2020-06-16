@@ -74,6 +74,7 @@ class CommonLog extends Component {
           let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
           let documentObj = this.state.documentObj
           this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle); 
+          this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId); 
 
           this.setState({
             showExportModal: true 
@@ -845,7 +846,9 @@ function mapStateToProps(state, ownProps) {
     showSelectProject: state.communication.showSelectProject,
     projectName: state.communication.projectName,
     moduleName: state.communication.moduleName,
-    document: state.communication.document
+    document: state.communication.document,
+    files: state.communication.files,
+    workFlowCycles: state.communication.workFlowCycles,
   };
 }
 

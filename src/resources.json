@@ -1173,9 +1173,21 @@
         "en": "Total Amount",
         "ar": "اجمالى القيمة"
     },
+    "currentTotalAmount": {
+        "en": "Current Total Amount",
+        "ar": "اجمالى القيمة"
+    },
+    "prevoiuseTotalAmount": {
+        "en": "Previous Total Amount",
+        "ar": "اجمالى القيمة"
+    }, 
     "quantityChange": {
         "en": "Change Quantity",
         "ar": "تعديل الكمية"
+    },
+    "currentQuantity": {
+        "en": "Current Quantity",
+        "ar": " الكميةالحاليه"
     },
     "codingTree": {
         "en": "Coding Tree",
@@ -6174,11 +6186,11 @@
         "ar": "نسبة التنفيذ"
     },
     "sitePercentComplete": {
-        "en": "Contractor's Percent Complete",
+        "en": "Cont.'s Percent Complete",
         "ar": "نسبة التنفيذ للمقاول"
     },
     "siteQuantityComplete": {
-        "en": "Contractor's Qty Complete",
+        "en": "Cont.'s Qty Complete",
         "ar": "كمية التنفيذ للمقاول"
     },
     "matrialStoredAmount": {
@@ -6344,6 +6356,10 @@
     "projectsBackLog": {
         "en": "Projects Back Log",
         "ar": "سجل المشروعات"
+    },
+    "reqPaymInvoicesRpt": {
+        "en": "Request Payments Invoices RPT",
+        "ar": "تقرير فواتير المستخلصات"
     },
     "quarter": {
         "en": "Quarter",
@@ -8362,8 +8378,8 @@
         "ar": "يجب عليك الحفظ فى صفحة التوقيت"
     },
     "contractPaymentPercent": {
-        "en": "Contractor's Payment Percent",
-        "ar": "Contractor's Payment Percent"
+        "en": "Cont.'s Payment Percent",
+        "ar": "Cont.'s Payment Percent"
     },
     "amountRequired": {
         "en": "Please insert Amount",

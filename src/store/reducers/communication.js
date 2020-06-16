@@ -388,6 +388,9 @@ export default function (state = initialState.app.communication, action) {
 
         case types.GET_ITEMS:
             return { ...state, items: action.document }
+        case types.Attachments_WF_Cycles:
+            return { ...state, files: action.files, workFlowCycles: action.workFlowCycles}
+        
         default:
             return {
                 ...state

@@ -654,6 +654,25 @@ export function setLoading() {
     }
 }
 
+export function getAttachmentsAndWFCycles(DocType,docId,projectId) {
+    return(dispatch)=>{
+        return Api.get('GetAttachFilesAndWFCycleByDocId?DocType='+ DocType +'&DocId='+ docId + '&projectId='+projectId).then(res=>{
 
+            let result = BuildWorkFlowCycleStracture(res.wfCycles);
+
+            dispatch({
+                type:types.Attachments_WF_Cycles,
+                files: res.attachments,
+                workFlowCycles : result.cycles, 
+               })
+        }).catch((ex)=>{
+            dispatch({
+                type:types.Attachments_WF_Cycles,
+                files: [],
+                workFlowCycles : [] 
+            })
+        })
+    } 
+}
 //#endregion
 
