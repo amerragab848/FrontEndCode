@@ -104,7 +104,7 @@ const validationSchemaForAddEditWorkFlow = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     alertDays: Yup.number().required(Resources['isRequiredField'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
     rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage]),
-    distributionId: Yup.string().required(Resources['distributionList'][currentLanguage])
+    // distributionId: Yup.string().required(Resources['distributionList'][currentLanguage])
 })
 
 class projectWorkFlowAddEdit extends Component {
@@ -1174,7 +1174,6 @@ class projectWorkFlowAddEdit extends Component {
                                         <Dropdown data={this.state.DistributionList} selectedValue={this.state.selectedDistributionList}
                                             handleChange={event => this.handleChangeDropDown(event, 'distributionId', false, '', '', '', 'selectedDistributionList')}
                                             onChange={setFieldValue} onBlur={setFieldTouched} title="distributionList"
-                                            error={errors.distributionId} touched={touched.distributionId}
                                             index="distributionId" name="distributionList" id="distributionList" />
                                     </div>
 

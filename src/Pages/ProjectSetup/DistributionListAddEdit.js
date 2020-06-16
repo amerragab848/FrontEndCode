@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridCustom from 'react-customized-grid';
- 
+
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -268,6 +268,9 @@ class TaskGroupsAddEdit extends Component {
                     )
                 }
                 break;
+            case 'ContactName':
+                this.setState({SelectedContact:SelectedItem})
+                break;
             case 'actionId':
                 this.setState({ SelectedAction: SelectedItem });
                 break;
@@ -370,6 +373,11 @@ class TaskGroupsAddEdit extends Component {
                 let data = { items: NewRows };
                 this.props.actions.ExportingData(data);
                 this.MaxArrangeContacts();
+                this.setState({
+                    SelectedCompany:'',
+                    SelectedContact:'',
+                    SelectedAction:{ label: "Select Action", value: "0" }
+                })
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }
         ).catch(ex => {
@@ -540,9 +548,9 @@ class TaskGroupsAddEdit extends Component {
                     <Formik
                         initialValues={{
                             ArrangeContact: this.state.MaxArrangeContact,
-                            Company: '',
-                            ContactName: '',
-                            actionId: this.state.SelectedAction.value
+                            Company: this.state.SelectedCompany,
+                            ContactName: this.state.SelectedContact,
+                            actionId: this.state.SelectedAction
                         }}
                         enableReinitialize={true}
                         validationSchema={ValidtionSchemaForContact}
@@ -587,7 +595,7 @@ class TaskGroupsAddEdit extends Component {
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <DropdownMelcous title="action" data={this.state.distributionAction} name="action"
+                                            <DropdownMelcous title="action" data={this.state.distributionAction} name="actionId"
                                                 selectedValue={this.state.SelectedAction} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "actionId")}
                                                 onBlur={setFieldTouched}
