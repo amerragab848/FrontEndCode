@@ -66,7 +66,7 @@ class ExportReportCenterDetails extends Component {
 
         let rows = fields.map((field, index) => {
             let data = field.type == "D" ? moment(field.value).format('DD/MM/YYYY') : field.value
-
+console.log("field...",field);
             return (<tr key={index}>
                 <Fragment>
                     <td><span>{data}</span></td>
