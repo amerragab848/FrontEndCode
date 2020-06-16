@@ -225,9 +225,11 @@ const ContractsConditions = AsyncComponent(() =>
 const VariationOrderAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationOrderAddEdit'),
 );
+
 const requestPaymentsAddEdit_New = AsyncComponent(() =>
     import('./Pages/Contracts/requestPaymentsAddEdit_New'),
 );
+
 const requestPaymentsAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/requestPaymentsAddEdit'),
 );

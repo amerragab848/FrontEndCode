@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import Api from '../../api'
 import moment from 'moment'
-import Resources from '../../resources.json';
-//import _ from "lodash";
+import Resources from '../../resources.json'; 
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import 'react-table/react-table.css'
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+import 'react-table/react-table.css' 
 import SubContract from '../Contracts/SubContract';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
