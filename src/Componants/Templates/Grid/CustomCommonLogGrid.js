@@ -1,7 +1,5 @@
-import React, { Component, Fragment } from 'react';
-
-import GridCustom from 'react-customized-grid';
- 
+import React, { Component, Fragment } from 'react'; 
+import GridCustom from 'react-customized-grid'; 
 import moment from "moment"; 
 import Resources from "../../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -120,7 +118,7 @@ export default class CustomGrid extends Component {
         return (
             <Fragment> 
                 <GridCustom
-                    key={this.props.key}
+                    key={this.props.gridKey}
                     cells={this.props.cells}
                     data={this.state.rows}
                     pageSize={this.props.pageSize}
