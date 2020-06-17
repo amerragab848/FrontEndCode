@@ -14,11 +14,9 @@ import DataService from '../../Dataservice'
 import { toast } from "react-toastify";
 //import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import 'react-table/react-table.css'
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
-
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import GridCustom from 'react-customized-grid';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -37,7 +35,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 class SubContract extends Component {
-    
+
     constructor(props) {
 
         super(props)
@@ -64,115 +62,138 @@ class SubContract extends Component {
             }
             return null;
         };
-
         this.itemsColumns = [
             {
-                key: "details",
-                name: Resources["description"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'id',
+                title: "",
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "check-box"
+            },
+            {
+                field: 'details',
+                title: Resources['description'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type:"string"
+            },
+            {
+                field: 'resourceCode',
+                title: Resources['resourceCode'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: 'specsSectionName',
+                title: Resources['specsSection'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: 'itemCode',
+                title: Resources['itemCode'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: 'unit',
+                title: Resources['unit'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }, {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: 'originalQuantity',
+                title: Resources['originalQuantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type:"string"
-
             }, {
-                key: "specsSectionName",
-                name: Resources["specsSection"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'originalUnitPrice',
+                title: Resources['originalPrice'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type:"string"
             }, {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'unitPrice',
+                title: Resources['unitPrice'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "input",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type:"string"
+                handleChange: (e, cell) => {
+                    let cellInstance = Object.assign({}, cell);
+                    cellInstance.unitPrice = parseFloat(e.target.value);
+                    let items = JSON.parse(JSON.stringify(this.state.rows));
+                    let cellIndex = items.findIndex(c => c.id == cell.id);
+                    items[cellIndex] = cellInstance;
+                    this.setState({
+                        rows: items,
+                    });
+                },
+                handleBlur: (e, cell) => {
+                    this._onGridUnitPriceUpdated(cell);
+                }
             }, {
-                key: "unit",
-                name: Resources["unit"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'quantity',
+                title: Resources['originalQuantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "input",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type:"string"
+                handleChange: (e, cell) => {
+                    let cellInstance = Object.assign({}, cell);
+                    cellInstance.quantity = parseFloat(e.target.value);
+                    let items = JSON.parse(JSON.stringify(this.state.rows));
+                    let cellIndex = items.findIndex(c => c.id == cell.id);
+                    items[cellIndex] = cellInstance;
+                    this.setState({
+                        rows: items,
+                    });
+                },
+                handleBlur: (e, cell) => {
+                    this._onGridQuantityUpdated(cell);
+                }
             }, {
-                key: "originalQuantity",
-                name: Resources["originalQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'defaultQuantity',
+                title: Resources['defaultQuantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "input",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type:"number"
-            }, {
-                key: "originalUnitPrice",
-                name: Resources["originalPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type:"number"
-            }, {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                editable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editUnitPrice,
-                type:"number"
-            }, {
-                key: "quantity",
-                name: Resources["originalQuantity"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                editable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editQuntity,
-                type:"number"
-            }, {
-                key: "defaultQuantity",
-                name: Resources["defaultQuantity"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                editable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editDefaultQuntity,
-                type:"number"
+                handleChange: (e, cell) => {
+                    let cellInstance = Object.assign({}, cell);
+                    cellInstance.defaultQuantity = parseFloat(e.target.value);
+                    let items = JSON.parse(JSON.stringify(this.state.rows));
+                    let cellIndex = items.findIndex(c => c.id == cell.id);
+                    items[cellIndex] = cellInstance;
+                    this.setState({
+                        rows: items,
+                    });
+                },
+                handleBlur: (e, cell) => {
+                    this._onGridDefaultQuantityUpdated(cell);
+                }
             }];
 
         this.state = {
@@ -186,16 +207,16 @@ class SubContract extends Component {
             contractTo: { label: Resources.selectContact[currentLanguage], value: -1 },
             contractWithContact: { label: Resources.selectContact[currentLanguage], value: -1 },
             itemsColumns: this.itemsColumns,
-            projectId:this.props.projectId
+            projectId: this.props.projectId
         }
 
     }
 
     componentWillMount() {
-        
+
         this.setState({ isLoading: true });
-        
-        DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId='+this.props.projectId, 'companyName', 'companyId').then(res => {
+
+        DataService.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + this.props.projectId, 'companyName', 'companyId').then(res => {
             this.setState({ companies: res, isLoading: false })
         }).catch(() => {
             this.setState({ isLoading: false })
@@ -203,16 +224,16 @@ class SubContract extends Component {
 
         this.setState({ isLoading: true });
 
-        if(!this.props.items){
-            Api.get('ShowContractItemsByContractId?contractId='+this.props.docId+'&pageNumber=0&pageSize=2000').then((res) => {
+        if (!this.props.items) {
+            Api.get('ShowContractItemsByContractId?contractId=' + this.props.docId + '&pageNumber=0&pageSize=2000').then((res) => {
                 if (res) {
                     let itemsColumns = filter(this.itemsColumns, (col) => col.key != 'defaultQuantity')
                     this.setState({ rows: res, itemsColumns, isLoading: false })
                 }
-            }); 
-        }else{
-            this.setState({ rows: this.props.items , isLoading: false })
-        } 
+            });
+        } else {
+            this.setState({ rows: this.props.items, isLoading: false })
+        }
     }
 
     componentWillReceiveProps(props, state) {
@@ -234,7 +255,7 @@ class SubContract extends Component {
     addContract = (values) => {
         if (this.state.selectedRows.length > 0) {
             this.setState({ isLoading: true })
-            Api.get('GetNextArrangeMainDoc?projectId='+this.props.projectId+'&docType=9&companyId=' + this.state.fromCompany.value + '&contactId=0').then((res) => {
+            Api.get('GetNextArrangeMainDoc?projectId=' + this.props.projectId + '&docType=9&companyId=' + this.state.fromCompany.value + '&contactId=0').then((res) => {
                 if (res) {
                     let contract = {
                         projectId: this.state.projectId,
@@ -244,15 +265,15 @@ class SubContract extends Component {
                         subject: values.subject,
                         arrange: res,
                         reference: values.refDoc,
-                        docDate: moment(values.docDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                        docDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                         status: values.status == undefined ? true : values.status,
-                        completionDate: moment(values.completionDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                        completionDate: moment(values.completionDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                         actualExceuted: 0,
                         originalContactSum: 0,
-                        parentId:this.props.docId,
+                        parentId: this.props.docId,
                         parentType: this.props.type,
                         tax: 0,
-                        vat: 0, 
+                        vat: 0,
                     }
                     DataService.addObject('AddContracts', contract).then((data) => {
                         let count = 0;
@@ -270,16 +291,17 @@ class SubContract extends Component {
                             item.orderType = this.props.type;
 
                             Api.post('AddContractsOrder', item).then(() => {
-                                if (count == this.state.selectedRows.length - 1){
+                                if (count == this.state.selectedRows.length - 1) {
                                     toast.success(Resources["operationSuccess"][currentLanguage]);
-                                   
-                                    this.setState({isLoading:false})}
+
+                                    this.setState({ isLoading: false })
+                                }
                                 else
                                     count++;
                             })
                         })
 
-                        this.props.FillTable(); 
+                        this.props.FillTable();
 
                     }).catch(() => {
                         toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -293,27 +315,44 @@ class SubContract extends Component {
         }
     }
 
-    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-      
-        this.setState({ isLoading: true });
-      
-        this.setState(state => {
-            const rows = state.rows.slice();
-            for (let i = fromRow; i <= toRow; i++) {
-                rows[i] = { ...rows[i], ...updated };
-            }
-            return { rows };
-        });
+    // _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
 
+    //     this.setState({ isLoading: true });
+
+    //     this.setState(state => {
+    //         const rows = state.rows.slice();
+    //         for (let i = fromRow; i <= toRow; i++) {
+    //             rows[i] = { ...rows[i], ...updated };
+    //         }
+    //         return { rows };
+    //     });
+
+    //     setTimeout(() => {
+    //         this.setState({ isLoading: false })
+    //     }, 300)
+    // };
+    _onGridDefaultQuantityUpdated = (cell) => {
+        this.setState({ isLoading: true });
         setTimeout(() => {
             this.setState({ isLoading: false })
         }, 300)
     };
-
+    _onGridQuantityUpdated = (cell) => {
+        this.setState({ isLoading: true });
+        setTimeout(() => {
+            this.setState({ isLoading: false })
+        }, 300)
+    };
+    _onGridUnitPriceUpdated = (cell) => {
+        this.setState({ isLoading: true });
+        setTimeout(() => {
+            this.setState({ isLoading: false })
+        }, 300)
+    };
     ChangeContract = (event) => {
 
         this.setState({ contractTo: event, isLoading: true })
-        
+
         DataService.GetDataList('GetContactsByCompanyId?companyId=' + event.value, 'contactName', 'id').then(res => {
             this.setState({
                 contracts: res, isLoading: false,
@@ -327,7 +366,7 @@ class SubContract extends Component {
     setupColumns(value) {
 
         this.setState({ isLoading: true });
-      
+
         let itemsColumns = value == 'quantity' ? filter(this.itemsColumns, (col) => col.key != 'defaultQuantity') : filter(this.itemsColumns, (col) => col.key != 'quantity')
         setTimeout(() => {
             this.setState({ itemsColumns, isLoading: false })
@@ -337,37 +376,30 @@ class SubContract extends Component {
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <>
-            <GridSetupWithFilter
-                rows={this.state.rows}
-                onRowClick={this.onRowClick}
-                columns={this.state.itemsColumns}
-                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                onRowsSelected={this.onRowsSelected}
-                onRowsDeselected={this.onRowsDeselected}
-                onGridRowsUpdated={this._onGridRowsUpdated}
-                showToolBar={false}
-                key='items'
-            />
-            
-           </> ) : <LoadingSection />;
+                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []}
+                    cells={this.itemsColumns}
+                    pageSize={this.state.rows.length} actions={[]} rowActions={[]}
+                    rowClick={() => { }}
+                />
+            </>) : <LoadingSection />;
 
         let Step_1 = <Fragment>
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                     <div className="document-fields">
                         <Formik initialValues={{
-                                subject: '',
-                                fromCompany: '',
-                                contractWithContact: '',
-                                status: true,
-                                refDoc: '',
-                                docDate: moment(),
-                                completionDate: moment()
-                            }} 
-                            validationSchema={poqSchema} 
+                            subject: '',
+                            fromCompany: '',
+                            contractWithContact: '',
+                            status: true,
+                            refDoc: '',
+                            docDate: moment(),
+                            completionDate: moment()
+                        }}
+                            validationSchema={poqSchema}
                             onSubmit={(values) => {
                                 this.addContract(values)
-                            }}> 
+                            }}>
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                 <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                     <div className="proForm first-proform">
@@ -396,13 +428,13 @@ class SubContract extends Component {
                                     </div>
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
-                                            <DatePicker title='docDate' 
+                                            <DatePicker title='docDate'
                                                 name="docDate"
                                                 startDate={values.docDate}
                                                 handleChange={e => { handleChange(e); setFieldValue('docDate', e) }} />
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <DatePicker title='completionDate' 
+                                            <DatePicker title='completionDate'
                                                 name="completionDate"
                                                 startDate={values.completionDate}
                                                 handleChange={e => { handleChange(e); setFieldValue('completionDate', e) }} />
@@ -440,7 +472,7 @@ class SubContract extends Component {
                                                         selectedValue={this.state.contractTo}
                                                         handleChange={event => { this.ChangeContract(event) }}
                                                         name="contractTo"
-                                                        index="contractTo" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                        index="contractTo" styles={CompanyDropdown} classDrop="companyName1 " />
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown
@@ -454,14 +486,14 @@ class SubContract extends Component {
                                                         error={errors.contractWithContact}
                                                         touched={touched.contractWithContact}
                                                         name="contractWithContact"
-                                                        index="contractWithContact" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                        index="contractWithContact" classDrop=" contactName1" styles={ContactDropdown} />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                         {this.state.saveLoading === false ? (
-                                            <button className={ "primaryBtn-1 btn " + (this.state.isViewMode === true ? "disNone" : "") } disabled={this.state.isViewMode} type="submit"  >{Resources['save'][currentLanguage]}</button>
+                                            <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? "disNone" : "")} disabled={this.state.isViewMode} type="submit"  >{Resources['save'][currentLanguage]}</button>
                                         ) :
                                             (
                                                 <button className="primaryBtn-1 btn  disabled" disabled="disabled">
@@ -498,12 +530,12 @@ class SubContract extends Component {
             <Fragment>
                 <div>
                     <div className="documents-stepper noTabs__document one__tab one_step" >
-              <div className="doc-pre-cycle letterFullWidth">
-                <header>
-                  <h2 className="zero">{Resources['subContracts'][currentLanguage]}</h2>
-                </header>
-              </div>
-                    <div className="doc-container">
+                        <div className="doc-pre-cycle letterFullWidth">
+                            <header>
+                                <h2 className="zero">{Resources['subContracts'][currentLanguage]}</h2>
+                            </header>
+                        </div>
+                        <div className="doc-container">
                             <div className="step-content">
                                 {this.state.LoadingPage ? <LoadingSection /> : Step_1}
                             </div>

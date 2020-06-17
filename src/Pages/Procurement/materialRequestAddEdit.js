@@ -28,7 +28,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+import GridCustom from 'react-customized-grid';
 
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
@@ -225,102 +225,123 @@ class materialRequestAddEdit extends Component {
                 );
             }
         };
-
         this.itemsColumns = [
             {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
+                field: 'id',
+                title: "",
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "check-box"
             },
             {
-                key: "details",
-                name: Resources["details"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'arrange',
+                title: Resources['arrange'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
             },
             {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: 'details',
+                title: Resources['details'][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editQuantity,
-                editable: true,
-                type: "number"
             },
             {
-                key: "stock",
-                name: Resources["stock"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'quantity',
+                title: Resources['quantity'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "input",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: editStock,
-                editable: true,
-                type: "string"
+                handleChange: (e, cell) => {
+                    let cellInstance = Object.assign({}, cell);
+                    cellInstance.quantity = parseFloat(e.target.value);
+                    let items = JSON.parse(JSON.stringify(this.state._items));
+                    let cellIndex = items.findIndex(c => c.id == cell.id);
+                    items[cellIndex] = cellInstance;
+                    this.setState({
+                        _items: items,
+                    });
+                },
+                handleBlur: (e, cell) => {
+                    this._onGridQuantityUpdated(cell);
+                }
             },
             {
-                key: "unit",
-                name: Resources["unit"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'stock',
+                title: Resources['stock'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "input",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                handleChange: (e, cell) => {
+                    let cellInstance = Object.assign({}, cell);
+                    cellInstance.stock = parseFloat(e.target.value);
+                    let items = JSON.parse(JSON.stringify(this.state._items));
+                    let cellIndex = items.findIndex(c => c.id == cell.id);
+                    items[cellIndex] = cellInstance;
+                    this.setState({
+                        _items: items,
+                    });
+                },
+                handleBlur: (e, cell) => {
+                    this._onGridStockUpdated(cell);
+                }
             },
             {
-                key: "days",
-                name: Resources["days"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'unit',
+                title: Resources['unit'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
             },
             {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'days',
+                title: Resources['days'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
             },
             {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: 'resourceCode',
+                title: Resources['resourceCode'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+            },
+            {
+                field: 'itemCode',
+                title: Resources['itemCode'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }
         ];
-
+      
+        this.actions = [
+            {
+                title: 'Delete',
+                handleClick:values => {
+                     this.clickHandlerDeleteRowsMain(values);
+                }
+            }
+        ]
         this.state = {
             pageNumber: 0,
             pageSize: 500,
@@ -1833,31 +1854,83 @@ class materialRequestAddEdit extends Component {
         }
     };
 
-    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        let updateRow = this.state._items[fromRow];
-        this.setState(
-            state => {
-                const _items = state._items.slice();
-                for (let i = fromRow; i <= toRow; i++) {
-                    _items[i] = { ..._items[i], ...updated };
-                }
-                this.props.actions.resetItems(_items);
-                return { _items };
-            },
-            function () {
-                if (
-                    updateRow[Object.keys(updated)[0]] !==
-                    updated[Object.keys(updated)[0]] &&
-                    Object.keys(updated)[0] == "quantity"
-                ) {
-                    updateRow[Object.keys(updated)[0]] =
-                        updated[Object.keys(updated)[0]];
+    // _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    //     let updateRow = this.state._items[fromRow];
+    //     this.setState(
+    //         state => {
+    //             const _items = state._items.slice();
+    //             for (let i = fromRow; i <= toRow; i++) {
+    //                 _items[i] = { ..._items[i], ...updated };
+    //             }
+    //             this.props.actions.resetItems(_items);
+    //             return { _items };
+    //         },
+    //         function () {
+    //             if (
+    //                 updateRow[Object.keys(updated)[0]] !==
+    //                 updated[Object.keys(updated)[0]] &&
+    //                 Object.keys(updated)[0] == "quantity"
+    //             ) {
+    //                 updateRow[Object.keys(updated)[0]] =
+    //                     updated[Object.keys(updated)[0]];
+    //                 this.setState({ isLoading: true });
+    //                 Api.post(
+    //                     "UpdateQuantitySiteRequestItems?id=" +
+    //                     this.state._items[fromRow].id +
+    //                     "&quantity=" +
+    //                     updated.quantity
+    //                 )
+    //                     .then(() => {
+    //                         toast.success(
+    //                             Resources["operationSuccess"][currentLanguage]
+    //                         );
+    //                         this.setState({ isLoading: false });
+    //                     })
+    //                     .catch(() => {
+    //                         toast.error(
+    //                             Resources["operationCanceled"][currentLanguage]
+    //                         );
+    //                         this.setState({ isLoading: false });
+    //                     });
+    //             }
+    //             if (
+    //                 updateRow[Object.keys(updated)[0]] !==
+    //                 updated[Object.keys(updated)[0]] &&
+    //                 Object.keys(updated)[0] == "stock"
+    //             ) {
+    //                 updateRow[Object.keys(updated)[0]] =
+    //                     updated[Object.keys(updated)[0]];
+    //                 this.setState({ isLoading: true });
+    //                 Api.post(
+    //                     "UpdateQuantitySiteRequestItems?id=" +
+    //                     this.state._items[fromRow].id +
+    //                     "&stock=" +
+    //                     updated.stock
+    //                 )
+    //                     .then(() => {
+    //                         toast.success(
+    //                             Resources["operationSuccess"][currentLanguage]
+    //                         );
+    //                         this.setState({ isLoading: false });
+    //                     })
+    //                     .catch(() => {
+    //                         toast.error(
+    //                             Resources["operationCanceled"][currentLanguage]
+    //                         );
+    //                         this.setState({ isLoading: false });
+    //                     });
+    //             }
+    //         }
+    //     );
+    // };
+    _onGridQuantityUpdated = (cell) => {
+            if (cell) {
                     this.setState({ isLoading: true });
                     Api.post(
                         "UpdateQuantitySiteRequestItems?id=" +
-                        this.state._items[fromRow].id +
+                        cell.id +
                         "&quantity=" +
-                        updated.quantity
+                        cell.quantity
                     )
                         .then(() => {
                             toast.success(
@@ -1872,43 +1945,36 @@ class materialRequestAddEdit extends Component {
                             this.setState({ isLoading: false });
                         });
                 }
-                if (
-                    updateRow[Object.keys(updated)[0]] !==
-                    updated[Object.keys(updated)[0]] &&
-                    Object.keys(updated)[0] == "stock"
-                ) {
-                    updateRow[Object.keys(updated)[0]] =
-                        updated[Object.keys(updated)[0]];
-                    this.setState({ isLoading: true });
-                    Api.post(
-                        "UpdateQuantitySiteRequestItems?id=" +
-                        this.state._items[fromRow].id +
-                        "&stock=" +
-                        updated.stock
-                    )
-                        .then(() => {
-                            toast.success(
-                                Resources["operationSuccess"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        })
-                        .catch(() => {
-                            toast.error(
-                                Resources["operationCanceled"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        });
-                }
-            }
-        );
     };
-
-    onRowClick = (value, index, column) => {
-        if (!Config.IsAllow(3751)) {
-            toast.warning("you don't have permission");
-        } else if (column.key == "customBtn") {
-            this.itemization(value);
-        }
+    _onGridStockUpdated = (cell) => {
+            if (cell) {
+                this.setState({ isLoading: true });
+                Api.post(
+                    "UpdateStockSiteRequestItems?id=" +
+                    cell.id +
+                    "&stock=" +
+                    cell.stock
+                )
+                    .then(() => {
+                        toast.success(
+                            Resources["operationSuccess"][currentLanguage]
+                        );
+                        this.setState({ isLoading: false });
+                    })
+                    .catch(() => {
+                        toast.error(
+                            Resources["operationCanceled"][currentLanguage]
+                        );
+                        this.setState({ isLoading: false });
+                    });
+            }
+};
+    onRowClick = (value) => {
+        // if (!Config.IsAllow(3751)) {
+        //     toast.warning("you don't have permission");
+        // } else if (column.key == "customBtn") {
+        //     this.itemization(value);
+        // }
     };
 
     addContract(values) {
@@ -2198,14 +2264,10 @@ class materialRequestAddEdit extends Component {
                 );
         const ItemsGrid =
             this.state.isLoading == false ? (
-                <GridSetupWithFilter
-                    rows={this.state._items}
-                    pageSize={this.state.pageSize}
-                    onRowClick={this.onRowClick}
-                    columns={this.itemsColumns}
-                    onGridRowsUpdated={this._onGridRowsUpdated}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    key="items"
+                <GridCustom ref='custom-data-grid' groups={[]} data={this.state._items || []}
+                    cells={this.itemsColumns}
+                    pageSize={this.state.pageSize} actions={this.actions} rowActions={[]}
+                    rowClick={(cell) => { this.onRowClick(cell) }}
                 />
             ) : (<LoadingSection />);
         const MRGrid = (
