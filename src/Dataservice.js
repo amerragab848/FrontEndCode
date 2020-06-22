@@ -18,32 +18,32 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
-    static GetDataListWithAdditionalParam(url, label, value,param) {
+    static GetDataListWithAdditionalParam(url, label, value, param) {
         let Data = []
         return Api.get(url).then(result => {
             (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-                obj.param=item[param]
+                obj.param = item[param]
                 Data.push(obj);
             });
             return Data;
         }).catch(ex => Data);
     };
 
-    static async GetDataListCached(url, label, value, tableName, params, mainColumn) { 
+    static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
         let rows = await IndexedDb.GetCachedData(params, tableName, mainColumn);
-        let Data = []; 
-        if (rows.length == 0) { 
+        let Data = [];
+        if (rows.length == 0) {
             rows = await this.callAPIGetDataList(url, label, value, params);
-            IndexedDb.setData(mainColumn, value, label, tableName, rows,params);
+            IndexedDb.setData(mainColumn, value, label, tableName, rows, params);
 
             rows.forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-                obj[mainColumn]= item[mainColumn];
+                obj[mainColumn] = item[mainColumn];
                 Data.push(obj);
             });
             rows = Data;
@@ -93,7 +93,7 @@ export default class Dataservice {
             return result;
         }).catch(ex => Data);
     };
-    
+
     static GetDataGrid = (url) => {
 
         return Api.get(url).then(result => {
@@ -105,6 +105,13 @@ export default class Dataservice {
     static GetDataGridPost = (url) => {
 
         return Api.post(url).then(result => {
+
+            return result;
+        }).catch(ex => []);
+    };
+    static GetAttachesPost = (params,searchOptions) => {
+
+        return Api.PostForGetAttaches(params,searchOptions).then(result => {
 
             return result;
         }).catch(ex => []);
