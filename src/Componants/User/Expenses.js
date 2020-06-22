@@ -53,7 +53,7 @@ class Expenses extends Component {
 
     constructor(props) {
         super(props)
- const columnsGrid = [
+        const columnsGrid = [
             {
                 field: 'docDate',
                 title: Resources['docDate'][currentLanguage],
@@ -145,10 +145,10 @@ class Expenses extends Component {
                 sortable: true,
             }
         ];
-        this.actions=[
+        this.actions = [
             {
-                title:'Delete',
-                handleClick:values=>{
+                title: 'Delete',
+                handleClick: values => {
                     this.clickHandlerDeleteRowsMain(values)
                 }
             }
@@ -170,6 +170,7 @@ class Expenses extends Component {
             totalRows: 0,
             selectedRows: [],
             showDeleteModal: false,
+            totalExpenses: 0
         };
     }
 
@@ -241,12 +242,16 @@ class Expenses extends Component {
             pageNumber: pageNumber
         });
         if (this.state.projectId) {
-            Api.post('GetExpensesByDates', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
+            Api.post('GetExpensesByDates', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: pageNumber, pageSize: this.state.pageSize }).then(result => {
                 let oldRows = this.state.rows;
                 const newRows = [...oldRows, ...result];
-
+                let totalExpenses = 0;
+                result.forEach(item => {
+                    totalExpenses = totalExpenses + item.total;
+                })
                 this.setState({
                     rows: newRows,
+                    totalExpenses:totalExpenses,
                     totalRows: newRows.length,
                     isLoading: false
                 });
@@ -259,12 +264,16 @@ class Expenses extends Component {
             });
         }
         else {
-            Api.post('GetExpensesByDates', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(result => {
+            Api.post('GetExpensesByDates', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: pageNumber, pageSize: this.state.pageSize }).then(result => {
                 let oldRows = this.state.rows;
                 const newRows = [...oldRows, ...result];
-
+                let totalExpenses = 0;
+                result.forEach(item => {
+                    totalExpenses = totalExpenses + item.total;
+                })
                 this.setState({
                     rows: newRows,
+                    totalExpenses:totalExpenses,
                     totalRows: newRows.length,
                     isLoading: false
                 });
@@ -284,6 +293,23 @@ class Expenses extends Component {
 
     componentDidMount = () => {
         this.GetData("ProjectProjectsGetAll", 'projectName', 'projectId', 'Projects');
+        this.setState({ btnisLoading: true, Loading: true })
+        Api.get(`GetExpenses?pageNumber=${this.state.pageNumber}&pageSize=10000`).then(
+            result => {
+                let totalExpenses = 0;
+                result.forEach(item => {
+                    totalExpenses = totalExpenses + item.total;
+                })
+                this.setState({
+                    rows: result,
+                    isLoading: false,
+                    btnisLoading: false,
+                    Loading: false,
+                    totalRows: result.length,
+                    totalExpenses: totalExpenses
+                })
+            }, this.setState({ isLoading: true })
+        );
     }
 
     ProjectshandleChange = (e) => {
@@ -305,12 +331,17 @@ class Expenses extends Component {
             this.setState({ btnisLoading: true, Loading: true })
             Api.post('GetExpensesByDates', { projectId: this.state.projectId, startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
                 result => {
+                    let totalExpenses = 0;
+                    result.forEach(item => {
+                        totalExpenses = totalExpenses + item.total;
+                    })
                     this.setState({
                         rows: result,
                         isLoading: false,
                         btnisLoading: false,
                         Loading: false,
-                        totalRows: result.length
+                        totalRows: result.length,
+                        totalExpenses: totalExpenses
                     })
                 }, this.setState({ isLoading: true })
             );
@@ -320,12 +351,17 @@ class Expenses extends Component {
             this.setState({ btnisLoading: true, Loading: true })
             Api.post('GetExpensesByDates', { startDate: this.state.startDate, finishDate: this.state.finishDate, pageNumber: this.state.pageNumber, pageSize: this.state.pageSize }).then(
                 result => {
+                    let totalExpenses = 0;
+                    result.forEach(item => {
+                        totalExpenses = totalExpenses + item.total;
+                    })
                     this.setState({
                         rows: result,
                         isLoading: false,
                         btnisLoading: false,
                         Loading: false,
-                        totalRows: result.length
+                        totalRows: result.length,
+                        totalExpenses: totalExpenses
                     });
                 }, this.setState({ isLoading: true })
             );
@@ -372,7 +408,7 @@ class Expenses extends Component {
                             <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.RouteHandler()}>New</button>
                         </div>
 
-                         <div className="rowsPaginations readOnly__disabled">
+                        <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
                                 <span>0</span> - <span>{this.state.pageSize}</span> of
                              <span>{this.state.totalRows}</span>
@@ -390,7 +426,7 @@ class Expenses extends Component {
                         <div className="fillter-status-container">
                             <div className="form-group fillterinput fillter-item-c">
                                 <Dropdown title='Projects' data={this.state.Projects}
-                                    handleChange={this.ProjectshandleChange} placeholder='Projects' styles= {filterStyle}/>
+                                    handleChange={this.ProjectshandleChange} placeholder='Projects' styles={filterStyle} />
                             </div>
                             <div className="form-group fillterinput fillter-item-c" >
                                 <DatePicker title='startDate' startDate={this.state.startDate}
@@ -415,37 +451,59 @@ class Expenses extends Component {
                                         </button>
                                     )}
                             </div>
+                            <div className="form-group fillterinput fillter-item-c">
+                                <label className="control-label">
+                                    {Resources["total"][currentLanguage]}{" "}
+                                </label>
+                                <div className="inputDev ui input ">
+                                    <input
+                                        name="total"
+                                        className="form-control"
+                                        id="total"
+                                        placeholder={
+                                            Resources["total"][
+                                            currentLanguage
+                                            ]
+                                        }
+                                        disabled="true"
+                                        autoComplete="off"
+                                        defaultValue={this.state.totalExpenses}
+                                        value={this.state.totalExpenses}
+                                    />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
 
                     {this.state.Loading ? <LoadingSection /> : null}
                     {this.state.isLoading == false
-                        ? 
+                        ?
                         <GridCustom
-                        ref='custom-data-grid'
-                        key="UserExpenses"
-                        data={this.state.rows}
-                        pageSize={this.state.pageSize}
-                        groups={[]}
-                        actions={this.actions}
-                        rowActions={[]}
-                        cells={this.state.columns}
-                        rowClick={(cell) => { this.RouteHandler(cell) }}
-                    />
+                            ref='custom-data-grid'
+                            key="UserExpenses"
+                            data={this.state.rows}
+                            pageSize={this.state.pageSize}
+                            groups={[]}
+                            actions={this.actions}
+                            rowActions={[]}
+                            cells={this.state.columns}
+                            rowClick={(cell) => { this.RouteHandler(cell) }}
+                        />
                         :
-                         <div className={this.state.isLoading == false ? "disNone" : ""}> 
-                         <GridCustom
-                        ref='custom-data-grid'
-                        key="UserExpenses"
-                        data={[]}
-                        pageSize={0}
-                        groups={[]}
-                        actions={[]}
-                        rowActions={[]}
-                        cells={this.state.columns}
-                        rowClick={() => {  }}
-                    />  </div>}
+                        <div className={this.state.isLoading == false ? "disNone" : ""}>
+                            <GridCustom
+                                ref='custom-data-grid'
+                                key="UserExpenses"
+                                data={[]}
+                                pageSize={0}
+                                groups={[]}
+                                actions={[]}
+                                rowActions={[]}
+                                cells={this.state.columns}
+                                rowClick={() => { }}
+                            />  </div>}
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
