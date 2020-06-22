@@ -1,6 +1,6 @@
 import Api from "./api.js";
 import IndexedDb from "./IndexedDb";
-import { object } from "prop-types";
+//import { object } from "prop-types";
 //let db = null; 
 //const cachedData = lf.schema.create('cachedAPI', 1);
 
