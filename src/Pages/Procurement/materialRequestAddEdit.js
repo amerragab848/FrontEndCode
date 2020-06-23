@@ -1142,7 +1142,45 @@ class materialRequestAddEdit extends Component {
     }
 
     saveMaterialReques(event) {
-        if (this.state.items.length > 0) {
+        if (this.state.boqLog.value != "0") {
+            if (this.state.items.length > 0) {
+                this.setState({ isLoading: true });
+                let saveDocument = { ...this.state.document };
+                saveDocument.docDate = moment(
+                    saveDocument.docDate,
+                    "YYYY-MM-DD"
+                ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+                saveDocument.requiredDate = moment(
+                    saveDocument.requiredDate,
+                    "YYYY-MM-DD"
+                ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+                saveDocument.boqId = this.state.boqLog.value;
+                saveDocument.companyId = this.state.fromCompany.value;
+                saveDocument.companyName = this.state.fromCompany.value;
+                saveDocument.area = this.state.area.label;
+                saveDocument.location = this.state.location.label;
+                saveDocument.disciplineId = this.state.discipline.value;
+                saveDocument.disciplineName = this.state.discipline.label;
+                saveDocument.buildingNoId = this.state.buildingNumber.value;
+                saveDocument.apartmentNoId = this.state.apartmentNo.value;
+                dataservice
+                    .addObject("AddContractsSiteRequest", saveDocument)
+                    .then(result => {
+                        this.setState({ docId: result.id, isLoading: false });
+                        toast.success(
+                            Resources["operationSuccess"][currentLanguage]
+                        );
+                    })
+                    .catch(() => {
+                        this.setState({ isLoading: false });
+                        toast.success(
+                            Resources["operationCanceled"][currentLanguage]
+                        );
+                    });
+            } else {
+                toast.info("this boq not have items choice another boq");
+            }
+        } else {
             this.setState({ isLoading: true });
             let saveDocument = { ...this.state.document };
             saveDocument.docDate = moment(
@@ -1176,8 +1214,6 @@ class materialRequestAddEdit extends Component {
                         Resources["operationCanceled"][currentLanguage]
                     );
                 });
-        } else {
-            toast.info("this boq not have items choice another boq");
         }
     }
 

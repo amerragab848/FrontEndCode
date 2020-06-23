@@ -185,7 +185,16 @@ export function userSettingsTabIndex(userTabIndex) {
 
     }
 }
-
+export function RouteToTemplate() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.RouteToTemplate,
+            showLeftMenu: false,
+            showSelectProject: true,
+            showLeftReportMenu: false
+        });
+    }
+}
 export function expenseWorkFlow() {
 
     return (dispatch, getState) => {
