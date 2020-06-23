@@ -63,6 +63,15 @@ class PettyCash extends Component {
                 sortable: true,
             },
             {
+                field: 'peetyCashTotalExpenses',
+                title: Resources['totalExpenses'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
+                sortable: true,
+            },
+            {
                 field: 'statusName',
                 title: Resources['statusName'][currentLanguage],
                 width: 10,

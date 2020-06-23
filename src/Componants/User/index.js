@@ -29,6 +29,7 @@ class Index extends Component {
     let projectId = localStorage.getItem("lastSelectedProject");
     let projectName = localStorage.getItem("lastSelectedprojectName");
     var e = { label: projectName, value: projectId };
+    this.props.actions.RouteToTemplate();
 
     // this.props.actions.RouteToMainDashboard(e);
   }
