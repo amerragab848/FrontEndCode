@@ -176,6 +176,7 @@ class GlobalSearch extends Component {
             pageNumber: 0,
             totalRows: 200,
             isLoading: true,
+            showAttachLoading: true,
             showDate: false,
             filterDate: moment().format("DD/MM/YYYY"),
             selectedStatus: this.statusData[2],
@@ -204,7 +205,7 @@ class GlobalSearch extends Component {
 
         dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
-                this.readFiles(searchResult.attachFiles, searchOptions);
+                this.readFiles(searchResult.attachFiles, searchOptions,false);
                 let data = []
                 if (searchResult.searchResp.searchList.length > 0)
                     searchResult.searchResp.searchList.forEach((item, i) => {
@@ -222,26 +223,56 @@ class GlobalSearch extends Component {
         })
     }
 
-    async readFiles(files, searchOptions) {
-
-        this.setState({ isLoading: true})
-
+    async readFiles(files, searchOptions, firstOrNext) {
+ 
+        let attachList = this.state.attachementsSearchResult;
         let i = 0;
         let j = 0;
         let temparray = [];
-        let chunk = 1000;
+        let chunk = 50;
         let resultLength = 0;
+        let newLit = attachList;
 
-        for (i = 0, j = files.length; i < j; i += chunk) {
- 
+        for (i = firstOrNext == true ?  attachList.length : 0 , j = files.length; i < j; i += chunk) {
+
             temparray = files.slice(i, i + chunk);
-      
-           await dataService.GetAttachesPost(temparray, searchOptions).then(result => {
-                resultLength = result.length;
-                this.setState({ isLoading: false, attachementsSearchResult: result })
+
+            this.setState({ showAttachLoading: true })
+
+            await dataService.GetAttachesPost(temparray, searchOptions).then(result => {
+                resultLength = result ? result.length : 0;
+
+                newLit.push.apply(newLit, result)
+                
+                this.setState({ showAttachLoading: false, attachementsSearchResult: result ? newLit : attachList })
             })
-            if(resultLength > 0){break;}
+            if (resultLength > 0) { break; }
         }
+    }
+    GetNextAttachFiles() {
+       
+        let fromDate = '';
+        let toDate = '';
+   
+        if (this.state.filterDate.split("-")[0] === this.state.filterDate) {
+            fromDate = moment().add(-1, 'Y').format('YYYY/MM/DD')
+            toDate = moment().format('YYYY/MM/DD')
+        }
+        else {
+            fromDate = moment(this.state.filterDate.split("-")[0]).format('YYYY/MM/DD');
+            toDate = moment(this.state.filterDate.split("-")[1]).format('YYYY/MM/DD');
+        }
+
+        let searchOptions = {
+            subject: this.state.subject,
+            fromDate: fromDate,
+            toDate: toDate,
+            docs: [],
+            status: this.state.selectedStatus.value,
+            pageNumber: 0
+        }
+
+        this.readFiles(this.state.allAttaches, searchOptions,true);
     }
 
     changeDate() {
@@ -297,7 +328,7 @@ class GlobalSearch extends Component {
 
         dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
-                this.readFiles(this.state.allAttaches, searchOptions);
+                this.readFiles(this.state.allAttaches, searchOptions,false);
 
                 let data = []
                 if (searchResult.searchResp.searchList.length > 0)
@@ -361,7 +392,6 @@ class GlobalSearch extends Component {
                 </div>
             );
         };
-
         const searchGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
@@ -455,8 +485,17 @@ class GlobalSearch extends Component {
                     </div>
                 </div>
                 {searchGrid}
-                <div className="dropWrapper">
-                    {ViewAttachmentsResult()}
+                {this.state.showAttachLoading === false ? (
+
+                    <div className="dropWrapper">
+                        {ViewAttachmentsResult()}
+                    </div>
+                ) : <LoadingSection />}
+
+                <div className="rowsPaginations readOnly__disabled" style={{ justifyContent: "center" }}>
+                    <button className="rowActive" onClick={() => this.GetNextAttachFiles()}>
+                        <i className="angle right icon" />
+                    </button>
                 </div>
             </div>
         );

@@ -292,20 +292,12 @@ export default class Api {
     
         const host = "http://localhost:5000/" + "translateFiles";
         const url = `${host}`;
-        let json = null;
-    
-    
-        let files  = params; 
-    
-        let files2 = [];
-        files2.push(files[1]);
-        
-        files2.push(files[10]);
+        let json = null; 
+        let files  = params;  
 
-       
         let req = {
             searchOptions: searchOptions,
-            files : files2
+            files : files
         };  
 
         let options = Object.assign(
@@ -345,7 +337,7 @@ export default class Api {
                     throw err;
                 });
             })
-            .then(json => (json ? json.result : json))
+            .then(json => (json ? json.results : json))
             .catch(reason => {
                 return null;
             });
