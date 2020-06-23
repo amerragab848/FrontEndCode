@@ -14,8 +14,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Export from "../../Componants/OptionsPanels/Export";
 import sumBy from 'lodash/sumBy';
 import BarChartComp from '../../Componants/ChartsWidgets/BarChartCompJS';
-import GridCustom from 'react-customized-grid';
-import 'react-customized-grid/main.css';
+import GridCustom from 'react-customized-grid'; 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 

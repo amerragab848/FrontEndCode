@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
@@ -12,7 +12,6 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from '../../../api.js';
 
-import moment from 'moment';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
 const ValidtionSchema = Yup.object().shape({
@@ -54,7 +53,7 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "itemCode",
                 title: Resources["itemCode"][currentLanguage],
-                width: 10,
+                width: 5,
                 groupable: true,
                 fixed: true,
                 sortable: true, hidden: false,
@@ -69,98 +68,98 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "boqType",
                 title: Resources["boqType"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "secondLevel",
                 title: Resources["boqTypeChild"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "boqSubType",
                 title: Resources["boqSubType"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "quantity",
                 title: Resources["boqQuanty"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "revisedQuantity",
                 title: Resources["approvedQuantity"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "actualPercentage",
                 title: Resources["actualPercentage"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "unitPrice",
                 title: Resources["unitPrice"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "unit",
                 title: Resources["unit"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "prevoiuseQnty",
                 title: Resources["previousQuantity"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "currentQty",
                 title: Resources["currentQuantity"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "currentTotalAmount",
                 title: Resources["currentTotalAmount"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "prevoiuseTotalAmount",
                 title: Resources["prevoiuseTotalAmount"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "oldPaymentPercent",
                 title: Resources["previousPaymentPercent"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "sitePercentComplete",
                 title: Resources["sitePercentComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true,
                 hidden: false,
@@ -168,7 +167,7 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "siteQuantityComplete",
                 title: Resources["siteQuantityComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true,
                 hidden: false,
@@ -176,7 +175,7 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "sitePaymentPercent",
                 title: Resources["contractPaymentPercent"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true,
                 hidden: false,
@@ -184,7 +183,7 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "percentComplete",
                 title: Resources["percentComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true,
                 hidden: false,
@@ -192,7 +191,7 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "quantityComplete",
                 title: Resources["quantityComplete"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true,
                 hidden: false,
@@ -200,7 +199,7 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "paymentPercent",
                 title: Resources["paymentPercent"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true,
                 hidden: false,
@@ -208,21 +207,21 @@ class reqPaymInvoicesRpt extends Component {
             }, {
                 field: "totalExcutedPayment",
                 title: Resources["totalAmount"][currentLanguage],
-                width: 10,
+                width: 6,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "lastComment",
                 title: Resources["comment"][currentLanguage],
-                width: 10,
+                width: 8,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "itemStatus",
                 title: Resources["itemStatus"][currentLanguage],
-                width: 10,
+                width: 7,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
@@ -259,28 +258,28 @@ class reqPaymInvoicesRpt extends Component {
                 })
             }).catch((e) => {
                 toast.error('somthing wrong')
-            })
+            });
     }
     getGridRows = () => {
         this.setState({ isLoading: true })
 
-        Api.get('GetContractsRequestPaymentsItemsForRPT?requestId=' + this.state.selectedRequestPayment.value).then(
-            res => {
+        Dataservice.GetDataGrid('GetContractsRequestPaymentsItemsForRPT?requestId=' + this.state.selectedRequestPayment.value)
+            .then(res => {
                 this.setState({
                     rows: res,
                     isLoading: false
                 })
             }
-        ).catch(() => {
-            this.setState({ isLoading: false })
-        })
+            ).catch(() => {
+                this.setState({ isLoading: false })
+            })
     }
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="paymentRequisition"
+                key="paymentRequisitionInvoiceReport"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -291,7 +290,9 @@ class reqPaymInvoicesRpt extends Component {
             />
         ) : <LoadingSection />
         const btnExport = <ExportDetails fieldsItems={this.columns}
-            rows={this.state.rows} fields={this.fields} fileName={Resources.paymentRequisition[currentLanguage]} />
+            rows={this.state.rows}
+            fields={this.fields}
+            fileName={Resources.paymentRequisition[currentLanguage]} />
 
         return (
             <div className="reports__content reports__multiDrop">
@@ -327,7 +328,7 @@ class reqPaymInvoicesRpt extends Component {
                             </div>
                             <div className="linebylineInput valid-input " >
                                 <Dropdown
-                                    title='siteRequest'
+                                    title='paymentRequistionList'
                                     data={this.state.RequestPayment}
                                     name='selectedRequestPayment'
                                     selectedValue={this.state.selectedRequestPayment}

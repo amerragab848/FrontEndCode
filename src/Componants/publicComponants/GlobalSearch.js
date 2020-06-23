@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import moment from "moment";
-import Api from '../../api';
 import Resources from "../../resources.json"
 import LoadingSection from '../publicComponants/LoadingSection'
 import Calendar from "react-calendar";
@@ -9,7 +8,6 @@ import Dropdown from '../OptionsPanels/DropdownMelcous'
 import dataService from '../../Dataservice'
 import CryptoJS from "crypto-js";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-
 
 import { connect } from 'react-redux';
 import {
@@ -135,7 +133,7 @@ class GlobalSearch extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            },  {
+            }, {
                 field: 'docTypeName',
                 title: Resources['docName'][currentLanguage],
                 width: 10,
@@ -143,7 +141,7 @@ class GlobalSearch extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            },  {
+            }, {
                 field: 'docDate',
                 title: Resources['docDate'][currentLanguage],
                 width: 10,
@@ -151,7 +149,7 @@ class GlobalSearch extends Component {
                 fixed: false,
                 type: "date",
                 sortable: true,
-            },  {
+            }, {
                 field: 'projectName',
                 title: Resources['projectName'][currentLanguage],
                 width: 20,
@@ -161,7 +159,7 @@ class GlobalSearch extends Component {
                 sortable: true,
             }
         ];
-         this.statusData = [
+        this.statusData = [
             {
                 label: Resources.oppened[currentLanguage], value: 1
             }, {
@@ -182,7 +180,10 @@ class GlobalSearch extends Component {
             filterDate: moment().format("DD/MM/YYYY"),
             selectedStatus: this.statusData[2],
             docsType: [],
-            selectedDocs: []
+            selectedDocs: [],
+            attachementsSearchResult: [],
+            allAttaches: [],
+
         }
     }
 
@@ -194,30 +195,53 @@ class GlobalSearch extends Component {
             fromDate: moment().add(-1, 'Y').format('YYYY/MM/DD'),
             toDate: moment().format('YYYY/MM/DD'),
             docs: [],
+            readedAttachFiles: [],
             status: null,
             pageNumber: 0
         }
 
         this.setState({ isLoading: true })
 
-        Api.post("GetDataForSearchInApp", searchOptions).then(searchResult => {
+        dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
+                this.readFiles(searchResult.attachFiles, searchOptions);
                 let data = []
-                if (searchResult.searchList.length > 0)
-                    searchResult.searchList.forEach((item, i) => {
+                if (searchResult.searchResp.searchList.length > 0)
+                    searchResult.searchResp.searchList.forEach((item, i) => {
                         item.index = i + 1;
                         data.push(item)
                     })
-                this.setState({ searchResult: data, totalRows: searchResult.total })
+                this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total })
             }
             else
-                this.setState({ searchResult: [], totalRows: searchResult.total })
+                this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
 
             dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
                 this.setState({ isLoading: false, docsType: result })
             })
         })
+    }
 
+    async readFiles(files, searchOptions) {
+
+        this.setState({ isLoading: true})
+
+        let i = 0;
+        let j = 0;
+        let temparray = [];
+        let chunk = 1000;
+        let resultLength = 0;
+
+        for (i = 0, j = files.length; i < j; i += chunk) {
+ 
+            temparray = files.slice(i, i + chunk);
+      
+           await dataService.GetAttachesPost(temparray, searchOptions).then(result => {
+                resultLength = result.length;
+                this.setState({ isLoading: false, attachementsSearchResult: result })
+            })
+            if(resultLength > 0){break;}
+        }
     }
 
     changeDate() {
@@ -271,18 +295,20 @@ class GlobalSearch extends Component {
 
         this.setState({ isLoading: true })
 
-        Api.post("GetDataForSearchInApp", searchOptions).then(searchResult => {
+        dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
+                this.readFiles(this.state.allAttaches, searchOptions);
+
                 let data = []
-                if (searchResult.searchList.length > 0)
-                    searchResult.searchList.forEach((item, i) => {
+                if (searchResult.searchResp.searchList.length > 0)
+                    searchResult.searchResp.searchList.forEach((item, i) => {
                         item.index = i + 1;
                         data.push(item)
                     })
-                this.setState({ searchResult: data, isLoading: false, totalRows: searchResult.total })
+                this.setState({ searchResult: data, isLoading: false, totalRows: searchResult.searchResp.total })
             }
             else
-                this.setState({ searchResult: [], isLoading: false, totalRows: searchResult.total })
+                this.setState({ searchResult: [], isLoading: false, totalRows: searchResult.searchResp.total })
         })
 
     }
@@ -307,21 +333,48 @@ class GlobalSearch extends Component {
             });
         }
     }
-    render() {
 
-         const searchGrid = this.state.isLoading === false ? (
+    render() {
+        let ViewAttachmentsResult = () => {
+            return (
+                <div className="doc-pre-cycle letterFullWidth">
+                    <div className='document-fields'>
+                        <ul className="ul__deleteHover">
+                            <li className="title">
+                                <h4 className="zero">{Resources['fileName'][currentLanguage]}</h4>
+                            </li>
+                            {this.state.attachementsSearchResult.map(item => (
+                                <li key={item.id}>
+                                    <div className="contentCell tableCell-4">
+                                        <a
+                                            href={item["attachFile"]}
+                                            className="pdfPopup various zero"
+                                            data-toggle="tooltip"
+                                            title={item["fileName"]}>
+                                            {item.fileNameDisplay}
+                                        </a>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            );
+        };
+
+        const searchGrid = this.state.isLoading === false ? (
             <GridCustom
-                            ref='custom-data-grid'
-                            key="searchGrid"
-                            data={this.state.searchResult}
-                            pageSize={this.state.pageSize}
-                            groups={[]}
-                            actions={[]}
-                            rowActions={[]}
-                            cells={this.searchColumns}
-                            rowClick={(cell) => { this.cellClick(cell) }}
-                        />
-            ) : <LoadingSection />;
+                ref='custom-data-grid'
+                key="searchGrid"
+                data={this.state.searchResult}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.searchColumns}
+                rowClick={(cell) => { this.cellClick(cell) }}
+            />
+        ) : <LoadingSection />;
 
         return (
             <div className="main__withouttabs mainContainer" >
@@ -331,7 +384,7 @@ class GlobalSearch extends Component {
                         <span>{this.state.totalRows}</span>
                     </div>
 
-                     <div className="rowsPaginations readOnly__disabled">
+                    <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}
                             <span>
@@ -378,7 +431,7 @@ class GlobalSearch extends Component {
                                 <label className="control-label" >
                                     {Resources.docDate[currentLanguage]}
                                 </label>
-                                <div  className="ui input inputDev"  style={{ position: "relative", display: "inline-block" }} onMouseLeave={this.resetDate} >
+                                <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} onMouseLeave={this.resetDate} >
                                     <input type="text" autoComplete="off" placeholder={Resources.docDate[currentLanguage]} value={this.state.filterDate}
                                         onClick={() => this.changeDate()} />
                                     {this.state.showDate ?
@@ -402,11 +455,13 @@ class GlobalSearch extends Component {
                     </div>
                 </div>
                 {searchGrid}
+                <div className="dropWrapper">
+                    {ViewAttachmentsResult()}
+                </div>
             </div>
         );
     }
 }
-
 
 function mapStateToProps(state, ownProps) {
     return {

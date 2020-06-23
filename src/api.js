@@ -99,7 +99,7 @@ export default class Api {
     }
 
     static postFile(route, params, header) {
-       
+
         let json = "";
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
@@ -108,10 +108,10 @@ export default class Api {
         if (header) {
             headers.docid = header.docId;
             headers.doctypeid = header.docTypeId;
-            headers.parentid = header.parentId; 
+            headers.parentid = header.parentId;
             headers.docType = header.docType;
         }
-        console.log("params ... ",params,"headers ... ",headers);
+        console.log("params ... ", params, "headers ... ", headers);
         return fetch(url, {
             method: "POST",
             headers: {
@@ -225,7 +225,7 @@ export default class Api {
                 });
             })
             .then(json => (json.result ? json.result : json));
-    } 
+    }
 
     static authorizationApi(route, params, method, isCheck) {
         const host = Config.getPublicConfiguartion().loginServer + "/api/";
@@ -241,8 +241,8 @@ export default class Api {
         return fetch(url, options).then(reponse => {
             if (reponse.status === 200) {
                 returnObject.status = 200;
-               
-                if (isCheck) { 
+
+                if (isCheck) {
                     returnObject.msg = "Email already exists.";
                 } else {
 
@@ -258,10 +258,10 @@ export default class Api {
                 returnObject.msg = "Email already exists.";
                 json = returnObject;
                 return json;
-            }else if (reponse.status === 400) {
+            } else if (reponse.status === 400) {
                 returnObject.status = 400;
                 returnObject.msg = "Email already Belonge to Another Company.";
-                
+
                 json = returnObject;
                 return json;
             } else if (reponse.status === 404) {
@@ -286,5 +286,68 @@ export default class Api {
             authorize = true;
         }
         return authorize;
+    }
+
+    static PostForGetAttaches(params,searchOptions) {
+    
+        const host = "http://localhost:5000/" + "translateFiles";
+        const url = `${host}`;
+        let json = null;
+    
+    
+        let files  = params; 
+    
+        let files2 = [];
+        files2.push(files[1]);
+        
+        files2.push(files[10]);
+
+       
+        let req = {
+            searchOptions: searchOptions,
+            files : files2
+        };  
+
+        let options = Object.assign(
+            {
+                method: "POST"
+            }
+            , {
+                body: JSON.stringify(req)
+            }
+        );
+
+        options.headers = {
+            "Content-Type": "application/json"
+        };
+
+        return fetch(url, options)
+            .then(resp => {
+                if (resp.status === 200) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 401) {
+                    localStorage.removeItem("userToken");
+                    json = "";
+                    window.location.reload();
+                    return json;
+                } else if (resp.status === 500) {
+                    json = null;
+                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
+                    return json;
+                } else if (resp.status === 409) {
+                    return resp;
+                }
+
+                return json.then(err => {
+                    throw err;
+                });
+            })
+            .then(json => (json ? json.result : json))
+            .catch(reason => {
+                return null;
+            });
     }
 }

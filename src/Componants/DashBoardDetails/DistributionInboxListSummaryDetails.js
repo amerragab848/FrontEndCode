@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import Api from "../../api";
-import Filter from "../FilterComponent/filterComponent";
+import Api from "../../api"; 
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export";
-import { Filters } from "react-data-grid-addons";
-import Resources from "../../resources.json";
-import moment from "moment";
+import Export from "../OptionsPanels/Export"; 
+import Resources from "../../resources.json"; 
 import CryptoJS from 'crypto-js';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -401,15 +398,7 @@ class DistributionInboxListSummaryDetails extends Component {
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
-
-    // const ComponantFilter = this.state.isLoading === false ?
-    //   <Filter
-    //     filtersColumns={this.state.filtersColumns}
-    //     apiFilter={this.state.apiFilter}
-    //     filterMethod={this.filterMethodMain}
-    //   /> : <LoadingSection />;
-
-
+ 
     return (
       <div className="mainContainer main__withouttabs">
         <div className="submittalFilter readOnly__disabled">

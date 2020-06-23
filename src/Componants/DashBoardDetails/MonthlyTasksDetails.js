@@ -14,11 +14,7 @@ import * as communicationActions from "../../store/actions/communication";
 import { withRouter } from "react-router-dom";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
+ 
 class MonthlyTasksDetails extends Component {
   constructor(props) {
     super(props);

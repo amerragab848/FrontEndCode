@@ -70,20 +70,21 @@ class CommonLog extends Component {
     this.rowActions = [
       {
         title: 'Export Doc & Attachments',
-        handleClick: value => { 
+        handleClick: value => {
           let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
           let documentObj = this.state.documentObj
-          this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle); 
-          this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId); 
+          this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle);
+          this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId);
 
           this.setState({
-            showExportModal: true 
+            showExportModal: true
           });
         }
-        
+
       }
-    ];    
-    this.ClosxMX = this.ClosxMX.bind(this); 
+    ];
+   
+    this.ClosxMX = this.ClosxMX.bind(this);
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
   };
@@ -563,7 +564,8 @@ class CommonLog extends Component {
     }).catch(ex => {
       this.setState({ isLoading: false });
     });
-  }; 
+  };
+
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -581,13 +583,16 @@ class CommonLog extends Component {
       this.state.projectId,
       !this.state.isCustom
     );
-  }; 
+  };
+
   openModalColumn = () => {
     this.setState({ columnsModal: true })
-  }; 
+  };
+
   closeModalColumn = () => {
     this.setState({ columnsModal: false })
-  }; 
+  };
+
   ResetShowHide = () => {
     this.setState({ Loading: true })
     let ColumnsHideShow = this.state.ColumnsHideShow
@@ -603,7 +608,8 @@ class CommonLog extends Component {
         Loading: false, columnsModal: false
       })
     }, 300)
-  }; 
+  };
+
   handleCheck = (key) => {
     this.setState({ [key]: !this.state[key], Loading: true })
     let data = this.state.ColumnsHideShow
@@ -618,12 +624,15 @@ class CommonLog extends Component {
       this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
     }, 300);
   };
+
   ClosxMX() {
-    if(this.props != undefined){this.props.actions.clearCashDocument();}
+    if (this.props != undefined) { this.props.actions.clearCashDocument(); }
 
     this.setState({ showExportModal: false });
   };
+
   render() {
+
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
       return (
         <div className="grid__content" key={item.field}>
@@ -635,11 +644,12 @@ class CommonLog extends Component {
         </div>
       )
     })
+
     const dataGrid = this.state.isLoading === false ?
       (
         <GridCustom
           ref='custom-data-grid'
-          key='CommonLog'
+          gridKey={'CommonLog-' + this.state.documentName}
           data={this.state.rows}
           pageSize={this.state.pageSize}
           groups={[]}
@@ -670,7 +680,6 @@ class CommonLog extends Component {
                     perviousRoute: window.location.pathname + window.location.search
                   };
                   if (rowData === "subject") {
-                    //obj.href = this.subjectLink(rowData);
                     obj.onClick = () => { };
                     obj.classes = 'bold'
                   }

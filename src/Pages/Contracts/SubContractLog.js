@@ -1,19 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import Api from '../../api'
-import moment from 'moment'
+import Api from '../../api' 
 import Resources from '../../resources.json'; 
 import { withRouter } from "react-router-dom";
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import 'react-table/react-table.css' 
+import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
 import SubContract from '../Contracts/SubContract';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
+ 
 class SubContractLog extends Component {
 
     constructor(props) {

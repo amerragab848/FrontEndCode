@@ -252,42 +252,14 @@ var routes = [
         nav: true,
         settings: { Reports: true, order: 18 }
     },
-    {
-        route: "boqCostReport",
-        moduleId: "reports/boqCostReport",
-        title: "boqItemsCost",
-        nav: true,
-        settings: { Reports: true, permission: 686, order: 7 }
-    },
-    {
+    { 
         route: "timeSheetUserDetails",
         moduleId: "TimeSheet/TimeSheetUserDetails",
         title: "timeSheetUserDetails",
         nav: true,
         settings: { HumanResources: true, permission: 3718, order: 12 }
     },
-    {
-        route: "userExpensesRpt",
-        moduleId: "TimeSheet/ReportUserExpenses",
-        title: "userExpensesRpt",
-        nav: true,
-        settings: { HumanResources: true, permission: 3748, order: 13 }
-    },
-    {
-        route: "projectExpensesReport",
-        moduleId: "reports/projectExpensesReport",
-        title: "projectExpensesReport",
-        nav: true,
-        settings: { Reports: true, permission: 686, order: 8 }
-    },
-    {
-        route: "expensesUserReport",
-        moduleId: "reports/expensesUserReport",
-        title: "expensesUserReport",
-        nav: true,
-        settings: { Reports: true, permission: 3653, order: 12 }
-    },
-    {
+    { 
         route: "boqContractCost",
         moduleId: "reports/boqContractCost",
         title: "boqContractCost",
@@ -2094,91 +2066,21 @@ var routes = [
         nav: true,
         settings: { CostControl: true, permission: 3186, order: 2 }
     },
-    {
-        route: "subContractor",
-        moduleId: "reports/subContractReport",
-        title: "subContractorProgress",
-        nav: true,
-        settings: { Reports: true, permission: 688, order: 4 }
-    },
-    {
-        route: "subContractorQuantities",
-        moduleId: "reports/subContractor",
-        title: "subContractorQuantities",
-        nav: true,
-        settings: { Reports: true, permission: 688, order: 15 }
-    },
-    {
+    { 
         route: "rptCostCodingTree",
         moduleId: "reports/rptCostCodingTree",
         title: "costCodingTreeReport",
         nav: true,
         settings: { CostControl: true, permission: 401, order: 10 }
     },
-    {
-        route: "costCodingTreeReport/:id",
-        moduleId: "reports/costCodingTreeReport",
-        title: "Cost Coding Tree Report",
-        nav: true,
-        settings: { Reports: false }
-    },
-    {
-        route: "pendingWorkflows",
-        moduleId: "workspace/pendingWorkflows",
-        title: "pendingWorkflows",
-        nav: true,
-        settings: { Reports: true }
-    },
-    {
-        route: "paymentRequisitionQuantities",
-        moduleId: "reports/paymentRequisitionQuantities",
-        title: "paymentRequisitionsQuantities",
-        nav: true,
-        settings: { Reports: true, permission: 685, order: 1 }
-    },
-    {
-        route: "paymentRequisitionReport",
-        moduleId: "reports/paymentRequisitionReport",
-        title: "paymentRequisitionsReport",
-        nav: true,
-        settings: { Reports: true }
-    },
-    {
-        route: "designStatus",
-        moduleId: "reports/designStatus",
-        title: "designStatusReport",
-        nav: true,
-        settings: { Reports: false, permission: 380 }
-    },
-    {
-        route: "requestedQuantities",
-        moduleId: "reports/requestedQuantities",
-        title: "boqQuantities",
-        nav: true,
-        settings: { Reports: true, permission: 686, order: 2 }
-    },
-    {
-        route: "boqItemsCostDetails/:id",
-        moduleId: "reports/boqItemsCostDetails",
-        title: "boqItemsCostDetails",
-        nav: false,
-        settings: { Reports: false }
-    },
-    {
+    { 
         route: "projectTimeSheet",
         moduleId: "reports/projectTimeSheet",
         title: "timeSheetReport",
         nav: true,
         settings: { Reports: true, permission: 407, order: 11 }
     },
-    {
-        route: "taskStatusReport",
-        moduleId: "reports/taskStatusReport",
-        title: "taskStatus",
-        nav: true,
-        settings: { Reports: true, permission: 407, order: 7 }
-    },
-    {
+    { 
         route: "taskStatus",
         moduleId: "TaskReports/TasksStatus",
         title: "taskStatus",
@@ -2192,14 +2094,7 @@ var routes = [
         nav: true,
         settings: { Tasks: true, permission: 3699, order: 2 }
     },
-    {
-        route: "designStatusRpt/:id",
-        moduleId: "reports/designStatusRpt",
-        title: "designStatusReport",
-        nav: true,
-        settings: { Reports: false }
-    },
-    {
+    { 
         route: "invoiceQuantity",
         moduleId: "reports/invoiceQuantity",
         title: "invoicedQuantities",
@@ -2360,14 +2255,7 @@ var routes = [
         nav: true,
         settings: { Tasks: true, permission: 3702, order: 5 }
     },
-    {
-        route: "workFlowDocStatus",
-        moduleId: "reports/workFlowDocStatus",
-        title: "workFlow",
-        nav: true,
-        settings: { Reports: true, permission: 610, order: 9 }
-    },
-    {
+    { 
         route: "projectTaskTree",
         moduleId: "projects/projectTaskTree",
         title: "taskTree",
