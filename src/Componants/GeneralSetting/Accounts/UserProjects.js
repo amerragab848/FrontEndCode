@@ -1,14 +1,14 @@
-import React, { Component, Fragment } from "react";
-import Api from "../../../api";
-import Resources from "../../../resources.json";
-import config from "../../../Services/Config";
-import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
+import React, { Component } from "react"
+import Api from "../../../api"
+import Resources from "../../../resources.json"
+import config from "../../../Services/Config"
+import LoadingSection from "../../../Componants/publicComponants/LoadingSection"
 import Recycle from '../../../Styles/images/attacheRecycle.png'
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous'
-import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import { withRouter } from "react-router-dom";
-import HeaderDocument from '../../OptionsPanels/HeaderDocument';
-import { toast } from "react-toastify";
+import ConfirmationModal from "../../publicComponants/ConfirmationModal"
+import { withRouter } from "react-router-dom"
+import HeaderDocument from '../../OptionsPanels/HeaderDocument'
+import { toast } from "react-toastify"
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let id = null;

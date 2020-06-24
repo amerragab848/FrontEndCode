@@ -511,6 +511,10 @@ const HeaderAndFooter = AsyncComponent(() =>
 const LeftReportMenu = AsyncComponent(() =>
     import('./Pages/Menu/LeftReportMenu'),
 );
+
+const ProcoorMeeting = AsyncComponent(() =>
+    import('./Pages/Menu/ProcoorMeeting'),
+);
 const PostitNotificationsDetail = AsyncComponent(() =>
     import('./Pages/Menu/postitNotificationsDetail'),
 );
@@ -1145,6 +1149,7 @@ let originalRoutes = [
         component={CompareApprovedQuantity}
     />,
     <Route key="r-145" path="/LeftReportMenu" component={LeftReportMenu} />,
+    <Route key="r-245" path="/ProcoorMeeting" component={ProcoorMeeting} />,
     <Route
         key="r-146"
         path="/budgetVarianceReport"
