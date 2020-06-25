@@ -180,7 +180,9 @@ class ViewAttachmments extends Component {
             this.props.actions.GetUploadedFiles(url);
         }
     }
-
+    ext = url => {
+        return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).split('#')[0].substr(url.lastIndexOf(".")).split(".")[1]
+    }
     render() {
         let tabelVersion = this.state.Versionfiles.map((item, Index) => {
             let ext = item["fileName"].split(".")[1] ? item["fileName"].split(".")[1].toLowerCase() : "png";
@@ -321,7 +323,9 @@ class ViewAttachmments extends Component {
         let tabel =
             this.props.isLoadingFiles == true
                 ? this.props.files.map((item, Index) => {
-                    let ext = item["fileName"].split(".")[1] ? item["fileName"].split(".")[1].toLowerCase() : "png";
+
+                    let newExt = this.ext(item.attachFile);
+                    let ext = newExt ? newExt.toLowerCase() : "png";
                     let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
                     let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
                     if (item.isCloud !== true) {
