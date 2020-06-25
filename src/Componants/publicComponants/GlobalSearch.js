@@ -230,10 +230,10 @@ class GlobalSearch extends Component {
         let i = 0;
         let j = 0;
         let temparray = [];
-        let chunk = 5;
+        let chunk = 10;
         let resultLength = 0;
         let newLit = attachList;
-        let maxIterate=5;//files.length
+        let maxIterate= files.length
 
         for (i = firstOrNext == true ?  attachList.length : 0 , j = maxIterate; i < j; i += chunk) {
 
