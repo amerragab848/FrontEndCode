@@ -290,7 +290,7 @@ export default class Api {
 
     static PostForGetAttaches(params, searchOptions) {
 
-        const host = Config.getPublicConfiguartion().exportStatic + "/api/translateFiles";
+        const host = Config.getPublicConfiguartion().exportStatic + "/api/textractify";
         const url = `${host}`;
         let json = null;
         let files = params;
@@ -312,38 +312,56 @@ export default class Api {
             Accept: "application/json",
             "Content-Type": "application/json",
             dataType: "json",
-            method: "POST",
-            Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
-            Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
+            //method: "POST",
+           // Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
+            //Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
         };
 
-        return fetch(url, options)
-            .then(resp => {
-                if (resp.status === 200) {
-                    json = resp.json();
-                    if (json === undefined) return null;
-                    return json;
-                } else if (resp.status === 401) {
-                    localStorage.removeItem("userToken");
-                    json = "";
-                    window.location.reload();
-                    return json;
-                } else if (resp.status === 500) {
-                    json = null;
-                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+        return new Promise((resolve, reject) => {
+            let xmlhttp = new XMLHttpRequest();
 
-                    return json;
-                } else if (resp.status === 409) {
-                    return resp;
+            xmlhttp.onload = () => {
+                if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
+                    const response = JSON.parse(xmlhttp.responseText);
+                    console.log(response);
+                    resolve(response);
+                } else {
+                    reject(xmlhttp.responseText);
                 }
+            };
 
-                return json.then(err => {
-                    throw err;
-                });
-            })
-            .then(json => (json ? json.results : json))
-            .catch(reason => {
-                return null;
-            });
+            xmlhttp.open("POST", url);
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.send(JSON.stringify(req));
+        });
+
+        // return fetch(url, options)
+        //     .then(resp => {
+        //         if (resp.status === 200) {
+        //             json = resp.json();
+        //             if (json === undefined) return null;
+        //             return json;
+        //         } else if (resp.status === 401) {
+        //             localStorage.removeItem("userToken");
+        //             json = "";
+        //             window.location.reload();
+        //             return json;
+        //         } else if (resp.status === 500) {
+        //             json = null;
+        //             toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
+        //             return json;
+        //         } else if (resp.status === 409) {
+        //             return resp;
+        //         }
+
+        //         return json.then(err => {
+        //             throw err;
+        //         });
+        //     })
+        //     .then(json => (json ? json.results : json))
+        //     .catch(reason => {
+        //         return null;
+        //     });
     }
 }
