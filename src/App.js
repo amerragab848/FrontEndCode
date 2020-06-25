@@ -107,10 +107,12 @@ class App extends Component {
 
         return this.state.cssLoaded ? (
             <Provider store={store}>
-                <div>
-                    {showComp}
-                    <ToastContainer autoClose={3000} />
-                </div>
+                <ErrorHandler>
+                    <div>
+                        {showComp}
+                        <ToastContainer autoClose={3000} />
+                    </div>
+                </ErrorHandler>
             </Provider>
         ) : (
                 <div style={loadingStyle.container}>

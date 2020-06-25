@@ -14,9 +14,7 @@ import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
 import moment from "moment";
 import { toast } from "react-toastify";
-
 import IndexedDb from "../../IndexedDb";
-// import { settings } from "cluster";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const DashboardArrow = () => {
@@ -117,6 +115,7 @@ class HeaderMenu extends Component {
     this.handleClearCach = this.handleClearCach.bind(this);
     this.handleClearSettings = this.handleClearSettings.bind(this);
     this.handleChangeTemplate = this.handleChangeTemplate.bind(this);
+    this.handleChangeGoMeeting = this.handleChangeGoMeeting.bind(this);
     this.handleChangeSelectProject = this.handleChangeSelectProject.bind(this);
     this.ReportCenterMenu = this.ReportCenterMenu.bind(this);
 
@@ -143,8 +142,6 @@ class HeaderMenu extends Component {
       });
     });
 
-
-
     if (this.props.location.pathname === "/LeftReportMenu") {
       setTimeout(() => {
         this.setState({
@@ -157,6 +154,7 @@ class HeaderMenu extends Component {
           activeTabs: 1
         })
       }, 500);
+
     } else {
       setTimeout(() => {
         this.setState({
@@ -249,6 +247,9 @@ class HeaderMenu extends Component {
     this.props.actions.RouteToTemplate();
   }
 
+  handleChangeGoMeeting(e) {
+    this.props.history.push({ pathname: "/ProcoorMeeting" });
+  }
   ReportCenterMenu(e) {
     this.props.history.push({
       pathname: "/LeftReportMenu"
@@ -1125,6 +1126,10 @@ class HeaderMenu extends Component {
       this.setState({
         activeTabs: 2
       })
+    } else if (field === 'goMeeting') {
+      this.setState({
+        activeTabs: 3
+      })
     } else {
       this.setState({
         activeTabs: 0
@@ -1187,6 +1192,31 @@ class HeaderMenu extends Component {
                     </div>
                   </a>
                 </li>
+
+                <li className={this.state.activeTabs === 3 ? ' active' : ''} onClick={(e, field) => this.notfiClick(e, 'goMeeting')}>
+                  <a data-modal="modal1" className="notfiUI" onClick={this.handleChangeGoMeeting}>
+
+                    {this.state.activeTabs === 3 ?
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none" fillRule="evenodd" transform="translate(3 3)">
+                          <g fill="#5E6475" mask="url(#b)">
+                            <path id="a" d="M16.511 11.777c.55.232.715.9.5 1.321A8.999 8.999 0 1 1 4.523 1.189c.424-.243 1.108-.132 1.46.475.35.607-.128 1.248-.506 1.475a6.836 6.836 0 1 0 9.528 9.124c.372-.685.956-.72 1.506-.486zM18 9c0 .598-.484 1.082-1.082 1.082H9A1.082 1.082 0 0 1 7.918 9V1.082C7.918.484 8.402 0 9 0a8.997 8.997 0 0 1 9 9z" />
+                          </g>
+                        </g>
+                      </svg>
+                      :
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none" fillRule="evenodd" transform="translate(3 3)">
+                          <g fill="#A8B0BF">
+                            <path id="a" d="M16.511 11.777c.55.232.715.9.5 1.321A8.999 8.999 0 1 1 4.523 1.189c.424-.243 1.108-.132 1.46.475.35.607-.128 1.248-.506 1.475a6.836 6.836 0 1 0 9.528 9.124c.372-.685.956-.72 1.506-.486zM18 9c0 .598-.484 1.082-1.082 1.082H9A1.082 1.082 0 0 1 7.918 9V1.082C7.918.484 8.402 0 9 0a8.997 8.997 0 0 1 9 9zm-4.1-4.89A7.304 7.304 0 0 0 9.89 2.06V8.12h6.058A7.305 7.305 0 0 0 13.9 4.11z" />
+                          </g>
+                        </g>
+                      </svg>
+                    }
+
+                  </a>
+                </li>
+
                 <li className={this.state.activeTabs === 2 ? ' active' : ''} onClick={(e, field) => this.notfiClick(e, 'report')}>
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
 
@@ -1210,6 +1240,7 @@ class HeaderMenu extends Component {
 
                   </a>
                 </li>
+
                 <li className={this.state.activeTabs === 1 ? 'active' : ''} onClick={(e, field) => this.notfiClick(e, 'settings')}>
                   <NavLink to="/TemplatesSettings" onClick={this.handleChangeTemplate}>
                     {this.state.activeTabs === 1 ?

@@ -91,6 +91,7 @@ const filterStyle = {
 
 
 class GlobalSearch extends Component {
+
     constructor(props) {
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -203,7 +204,7 @@ class GlobalSearch extends Component {
 
         this.setState({ isLoading: true })
 
-        dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
+        dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
             if (searchResult) {
                 this.readFiles(searchResult.attachFiles, searchOptions,false);
                 let data = []
@@ -229,11 +230,12 @@ class GlobalSearch extends Component {
         let i = 0;
         let j = 0;
         let temparray = [];
-        let chunk = 50;
+        let chunk = 5;
         let resultLength = 0;
         let newLit = attachList;
+        let maxIterate=5;//files.length
 
-        for (i = firstOrNext == true ?  attachList.length : 0 , j = files.length; i < j; i += chunk) {
+        for (i = firstOrNext == true ?  attachList.length : 0 , j = maxIterate; i < j; i += chunk) {
 
             temparray = files.slice(i, i + chunk);
 
@@ -249,6 +251,7 @@ class GlobalSearch extends Component {
             if (resultLength > 0) { break; }
         }
     }
+    
     GetNextAttachFiles() {
        
         let fromDate = '';

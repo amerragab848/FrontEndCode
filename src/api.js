@@ -288,29 +288,33 @@ export default class Api {
         return authorize;
     }
 
-    static PostForGetAttaches(params,searchOptions) {
-    
-        const host = "http://localhost:5000/" + "translateFiles";
+    static PostForGetAttaches(params, searchOptions) {
+
+        const host = Config.getPublicConfiguartion().exportStatic + "/api/translateFiles";
         const url = `${host}`;
-        let json = null; 
-        let files  = params;  
+        let json = null;
+        let files = params;
 
         let req = {
             searchOptions: searchOptions,
-            files : files
-        };  
+            files: files
+        };
 
         let options = Object.assign(
             {
                 method: "POST"
-            }
-            , {
+            }, {
                 body: JSON.stringify(req)
             }
         );
 
         options.headers = {
-            "Content-Type": "application/json"
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            dataType: "json",
+            method: "POST",
+            Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
+            Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
         };
 
         return fetch(url, options)
