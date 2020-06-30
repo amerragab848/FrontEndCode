@@ -5,47 +5,14 @@ import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import CryptoJS from 'crypto-js';
 
-import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-import { Filters } from "react-data-grid-addons";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid"; 
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
-
-const subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.docId,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/boqAddEdit" + "?id=" + encodedPaylod
-    subject = row.description;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
-
+  
 
 class AlertingQuantitySummaryDetails extends Component {
   constructor(props) {
