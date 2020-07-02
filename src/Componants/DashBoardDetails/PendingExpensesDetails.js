@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
-import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-import { Filters } from "react-data-grid-addons";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid"; 
 import Resources from "../../resources.json";
 import CryptoJS from "crypto-js";
 
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter } = Filters;
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"); 
 class PendingExpensesDetails extends Component {
+
   constructor(props) {
     super(props);
     const columnGrid = [

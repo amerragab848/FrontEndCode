@@ -16,7 +16,7 @@
     "env": "0.0.2",
     "fine-uploader": "^5.16.2",
     "fine-uploader-wrappers": "^1.0.1",
-    "formik": "^1.4.2", 
+    "formik": "^1.4.2",
     "history": "^4.7.2",
     "html2canvas": "^1.0.0-rc.1",
     "immutable": "^4.0.0-rc.12",
@@ -40,8 +40,6 @@
     "react-cookie": "^3.0.8",
     "react-cookies": "^0.1.0",
     "react-customized-grid": "^2.3.0",
-    "react-data-grid": "github:elsokary/react-data-grid#master",
-    "react-data-grid-addons": "github:elsokary/react-data-grid-addons#master",
     "react-date-picker": "^7.10.0",
     "react-datepicker": "^2.0.0",
     "react-dom": "^16.6.3",
@@ -75,7 +73,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
-    "simple-react-validator": "^1.4.1", 
+    "simple-react-validator": "^1.4.1",
     "uuid": "^8.0.0",
     "xlsx": "^0.14.1",
     "yup": "^0.26.10"
@@ -100,4 +98,4 @@
     "copy-webpack-plugin": "^5.1.1",
     "react-app-rewired": "^2.1.4"
   }
-} 
+}

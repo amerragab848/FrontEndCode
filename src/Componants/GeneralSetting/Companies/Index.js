@@ -87,7 +87,7 @@ class Index extends Component {
                 name: Resources["lastModified"][currentLanguage]
             }
         ];
- const columnsGrid = [
+        const columnsGrid = [
             {
                 field: 'companyName',
                 title: Resources['CompanyName'][currentLanguage],
@@ -189,7 +189,7 @@ class Index extends Component {
                 sortable: true,
             }
         ];
-      this.state = {
+        this.state = {
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
             rows: [],
@@ -208,13 +208,13 @@ class Index extends Component {
             {
                 title: 'Delete',
                 handleClick: value => {
-                   this.clickHandlerDeleteRowsMain(value.id)
+                    this.clickHandlerDeleteRowsMain(value.id)
                 }
             },
             {
                 title: 'Contacts',
                 handleClick: value => {
-                    this.props.history.push('/contacts/'+value.keyContact);
+                    this.props.history.push('/contacts/' + value.id);
                 }
             }
         ]
@@ -248,31 +248,18 @@ class Index extends Component {
             toast.warning("you don't have permission");
         }
     }
-
-    // cellClick = (rowID, colID) => {
-    //     let id = this.state.rows[rowID]['id']
-    //     if (colID == 1)
-    //         this.viewContact(id)
-    //     else if (!Config.IsAllow(1257)) {
-    //         toast.warning("you don't have permission");
-    //     }
-    //     else if (colID != 0) {
-    //         this.props.history.push({
-    //             pathname: "/AddEditCompany/" + id,
-    //         });
-    //     }
-    // }
+ 
     cellClick = (row) => {
-         if (!Config.IsAllow(1257)) {
+        if (!Config.IsAllow(1257)) {
             toast.warning("you don't have permission");
         }
-        else  {
+        else {
             this.props.history.push({
                 pathname: "/AddEditCompany/" + row.id,
             });
         }
     }
-    
+
     GetNextData = () => {
         let pageNumber = this.state.pageNumber + 1;
         this.setState({
@@ -429,16 +416,16 @@ class Index extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
-                            ref='custom-data-grid'
-                            key="CompaniesIndex"
-                            data={this.state.rows}
-                            pageSize={this.state.rows.length}
-                            groups={[]}
-                            actions={[]}
-                            rowActions={this.rowActions}
-                            cells={this.state.columns}
-                            rowClick={(cell) => { this.cellClick(cell) }}
-                        />
+                    ref='custom-data-grid'
+                    key="CompaniesIndex"
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={[]}
+                    rowActions={this.rowActions}
+                    cells={this.state.columns}
+                    rowClick={(cell) => { this.cellClick(cell) }}
+                />
             ) : <LoadingSection />;
 
         const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} /> : null;
@@ -507,7 +494,7 @@ class Index extends Component {
                         {btnExport}
                         <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>{Resources['add'][currentLanguage]}</button>
                     </div>
-                     <div className="rowsPaginations readOnly__disabled">
+                    <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
                             <span>{this.state.totalRows}</span>

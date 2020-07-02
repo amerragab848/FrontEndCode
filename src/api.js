@@ -324,7 +324,7 @@ export default class Api {
                 if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
                     const response = JSON.parse(xmlhttp.responseText);
                     console.log(response);
-                    resolve(response);
+                    resolve(response.resultFiles);
                 } else {
                     reject(xmlhttp.responseText);
                 }
