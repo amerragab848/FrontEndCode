@@ -257,6 +257,7 @@ class inspectionRequestAddEdit extends Component {
             this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId, 'inspectionRequest');
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
+              console.log("requestCycles...",result);
                 this.setState({
                     IRCycles: [...result]
                 });
@@ -266,6 +267,7 @@ class inspectionRequestAddEdit extends Component {
 
             dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {
                 result.cycleStatus=result.status;
+                console.log("lastCycles...",result);
                 this.setState({
                     documentCycle: { ...result }
                 });
@@ -303,8 +305,7 @@ class inspectionRequestAddEdit extends Component {
                 resultDate: moment(),
                 reasonForIssueId: ''
             };
-
-            this.setState({ document: inspectionRequest }, function () {
+            this.setState({ document: inspectionRequest}, function () {
                 this.GetNExtArrange();
             });
             this.fillDropDowns(false);
@@ -630,7 +631,7 @@ class inspectionRequestAddEdit extends Component {
                     subject: this.state.document.subject,
                     docDate: this.state.document.docDate,
                     progressPercent: 0,
-                    status: 'false',
+                    status: true,
                     approvalStatusId: null,
                     cycleComment: '',
                     arrange: 1

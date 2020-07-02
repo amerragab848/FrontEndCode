@@ -310,7 +310,7 @@
             },
             {
                 "name": "toCompany",
-                "value": "toCompanyName ",
+                "value": "toCompanyName",
                 "type": "S"
             },
             {
@@ -330,7 +330,7 @@
             },
             {
                 "name": "contractPo",
-                "value": "orderType ",
+                "value": "orderSubject",
                 "type": "S"
             },
             {
@@ -345,7 +345,7 @@
             },
             {
                 "name": "reasonForIssue",
-                "value": "reasonForIssueName ",
+                "value": "reasonForIssueName",
                 "type": "S"
             },
             {
@@ -360,7 +360,7 @@
             },
             {
                 "name": "Building",
-                "value": "buildingNoName ",
+                "value": "buildingNoName",
                 "type": "S"
             },
             {
@@ -369,13 +369,8 @@
                 "type": "S"
             },
             {
-                "name": "answer",
-                "value": "rfi",
-                "type": "S"
-            },
-            {
                 "name": "message",
-                "value": "answer ",
+                "value": "rfi",
                 "type": "S"
             },
             {
@@ -384,33 +379,13 @@
                 "type": "L"
             },
             {
-                "name": "cycleSubject",
-                "value": "cycleSubject",
-                "type": "S"
-            },
-            {
-                "name": "status",
-                "value": "cycleStatusName ",
-                "type": "S"
-            },
-            {
                 "name": "cycleDate",
                 "value": "cycleDocDate",
                 "type": "D"
             },
             {
-                "name": "approvalStatus",
-                "value": "cycleApprovalStatusName",
-                "type": "S"
-            },
-            {
-                "name": "progressPercent",
-                "value": "cycleProgressPercent ",
-                "type": "S"
-            },
-            {
                 "name": "resultDate",
-                "value": "resultDate ",
+                "value": "resultDate",
                 "type": "D"
             }
         ],
