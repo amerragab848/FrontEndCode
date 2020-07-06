@@ -11,7 +11,6 @@ import * as communicationActions from "../../../store/actions/communication";
 import Tree from "../../../Pages/Contracts/CostControlTree";
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Api from '../../../api'
-//import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -126,38 +125,37 @@ class CostControlTreeReport extends Component {
         this.setState({ isLoading: true })
         Api.get('GetCostcodingReport?treeId=' + item.id + '&projectId=' + this.state.projectId + '').then(
             res => {
-               
+
 
                 if (res != null) {
-                    let estimatedBudgetTotal=0;
-                   let paymentRequisitionsCost=0;
-                    let expensesCost=0;
-                    let materialRelease=0;
-                    let invoicesForPOCost=0;
-                    let actualCostTotal=0;
-                     let balanceTotal=0;
+                    let estimatedBudgetTotal = 0;
+                    let paymentRequisitionsCost = 0;
+                    let expensesCost = 0;
+                    let materialRelease = 0;
+                    let invoicesForPOCost = 0;
+                    let actualCostTotal = 0;
+                    let balanceTotal = 0;
                     res.forEach(row => {
                         row.actualPercentage = row.actualPercentage + " %";
-                        estimatedBudgetTotal=estimatedBudgetTotal+row.originalBudget;
-                        paymentRequisitionsCost=paymentRequisitionsCost+row.paymentTotal;
-                        expensesCost=expensesCost+row.expenses;
-                        materialRelease=materialRelease+row.totalMaterialRelease;
-                        invoicesForPOCost=invoicesForPOCost+row.invoicesTotal;
-                        actualCostTotal=actualCostTotal+row.actualCost;
-                       // actualPercentageTotal=actualPercentageTotal+row.paymentTotal;
-                        balanceTotal=balanceTotal+row.balance;
+                        estimatedBudgetTotal = estimatedBudgetTotal + row.originalBudget;
+                        paymentRequisitionsCost = paymentRequisitionsCost + row.paymentTotal;
+                        expensesCost = expensesCost + row.expenses;
+                        materialRelease = materialRelease + row.totalMaterialRelease;
+                        invoicesForPOCost = invoicesForPOCost + row.invoicesTotal;
+                        actualCostTotal = actualCostTotal + row.actualCost;
+                        balanceTotal = balanceTotal + row.balance;
                     })
-                    let actualPercentageTotal=estimatedBudgetTotal==0?"0 %":Math.round((actualCostTotal/estimatedBudgetTotal)*100)+" %";
+                    let actualPercentageTotal = estimatedBudgetTotal == 0 ? "0 %" : Math.round((actualCostTotal / estimatedBudgetTotal) * 100) + " %";
                     res.push({
-                        costCodingTitle:"Total",
-                        originalBudget:estimatedBudgetTotal,
-                        paymentTotal:paymentRequisitionsCost,
-                        expenses:expensesCost,
-                        totalMaterialRelease:materialRelease,
-                        invoicesTotal:invoicesForPOCost,
-                        actualCost:actualCostTotal,
-                        actualPercentage:actualPercentageTotal,
-                        balance:balanceTotal
+                        costCodingTitle: "Total",
+                        originalBudget: estimatedBudgetTotal,
+                        paymentTotal: paymentRequisitionsCost,
+                        expenses: expensesCost,
+                        totalMaterialRelease: materialRelease,
+                        invoicesTotal: invoicesForPOCost,
+                        actualCost: actualCostTotal,
+                        actualPercentage: actualPercentageTotal,
+                        balance: balanceTotal
                     })
                     this.setState({
                         gridRows: res,
@@ -179,17 +177,6 @@ class CostControlTreeReport extends Component {
         let exportBtn = this.state.isLoading == false ? <ExportDetails fieldsItems={this.columns}
             rows={this.state.gridRows}
             fields={[]} fileName={Resources.CostCodingReport[currentLanguage]} /> : null
-        // let ExportColumns = [
-        //     { field: 'projectName', title: Resources['projectName'][currentLanguage] },
-        //     { field: 'costCodingTitle', title: Resources['costCoding'][currentLanguage] },
-        //     { field: 'totalCostCode', title: Resources['totalCost'][currentLanguage] },
-        //     { field: 'invoicesTotal', title: Resources['invoicesTotal'][currentLanguage] },
-        //     { field: 'paymentTotal', title: Resources['paymentTotal'][currentLanguage] },
-        //     { field: 'totalMaterialRelease', title: Resources['materialRequestcount'][currentLanguage] },
-        //     { field: 'expenses', title: Resources['expensesTotal'][currentLanguage] },
-        // ]
-        // let rows = []
-        // rows.push(this.state.NodeData)
         return (
             <div className="reports__content reports__multiDrop">
                 <header>

@@ -29,11 +29,11 @@ class CostControlTreeReport extends Component {
             NodeData: {},
             isLoading: false,
             showActions: true,
-            renderTree:true
+            renderTree: true
 
         }
     }
-  componentDidMount() {
+    componentDidMount() {
         dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "id").then(result => {
             this.setState({
                 projects: result
@@ -41,18 +41,18 @@ class CostControlTreeReport extends Component {
         });
     }
     handleChangeDrop = (e) => {
-        let renderTre=this.state.renderTree?false:true;
+        let renderTre = this.state.renderTree ? false : true;
         this.setState({
             projectId: e.value,
             selectedProject: e,
             showActions: false,
-            renderTree:renderTre
+            renderTree: renderTre
         })
     }
-   
+
     GetNodeData = (item) => {
         this.setState({ isLoading: true })
-        Api.get('GetSummaryOfCostControl?treeId=' + item.id + '&projectId='+this.state.projectId+'').then(
+        Api.get('GetSummaryOfCostControl?treeId=' + item.id + '&projectId=' + this.state.projectId + '').then(
             res => {
                 if (res != null) {
                     this.setState({
@@ -96,10 +96,10 @@ class CostControlTreeReport extends Component {
                 <div className='proForm reports__proForm'>
                     <div className="linebylineInput multiChoice">
                         <Dropdown title='projectName' data={this.state.projects} name='projectName'
-                            selectedValue={this.state.selectedProject}  handleChange={e => { this.handleChangeDrop(e); }} />
+                            selectedValue={this.state.selectedProject} handleChange={e => { this.handleChangeDrop(e); }} />
 
                     </div>
-                 
+
                 </div>
 
                 {this.state.renderTree ?
