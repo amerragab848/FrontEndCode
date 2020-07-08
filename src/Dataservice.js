@@ -56,8 +56,25 @@ export default class Dataservice {
         return Api.get(url).then(result => {
             return result;
         }).catch(ex => Data);
+    } 
+    static async getGoMeetingAPIs(url) {
+        let Data = []
+        return Api.getGoMeetingAPIs(url).then(result => {
+            return result;
+        }).catch(ex => Data);
+    } 
+    static async postGoMeetingAPIs(url,params) {
+        let Data = []
+        return Api.postGoMeetingAPIs(url,params).then(result => {
+            return result;
+        }).catch(ex => Data);
     }
-
+    static async postGoMeetingToken(url,params) {
+        let Data = []
+        return Api.postGoMeetingToken(url,params).then(result => {
+            return result;
+        }).catch(ex => Data);
+    }
     static GetDataListWithNewVersion = (url, label, value, tableName) => {
         let Data = []
         return Api.get(url).then(result => {
@@ -100,8 +117,7 @@ export default class Dataservice {
 
             return result;
         }).catch(ex => []);
-    };
-
+    }; 
     static GetDataGridPost = (url) => {
 
         return Api.post(url).then(result => {
