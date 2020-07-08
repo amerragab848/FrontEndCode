@@ -3,8 +3,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js";
+import { bindActionCreators } from "redux"; 
 import * as communicationActions from "../../store/actions/communication";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
@@ -13,8 +12,8 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 var treeContainer = []
 class CostControlTree extends Component {
   constructor(props) {
-  super(props);
-  this.state = {
+    super(props);
+    this.state = {
       costCodingTreeId: 0,
       mode: 'add',
       projectId: this.props.projectId,
@@ -94,7 +93,7 @@ class CostControlTree extends Component {
     });
   }
 
- GetNodeData = (item) => {
+  GetNodeData = (item) => {
     this.props.GetNodeData(item)
   }
 
@@ -129,7 +128,7 @@ class CostControlTree extends Component {
                   {this.state[item.id] ? this.state[item.id].codeTreeTitle || item.costCodingTreeName : item.codeTreeTitle || item.costCodingTreeName}
                 </span>
               </div>
-             
+
             </div>
             <div className="epsContent">
               {item.trees.length > 0 ? this.printChild(item.trees) : null}
@@ -163,7 +162,7 @@ class CostControlTree extends Component {
       document: updated_document
     });
   }
-clear = () => {
+  clear = () => {
 
     let treeDocument = {
       codeTreeTitle: "",
@@ -215,7 +214,7 @@ clear = () => {
     return (
       <div>
         <div className="documents-stepper noTabs__document">
-         {this.state.isLoading == true ? <LoadingSection /> :
+          {this.state.isLoading == true ? <LoadingSection /> :
             <div className="Eps__list">
               {
                 this.state.trees.map((item, i) => {
@@ -232,7 +231,7 @@ clear = () => {
                           <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>{this.state[item.id] ? this.state[item.id].codeTreeTitle || item.costCodingTreeName : item.codeTreeTitle || item.costCodingTreeName}
                           </span>
                         </div>
-                          </div>
+                      </div>
                       <div className="epsContent" id={item.id}>
                         {item.trees.length > 0 ? this.printChild(item.trees) : null}
                       </div>

@@ -15,8 +15,7 @@ import Filter from "../../Componants/FilterComponent/filterComponent";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../../Componants/OptionsPanels/Export";
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
-import { SkyLightStateless } from 'react-skylight';
-import { Filters } from "react-data-grid-addons";
+import { SkyLightStateless } from 'react-skylight'; 
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import moment from "moment";
@@ -26,39 +25,7 @@ import MinimizeV from '../../Styles/images/table1.png';
 import MinimizeVBlue from '../../Styles/images/table1.png';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const { SingleSelectFilter } = Filters;
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-let subjectLink = ({ value, row }) => {
-
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.id,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: 0,
-      docApprovalId: 0,
-      isApproveMode: false,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    let doc_view = "/ProjectTaskAddEdit" + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-
-  }
-  return null;
-};
-
+  
 class ProjectTasks extends Component {
 
   constructor(props) {

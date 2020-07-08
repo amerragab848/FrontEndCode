@@ -171,6 +171,7 @@ class GlobalSearch extends Component {
 
         ]
         this.state = {
+            lastChunk: 0,
             subject: subject,
             searchResult: [],
             pageSize: 50,
@@ -206,14 +207,14 @@ class GlobalSearch extends Component {
 
         dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
             if (searchResult) {
-                this.readFiles(searchResult.attachFiles, searchOptions,false);
+                this.readFiles(searchResult.attachFiles, searchOptions, false);
                 let data = []
                 if (searchResult.searchResp.searchList.length > 0)
                     searchResult.searchResp.searchList.forEach((item, i) => {
                         item.index = i + 1;
                         data.push(item)
                     })
-                this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total })
+                this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total,isLoading: false })
             }
             else
                 this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
@@ -225,19 +226,19 @@ class GlobalSearch extends Component {
     }
 
     async readFiles(files, searchOptions, firstOrNext) {
- 
+
         let attachList = this.state.attachementsSearchResult;
         let i = 0;
         let j = 0;
         let temparray = [];
-        let chunk = 5;
+        let chunk = 10;
         let resultLength = 0;
-        let newLit = attachList;
-        let maxIterate=5;//files.length
+        let newLit = firstOrNext == false ? [] : attachList;
+        let maxIterate = files.length
 
-        for (i = firstOrNext == true ?  attachList.length : 0 , j = maxIterate; i < j; i += chunk) {
-
-            temparray = files.slice(i, i + chunk);
+        for (i = firstOrNext == true ? this.state.lastChunk : 0, j = maxIterate; i < j; i += chunk) {
+            let lastChunk =  i + chunk;
+            temparray = files.slice(i, lastChunk);
 
             this.setState({ showAttachLoading: true })
 
@@ -245,18 +246,18 @@ class GlobalSearch extends Component {
                 resultLength = result ? result.length : 0;
 
                 newLit.push.apply(newLit, result)
-                
-                this.setState({ showAttachLoading: false, attachementsSearchResult: result ? newLit : attachList })
-            })
+
+                this.setState({ showAttachLoading: false, attachementsSearchResult: result ? newLit : attachList, lastChunk })
+            });
             if (resultLength > 0) { break; }
         }
     }
-    
+
     GetNextAttachFiles() {
-       
+
         let fromDate = '';
         let toDate = '';
-   
+
         if (this.state.filterDate.split("-")[0] === this.state.filterDate) {
             fromDate = moment().add(-1, 'Y').format('YYYY/MM/DD')
             toDate = moment().format('YYYY/MM/DD')
@@ -275,7 +276,7 @@ class GlobalSearch extends Component {
             pageNumber: 0
         }
 
-        this.readFiles(this.state.allAttaches, searchOptions,true);
+        this.readFiles(this.state.allAttaches, searchOptions, true);
     }
 
     changeDate() {
@@ -331,7 +332,7 @@ class GlobalSearch extends Component {
 
         dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
-                this.readFiles(this.state.allAttaches, searchOptions,false);
+                this.readFiles(this.state.allAttaches, searchOptions, false);
 
                 let data = []
                 if (searchResult.searchResp.searchList.length > 0)

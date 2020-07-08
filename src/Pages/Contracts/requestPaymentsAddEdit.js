@@ -846,8 +846,8 @@ class requestPaymentsAddEdit extends Component {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
 
             this.props.actions.ExportingData({ items: [] });
-
-            dataservice.GetDataList("GetCostCodingTreeByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
+            //GetCostCodingTreeByProjectIdForList
+            dataservice.GetDataList("GetCostCodingTreeNewByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
                 this.setState({
                     fillDropDownTress: result
                 });

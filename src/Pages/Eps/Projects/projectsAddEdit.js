@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../../Services/Config";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
+//import moment from "moment";
 import * as communicationActions from '../../../store/actions/communication';
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
@@ -19,24 +19,25 @@ import ContactDropdown from '../../../Componants/publicComponants/ContactDropdow
 import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
+//var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 const validationSchema = Yup.object().shape({
     projectNameEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
-    projectNameAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => {
-        return ar.test(value)
-    }).required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
+    projectNameAr: Yup.string()
+    // .test('projectNameAr', 'Name cannot be english', value => {
+    //     return ar.test(value)
+    // })
+    .required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
     job: Yup.string().required(Resources['referenceCode'][currentLanguage]),
     projectType: Yup.string().required(Resources['pleaseSelectProjectType'][currentLanguage]),
     country: Yup.string().required(Resources['pleaseSelectCountry'][currentLanguage]),
-    projectManagerContact: Yup.string().required(Resources['pleaseSelectProjectManagerContact'][currentLanguage]),
+    projectManagerContact: Yup.string().required(Resources['pleaseSelectProjectManagerContact'][currentLanguage])
 })
 
 let docId = 0;
-let epsId = 0;
-//const _ = require('lodash')
+let epsId = 0; 
 class projectsAddEdit extends Component {
     constructor(props) {
         super(props);

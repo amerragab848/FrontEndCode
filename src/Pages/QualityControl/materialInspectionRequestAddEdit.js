@@ -192,7 +192,7 @@ class materialInspectionRequestAddEdit extends Component {
                 callBackFn: null
             },
             {
-                name: "newCycle",
+                name: "cycle",
                 callBackFn: null
             }
         ];
@@ -251,7 +251,7 @@ class materialInspectionRequestAddEdit extends Component {
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
-                answer: '',
+                // answer: '',
                 rfi: '',
                 orderId: null,
                 orderType: null,
@@ -287,7 +287,7 @@ class materialInspectionRequestAddEdit extends Component {
             this.setState({
                 document: { ...serverInspectionRequest },
                 hasWorkflow: nextProps.hasWorkflow,
-                answer: nextProps.document.answer,
+                // answer: nextProps.document.answer,
                 rfi: nextProps.document.rfi
             });
 
@@ -514,13 +514,13 @@ class materialInspectionRequestAddEdit extends Component {
 
     onChangeAnswer = (value) => {
         if (value != null) {
-            this.setState({ answer: value });
-            let original_document = { ...this.state.document };
+            // this.setState({ answer: value });
+            let original_document = { ...this.state.documentCycle };
             let updated_document = {};
-            updated_document['answer'] = value;
+            updated_document['comment'] = value;
             updated_document = Object.assign(original_document, updated_document);
             this.setState({
-                document: updated_document
+                documentCycle: updated_document
             });
         }
     }
@@ -865,18 +865,6 @@ class materialInspectionRequestAddEdit extends Component {
                                             name="approvalStatusId"
                                             id="approvalStatusId" />
                                     </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['comment'][currentLanguage]}</label>
-                                        <div className='ui input inputDev '>
-                                            <input autoComplete="off"
-                                                value={this.state.documentCycle.comment}
-                                                className="form-control" name="comment"
-                                                onBlur={(e) => { handleBlur(e) }}
-                                                onChange={(e) => { this.handleChangeCycle(e, 'comment') }}
-                                                placeholder={Resources['comment'][currentLanguage]} />
-                                        </div>
-                                    </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources['progressPercent'][currentLanguage]}</label>
                                         <div className='ui input inputDev '>
@@ -888,6 +876,30 @@ class materialInspectionRequestAddEdit extends Component {
                                                 placeholder={Resources['progressPercent'][currentLanguage]} />
                                         </div>
                                     </div>
+                                    {/* <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources['comment'][currentLanguage]}</label>
+                                        <div className='ui input inputDev '>
+                                            <input autoComplete="off"
+                                                value={this.state.documentCycle.comment}
+                                                className="form-control" name="comment"
+                                                onBlur={(e) => { handleBlur(e) }}
+                                                onChange={(e) => { this.handleChangeCycle(e, 'comment') }}
+                                                placeholder={Resources['comment'][currentLanguage]} />
+                                        </div>
+                                    </div> */}
+                                     <div className="letterFullWidth">
+                                        <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
+                                        <div className="inputDev ui input">
+                                            <div className="inputDev ui input">
+                                                <TextEditor
+                                                    value={this.state.documentCycle.comment}
+                                                    onChange={ this.onChangeAnswer} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
+
+                                   
                                 </div>
                                 {this.props.changeStatus == false ?
                                     <button className="primaryBtn-1 btn meduimBtn" type='submit' onClick={this.newCycle}>{Resources['saveAndExit'][currentLanguage]}</button>
@@ -1249,17 +1261,6 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         <TextEditor
                                                                             value={this.state.rfi}
                                                                             onChange={this.onChangeRfi} />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="letterFullWidth">
-                                                                    <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
-                                                                    <div className="inputDev ui input">
-                                                                        <div className="inputDev ui input">
-                                                                            <TextEditor
-                                                                                value={this.state.answer}
-                                                                                onChange={this.onChangeAnswer} />
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
