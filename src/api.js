@@ -2,6 +2,7 @@ import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
+import moment from "moment";
 let Authorization = localStorage.getItem("userToken");
 
 export default class Api {
@@ -16,14 +17,178 @@ export default class Api {
             Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
         };
     }
+    static getGoMeetingAPIs(route, params) {
+        const host = Config.getPublicConfiguartion().goMeeting;
+        const url = `${host}${route}`;
+        let json = null;
 
+
+        let auth = "Bearer " + localStorage.getItem("accToken");
+        let data = [];
+
+        let options = Object.assign(
+            {
+                method: "GET"
+            },
+            params
+                ? {
+                    body: JSON.stringify(params)
+                }
+                : null
+        );
+
+        options.headers = {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            Authorization: auth
+        };
+        return fetch(url, options)
+            .then(resp => {
+                if (resp.status === 200) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 201) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 401) {
+                    localStorage.removeItem("refToken");
+                    json = "";
+                    window.location.reload();
+                    return json;
+                } else if (resp.status === 500) {
+                    json = null;
+                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
+                    return json;
+                } else if (resp.status === 409) {
+                    return resp;
+                }
+
+                return json.then(err => {
+                    throw err;
+                });
+            })
+            .then(json => (json.result ? json.result : json))
+            .catch(reason => {
+                return null;
+            });
+    }
+    static postGoMeetingToken(route, params) {
+        const host = Config.getPublicConfiguartion().goMeeting;
+        const url = `${host}${route}`;
+        let json = null;
+        let auth = "Basic " + btoa('BgeBrkkiK0Bg1YiREsn75ED2z0nZtxZb' + ":" + 'vZI2PG0EhA2if7YF');
+
+        let data = [];
+
+        for (var param in params) {
+            if (params.hasOwnProperty(param)) {
+                data.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]))
+            }
+        }
+        let options = {
+            method: "POST",
+            body: data.join('&')
+        };
+
+        options.headers = {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            Authorization: auth
+        };
+
+        return fetch(url, options)
+            .then(resp => {
+                if (resp.status === 200) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 401) {
+                    localStorage.removeItem("userToken");
+                    json = "";
+                    window.location.reload();
+                    return json;
+                } else if (resp.status === 500) {
+                    json = null;
+                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
+                    return json;
+                } else if (resp.status === 409) {
+                    return resp;
+                }
+
+                return json.then(err => {
+                    throw err;
+                });
+            })
+            .then(json => (json.result ? json.result : json))
+            .catch(reason => {
+                return null;
+            });
+    }
+    static postGoMeetingAPIs(route, params) {
+        const host = Config.getPublicConfiguartion().goMeeting;
+        const url = `${host}${route}`;
+        let json = null;
+
+
+        let auth = "Bearer " + localStorage.getItem("accToken");
+        let data = [];
+
+        let options = Object.assign(
+            {
+                method: "POST"
+            },
+            params
+                ? {
+                    body: JSON.stringify(params)
+                }
+                : null
+        );
+
+        options.headers = {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            Authorization: auth
+        };
+        return fetch(url, options)
+            .then(resp => {
+                if (resp.status === 200) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 201) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 401) {
+                    localStorage.removeItem("refToken");
+                    json = "";
+                    window.location.reload();
+                    return json;
+                } else if (resp.status === 500) {
+                    json = null;
+                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
+                    return json;
+                } else if (resp.status === 409) {
+                    return resp;
+                }
+
+                return json.then(err => {
+                    throw err;
+                });
+            })
+            .then(json => (json.result ? json.result : json))
+            .catch(reason => {
+                return null;
+            });
+    }
     static get(route, params) {
         return this.xhr(route, params === null ? null : params, "GET");
     }
     static post(route, params) {
         return this.xhr(route, params, "POST");
     }
-
     static xhr(route, params, verb) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
@@ -71,13 +236,11 @@ export default class Api {
                 return null;
             });
     }
-
     static GetPayload() {
         var payload = [];
 
         return JSON.parse(payload);
     }
-
     static IsAllow(code) {
         let userPermissions = [];
         let isCompany = true;
@@ -97,7 +260,6 @@ export default class Api {
             return true;
         }
     }
-
     static postFile(route, params, header) {
 
         let json = "";
@@ -150,7 +312,6 @@ export default class Api {
                 // response is not a valid json string
             });
     }
-
     static getPassword(route, password) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
 
@@ -165,7 +326,6 @@ export default class Api {
             body: null
         }).then(response => response.json());
     }
-
     static getPublicIP() {
         const url = "https://ipapi.co/json/?callback=?";
         let json = null;
@@ -186,7 +346,6 @@ export default class Api {
             })
             .then(json => (json.result ? json.result : json));
     }
-
     static Login(hostt, route, params) {
         const host = hostt;
         const url = `${host}${route}`;
@@ -226,7 +385,6 @@ export default class Api {
             })
             .then(json => (json.result ? json.result : json));
     }
-
     static authorizationApi(route, params, method, isCheck) {
         const host = Config.getPublicConfiguartion().loginServer + "/api/";
         const url = `${host}${route}`;
@@ -279,7 +437,6 @@ export default class Api {
         }
         );
     }
-
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem("userToken")) {
@@ -287,7 +444,6 @@ export default class Api {
         }
         return authorize;
     }
-
     static PostForGetAttaches(params, searchOptions) {
 
         const host = Config.getPublicConfiguartion().exportStatic + "/api/textractify";

@@ -3305,6 +3305,14 @@
         "en": "Add Proposal Variation Order",
         "ar": "اضافة طلبات التغيير المقترحة"
     },
+    "startTime": {
+        "en": "Start Time",
+        "ar": "وقت البداية"
+    },
+    "finishTime": {
+        "en": "Finish Time",
+        "ar": "وقت الانتهاء"
+    },
     "timeExtension": {
         "en": "Time Extension",
         "ar": "الوقت الإضافي"
