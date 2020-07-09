@@ -114,11 +114,11 @@ class AutoDeskViewer extends Component {
             let link = document.createElement("link");
             link.type = "text/css";
             link.rel = "stylesheet";
-            link.onload = function() {
+            link.onload = function () {
                 resolve();
                 console.log("style has loaded");
             };
-            link.onerror = function() {
+            link.onerror = function () {
                 resolve();
                 console.log("[Error] style not loaded");
             };
@@ -133,11 +133,11 @@ class AutoDeskViewer extends Component {
         return new Promise((resolve, reject) => {
             let script = document.createElement("script");
             script.type = "text/javascript";
-            script.onload = function() {
+            script.onload = function () {
                 resolve();
                 console.log("script has loaded");
             };
-            script.onerror = function() {
+            script.onerror = function () {
                 resolve();
                 console.log("[Error] script not loaded");
             };
@@ -173,21 +173,15 @@ class AutoDeskViewer extends Component {
 
         let obj = {
             fileName: this.state.fileName,
-            attachFile: decodeURIComponent(this.state.attachFile)
+            attachFile: decodeURIComponent(this.state.attachFile),
+            id: this.state.docFileId
         };
 
         Api.post("translateAutoDesk", obj).then(data => {
             this.showModel(data);
         });
 
-        Api.get(
-            "GetAllMarkUps?docId=" +
-                this.state.docId +
-                "&docType=" +
-                this.state.docType +
-                "&docFileId=" +
-                this.state.docFileId
-        ).then(markups => {
+        Api.get("GetAllMarkUps?docId=" + this.state.docId + "&docType=" + this.state.docType + "&docFileId=" + this.state.docFileId).then(markups => {
             this.setState({ markups });
             let markupsList = [];
             markups.forEach((item, index) => {
@@ -206,7 +200,7 @@ class AutoDeskViewer extends Component {
             obj = id,
             duration = this.state.loadingPer === true ? 0 : 1000;
 
-        var timer = setInterval(function() {
+        var timer = setInterval(function () {
             current = current + 1;
             obj.innerHTML = current + "%";
             if (current === end) {
@@ -374,7 +368,7 @@ class AutoDeskViewer extends Component {
                     );
                     this.setState({ viewer, loaded: true });
                 },
-                function(errorCode, errorMessage) {
+                function (errorCode, errorMessage) {
                     console.log(
                         "....Loading fail model autoDesk",
                         errorCode,
@@ -389,12 +383,7 @@ class AutoDeskViewer extends Component {
     getAccessToken = () => {
         var xmlHttp = null;
         xmlHttp = new XMLHttpRequest();
-        xmlHttp.open(
-            "GET",
-            Config.getPublicConfiguartion().static +
-                "/api/Procoor/getAccessToken",
-            false /*forge viewer requires SYNC*/
-        );
+        xmlHttp.open("GET", Config.getPublicConfiguartion().static + "/api/Procoor/getAccessToken", false /*forge viewer requires SYNC*/);
         xmlHttp.send(null);
         return xmlHttp.responseText;
     };
