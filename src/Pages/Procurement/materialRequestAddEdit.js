@@ -333,12 +333,12 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
             }
         ];
-      
+
         this.actions = [
             {
                 title: 'Delete',
-                handleClick:values => {
-                     this.clickHandlerDeleteRowsMain(values);
+                handleClick: values => {
+                    this.clickHandlerDeleteRowsMain(values);
                 }
             }
         ]
@@ -703,21 +703,21 @@ class materialRequestAddEdit extends Component {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(119)) {
                 this.setState({ isViewMode: true });
-            } else if (
-                this.state.isApproveMode != true &&
-                Config.IsAllow(119)
-            ) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(119)) {
-                    if (
-                        this.props.document.status != false &&
-                        Config.IsAllow(119)
-                    ) {
-                        this.setState({ isViewMode: false });
+            }
+
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(119)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(119)) {
+                        if (this.props.document.status != false && Config.IsAllow(119)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
@@ -1960,51 +1960,51 @@ class materialRequestAddEdit extends Component {
     //     );
     // };
     _onGridQuantityUpdated = (cell) => {
-            if (cell) {
-                    this.setState({ isLoading: true });
-                    Api.post(
-                        "UpdateQuantitySiteRequestItems?id=" +
-                        cell.id +
-                        "&quantity=" +
-                        cell.quantity
-                    )
-                        .then(() => {
-                            toast.success(
-                                Resources["operationSuccess"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        })
-                        .catch(() => {
-                            toast.error(
-                                Resources["operationCanceled"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        });
-                }
+        if (cell) {
+            this.setState({ isLoading: true });
+            Api.post(
+                "UpdateQuantitySiteRequestItems?id=" +
+                cell.id +
+                "&quantity=" +
+                cell.quantity
+            )
+                .then(() => {
+                    toast.success(
+                        Resources["operationSuccess"][currentLanguage]
+                    );
+                    this.setState({ isLoading: false });
+                })
+                .catch(() => {
+                    toast.error(
+                        Resources["operationCanceled"][currentLanguage]
+                    );
+                    this.setState({ isLoading: false });
+                });
+        }
     };
     _onGridStockUpdated = (cell) => {
-            if (cell) {
-                this.setState({ isLoading: true });
-                Api.post(
-                    "UpdateStockSiteRequestItems?id=" +
-                    cell.id +
-                    "&stock=" +
-                    cell.stock
-                )
-                    .then(() => {
-                        toast.success(
-                            Resources["operationSuccess"][currentLanguage]
-                        );
-                        this.setState({ isLoading: false });
-                    })
-                    .catch(() => {
-                        toast.error(
-                            Resources["operationCanceled"][currentLanguage]
-                        );
-                        this.setState({ isLoading: false });
-                    });
-            }
-};
+        if (cell) {
+            this.setState({ isLoading: true });
+            Api.post(
+                "UpdateStockSiteRequestItems?id=" +
+                cell.id +
+                "&stock=" +
+                cell.stock
+            )
+                .then(() => {
+                    toast.success(
+                        Resources["operationSuccess"][currentLanguage]
+                    );
+                    this.setState({ isLoading: false });
+                })
+                .catch(() => {
+                    toast.error(
+                        Resources["operationCanceled"][currentLanguage]
+                    );
+                    this.setState({ isLoading: false });
+                });
+        }
+    };
     onRowClick = (value) => {
         // if (!Config.IsAllow(3751)) {
         //     toast.warning("you don't have permission");

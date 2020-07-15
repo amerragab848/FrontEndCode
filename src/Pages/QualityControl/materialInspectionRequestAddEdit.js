@@ -309,22 +309,25 @@ class materialInspectionRequestAddEdit extends Component {
                 this.setState({ isViewMode: true });
             }
 
-            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
-                    if (this.props.document.status !== false && Config.IsAllow(367)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(367)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
+                        if (this.props.document.status !== false && Config.IsAllow(367)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
         else {
             this.setState({ isViewMode: false });
         }
-        console.log('checkDocumentIsView...', this.props, this.state);
     }
 
     GetNExtArrange() {
@@ -887,19 +890,19 @@ class materialInspectionRequestAddEdit extends Component {
                                                 placeholder={Resources['comment'][currentLanguage]} />
                                         </div>
                                     </div> */}
-                                     <div className="letterFullWidth">
+                                    <div className="letterFullWidth">
                                         <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
                                         <div className="inputDev ui input">
                                             <div className="inputDev ui input">
                                                 <TextEditor
                                                     value={this.state.documentCycle.comment}
-                                                    onChange={ this.onChangeAnswer} />
+                                                    onChange={this.onChangeAnswer} />
                                             </div>
                                         </div>
                                     </div>
-                                  
 
-                                   
+
+
                                 </div>
                                 {this.props.changeStatus == false ?
                                     <button className="primaryBtn-1 btn meduimBtn" type='submit' onClick={this.newCycle}>{Resources['saveAndExit'][currentLanguage]}</button>
