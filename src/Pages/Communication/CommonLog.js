@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from "../../api";
+import dataservice from "../../Dataservice";
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -52,7 +53,8 @@ class CommonLog extends Component {
       minimizeClick: false,
       documentObj: {},
       exportDocument: {},
-      match: props.match, export: false
+      match: props.match, export: false,
+      columnsExport: []
     };
     this.actions = [
       {
@@ -83,7 +85,7 @@ class CommonLog extends Component {
 
       }
     ];
-   
+
     this.ClosxMX = this.ClosxMX.bind(this);
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
@@ -625,11 +627,79 @@ class CommonLog extends Component {
     }, 300);
   };
 
+  handleCheckForExport = (key) => {
+    this.setState({ [key]: !this.state[key], Loading: true })
+    let data = this.state.ColumnsHideShow
+    for (var i in data) {
+      if (data[i].field === key) {
+        let status = data[i].hidden === true ? false : true
+        data[i].hidden = status
+        break;
+      }
+    }
+
+    let chosenColumns = data.filter(i => i.hidden === false);
+
+    var columnsExport = [];
+
+    chosenColumns.forEach(function (d) {
+      columnsExport.push({
+        field: d.field,
+        friendlyName: d.title
+      });
+    });
+
+    setTimeout(() => {
+      this.setState({ columnsExport: columnsExport, Loading: false })
+    }, 300);
+  };
+
   ClosxMX() {
     if (this.props != undefined) { this.props.actions.clearCashDocument(); }
 
     this.setState({ showExportModal: false });
   };
+
+  btnExportServerShowModal = () => {
+    this.setState({ exportColumnsModal: true });
+  }
+
+  btnExportServerClick = () => {
+    let chosenColumns = this.state.columnsExport;
+    if (chosenColumns.length < 3) {
+      toast.warning("Can't Export With less than 3 Columns Choosen");
+      this.setState({ exportColumnsModal: false })
+    }
+    else {
+      let docTypeId = this.state.documentObj.docTyp;
+      let query = this.state.query;
+      var stringifiedQuery = JSON.stringify(query);
+      if (stringifiedQuery == '{"isCustom":true}') {
+        stringifiedQuery = undefined
+      } else {
+        stringifiedQuery = '{"projectId":' + this.state.projectId + '}'
+      }
+
+      let data = {};
+      data.docType = docTypeId;
+      data.query = stringifiedQuery;
+      data.chosenColumns = chosenColumns;
+
+      dataservice.addObjectCore("ExcelServerExport", data, 'POST').then(data => {
+        if (data) {
+          data = Config.getPublicConfiguartion().downloads + '/' + data;
+          var a = document.createElement('A');
+          a.href = data;
+          a.download = data.substr(data.lastIndexOf('/') + 1);
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          this.setState({ exportColumnsModal: false })
+        }
+      });
+    }
+  }
 
   render() {
 
@@ -642,6 +712,19 @@ class CommonLog extends Component {
             <label>{item.title}</label>
           </div>
         </div>
+      )
+    })
+
+    let RenderPopupShowExportColumns = this.state.ColumnsHideShow.map((item, index) => {
+      return (
+        (item.type === 'check-box' || item.field == "id") ? null :
+          <div className="grid__content" key={item.field}>
+            <div className={'ui checkbox checkBoxGray300 count checked'}>
+              <input name="CheckBox" type="checkbox" id={"export_" + item.field} checked={!this.state[item.field]}
+                onChange={(e) => this.handleCheckForExport(item.field)} />
+              <label>{item.title}</label>
+            </div>
+          </div>
       )
     })
 
@@ -709,6 +792,9 @@ class CommonLog extends Component {
         />
       ) : null;
 
+    const btnExportServer = <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnExportServerShowModal()}>{Resources["exportAll"][currentLanguage]}</button>
+
+
     const ComponantFilter = this.state.isLoading === false ?
       (
         <Filter
@@ -751,6 +837,7 @@ class CommonLog extends Component {
             </div>
             <div className="filterBTNS">
               {btnExport}
+              {btnExportServer}
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
@@ -825,6 +912,23 @@ class CommonLog extends Component {
               </div>
             </div>
           </div>
+
+          <div className={this.state.exportColumnsModal ? "grid__column active " : "grid__column "}>
+            <div className="grid__column--container">
+              <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
+              <div className="grid__column--title">
+                <h2>{Resources.gridColumns[currentLanguage]}</h2>
+              </div>
+              <div className="grid__column--content">
+                {RenderPopupShowExportColumns}
+              </div>
+              <div className="grid__column--footer">
+                <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>{Resources.close[currentLanguage]}</button>
+                <button className="btn primaryBtn-2" onClick={this.btnExportServerClick}>{Resources.export[currentLanguage]} </button>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         {(this.props.document.id > 0 && this.state.showExportModal == true) ? (

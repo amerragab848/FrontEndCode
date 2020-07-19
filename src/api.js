@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
-import moment from "moment";
+//import moment from "moment";
 let Authorization = localStorage.getItem("userToken");
 
 export default class Api {
@@ -17,6 +17,7 @@ export default class Api {
             Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
         };
     }
+
     static getGoMeetingAPIs(route, params) {
         const host = Config.getPublicConfiguartion().goMeeting;
         const url = `${host}${route}`;
@@ -74,6 +75,52 @@ export default class Api {
                 return null;
             });
     }
+
+    static getDataAPIsByCore(route, params, verb) {
+        const host = Config.getPublicConfiguartion().exportCore;
+        const url = `${host}${route}`;
+        let json = null;
+
+        let options = Object.assign(
+            {
+                method: verb
+            },
+            params
+                ? {
+                    body: JSON.stringify(params)
+                }
+                : null
+        );
+        options.headers = Api.headers();
+        return fetch(url, options)
+            .then(resp => {
+                if (resp.status === 200) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 201) {
+                    json = resp.json();
+                    if (json === undefined) return null;
+                    return json;
+                } else if (resp.status === 500) {
+                    json = null;
+                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
+                    return json;
+                } else if (resp.status === 409) {
+                    return resp;
+                }
+
+                return json.then(err => {
+                    throw err;
+                });
+            })
+            .then(json => (json.result ? json.result : json))
+            .catch(reason => {
+                return null;
+            });
+    }
+
     static postGoMeetingToken(route, params) {
         const host = Config.getPublicConfiguartion().goMeeting;
         const url = `${host}${route}`;
@@ -469,7 +516,7 @@ export default class Api {
             "Content-Type": "application/json",
             dataType: "json",
             //method: "POST",
-           // Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
+            // Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
             //Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
         };
 
