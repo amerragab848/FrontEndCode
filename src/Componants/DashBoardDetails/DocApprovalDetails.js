@@ -83,6 +83,15 @@ class DocApprovalDetails extends Component {
         type: "text"
       },
       {
+        field: "companyType",
+        title: Resources["companyType"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
+        sortable: true,
+        type: "text"
+      },
+      {
         field: "openedBy",
         title: Resources["openedBy"][currentLanguage],
         groupable: true,
@@ -220,6 +229,12 @@ class DocApprovalDetails extends Component {
       {
         field: "actionBy",
         name: "actionByContact",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "companyType",
+        name: "companyType",
         type: "string",
         isCustom: true
       },

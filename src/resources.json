@@ -633,6 +633,10 @@
         "en": "select Company role",
         "ar": "من فضلك اختر مجال الشركة"
     },
+    "companyTypeRequired": {
+        "en": "select Company Type",
+        "ar": "من فضلك اختر مجال الشركة"
+    }, 
     "rateValueRequired": {
         "en": "Please enter a valid salary",
         "ar": "من فضلك ادخل قيمة مرتب سليمة"
@@ -1553,6 +1557,10 @@
         "en": "Company Role",
         "ar": "دور الشركة"
     },
+    "companyType": {
+        "en": "Company Type",
+        "ar": "مجال الشركة"
+    }, 
     "discipline": {
         "en": "Discipline",
         "ar": "نطاق اعمال الشركه"

@@ -36,7 +36,8 @@ const validationSchema = Yup.object().shape({
     Telephone: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
     title: Yup.string().required(Resources['empTitleRequired'][currentLanguage]),
-    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage])
+    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]),
+    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage]),
 });
 
 const validationSchemaForEdit = Yup.object().shape({
@@ -47,7 +48,8 @@ const validationSchemaForEdit = Yup.object().shape({
         return ar.test(value)
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
-    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage])
+    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]),
+    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage])
 })
 
 class AddEditCompany extends Component {
@@ -62,7 +64,9 @@ class AddEditCompany extends Component {
             selectedDiscipline: '',
             disciplineData: [],
             selectedCompanyRole: '',
+            selectedCompanyType: '',
             CompanyRoleData: [],
+            CompanyTypeData: [],
             selectedTitle: '',
             TitleData: [],
             projectId: 0,
@@ -124,6 +128,10 @@ class AddEditCompany extends Component {
                 original_document.companyRole = item.label;
                 this.setState({ selectedCompanyRole: item, document: original_document })
                 break;
+            case "companyType":
+                original_document.companyType = item.label;
+                this.setState({ selectedCompanyType: item, document: original_document })
+                break;
             case "discipline":
                 original_document.title = item.label;
                 this.setState({ selectedDiscipline: item, document: original_document })
@@ -159,6 +167,7 @@ class AddEditCompany extends Component {
 
             this.GetData('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'disciplineData')
             this.GetData('GetaccountsDefaultListForList?listType=companyrole', 'title', 'id', 'CompanyRoleData')
+            this.GetData('GetaccountsDefaultListForList?listType=companyType', 'title', 'id', 'CompanyTypeData')
             this.GetData('GetaccountsDefaultListForList?listType=contacttitle', 'title', 'id', 'TitleData')
             let id = TokenStore.getItem('projectIdForaddCompany')
             this.setState({ projectId: (id ? id : 0), document: document })
@@ -166,6 +175,7 @@ class AddEditCompany extends Component {
         } else {
             this.GetData('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'disciplineData')
             this.GetData('GetaccountsDefaultListForList?listType=companyrole', 'title', 'id', 'CompanyRoleData')
+            this.GetData('GetaccountsDefaultListForList?listType=companyType', 'title', 'id', 'CompanyTypeData')
 
             Api.get('GetProjectCompaniesForEdit?id=' + this.state.companyID).then(res => {
                 res.titleEnCompany = res.companyNameEn;
@@ -196,6 +206,8 @@ class AddEditCompany extends Component {
         objDocument.disciplineTitle = this.state.selectedDiscipline.label;
         objDocument.roleId = this.state.selectedCompanyRole.value;
         objDocument.roleTitle = this.state.selectedCompanyRole.label;
+        objDocument.companyTypeId = this.state.selectedCompanyType.value;
+        objDocument.companyTypeTitle = this.state.selectedCompanyType.label;
         objDocument.titleId = this.state.selectedTitle.value;
         objDocument.projectId = this.state.projectId;
         objDocument.logoFileData = this.state.imageIamge;
@@ -321,6 +333,17 @@ class AddEditCompany extends Component {
                                                                 error={errors.companyRole}
                                                                 touched={touched.companyRole}
                                                                 value={values.companyRole} />
+                                                        </div>
+                                                        <div className="linebylineInput valid-input passWrapperInput">
+                                                            <Dropdown title="companyType" data={this.state.CompanyTypeData}
+                                                                name="companyType"
+                                                                selectedValue={this.state.selectedCompanyType}
+                                                                onChange={setFieldValue}
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "companyType")}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.companyType}
+                                                                touched={touched.companyType}
+                                                                value={values.companyType} />
                                                         </div>
                                                     </div>
 
