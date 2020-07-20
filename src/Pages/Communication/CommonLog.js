@@ -51,6 +51,7 @@ class CommonLog extends Component {
       showExportModal: false,
       selectedRows: [],
       minimizeClick: false,
+      showExServerBtn: false,
       documentObj: {},
       exportDocument: {},
       match: props.match, export: false,
@@ -453,6 +454,10 @@ class CommonLog extends Component {
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
+
+    let docTypeId = documentObj.docTyp;
+    let showExServerBtn = false;
+
     var cNames = [];
     var filtersColumns = [];
     if (documentObj.documentColumns) {
@@ -503,8 +508,9 @@ class CommonLog extends Component {
 
       });
     }
-
-
+    if (docTypeId == 19 || docTypeId == 23 || docTypeId == 42 || docTypeId == 28 || docTypeId == 103 || docTypeId == 25) {
+      showExServerBtn = true;
+    }
 
     filtersColumns = documentObj.filters;
 
@@ -518,7 +524,8 @@ class CommonLog extends Component {
       columns: cNames,
       filtersColumns: filtersColumns,
       documentObj: documentObj,
-      projectId: projectId
+      projectId: projectId,
+      showExServerBtn
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
@@ -792,8 +799,10 @@ class CommonLog extends Component {
         />
       ) : null;
 
-    const btnExportServer = <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnExportServerShowModal()}>{Resources["exportAll"][currentLanguage]}</button>
-
+    const btnExportServer = 
+     this.state.showExServerBtn == true ?
+    <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnExportServerShowModal()}>{Resources["exportAll"][currentLanguage]}</button>
+    : null;
 
     const ComponantFilter = this.state.isLoading === false ?
       (
@@ -837,6 +846,7 @@ class CommonLog extends Component {
             </div>
             <div className="filterBTNS">
               {btnExport}
+
               {btnExportServer}
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
