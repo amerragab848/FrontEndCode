@@ -345,15 +345,19 @@ class riskAddEdit extends Component {
             if (!(Config.IsAllow(10001))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(10001)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(10001)) {
-                    if (this.props.document.status == true && Config.IsAllow(10001)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(10001)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(10001)) {
+                        if (this.props.document.status == true && Config.IsAllow(10001)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -362,7 +366,7 @@ class riskAddEdit extends Component {
         }
     }
 
-   
+
 
     GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";

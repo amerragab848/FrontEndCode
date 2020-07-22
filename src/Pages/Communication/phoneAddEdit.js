@@ -8,7 +8,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import DataService from '../../Dataservice' 
+import DataService from '../../Dataservice'
 import { toast } from "react-toastify";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
@@ -42,8 +42,8 @@ let perviousRoute = 0;
 class phoneAddEdit extends Component {
     constructor(props) {
 
-        super(props) 
-        const query = new URLSearchParams(this.props.location.search); 
+        super(props)
+        const query = new URLSearchParams(this.props.location.search);
         let obj = Config.extractDataFromParamas(query);
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
@@ -55,7 +55,7 @@ class phoneAddEdit extends Component {
             docApprovalId = obj.docApprovalId;
             arrange = obj.arrange;
             perviousRoute = obj.perviousRoute;
-        } 
+        }
         this.state = {
             isViewMode: false,
             isApproveMode: isApproveMode,
@@ -125,17 +125,20 @@ class phoneAddEdit extends Component {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(90)) {
                 this.setState({ isViewMode: true });
-            }
-            else if (this.state.isApproveMode != true && Config.IsAllow(90)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(90)) {
-                    if (this.props.document.status != false && Config.IsAllow(90)) {
-                        this.setState({ isViewMode: false });
+            } if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(90)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(90)) {
+                        if (this.props.document.status != false && Config.IsAllow(90)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
+
                         this.setState({ isViewMode: true });
                     }
-                } else {
-
-                    this.setState({ isViewMode: true });
                 }
             }
         }

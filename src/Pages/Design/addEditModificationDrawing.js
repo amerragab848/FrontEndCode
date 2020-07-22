@@ -3,7 +3,7 @@ import React, { Component, Fragment } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import ReactTable from "react-table"; 
+import ReactTable from "react-table";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
@@ -229,15 +229,19 @@ class addEditModificationDrawing extends Component {
                 if (!(Config.IsAllow(3517))) {
                     this.setState({ isViewMode: true });
                 }
-                if (this.state.isApproveMode != true && Config.IsAllow(3517)) {
-                    if (this.props.hasWorkflow == false && Config.IsAllow(3517)) {
-                        if (this.props.document.status !== false && Config.IsAllow(3517)) {
-                            this.setState({ isViewMode: false });
+                if (Config.getUserTypeIsAdmin() === true) {
+                    this.setState({ isViewMode: false });
+                } else {
+                    if (this.state.isApproveMode != true && Config.IsAllow(3517)) {
+                        if (this.props.hasWorkflow == false && Config.IsAllow(3517)) {
+                            if (this.props.document.status !== false && Config.IsAllow(3517)) {
+                                this.setState({ isViewMode: false });
+                            } else {
+                                this.setState({ isViewMode: true });
+                            }
                         } else {
                             this.setState({ isViewMode: true });
                         }
-                    } else {
-                        this.setState({ isViewMode: true });
                     }
                 }
             }
@@ -335,7 +339,7 @@ class addEditModificationDrawing extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
-                
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -350,7 +354,7 @@ class addEditModificationDrawing extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.drawingCycle[subField];
                 let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
-                
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -451,7 +455,7 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -517,7 +521,7 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChangeCycle(e, field) { 
+    handleChangeCycle(e, field) {
         let original_document = { ...this.state.drawingCycle };
 
         let updated_document = {};
@@ -531,7 +535,7 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChangeCycleAdd(e, field) { 
+    handleChangeCycleAdd(e, field) {
         let original_document = { ...this.state.drawingCycleAdd };
 
         let updated_document = {};

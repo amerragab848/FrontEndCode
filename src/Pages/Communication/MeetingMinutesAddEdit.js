@@ -3,7 +3,7 @@ import DropdownMelcous from "../../Componants/OptionsPanels/DropdownMelcous";
 import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
-import Resources from "../../resources.json"; 
+import Resources from "../../resources.json";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
@@ -16,7 +16,7 @@ import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux"; 
+import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Recycle from "../../Styles/images/attacheRecycle.png";
 import "react-table/react-table.css";
@@ -90,8 +90,8 @@ var steps_defination = [
 class MeetingMinutesAddEdit extends Component {
     constructor(props) {
         super(props);
-        
-        const query = new URLSearchParams(this.props.location.search); 
+
+        const query = new URLSearchParams(this.props.location.search);
         let obj = Config.extractDataFromParamas(query);
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
@@ -216,18 +216,22 @@ class MeetingMinutesAddEdit extends Component {
             if (!Config.IsAllow(507)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(507)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(507)) {
-                    if (
-                        this.props.document.status !== false &&
-                        Config.IsAllow(507)
-                    ) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(507)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(507)) {
+                        if (
+                            this.props.document.status !== false &&
+                            Config.IsAllow(507)
+                        ) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
@@ -453,10 +457,10 @@ class MeetingMinutesAddEdit extends Component {
             let docDate = state.document.docDate != null ? moment(state.document.docDate).format("YYYY-MM-DD") : moment().format("YYYY-MM-DD");
 
             return {
-                document: { ...nextProps.document, docDate: docDate } 
+                document: { ...nextProps.document, docDate: docDate }
             };
         }
-        return null; 
+        return null;
     }
 
     //#region  editting
@@ -816,7 +820,7 @@ class MeetingMinutesAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    render() { 
+    render() {
         let Step_1 = (
             <React.Fragment>
                 <div className="document-fields">
@@ -1675,8 +1679,8 @@ class MeetingMinutesAddEdit extends Component {
                                                     ]
                                                 }
                                                 value="1"
-                                                   
-                                                
+
+
                                                 autoComplete="off"
                                                 onChange={handleChange}
                                             />

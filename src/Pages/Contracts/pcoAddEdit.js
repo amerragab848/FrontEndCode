@@ -286,16 +286,20 @@ class pcoAddEdit extends Component {
             if (!Config.IsAllow(149)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(149)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(149)) {
-                    //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(149)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(149)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(149)) {
+                        //close => false
+                        if (this.props.document.status !== false && Config.IsAllow(149)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

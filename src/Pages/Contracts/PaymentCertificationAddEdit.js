@@ -103,15 +103,19 @@ class PaymentCertificationAddEdit extends Component {
 
         if (!Config.IsAllow(10069)) {
             this.setState({ isViewMode: true });
-        } else if (this.state.isApproveMode !== true && Config.IsAllow(10069)) {
-            if (this.props.hasWorkflow === false && Config.IsAllow(10069)) {
-                if (this.props.document.status !== false && Config.IsAllow(10069)) {
-                    this.setState({ isViewMode: false });
+        } if (Config.getUserTypeIsAdmin() === true) {
+            this.setState({ isViewMode: false });
+        } else {
+            if (this.state.isApproveMode !== true && Config.IsAllow(10069)) {
+                if (this.props.hasWorkflow === false && Config.IsAllow(10069)) {
+                    if (this.props.document.status !== false && Config.IsAllow(10069)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
                 } else {
                     this.setState({ isViewMode: true });
                 }
-            } else {
-                this.setState({ isViewMode: true });
             }
         }
     }

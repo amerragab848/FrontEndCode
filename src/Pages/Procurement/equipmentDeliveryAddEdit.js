@@ -259,7 +259,7 @@ class equipmentDeliveryAddEdit extends Component {
             this.setState({ contractPoData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultListForList?listType=equipmentcode', 'title', 'id','defaultLists', "equipmentcode", "listType").then(result => {
+        dataservice.GetDataList('GetAccountsDefaultListForList?listType=equipmentcode', 'title', 'id', 'defaultLists', "equipmentcode", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.equipmentCodeId;
                 let selectedValue = {};
@@ -315,7 +315,7 @@ class equipmentDeliveryAddEdit extends Component {
 
             this.setState({
                 selectedProject: event
-            }) 
+            })
             // if (event == null) return
             // let original_document = { ...this.state.document }
             // let updated_document = {};
@@ -339,14 +339,18 @@ class equipmentDeliveryAddEdit extends Component {
             if (!Config.IsAllow(257)) {
                 this.setState({ isViewMode: true })
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(257)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(257)) {
-                    if (this.props.document.status !== false && Config.IsAllow(257)) {
-                        this.setState({ isViewMode: false })
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(257)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(257)) {
+                        if (this.props.document.status !== false && Config.IsAllow(257)) {
+                            this.setState({ isViewMode: false })
+                        }
+                        else { this.setState({ isViewMode: true }) }
                     }
                     else { this.setState({ isViewMode: true }) }
                 }
-                else { this.setState({ isViewMode: true }) }
             }
         }
         else { this.setState({ isViewMode: false }) }
@@ -688,28 +692,28 @@ class equipmentDeliveryAddEdit extends Component {
                                 {this.props.changeStatus === true ?
                                     <div className="approveDocument">
                                         <div className="approveDocumentBTNS">
-                                        {this.state.isLoading ?
-                                                                        <button className="primaryBtn-1 btn disabled">
-                                                                            <div className="spinner">
-                                                                                <div className="bounce1" />
-                                                                                <div className="bounce2" />
-                                                                                <div className="bounce3" />
-                                                                            </div>
-                                                                        </button> :
-                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                                                    }
-                                                                    <DocumentActions
-                                                                        isApproveMode={this.state.isApproveMode}
-                                                                        docTypeId={this.state.docTypeId}
-                                                                        docId={this.state.docId}
-                                                                        projectId={this.state.projectId}
-                                                                        previousRoute={this.state.previousRoute}
-                                                                        docApprovalId={this.state.docApprovalId}
-                                                                        currentArrange={this.state.arrange}
-                                                                        showModal={this.props.showModal}
-                                                                        showOptionPanel={this.showOptionPanel}
-                                                                        permission={this.state.permission}
-                                                                    />
+                                            {this.state.isLoading ?
+                                                <button className="primaryBtn-1 btn disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button> :
+                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                                            }
+                                            <DocumentActions
+                                                isApproveMode={this.state.isApproveMode}
+                                                docTypeId={this.state.docTypeId}
+                                                docId={this.state.docId}
+                                                projectId={this.state.projectId}
+                                                previousRoute={this.state.previousRoute}
+                                                docApprovalId={this.state.docApprovalId}
+                                                currentArrange={this.state.arrange}
+                                                showModal={this.props.showModal}
+                                                showOptionPanel={this.showOptionPanel}
+                                                permission={this.state.permission}
+                                            />
 
                                         </div>
                                     </div>

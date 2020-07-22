@@ -382,18 +382,22 @@ class procurementAddEdit extends Component {
             if (!Config.IsAllow(167)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(167)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(167)) {
-                    if (
-                        this.props.document.status !== false &&
-                        Config.IsAllow(167)
-                    ) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(167)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(167)) {
+                        if (
+                            this.props.document.status !== false &&
+                            Config.IsAllow(167)
+                        ) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
@@ -974,7 +978,7 @@ class procurementAddEdit extends Component {
         };
 
         let StepTwo = () => {
-    
+
             let columnsItem = [
                 {
                     Header: Resources["arrange"][currentLanguage],
@@ -1534,7 +1538,7 @@ class procurementAddEdit extends Component {
                             <div className="slider-Btns">
                                 <button
                                     className="primaryBtn-1 btn meduimBtn"
-                                    onClick={()=>this.changeCurrentStep(2)}>
+                                    onClick={() => this.changeCurrentStep(2)}>
                                     NEXT STEP
                                 </button>
                             </div>
@@ -1713,7 +1717,7 @@ class procurementAddEdit extends Component {
                             <div className="slider-Btns">
                                 <button
                                     className="primaryBtn-1 btn meduimBtn"
-                                    onClick={()=>this.changeCurrentStep(3)}>
+                                    onClick={() => this.changeCurrentStep(3)}>
                                     NEXT STEP
                                 </button>
                             </div>
@@ -1791,12 +1795,12 @@ class procurementAddEdit extends Component {
                             ) : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
                             <div className="step-content">
-                            {this.state.CurrStep === 0 ? <Fragment>{StepOne()}</Fragment> :
-                                this.state.CurrStep === 1 ? <Fragment> {StepTwo()}</Fragment> :
-                                    this.state.CurrStep === 2 ? <Fragment> {StepThree()}</Fragment> :
-                                        this.state.CurrStep === 3 ? <Fragment> {StepFour()}</Fragment> :
-                                            <Fragment> {StepFive()}</Fragment>}
-                        </div>
+                                {this.state.CurrStep === 0 ? <Fragment>{StepOne()}</Fragment> :
+                                    this.state.CurrStep === 1 ? <Fragment> {StepTwo()}</Fragment> :
+                                        this.state.CurrStep === 2 ? <Fragment> {StepThree()}</Fragment> :
+                                            this.state.CurrStep === 3 ? <Fragment> {StepFour()}</Fragment> :
+                                                <Fragment> {StepFive()}</Fragment>}
+                            </div>
                         </div>
                         <Fragment>
                             <Steps

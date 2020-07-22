@@ -442,18 +442,22 @@ class PurchaseOrderAddEdit extends Component {
             if (!Config.IsAllow(176)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(176)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(176)) {
-                    if (
-                        this.props.document.status !== false &&
-                        Config.IsAllow(176)
-                    ) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(176)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(176)) {
+                        if (
+                            this.props.document.status !== false &&
+                            Config.IsAllow(176)
+                        ) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
@@ -725,9 +729,9 @@ class PurchaseOrderAddEdit extends Component {
             [selectedValue]: event
         });
     }
-    getcontractsBoqItems(e){
-        Api.get(`getContractsBoqItemsBySpecsId?boqId=${this.state.selectedBoq.value}&specsId=${e.value}`).then(result=>{
-            this.setState({BoqData:result})
+    getcontractsBoqItems(e) {
+        Api.get(`getContractsBoqItemsBySpecsId?boqId=${this.state.selectedBoq.value}&specsId=${e.value}`).then(result => {
+            this.setState({ BoqData: result })
         })
     }
     handleChangeDropDownItemsForBoq(
@@ -2068,7 +2072,7 @@ class PurchaseOrderAddEdit extends Component {
                                 readOnly
                                 value={this.state.document.arrange}
                                 placeholder={Resources.arrange[currentLanguage]}
-                                onChange={(e) => {this.handleChange(e, "arrange")}}
+                                onChange={(e) => { this.handleChange(e, "arrange") }}
                                 onBlur={e => {
                                     handleChange(e);
                                     handleBlur(e);
@@ -2198,36 +2202,37 @@ class PurchaseOrderAddEdit extends Component {
                     );
                 });
         } else {
-           let arr = this.state.BoqData.filter(x=>x.quantity > 0);
-           let finalArray=[];
-           arr.forEach(item=>{
-               let obj={};
-               obj.purchaseId=this.state.docId;
-               obj.docId=this.state.docId;
-               obj.itemType=item.itemType;
-               obj.details=item.details;
-               obj.unitPrice=item.unitPrice;
-               obj.quantity=item.quantity;
-               obj.resourceCode=item.resourceCode;
-               obj.arrange=item.arrange;
-               obj.itemCode=item.itemCode;
-               obj.dueBack=moment(item.dueBack,"YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-               item.days==null?obj.days=1:obj.days=item.days;
-               finalArray.push(obj);
-           })
-           this.setState({itemBoq:finalArray})
-           if(finalArray.length > 0){
-            dataservice.addObject("AddMultipleContractsOrderForPo?docId=" + this.state.docId,finalArray
-                ).then(result => {toast.success(Resources["operationSuccess"][currentLanguage]);
+            let arr = this.state.BoqData.filter(x => x.quantity > 0);
+            let finalArray = [];
+            arr.forEach(item => {
+                let obj = {};
+                obj.purchaseId = this.state.docId;
+                obj.docId = this.state.docId;
+                obj.itemType = item.itemType;
+                obj.details = item.details;
+                obj.unitPrice = item.unitPrice;
+                obj.quantity = item.quantity;
+                obj.resourceCode = item.resourceCode;
+                obj.arrange = item.arrange;
+                obj.itemCode = item.itemCode;
+                obj.dueBack = moment(item.dueBack, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+                item.days == null ? obj.days = 1 : obj.days = item.days;
+                finalArray.push(obj);
+            })
+            this.setState({ itemBoq: finalArray })
+            if (finalArray.length > 0) {
+                dataservice.addObject("AddMultipleContractsOrderForPo?docId=" + this.state.docId, finalArray
+                ).then(result => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.setState({
                         purchaseOrderDataItems: result,
                         isLoading: false
                     });
                 }).catch(ex => {
-                    this.setState({isLoading: false});
+                    this.setState({ isLoading: false });
                     toast.error(Resources["operationCanceled"][currentLanguage].successTitle);
                 });
-            }else{
+            } else {
                 toast.error("There are no contracts in this boq and specification");
             }
         }

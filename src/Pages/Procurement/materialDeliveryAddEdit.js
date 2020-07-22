@@ -319,10 +319,10 @@ class materialDeliveryAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         dataservice.GetDataListCached(
-                "GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId,
-                "companyName",
-                "companyId", 'companies', this.state.projectId, "projectId"
-            )
+            "GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId,
+            "companyName",
+            "companyId", 'companies', this.state.projectId, "projectId"
+        )
             .then(result => {
                 if (isEdit) {
                     let id = this.props.document.contractId;
@@ -337,8 +337,8 @@ class materialDeliveryAddEdit extends Component {
                 // this.setState({ contractPoData: [...result] });
             });
 
-            dataservice.GetDataList(
-                "GetPoContractForList?projectId= " + this.state.projectId,"subject","id").then(result => {
+        dataservice.GetDataList(
+            "GetPoContractForList?projectId= " + this.state.projectId, "subject", "id").then(result => {
                 if (isEdit) {
                     let id = this.props.document.contractId;
                     let selectedValue = {};
@@ -376,18 +376,22 @@ class materialDeliveryAddEdit extends Component {
             if (!Config.IsAllow(239)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(239)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(239)) {
-                    if (
-                        this.props.document.status !== false &&
-                        Config.IsAllow(239)
-                    ) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(239)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(239)) {
+                        if (
+                            this.props.document.status !== false &&
+                            Config.IsAllow(239)
+                        ) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {

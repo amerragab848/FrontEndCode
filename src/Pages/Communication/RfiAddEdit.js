@@ -194,15 +194,19 @@ class RfiAddEdit extends Component {
             if (!(Config.IsAllow(76))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(76)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
-                    if (this.props.document.status == true && Config.IsAllow(76)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(76)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
+                        if (this.props.document.status == true && Config.IsAllow(76)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

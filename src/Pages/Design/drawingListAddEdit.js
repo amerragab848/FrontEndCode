@@ -58,16 +58,16 @@ const ValidtionSchemaDrawItems = Yup.object().shape({
 class drawingListAddEdit extends Component {
 
     constructor(props) {
-      
+
         const columnsGrid = [
             { title: '', type: 'check-box', fixed: true, field: 'id' },
-           
+
             {
                 field: "details",
                 title: Resources["details"][currentLanguage],
                 width: 10,
                 groupable: true,
-                fixed: false,  
+                fixed: false,
                 sortable: true,
                 type: "text"
 
@@ -77,7 +77,7 @@ class drawingListAddEdit extends Component {
                 title: Resources["paper"][currentLanguage],
                 width: 10,
                 groupable: true,
-                fixed: false, 
+                fixed: false,
                 sortable: true,
                 type: "text"
             },
@@ -88,7 +88,7 @@ class drawingListAddEdit extends Component {
                 groupable: true,
                 fixed: false,
                 sortable: true,
-               type:"text"
+                type: "text"
             },
             {
                 field: "estimatedTime",
@@ -97,10 +97,10 @@ class drawingListAddEdit extends Component {
                 groupable: true,
                 fixed: false,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
         ]
-        
+
         super(props)
 
         const query = new URLSearchParams(this.props.location.search);
@@ -185,7 +185,7 @@ class drawingListAddEdit extends Component {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/drawingList/" + this.state.projectId);
         }
-      
+
         steps_defination = [
             {
                 name: "drawingList",
@@ -204,7 +204,7 @@ class drawingListAddEdit extends Component {
                     this.setState({
                         showDeleteModal: true,
                         selectedRows
-            
+
                     })
                 },
                 classes: '',
@@ -212,7 +212,7 @@ class drawingListAddEdit extends Component {
                 title: 'TaskGroup',
                 handleClick: selectedRows => {
                     console.log(selectedRows);
-                   
+
                 },
                 classes: 'autoGridBtn',
             },
@@ -223,29 +223,33 @@ class drawingListAddEdit extends Component {
                         showPopUpProjectTask: true,
                         selectedRows
                     })
-                   
+
                 },
                 classes: 'autoGridBtn',
             }
         ];
         this.rowActions = [];
-        this.groups=[];
+        this.groups = [];
     }
-    
+
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(302))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(302)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(302)) {
-                    if (this.props.document.status !== false && Config.IsAllow(302)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(302)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(302)) {
+                        if (this.props.document.status !== false && Config.IsAllow(302)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -693,20 +697,20 @@ class drawingListAddEdit extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
-                cells={this.state.columns}
-                data={this.state.rows}
-                groups={[]}
-                pageSize={50}
-                actions={this.actions}
-                rowActions={this.rowActions}
-                rowClick={obj => {
-                    this.setState({
-                        showPopUp: true,
-                        ItemForEdit: obj,
-                        IsEditModeItem: true
-                    })
-                }}
-            />
+                    cells={this.state.columns}
+                    data={this.state.rows}
+                    groups={[]}
+                    pageSize={50}
+                    actions={this.actions}
+                    rowActions={this.rowActions}
+                    rowClick={obj => {
+                        this.setState({
+                            showPopUp: true,
+                            ItemForEdit: obj,
+                            IsEditModeItem: true
+                        })
+                    }}
+                />
             ) : <LoadingSection />
 
         let SecondStepItems = () => {
@@ -849,7 +853,7 @@ class drawingListAddEdit extends Component {
             )
         }
 
-   return (
+        return (
 
             <div className="mainContainer">
 
@@ -899,7 +903,7 @@ class drawingListAddEdit extends Component {
                         </div>
                     </SkyLightStateless>
                 </div>
-  <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">

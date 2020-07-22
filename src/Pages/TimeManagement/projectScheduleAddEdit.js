@@ -241,15 +241,19 @@ class projectScheduleAddEdit extends Component {
             if (!(Config.IsAllow(30))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode !== true && Config.IsAllow(30)) {
-                if (this.props.hasWorkflow === false && Config.IsAllow(30)) {
-                    if (this.props.document.status !== false && Config.IsAllow(30)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode !== true && Config.IsAllow(30)) {
+                    if (this.props.hasWorkflow === false && Config.IsAllow(30)) {
+                        if (this.props.document.status !== false && Config.IsAllow(30)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -663,7 +667,7 @@ class projectScheduleAddEdit extends Component {
             this.setState({
                 scheduleItemData: result
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage])); 
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
     EditItems = (values) => {
         this.setState({
@@ -1155,7 +1159,7 @@ class projectScheduleAddEdit extends Component {
                             docId={this.state.docId}
                             docType={this.state.docTypeId}
                             link={Config.getPublicConfiguartion().downloads +
-                                 "/Downloads/Excel/ProjectSchedule.xlsx"}
+                                "/Downloads/Excel/ProjectSchedule.xlsx"}
                             header="addManyItems"
                             disabled={this.props.changeStatus ? this.props.document.docId > 0 ? true : false : false}
                             afterUpload={() => this.getItemsData()} />

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"; 
+import React, { Component, Fragment } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -210,7 +210,7 @@ class dailyReportsAddEdit extends Component {
                 (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
-   
+
 
     fillDropDowns(isEdit) {
         dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
@@ -232,8 +232,8 @@ class dailyReportsAddEdit extends Component {
             let doc = nextProps.document
             doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             return { isEdit: true, document: doc, hasWorkflow: nextProps.hasWorkflow }
-        } 
-        return null; 
+        }
+        return null;
     }
 
 
@@ -245,24 +245,28 @@ class dailyReportsAddEdit extends Component {
         if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-          }
- 
+        }
+
     }
- 
+
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(266)) {
                 this.setState({ isViewMode: true })
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(266)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(266)) {
-                    if (this.props.document.status !== false && Config.IsAllow(266)) {
-                        this.setState({ isViewMode: false })
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(266)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(266)) {
+                        if (this.props.document.status !== false && Config.IsAllow(266)) {
+                            this.setState({ isViewMode: false })
+                        }
+                        else { this.setState({ isViewMode: true }) }
                     }
                     else { this.setState({ isViewMode: true }) }
                 }
-                else { this.setState({ isViewMode: true }) }
             }
         }
         else { this.setState({ isViewMode: false }) }
@@ -299,8 +303,8 @@ class dailyReportsAddEdit extends Component {
     }
 
     componentDidMount() {
-        this.checkDocumentIsView(); 
- 
+        this.checkDocumentIsView();
+
         if (this.state.docId !== 0) {
             let url = "GetLogsDailyReportsForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'dailyReports')

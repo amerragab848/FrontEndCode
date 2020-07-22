@@ -22,7 +22,7 @@ import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription"; 
+import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -278,15 +278,19 @@ class VariationRequestAdd extends Component {
             if (!(Config.IsAllow(3163))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(3163)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(3163)) {
-                    if (this.props.document.status !== false && Config.IsAllow(3163)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(3163)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(3163)) {
+                        if (this.props.document.status !== false && Config.IsAllow(3163)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -488,7 +492,7 @@ class VariationRequestAdd extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-           
+
         });
     }
 

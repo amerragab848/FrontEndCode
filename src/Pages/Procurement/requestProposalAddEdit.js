@@ -97,14 +97,14 @@ class RequestProposalAddEdit extends Component {
       selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
       message: ""
     };
-    
+
     if (!Config.IsAllow(57) && !Config.IsAllow(58) && !Config.IsAllow(60)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push({
         pathname: "/RequestProposal/" + projectId
       });
     }
-    
+
   }
 
   componentDidMount = () => {
@@ -150,15 +150,19 @@ class RequestProposalAddEdit extends Component {
       if (!Config.IsAllow(58)) {
         this.setState({ isViewMode: true });
       }
-      if (this.state.isApproveMode != true && Config.IsAllow(58)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(58)) {
-          if (this.props.document.status !== false && Config.IsAllow(58)) {
-            this.setState({ isViewMode: false });
+      if (Config.getUserTypeIsAdmin() === true) {
+        this.setState({ isViewMode: false });
+      } else {
+        if (this.state.isApproveMode != true && Config.IsAllow(58)) {
+          if (this.props.hasWorkflow == false && Config.IsAllow(58)) {
+            if (this.props.document.status !== false && Config.IsAllow(58)) {
+              this.setState({ isViewMode: false });
+            } else {
+              this.setState({ isViewMode: true });
+            }
           } else {
             this.setState({ isViewMode: true });
           }
-        } else {
-          this.setState({ isViewMode: true });
         }
       }
     } else {
