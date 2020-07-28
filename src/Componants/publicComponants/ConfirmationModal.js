@@ -1,5 +1,5 @@
 import React, { Component } from "react";
- 
+
 // import "../../Styles/css/rodal.css";
 import Resources from "../../resources.json";
 import SkyLight from "react-skylight";
@@ -42,7 +42,7 @@ class ConfirmationModal extends Component {
             </div>
             <div className="actions">
               <button className="defaultBtn btn cancel smallBtn" type="button" onClick={this.clickHandlerCancel}>
-                {Resources["cancel"][currentLanguage]}
+                {this.props.cancel ? Resources[this.props.cancel][currentLanguage] : Resources["cancel"][currentLanguage]}
               </button>
 
               <button className="smallBtn primaryBtn-1 btn approve" type="button" onClick={this.clickHandlerContinue}>

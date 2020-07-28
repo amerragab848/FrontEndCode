@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Formik, Form } from "formik";
 import Api from "../../api";
+import ConfirmationModal from "../publicComponants/ConfirmationModal";
 import eyeShow from "../../Styles/images/eyepw.svg";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
@@ -90,31 +91,51 @@ class wfApproval extends Component {
     });
   };
 
-  sendToWorkFlow(values) {
+  sendToWorkFlow(values, fromConfirm) {
     if (values) {
-      Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
-        if (result === true) {
-          this.setState({ submitLoading: true });
-          Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
+      let selectedContacts = this.state.updateWorkFlow.contacts;
+      let approvalStatus = this.state.updateWorkFlow.approvalStatus;
+      //
+      if ((selectedContacts.length == 0 && fromConfirm == false) && approvalStatus == false) {
+        this.setState({ showConfirm: true, values: values });
+      }
+      else {
+        this.setState({ showConfirm: true, values: values });
 
-            this.setState({ submitLoading: false });
+        Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
+          if (result === true) {
+            this.setState({ submitLoading: true });
+            Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
 
-            this.props.actions.showOptionPanel(false);
+              this.setState({ submitLoading: false });
 
-            const previousRoute = localStorage.getItem('lastRoute');
+              this.props.actions.showOptionPanel(false);
 
-            this.props.history.push(previousRoute);
+              const previousRoute = localStorage.getItem('lastRoute');
 
-          });
-        } else {
-          toast.error(Resources["invalidPassword"][currentLanguage]);
-        }
-      }).catch(ex => {
-        toast.error(ex);
-      });
+              this.props.history.push(previousRoute);
+
+            });
+          } else {
+            toast.error(Resources["invalidPassword"][currentLanguage]);
+          }
+        }).catch(ex => {
+          toast.error(ex);
+        });
+      }
     }
   }
 
+  onCloseModal = () => {
+    this.setState({ showConfirm: false });
+  };
+
+  confirmHandler() {
+
+    this.setState({ showConfirm: false });
+
+    this.sendToWorkFlow(this.state.values, true);
+  }
 
   render() {
     return (
@@ -129,7 +150,7 @@ class wfApproval extends Component {
             return errors;
           }}
           onSubmit={values => {
-            this.sendToWorkFlow(values);
+            this.sendToWorkFlow(values, false);
           }}>
           {({ errors, touched, handleBlur, handleChange }) => (
             <Form id="signupForm1" className="proForm customProform" noValidate="novalidate">
@@ -143,8 +164,13 @@ class wfApproval extends Component {
                         <span className="show"> Show</span>
                         <span className="hide"> Hide</span>
                       </span>
-                      <input name="password" type={this.state.type ? "text" : "password"}
-                        className="form-control" id="password" placeholder="password" autoComplete="off"
+                      <input
+                        name="password"
+                        type={this.state.type ? "text" : "password"}
+                        className="form-control"
+                        id="password"
+                        placeholder="password"
+                        autoComplete="off"
                         onBlur={e => { handleBlur(e); }}
                         onChange={handleChange} />
                       {errors.password && touched.password ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.password && touched.password ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
@@ -171,6 +197,17 @@ class wfApproval extends Component {
             </Form>
           )}
         </Formik>
+        {
+          this.state.showConfirm ?
+            <ConfirmationModal
+              closed={this.onCloseModal}
+              showDeleteModal={false}
+              clickHandlerCancel={this.onCloseModal}
+              clickHandlerContinue={() => this.confirmHandler()}
+              title="You must select a user to reject this document to, otherwise, this document will be frozen."
+              buttonName='continue'
+              cancel="no" />
+            : null}
       </div>
     );
   }

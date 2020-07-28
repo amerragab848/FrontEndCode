@@ -2905,6 +2905,10 @@
         "en": "Called By Contact",
         "ar": "الشخص الداعي للاجتماع"
     },
+    "continue": {
+        "en": "Continue",
+        "ar": "استمرار"
+    },
     "calledByContactRequired": {
         "en": "Please Select Called By Contact",
         "ar": "برجاء اختيار الشخص الداعي للاجتماع"

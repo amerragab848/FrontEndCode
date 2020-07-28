@@ -23,7 +23,7 @@ class DocApprovalDetails extends Component {
         title: Resources["statusName"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 6,
         sortable: true,
         type: "text",
         classes: 'gridBtns status '
@@ -51,7 +51,7 @@ class DocApprovalDetails extends Component {
         title: Resources["docDate"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 8,
         sortable: true,
         type: "date"
       },
@@ -60,7 +60,7 @@ class DocApprovalDetails extends Component {
         title: Resources["durationDays"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 8,
         sortable: true,
         type: "number"
       },
@@ -69,7 +69,7 @@ class DocApprovalDetails extends Component {
         title: Resources["levelNo"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 6,
         sortable: true,
         type: "text"
       },
@@ -78,7 +78,7 @@ class DocApprovalDetails extends Component {
         title: Resources["actionByContact"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 12,
         sortable: true,
         type: "text"
       },
@@ -87,7 +87,7 @@ class DocApprovalDetails extends Component {
         title: Resources["companyType"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 10,
         sortable: true,
         type: "text"
       },
@@ -96,7 +96,7 @@ class DocApprovalDetails extends Component {
         title: Resources["openedBy"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 10,
         sortable: true,
         type: "text"
 
@@ -106,7 +106,7 @@ class DocApprovalDetails extends Component {
         title: Resources["description"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 8,
         sortable: true,
         type: "text"
       },
@@ -115,7 +115,7 @@ class DocApprovalDetails extends Component {
         title: Resources["projectName"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 8,
         sortable: true,
         type: "text"
       },
@@ -124,7 +124,7 @@ class DocApprovalDetails extends Component {
         title: Resources["docType"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 8,
         sortable: true,
         type: "text"
       },
@@ -133,7 +133,7 @@ class DocApprovalDetails extends Component {
         title: Resources["docNo"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 6,
         sortable: true,
         type: "text"
       },
@@ -142,7 +142,7 @@ class DocApprovalDetails extends Component {
         title: Resources["lastApproveDate"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 10,
         sortable: true,
         type: "date"
       },
@@ -151,7 +151,7 @@ class DocApprovalDetails extends Component {
         title: Resources["delay"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 6,
         sortable: true,
         type: "text"
       },
@@ -160,7 +160,7 @@ class DocApprovalDetails extends Component {
         title: Resources["dueDate"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 10,
         sortable: true,
         type: "date"
       },
@@ -169,7 +169,7 @@ class DocApprovalDetails extends Component {
         title: Resources["lastSendDate"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 10,
         sortable: true,
         type: "date"
       },
@@ -178,7 +178,7 @@ class DocApprovalDetails extends Component {
         title: Resources["lastSendTime"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 8,
         sortable: true,
         type: "text"
       },
@@ -187,7 +187,7 @@ class DocApprovalDetails extends Component {
         title: Resources["lastApprovedTime"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 16,
+        width: 8,
         sortable: true,
         type: "text"
       }

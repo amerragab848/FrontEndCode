@@ -11883,7 +11883,7 @@
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
+        "isCustom": true, 
         "exportDataType": "s"
       },
       {

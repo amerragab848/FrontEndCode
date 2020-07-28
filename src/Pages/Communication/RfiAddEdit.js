@@ -769,17 +769,23 @@ class RfiAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus}
-                                                AddAttachments={827} EditAttachments={3224} ShowDropBox={3609} ShowGoogleDrive={3610}
-                                                docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />)
-                                                : null}
-                                            {this.state.docId > 0 && this.state.currentStep === 0 ? (
-                                                <Fragment>
-                                                    <div className="document-fields tableBTnabs">
-                                                        <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
-                                                    </div>
-                                                </Fragment>
-                                            ) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ?
+                                                (<UploadAttachment changeStatus={this.props.changeStatus}
+                                                    AddAttachments={827} EditAttachments={3224}
+                                                    ShowDropBox={3609} ShowGoogleDrive={3610}
+                                                    docTypeId={this.state.docTypeId}
+                                                    docId={this.state.docId}
+                                                    projectId={this.state.projectId} />)
+                                                : null
+                                            }
+
+                                            {this.state.docId > 0 ? (
+                                                <div className="document-fields tableBTnabs">
+                                                    <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                </div>
+
+                                            ) : null
+                                            }
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>

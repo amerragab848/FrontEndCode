@@ -39,6 +39,7 @@ class CommonLog extends Component {
       docType: "",
       rows: [],
       ColumnsHideShow: [],
+      exportedColumns: [],
       totalRows: 0,
       columns: [],
       pageSize: 50,
@@ -461,6 +462,7 @@ class CommonLog extends Component {
 
     var cNames = [];
     var filtersColumns = [];
+    var exportedColumns = [];
     if (documentObj.documentColumns) {
       if (Config.IsAllow(this.state.documentObj.documentDeletePermission) && documentName !== "paymentCertification") {
         cNames.push({ title: '', type: 'check-box', fixed: true, field: 'id' });
@@ -489,13 +491,27 @@ class CommonLog extends Component {
           obj.leftPadding = 17;
 
         }
+
         if (isCustom !== true) {
           cNames.push(obj);
+          exportedColumns.push({
+            field: item.field,
+            title: Resources[item.friendlyName][currentLanguage],
+            selected: false
+          });
+
         } else {
           if (item.isCustom === true) {
             cNames.push(obj);
+            exportedColumns.push({
+              field: item.field,
+              title: Resources[item.friendlyName][currentLanguage],
+              selected: false
+            });
+
           }
         }
+
       });
 
       let ColumnsHideShow = [...cNames];
@@ -505,7 +521,8 @@ class CommonLog extends Component {
       }
 
       this.setState({
-        ColumnsHideShow: ColumnsHideShow
+        ColumnsHideShow: ColumnsHideShow,
+        exportedColumns: exportedColumns
       });
 
     }
@@ -638,19 +655,17 @@ class CommonLog extends Component {
 
   handleCheckForExport = (key) => {
 
-    this.setState({ [key]: !this.state[key], Loading: true })
-    
-    let data = this.state.ColumnsHideShow
-    
+    let data = this.state.exportedColumns
+
     for (var i in data) {
       if (data[i].field === key) {
-        let status = data[i].hidden === true ? false : true
-        data[i].hidden = status
+        let status = data[i].selected === true ? false : true
+        data[i].selected = status
         break;
       }
     }
 
-    let chosenColumns = data.filter(i => i.hidden === true);
+    let chosenColumns = data.filter(i => i.selected === true);
 
     var columnsExport = [];
 
@@ -676,7 +691,17 @@ class CommonLog extends Component {
   };
 
   btnExportServerShowModal = () => {
-    this.setState({ exportColumnsModal: true });
+
+    let exportedColumns = this.state.exportedColumns;
+
+    for (var i in exportedColumns) {
+      exportedColumns[i].selected = false;
+    }
+
+    this.setState({
+      exportColumnsModal: true,
+      exportedColumns: exportedColumns
+    });
   }
 
   btnExportServerClick = () => {
@@ -690,8 +715,9 @@ class CommonLog extends Component {
       let docTypeId = this.state.documentObj.docTyp;
       let query = this.state.query;
       var stringifiedQuery = JSON.stringify(query);
+
       if (stringifiedQuery == '{"isCustom":true}') {
-        stringifiedQuery = undefined
+        stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
       } else {
         stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
       }
@@ -731,12 +757,12 @@ class CommonLog extends Component {
       )
     })
 
-    let RenderPopupShowExportColumns = this.state.ColumnsHideShow.map((item, index) => {
+    let RenderPopupShowExportColumns = this.state.exportedColumns.map(item => {
       return (
         (item.type === 'check-box' || item.field == "id") ? null :
           <div className="grid__content" key={item.field}>
             <div className={'ui checkbox checkBoxGray300 count checked'}>
-              <input name="CheckBox" type="checkbox" id={"export_" + item.field} checked={this.state[item.field]}
+              <input name="CheckBox" type="checkbox" id={"export_" + item.field} checked={item.selected}
                 onChange={(e) => this.handleCheckForExport(item.field)} />
               <label>{item.title}</label>
             </div>
@@ -943,7 +969,10 @@ class CommonLog extends Component {
               </div>
               <div className="grid__column--footer">
                 <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>{Resources.close[currentLanguage]}</button>
-                <button className="btn primaryBtn-2" onClick={this.btnExportServerClick}>{Resources.export[currentLanguage]} </button>
+
+                {this.state.isExporting == true ? <LoadingSection /> :
+                  <button className="btn primaryBtn-2" onClick={this.btnExportServerClick}>{Resources.export[currentLanguage]} </button>
+                }
               </div>
             </div>
           </div>
