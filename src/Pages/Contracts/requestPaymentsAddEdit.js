@@ -489,7 +489,7 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "itemCode",
                 title: Resources["itemCode"][currentLanguage],
-                width: 4,
+                width: 8,
                 groupable: true,
                 fixed: true,
                 sortable: true,
@@ -535,14 +535,14 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "revisedQuantity",
                 title: Resources["approvedQuantity"][currentLanguage],
-                width: 6,
+                width: 10,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "actualPercentage",
                 title: Resources["actualPercentage"][currentLanguage],
-                width: 6,
+                width: 10,
                 groupable: true,
                 sortable: true, hidden: true,
                 type: "number"
@@ -563,56 +563,56 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "prevoiuseQnty",
                 title: Resources["previousQuantity"][currentLanguage],
-                width: 6,
+                width: 10,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "oldPaymentPercent",
                 title: Resources["previousPaymentPercent"][currentLanguage],
-                width: 6,
+                width: 13,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "sitePercentComplete",
                 title: Resources["sitePercentComplete"][currentLanguage],
-                width: 6,
+                width: 13,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "siteQuantityComplete",
                 title: Resources["siteQuantityComplete"][currentLanguage],
-                width: 6,
+                width: 13,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "sitePaymentPercent",
                 title: Resources["contractPaymentPercent"][currentLanguage],
-                width: 6,
+                width: 13,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, ...(this.props.changeStatus ? [{
                 field: "percentComplete",
                 title: Resources["percentComplete"][currentLanguage],
-                width: 6,
+                width: 12,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "quantityComplete",
                 title: Resources["quantityComplete"][currentLanguage],
-                width: 6,
+                width: 9,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
             }, {
                 field: "paymentPercent",
                 title: Resources["paymentPercent"][currentLanguage],
-                width: 6,
+                width: 9,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
@@ -626,7 +626,7 @@ class requestPaymentsAddEdit extends Component {
             }, {
                 field: "totalExcutedPayment",
                 title: Resources["totalAmount"][currentLanguage],
-                width: 5,
+                width: 9,
                 groupable: true,
                 sortable: true, hidden: false,
                 type: "number"
