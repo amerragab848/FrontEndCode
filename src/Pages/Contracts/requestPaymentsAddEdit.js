@@ -473,6 +473,7 @@ class requestPaymentsAddEdit extends Component {
             toast.warn(Resources["adminItemEditable"][currentLanguage]);
         }
     };
+
     buildColumns(changeStatus) {
 
         itemsColumns = [
@@ -748,6 +749,7 @@ class requestPaymentsAddEdit extends Component {
             groups: currentGP
         });
     };
+
     customCellActions(column, row) {
         if (column.key === "BtnActions") {
             const custom = [{
@@ -803,6 +805,7 @@ class requestPaymentsAddEdit extends Component {
 
         }
     };
+
     getCellActions(column, row) {
 
         const cellActions = {
@@ -810,6 +813,7 @@ class requestPaymentsAddEdit extends Component {
         };
         return cellActions[column.key];
     };
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -827,9 +831,7 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
-
             this.props.actions.ExportingData({ items: [] });
-            //GetCostCodingTreeByProjectIdForList
             dataservice.GetDataList("GetCostCodingTreeNewByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
                 this.setState({
                     fillDropDownTress: result
@@ -839,7 +841,6 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true,
                 documentDeduction: documentDeduction
             });
-
         } else {
 
             let paymentRequistion = {
@@ -1060,16 +1061,17 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: true
             });
 
+            let contract = find(this.state.contractsPool, function (x) {
+                return x.id == event.value;
+            });
+
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=" + !this.props.changeStatus + "&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
                 this.setState({
                     paymentsItems: result,
-                    gridLoader: false
+                    gridLoader: false,
+                    noItems: contract.noItems
                 });
-            });
-
-            let contract = find(this.state.contractsPool, function (x) {
-                return x.id == event.value;
             });
 
             if (contract) {
@@ -1833,15 +1835,15 @@ class requestPaymentsAddEdit extends Component {
         switch (updated) {
 
             case "quantityComplete":
-                updateRow.quantityComplete =e.target.value;// currentvalue;
+                updateRow.quantityComplete = e.target.value;// currentvalue;
                 break;
 
             case "sitePaymentPercent":
-                updateRow.sitePaymentPercent =e.target.value;// currentvalue;
+                updateRow.sitePaymentPercent = e.target.value;// currentvalue;
                 break;
 
             case "paymentPercent":
-                updateRow.paymentPercent =e.target.value;// currentvalue;
+                updateRow.paymentPercent = e.target.value;// currentvalue;
                 break;
 
             case "percentComplete":
@@ -1849,14 +1851,14 @@ class requestPaymentsAddEdit extends Component {
                 break;
 
             case "sitePercentComplete":
-                sitePercentComplete =e.target.value;// currentvalue;
+                sitePercentComplete = e.target.value;// currentvalue;
                 updateRow.sitePercentComplete = sitePercentComplete;
                 updateRow.percentComplete = this.props.changeStatus === false ? sitePercentComplete : updateRow.percentComplete;
 
                 break;
 
             case "siteQuantityComplete":
-                siteQuantityComplete =e.target.value;// currentvalue;
+                siteQuantityComplete = e.target.value;// currentvalue;
 
                 updateRow.siteQuantityComplete = siteQuantityComplete;
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import moment from "moment";
+// import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
@@ -11,37 +11,9 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-let subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.docId,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
-
+ 
 class FollowUpsSummaryDetails extends Component {
+  
   constructor(props) {
     super(props);
 
@@ -72,7 +44,7 @@ class FollowUpsSummaryDetails extends Component {
       {
         field: "projectName",
         title: Resources["projectName"][currentLanguage],
-        width: 20,
+        width: 6,
         groupable: true,
         fixed: false,
         sortable: true,
@@ -81,7 +53,7 @@ class FollowUpsSummaryDetails extends Component {
       {
         field: "fromCompany",
         title: Resources["fromCompany"][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         fixed: false,
         sortable: true,
@@ -97,6 +69,15 @@ class FollowUpsSummaryDetails extends Component {
         type: "text"
       },
       {
+        field: "companyType",
+        title: Resources["companyType"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 10,
+        sortable: true,
+        type: "text"
+      },
+      {
         field: "approvalStatusName",
         title: Resources["approvalStatus"][currentLanguage],
         width: 5,
@@ -108,7 +89,7 @@ class FollowUpsSummaryDetails extends Component {
       {
         field: "docTypeName",
         title: Resources["docType"][currentLanguage],
-        width: 10,
+        width: 6,
         groupable: true,
         fixed: false,
         sortable: true,
@@ -135,7 +116,7 @@ class FollowUpsSummaryDetails extends Component {
       {
         field: "sendDate",
         title: Resources["sendDate"][currentLanguage],
-        width: 10,
+        width: 6,
         groupable: true,
         fixed: false,
         sortable: true,
@@ -144,7 +125,7 @@ class FollowUpsSummaryDetails extends Component {
       {
         field: "lastApprovalDate",
         title: Resources["lastApprovalDate"][currentLanguage],
-        width: 10,
+        width: 6,
         groupable: true,
         fixed: false,
         sortable: true,
@@ -236,13 +217,12 @@ class FollowUpsSummaryDetails extends Component {
   }
 
   componentDidMount() {
+
     this.props.actions.RouteToTemplate();
+
     Api.get("GetFollowing").then(result => {
 
-      result.forEach(row => {
-
-        let link = "";
-
+      result.forEach(row => { 
         let obj = {
           docId: row.docId,
           projectId: row.projectId,

@@ -13,6 +13,7 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class DocApprovalDetails extends Component {
+  
   constructor(props) {
     super(props);
 
@@ -36,8 +37,7 @@ class DocApprovalDetails extends Component {
         width: 16,
         sortable: true,
         type: "text",
-        href: 'link',
-
+        href: 'link', 
         onRightClick: (e, cell) => {
           if (e.readStatus != true) {
             Api.post("UpdateStatusWorkFlow?id=" + e.id);
@@ -78,7 +78,7 @@ class DocApprovalDetails extends Component {
         title: Resources["actionByContact"][currentLanguage],
         groupable: true,
         fixed: false,
-        width: 12,
+        width: 10,
         sortable: true,
         type: "text"
       },
