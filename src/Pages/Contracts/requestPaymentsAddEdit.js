@@ -723,6 +723,7 @@ class requestPaymentsAddEdit extends Component {
             { field: 'secondLevel', title: 'boqTypeChild', type: "text" }
         ];
 
+       
         if (selectedCols.length === 0) {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
@@ -1540,11 +1541,7 @@ class requestPaymentsAddEdit extends Component {
                         i = updateRow;
                     }
                 });
-            });
-
-            //var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || [];
-
-            //let groups = JSON.parse(selectedCols.groups);
+            }); 
             this.setState({
                 editRows: editRows,
                 paymentsItems: paymentsItems,
@@ -1556,8 +1553,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: false,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
-                isMultipleItems: false//,
-                //groups
+                isMultipleItems: false 
             });
 
             this.reqPayModal.hide();
@@ -1586,9 +1582,7 @@ class requestPaymentsAddEdit extends Component {
             let index = pItems.findIndex(x => x.id === newValue.id);
 
             pItems[index] = newValue;
-
-            // var selectedCols = JSON.parse(localStorage.getItem("ReqPaymentsItems")) || []; 
-            // let groups = JSON.parse(selectedCols.groups);
+ 
             this.setState({
                 editRows: editRows,
                 paymentsItems: pItems,
@@ -1604,8 +1598,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     changeValueOfProps = () => {
-
-        console.log('changeValueOfProps...', this.state.isFilter, 'rows...', this.state.gridLoader);
+ 
         this.setState({ isFilter: false });
     };
 
@@ -2482,22 +2475,22 @@ class requestPaymentsAddEdit extends Component {
     };
 
     renderingGrid() {
-        // 
-        const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
+         const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
 
             <GridCustom
                 gridKey='ReqPaymentsItems'
-                data={this.state.paymentsItems}
-                pageSize={this.state.pageSize}
+                data={this.state.paymentsItems} 
                 groups={this.state.groups}
+                isFilter={this.state.isFilter}
                 actions={this.actions}
                 openModalColumn={this.state.columnsModal}
                 cells={this.state.columns}
                 isFilter={this.state.isFilter}
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
                 rowClick={cell => { this.onRowClick(cell); }}
+                groups={this.state.groups}
+                isFilter={this.state.isFilter}
                 changeValueOfProps={this.changeValueOfProps.bind(this)}
-
             />
         ) : <div style={{ position: 'relative' }}><LoadingSection isCustomLoader={true} /></div>;
 

@@ -28,11 +28,15 @@ class CommonLog extends Component {
     super(props);
 
     this.state = {
+      groups: [],
       projectName: localStorage.getItem("lastSelectedprojectName"),
       isLoading: true,
       isExporting: false,
       pageTitle: "",
       viewfilter: false,
+      filterMode: false,            
+      isFilter: false,
+
       projectId: this.props.projectId,
       documentName: props.match.params.document,
       filtersColumns: [],
@@ -345,13 +349,12 @@ class CommonLog extends Component {
     }
     this.setState({
       isLoading: true,
-      query: stringifiedQuery
+      query: stringifiedQuery,
+      filterMode: true
     });
 
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
-
-
         if (result.data.length > 0) {
           result.data.forEach(row => {
             let subject = "";
@@ -381,7 +384,8 @@ class CommonLog extends Component {
           this.setState({
             rows: result.data,
             totalRows: result.data != undefined ? result.total : 0,
-            isLoading: false
+            isLoading: false,
+            isFilter: true
           });
         } else {
           this.setState({
@@ -533,8 +537,31 @@ class CommonLog extends Component {
 
     filtersColumns = documentObj.filters;
 
+    var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
+    var currentGP = [];
+    if (selectedCols.length === 0) {
+      var gridLocalStor = { columnsList: [], groups: [] };
+      gridLocalStor.columnsList = JSON.stringify(cNames);
+      gridLocalStor.groups = JSON.stringify(currentGP);
+      localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(gridLocalStor));
+    }
+    else {
+      var parsingList = JSON.parse(selectedCols.columnsList);
+      for (var item in parsingList) {
+        for (var i in cNames) {
+          if (cNames[i].field === parsingList[item].field) {
+            let status = parsingList[item].hidden
+            cNames[i].hidden = status
+            break;
+          }
+        }
+      };
+      currentGP = JSON.parse(selectedCols.groups);
+    }
+
     this.setState({
       pageTitle: Resources[documentObj.documentTitle][currentLanguage],
+      groups: currentGP,
       docType: documents,
       routeAddEdit: documentObj.documentAddEditLink,
       apiFilter: documentObj.filterApi,
@@ -743,6 +770,10 @@ class CommonLog extends Component {
     }
   }
 
+  changeValueOfProps = () => {
+    this.setState({ isFilter: false });
+  };
+
   render() {
 
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
@@ -773,16 +804,13 @@ class CommonLog extends Component {
     const dataGrid = this.state.isLoading === false ?
       (
         <GridCustom
-          ref='custom-data-grid'
           gridKey={'CommonLog-' + this.state.documentName}
           data={this.state.rows}
-          pageSize={this.state.pageSize}
-          groups={[]}
           actions={this.actions}
           rowActions={this.rowActions}
           cells={this.state.columns}
+
           openModalColumn={this.state.columnsModal}
-          showCheckAll={true}
           rowClick={cell => {
             if (cell.id != 0) {
 
@@ -823,7 +851,12 @@ class CommonLog extends Component {
               }
             };
           }}
-        />) : (<LoadingSection />);
+          groups={this.state.groups}
+          isFilter={this.state.isFilter}
+          showCheckAll={true}
+          changeValueOfProps={this.changeValueOfProps.bind(this)}
+
+        />) : <LoadingSection />;
 
     const btnExport = this.state.export === false ?
       (
@@ -834,10 +867,8 @@ class CommonLog extends Component {
         />
       ) : null;
 
-    const btnExportServer =
-      this.state.showExServerBtn == true ?
-        <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnExportServerShowModal()}>{Resources["exportAll"][currentLanguage]}</button>
-        : null;
+    const btnExportServer = this.state.showExServerBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnExportServerShowModal()}>{Resources["exportAll"][currentLanguage]}</button>
+      : null;
 
     const ComponantFilter = this.state.isLoading === false ?
       (
@@ -889,7 +920,7 @@ class CommonLog extends Component {
               <div className="rowsPagiRange">
                 <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -
                 <span>
-                  {this.state.pageSize * this.state.pageNumber + this.state.pageSize}
+                  {this.state.filterMode ? this.state.totalRows : this.state.pageSize * this.state.pageNumber + this.state.pageSize}
                 </span>
                 {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
                 <span> {this.state.totalRows}</span>

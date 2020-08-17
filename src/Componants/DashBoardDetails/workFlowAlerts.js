@@ -17,7 +17,7 @@ class workFlowAlerts extends Component {
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],
-        width: 10,
+        width: 6,
         groupable: true,
         fixed: true,
         type: "number",
@@ -26,7 +26,7 @@ class workFlowAlerts extends Component {
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         fixed: false,
         type: "text",
@@ -37,7 +37,7 @@ class workFlowAlerts extends Component {
       {
         field: 'projectName',
         title: Resources['projectName'][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         fixed: false,
         type: "text",
@@ -45,7 +45,7 @@ class workFlowAlerts extends Component {
       }, {
         field: 'actionByContactName',
         title: Resources['actionByContact'][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         fixed: false,
         type: "text",
@@ -54,7 +54,7 @@ class workFlowAlerts extends Component {
       {
         field: 'docTypeName',
         title: Resources['docType'][currentLanguage],
-        width: 15,
+        width: 6,
         groupable: true,
         fixed: false,
         type: "text",
@@ -63,7 +63,7 @@ class workFlowAlerts extends Component {
       {
         field: 'delayDuration',
         title: Resources['delay'][currentLanguage],
-        width: 15,
+        width: 5,
         groupable: true,
         fixed: false,
         type: "text",
@@ -72,7 +72,7 @@ class workFlowAlerts extends Component {
       {
         field: 'duration2',
         title: Resources['durationDays'][currentLanguage],
-        width: 15,
+        width: 5,
         groupable: true,
         fixed: false,
         type: "text",
@@ -81,7 +81,7 @@ class workFlowAlerts extends Component {
       {
         field: 'sendDate',
         title: Resources['sendDate'][currentLanguage],
-        width: 10,
+        width: 8,
         groupable: true,
         fixed: false,
         type: "date",
@@ -90,7 +90,7 @@ class workFlowAlerts extends Component {
       {
         field: 'lastApprovalDate',
         title: Resources['lastApproveDate'][currentLanguage],
-        width: 10,
+        width: 8,
         groupable: true,
         fixed: false,
         type: "date",
@@ -165,9 +165,8 @@ class workFlowAlerts extends Component {
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom
         ref='custom-data-grid'
-        key="WorkFlowAlert"
-        data={this.state.rows}
-        pageSize={this.state.rows.length}
+        gridKey="WorkFlowAlert"
+        data={this.state.rows} 
         groups={[]}
         actions={[]}
         rowActions={[]}

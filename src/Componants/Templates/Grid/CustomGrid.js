@@ -78,6 +78,7 @@ export default class CustomGrid extends Component {
 
         var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
+        console.log( this.props.gridKey );
         var currentGP = [];
 
         let itemsColumns = this.props.cells;
@@ -86,7 +87,6 @@ export default class CustomGrid extends Component {
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
-            console.log('first time....', itemsColumns);
         }
         else {
             var parsingList = JSON.parse(selectedCols.columnsList);
@@ -128,7 +128,7 @@ export default class CustomGrid extends Component {
         }
         return null
     }
- 
+
     componentDidUpdate(prevProps, prevState) {
         if (this.props.isFilter && isEqual(prevState.rows, this.props.data)) {
 
@@ -171,7 +171,6 @@ export default class CustomGrid extends Component {
 
     handleCheck = (key) => {
         this.setState({ [key]: !this.state[key], Loading: true });
-        console.log(this.state.ColumnsHideShow)
         let data = this.state.ColumnsHideShow
         for (var i in data) {
             if (data[i].field === key) {
@@ -193,7 +192,6 @@ export default class CustomGrid extends Component {
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         let showColumn = data.filter(i => i.hidden === false);
-        console.log(showColumn)
         setTimeout(() => {
             this.setState({
                 columns: showColumn,
@@ -480,7 +478,7 @@ export default class CustomGrid extends Component {
         let newFilterLst = this.state.localStorFiltersList;
 
         gridLocalStor.Filters = JSON.stringify(newFilterLst);
-
+        console.log(this.props,this.props.gridKey,'handleGroupEvent');
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         this.setState({ groupsList: groups });
@@ -666,7 +664,7 @@ export default class CustomGrid extends Component {
                         (< GridCustom
                             key={this.props.gridKey}
                             cells={(this.state.columns).filter(i => i.hidden != true)}
-                            data={this.state.rows} 
+                            data={this.state.rows}
                             actions={this.props.actions}
                             rowActions={this.props.rowActions}
                             rowClick={cell => this.props.rowClick(cell)}

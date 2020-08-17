@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import Api from "../../api";
-// import moment from "moment";
+import Api from "../../api"; 
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
@@ -133,8 +132,7 @@ class FollowUpsSummaryDetails extends Component {
       }
     ];
 
-    var groups = [
-    ];
+    var groups = [    ];
 
     const filtersColumns = [
       {
