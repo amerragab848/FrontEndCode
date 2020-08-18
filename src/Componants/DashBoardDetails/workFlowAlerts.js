@@ -11,9 +11,11 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class workFlowAlerts extends Component {
+
   constructor(props) {
     super(props);
- const columnGrid = [
+
+    const columnGrid = [
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],
@@ -97,7 +99,8 @@ class workFlowAlerts extends Component {
         sortable: true
       }
     ];
-  this.state = {
+
+    this.state = {
       pageTitle: Resources["workFlowAlert"][currentLanguage],
       viewfilter: false,
       columns: columnGrid,
@@ -106,6 +109,7 @@ class workFlowAlerts extends Component {
       isCustom: true
     };
   }
+
   componentDidMount() {
 
     this.props.actions.RouteToTemplate();
@@ -134,6 +138,7 @@ class workFlowAlerts extends Component {
       });
     });
   }
+
   cellClick = (rowId, colID) => {
 
     if (colID != 0 && colID != 1) {
@@ -161,24 +166,45 @@ class workFlowAlerts extends Component {
       }
     }
   };
+
+  onRowClick = (obj) => {
+    if (this.state.RouteEdit !== '') {
+      let objRout = {
+        docId: obj.docId,
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false,
+        perviousRoute: window.location.pathname + window.location.search
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" + obj.docLink,
+        search: "?id=" + encodedPaylod
+      });
+    }
+  }
+
   render() {
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom
         ref='custom-data-grid'
         gridKey="WorkFlowAlert"
-        data={this.state.rows} 
+        data={this.state.rows}
         groups={[]}
         actions={[]}
         rowActions={[]}
         cells={this.state.columns}
-        rowClick={(cell) => { this.rowClick(cell) }}
+        rowClick={(cell) => { this.onRowClick(cell) }}
       />
     ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
- return (
+    return (
       <div className="mainContainer">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">

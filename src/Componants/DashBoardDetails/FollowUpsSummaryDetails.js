@@ -79,7 +79,7 @@ class FollowUpsSummaryDetails extends Component {
       {
         field: "approvalStatusName",
         title: Resources["approvalStatus"][currentLanguage],
-        width: 5,
+        width: 8,
         groupable: true,
         fixed: false,
         sortable: true,
@@ -88,13 +88,12 @@ class FollowUpsSummaryDetails extends Component {
       {
         field: "docTypeName",
         title: Resources["docType"][currentLanguage],
-        width: 6,
+        width: 7,
         groupable: true,
         fixed: false,
         sortable: true,
         type: "text"
-      },
-      {
+      },      {
         field: "delayDuration",
         title: Resources["delay"][currentLanguage],
         width: 5,
@@ -244,27 +243,7 @@ class FollowUpsSummaryDetails extends Component {
       });
     });
   }
-
-  onRowClick = (obj) => {
-    if (this.state.RouteEdit !== '') {
-      let objRout = {
-        docId: obj.docId,
-        projectId: obj.projectId,
-        projectName: obj.projectName,
-        arrange: 0,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute: window.location.pathname + window.location.search
-      }
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-      this.props.history.push({
-        pathname: "/" + obj.docLink,
-        search: "?id=" + encodedPaylod
-      });
-    }
-  }
-
+  
   render() {
 
     const dataGrid = this.state.isLoading === false ? (

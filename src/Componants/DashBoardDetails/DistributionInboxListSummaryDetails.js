@@ -13,6 +13,7 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const find = require("lodash/find");
+
 class DistributionInboxListSummaryDetails extends Component {
   constructor(props) {
     super(props);
@@ -384,9 +385,8 @@ class DistributionInboxListSummaryDetails extends Component {
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
-          key="ClosedSummaryDetails"
-          data={this.state.rows}
-          pageSize={this.state.rows.length}
+          gridKey="ClosedSummaryDetails"
+          data={this.state.rows} 
           groups={[]}
           actions={this.actions}
           rowActions={[]}

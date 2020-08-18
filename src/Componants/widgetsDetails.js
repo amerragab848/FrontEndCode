@@ -343,7 +343,7 @@ let widgets = {
             "id": 'wt-Name6',
             "permission": 10042,
             "type": "line",
-            "api": "GetChartLineDataByDocType?docType=17",
+            "api": "GetChartLineDataByDocType?docType=19",
             "topicNames": ["Opened", "Closed"],
             "key": "0-3-6"
         }
