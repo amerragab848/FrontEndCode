@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
-import Filter from "../FilterComponent/filterComponent";
+//import Filter from "../FilterComponent/filterComponent";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -292,6 +292,7 @@ class DocApprovalDetails extends Component {
     let gridName = 'Doc_' + (action == "1" ? "RejectList" : "ApproveList");
 
     this.state = {
+      action: action,
       pageTitle: "",
       viewfilter: false,
       isFilter: false,

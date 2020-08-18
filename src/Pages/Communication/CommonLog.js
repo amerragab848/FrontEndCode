@@ -347,6 +347,7 @@ class CommonLog extends Component {
     if (stringifiedQuery == '{"isCustom":true}') {
       stringifiedQuery = undefined
     }
+    
     this.setState({
       isLoading: true,
       query: stringifiedQuery,
@@ -356,6 +357,7 @@ class CommonLog extends Component {
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
         if (result.data.length > 0) {
+
           result.data.forEach(row => {
             let subject = "";
             if (row) {

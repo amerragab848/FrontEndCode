@@ -2484,12 +2484,9 @@ class requestPaymentsAddEdit extends Component {
                 isFilter={this.state.isFilter}
                 actions={this.actions}
                 openModalColumn={this.state.columnsModal}
-                cells={this.state.columns}
-                isFilter={this.state.isFilter}
+                cells={this.state.columns} 
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
-                rowClick={cell => { this.onRowClick(cell); }}
-                groups={this.state.groups}
-                isFilter={this.state.isFilter}
+                rowClick={cell => { this.onRowClick(cell); }} 
                 changeValueOfProps={this.changeValueOfProps.bind(this)}
             />
         ) : <div style={{ position: 'relative' }}><LoadingSection isCustomLoader={true} /></div>;

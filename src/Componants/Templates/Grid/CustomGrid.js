@@ -487,7 +487,6 @@ export default class CustomGrid extends Component {
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
-
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
             return (
                 <div className="grid__content" key={item.field}>

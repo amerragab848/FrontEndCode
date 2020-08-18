@@ -12,8 +12,9 @@ export default class CustomGrid extends Component {
         super(props);
 
         this.state = {
-            columns: this.props.cells, 
-            rows: this.props.data,
+            columns: this.props.cells,
+            rows: this.props.data != null ? this.props.data : [],
+            filteredRows: this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             groupsList: this.props.groups || [],
 
@@ -25,8 +26,7 @@ export default class CustomGrid extends Component {
             columnsModal: false,
             ColumnsHideShow: [],
             Loading: false,
-            GridLoading: false,
-            filteredRows: this.props.data,
+            GridLoading: true,
             setFilters: {},
             filters: [],
             ShowModelFilter: false,
@@ -97,18 +97,18 @@ export default class CustomGrid extends Component {
         }, 500);
     };
 
-    static getDerivedStateFromProps(nextProps, state) { 
+    static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.isFilter && isEqual(state.rows, nextProps.data)) {
             return {
-                rows: nextProps.rows,
-                filteredRows: nextProps.rows,
+                rows: nextProps.data,
+                filteredRows: nextProps.data,
                 GridLoading: true
             }
         }
         return null
     };
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) { 
         if (this.props.isFilter && isEqual(prevState.rows, this.props.data)) {
             this.props.changeValueOfProps();
             this.setState({
