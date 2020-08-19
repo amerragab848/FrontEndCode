@@ -831,8 +831,8 @@ class LettersAddEdit extends Component {
                                                                         }
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
-                                                                        error={errors.toContactId}
                                                                         touched={true}
+                                                                        error={errors.toContactId}
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId"

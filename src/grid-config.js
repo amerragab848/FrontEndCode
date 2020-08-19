@@ -23,13 +23,7 @@ const documents = {
                 classes: '',
             },
         ],
-        rowActions: [
-            // {
-            //     title: 'Send',
-            //     handleClick: item => {
-            //         alert(`Sent ${item.subject}!!!`);
-            //     },
-            // },
+        rowActions: [ 
         ],
         api: {
             fetch: 'GetLettersByProjectId',

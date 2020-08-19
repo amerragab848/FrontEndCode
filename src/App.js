@@ -65,8 +65,7 @@ class App extends Component {
 
     async componentDidMount() {
         await IndexedDb.seed();
-        await IndexedDb.seedWidgetCounter();
-        //await IndexedDb.initializeCachedAPI();
+        await IndexedDb.seedWidgetCounter(); 
 
         let currentLanguage =
             localStorage.getItem("lang") == null

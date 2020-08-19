@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
     title: Yup.string().required(Resources['empTitleRequired'][currentLanguage]),
     companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]),
-    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage]),
+    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage])
 });
 
 const validationSchemaForEdit = Yup.object().shape({
@@ -314,35 +314,44 @@ class AddEditCompany extends Component {
                                                         <div className="linebylineInput valid-input passWrapperInput">
                                                             <Dropdown title="discipline" data={this.state.disciplineData}
                                                                 name="discipline"
+                                                                id="discipline"
                                                                 selectedValue={this.state.selectedDiscipline}
                                                                 onChange={setFieldValue}
                                                                 handleChange={(e) => this.handleChangeDropDown(e, "discipline")}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.discipline}
-                                                                touched={touched.discipline}
+                                                                touched={true} 
                                                                 value={values.discipline} />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input passWrapperInput">
-                                                            <Dropdown title="companyRole" data={this.state.CompanyRoleData}
+                                                            <Dropdown title="companyRole"
+                                                                data={this.state.CompanyRoleData}
                                                                 name="companyRole"
-                                                                selectedValue={this.state.selectedCompanyRole}
-                                                                onChange={setFieldValue}
-                                                                handleChange={(e) => this.handleChangeDropDown(e, "companyRole")}
-                                                                onBlur={setFieldTouched}
+                                                                id="companyRole"
+                                                                selectedValue={this.state.selectedCompanyRole} 
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "companyRole")} 
                                                                 error={errors.companyRole}
-                                                                touched={touched.companyRole}
+                                                                touched={true} 
+                                                                onChange={setFieldValue}
+                                                                onBlur={setFieldTouched}
                                                                 value={values.companyRole} />
                                                         </div>
                                                         <div className="linebylineInput valid-input passWrapperInput">
-                                                            <Dropdown title="companyType" data={this.state.CompanyTypeData}
+                                                            <Dropdown
+                                                                title="companyType"
+                                                                data={this.state.CompanyTypeData}
                                                                 name="companyType"
+                                                                id="companyType"
                                                                 selectedValue={this.state.selectedCompanyType}
-                                                                onChange={setFieldValue}
+
                                                                 handleChange={(e) => this.handleChangeDropDown(e, "companyType")}
+
+                                                                touched={true} 
+                                                                onChange={setFieldValue}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.companyType}
-                                                                touched={touched.companyType}
+
                                                                 value={values.companyType} />
                                                         </div>
                                                     </div>
