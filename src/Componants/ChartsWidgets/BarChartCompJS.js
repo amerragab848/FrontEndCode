@@ -117,7 +117,7 @@ class BarChartCompJS extends Component {
                 container = d3.select('.js-grouped-bar-chart-tooltip-container'),
                 containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
                 tooltipContainer;
-
+              
             groupedBarChart
                 .width(containerWidth)
                 .groupLabel('stack')
