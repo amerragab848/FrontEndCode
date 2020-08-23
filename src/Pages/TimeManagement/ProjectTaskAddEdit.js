@@ -186,15 +186,19 @@ class ProjectTaskAddEdit extends Component {
       if (!Config.IsAllow(358)) {
         this.setState({ isViewMode: true });
       }
-      if (this.state.isApproveMode != true && Config.IsAllow(358)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(358)) {
-          if (this.props.document.status == true && Config.IsAllow(358)) {
-            this.setState({ isViewMode: false });
+      if (Config.getUserTypeIsAdmin() === true) {
+        this.setState({ isViewMode: false });
+      } else {
+        if (this.state.isApproveMode != true && Config.IsAllow(358)) {
+          if (this.props.hasWorkflow == false && Config.IsAllow(358)) {
+            if (this.props.document.status == true && Config.IsAllow(358)) {
+              this.setState({ isViewMode: false });
+            } else {
+              this.setState({ isViewMode: true });
+            }
           } else {
             this.setState({ isViewMode: true });
           }
-        } else {
-          this.setState({ isViewMode: true });
         }
       }
     } else {
@@ -347,10 +351,10 @@ class ProjectTaskAddEdit extends Component {
       document: original_document
     });
   }
-  handleCheck(e,field){
+  handleCheck(e, field) {
     let original_document = { ...this.state.document };
     original_document[field] = e.target.checked;
-   this.setState({
+    this.setState({
       document: original_document
     });
   }
@@ -509,7 +513,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   saveAndExit(event) {
-     this.props.history.push("/ProjectTasks/" + this.state.projectId);
+    this.props.history.push("/ProjectTasks/" + this.state.projectId);
   }
 
   showBtnsSaving() {
@@ -795,7 +799,7 @@ class ProjectTaskAddEdit extends Component {
                                 </div>
                               </div>
                             </div>
-                       
+
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.taskActivity[currentLanguage]}
@@ -815,7 +819,7 @@ class ProjectTaskAddEdit extends Component {
                                 </label>
                               </div>
                             </div>
- 
+
                           </div>
                           <div className="slider-Btns">
                             {this.state.isLoading ?

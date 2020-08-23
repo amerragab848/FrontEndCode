@@ -269,7 +269,7 @@ class TaskGroupsAddEdit extends Component {
                 }
                 break;
             case 'ContactName':
-                this.setState({SelectedContact:SelectedItem})
+                this.setState({ SelectedContact: SelectedItem })
                 break;
             case 'actionId':
                 this.setState({ SelectedAction: SelectedItem });
@@ -374,9 +374,9 @@ class TaskGroupsAddEdit extends Component {
                 this.props.actions.ExportingData(data);
                 this.MaxArrangeContacts();
                 this.setState({
-                    SelectedCompany:'',
-                    SelectedContact:'',
-                    SelectedAction:{ label: "Select Action", value: "0" }
+                    SelectedCompany: '',
+                    SelectedContact: '',
+                    SelectedAction: { label: "Select Action", value: "0" }
                 })
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }
@@ -430,15 +430,19 @@ class TaskGroupsAddEdit extends Component {
             if (!(Config.IsAllow(626))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(626)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(626)) {
-                    if (this.props.document.status == true && Config.IsAllow(626)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(626)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(626)) {
+                        if (this.props.document.status == true && Config.IsAllow(626)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

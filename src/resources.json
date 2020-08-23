@@ -633,6 +633,10 @@
         "en": "select Company role",
         "ar": "من فضلك اختر مجال الشركة"
     },
+    "companyTypeRequired": {
+        "en": "select Company Type",
+        "ar": "من فضلك اختر مجال الشركة"
+    }, 
     "rateValueRequired": {
         "en": "Please enter a valid salary",
         "ar": "من فضلك ادخل قيمة مرتب سليمة"
@@ -1553,6 +1557,10 @@
         "en": "Company Role",
         "ar": "دور الشركة"
     },
+    "companyType": {
+        "en": "Company Type",
+        "ar": "مجال الشركة"
+    }, 
     "discipline": {
         "en": "Discipline",
         "ar": "نطاق اعمال الشركه"
@@ -2897,6 +2905,10 @@
         "en": "Called By Contact",
         "ar": "الشخص الداعي للاجتماع"
     },
+    "continue": {
+        "en": "Continue",
+        "ar": "استمرار"
+    },
     "calledByContactRequired": {
         "en": "Please Select Called By Contact",
         "ar": "برجاء اختيار الشخص الداعي للاجتماع"
@@ -4010,7 +4022,7 @@
         "ar": "يرجي استخدام الكمية والإجمالي المراجع"
     },
     "advancePaymentPercent": {
-        "en": "Advance Payment Percent",
+        "en": "Advance Payment(%)",
         "ar": "الدفعة المقدمة"
     },
     "contractExecutedToDate": {
@@ -6190,11 +6202,11 @@
         "ar": "استخدام التفصيل للبنود"
     },
     "percentComplete": {
-        "en": "Percent Complete",
+        "en": "(%) Complete",
         "ar": "نسبة التنفيذ"
     },
     "sitePercentComplete": {
-        "en": "Cont.'s Percent Complete",
+        "en": "Cont.'s (%) Complete",
         "ar": "نسبة التنفيذ للمقاول"
     },
     "siteQuantityComplete": {
@@ -7694,7 +7706,7 @@
         "ar": "<i class='fa fa-clock-o'></i> <i>تم إلغاء عملية التعديل...</i>"
     },
     "previousPaymentPercent": {
-        "en": "Previous Payment Percent",
+        "en": "Previous Payment (%)",
         "ar": "نسبة الدفع القديمة"
     },
     "expensesStatus": {
@@ -8386,7 +8398,7 @@
         "ar": "يجب عليك الحفظ فى صفحة التوقيت"
     },
     "contractPaymentPercent": {
-        "en": "Cont.'s Payment Percent",
+        "en": "Cont.'s Payment (%)",
         "ar": "Cont.'s Payment Percent"
     },
     "amountRequired": {

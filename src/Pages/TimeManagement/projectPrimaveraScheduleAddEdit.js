@@ -121,15 +121,19 @@ class projectPrimaveraScheduleAddEdit extends Component {
             if (!(Config.IsAllow(583))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(583)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(583)) {
-                    if (this.props.document.status !== false && Config.IsAllow(583)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(583)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(583)) {
+                        if (this.props.document.status !== false && Config.IsAllow(583)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -297,7 +301,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
                         dataservice.GetDataGrid('GetProjectEstimateItemsByProjectEstimateId?projectEstimateId=' + res.id + '').then(
                             Data => {
-                                
+
                                 this.setState({
                                     rows: Data,
                                 })
@@ -323,7 +327,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 })
                 let data = { items: res };
 
-                this.props.actions.ExportingData(data); 
+                this.props.actions.ExportingData(data);
 
             }
 

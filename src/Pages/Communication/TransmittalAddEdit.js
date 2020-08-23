@@ -49,7 +49,7 @@ class TransmittalAddEdit extends Component {
         const query = new URLSearchParams(this.props.location.search);
 
         let obj = Config.extractDataFromParamas(query);
-         
+
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
         } else {
@@ -61,7 +61,7 @@ class TransmittalAddEdit extends Component {
             arrange = obj.arrange;
             perviousRoute = obj.perviousRoute;
         }
- 
+
 
         this.state = {
             isViewMode: false,
@@ -211,16 +211,19 @@ class TransmittalAddEdit extends Component {
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(85))) {
                 this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(85)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
-                    if (this.props.document.status == true && Config.IsAllow(85)) {
-                        this.setState({ isViewMode: false });
+            } if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(85)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
+                        if (this.props.document.status == true && Config.IsAllow(85)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

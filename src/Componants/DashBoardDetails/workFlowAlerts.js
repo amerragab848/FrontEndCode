@@ -11,13 +11,15 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class workFlowAlerts extends Component {
+
   constructor(props) {
     super(props);
- const columnGrid = [
+
+    const columnGrid = [
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],
-        width: 10,
+        width: 6,
         groupable: true,
         fixed: true,
         type: "number",
@@ -26,7 +28,7 @@ class workFlowAlerts extends Component {
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         fixed: false,
         type: "text",
@@ -37,7 +39,7 @@ class workFlowAlerts extends Component {
       {
         field: 'projectName',
         title: Resources['projectName'][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         fixed: false,
         type: "text",
@@ -45,7 +47,7 @@ class workFlowAlerts extends Component {
       }, {
         field: 'actionByContactName',
         title: Resources['actionByContact'][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         fixed: false,
         type: "text",
@@ -54,7 +56,7 @@ class workFlowAlerts extends Component {
       {
         field: 'docTypeName',
         title: Resources['docType'][currentLanguage],
-        width: 15,
+        width: 6,
         groupable: true,
         fixed: false,
         type: "text",
@@ -63,7 +65,7 @@ class workFlowAlerts extends Component {
       {
         field: 'delayDuration',
         title: Resources['delay'][currentLanguage],
-        width: 15,
+        width: 5,
         groupable: true,
         fixed: false,
         type: "text",
@@ -72,7 +74,7 @@ class workFlowAlerts extends Component {
       {
         field: 'duration2',
         title: Resources['durationDays'][currentLanguage],
-        width: 15,
+        width: 5,
         groupable: true,
         fixed: false,
         type: "text",
@@ -81,7 +83,7 @@ class workFlowAlerts extends Component {
       {
         field: 'sendDate',
         title: Resources['sendDate'][currentLanguage],
-        width: 10,
+        width: 8,
         groupable: true,
         fixed: false,
         type: "date",
@@ -90,14 +92,15 @@ class workFlowAlerts extends Component {
       {
         field: 'lastApprovalDate',
         title: Resources['lastApproveDate'][currentLanguage],
-        width: 10,
+        width: 8,
         groupable: true,
         fixed: false,
         type: "date",
         sortable: true
       }
     ];
-  this.state = {
+
+    this.state = {
       pageTitle: Resources["workFlowAlert"][currentLanguage],
       viewfilter: false,
       columns: columnGrid,
@@ -106,6 +109,7 @@ class workFlowAlerts extends Component {
       isCustom: true
     };
   }
+
   componentDidMount() {
 
     this.props.actions.RouteToTemplate();
@@ -134,6 +138,7 @@ class workFlowAlerts extends Component {
       });
     });
   }
+
   cellClick = (rowId, colID) => {
 
     if (colID != 0 && colID != 1) {
@@ -161,25 +166,45 @@ class workFlowAlerts extends Component {
       }
     }
   };
+
+  onRowClick = (obj) => {
+    if (this.state.RouteEdit !== '') {
+      let objRout = {
+        docId: obj.docId,
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false,
+        perviousRoute: window.location.pathname + window.location.search
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" + obj.docLink,
+        search: "?id=" + encodedPaylod
+      });
+    }
+  }
+
   render() {
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom
         ref='custom-data-grid'
-        key="WorkFlowAlert"
+        gridKey="WorkFlowAlert"
         data={this.state.rows}
-        pageSize={this.state.rows.length}
         groups={[]}
         actions={[]}
         rowActions={[]}
         cells={this.state.columns}
-        rowClick={(cell) => { this.rowClick(cell) }}
+        rowClick={(cell) => { this.onRowClick(cell) }}
       />
     ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
- return (
+    return (
       <div className="mainContainer">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">

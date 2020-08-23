@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -11,7 +11,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Config from "../../Services/Config.js"; 
+import Config from "../../Services/Config.js";
 import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
@@ -20,6 +20,8 @@ import { toast } from "react-toastify";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+
 import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -45,7 +47,7 @@ class RfiAddEdit extends Component {
 
         super(props);
 
-        const query = new URLSearchParams(this.props.location.search); 
+        const query = new URLSearchParams(this.props.location.search);
         let obj = Config.extractDataFromParamas(query);
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
@@ -57,7 +59,7 @@ class RfiAddEdit extends Component {
             docApprovalId = obj.docApprovalId;
             arrange = obj.arrange;
             perviousRoute = obj.perviousRoute;
-        } 
+        }
         this.state = {
             isLoading: false,
             isViewMode: false,
@@ -192,15 +194,19 @@ class RfiAddEdit extends Component {
             if (!(Config.IsAllow(76))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(76)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
-                    if (this.props.document.status == true && Config.IsAllow(76)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(76)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
+                        if (this.props.document.status == true && Config.IsAllow(76)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -763,10 +769,23 @@ class RfiAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus}
-                                                AddAttachments={827} EditAttachments={3224} ShowDropBox={3609} ShowGoogleDrive={3610}
-                                                docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />)
-                                                : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ?
+                                                (<UploadAttachment changeStatus={this.props.changeStatus}
+                                                    AddAttachments={827} EditAttachments={3224}
+                                                    ShowDropBox={3609} ShowGoogleDrive={3610}
+                                                    docTypeId={this.state.docTypeId}
+                                                    docId={this.state.docId}
+                                                    projectId={this.state.projectId} />)
+                                                : null
+                                            }
+
+                                            {this.state.docId > 0 ? (
+                                                <div className="document-fields tableBTnabs">
+                                                    <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                </div>
+
+                                            ) : null
+                                            }
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>

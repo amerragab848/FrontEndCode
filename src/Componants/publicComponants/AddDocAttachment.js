@@ -42,7 +42,7 @@ class AddDocAttachment extends Component {
     };
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     if (this.state.docId > 0) {
       dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => {
         this.setState({
@@ -137,29 +137,29 @@ class AddDocAttachment extends Component {
       isloading: true
     })
     let mergeDate = date != null ? moment(date[0]).format("YYYY-MM-DD") + "|" + moment(date[1]).format("YYYY-MM-DD") : "";
-   
+
     this.setState({
       dateRange: mergeDate,
       focused: false
     })
     this.filterDataByDate(mergeDate);
   }
- 
+
   filterDataByDate(mergeDate) {
     let date1 = mergeDate.split('|')[0];
     let date2 = mergeDate.split('|')[1];
     let data = this.state.documentData;
     let dataArray = [];
     data.filter((item) => {
-     if(moment(new Date(item.docDate).toISOString().split('T')[0], 'YYYY-MM-DD').isBetween(moment(date1, 'YYYY-MM-DD'), moment(date2, 'YYYY-MM-DD'))){
-      dataArray.push(item);
-    }
+      if (moment(new Date(item.docDate).toISOString().split('T')[0], 'YYYY-MM-DD').isBetween(moment(date1, 'YYYY-MM-DD'), moment(date2, 'YYYY-MM-DD'))) {
+        dataArray.push(item);
+      }
     });
     this.setState({
       documentData: dataArray
     })
 
-    
+
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -167,12 +167,12 @@ class AddDocAttachment extends Component {
       return {
         documentData: nextProps.documentData,
         isFilter: true
-       
+
       };
     }
     return null
   }
- 
+
   changeDate() {
     this.setState({
       focused: true
@@ -182,7 +182,7 @@ class AddDocAttachment extends Component {
 
   render() {
 
-   
+
 
     let columnsDocument =
       [
@@ -307,8 +307,7 @@ class AddDocAttachment extends Component {
                 <div className="fullWidthWrapper">
                   <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={e => this.save()}>{Resources["save"][currentLanguage]} </button>
                 </div> : null}
-
-              ? <div className="precycle-grid modalTable">
+              <div className="precycle-grid modalTable">
                 <ReactTable
                   columns={columns}
                   data={this.state.documentData}

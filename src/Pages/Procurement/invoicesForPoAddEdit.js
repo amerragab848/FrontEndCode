@@ -32,7 +32,7 @@ steps_defination = [
     { name: "invoicesForPO", callBackFn: null },
     { name: "items", callBackFn: null },
     { name: "deductions", callBackFn: null }
-]; 
+];
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -238,15 +238,19 @@ class invoicesForPoAddEdit extends Component {
             if (!(Config.IsAllow(194))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(194)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(194)) {
-                    if (this.props.document.status !== false && Config.IsAllow(194)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(194)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(194)) {
+                        if (this.props.document.status !== false && Config.IsAllow(194)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -334,7 +338,7 @@ class invoicesForPoAddEdit extends Component {
         dataservice.GetDataList(action, DropLable, DropValue).then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; }); 
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -345,7 +349,7 @@ class invoicesForPoAddEdit extends Component {
 
     fillDropDowns(isEdit) {
 
-    dataservice.GetDataList('GetContractsBoqShowInCostCodingTree?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', 'subject', 'id').then(result => {
+        dataservice.GetDataList('GetContractsBoqShowInCostCodingTree?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000000', 'subject', 'id').then(result => {
 
             if (isEdit) {
                 let id = this.props.document.boqId;
@@ -417,13 +421,13 @@ class invoicesForPoAddEdit extends Component {
         this.checkDocumentIsView();
     }
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
 
         updated_document[field] = e.target.value;
-       // updated_document["costCodingTreeId"]
+        // updated_document["costCodingTreeId"]
 
         updated_document = Object.assign(original_document, updated_document);
 
@@ -582,9 +586,9 @@ class invoicesForPoAddEdit extends Component {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
- 
-       updated_document['costCodingTreeName'] = item.costCodingTreeName;
-       updated_document['costCodingTreeId'] = item.id;
+
+        updated_document['costCodingTreeName'] = item.costCodingTreeName;
+        updated_document['costCodingTreeId'] = item.id;
 
         updated_document = Object.assign(original_document, updated_document);
 
@@ -602,26 +606,26 @@ class invoicesForPoAddEdit extends Component {
         let value = parseInt(e.target.value)
         if (value > maxQnty) {
             // e.target.value = quantityComplete
-            toast.warn("value can not be more than "+maxQnty);
+            toast.warn("value can not be more than " + maxQnty);
         }
         else if (value < minQnty) {
             // e.target.value = quantityComplete
-            toast.warn("value can not be less than "+minQnty);
-        }else{
-   Api.post("EditContractsInvoicesForPoItems",element).then(res=>{
-       toast.success(Resources.operationSuccess[currentLanguage])
-       let data=this.state.InvoicesItems;
-       data.splice(index,1,res);
+            toast.warn("value can not be less than " + minQnty);
+        } else {
+            Api.post("EditContractsInvoicesForPoItems", element).then(res => {
+                toast.success(Resources.operationSuccess[currentLanguage])
+                let data = this.state.InvoicesItems;
+                data.splice(index, 1, res);
 
-            this.setState({
-                InvoicesItems:data
+                this.setState({
+                    InvoicesItems: data
+                })
             })
-        })
-    }
+        }
     }
 
     HandleChangeTaxesValue = (e, index) => {
-         let data = this.state.InvoicesItems
+        let data = this.state.InvoicesItems
         // let element = data[index]
         // let quantityComplete = data[index]['minQnty']
         // let minQnty = data[index]['minQnty']
@@ -640,9 +644,9 @@ class invoicesForPoAddEdit extends Component {
         //     data[index]['quantityComplete'] = e.target.value
         //     this.setState({ InvoicesItems: data })
         // }
-           data[index]['quantityComplete'] = e.target.value
-            this.setState({ InvoicesItems: data })
-            
+        data[index]['quantityComplete'] = e.target.value
+        this.setState({ InvoicesItems: data })
+
     }
 
     EditDeduction = (obj) => {
@@ -918,7 +922,7 @@ class invoicesForPoAddEdit extends Component {
         })
     }
 
-    EditItem = (obj) => { 
+    EditItem = (obj) => {
         this.setState({
             ObjItem: obj._original,
             showEdititem: true,
@@ -1967,9 +1971,9 @@ class invoicesForPoAddEdit extends Component {
                     <SkyLightStateless onOverlayClicked={e => this.setState({ ShowTree: false })}
                         title={Resources['add'][currentLanguage]}
                         onCloseClicked={e => this.setState({ ShowTree: false })} isVisible={this.state.ShowTree}>
-                        {this.state.ShowTree? 
-                        <Tree projectId={this.state.projectId} GetNodeData={this.GetNodeData} />
-                        :null}
+                        {this.state.ShowTree ?
+                            <Tree projectId={this.state.projectId} GetNodeData={this.GetNodeData} />
+                            : null}
                         <div className="fullWidthWrapper">
                             <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.setState({ ShowTree: false })}  >{Resources.add[currentLanguage]}</button>
                         </div>

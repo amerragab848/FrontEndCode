@@ -56,22 +56,22 @@ export default class Dataservice {
         return Api.get(url).then(result => {
             return result;
         }).catch(ex => Data);
-    } 
+    }
     static async getGoMeetingAPIs(url) {
         let Data = []
         return Api.getGoMeetingAPIs(url).then(result => {
             return result;
         }).catch(ex => Data);
-    } 
-    static async postGoMeetingAPIs(url,params) {
+    }
+    static async postGoMeetingAPIs(url, params) {
         let Data = []
-        return Api.postGoMeetingAPIs(url,params).then(result => {
+        return Api.postGoMeetingAPIs(url, params).then(result => {
             return result;
         }).catch(ex => Data);
     }
-    static async postGoMeetingToken(url,params) {
+    static async postGoMeetingToken(url, params) {
         let Data = []
-        return Api.postGoMeetingToken(url,params).then(result => {
+        return Api.postGoMeetingToken(url, params).then(result => {
             return result;
         }).catch(ex => Data);
     }
@@ -91,6 +91,13 @@ export default class Dataservice {
     static addObject = (url, docObj) => {
 
         return Api.post(url, docObj).then(result => {
+            return result;
+        });
+    };
+
+    static addObjectCore = (url, docObj, verb) => {
+
+        return Api.getDataAPIsByCore(url, docObj, verb).then(result => {
             return result;
         });
     };
@@ -117,7 +124,7 @@ export default class Dataservice {
 
             return result;
         }).catch(ex => []);
-    }; 
+    };
     static GetDataGridPost = (url) => {
 
         return Api.post(url).then(result => {
@@ -125,9 +132,9 @@ export default class Dataservice {
             return result;
         }).catch(ex => []);
     };
-    static GetAttachesPost = (params,searchOptions) => {
+    static GetAttachesPost = (params, searchOptions) => {
 
-        return Api.PostForGetAttaches(params,searchOptions).then(result => {
+        return Api.PostForGetAttaches(params, searchOptions).then(result => {
 
             return result;
         }).catch(ex => []);

@@ -404,15 +404,19 @@ class MaterialInventoryAddEdit extends Component {
             if (!(Config.IsAllow(616))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(616)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(616)) {
-                    if (this.props.document.status !== false && Config.IsAllow(616)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(616)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(616)) {
+                        if (this.props.document.status !== false && Config.IsAllow(616)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -435,7 +439,7 @@ class MaterialInventoryAddEdit extends Component {
                 result.forEach(item => {
                     setDataChart.push({ stack: stacks[0], name: stacks[0], value: item.approvedQuantity });
                     setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
-                    setDataChart.push({ stack: stacks[2], name:stacks[2], value: item.pendingQuantity });
+                    setDataChart.push({ stack: stacks[2], name: stacks[2], value: item.pendingQuantity });
                 });
                 // moment(item.docDate).format("DD/MM/YYYY")
                 this.setState({
@@ -840,24 +844,24 @@ class MaterialInventoryAddEdit extends Component {
                                 : null
                         }
                         <div className="step-content">
-                        <XSLfile
-                        key="MaterialInventory"
-                        docId={projectId}
-                        docType={this.state.docTypeId}
-                        link={
-                            Config.getPublicConfiguartion().downloads +
-                            "/downloads/excel/inventory.xlsx"
-                        }
-                        header="addManyItems"
-                        disabled={
-                            this.props.changeStatus
-                                ? this.props.docId === 0
-                                    ? true
-                                    : false
-                                : false
-                        }
-                        afterUpload={() => this.saveAndExit()}
-                    />
+                            <XSLfile
+                                key="MaterialInventory"
+                                docId={projectId}
+                                docType={this.state.docTypeId}
+                                link={
+                                    Config.getPublicConfiguartion().downloads +
+                                    "/downloads/excel/inventory.xlsx"
+                                }
+                                header="addManyItems"
+                                disabled={
+                                    this.props.changeStatus
+                                        ? this.props.docId === 0
+                                            ? true
+                                            : false
+                                        : false
+                                }
+                                afterUpload={() => this.saveAndExit()}
+                            />
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">

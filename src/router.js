@@ -9,9 +9,7 @@ const DashBoard = AsyncComponent(() => import('./Pages/DashBoard'));
 
 const DashboardProject = AsyncComponent(() => import('./DashboardProject'));
 
-const Chart = AsyncComponent(() =>
-    import('./Componants/ChartsWidgets/BarChartComp'),
-);
+const Chart = AsyncComponent(() => import('./Componants/ChartsWidgets/BarChartComp'));
 
 //Document Generator
 const DocGen = AsyncComponent(() =>
@@ -631,13 +629,8 @@ const CollectedInvoices = AsyncComponent(() =>
     import('../src/Pages/ReportsMenu/collectedInvoices'),
 );
 
-const Logs = AsyncComponent(() => import('./Pages/Logs'));
-
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
-    let path =
-        item.moduleId === 'ProjectSetup'
-            ? '/' + item.route + '/:projectId'
-            : '/:document/:projectId';
+    let path = item.moduleId === 'ProjectSetup' ? '/' + item.route + '/:projectId' : '/:document/:projectId';
     let compoenet = item.moduleId === 'ProjectSetup' ? ProjectSetup : CommonLog;
     return <Route key={index + 181} path={path} component={compoenet} />;
 });
@@ -650,7 +643,6 @@ let originalRoutes = [
         path="/TenderAnalysisAddEdit"
         component={TenderAnalysisAddEdit}
     />,
-    <Route key="r-kk" path="/logs/:document/:project" component={Logs} />,
     <Route key="r-3" path="/ActionByAlerts" component={ActionByAlerts} />,
     <Route
         key="r-4"
@@ -1119,7 +1111,7 @@ let originalRoutes = [
         path="/AccountsGroup/:groupId"
         component={AccountsGroup}
     />,
-    <Route key="r-136" path="/projectBackLog" component={ProjectBackLog} />, 
+    <Route key="r-136" path="/projectBackLog" component={ProjectBackLog} />,
     <Route
         key="r-137"
         path="/projectsAchievements"
@@ -1294,7 +1286,7 @@ let originalRoutes = [
         component={PaymentCertification}
     />,
     <Route key="r-189" path="/:docType/gen/:projectId" component={DocGen} />,
-    
+
     <Route key="r-190" path="Pages/ReportsCenter/ContractsPOReports/reqPaymInvoicesRpt" component={reqPaymInvoicesRpt} />,
 ];
 

@@ -12,7 +12,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import Config from "../../Services/Config.js"; 
+import Config from "../../Services/Config.js";
 import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -43,7 +43,7 @@ class emailAddEdit extends Component {
     constructor(props) {
 
         super(props);
-        const query = new URLSearchParams(this.props.location.search); 
+        const query = new URLSearchParams(this.props.location.search);
         let obj = Config.extractDataFromParamas(query);
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
@@ -163,15 +163,19 @@ class emailAddEdit extends Component {
             if (!(Config.IsAllow(392))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(392)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(392)) {
-                    if (this.props.document.status !== false && Config.IsAllow(392)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(392)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(392)) {
+                        if (this.props.document.status !== false && Config.IsAllow(392)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

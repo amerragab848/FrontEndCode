@@ -34,7 +34,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const find = require('lodash/find')
 const sum = require('lodash/sum')
@@ -51,12 +51,12 @@ class projectEstimateAddEdit extends Component {
     constructor(props) {
         const columnsGrid = [
             {
-                field:"id",
-                title:"",
-                type:"check-box",
-                fixed:true,
-                showTip:true,
-                width:10
+                field: "id",
+                title: "",
+                type: "check-box",
+                fixed: true,
+                showTip: true,
+                width: 10
             },
             {
                 field: 'arrange',
@@ -211,7 +211,7 @@ class projectEstimateAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -237,7 +237,7 @@ class projectEstimateAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -268,9 +268,9 @@ class projectEstimateAddEdit extends Component {
             rowSelectedId: [],
             SelectedCurrency: { label: Resources.pleaseSelectCurrency[currentLanguage], value: "0" },
         }
-        this.actions=[{
-            title:'Delete',
-            handleClick:values=>{
+        this.actions = [{
+            title: 'Delete',
+            handleClick: values => {
                 this.CurrencyShowBtn(values);
             }
         }]
@@ -281,15 +281,19 @@ class projectEstimateAddEdit extends Component {
             if (!(Config.IsAllow(592))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(592)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(592)) {
-                    if (this.props.document.status !== false && Config.IsAllow(592)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(592)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(592)) {
+                        if (this.props.document.status !== false && Config.IsAllow(592)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -335,7 +339,7 @@ class projectEstimateAddEdit extends Component {
                     CurrStep: this.state.CurrStep + 1,
                 })
             }
-            else{
+            else {
                 toast.error('This boq not have items choice another boq')
             }
         }
@@ -474,7 +478,8 @@ class projectEstimateAddEdit extends Component {
         )
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -512,10 +517,11 @@ class projectEstimateAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -551,7 +557,7 @@ class projectEstimateAddEdit extends Component {
         return (
             this.state.docId !== 0 ? (
                 Config.IsAllow(3304) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -810,16 +816,16 @@ class projectEstimateAddEdit extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
-                ref='custom-data-grid'
-                key="ProjectEstimateAddEdit"
-                data={this.state.rows}
-                pageSize={this.state.rows.length}
-                groups={[]}
-                actions={this.actions}
-                rowActions={[]}
-                cells={this.state.columns}
-                rowClick={ ()=>{} }
-            />
+                    ref='custom-data-grid'
+                    key="ProjectEstimateAddEdit"
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={this.actions}
+                    rowActions={[]}
+                    cells={this.state.columns}
+                    rowClick={() => { }}
+                />
             ) : <LoadingSection />
 
         let SecondStepItems = () => {
@@ -1044,15 +1050,15 @@ class projectEstimateAddEdit extends Component {
 
                                                                 {this.state.isApproveMode === true ?
                                                                     <div >
-                                                                        <button className="primaryBtn-1 btn " type="button"  onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                        <button className="primaryBtn-2 btn middle__btn"  type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                        <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                        <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
 
 
                                                                     </div>
                                                                     : null
                                                                 }
                                                                 <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                               <button  type="button"     className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                 <span className="border"></span>
                                                                 <div className="document__action--menu">
                                                                     <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

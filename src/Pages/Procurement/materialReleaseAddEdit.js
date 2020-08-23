@@ -360,14 +360,18 @@ class materialReleaseAddEdit extends Component {
             if (!Config.IsAllow(248)) {
                 this.setState({ isViewMode: true })
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(248)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(248)) {
-                    if (this.props.document.status !== false && Config.IsAllow(248)) {
-                        this.setState({ isViewMode: false })
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(248)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(248)) {
+                        if (this.props.document.status !== false && Config.IsAllow(248)) {
+                            this.setState({ isViewMode: false })
+                        }
+                        else { this.setState({ isViewMode: true }) }
                     }
                     else { this.setState({ isViewMode: true }) }
                 }
-                else { this.setState({ isViewMode: true }) }
             }
         }
         else { this.setState({ isViewMode: false }) }
@@ -667,7 +671,7 @@ class materialReleaseAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-    
+
     render() {
 
         let StepOne = () => {
@@ -938,8 +942,8 @@ class materialReleaseAddEdit extends Component {
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources['resourceCode'][currentLanguage]}  </label>
                                                 <div className="inputDev ui input has-success">
-                                                    <input className="form-control"  placeholder={Resources['resourceCode'][currentLanguage]}
-                                                     readOnly value={this.state.ItemDescriptionInfo.resourceCode} />
+                                                    <input className="form-control" placeholder={Resources['resourceCode'][currentLanguage]}
+                                                        readOnly value={this.state.ItemDescriptionInfo.resourceCode} />
                                                 </div>
                                             </div>
 
@@ -1060,7 +1064,7 @@ class materialReleaseAddEdit extends Component {
                         </div>
                         <div className="doc-pre-cycle">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => {this.props.history.push("/materialRelease/2")}}>Finish</button>
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => { this.props.history.push("/materialRelease/2") }}>Finish</button>
                             </div>
                         </div>
                     </div>
@@ -1116,7 +1120,7 @@ class materialReleaseAddEdit extends Component {
                                             <label className="control-label">{Resources['resourceCode'][currentLanguage]}  </label>
                                             <div className="inputDev ui input has-success">
                                                 <input className="form-control" readOnly placeholder={Resources['resourceCode'][currentLanguage]}
-                                                 value={this.state.objItemForEdit.resourceCode} />
+                                                    value={this.state.objItemForEdit.resourceCode} />
                                             </div>
                                         </div>
 

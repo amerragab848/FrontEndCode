@@ -156,15 +156,19 @@ class BaseAddEdit extends Component {
             if (!(Config.IsAllow(579))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(579)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(579)) {
-                    if (this.props.document.status !== false && Config.IsAllow(579)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(579)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(579)) {
+                        if (this.props.document.status !== false && Config.IsAllow(579)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

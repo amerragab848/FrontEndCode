@@ -24,7 +24,7 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
-import Late from '../../Componants/DashBoardDetails/LateTimeSheetAddEdit';
+
 import find from "lodash/find";
 
 var steps_defination = [];
@@ -141,7 +141,7 @@ class inspectionRequestAddEdit extends Component {
             fromContacts: [],
             approvalstatusList: [],
             discplines: [],
-            specsSections:[],
+            specsSections: [],
             letters: [],
             permission: [{ name: 'sendByEmail', code: 372 }, { name: 'sendByInbox', code: 371 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 959 },
@@ -152,7 +152,7 @@ class inspectionRequestAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedspecsSection:{ label: Resources.specsSection[currentLanguage], value: "0" },
+            selectedspecsSection: { label: Resources.specsSection[currentLanguage], value: "0" },
             selectedActionByContactId: { label: Resources.actionByContact[currentLanguage], value: "0" },
             selectedActionByCompanyId: { label: Resources.actionByCompany[currentLanguage], value: "0" },
             selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
@@ -231,19 +231,27 @@ class inspectionRequestAddEdit extends Component {
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(367)) {
-                this.setState({ isViewMode: true });
+                if (Config.getUserTypeIsAdmin() === true) {
+                    this.setState({ isViewMode: false });
+                } else {
+                    this.setState({ isViewMode: true });
+                }
             }
 
-            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
-                    //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(367)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(367)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
+                        //close => false
+                        if (this.props.document.status !== false && Config.IsAllow(367)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -257,7 +265,7 @@ class inspectionRequestAddEdit extends Component {
             this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId, 'inspectionRequest');
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
-              console.log("requestCycles...",result);
+                console.log("requestCycles...", result);
                 this.setState({
                     IRCycles: [...result]
                 });
@@ -266,8 +274,8 @@ class inspectionRequestAddEdit extends Component {
             });
 
             dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {
-                result.cycleStatus=result.status;
-                console.log("lastCycles...",result);
+                result.cycleStatus = result.status;
+                console.log("lastCycles...", result);
                 this.setState({
                     documentCycle: { ...result }
                 });
@@ -305,7 +313,7 @@ class inspectionRequestAddEdit extends Component {
                 resultDate: moment(),
                 reasonForIssueId: ''
             };
-            this.setState({ document: inspectionRequest}, function () {
+            this.setState({ document: inspectionRequest }, function () {
                 this.GetNExtArrange();
             });
             this.fillDropDowns(false);
@@ -512,8 +520,8 @@ class inspectionRequestAddEdit extends Component {
 
     onChangeAnswer = (value) => {
         if (value != null) {
-            value =value.replace('<p>','');
-            value =value.replace(/<\/p>/gm, "");
+            value = value.replace('<p>', '');
+            value = value.replace(/<\/p>/gm, "");
             let original_document = { ...this.state.documentCycle };
             let updated_document = {};
             updated_document['cycleComment'] = value;
@@ -666,7 +674,12 @@ class inspectionRequestAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3312) === true ?
-                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={850} />
+                    <ViewAttachment
+                        isApproveMode={this.state.isViewMode}
+                        docTypeId={this.state.docTypeId}
+                        docId={this.state.docId}
+                        projectId={this.state.projectId}
+                        deleteAttachments={850} />
                     : null)
                 : null
         )
@@ -917,8 +930,6 @@ class inspectionRequestAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-                {/* <Late />
-               <a href="/LateTimeSheet">test</a> */}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />

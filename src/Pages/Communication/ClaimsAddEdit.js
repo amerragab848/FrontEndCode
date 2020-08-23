@@ -12,7 +12,7 @@ import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import Config from "../../Services/Config.js"; 
+import Config from "../../Services/Config.js";
 import moment from "moment";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
@@ -44,7 +44,7 @@ class ClaimsAddEdit extends Component {
 
         super(props);
 
-        const query = new URLSearchParams(this.props.location.search); 
+        const query = new URLSearchParams(this.props.location.search);
         let obj = Config.extractDataFromParamas(query);
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
@@ -112,7 +112,7 @@ class ClaimsAddEdit extends Component {
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'claims');
 
         } else {
-            
+
             let claimsDocument = {
                 subject: '',
                 id: 0,
@@ -130,12 +130,12 @@ class ClaimsAddEdit extends Component {
                 message: '',
                 contractId: ''
             };
-            
+
             this.setState({
                 document: claimsDocument
             });
 
-            this.fillDropDowns(false); 
+            this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
         this.checkDocumentIsView();
@@ -194,15 +194,19 @@ class ClaimsAddEdit extends Component {
             if (!(Config.IsAllow(49))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status !== false && Config.IsAllow(49)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(49)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
+                        if (this.props.document.status !== false && Config.IsAllow(49)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

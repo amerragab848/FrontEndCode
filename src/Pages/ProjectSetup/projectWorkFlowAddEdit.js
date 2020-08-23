@@ -22,7 +22,7 @@ import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
- 
+
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
@@ -256,15 +256,19 @@ class projectWorkFlowAddEdit extends Component {
             if (!(Config.IsAllow(601))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(601)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(601)) {
-                    if (this.props.document.status !== false && Config.IsAllow(601)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(601)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(601)) {
+                        if (this.props.document.status !== false && Config.IsAllow(601)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

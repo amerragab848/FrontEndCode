@@ -90,7 +90,7 @@ class TaskGroupsAddEdit extends Component {
                 index++;
             }
         }
-  const columnsGrid = [
+        const columnsGrid = [
             {
                 field: 'arrange',
                 title: Resources['numberAbb'][currentLanguage],
@@ -155,10 +155,10 @@ class TaskGroupsAddEdit extends Component {
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 951 },
             { name: 'createTransmittal', code: 3037 }, { name: 'sendToWorkFlow', code: 783 }]
         }
-        this.rowActions=[
+        this.rowActions = [
             {
-                title:"Delete",
-                handleClick:value=>{
+                title: "Delete",
+                handleClick: value => {
                     this.DeleteContact(value.id)
                 }
             }
@@ -267,11 +267,11 @@ class TaskGroupsAddEdit extends Component {
 
     DeleteContact = (rowId) => {
         // if (index === undefined) {
-            this.setState({
-                showDeleteModal: true,
-                rowId: rowId,
-                DeleteFromLog: true
-            })
+        this.setState({
+            showDeleteModal: true,
+            rowId: rowId,
+            DeleteFromLog: true
+        })
         // }
         // else {
         //     this.setState({
@@ -419,15 +419,19 @@ class TaskGroupsAddEdit extends Component {
             if (!(Config.IsAllow(775))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(775)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(775)) {
-                    if (this.props.document.status != false && Config.IsAllow(775)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(775)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(775)) {
+                        if (this.props.document.status != false && Config.IsAllow(775)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }
@@ -536,16 +540,16 @@ class TaskGroupsAddEdit extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
-                ref='custom-data-grid'
-                key='TaskGroupAddEdit'
-                data={this.state.rows}
-                pageSize={this.state.rows.length}
-                groups={[]}
-                actions={[]}
-                rowActions={this.rowActions}
-                cells={this.state.columns}
-                rowClick={() => { }}
-              />
+                    ref='custom-data-grid'
+                    key='TaskGroupAddEdit'
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={[]}
+                    rowActions={this.rowActions}
+                    cells={this.state.columns}
+                    rowClick={() => { }}
+                />
             ) : <LoadingSection />
 
         const RenderAddContact = () => {
@@ -846,45 +850,45 @@ class TaskGroupsAddEdit extends Component {
                             </div>
                             : null
                     } */}
-                     {this.props.changeStatus === true ? (
-                                                        <div className="approveDocument">
-                                                            <div className="approveDocumentBTNS">
-                                                                {this.state.isLoading ? (
-                                                                    <button className="primaryBtn-1 btn disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
-                                                                        </div>
-                                                                    </button>
-                                                                ) : (
-                                                                        <button
-                                                                            className={this.state.isViewMode === true
-                                                                                ? "primaryBtn-1 btn middle__btn disNone"
-                                                                                : "primaryBtn-1 btn middle__btn"
-                                                                            }>
-                                                                            {
-                                                                                Resources.save[currentLanguage]
-                                                                            }
-                                                                        </button>
-                                                                    )}
-                                                                <DocumentActions
-                                                                    isApproveMode={this.state.isApproveMode}
-                                                                    docTypeId={this.state.docTypeId}
-                                                                    docId={this.state.docId}
-                                                                    projectId={this.state.projectId}
-                                                                    previousRoute={this.state.previousRoute}
-                                                                    docApprovalId={this.state.docApprovalId}
-                                                                    currentArrange={this.state.arrange}
-                                                                     //showModal={this.props.showModal}
-                                                                    showModal={true}
-                                                                    showOptionPanel={this.showOptionPanel}
-                                                                    permission={this.state.permission}
-                                                                    documentName="TaskGroup"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    ) : null}
+                    {this.props.changeStatus === true ? (
+                        <div className="approveDocument">
+                            <div className="approveDocumentBTNS">
+                                {this.state.isLoading ? (
+                                    <button className="primaryBtn-1 btn disabled">
+                                        <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                        </div>
+                                    </button>
+                                ) : (
+                                        <button
+                                            className={this.state.isViewMode === true
+                                                ? "primaryBtn-1 btn middle__btn disNone"
+                                                : "primaryBtn-1 btn middle__btn"
+                                            }>
+                                            {
+                                                Resources.save[currentLanguage]
+                                            }
+                                        </button>
+                                    )}
+                                <DocumentActions
+                                    isApproveMode={this.state.isApproveMode}
+                                    docTypeId={this.state.docTypeId}
+                                    docId={this.state.docId}
+                                    projectId={this.state.projectId}
+                                    previousRoute={this.state.previousRoute}
+                                    docApprovalId={this.state.docApprovalId}
+                                    currentArrange={this.state.arrange}
+                                    //showModal={this.props.showModal}
+                                    showModal={true}
+                                    showOptionPanel={this.showOptionPanel}
+                                    permission={this.state.permission}
+                                    documentName="TaskGroup"
+                                />
+                            </div>
+                        </div>
+                    ) : null}
 
                     <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>

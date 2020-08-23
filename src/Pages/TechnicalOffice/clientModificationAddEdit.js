@@ -210,15 +210,19 @@ class clientModificationAddEdit extends Component {
             if (!(Config.IsAllow(3134))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(3134)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(3134)) {
-                    if (this.props.document.status !== false && Config.IsAllow(3134)) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(3134)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(3134)) {
+                        if (this.props.document.status !== false && Config.IsAllow(3134)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         }

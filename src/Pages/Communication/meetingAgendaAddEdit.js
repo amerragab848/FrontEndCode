@@ -84,7 +84,7 @@ steps_defination = [
 class meetingAgendaAddEdit extends Component {
     constructor(props) {
         super(props);
-        const query = new URLSearchParams(this.props.location.search); 
+        const query = new URLSearchParams(this.props.location.search);
         let obj = Config.extractDataFromParamas(query);
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
@@ -298,18 +298,22 @@ class meetingAgendaAddEdit extends Component {
             if (!Config.IsAllow(453)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode !== true && Config.IsAllow(453)) {
-                if (this.props.hasWorkflow === false && Config.IsAllow(453)) {
-                    if (
-                        this.props.document.status !== false &&
-                        Config.IsAllow(453)
-                    ) {
-                        this.setState({ isViewMode: false });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode !== true && Config.IsAllow(453)) {
+                    if (this.props.hasWorkflow === false && Config.IsAllow(453)) {
+                        if (
+                            this.props.document.status !== false &&
+                            Config.IsAllow(453)
+                        ) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
@@ -870,7 +874,7 @@ class meetingAgendaAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
- 
+
     _executeBeforeModalClose = () => {
         this.setState({
             showPopUp: false,
@@ -916,7 +920,7 @@ class meetingAgendaAddEdit extends Component {
                     actions={this.actions}
                     cells={this.topicColumns}
                     rowActions={this.rowActions}
-                    rowClick={(row,cell) => {
+                    rowClick={(row, cell) => {
                         let id = cell.id;
                         if (!Config.IsAllow(11)) {
                             toast.warning("you don't have permission");

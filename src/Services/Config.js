@@ -45,6 +45,10 @@ export default class Config {
         var payload = window.localStorage.getItem("claims") ? CryptoJS.enc.Base64.parse(window.localStorage.getItem("claims")).toString(CryptoJS.enc.Utf8) : "";
         return payload ? JSON.parse(payload) : {};
     }
+    static getUserTypeIsAdmin() {
+        var payload = window.localStorage.getItem("claims") ? CryptoJS.enc.Base64.parse(window.localStorage.getItem("claims")).toString(CryptoJS.enc.Utf8) : "";
+        return payload ? JSON.parse(payload).uty == 'company' ? true : false : false;
+    }
 
     static IsAuthorized() {
         let authorize = false;

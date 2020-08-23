@@ -231,11 +231,15 @@ class tenderAnalysisAddEdit extends Component {
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(570)) this.setState({ isViewMode: true });
-            if (this.state.isApproveMode != true && Config.IsAllow(570)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(570)) {
-                    if (this.props.document.status !== false && Config.IsAllow(570)) this.setState({ isViewMode: false });
-                    else this.setState({ isViewMode: true });
-                } else this.setState({ isViewMode: true });
+            if (Config.getUserTypeIsAdmin() === true) {
+                this.setState({ isViewMode: false });
+            } else {
+                if (this.state.isApproveMode != true && Config.IsAllow(570)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(570)) {
+                        if (this.props.document.status !== false && Config.IsAllow(570)) this.setState({ isViewMode: false });
+                        else this.setState({ isViewMode: true });
+                    } else this.setState({ isViewMode: true });
+                }
             }
         } else this.setState({ isViewMode: false });
     }
