@@ -160,7 +160,7 @@ class boqStructure extends Component {
                 //item.collapse = item.id != parentId ? true : item.collapse; 
             }
             updateTrees.push(item);
-            if (item.trees.length > 0) {
+            if (item.trees &&item.trees.length > 0) {
                 this.search(id, item.trees, updateTrees, parentId);
             }
         });
@@ -352,8 +352,8 @@ class boqStructure extends Component {
         else {
             let data = this.state.trees
             if (this.state.IsEditMode) {
-                data.filter(s => s.id !== SelectedNode.id)
-                data.push(NewNode)
+                data= data.filter(s => s.id !== SelectedNode.id)
+                 data.push(NewNode)
             }
 
             else {
@@ -536,7 +536,7 @@ class boqStructure extends Component {
                                                 </div>
                                             </div>
                                             <div className="epsContent">
-                                                {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                                                {item.trees?item.trees.length > 0 ? this.printChild(item.trees) : null:null}
                                             </div>
                                         </Fragment>
                                     )
