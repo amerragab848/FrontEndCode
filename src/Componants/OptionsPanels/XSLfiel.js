@@ -46,7 +46,28 @@ class XSLfile extends Component {
         }, 500)
         this.setState({ acceptedFiles })
     }
+    documentTemplateUpload= () => { 
+        if (this.state.acceptedFiles.length > 0) {
+            let formData = new FormData();
+            let file = this.state.acceptedFiles[0]
+            formData.append("file0", file)
+            let docType = this.props.docType;
+            let header = { 'docType': docType }
+            this.setState({ Isloading: true })
+            Api.postFile("UploadExcelFilesTemplate?projectId=" + this.props.projectId, formData, header).then(resp => {
+                if (this.props.afterUpload != undefined) {
+                    this.setState({ Isloading: false }) 
+                    this.props.afterUpload() 
+                }
+                setTimeout(() => {
+                    this.setState({ _className: "zeropercent", Isloading: false })
+                }, 1000)
 
+            }).catch((ex) => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            })
+        }
+    }
     upload = () => {
         if (this.state.acceptedFiles.length > 0) {
             let formData = new FormData();
@@ -170,7 +191,14 @@ class XSLfile extends Component {
                                             <div className="bounce3" />
                                         </div>
                                     </button>
-                                    : <button className={"primaryBtn-1 btn smallBtn " + (this.props.disabled ? 'disabled' : '')} disabled={this.props.disabled ? 'disabled' : ''} onClick={this.props.CustomUpload ? this.CustomUpload : this.upload}>{Resources['upload'][currentLanguage]}</button>} </div>
+                                    : <button 
+                                    className={"primaryBtn-1 btn smallBtn " + (this.props.disabled ? 'disabled' : '')} 
+                                    disabled={this.props.disabled ? 'disabled' : ''} 
+
+                                    onClick={this.props.documentTemplate ? this.documentTemplateUpload : (this.props.CustomUpload ? this.CustomUpload : this.upload)}>
+                                        
+                                    {Resources['upload'][currentLanguage]}</button>} 
+                                    </div>
                     
                     </React.Fragment>
                     </div>

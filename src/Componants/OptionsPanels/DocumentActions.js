@@ -31,6 +31,8 @@ const importedPaths = [
         title: "createVO", path: "./CreateVO", value: 10
     }, {
         title: "previousVersions", path: "./PreviousVersions", value: 11
+    }, {
+        title: "DocTemplate", path: "./DocumentTemplate", value: 12
     }
 ]
 
@@ -123,7 +125,7 @@ class DocumentActions extends Component {
 
     componentDidMount = () => {
         ///fillter importedPath array to fill dropdowns (actions) with coorect panels bassed on permmsion given from props  (without reject,approved,workFlow anddistribution panels)
-        let dropActions = importedPaths.slice(4, 12);
+        let dropActions = importedPaths.slice(4, 13);
         let allowActions = [];
         dropActions.map(i => {
             if (this.IsAllow(i.title)) {
@@ -184,7 +186,8 @@ class DocumentActions extends Component {
                          || this.IsAllow(importedPaths[9]['title'])
                          || this.IsAllow(importedPaths[10]['title']) 
                          || this.IsAllow(importedPaths[8]['title'])
-                         || this.IsAllow(importedPaths[11]['title']) ?
+                         || this.IsAllow(importedPaths[11]['title'])
+                         || this.IsAllow(importedPaths[12]['title']) ?
                             <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={item => this.handleShowAction(importedPaths[item.value])}
                                 index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
                             : null}

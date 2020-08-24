@@ -636,7 +636,7 @@
     "companyTypeRequired": {
         "en": "select Company Type",
         "ar": "من فضلك اختر مجال الشركة"
-    }, 
+    },
     "rateValueRequired": {
         "en": "Please enter a valid salary",
         "ar": "من فضلك ادخل قيمة مرتب سليمة"
@@ -1184,7 +1184,7 @@
     "prevoiuseTotalAmount": {
         "en": "Previous Total Amount",
         "ar": "اجمالى القيمة"
-    }, 
+    },
     "quantityChange": {
         "en": "Change Quantity",
         "ar": "تعديل الكمية"
@@ -1560,7 +1560,7 @@
     "companyType": {
         "en": "Company Type",
         "ar": "مجال الشركة"
-    }, 
+    },
     "discipline": {
         "en": "Discipline",
         "ar": "نطاق اعمال الشركه"
@@ -7833,6 +7833,10 @@
         "en": "Previous Versions",
         "ar": "النسخ السابقة"
     },
+    "DocTemplate": {
+        "en": "Document Template",
+        "ar": "قالب للمستند "
+    },
     "addAnthorContact": {
         "en": "Add Anthor Contact",
         "ar": "اضافة عميل اخر"
@@ -8557,7 +8561,6 @@
         "en": "Contractor Ref Number",
         "ar": "Contractor Ref Number"
     },
-
     "CostControlTreeReport": {
         "en": "Cost Control Tree Report",
         "ar": "تقرير شجرة تحكم التكلفة"
