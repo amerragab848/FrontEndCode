@@ -95,6 +95,8 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = false;
 let docApprovalId = 0;
+let docAlertId = 0;
+
 let perviousRoute = '';
 let arrange = 0;
 class inspectionRequestAddEdit extends Component {
@@ -114,6 +116,7 @@ class inspectionRequestAddEdit extends Component {
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
+                    docAlertId = obj.docAlertId;
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
@@ -131,8 +134,10 @@ class inspectionRequestAddEdit extends Component {
             isView: false,
             docId: docId,
             docTypeId: 25,
+            docAlertId:0,
             projectId: projectId,
             docApprovalId: docApprovalId,
+            docAlertId : docAlertId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             documentCycle: {},
@@ -146,7 +151,8 @@ class inspectionRequestAddEdit extends Component {
             permission: [{ name: 'sendByEmail', code: 372 }, { name: 'sendByInbox', code: 371 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 959 },
             { name: 'createTransmittal', code: 3045 }, { name: 'sendToWorkFlow', code: 710 },
-            { name: 'viewAttachments', code: 3312 }, { name: 'deleteAttachments', code: 850 }],
+            { name: 'viewAttachments', code: 3312 }, { name: 'deleteAttachments', code: 850 },
+            { name: "previousVersions", code: 8080800 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -1272,6 +1278,9 @@ class inspectionRequestAddEdit extends Component {
                                                                                 projectId={this.state.projectId}
                                                                                 previousRoute={this.state.previousRoute}
                                                                                 docApprovalId={this.state.docApprovalId}
+                                                                              
+                                                                                docAlertId={this.state.docAlertId}
+
                                                                                 currentArrange={this.state.arrange}
                                                                                 showModal={this.props.showModal}
                                                                                 showOptionPanel={this.showOptionPanel}

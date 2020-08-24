@@ -114,8 +114,7 @@ class DashBoard extends Component {
             widgetOrders,
             selected
         });
-    }
-
+    } 
     // category map to number 
     openCategory(category, type) {
         this.setState({ showWidgets: false });
@@ -308,7 +307,7 @@ class DashBoard extends Component {
 
     render() {
 
-        let widgetCurrentOrder = this.state.showWidgets && this.state.widgetOrders[1] ? this.state.widgetOrders[this.state.type][this.state.category].order : null;
+        //let widgetCurrentOrder = this.state.showWidgets && this.state.widgetOrders[1] ? this.state.widgetOrders[this.state.type][this.state.category].order : null;
 
         let orderhavePermission = [];
 
@@ -316,7 +315,7 @@ class DashBoard extends Component {
             this.state.types[this.state.type - 1].categories.find(category => category.id === this.state.category).widgets.map((widget, index) => {
                 if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                     let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
-                    
+
                     orderhavePermission.push(widget.order.toString());
 
                     return (

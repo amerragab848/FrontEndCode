@@ -99,6 +99,8 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let docAlertId = 0;
+
 let perviousRoute = '';
 let arrange = 0;
 const find = require('lodash/find')
@@ -119,6 +121,7 @@ class materialInspectionRequestAddEdit extends Component {
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
+                    docAlertId = obj.docAlertId;
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
@@ -135,9 +138,11 @@ class materialInspectionRequestAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
+            docAlertId:0,
             docTypeId: 103,
             projectId: projectId,
             docApprovalId: docApprovalId,
+            docAlertId:docAlertId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             documentCycle: {},
@@ -152,7 +157,8 @@ class materialInspectionRequestAddEdit extends Component {
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 },
+            { name: "previousVersions", code: 8080800 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -1296,6 +1302,9 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 projectId={this.state.projectId}
                                                                                 previousRoute={this.state.previousRoute}
                                                                                 docApprovalId={this.state.docApprovalId}
+                                                                                 
+                                                                                docAlertId={this.state.docAlertId}
+
                                                                                 currentArrange={this.state.arrange}
                                                                                 showModal={this.props.showModal}
                                                                                 showOptionPanel={this.showOptionPanel}

@@ -37,6 +37,8 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let docAlertId = 0;
+ 
 let perviousRoute = '';
 let arrange = 0;
 
@@ -58,6 +60,7 @@ class TransmittalAddEdit extends Component {
             projectName = obj.projectName;
             isApproveMode = obj.isApproveMode;
             docApprovalId = obj.docApprovalId;
+            docAlertId = obj.docAlertId;
             arrange = obj.arrange;
             perviousRoute = obj.perviousRoute;
         }
@@ -73,6 +76,9 @@ class TransmittalAddEdit extends Component {
             docTypeId: 28,
             projectId: projectId,
             docApprovalId: docApprovalId,
+            docAlertId:docAlertId,
+            
+            docAlertId: 0,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
@@ -91,7 +97,9 @@ class TransmittalAddEdit extends Component {
             { name: 'createTransmittal', code: 3027 },
             { name: 'sendToWorkFlow', code: 1025 },
             { name: 'viewAttachments', code: 3327 },
-            { name: 'deleteAttachments', code: 824 }],
+            { name: 'deleteAttachments', code: 824 },
+        
+            { name: "previousVersions", code: 8080800 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -780,7 +788,8 @@ class TransmittalAddEdit extends Component {
                                                                     docId={this.state.docId}
                                                                     projectId={this.state.projectId}
                                                                     previousRoute={this.state.previousRoute}
-                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    docApprovalId={this.state.docApprovalId} 
+                                                                    docAlertId={this.state.docAlertId}
                                                                     currentArrange={this.state.arrange}
                                                                     showModal={this.props.showModal}
                                                                     showOptionPanel={this.showOptionPanel}

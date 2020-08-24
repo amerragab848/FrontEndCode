@@ -18,6 +18,7 @@ import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument"
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
+
 const validationSchema = Yup.object().shape({
     email: Yup.string().max(50, Resources['maxLength'][currentLanguage]).email(Resources['emailFormat'][currentLanguage]).required(Resources['emailRequired'][currentLanguage]),
     titleEnCompany: Yup.string().max(50, Resources['maxLength'][currentLanguage]).test('titleEnCompany', 'Name cannot be arabic', value => {
@@ -53,6 +54,7 @@ const validationSchemaForEdit = Yup.object().shape({
 })
 
 class AddEditCompany extends Component {
+  
     constructor(props) {
         super(props);
 

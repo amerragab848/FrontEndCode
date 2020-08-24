@@ -7833,6 +7833,10 @@
         "en": "Create VO",
         "ar": "إنشاء تغيير عقد المقترحة"
     },
+    "previousVersions": {
+        "en": "Previous Versions",
+        "ar": "النسخ السابقة"
+    },
     "addAnthorContact": {
         "en": "Add Anthor Contact",
         "ar": "اضافة عميل اخر"
