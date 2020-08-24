@@ -39,7 +39,15 @@ class Britecharts extends Component {
         <ResponsiveContainer
             render={
                 ({ width }) =>
-                    <ResponsiveLineChart margin={marginObject} lineCurve="basis" height={400} width={width} colorSchema={colorSchema} grid='horizontal' {...props} />
+                    <ResponsiveLineChart
+                        margin={marginObject}
+                        lineCurve="basis"
+                        height={400}
+                        width={width}
+                        colorSchema={colorSchema}
+                        grid='horizontal'
+                        shouldShowLoadingState={this.state.data.dataByTopic.length > 0 ? false : true}
+                        {...props} />
             }
         />
     );

@@ -18,6 +18,7 @@ const colorSchema = ["#39bd3d", "#dfe2e6"];
 const colorSchemaGroup = ["#90ED7D", "#f45b4f", "#95ceff", "#90000f"];
 
 class BarChartComp extends Component {
+
   constructor(props) {
     super(props);
 
@@ -70,8 +71,10 @@ class BarChartComp extends Component {
       <div className="col-md-12">
         <div className="panel barChart__container">
           <div className="panel-body">
-            {this.state.groupedBarData.length > 0 ? (
-              <ResponsiveContainer
+            <h2>
+              {this.props.title}
+            </h2>
+               <ResponsiveContainer
                 render={({ width }) => (
                   <div className="group__charts">
                     <GroupedBar
@@ -81,12 +84,12 @@ class BarChartComp extends Component {
                       nameLabel="name"
                       valueLabel="total"
                       colorSchema={colorSchemaGroup}
+                      shouldShowLoadingState={this.state.groupedBarData.length == 0 ? false : true}
                     />
                   </div>
                 )}
               />
-            ) : null}
-          </div>
+           </div>
         </div>
       </div>
     );
@@ -97,6 +100,9 @@ class BarChartComp extends Component {
       <div className="col-md-12">
         <div className="panel barChart__container">
           <div className="panel-body">
+            <h2>
+              {this.props.title}
+            </h2>
             <ResponsiveContainer
               render={({ width }) => (
                 <div>
@@ -125,6 +131,9 @@ class BarChartComp extends Component {
       <div className="col-md-12">
         <div className="panel barChart__container">
           <div className="panel-body">
+            <h2>
+              {this.props.title}
+            </h2>
             <ResponsiveContainer
               render={({ width }) => (
                 <div>
@@ -147,13 +156,8 @@ class BarChartComp extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.multiSeries !== "no"
-          ? this.renderGroupedBar()
-          : this.state.isLoading == false
-            ? this.props.isStack
-              ? this.renderStackedBar()
-              : this.renderBar()
-            : null}
+        {this.props.multiSeries !== "no" ? this.renderGroupedBar() :
+          this.state.isLoading == false ? this.props.isStack ? this.renderStackedBar() : this.renderBar() : null}
       </Fragment>
     );
   }

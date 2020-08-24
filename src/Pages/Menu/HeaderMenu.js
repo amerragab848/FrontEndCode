@@ -83,6 +83,7 @@ const dashboardMenu = {
 };
 
 class HeaderMenu extends Component {
+
   constructor(props) {
     super(props);
 
@@ -121,35 +122,42 @@ class HeaderMenu extends Component {
 
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
+
+    this._isMounted = false;
   }
 
   componentDidMount = () => {
+    this._isMounted = true;
+    this._isMounted && this.fillData(); 
+  };
+
+  fillData() {
     dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "projectId").then(result => {
-      this.setState({
+      this._isMounted &&  this.setState({
         projects: result
       });
     });
 
     dataservice.GetDataGrid("GetNotificationPostit").then(result => {
-      this.setState({
+      this._isMounted &&  this.setState({
         notifications: result
       });
     });
 
     dataservice.GetDataGrid("GetMyNotifcations").then(result => {
-      this.setState({
+      this._isMounted &&  this.setState({
         taskes: result
       });
     });
 
     if (this.props.location.pathname === "/LeftReportMenu") {
       setTimeout(() => {
-        this.setState({
+        this._isMounted &&   this.setState({
           activeTabs: 2
         })
       }, 500);
     } else if (this.props.location.pathname === "/TemplatesSettings") {
-      setTimeout(() => {
+      this._isMounted &&  setTimeout(() => {
         this.setState({
           activeTabs: 1
         })
@@ -157,13 +165,12 @@ class HeaderMenu extends Component {
 
     } else {
       setTimeout(() => {
-        this.setState({
+        this._isMounted &&  this.setState({
           activeTabs: 0
         })
       }, 500);
     }
-
-  };
+  }
 
   openProfile = () => {
     if (!this.state.activeClass) {
@@ -1138,6 +1145,7 @@ class HeaderMenu extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.props.actions.clearCashDocument();
   }
 
@@ -1418,6 +1426,16 @@ class HeaderMenu extends Component {
                         <div className="item">
                           <Link to="/PrivacySetting" className="item-content">
                             {Resources["privacySettings"][currentLanguage]}
+                          </Link>
+                        </div>
+                        <div className="item">
+                          <Link to="/IMAPConfiguration" className="item-content">
+                            {Resources["imapConfigurationSettings"][currentLanguage]}
+                          </Link>
+                        </div>
+                        <div className="item">
+                          <Link to="/imapEmails/false" className="item-content">
+                            {Resources["email"][currentLanguage]}
                           </Link>
                         </div>
                         <div className="item" onClick={event => this.setState({ clearSettings: true })} >

@@ -70,11 +70,11 @@ class BarChartComp extends Component {
                 render={
                     ({ width }) =>
                         <Bar
-                           e isHorizontal={false}
+                            isHorizontal={false}
                             margin={marginObject}
                             colorSchema={colorSchema}
                             width={width}
-                            shouldShowLoadingState={this.state.barData.length ? false : true}
+                            shouldShowLoadingState={this.state.barData.length == 0 ? false : true}
                             {...props}
                         />
                 }
@@ -101,7 +101,7 @@ class BarChartComp extends Component {
                                                         nameLabel='name'
                                                         valueLabel='total'
                                                         colorSchema={colorSchema}
-                                                        shouldShowLoadingState={this.state.groupedBarData.length ? false : true} />
+                                                        shouldShowLoadingState={this.state.groupedBarData.length == 0 ? false : true} />
                                                 </div>
                                         }
                                     />

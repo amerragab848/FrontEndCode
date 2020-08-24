@@ -430,7 +430,7 @@ var widgets = [
         topicNames: ['Opened', 'Closed'],
         type: 'line'
       }, {
-        id: 'wt-Name7', 
+        id: 'wt-Name7',
         checked: false,
         permission: 3497,
         order: 7,
@@ -447,7 +447,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, {
-        id: 'wt-Name8', 
+        id: 'wt-Name8',
         checked: false,
         permission: 10039,
         order: 8,
@@ -458,7 +458,7 @@ var widgets = [
         topicNames: ['Opened', 'Closed'],
         type: 'line'
       }, {
-        id: 'wt-Name09', 
+        id: 'wt-Name09',
         checked: false,
         permission: 3499,
         order: 9,
@@ -475,7 +475,22 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, {
-        id: 'wt-Name10', 
+        id: 'wt-Name11',
+        checked: false,
+        permission: 3505,
+        order: 11,
+        title: 'contractsPerProject',
+        props: {
+          'api': 'GetTopFiveContracts'
+        },
+        type: 'column',
+        yTitle: 'total',
+        catagName: 'projectName',
+        multiSeries: 'yes',
+        barContent: [{ name: 'Contracted', value: 'percentageContract' }, { name: 'Contracts Under Review', value: 'countUnderContract' }]
+
+      }, {
+        id: 'wt-Name10',
         checked: false,
         permission: 10043,
         order: 10,
@@ -492,42 +507,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       }, {
-        id: 'wt-Name11', 
-        checked: false,
-        permission: 3505,
-        order: 11,
-        title: 'contractsPerProject',
-        props: {
-          'api': 'GetTopFiveContracts',
-          'name': 'docName',
-          'data': 'count'
-        },
-        type: 'column',
-        stack: '',
-        yTitle: 'total',
-        catagName: 'projectName',
-        multiSeries: 'yes',
-        barContent: [{ name: 'Contracted', value: 'percentageContract' }, { name: 'Contracts Under Review', value: 'countUnderContract' }]
-
-      }, {
-        id: 'wt-Name12', 
-        checked: false,
-        title: 'budgetVariance',
-        permission: 3509,
-        order: 12,
-        props: {
-          'api': 'GetTopFiveBudgetVariance',
-          'name': 'projectName',
-          'data': 'total'
-        },
-        type: 'column',
-        stack: '',
-        yTitle: 'total',
-        catagName: 'expenseTypeName',
-        multiSeries: 'yes',
-        barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
-      }, {
-        id: 'wt-Name13', 
+        id: 'wt-Name13',
         checked: false,
         permission: 10040,
         order: 13,
@@ -537,12 +517,26 @@ var widgets = [
         },
         topicNames: ['Opened', 'Closed'],
         type: 'line'
+      }, {
+        id: 'wt-Name12',
+        checked: false,
+        title: 'budgetVariance',
+        permission: 3509,
+        order: 12,
+        props: {
+          'api': 'GetTopFiveBudgetVariance'
+        },
+        type: 'column',
+        yTitle: 'actual',
+        catagName: 'expenseTypeName',
+        multiSeries: 'yes',
+        barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
       }
     ]
   },
   {
     widgetCategory: "risk",
-    refrence: 0, 
+    refrence: 0,
     canView: false,
     checked: false,
     order: 4,
@@ -550,7 +544,7 @@ var widgets = [
       {
         id: 'wt-riskStatus01',
         checked: false,
-        permission: 1377, 
+        permission: 1377,
         title: 'riskStatus',
         order: 1,
         props: {
@@ -562,7 +556,7 @@ var widgets = [
         seriesName: "riskStatus"
       }, {
         id: 'wt-riskPeriority02',
-        permission: 3500, 
+        permission: 3500,
         checked: false,
         title: 'riskPeriority',
         order: 2,
@@ -574,7 +568,7 @@ var widgets = [
         type: 'pie',
         seriesName: "riskPeriority"
       }, {
-        id: 'wt-riskType03', 
+        id: 'wt-riskType03',
         checked: false,
         permission: 3507,
         title: 'riskType',
@@ -600,7 +594,7 @@ var widgets = [
       {
         title: "monthlyPo",
         permission: 0,
-         canView: false,
+        canView: false,
         checked: false,
         order: 1,
         type: "oneWidget",
@@ -612,7 +606,7 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-         }
+        }
       },
       {
         title: "materialRequestcount",
@@ -629,7 +623,7 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-         }
+        }
       },
       {
         title: "rejectedTimeSheet",
@@ -646,7 +640,7 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-         }
+        }
       },
       {
         title: "monthlyPaymentRequisitions",
@@ -702,7 +696,7 @@ var widgets = [
       {
         title: "pendingExpenses",
         permission: 0,
-         canView: false,
+        canView: false,
         checked: false,
         order: 8,
         type: "oneWidget",
@@ -933,11 +927,11 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }, {
         title: "avgRespondTimeTransmittals",
-        permission: 3515, 
+        permission: 3515,
         canView: false,
         checked: false,
         order: 2,
@@ -954,7 +948,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeIR",
-        permission: 10044, 
+        permission: 10044,
         canView: false,
         checked: false,
         order: 3,
@@ -1005,7 +999,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeSubmittals",
-        permission: 10046, 
+        permission: 10046,
         canView: false,
         checked: false,
         order: 6,
@@ -1022,7 +1016,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimePO",
-        permission: 10047, 
+        permission: 10047,
         canView: false,
         checked: false,
         order: 7,
@@ -1034,7 +1028,7 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }
     ]
@@ -1048,7 +1042,7 @@ var widgets = [
     widgets: [
       {
         title: "materialRequestcount",
-        permission: 3343, 
+        permission: 3343,
         canView: false,
         checked: false,
         order: 1,
@@ -1060,11 +1054,11 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }, {
         title: "inspectionRequestCount",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 2,
@@ -1076,11 +1070,11 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }, {
         title: "NCRCount",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 3,
@@ -1092,11 +1086,11 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }, {
         title: "siteInstructionsCount",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 4,
@@ -1108,7 +1102,7 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }
     ]
@@ -1122,7 +1116,7 @@ var widgets = [
     widgets: [
       {
         title: "InvoicesForPOCount",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 1,
@@ -1134,11 +1128,11 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }, {
         title: "projectInventory",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 2,
@@ -1150,7 +1144,7 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
+          isModal: false,
         }
       }
     ]
@@ -1162,7 +1156,7 @@ var widgets = [
     checked: false,
     order: 1,
     widgets: [
-      { 
+      {
         checked: false,
         permission: 0,
         order: 1,
@@ -1179,7 +1173,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       },
-      { 
+      {
         checked: false,
         permission: 0,
         order: 2,
@@ -1197,7 +1191,7 @@ var widgets = [
         barContent: []
       },
       {
-        id: 'wt-Name7', 
+        id: 'wt-Name7',
         checked: false,
         permission: 0,
         order: 3,
@@ -1215,7 +1209,7 @@ var widgets = [
         barContent: []
       },
       {
-        id: 'wt-Name09', 
+        id: 'wt-Name09',
         checked: false,
         permission: 0,
         order: 4,
@@ -1232,7 +1226,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       },
-      { 
+      {
         checked: false,
         permission: 0,
         order: 5,
@@ -1249,7 +1243,7 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       },
-      { 
+      {
         checked: false,
         permission: 0,
         order: 6,
@@ -1266,15 +1260,13 @@ var widgets = [
         multiSeries: 'no',
         barContent: []
       },
-      { 
+      {
         checked: false,
         permission: 0,
         order: 7,
         title: 'contractsSummaryAllProjectProject',
         props: {
-          'api': 'GetTopFiveContractsForAllProjects',
-          'name': 'docName',
-          'data': 'count'
+          'api': 'GetTopFiveContractsForAllProjects' 
         },
         type: 'column',
         stack: '',

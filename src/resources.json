@@ -7533,6 +7533,10 @@
         "en": "Add Material Release",
         "ar": "صرف المواد "
     },
+    "portRequired":{
+        "en": "Port Required",
+        "ar": "Port Required"
+    },
     "executiveSummary": {
         "en": "Executive Summary ",
         "ar": " المشاريع التنفيذية "
