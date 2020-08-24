@@ -33,18 +33,16 @@ class BarChartCompJS extends Component {
 
     componentDidMount = () => {
 
-        this._isMounted = true;
-        //this._isMounted &&
-
+        this._isMounted = true; 
         if (this.props.multiSeries === 'no') {
-            this._isMounted &&   this.setState({
+            this._isMounted && this.setState({
                 isLoadingBar: true
             });
         } else {
-            this._isMounted &&     this.setState({
+            this._isMounted && this.setState({
                 isLoadingGrouped: true
             });
-        }
+        } 
 
         if (this.props.reports == undefined) {
             Api.get(this.props.api).then(results => {
@@ -98,7 +96,7 @@ class BarChartCompJS extends Component {
             barContainer.datum(BarData.data).call(barChart);
             barContainer = d3.select('.js-bar-chart-container-tooltip-container.' + this.props.ukey + ' .metadata-group');
             barContainer.datum([]).call(chartBarTooltip);
-            this._isMounted &&   this.setState({
+            this._isMounted && this.setState({
                 isLoadingBar: false
             });
 
@@ -160,12 +158,16 @@ class BarChartCompJS extends Component {
             tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey + '.metadata-group');
             tooltipContainer.datum([]).call(chartTooltip);
 
-            this._isMounted &&   this.setState({
+            this._isMounted && this.setState({
                 isLoadingGrouped: true,//results.length > 0 ? false :
                 groupedBarData: groupedBarData,
                 //xAxis: xAxis
             });
         }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {
