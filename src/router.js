@@ -598,6 +598,12 @@ const BaseAddEdit = AsyncComponent(() =>
 const PrivacySetting = AsyncComponent(() =>
     import('../src/Componants/User/PrivacySetting'),
 );
+const IMAPConfiguration =  AsyncComponent(() =>
+import('../src/Componants/User/IMAPConfigurationSettings'),
+);
+const IMAPEmails =  AsyncComponent(() =>
+import('../src/Componants/User/IMAPEmail'),
+);
 const ProfileSetting = AsyncComponent(() =>
     import('../src/Componants/User/index'),
 );
@@ -722,6 +728,8 @@ let originalRoutes = [
         component={PendingExpensesDetails}
     />,
     <Route key="r-21" path="/PrivacySetting" component={PrivacySetting} />,
+    <Route key="r-21" path="/IMAPConfiguration" component={IMAPConfiguration} />,
+    <Route key="r-21" path="/imapEmails/:status" component={IMAPEmails} />,
     <Route key="r-22" path="/Companies/" component={Companies} />,
     <Route
         key="r-24"

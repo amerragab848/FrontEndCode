@@ -5,6 +5,7 @@ import PettyCash from "./PettyCash";
 import Timesheet from './Timesheet';
 import Expenses from './Expenses';
 import DocumentEmailNotification from './DocumentEmailNotification';
+import IMAPConfigurationSettings from './IMAPConfigurationSettings'
 import Resources from "../../resources.json";
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";

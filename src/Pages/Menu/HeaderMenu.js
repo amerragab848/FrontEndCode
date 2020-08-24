@@ -1420,6 +1420,16 @@ class HeaderMenu extends Component {
                             {Resources["privacySettings"][currentLanguage]}
                           </Link>
                         </div>
+                        <div className="item">
+                          <Link to="/IMAPConfiguration" className="item-content">
+                            {Resources["imapConfigurationSettings"][currentLanguage]}
+                          </Link>
+                        </div>
+                        <div className="item">
+                          <Link to="/imapEmails/false" className="item-content">
+                            {Resources["email"][currentLanguage]}
+                          </Link>
+                        </div>
                         <div className="item" onClick={event => this.setState({ clearSettings: true })} >
                           <div className="item-content">
                             {Resources["clearSettings"][currentLanguage]}
