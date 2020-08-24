@@ -74,6 +74,8 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
+let docAlertId = 0;
+
 let perviousRoute = '';
 let arrange = 0;
 var steps_defination = []
@@ -96,6 +98,7 @@ class SubmittalAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
+          docAlertId = obj.docAlertId;
           perviousRoute = obj.perviousRoute
           arrange = obj.arrange;
 
@@ -123,6 +126,8 @@ class SubmittalAddEdit extends Component {
       docTypeId: 42,
       projectId: projectId,
       docApprovalId: docApprovalId,
+      docAlertId: docAlertId,
+      docAlertId:0,
       arrange: arrange,
       SecondStepComplate: false,
       ThirdStepComplate: false,
@@ -157,7 +162,8 @@ class SubmittalAddEdit extends Component {
         { name: "createTransmittal", code: 3070 },
         { name: "sendToWorkFlow", code: 732 },
         { name: "viewAttachments", code: 3302 },
-        { name: "deleteAttachments", code: 884 }
+        { name: "deleteAttachments", code: 884 },
+        { name: "previousVersions", code: 8080800 }
       ],
       SubmittalTypes: [
         { label: "As Build", value: "As Build" },
@@ -2177,6 +2183,7 @@ class SubmittalAddEdit extends Component {
                     subject={this.props.document.subject}
                     previousRoute={this.state.previousRoute}
                     docApprovalId={this.state.docApprovalId}
+                    docAlertId={this.state.docAlertId} 
                     currentArrange={this.state.arrange}
                     showModal={this.props.showModal}
                     showOptionPanel={this.showOptionPanel}

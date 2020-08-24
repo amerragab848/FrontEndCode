@@ -36,6 +36,8 @@ let projectId = 0;
 let projectName = "";
 let isApproveMode = false;
 let docApprovalId = 0;
+let docAlertId = 0;
+
 let perviousRoute = "";
 let arrange = 0;
 let prevLetterId = 0;
@@ -67,6 +69,7 @@ class LettersAddEdit extends Component {
             projectName = obj.projectName;
             isApproveMode = obj.isApproveMode;
             docApprovalId = obj.docApprovalId;
+            docAlertId = obj.docAlertId;
             arrange = obj.arrange;
             perviousRoute = obj.perviousRoute;
             prevLetterId = obj.prevLetterId;
@@ -89,7 +92,9 @@ class LettersAddEdit extends Component {
             docTypeId: 19,
             projectId: projectId,
             docApprovalId: docApprovalId,
+            docAlertId: docAlertId,
             arrange: arrange,
+            docAlertId: 0,
             document: { id: 0 },
             companies: [],
             ToContacts: [],
@@ -104,7 +109,8 @@ class LettersAddEdit extends Component {
                 { name: "createTransmittal", code: 3042 },
                 { name: "sendToWorkFlow", code: 707 },
                 { name: "viewAttachments", code: 3317 },
-                { name: "deleteAttachments", code: 840 }
+                { name: "deleteAttachments", code: 840 },
+                { name: "previousVersions", code: 8080800 }
             ],
             selectedFromCompany: {
                 label: Resources.fromCompanyRequired[currentLanguage],
@@ -210,7 +216,7 @@ class LettersAddEdit extends Component {
             };
 
             this.setState({
-                document: letter
+                document: letter  
             });
 
             this.fillDropDowns(false);
@@ -561,6 +567,7 @@ class LettersAddEdit extends Component {
                 projectName: this.state.document.projectName,
                 arrange: 0,
                 docApprovalId: 0,
+                docAlertId: 0,
                 isApproveMode: false,
                 perviousRoute: window.location.pathname + window.location.search
             };
@@ -931,6 +938,7 @@ class LettersAddEdit extends Component {
                                                                     docTypeId={this.state.docTypeId}
                                                                     docId={this.state.docId}
                                                                     projectId={this.state.projectId}
+                                                                    docAlertId={this.state.docAlertId}
                                                                     previousRoute={this.state.previousRoute}
                                                                     docApprovalId={this.state.docApprovalId}
                                                                     currentArrange={this.state.arrange}
