@@ -11,18 +11,16 @@ import { toast } from "react-toastify";
 import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import GridCustom from 'react-customized-grid';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
-    userName: Yup.string().required(Resources['userNameRequired'][currentLanguage]),
-    userPassword: Yup.string().required(Resources['passwordRequired'][currentLanguage]),
+    userNameText: Yup.string().required(Resources['userNameRequired'][currentLanguage]),
+    userPasswordText: Yup.string().required(Resources['passwordRequired'][currentLanguage]),
     port: Yup.string().required(Resources['portRequired'][currentLanguage]),
 })
-
+let projectId=localStorage.getItem("lastSelectedProject");
 class IMAPConfigurationSettings extends Component {
 
     constructor(props) {
@@ -104,8 +102,8 @@ class IMAPConfigurationSettings extends Component {
                 server: null,
                 port: null,
                 useSsl: true,
-                userName: null,
-                userPassword: null,
+                userNameText: null,
+                userPasswordText: null,
                 folder: null,
                 isOn: true,
                 totalQuota: null,
@@ -164,24 +162,27 @@ class IMAPConfigurationSettings extends Component {
 
     submitIMAP = (values) => {
         this.setState({ isLoading: true })
+        let params={...this.state.imapObj}
+        Object.assign(params,{userName:params.userNameText,userPassword:params.userPasswordText})
         if (this.state.isAdd === true) {
-            dataservice.addObject(`SetImapConfiguration?projectId=${this.props.projectId}`, this.state.imapObj).then(
+            dataservice.addObject(`SetImapConfiguration?projectId=${projectId}`, params).then(
                 result => {
                     let data = this.state.rows
-                    data.push({ ...this.state.imapObj })
+                    params.id=result;
+                    data.push({ ...params })
                     this.setState({ rows: data, isLoading: false, ShowPopup: false });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 });
         } else {
-            dataservice.addObject('EditImapConfiguration', this.state.imapObj).then(
+            dataservice.addObject('EditImapConfiguration',params).then(
                 result => {
                     let data = this.state.rows;
                     let index = data.findIndex(x => x.id === values.id);
                     if (index) {
                         data.splice(index, 1);
-                        data.push({ ...this.state.imapObj });
+                        data.push({ ...params });
                     }
                     this.setState({ rows: data, isLoading: false, ShowPopup: false });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -206,8 +207,8 @@ class IMAPConfigurationSettings extends Component {
             server: null,
             port: null,
             useSsl: true,
-            userName: null,
-            userPassword: null,
+            userNameText: null,
+            userPasswordText: null,
             folder: null,
             isOn: true,
             totalQuota: null,
@@ -218,6 +219,7 @@ class IMAPConfigurationSettings extends Component {
 
     rowClick(cell) {
         dataservice.GetRowById(`GetImapConfigurationForEdit?id=${cell.id}`).then(result => {
+            Object.assign(result,{userNameText:result.userName,userPasswordText:result.userPassword})
             this.setState({
                 ShowPopup: true,
                 imapObj: result,
@@ -274,25 +276,25 @@ class IMAPConfigurationSettings extends Component {
                                             </div>
                                             <div className="linebylineInput valid-input fullInputWidth">
                                                 <label className="control-label">{Resources['UserName'][currentLanguage]}</label>
-                                                <div className={"inputDev ui input" + (errors.userName && touched.userName ? (" has-error") : !errors.userName && touched.userName ? (" has-success") : " ")} >
+                                                <div className={"inputDev ui input" + (errors.userNameText && touched.userNameText ? (" has-error") : !errors.userNameText && touched.userNameText ? (" has-success") : " ")} >
                                                     <div className="inputDev ui input">
                                                         <input autoComplete="off" className="form-control"
-                                                            value={this.state.imapObj.userName} name="userName"
-                                                            onBlur={handleBlur} onChange={(e) => this.handleChange('imapObj', 'userName', e.target.value)}
+                                                            value={this.state.imapObj.userNameText} name="userNameText"
+                                                            onBlur={handleBlur} onChange={(e) => this.handleChange('imapObj', 'userNameText', e.target.value)}
                                                             placeholder={Resources['UserName'][currentLanguage]} />
-                                                        {touched.userName ? (<em className="pError">{errors.userName}</em>) : null}
+                                                        {touched.userNameText ? (<em className="pError">{errors.userNameText}</em>) : null}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="linebylineInput valid-input fullInputWidth">
                                                 <label className="control-label">{Resources['password'][currentLanguage]}</label>
-                                                <div className={"inputDev ui input" + (errors.userPassword && touched.userPassword ? (" has-error") : !errors.userPassword && touched.userPassword ? (" has-success") : " ")} >
+                                                <div className={"inputDev ui input" + (errors.userPasswordText && touched.userPasswordText ? (" has-error") : !errors.userPasswordText && touched.userPasswordText ? (" has-success") : " ")} >
                                                     <div className="inputDev ui input">
                                                         <input autoComplete="off" className="form-control" type="password"
-                                                            value={this.state.imapObj.userPassword} name="userPassword"
-                                                            onBlur={handleBlur} onChange={(e) => this.handleChange('imapObj', 'userPassword', e.target.value)}
+                                                            value={this.state.imapObj.userPasswordText} name="userPasswordText"
+                                                            onBlur={handleBlur} onChange={(e) => this.handleChange('imapObj', 'userPasswordText', e.target.value)}
                                                             placeholder={Resources['password'][currentLanguage]} />
-                                                        {touched.userPassword ? (<em className="pError">{errors.userPassword}</em>) : null}
+                                                        {touched.userPasswordText ? (<em className="pError">{errors.userPasswordText}</em>) : null}
                                                     </div>
                                                 </div>
                                             </div>
@@ -406,16 +408,6 @@ class IMAPConfigurationSettings extends Component {
         )
     }
 }
-function mapStateToProps(state, ownProps) {
-    return {
-      projectId: state.communication.projectId,
-    };
-  }
+
   
-  function mapDispatchToProps(dispatch) {
-    return {
-      actions: bindActionCreators(dashboardComponantActions, dispatch)
-    };
-  }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(withRouter(IMAPConfigurationSettings));
+  export default withRouter(IMAPConfigurationSettings);

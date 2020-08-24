@@ -123,14 +123,6 @@ class filesSettings extends Component {
 
 
             </div>
-
-
-
-
-
-
-
-
         )
     }
 }
