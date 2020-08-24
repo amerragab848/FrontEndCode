@@ -17,6 +17,7 @@ export function documentForEdit(urlAction, docTypeId, docName) {
                 type: types.Document_for_Edit,
                 document: resp,
                 docId: resp.id,
+                docAlertId : resp.docAlertId,
                 docTypeId: docTypeId,
                 showLeftReportMenu: false,
                 docName: docName
