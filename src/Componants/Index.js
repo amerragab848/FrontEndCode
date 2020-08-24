@@ -16,6 +16,7 @@ import orderBy from 'lodash/orderBy';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Index extends Component {
+
   constructor(props) {
     super(props);
 
@@ -114,9 +115,13 @@ class Index extends Component {
     }
     else {
       return <Fragment key={index + "DIVBarChart"}>
-        <BarChartComp api={Details.widgets[widget.title].props.api} ukey={Details.widgets[widget.title].props.id} catagName={Details.widgets[widget.title].props.catagName}
-          name={Details.widgets[widget.title].props.name} y={Details.widgets[widget.title].props.data}
-          title={language[widget.title][currentLanguage]} stack={Details.widgets[widget.title].props.stack}
+        <BarChartComp api={Details.widgets[widget.title].props.api}
+          ukey={Details.widgets[widget.title].props.id}
+          categoryName={Details.widgets[widget.title].props.catagName}
+          name={Details.widgets[widget.title].props.name}
+          y={Details.widgets[widget.title].props.data}
+          title={language[widget.title][currentLanguage]}
+          stack={Details.widgets[widget.title].stack}
           yTitle={language[Details.widgets[widget.title].props.yTitle][currentLanguage]}
           multiSeries={Details.widgets[widget.title].props.multiSeries}
           barContent={Details.widgets[widget.title].props.barContent ? Details.widgets[widget.title].props.barContent : []} />

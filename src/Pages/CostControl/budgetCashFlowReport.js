@@ -8,7 +8,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import Export from "../../Componants/OptionsPanels/Export";
 import BarChartComp from '../ReportsCenter/TechnicalOffice/BarChartComp'
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-import ExportDetails from "../../Pages/ReportsCenter/ExportReportCenterDetails";
+//import ExportDetails from "../../Pages/ReportsCenter/ExportReportCenterDetails";
 import { SkyLightStateless } from 'react-skylight';
 import moment from 'moment';
 import Api from '../../api.js';
@@ -20,10 +20,7 @@ import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 const sum = require('lodash/sum')
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
+ 
 class BudgetCashFlowReport extends Component {
 
     constructor(props) {
@@ -235,7 +232,8 @@ class BudgetCashFlowReport extends Component {
                 series={this.state.series}
                 multiSeries="yes"
                 xAxis={this.state.xAxis}
-                title={Resources['budgetCashFlowReport'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />) : null
+                title={Resources['budgetCashFlowReport'][currentLanguage]} 
+                yTitle={Resources['total'][currentLanguage]} />) : null
 
         const columnsCycles = [
             {
