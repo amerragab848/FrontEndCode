@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
-import config from "../../Services/Config";
-import { toast } from "react-toastify";
+//import config from "../../Services/Config";
+//import { toast } from "react-toastify";
+// import Resources from "../../resources.json";
 import dataservice from "../../Dataservice";
-import Resources from "../../resources.json";
 import Dropdown from '../OptionsPanels/DropdownMelcous';
 import LoadingSection from '../publicComponants/LoadingSection';
 import moment from 'moment';
 
 
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+//let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class filesSettings extends Component {
 
@@ -20,7 +20,6 @@ class filesSettings extends Component {
             selectedImapEmail: null,
             isLoading: false,
             rows: []
-           
         }
     }
 
@@ -29,15 +28,18 @@ class filesSettings extends Component {
             this.setState({ imapEmailsList: result || [] });
         });
     }
-    
+
     handleChange = (e) => {
         this.setState({ isLoading: true })
         dataservice.GetDataGrid(`SynchronizeEmails?configurationSetId=${e.value}`).then(result => {
-            this.setState({
-                selectedImapEmail: e.value,
-                rows: result || [],
-                isLoading: false
-            })
+            dataservice.GetDataGrid(`GetEmails?configurationId=${e.value}`).then(messages => {
+
+                this.setState({
+                    selectedImapEmail: e.value,
+                    rows: messages || [],
+                    isLoading: false
+                }) 
+            });
         })
     }
 
@@ -74,13 +76,13 @@ class filesSettings extends Component {
                         return (
                             <>
                                 <tr key={index} >
-                                    <td colspan="12" style={{ paddingLeft: '18px !important' }}>
+                                    <td style={{ paddingLeft: '18px !important' }}>
                                         {element.fromEmail}
                                     </td>
-                                    <td colspan="12" style={{ paddingLeft: '18px !important' }}>
+                                    <td style={{ paddingLeft: '18px !important' }}>
                                         {element.subject}
                                     </td>
-                                    <td colspan="12" style={{ paddingLeft: '18px !important' }}>
+                                    <td style={{ paddingLeft: '18px !important' }}>
                                         {moment(element.date).format('DD/MM/YYYY')}
                                     </td>
                                 </tr>
