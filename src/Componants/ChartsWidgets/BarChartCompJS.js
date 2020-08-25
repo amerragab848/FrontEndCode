@@ -129,9 +129,9 @@ class BarChartCompJS extends Component {
                 .valueLabel('total')
                 .grid('horizontal')
                 .colorSchema(colorSchema)
-                //.valueLabelFormat(NUMBER_FORMAT)
+                .valueLabelFormat(NUMBER_FORMAT)
                 //.betweenBarsPadding(0.1)
-                //.isAnimated(true)
+                .isAnimated(true)
                 .on('customMouseOver', function () {
                     chartTooltip.show();
                 })
