@@ -94,9 +94,7 @@ let ChartWidgets = [
         id: 'wt-Name07',
         title: 'contractsSummaryAllProjectProject',
         props: {
-            'api': 'GetTopFiveContractsForAllProjects',
-            'name': 'docName',
-            'data': 'count'
+            'api': 'GetTopFiveContractsForAllProjects' 
         },
         type: 'column',
         stack: '',

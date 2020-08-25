@@ -33,7 +33,7 @@ class BarChartCompJS extends Component {
 
     componentDidMount = () => {
 
-        this._isMounted = true; 
+        this._isMounted = true;
         if (this.props.multiSeries === 'no') {
             this._isMounted && this.setState({
                 isLoadingBar: true
@@ -42,7 +42,7 @@ class BarChartCompJS extends Component {
             this._isMounted && this.setState({
                 isLoadingGrouped: true
             });
-        } 
+        }
 
         if (this.props.reports == undefined) {
             Api.get(this.props.api).then(results => {
@@ -65,7 +65,7 @@ class BarChartCompJS extends Component {
             }
 
             let BarData = { data: barData }
-            let contDiv = '.js-bar-chart-container-tooltip-container.' + this.props.ukey;
+            let contDiv = '.js-bar-chart-container-tooltip-container-' + this.props.ukey;
             let barChart = britecharts.bar(),
                 chartBarTooltip = miniTooltip(),
                 barContainer = d3.select(contDiv),
@@ -94,7 +94,7 @@ class BarChartCompJS extends Component {
                 });
 
             barContainer.datum(BarData.data).call(barChart);
-            barContainer = d3.select('.js-bar-chart-container-tooltip-container.' + this.props.ukey + ' .metadata-group');
+            barContainer = d3.select('.js-bar-chart-container-tooltip-container-' + this.props.ukey + ' .metadata-group');
             barContainer.datum([]).call(chartBarTooltip);
             this._isMounted && this.setState({
                 isLoadingBar: false
@@ -103,27 +103,21 @@ class BarChartCompJS extends Component {
         }
         else {
             let groupedBarData = []
-            let categories = [];
             this.props.barContent.map((bar) => {
                 if (results) {
                     results.map((obj) => {
                         groupedBarData.push({
                             stack: bar.name,
-                            name: this.props.categoryName,
+                            name: obj[this.props.categoryName],
                             total: obj[bar.value]
                         })
                     })
                 }
-            })
-            // results.forEach(element => {
-            //     categories.push(element[this.props.categoryName]);
-            // }) 
-            //let xAxis = { categories: categories }
-
+            });
             let groupedData = { data: groupedBarData }
             var groupedBarChart = britecharts.groupedBar(),
                 chartTooltip = britecharts.tooltip(),
-                container = d3.select(".js-grouped-bar-chart-tooltip-container." + this.props.ukey),
+                container = d3.select(".js-grouped-bar-chart-tooltip-container--" + this.props.ukey),
                 containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
                 tooltipContainer;
 
@@ -155,13 +149,13 @@ class BarChartCompJS extends Component {
                 .dateLabel('key')
                 .nameLabel('stack')
                 .title('Procoor tooltip');
-            tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey + '.metadata-group');
+            tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container--' + this.props.ukey + ' .metadata-group');
+
             tooltipContainer.datum([]).call(chartTooltip);
 
             this._isMounted && this.setState({
-                isLoadingGrouped: true,//results.length > 0 ? false :
-                groupedBarData: groupedBarData,
-                //xAxis: xAxis
+                isLoadingGrouped: results.length > 0 ? false : true,
+                groupedBarData: groupedBarData
             });
         }
     }
@@ -172,15 +166,15 @@ class BarChartCompJS extends Component {
 
     render() {
         return (
-            this.props.multiSeries !== 'no' ?
+            this.props.multiSeries == 'yes' ?
                 <div className="col-md-12 col-lg-6">
                     <div className="panel barChart__container">
                         <div className="panel-body">
                             <h2>
                                 {this.props.title}
                             </h2>
-                            <div key={this.props.ukey}
-                                className={"js-grouped-bar-chart-tooltip-container" + this.props.ukey + " card--chart"}></div>
+                            <div id={this.props.ukey} key={this.props.ukey}
+                                className={"britechart js-grouped-bar-chart-tooltip-container--" + this.props.ukey + " card--chart"}></div>
                             {this.state.isLoadingGrouped === true ?
                                 <Bar shouldShowLoadingState={true} /> : null
                             }
@@ -194,7 +188,7 @@ class BarChartCompJS extends Component {
                             <h2>
                                 {this.props.title}
                             </h2>
-                            <div className={"js-bar-chart-container-tooltip-container " + this.props.ukey + ' card--chart '}></div>
+                            <div key={this.props.ukey} className={"js-bar-chart-container-tooltip-container-" + this.props.ukey + ' card--chart '}></div>
 
                             {this.state.isLoadingBar === true ?
                                 <Bar shouldShowLoadingState={true} /> : null
