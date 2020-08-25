@@ -53,7 +53,7 @@ class viewDistributionList extends Component {
             <div>
                 {this.state.rows.length > 0 ?
                     <Fragment>
-                        <header><h2 class="zero">{Resources.distributionList[currentLanguage]}</h2></header>
+                        <header><h2 className="zero">{Resources.distributionList[currentLanguage]}</h2></header>
                         <table className="attachmentTable">
                             <thead>
                                 <tr>

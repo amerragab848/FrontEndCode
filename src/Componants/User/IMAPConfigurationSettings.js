@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import GridCustom from 'react-customized-grid';
-import * as dashboardComponantActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -20,7 +19,7 @@ const validationSchema = Yup.object().shape({
     userPasswordText: Yup.string().required(Resources['passwordRequired'][currentLanguage]),
     port: Yup.string().required(Resources['portRequired'][currentLanguage]),
 })
-let projectId=localStorage.getItem("lastSelectedProject");
+let projectId = localStorage.getItem("lastSelectedProject");
 class IMAPConfigurationSettings extends Component {
 
     constructor(props) {
@@ -162,13 +161,13 @@ class IMAPConfigurationSettings extends Component {
 
     submitIMAP = (values) => {
         this.setState({ isLoading: true })
-        let params={...this.state.imapObj}
-        Object.assign(params,{userName:params.userNameText,userPassword:params.userPasswordText})
+        let params = { ...this.state.imapObj }
+        Object.assign(params, { userName: params.userNameText, userPassword: params.userPasswordText })
         if (this.state.isAdd === true) {
             dataservice.addObject(`SetImapConfiguration?projectId=${projectId}`, params).then(
                 result => {
                     let data = this.state.rows
-                    params.id=result;
+                    params.id = result;
                     data.push({ ...params })
                     this.setState({ rows: data, isLoading: false, ShowPopup: false });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -176,7 +175,7 @@ class IMAPConfigurationSettings extends Component {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 });
         } else {
-            dataservice.addObject('EditImapConfiguration',params).then(
+            dataservice.addObject('EditImapConfiguration', params).then(
                 result => {
                     let data = this.state.rows;
                     let index = data.findIndex(x => x.id === values.id);
@@ -214,12 +213,12 @@ class IMAPConfigurationSettings extends Component {
             totalQuota: null,
             usedQuota: null
         };
-        this.setState({ imapObj: obj,isAdd:true, ShowPopup: true })
+        this.setState({ imapObj: obj, isAdd: true, ShowPopup: true })
     }
 
     rowClick(cell) {
         dataservice.GetRowById(`GetImapConfigurationForEdit?id=${cell.id}`).then(result => {
-            Object.assign(result,{userNameText:result.userName,userPasswordText:result.userPassword})
+            Object.assign(result, { userNameText: result.userName, userPasswordText: result.userPassword })
             this.setState({
                 ShowPopup: true,
                 imapObj: result,
@@ -257,7 +256,7 @@ class IMAPConfigurationSettings extends Component {
                             onSubmit={(values) => {
                                 this.submitIMAP(values)
                             }}>
-                            {({ errors, touched, handleBlur, handleSubmit}) => (
+                            {({ errors, touched, handleBlur, handleSubmit }) => (
                                 <Form onSubmit={handleSubmit}>
                                     <div className='document-fields'>
                                         <div className="proForm datepickerContainer">
@@ -375,39 +374,39 @@ class IMAPConfigurationSettings extends Component {
         return (
             <Fragment>
                 <div className="mainContainer">
-                <div className="submittalFilter readOnly__disabled">
-                    <div className="subFilter">
-                        <h3 className="zero">{Resources.imapConfigurationName[currentLanguage]}</h3>
+                    <div className="submittalFilter readOnly__disabled">
+                        <div className="subFilter">
+                            <h3 className="zero">{Resources.imapConfigurationName[currentLanguage]}</h3>
+                        </div>
+                        <div className="filterBTNS">
+                            {btnExport}
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addNew()}>{Resources['add'][currentLanguage]}</button>
+                        </div>
                     </div>
-                    <div className="filterBTNS">
-                        {btnExport}
-                        <button className="primaryBtn-1 btn mediumBtn" onClick={()=>this.addNew()}>{Resources['add'][currentLanguage]}</button>
+                    <div className="grid-container">
+                        {dataGrid}
                     </div>
-                </div>
-                <div className="grid-container">
-                    {dataGrid}
-                </div>
-                <div className="skyLight__form">
-                    <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false })}
-                        title={Resources[this.state.isAdd==true?'add':'editTitle'][currentLanguage]} isVisible={this.state.ShowPopup}
-                        onCloseClicked={() => this.setState({ ShowPopup: false })} >
-                        {RenderSettings()}
-                    </SkyLightStateless>
-                </div>
-                {this.state.showDeleteModal == true ? (
-                    <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
-                        closed={() => this.setState({ showDeleteModal: false })}
-                        showDeleteModal={this.state.showDeleteModal}
-                        clickHandlerCancel={() => this.setState({ showDeleteModal: false })}
-                        buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
-                    />
-                ) : null}
+                    <div className="skyLight__form">
+                        <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false })}
+                            title={Resources[this.state.isAdd == true ? 'add' : 'editTitle'][currentLanguage]} isVisible={this.state.ShowPopup}
+                            onCloseClicked={() => this.setState({ ShowPopup: false })} >
+                            {RenderSettings()}
+                        </SkyLightStateless>
+                    </div>
+                    {this.state.showDeleteModal == true ? (
+                        <ConfirmationModal
+                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            closed={() => this.setState({ showDeleteModal: false })}
+                            showDeleteModal={this.state.showDeleteModal}
+                            clickHandlerCancel={() => this.setState({ showDeleteModal: false })}
+                            buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
+                        />
+                    ) : null}
                 </div>
             </Fragment>
         )
     }
 }
 
-  
-  export default withRouter(IMAPConfigurationSettings);
+
+export default withRouter(IMAPConfigurationSettings);

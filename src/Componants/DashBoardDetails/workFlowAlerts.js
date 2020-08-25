@@ -19,7 +19,7 @@ class workFlowAlerts extends Component {
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],
-        width: 6,
+        width: 4,
         groupable: true,
         fixed: true,
         type: "number",
@@ -28,7 +28,7 @@ class workFlowAlerts extends Component {
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
-        width: 10,
+        width: 15,
         groupable: true,
         fixed: false,
         type: "text",
@@ -74,7 +74,7 @@ class workFlowAlerts extends Component {
       {
         field: 'duration2',
         title: Resources['durationDays'][currentLanguage],
-        width: 5,
+        width: 7,
         groupable: true,
         fixed: false,
         type: "text",
