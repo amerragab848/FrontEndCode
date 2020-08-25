@@ -110,8 +110,7 @@ class LettersAddEdit extends Component {
                 { name: "sendToWorkFlow", code: 707 },
                 { name: "viewAttachments", code: 3317 },
                 { name: "deleteAttachments", code: 840 },
-                { name: "previousVersions", code: 8080800 },
-                { name: "DocTemplate", code: 8080811 }
+                { name: "previousVersions", code: 8080800 }
             ],
             selectedFromCompany: {
                 label: Resources.fromCompanyRequired[currentLanguage],

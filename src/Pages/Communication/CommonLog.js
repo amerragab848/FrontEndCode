@@ -18,6 +18,9 @@ import Config from "../../Services/Config.js";
 import ExportDetails from "../../Componants/OptionsPanels/ExportDetails";
 import SkyLight from "react-skylight";
 
+import { SkyLightStateless } from 'react-skylight';
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
 
@@ -34,7 +37,7 @@ class CommonLog extends Component {
       isExporting: false,
       pageTitle: "",
       viewfilter: false,
-      filterMode: false,            
+      filterMode: false,
       isFilter: false,
 
       projectId: this.props.projectId,
@@ -55,6 +58,7 @@ class CommonLog extends Component {
       isCustom: true,
       showDeleteModal: false,
       showExportModal: false,
+      docTemplateModal: false,
       selectedRows: [],
       minimizeClick: false,
       showExServerBtn: false,
@@ -347,7 +351,7 @@ class CommonLog extends Component {
     if (stringifiedQuery == '{"isCustom":true}') {
       stringifiedQuery = undefined
     }
-    
+
     this.setState({
       isLoading: true,
       query: stringifiedQuery,
@@ -465,6 +469,7 @@ class CommonLog extends Component {
 
     let docTypeId = documentObj.docTyp;
     let showExServerBtn = false;
+    let showDocTemplateBtn = false;
 
     var cNames = [];
     var filtersColumns = [];
@@ -536,7 +541,9 @@ class CommonLog extends Component {
     if (docTypeId == 19 || docTypeId == 23 || docTypeId == 42 || docTypeId == 28 || docTypeId == 103 || docTypeId == 25) {
       showExServerBtn = true;
     }
-
+    if (docTypeId == 19) {
+      showDocTemplateBtn = true;
+    }
     filtersColumns = documentObj.filters;
 
     var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
@@ -573,7 +580,8 @@ class CommonLog extends Component {
       filtersColumns: filtersColumns,
       documentObj: documentObj,
       projectId: projectId,
-      showExServerBtn
+      showExServerBtn,
+      showDocTemplateBtn
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
@@ -647,7 +655,7 @@ class CommonLog extends Component {
   };
 
   closeModalColumn = () => {
-    this.setState({ columnsModal: false, exportColumnsModal: false })
+    this.setState({ columnsModal: false, exportColumnsModal: false, docTemplateModal: false })
   };
 
   ResetShowHide = () => {
@@ -715,10 +723,16 @@ class CommonLog extends Component {
 
     this.setState({
       showExportModal: false,
-      exportColumnsModal: false
+      exportColumnsModal: false,
+      docTemplateModal: false
     });
   };
 
+  btnDocumentTemplateShowModal = () => { 
+    this.setState({
+      docTemplateModal: true
+    });
+  }
   btnExportServerShowModal = () => {
 
     let exportedColumns = this.state.exportedColumns;
@@ -872,6 +886,9 @@ class CommonLog extends Component {
     const btnExportServer = this.state.showExServerBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnExportServerShowModal()}>{Resources["exportAll"][currentLanguage]}</button>
       : null;
 
+    const btnDocumentTemplate = this.state.showDocTemplateBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
+      : null;
+
     const ComponantFilter = this.state.isLoading === false ?
       (
         <Filter
@@ -914,8 +931,13 @@ class CommonLog extends Component {
             </div>
             <div className="filterBTNS">
               {btnExport}
-
               {btnExportServer}
+              <hr/>
+              <hr/>
+              {btnDocumentTemplate}
+              <hr/>
+              <hr/>
+
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
@@ -1011,6 +1033,28 @@ class CommonLog extends Component {
           </div>
 
         </div>
+
+        {(this.state.docTemplateModal == true) ? (
+          <div className="largePopup largeModal " >
+
+            <SkyLightStateless
+              onOverlayClicked={() => this.setState({ docTemplateModal: false})}
+              title={Resources['DocTemplate'][currentLanguage]}
+              onCloseClicked={() => this.setState({ docTemplateModal: false})}
+              isVisible={this.state.docTemplateModal}>
+              <div>
+                <XSLfile key="docTemplate"
+                  projectId={this.state.projectId}
+                  docType="docTemplate"
+                  documentTemplate={true}
+                  link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
+                  header="addManyItems"
+                  afterUpload={() => this.setState({ docTemplateModal: false})} />
+              </div>
+
+            </SkyLightStateless>
+          </div>
+        ) : null}
 
         {(this.props.document.id > 0 && this.state.showExportModal == true) ? (
           <div className="largePopup largeModal " >
