@@ -62,6 +62,7 @@ class IMApEmails extends Component {
     }
 
     handleChange = (e) => {
+        if(e.value > 0){
         this.setState({ isLoading: true })
         dataservice.GetDataGrid(`SynchronizeEmails?configurationSetId=${e.value}`).then(result => {
             dataservice.GetDataGrid(`GetEmails?configurationId=${e.value}&pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then(messages => {
@@ -73,6 +74,7 @@ class IMApEmails extends Component {
                 })
             });
         })
+    }
     }
     
     popupHandleChange = (obj, fieldName, fieldObj, selectedField) => {
