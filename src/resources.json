@@ -1321,6 +1321,10 @@
         "en": "Actions",
         "ar": "عمليات الجدول"
     },
+    "addInboxToEmailRecord":{
+        "en":"Add Inbox To Email Record",
+        "ar":"اضافة تنبيه الى الايميل"
+    },
     "titleEn": {
         "en": "English Title",
         "ar": "العنوان بالانجليزيه"
@@ -4261,6 +4265,10 @@
         "en": "Add New From Excel",
         "ar": "اضافة جديدة من اكسيل"
     },
+    "fromEmail": {
+        "en": "From Email",
+        "ar": "من ايميل"
+    },
     "newSubmittal": {
         "en": "New Submittal",
         "ar": "تقديمات جديدة"
@@ -5480,6 +5488,10 @@
     "inboxSummary": {
         "en": "Inbox ",
         "ar": " التنبيهات"
+    },
+    "imapEmails": {
+        "en": "IMAP Emails",
+        "ar": "IMAP Emails"
     },
     "notCodedInvoicesSummary": {
         "en": "Not Coded Invoices ",
@@ -7533,7 +7545,7 @@
         "en": "Add Material Release",
         "ar": "صرف المواد "
     },
-    "portRequired":{
+    "portRequired": {
         "en": "Port Required",
         "ar": "Port Required"
     },
