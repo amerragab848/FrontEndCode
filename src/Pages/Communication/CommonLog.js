@@ -5,6 +5,8 @@ import Api from "../../api";
 import dataservice from "../../Dataservice";
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import documentDefenition from "../../documentDefenition.json";
 import Resources from "../../resources.json";
@@ -17,9 +19,11 @@ import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
 import ExportDetails from "../../Componants/OptionsPanels/ExportDetails";
 import SkyLight from "react-skylight";
-
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import find from "lodash/find";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
@@ -65,7 +69,17 @@ class CommonLog extends Component {
       documentObj: {},
       exportDocument: {},
       match: props.match, export: false,
-      columnsExport: []
+      columnsExport: [],
+      companies: [],
+      contacts: [],
+      selectedFromCompany: {
+        label: Resources.ComapnyNameRequired[currentLanguage],
+        value: "0"
+      },
+      selectedFromContact: {
+        label: Resources.contactNameRequired[currentLanguage],
+        value: "0"
+      },
     };
     this.actions = [
       {
@@ -107,6 +121,7 @@ class CommonLog extends Component {
     this.props.actions.FillGridLeftMenu();
 
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
+
   };
 
   componentWillUnmount() {
@@ -118,7 +133,15 @@ class CommonLog extends Component {
       isCustom: true
     });
   };
+  fillDropDowns() {
 
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.props.projectId, "companyName", "companyId", 'companies', this.props.projectId, "projectId").then(result => {
+      this.setState({
+        companies: [...result]
+      });
+    });
+
+  }
   static getDerivedStateFromProps(nextProps, state) {
     if (nextProps.match !== state.match) {
       return {
@@ -155,6 +178,7 @@ class CommonLog extends Component {
         this.renderComponent(this.props.match.params.document, this.props.projectId, true);
       } else {
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
+        this.fillDropDowns();
       }
     }
   };
@@ -728,11 +752,12 @@ class CommonLog extends Component {
     });
   };
 
-  btnDocumentTemplateShowModal = () => { 
+  btnDocumentTemplateShowModal = () => {
     this.setState({
       docTemplateModal: true
     });
   }
+
   btnExportServerShowModal = () => {
 
     let exportedColumns = this.state.exportedColumns;
@@ -789,7 +814,27 @@ class CommonLog extends Component {
   changeValueOfProps = () => {
     this.setState({ isFilter: false });
   };
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+    if (event == null) return;
+    let original_document = { ...this.state.document };
+    let updated_document = {};
+    updated_document[field] = event.value;
+    updated_document = Object.assign(original_document, updated_document);
 
+    this.setState({
+      document: updated_document,
+      [selectedValue]: event
+    });
+
+    if (isSubscrib) {
+      let action = url + "?" + param + "=" + event.value;
+      dataservice.GetDataList(action, "contactName", "id").then(result => {
+        this.setState({
+          [targetState]: result
+        });
+      });
+    }
+  }
   render() {
 
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
@@ -932,12 +977,9 @@ class CommonLog extends Component {
             <div className="filterBTNS">
               {btnExport}
               {btnExportServer}
-              <hr/>
-              <hr/>
+              &nbsp; 
               {btnDocumentTemplate}
-              <hr/>
-              <hr/>
-
+              &nbsp; 
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
@@ -1038,20 +1080,57 @@ class CommonLog extends Component {
           <div className="largePopup largeModal " >
 
             <SkyLightStateless
-              onOverlayClicked={() => this.setState({ docTemplateModal: false})}
+              onOverlayClicked={() => this.setState({ docTemplateModal: false })}
               title={Resources['DocTemplate'][currentLanguage]}
-              onCloseClicked={() => this.setState({ docTemplateModal: false})}
+              onCloseClicked={() => this.setState({ docTemplateModal: false })}
               isVisible={this.state.docTemplateModal}>
               <div>
+                <div className="linebylineInput valid-input mix_dropdown">
+                 
+                  <div className="supervisor__company">
+                    <div className="super_name">
+                      <Dropdown
+                        data={this.state.companies}
+                        isMulti={false}
+                        selectedValue={this.state.selectedFromCompany}
+                        handleChange={event => {
+                          this.handleChangeDropDown(event, "companyId", true, "contacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                        }}
+                        index="companyId"
+                        name="companyId"
+                        id=" companyId"
+                        styles={CompanyDropdown}
+                        classDrop="companyName1"
+                      />
+                    </div>
+                    <div className="super_name">
+                      <Dropdown
+                        isMulti={false}
+                        data={this.state.contacts}
+                        selectedValue={this.state.selectedFromContact}
+                        handleChange={event =>
+                          this.handleChangeDropDown(event, "contactId", false, "", "", "", "selectedFromContact")
+                        }
+                        index="contactId"
+                        name="contactId"
+                        id="contactId"
+                        classDrop="contactName1"
+                        styles={ContactDropdown}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <XSLfile key="docTemplate"
                   projectId={this.state.projectId}
+                  companyId={this.state.document != null ? this.state.document.companyId : null}
+                  contactId={this.state.document != null ? this.state.document.contactId : null}
                   docType="docTemplate"
                   documentTemplate={true}
                   link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
                   header="addManyItems"
-                  afterUpload={() => this.setState({ docTemplateModal: false})} />
-              </div>
+                  afterUpload={() => this.setState({ docTemplateModal: false })} />
 
+              </div>
             </SkyLightStateless>
           </div>
         ) : null}
