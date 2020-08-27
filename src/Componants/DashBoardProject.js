@@ -8,8 +8,6 @@ import IndexedDb from '../IndexedDb';
 import Config from "../Services/Config";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-//const _ = require('lodash');
  
 class DashBoardProject extends Component {
   constructor(props) {
@@ -244,7 +242,7 @@ class DashBoardProject extends Component {
 
     let widgets = this.state.showWidgets ? this.state.categories.find(category => category.id === this.state.category).widgets.map((widget, index) => {
 
-      if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
+      // if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
 
         let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
 
@@ -262,9 +260,9 @@ class DashBoardProject extends Component {
             </div>
           </Pane>
         );
-      } else {
-        return null;
-      }
+      // } else {
+      //   return null;
+      // }
     }) : null;
 
     let categoryPanes = this.state.categories && this.state.categories.length ? this.renderCategories() : [];
