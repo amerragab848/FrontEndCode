@@ -8216,6 +8216,17 @@ h1, h2, h3, h4, h5 {
     z-index: 0;
     height: 100%;
 }
+/*test*/
+.uploadForm .progressBar .completeProgress {
+    background-color: #d9eeff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 0;
+    height: 100%;
+}
 
 .uploadForm.zeropercent .progressBar .smallProgress {
     width: 80%;
@@ -8224,6 +8235,11 @@ h1, h2, h3, h4, h5 {
 
 .uploadForm.zeropercent, .uploadForm.hundredPercent {
     border: 3px solid #83B4FC;
+}
+/*test*/
+.uploadForm.done .progressBar .completeProgress,.uploadForm.hundredPercent .progressBar .completeProgress {
+    width: 100%;
+    transition: all 2s ease-in
 }
 
 .uploadForm.done .progressBar .smallProgress,.uploadForm.hundredPercent .progressBar .smallProgress {

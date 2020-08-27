@@ -166,7 +166,7 @@ class XSLfile extends Component {
                                                     </div>
                                                 </div>
                                                 <div className='progressBar'>
-                                                    <div className='smallProgress'>
+                                                    <div className='completeProgress'>
                                                     </div>
                                                 </div>
                                             </div>
