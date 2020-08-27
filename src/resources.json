@@ -1321,9 +1321,13 @@
         "en": "Actions",
         "ar": "عمليات الجدول"
     },
-    "addToEmailRecord":{
-        "en":"Add To Email Record",
-        "ar":"اضافة الى الايميل"
+    "addToEmailRecord": {
+        "en": "Add To Email Record",
+        "ar": "اضافة الى الايميل"
+    },
+    "emailBody": {
+        "en": "ُmail Body",
+        "ar": "محتوى الايميل"
     },
     "titleEn": {
         "en": "English Title",

@@ -19,6 +19,7 @@ export default class TextEditor extends React.Component {
                 <CKEditor
                     editor={ClassicEditor}
                     data={this.props.value !=undefined?this.props.value:''}
+                    disabled ={this.props.disabled !=undefined?this.props.disabled:false }
                     onInit={(event, editor) => {
                         // You can store the "editor" and use when it is needed. 
                     }}

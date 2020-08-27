@@ -9,6 +9,7 @@ import { SkyLightStateless } from 'react-skylight';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
+import TextEditor from '../OptionsPanels/TextEditor';
 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -45,6 +46,7 @@ class IMApEmails extends Component {
             totalRows: 0,
             ShowPopup: false,
             isLoading: false,
+            emailBody:null,
             selectedImapEmail: { label: Resources.imapConfigurationName[currentLanguage], value: 0 },
             selectedProject: { label: Resources.projectName[currentLanguage], value: 0 },
             selectedCompany: { label: Resources.CompanyName[currentLanguage], value: 0 },
@@ -62,21 +64,21 @@ class IMApEmails extends Component {
     }
 
     handleChange = (e) => {
-        if(e.value > 0){
-        this.setState({ isLoading: true })
-        dataservice.GetDataGrid(`SynchronizeEmails?configurationSetId=${e.value}`).then(result => {
-            dataservice.GetDataGrid(`GetEmails?configurationId=${e.value}&pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then(messages => {
-                this.setState({
-                    selectedImapEmail: e,
-                    rows: messages.data || [],
-                    totalRows: messages.total || 0,
-                    isLoading: false
-                })
-            });
-        })
+        if (e.value > 0) {
+            this.setState({ isLoading: true })
+            dataservice.GetDataGrid(`SynchronizeEmails?configurationSetId=${e.value}`).then(result => {
+                dataservice.GetDataGrid(`GetEmails?configurationId=${e.value}&pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then(messages => {
+                    this.setState({
+                        selectedImapEmail: e,
+                        rows: messages.data || [],
+                        totalRows: messages.total || 0,
+                        isLoading: false
+                    })
+                });
+            })
+        }
     }
-    }
-    
+
     popupHandleChange = (obj, fieldName, fieldObj, selectedField) => {
         let originalDocument = { ...this.state[obj] }
         let newDocument = {};
@@ -125,7 +127,7 @@ class IMApEmails extends Component {
                 selectedCompany: { label: Resources.CompanyName[currentLanguage], value: 0 },
                 selectedContact: { label: Resources.ContactName[currentLanguage], value: 0 },
                 isLoading: false,
-                ShowPopup:false
+                ShowPopup: false
             })
         })
     }
@@ -166,6 +168,14 @@ class IMApEmails extends Component {
             })
         }
     };
+
+    preparePopUp=(element)=>{
+        let url=`GetEmailBody?messageId=${element.msgId}&configurationSetId=${this.state.selectedImapEmail.value}`
+        dataservice.GetRowById(url).then(result=>{
+            this.setState({ selectedRow: element,emailBody:result.textBody, ShowPopup: true })
+        })
+        //this.setState({ selectedRow: element, ShowPopup: true })
+    }
 
     render() {
         let table = <table className="attachmentTable attachmentTableAuto">
@@ -217,7 +227,7 @@ class IMApEmails extends Component {
                                         {moment(element.date).format('DD/MM/YYYY')}
                                     </td>
                                     <td style={{ paddingLeft: '18px !important' }}>
-                                        <button className="ui basic button" onClick={() => { this.setState({ selectedRow: element, ShowPopup: true }) }}>
+                                        <button className="ui basic button" onClick={() => { this.preparePopUp(element) }}>
                                             <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxwYXRoIGZpbGw9IiNDQ0QyREIiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTE0IDYuMDFjMCAxLjExLS44OTYgMi4wMS0yIDIuMDFzLTItLjktMi0yLjAxQzEwIDQuOSAxMC44OTYgNCAxMiA0czIgLjkgMiAyLjAxem0wIDUuOTg2YzAgMS4xMS0uODk2IDIuMDEtMiAyLjAxcy0yLS45LTItMi4wMWMwLTEuMTEuODk2LTIuMDEgMi0yLjAxczIgLjkgMiAyLjAxem0wIDUuOTk0YzAgMS4xMS0uODk2IDIuMDEtMiAyLjAxcy0yLS45LTItMi4wMWMwLTEuMTEuODk2LTIuMDEgMi0yLjAxczIgLjkgMiAyLjAxeiIvPgo8L3N2Zz4K" alt="Row Actions" />
                                         </button>
                                     </td>
@@ -243,6 +253,14 @@ class IMApEmails extends Component {
                                 <Form onSubmit={handleSubmit}>
                                     <div className='document-fields'>
                                         <div className="proForm datepickerContainer">
+                                            <div className="letterFullWidth">
+                                                <label className="control-label">{Resources.emailBody[currentLanguage]}</label>
+                                                <div className="inputDev ui input">
+                                                    <TextEditor
+                                                        value={this.state.emailBody || ''}
+                                                        disabled={true} />
+                                                </div>
+                                            </div>
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown title='Projects' data={this.state.projectsList} name='projectId'
                                                     selectedValue={this.state.selectedProject}
