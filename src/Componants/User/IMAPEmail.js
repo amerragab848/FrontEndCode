@@ -346,7 +346,7 @@ class IMApEmails extends Component {
                     {this.state.isLoading == false ? table : <LoadingSection />}
                     <div className="skyLight__form">
                         <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false, selectedRow: {} })}
-                            title={Resources['addInboxToEmailRecord'][currentLanguage]} isVisible={this.state.ShowPopup}
+                            title={Resources['addToEmailRecord'][currentLanguage]} isVisible={this.state.ShowPopup}
                             onCloseClicked={() => this.setState({ ShowPopup: false, selectedRow: {} })} >
                             {RenderSettings()}
                         </SkyLightStateless>

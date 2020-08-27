@@ -1321,9 +1321,9 @@
         "en": "Actions",
         "ar": "عمليات الجدول"
     },
-    "addInboxToEmailRecord":{
-        "en":"Add Inbox To Email Record",
-        "ar":"اضافة تنبيه الى الايميل"
+    "addToEmailRecord":{
+        "en":"Add To Email Record",
+        "ar":"اضافة الى الايميل"
     },
     "titleEn": {
         "en": "English Title",
