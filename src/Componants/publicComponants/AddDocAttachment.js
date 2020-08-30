@@ -37,7 +37,7 @@ class AddDocAttachment extends Component {
       isRelatedLink: this.props.docTypeId === 108 || this.props.docTypeId === 90 ? true : false,
       focused: false,
       dateRange: moment().format("YYYY-MM-DD"),
-      documentData: [],
+      documentData: [], filtered: [],
       isFilter: false
     };
   }
@@ -179,7 +179,27 @@ class AddDocAttachment extends Component {
     })
     // return <Calendar onChange={date => this.onChange()} selectRange={true} />
   }
+  onFilteredChangeCustom = (value, accessor) => {
+    let filtered = this.state.filtered;
+    let insertNewFilter = 1;
 
+    if (filtered.length) {
+      filtered.forEach((filter, i) => {
+        if (filter["id"] === accessor) {
+          if (value === "" || !value.length) filtered.splice(i, 1);
+          else filter["value"] = value.toLowerCase();
+
+          insertNewFilter = 0;
+        }
+      });
+    }
+
+    if (insertNewFilter) {
+      filtered.push({ id: accessor, value: value.toLowerCase() });
+    }
+
+    this.setState({ filtered: filtered });
+  };
   render() {
 
 
@@ -259,7 +279,7 @@ class AddDocAttachment extends Component {
           Header: Resources["subject"][currentLanguage],
           accessor: "subject",
           width: 200,
-          filterable: true
+          filterable: true,
         },
         {
           Header: Resources["docStatus"][currentLanguage],
@@ -271,16 +291,13 @@ class AddDocAttachment extends Component {
           Header: Resources["docDate"][currentLanguage],
           accessor: "docDate",
           filterable: true,
-          //filterMethod: (filter, row) => this.customOptionsFilterMethodssss(filter, row),
           Filter: ({ filter, onChange }) => {
             return <><input type="text" autoComplete="off"
               value={this.state.dateRange}
-              //onChange={e => this.saveFilter(e, index, column.name, column.type)}
               onFocus={() => this.changeDate()} />
               <div className="viewCalender__reactTable" tabIndex={0} onMouseLeave={this.resetDate} ref={index => { this.index = index; }}>
                 {this.state.focused ? <Calendar onChange={date => this.setDateFilter(date)} selectRange={true} /> : null}
               </div></>
-            // ,
           },
           Cell: row => (
             <span>
@@ -311,6 +328,23 @@ class AddDocAttachment extends Component {
                 <ReactTable
                   columns={columns}
                   data={this.state.documentData}
+                  filterable
+                  filtered={this.state.filtered}
+                  onFilteredChange={(filtered, column, value) => {
+                    this.onFilteredChangeCustom(value, column.id || column.accessor);
+                  }}
+                  defaultFilterMethod={(filter, row, column) => {
+                    const id = filter.pivotId || filter.id;
+                    if (typeof filter.value === "object") {
+                      return row[id] !== undefined
+                        ? filter.value.indexOf(row[id]) > -1
+                        : true;
+                    } else {
+                      return row[id] !== undefined
+                        ? (String(row[id]).toLowerCase()).indexOf(filter.value.toLowerCase()) > -1
+                        : true;
+                    }
+                  }}
                   className="-striped -highlight"
                   defaultPageSize={10}
                   noDataText={Resources["noData"][currentLanguage]} />

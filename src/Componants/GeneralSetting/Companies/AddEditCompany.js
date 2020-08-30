@@ -123,7 +123,7 @@ class AddEditCompany extends Component {
 
         switch (name) {
             case "title":
-                original_document.discipline = item.label;
+                original_document.title = item.label;
                 this.setState({ selectedTitle: item, document: original_document })
                 break;
             case "companyRole":
@@ -135,7 +135,7 @@ class AddEditCompany extends Component {
                 this.setState({ selectedCompanyType: item, document: original_document })
                 break;
             case "discipline":
-                original_document.title = item.label;
+                original_document.discipline = item.label;
                 this.setState({ selectedDiscipline: item, document: original_document })
                 break;
             default:
