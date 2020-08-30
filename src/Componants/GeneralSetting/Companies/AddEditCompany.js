@@ -54,7 +54,7 @@ const validationSchemaForEdit = Yup.object().shape({
 })
 
 class AddEditCompany extends Component {
-  
+
     constructor(props) {
         super(props);
 
@@ -190,6 +190,7 @@ class AddEditCompany extends Component {
                     sectionLoading: false,
                     selectedDiscipline: { label: res.disciplineTitle, value: res.disciplineId },
                     selectedCompanyRole: { label: res.roleTitle, value: res.roleId },
+                    selectedCompanyType: { label: res.companyType, value: res.companyTypeId },
                     titleEnCompany: res.companyNameEn,
                     titleArCompany: res.companyNameAr
                 })
@@ -220,30 +221,36 @@ class AddEditCompany extends Component {
                 this.props.actions.routeToTabIndex(2)
                 this.props.history.push({ pathname: '/TemplatesSettings' })
                 toast.success("operation complete sucessful")
+
+                this.uploadCompanyFooter();
             })
         }
         else {
             Api.post('EditProjectCompanies', objDocument).then(() => {
+
+                this.uploadCompanyFooter();
                 this.setState({ isLoading: false })
                 this.props.actions.routeToTabIndex(2)
                 this.props.history.push({ pathname: '/TemplatesSettings' })
                 toast.success("operation complete sucessful");
             })
-            this.uploadCompanyFooter();
+
         }
     }
 
     uploadCompanyFooter = () => {
         if (this.state.imageFooter) {
             let formData = new FormData();
-            formData.append("file", this.state.imageFooter[0]);
-            formData.append("companyId", this.state.companyID);
+            if (this.state.imageFooter[0] != null) {
+                formData.append("file", this.state.imageFooter[0]);
+                formData.append("companyId", this.state.companyID);
 
-            Api.postFile('UploadCompanyFooter', formData).then(res => {
-                res.status === 200 ? toast.success(Resources["operationSuccess"][currentLanguage]) : toast.error(Resources["operationCanceled"][currentLanguage]);
-            }).catch(ex => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-            });
+                Api.postFile('UploadCompanyFooter?companyId=' + this.state.companyID, formData).then(res => {
+                    res.status === 200 ? toast.success(Resources["operationSuccess"][currentLanguage]) : toast.error(Resources["operationCanceled"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
+                });
+            }
         }
     }
 
@@ -322,7 +329,7 @@ class AddEditCompany extends Component {
                                                                 handleChange={(e) => this.handleChangeDropDown(e, "discipline")}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.discipline}
-                                                                touched={true} 
+                                                                touched={true}
                                                                 value={values.discipline} />
                                                         </div>
 
@@ -331,10 +338,10 @@ class AddEditCompany extends Component {
                                                                 data={this.state.CompanyRoleData}
                                                                 name="companyRole"
                                                                 id="companyRole"
-                                                                selectedValue={this.state.selectedCompanyRole} 
-                                                                handleChange={(e) => this.handleChangeDropDown(e, "companyRole")} 
+                                                                selectedValue={this.state.selectedCompanyRole}
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "companyRole")}
                                                                 error={errors.companyRole}
-                                                                touched={true} 
+                                                                touched={true}
                                                                 onChange={setFieldValue}
                                                                 onBlur={setFieldTouched}
                                                                 value={values.companyRole} />
@@ -349,7 +356,7 @@ class AddEditCompany extends Component {
 
                                                                 handleChange={(e) => this.handleChangeDropDown(e, "companyType")}
 
-                                                                touched={true} 
+                                                                touched={true}
                                                                 onChange={setFieldValue}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.companyType}

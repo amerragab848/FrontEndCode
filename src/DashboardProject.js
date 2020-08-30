@@ -40,7 +40,7 @@ const validationSchema = Yup.object().shape({
 });
 
 class DashboardProject extends Component {
-    
+
     constructor(props) {
         super(props);
 
@@ -158,11 +158,7 @@ class DashboardProject extends Component {
     }
 
     async getWidgets() {
-        const data = orderBy(
-            await IndexedDb.getSelectedDashBoardWidgets(),
-            "order",
-            "asc"
-        );
+        const data = orderBy(await IndexedDb.getSelectedDashBoardWidgets(), "order", "asc");
 
         const categoryOrder = await IndexedDb.getDashBoardCategoryOrder();
 
@@ -183,9 +179,7 @@ class DashboardProject extends Component {
 
             widgets = orderBy(widgets, "order", "asc");
         } else {
-            const getAllWidgets = await IndexedDb.getAllDashBoradProject(
-                "widget"
-            );
+            const getAllWidgets = await IndexedDb.getAllDashBoradProject("widget");
 
             widgets = map(
                 groupBy(getAllWidgets, widget => widget.categoryId),
@@ -235,9 +229,9 @@ class DashboardProject extends Component {
                         </h2>
                         <div className={"SummeriesContainerContent " + (category.title == "Submittal" || category.title == "communication" ? " numbersContainerContent" : " ")}>
                             {category.widgets.map((widget, widgetIndex) => {
-                                if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
+                                // if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                                     return this.renderWidget(widget, widgetIndex);
-                                }
+                                // }
                             })}
                         </div>
                     </Fragment>
@@ -1321,9 +1315,7 @@ class DashboardProject extends Component {
                     {/* View renderCategoryWidget */}
                     <TabPanel>
                         <div className="mainContainer dashboardCon projectDashboard">
-                            {this.state.viewWidget
-                                ? this.renderCategoryWidget()
-                                : null}
+                            {this.state.viewWidget ? this.renderCategoryWidget() : null}
                         </div>
                     </TabPanel>
                     {/* view renderDiscussions */}
