@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs"; 
-import { SortablePane, Pane } from "react-sortable-pane"; 
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { SortablePane, Pane } from "react-sortable-pane";
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
 import widgets from "./WidgetsDashBoradProject";
 import Resources from "../resources.json";
 import IndexedDb from '../IndexedDb';
-import Config from "../Services/Config";
+//import Config from "../Services/Config";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
- 
+
 class DashBoardProject extends Component {
   constructor(props) {
     super(props);
@@ -244,22 +244,22 @@ class DashBoardProject extends Component {
 
       // if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
 
-        let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
+      let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
 
-        return (
-          <Pane key={widget.order} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
-            <div className="secondTabs project__select ui-state-default">
-              <img src={dashBoardLogo} />
-              <div className={"ui checkbox checkBoxGray300 count" + (checked ? " checked" : "")} onClick={event => this.toggleCheck(widget.id, widget.categoryId, checked)}>
-                <input name="CheckBox" type="checkbox" id="terms" tabIndex={index} className="hidden" checked={checked} />
-                <label />
-              </div>
-              <div className="project__title">
-                <h3>{Resources[widget.title][currentLanguage]}</h3>
-              </div>
+      return (
+        <Pane key={widget.order} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
+          <div className="secondTabs project__select ui-state-default">
+            <img src={dashBoardLogo} />
+            <div className={"ui checkbox checkBoxGray300 count" + (checked ? " checked" : "")} onClick={event => this.toggleCheck(widget.id, widget.categoryId, checked)}>
+              <input name="CheckBox" type="checkbox" id="terms" tabIndex={index} className="hidden" checked={checked} />
+              <label />
             </div>
-          </Pane>
-        );
+            <div className="project__title">
+              <h3>{Resources[widget.title][currentLanguage]}</h3>
+            </div>
+          </div>
+        </Pane>
+      );
       // } else {
       //   return null;
       // }

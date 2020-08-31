@@ -122,7 +122,6 @@ class IMApEmails extends Component {
             this.setState({
                 selectedRow: {},
                 imapObj: imapObj,
-                selectedImapEmail: { label: Resources.imapConfigurationName[currentLanguage], value: 0 },
                 selectedProject: { label: Resources.projectName[currentLanguage], value: 0 },
                 selectedCompany: { label: Resources.CompanyName[currentLanguage], value: 0 },
                 selectedContact: { label: Resources.ContactName[currentLanguage], value: 0 },
@@ -170,9 +169,10 @@ class IMApEmails extends Component {
     };
 
     preparePopUp=(element)=>{
+        this.setState({isLoading:true})
         let url=`GetEmailBody?messageId=${element.msgId}&configurationSetId=${this.state.selectedImapEmail.value}`
         dataservice.GetRowById(url).then(result=>{
-            this.setState({ selectedRow: element,emailBody:result.textBody, ShowPopup: true })
+            this.setState({ selectedRow: element,emailBody:result.textBody, ShowPopup: true,isLoading:false })
         })
         //this.setState({ selectedRow: element, ShowPopup: true })
     }
