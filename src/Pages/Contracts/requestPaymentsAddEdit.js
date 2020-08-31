@@ -723,7 +723,7 @@ class requestPaymentsAddEdit extends Component {
             { field: 'secondLevel', title: 'boqTypeChild', type: "text" }
         ];
 
-       
+
         if (selectedCols.length === 0) {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
@@ -862,7 +862,9 @@ class requestPaymentsAddEdit extends Component {
                 useQuantity: false,
                 percentComplete: "",
                 quantityComplete: "",
-                paymentPercent: ""
+                paymentPercent: "",
+                nextId:0,
+                previousId:0
             };
 
             this.setState(
@@ -1541,7 +1543,7 @@ class requestPaymentsAddEdit extends Component {
                         i = updateRow;
                     }
                 });
-            }); 
+            });
             this.setState({
                 editRows: editRows,
                 paymentsItems: paymentsItems,
@@ -1553,7 +1555,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: false,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
-                isMultipleItems: false 
+                isMultipleItems: false
             });
 
             this.reqPayModal.hide();
@@ -1582,7 +1584,7 @@ class requestPaymentsAddEdit extends Component {
             let index = pItems.findIndex(x => x.id === newValue.id);
 
             pItems[index] = newValue;
- 
+
             this.setState({
                 editRows: editRows,
                 paymentsItems: pItems,
@@ -1598,7 +1600,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     changeValueOfProps = () => {
- 
+
         this.setState({ isFilter: false });
     };
 
@@ -2475,18 +2477,18 @@ class requestPaymentsAddEdit extends Component {
     };
 
     renderingGrid() {
-         const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
+        const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
 
             <GridCustom
                 gridKey='ReqPaymentsItems'
-                data={this.state.paymentsItems} 
+                data={this.state.paymentsItems}
                 groups={this.state.groups}
                 isFilter={this.state.isFilter}
                 actions={this.actions}
                 openModalColumn={this.state.columnsModal}
-                cells={this.state.columns} 
+                cells={this.state.columns}
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
-                rowClick={cell => { this.onRowClick(cell); }} 
+                rowClick={cell => { this.onRowClick(cell); }}
                 changeValueOfProps={this.changeValueOfProps.bind(this)}
             />
         ) : <div style={{ position: 'relative' }}><LoadingSection isCustomLoader={true} /></div>;
@@ -2874,6 +2876,10 @@ class requestPaymentsAddEdit extends Component {
                         docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
+                            <button className={this.state.document.previousId == 0 ? "hidden" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
+                            <button className={this.state.document.nextId == 0 ? "hidden" : ""} onClick={() => this.GetNextData()}>
+                                <i className="angle right icon" />
+                            </button>
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
