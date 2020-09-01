@@ -863,8 +863,8 @@ class requestPaymentsAddEdit extends Component {
                 percentComplete: "",
                 quantityComplete: "",
                 paymentPercent: "",
-                nextId:0,
-                previousId:0
+                nextId: 0,
+                previousId: 0
             };
 
             this.setState(
@@ -2495,6 +2495,61 @@ class requestPaymentsAddEdit extends Component {
 
         return ItemsGrid;
     };
+    getById = (id) => {
+        if (id > 0) {
+            // First 
+
+
+            let obj = {
+                docId: id,
+                projectId: projectId,
+                projectName: projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+            this.props.history.push({ pathname: "/requestPaymentsAddEdit", search: "?id=" + encodedPaylod });
+            window.location.reload();
+
+
+            // End First -------------------------------------
+
+
+
+            //Second ----------------------------
+
+
+            // let documentDeduction = {
+            //     title: "",
+            //     deductionValue: 0
+            // };
+            // this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + id);
+            // this.props.actions.ExportingData({ items: [] });
+            // dataservice.GetDataList("GetCostCodingTreeNewByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
+            //     this.setState({
+            //         fillDropDownTress: result
+            //     });
+            // });
+            // this.setState({
+            //     isLoading: true,
+            //     documentDeduction: documentDeduction,
+            //     docId: id
+            // });
+            // docId = id;
+            // isApproveMode = 0;
+            // docApprovalId = 0;
+            // perviousRoute = window.location.pathname + window.location.search;
+            // arrange = 0;
+
+
+            //End Second------------------------------------------
+        }
+    }
     render() {
 
         let columns = [];
@@ -2876,10 +2931,20 @@ class requestPaymentsAddEdit extends Component {
                         docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {/* <button className={this.state.document.previousId == 0 ? "hide" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
-                            <button className={this.state.document.nextId == 0 ? "hide" : ""} onClick={() => this.GetNextData()}>
+                            <button style={{
+                                "display": this.state.document.previousId > 0 && this.state.docId > 0 ? "inline-block" : "none",
+                                "float": "left", "margin-top": "200px", "margin-right": "20px"
+                            }}
+                                onClick={() => this.getById(this.state.document.previousId)}>
+                                <i className="angle left icon" />
+                            </button>
+                            <button style={{
+                                "display": this.state.document.nextId > 0 && this.state.docId > 0 ? "inline-block" : "none",
+                                "float": "right", "margin-top": "200px"
+                            }}
+                                onClick={() => this.getById(this.state.document.nextId)}>
                                 <i className="angle right icon" />
-                            </button> */}
+                            </button>
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
