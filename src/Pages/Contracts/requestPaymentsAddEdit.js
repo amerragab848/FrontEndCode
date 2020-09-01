@@ -2495,11 +2495,9 @@ class requestPaymentsAddEdit extends Component {
 
         return ItemsGrid;
     };
+
     getById = (id) => {
         if (id > 0) {
-            // First 
-
-
             let obj = {
                 docId: id,
                 projectId: projectId,
@@ -2516,38 +2514,6 @@ class requestPaymentsAddEdit extends Component {
             this.props.history.push({ pathname: "/requestPaymentsAddEdit", search: "?id=" + encodedPaylod });
             window.location.reload();
 
-
-            // End First -------------------------------------
-
-
-
-            //Second ----------------------------
-
-
-            // let documentDeduction = {
-            //     title: "",
-            //     deductionValue: 0
-            // };
-            // this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + id);
-            // this.props.actions.ExportingData({ items: [] });
-            // dataservice.GetDataList("GetCostCodingTreeNewByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
-            //     this.setState({
-            //         fillDropDownTress: result
-            //     });
-            // });
-            // this.setState({
-            //     isLoading: true,
-            //     documentDeduction: documentDeduction,
-            //     docId: id
-            // });
-            // docId = id;
-            // isApproveMode = 0;
-            // docApprovalId = 0;
-            // perviousRoute = window.location.pathname + window.location.search;
-            // arrange = 0;
-
-
-            //End Second------------------------------------------
         }
     }
     render() {
@@ -2931,20 +2897,10 @@ class requestPaymentsAddEdit extends Component {
                         docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            <button style={{
-                                "display": this.state.document.previousId > 0 && this.state.docId > 0 ? "inline-block" : "none",
-                                "float": "left", "margin-top": "200px", "margin-right": "20px"
-                            }}
-                                onClick={() => this.getById(this.state.document.previousId)}>
-                                <i className="angle left icon" />
-                            </button>
-                            <button style={{
-                                "display": this.state.document.nextId > 0 && this.state.docId > 0 ? "inline-block" : "none",
-                                "float": "right", "margin-top": "200px"
-                            }}
-                                onClick={() => this.getById(this.state.document.nextId)}>
-                                <i className="angle right icon" />
-                            </button>
+                            <div className="rowsPaginations readOnly__disabled " style={{ 'justify-content': 'space-between' }}>
+                                {this.state.document.previousId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Prevoius Payment" style={{ 'border-radius': '20px' }}><i className="angle left icon" onClick={() => this.getById(this.state.document.previousId)}></i></button> : null}
+                                {this.state.document.nextId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Next Payment" style={{ 'border-radius': '20px' }}><i className="angle right icon" onClick={() => this.getById(this.state.document.nextId)}></i></button> : null}
+                            </div>
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
