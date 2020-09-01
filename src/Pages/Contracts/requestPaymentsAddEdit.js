@@ -2876,10 +2876,10 @@ class requestPaymentsAddEdit extends Component {
                         docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            <button className={this.state.document.previousId == 0 ? "hidden" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
-                            <button className={this.state.document.nextId == 0 ? "hidden" : ""} onClick={() => this.GetNextData()}>
+                            {/* <button className={this.state.document.previousId == 0 ? "hide" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
+                            <button className={this.state.document.nextId == 0 ? "hide" : ""} onClick={() => this.GetNextData()}>
                                 <i className="angle right icon" />
-                            </button>
+                            </button> */}
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
