@@ -266,6 +266,13 @@ var routes = [
         nav: true,
         settings: { Reports: true, permission: 3654, order: 13 }
     },
+    { 
+        route: "ContractedQtyVSEarnedQty",
+        moduleId: "ProjectReports/ContractedQtyVSEarnedQty",
+        title: "contractQtyVsEarnedQty",
+        nav: true,
+        settings: { ProjectReports: true, permission: 10074, order: 21 }
+    },
     {
         route: "taskDetail",
         moduleId: "TimeSheet/EPSTimeSheetReport",

@@ -1321,6 +1321,10 @@
         "en": "Actions",
         "ar": "عمليات الجدول"
     },
+    "contractQtyVsEarnedQty": {
+        "en": "Contracted Qty Vs Earned Qty Report",
+        "ar": "كمية العقود مقابل الكمية المكتسبة"
+    },
     "addToEmailRecord": {
         "en": "Add To Email Record",
         "ar": "اضافة الى الايميل"
@@ -3728,6 +3732,10 @@
     "paymentRequistionLog": {
         "en": "Payment Requisition",
         "ar": "سجل المستخلصات"
+    },
+    "paymentRequistion": {
+        "en": "Payment Requisition",
+        "ar": " المستخلصات"
     },
     "siteRequest": {
         "en": "Material Request",

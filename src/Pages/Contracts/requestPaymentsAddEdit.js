@@ -2497,9 +2497,6 @@ class requestPaymentsAddEdit extends Component {
     };
     getById = (id) => {
         if (id > 0) {
-            // First 
-
-
             let obj = {
                 docId: id,
                 projectId: projectId,
@@ -2515,39 +2512,6 @@ class requestPaymentsAddEdit extends Component {
 
             this.props.history.push({ pathname: "/requestPaymentsAddEdit", search: "?id=" + encodedPaylod });
             window.location.reload();
-
-
-            // End First -------------------------------------
-
-
-
-            //Second ----------------------------
-
-
-            // let documentDeduction = {
-            //     title: "",
-            //     deductionValue: 0
-            // };
-            // this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + id);
-            // this.props.actions.ExportingData({ items: [] });
-            // dataservice.GetDataList("GetCostCodingTreeNewByProjectIdForList?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
-            //     this.setState({
-            //         fillDropDownTress: result
-            //     });
-            // });
-            // this.setState({
-            //     isLoading: true,
-            //     documentDeduction: documentDeduction,
-            //     docId: id
-            // });
-            // docId = id;
-            // isApproveMode = 0;
-            // docApprovalId = 0;
-            // perviousRoute = window.location.pathname + window.location.search;
-            // arrange = 0;
-
-
-            //End Second------------------------------------------
         }
     }
     render() {
