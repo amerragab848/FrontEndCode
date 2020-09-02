@@ -1305,19 +1305,19 @@ var routes = [
         nav: true,
         settings: { Contracts: false }
     },
-    {
-        route: "procurement",
-        moduleId: "commonLogs",
-        title: "proposalsComparison",
-        nav: true,
-        hash: "#procurement",
-        settings: {
-            Procurement: true,
-            caption: "procoor-icon-procurement",
-            permission: 170,
-            order: 9
-        }
-    }, 
+    // {
+    //     route: "procurement",
+    //     moduleId: "commonLogs",
+    //     title: "proposalsComparison",
+    //     nav: true,
+    //     hash: "#procurement",
+    //     settings: {
+    //         Procurement: true,
+    //         caption: "procoor-icon-procurement",
+    //         permission: 170,
+    //         order: 9
+    //     }
+    // }, 
     {
         route: "pco",
         moduleId: "commonLogs",

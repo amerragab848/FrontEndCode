@@ -2495,6 +2495,7 @@ class requestPaymentsAddEdit extends Component {
 
         return ItemsGrid;
     };
+
     getById = (id) => {
         if (id > 0) {
             let obj = {
@@ -2895,20 +2896,10 @@ class requestPaymentsAddEdit extends Component {
                         docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            <button style={{
-                                "display": this.state.document.previousId > 0 && this.state.docId > 0 ? "inline-block" : "none",
-                                "float": "left", "margin-top": "200px", "margin-right": "20px"
-                            }}
-                                onClick={() => this.getById(this.state.document.previousId)}>
-                                <i className="angle left icon" />
-                            </button>
-                            <button style={{
-                                "display": this.state.document.nextId > 0 && this.state.docId > 0 ? "inline-block" : "none",
-                                "float": "right", "margin-top": "200px"
-                            }}
-                                onClick={() => this.getById(this.state.document.nextId)}>
-                                <i className="angle right icon" />
-                            </button>
+                            <div className="rowsPaginations readOnly__disabled " style={{ 'justify-content': 'space-between' }}>
+                                {this.state.document.previousId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Prevoius Payment" style={{ 'border-radius': '20px' }}><i className="angle left icon" onClick={() => this.getById(this.state.document.previousId)}></i></button> : null}
+                                {this.state.document.nextId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Next Payment" style={{ 'border-radius': '20px' }}><i className="angle right icon" onClick={() => this.getById(this.state.document.nextId)}></i></button> : null}
+                            </div>
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
