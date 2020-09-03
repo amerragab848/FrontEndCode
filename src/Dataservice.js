@@ -18,6 +18,7 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
+    
     static GetDataListWithAdditionalParam(url, label, value, param) {
         let Data = []
         return Api.get(url).then(result => {

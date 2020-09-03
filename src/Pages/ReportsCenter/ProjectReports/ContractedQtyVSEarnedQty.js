@@ -14,6 +14,7 @@ import * as communicationActions from "../../../store/actions/communication";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { withRouter } from "react-router-dom";
+import Dataservice from '../../../Dataservice';
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -23,12 +24,6 @@ const companySchema = Yup.object().shape({
     SelectedPaymentRequisition: Yup.string().required(Resources['paymentRequistionRequired'][currentLanguage]).nullable(true)
 });
 
-const dropDownMap = (list, fieldText, fieldValue) => {
-    return list.map(item => ({
-        label: item[fieldText],
-        value: item[fieldValue]
-    }))
-}
 
 class ContractedQtyVSEarnedQty extends Component {
 
@@ -175,6 +170,7 @@ class ContractedQtyVSEarnedQty extends Component {
                 type: "text"
             }
         ];
+
         this.state = {
             isLoading: false,
             PaymentRequisitionList: [],
@@ -186,12 +182,14 @@ class ContractedQtyVSEarnedQty extends Component {
             pageNumber: 0,
             totalRows: 0
         }
+
         if (!Config.IsAllow(10074)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             });
         }
+
         this.fields = [
             {
                 title: Resources["projectName"][currentLanguage],
@@ -204,6 +202,7 @@ class ContractedQtyVSEarnedQty extends Component {
                 type: "text"
             }
         ];
+
         this.exportData = {
             docTypeId: "121",
             docId: "",
@@ -215,9 +214,10 @@ class ContractedQtyVSEarnedQty extends Component {
 
     componentDidMount() {
         this.setState({ isLoading: true })
-        Api.get(`GetAccountsProjectsByIdForList`).then(result => {
+        Dataservice.GetDataList(`GetAccountsProjectsByIdForList`, "projectName", "projectId").then(result => {
+            //Api.get(`GetAccountsProjectsByIdForList`).then(result => {
             this.setState({
-                projectsList: dropDownMap(result || [], "projectName", "projectId"),
+                projectsList: result,
                 isLoading: false
             });
         }).catch((ex) => {
@@ -226,18 +226,20 @@ class ContractedQtyVSEarnedQty extends Component {
     }
 
     handleProjectChange = (e) => {
-        Api.get(`GetContractsRequestPaymentsForList?projectId=${e.value}`).then(result => {
+        Dataservice.GetDataList(`GetContractsRequestPaymentsForList?projectId=${e.value}`, "subject", "id").then(result => {
+
+            // Api.get(`GetContractsRequestPaymentsForList?projectId=${e.value}`).then(result => {
             this.setState({
-                PaymentRequisitionList: dropDownMap(result || [], "subject", "id"),
+                PaymentRequisitionList: result,
                 isLoading: false
             });
         }).catch((ex) => {
-            toast.error(console.log("ex...", ex))
+            toast.error(ex);
         })
     }
 
     getGridRows = () => {
-        this.setState({ isLoading: true  })
+        this.setState({ isLoading: true })
         Object.assign(this.exportData, {
             docId: this.state.SelectedPaymentRequisition.value,
             projectId: this.state.selectedProject.value
@@ -266,9 +268,7 @@ class ContractedQtyVSEarnedQty extends Component {
             let url = `GetRequestItemsByRequestIdForReport?requestId=${this.state.SelectedPaymentRequisition.value}&pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
             Api.get(url).then(result => {
                 this.setState({
-                    rows: result || [],
-                    // rows: result.data || [],
-                    // totalRows: result.total || 0,
+                    rows: result || [], 
                     isLoading: false
                 });
             })
@@ -306,7 +306,6 @@ class ContractedQtyVSEarnedQty extends Component {
                 ref='custom-data-grid'
                 key="ContractedQtyVsEarnedQty"
                 data={this.state.rows}
-                pageSize={this.state.pageSize}
                 groups={[]}
                 actions={[]}
                 rowActions={[]}
@@ -315,7 +314,7 @@ class ContractedQtyVSEarnedQty extends Component {
             />) : null
 
         const btnExport = <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={() => this.Export()}>{Resources.export[currentLanguage]}</button>
-          
+
 
         return (
             <div className="reports__content">

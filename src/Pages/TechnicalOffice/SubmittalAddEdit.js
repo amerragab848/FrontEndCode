@@ -178,7 +178,8 @@ class SubmittalAddEdit extends Component {
         { label: "ITP", value: "ITP" },
         { label: "Safty Plan", value: "Safty Plan" },
         { label: "Release Submittal", value: "Release Submittal" },
-        { label: "Organization Chart", value: "Organization Chart" } 
+        { label: "Organization Chart", value: "Organization Chart" } ,
+        { label: "BBS", value: "BBS" } 
       ],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },

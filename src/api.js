@@ -5,6 +5,7 @@ import Config from "./Services/Config";
 //import moment from "moment";
 let Authorization = localStorage.getItem("userToken");
 
+let modules = [{ api: 'PM/api/Procoor/', key: 1 }, { api: 'ExportAPI/api/ExportController/', key: 2 }, { api: 'ExportAPI/api/ExportController/', key: 3 }]
 export default class Api {
 
     static headers() {
@@ -230,14 +231,16 @@ export default class Api {
                 return null;
             });
     }
-    static get(route, params) {
-        return this.xhr(route, params === null ? null : params, "GET");
+    static get(route, params, moduleId) {
+        return this.xhr(route, params === null ? null : params, "GET", moduleId ? moduleId : 1);
     }
     static post(route, params) {
         return this.xhr(route, params, "POST");
     }
-    static xhr(route, params, verb) {
-        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
+    static xhr(route, params, verb, moduleId) {
+        if (moduleId < 1) moduleId = 1;
+        let apiPrefix = modules.find(x => x.key == moduleId);
+        const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
 
