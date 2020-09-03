@@ -4,7 +4,7 @@ var widgets = [
     refrence: 0,
     canView: false,
     order: 1,
-    checked: false,
+    checked: true,
     widgets: [
       {
         title: "docApproval",
