@@ -237,17 +237,20 @@ class ContractedQtyVSEarnedQty extends Component {
     }
 
     getGridRows = () => {
-        this.setState({
-            isLoading: true
-        })
-
+        this.setState({ isLoading: true  })
         Object.assign(this.exportData, {
             docId: this.state.SelectedPaymentRequisition.value,
             projectId: this.state.selectedProject.value
         })
+        let exportFilterObj = {
+            projectName: this.fields[0].value,
+            paymentRequistion: this.fields[1].value,
+            projectId: this.state.selectedProject.value
+        }
         Api.get(`GetRequestItemsByRequestIdForReport?requestId=${this.state.SelectedPaymentRequisition.value}&pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then((res) => {
             this.setState({ rows: res || [], isLoading: false })
-            this.props.actions.ExportingData({ items: res });
+            this.props.actions.reportFilters(exportFilterObj)
+            this.props.actions.ExportingReportData(res);
         }).catch(() => {
             this.setState({ isLoading: false })
         })
@@ -311,7 +314,8 @@ class ContractedQtyVSEarnedQty extends Component {
                 rowClick={() => { }}
             />) : null
 
-        const btnExport = <button onClick={() => this.Export()}>{Resources.export[currentLanguage]}</button>
+        const btnExport = <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={() => this.Export()}>{Resources.export[currentLanguage]}</button>
+          
 
         return (
             <div className="reports__content">
@@ -390,7 +394,6 @@ class ContractedQtyVSEarnedQty extends Component {
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources.export[currentLanguage]}>
-                        {console.log("this.props.items...",this.props.items)}
                         {this.props.items.length > 0 ? (ExportDetails && <ExportDetails  {...this.exportData} />) : null}
                     </SkyLight>
                 </div>

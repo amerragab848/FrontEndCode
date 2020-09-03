@@ -3264,7 +3264,18 @@
         "friendlyNames": []
     },
     "121": {
-        "fields": [],
+        "fields": [
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "paymentRequistion",
+                "value": "paymentRequistion",
+                "type": "S"
+            }
+        ],
         "columnsItems": [
             "arrange",
             "boqType",

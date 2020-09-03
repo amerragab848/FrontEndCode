@@ -17,7 +17,7 @@ export function documentForEdit(urlAction, docTypeId, docName) {
                 type: types.Document_for_Edit,
                 document: resp,
                 docId: resp.id,
-                docAlertId : resp.docAlertId,
+                docAlertId: resp.docAlertId,
                 docTypeId: docTypeId,
                 showLeftReportMenu: false,
                 docName: docName
@@ -39,18 +39,18 @@ export function getItems(urlAction) {
         return Api.get(urlAction).then(resp => {
             dispatch({
                 type: types.GET_ITEMS,
-                document: resp 
+                document: resp
             });
 
         }).catch((ex) => {
             toast.error(Resources["failError"][currentLanguage]);
             dispatch({
-                type: types.GET_ITEMS 
+                type: types.GET_ITEMS
             });
         });
     }
 }
- 
+
 export function clearCashDocument() {
     return (dispatch, getState) => {
         dispatch({
@@ -139,7 +139,7 @@ export function uploadFile(BlobUpload, formData, header) {
     return (dispatch, getState) => {
 
         return Api.postFile(BlobUpload, formData, header).then(resp => {
-            
+
             dispatch({
                 type: types.File_Upload,
                 file: resp[0]
@@ -156,7 +156,7 @@ export function uploadFile(BlobUpload, formData, header) {
 export function setLoadingFiles() {
     return (dispatch, getState) => {
         dispatch({
-            type: types.SET_LOADING 
+            type: types.SET_LOADING
         });
     }
 }
@@ -609,40 +609,56 @@ export function addCommunicationDocsAttach(data, projectId, docType, docId) {
     }
 }
 // region Ahmed Yousry
-export function fillProjectDropdown(){
-    return (dispatch)=>{
-       return Api.get('GetAccountsProjectsByIdForList').then(res=>{
-         dispatch({type:types.FILL_PROJECTS_DROPDOWN,projectDropdown:res.data})
-       }).catch((ex)=>{
-         dispatch({type:types.FILL_PROJECTS_DROPDOWN})
-       });
-    }
-}
-export function fillTasksDropdown(){
-    return(dispatch)=>{
-      return Api.get().then(res=>{
-        dispatch({type:types.FILL_TASKS_DROPDOWN,taskDropdown:res.data})
-      }).catch((ex)=>{
-        dispatch({type:types.FILL_TASKS_DROPDOWN})
-      });
-    }
-}
-export function fillLocationsDropdown(){
-    return(dispatch)=>{
-        return Api.get('GetAccountsDefaultList?listType=timesheetlocation&pageNumber=0&pageSize=10000').then(res=>{
-          dispatch({type:types.FILL_LOCATIONS_DROPDOWN,locationDropdown:res.data})
-        }).catch((ex)=>{
-            dispatch({type:types.FILL_LOCATIONS_DROPDOWN})
+export function fillProjectDropdown() {
+    return (dispatch) => {
+        return Api.get('GetAccountsProjectsByIdForList').then(res => {
+            dispatch({ type: types.FILL_PROJECTS_DROPDOWN, projectDropdown: res.data })
+        }).catch((ex) => {
+            dispatch({ type: types.FILL_PROJECTS_DROPDOWN })
         });
     }
 }
-export function fillCountriesDropdown(){
-    return(dispatch)=>{
-        return Api.get('GetAccountsDefaultList?listType=country&pageNumber=0&pageSize=10000').then(res=>{
-            dispatch({type:types.FILL_COUNTRIES_DROPDOWN,countryDropdown:res.data})
-        }).catch((ex)=>{
-            dispatch({type:types.FILL_COUNTRIES_DROPDOWN})
+export function fillTasksDropdown() {
+    return (dispatch) => {
+        return Api.get().then(res => {
+            dispatch({ type: types.FILL_TASKS_DROPDOWN, taskDropdown: res.data })
+        }).catch((ex) => {
+            dispatch({ type: types.FILL_TASKS_DROPDOWN })
+        });
+    }
+}
+export function fillLocationsDropdown() {
+    return (dispatch) => {
+        return Api.get('GetAccountsDefaultList?listType=timesheetlocation&pageNumber=0&pageSize=10000').then(res => {
+            dispatch({ type: types.FILL_LOCATIONS_DROPDOWN, locationDropdown: res.data })
+        }).catch((ex) => {
+            dispatch({ type: types.FILL_LOCATIONS_DROPDOWN })
+        });
+    }
+}
+export function fillCountriesDropdown() {
+    return (dispatch) => {
+        return Api.get('GetAccountsDefaultList?listType=country&pageNumber=0&pageSize=10000').then(res => {
+            dispatch({ type: types.FILL_COUNTRIES_DROPDOWN, countryDropdown: res.data })
+        }).catch((ex) => {
+            dispatch({ type: types.FILL_COUNTRIES_DROPDOWN })
         })
+    }
+}
+export function ExportingReportData(data) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Export_REPORT_Document,
+            items: data
+        });
+    }
+}
+export function reportFilters(data) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.REPORT_FILTERS,
+            document: data
+        });
     }
 }
 // endregion Ahmed Yousry
@@ -655,25 +671,25 @@ export function setLoading() {
     }
 }
 
-export function getAttachmentsAndWFCycles(DocType,docId,projectId) {
-    return(dispatch)=>{
-        return Api.get('GetAttachFilesAndWFCycleByDocId?DocType='+ DocType +'&DocId='+ docId + '&projectId='+projectId).then(res=>{
+export function getAttachmentsAndWFCycles(DocType, docId, projectId) {
+    return (dispatch) => {
+        return Api.get('GetAttachFilesAndWFCycleByDocId?DocType=' + DocType + '&DocId=' + docId + '&projectId=' + projectId).then(res => {
 
             let result = BuildWorkFlowCycleStracture(res.wfCycles);
 
             dispatch({
-                type:types.Attachments_WF_Cycles,
+                type: types.Attachments_WF_Cycles,
                 files: res.attachments,
-                workFlowCycles : result.cycles, 
-               })
-        }).catch((ex)=>{
+                workFlowCycles: result.cycles,
+            })
+        }).catch((ex) => {
             dispatch({
-                type:types.Attachments_WF_Cycles,
+                type: types.Attachments_WF_Cycles,
                 files: [],
-                workFlowCycles : [] 
+                workFlowCycles: []
             })
         })
-    } 
+    }
 }
 //#endregion
 

@@ -381,7 +381,11 @@ export default function (state = initialState.app.communication, action) {
         case types.FILL_COUNTRIES_DROPDOWN:
             return { ...state, countryDropdown: action.countryDropdown }
 
-
+        case types.Export_REPORT_Document:
+            return { ...state, items: action.items }
+        
+        case types.REPORT_FILTERS:
+            return {...state,document:action.document}
 
         case types.SET_LOADING:
             return { ...state, isLoading: true, isLoadingFilesUpload: true }
@@ -389,8 +393,8 @@ export default function (state = initialState.app.communication, action) {
         case types.GET_ITEMS:
             return { ...state, items: action.document }
         case types.Attachments_WF_Cycles:
-            return { ...state, files: action.files, workFlowCycles: action.workFlowCycles}
-        
+            return { ...state, files: action.files, workFlowCycles: action.workFlowCycles }
+
         default:
             return {
                 ...state
