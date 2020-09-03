@@ -15,6 +15,10 @@
         "en": "Create Document",
         "ar": "انشاء مستند"
     },
+    "earnedQuantity":{
+        "en":"Earned Qty",
+        "ar":"الكمية المكتسبة"
+    },
     "approvalModalReject": {
         "en": "Reject",
         "ar": "رفض"
@@ -3736,6 +3740,10 @@
     "paymentRequistion": {
         "en": "Payment Requisition",
         "ar": " المستخلصات"
+    },
+    "paymentRequistionRequired": {
+        "en": "Payment Requisition Required",
+        "ar": " المستخلصات مطلوبة"
     },
     "siteRequest": {
         "en": "Material Request",

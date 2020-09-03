@@ -6,10 +6,29 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
-import ExportDetails from "../ExportReportCenterDetails";
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import ExportDetails from '../../../Componants/OptionsPanels/ExportDetails';
+import SkyLight from 'react-skylight';
+import * as communicationActions from "../../../store/actions/communication";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import { withRouter } from "react-router-dom";
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let projectId = localStorage.getItem("lastSelectedProject") == null ? 0 : localStorage.getItem("lastSelectedProject")
+
+const companySchema = Yup.object().shape({
+    selectedProject: Yup.string().required(Resources['projectRequired'][currentLanguage]).nullable(true),
+    SelectedPaymentRequisition: Yup.string().required(Resources['paymentRequistionRequired'][currentLanguage]).nullable(true)
+});
+
+const dropDownMap = (list, fieldText, fieldValue) => {
+    return list.map(item => ({
+        label: item[fieldText],
+        value: item[fieldValue]
+    }))
+}
 
 class ContractedQtyVSEarnedQty extends Component {
 
@@ -36,12 +55,12 @@ class ContractedQtyVSEarnedQty extends Component {
             }, {
                 field: "secondLevel",
                 title: Resources["boqTypeChild"][currentLanguage],
-                width: 10,
+                width: 13,
                 groupable: true,
-                sortable: true, 
+                sortable: true,
                 hidden: false,
                 type: "text"
-            },  {
+            }, {
                 field: "itemCode",
                 title: Resources["itemCode"][currentLanguage],
                 width: 10,
@@ -55,7 +74,7 @@ class ContractedQtyVSEarnedQty extends Component {
                 width: 15,
                 groupable: true,
                 sortable: true,
-                 hidden: false,
+                hidden: false,
                 type: "text",
             },
             {
@@ -63,7 +82,7 @@ class ContractedQtyVSEarnedQty extends Component {
                 title: Resources["unit"][currentLanguage],
                 width: 10,
                 groupable: true,
-                sortable: true, 
+                sortable: true,
                 hidden: false,
                 type: "text"
             },
@@ -72,15 +91,15 @@ class ContractedQtyVSEarnedQty extends Component {
                 title: Resources["unitPrice"][currentLanguage],
                 width: 10,
                 groupable: true,
-                sortable: true, 
+                sortable: true,
                 hidden: false,
                 type: "number"
-            },{
+            }, {
                 field: "quantity",
                 title: Resources["boqQuanty"][currentLanguage],
                 width: 10,
                 groupable: true,
-                sortable: true, 
+                sortable: true,
                 hidden: false,
                 type: "number"
             }, {
@@ -88,7 +107,16 @@ class ContractedQtyVSEarnedQty extends Component {
                 title: Resources["approvedQuantity"][currentLanguage],
                 width: 10,
                 groupable: true,
-                sortable: true, 
+                sortable: true,
+                hidden: false,
+                type: "number"
+            },
+            {
+                field: "earnedQuantity",
+                title: Resources["earnedQuantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                sortable: true,
                 hidden: false,
                 type: "number"
             },
@@ -97,26 +125,26 @@ class ContractedQtyVSEarnedQty extends Component {
                 title: Resources["quantityComplete"][currentLanguage],
                 width: 10,
                 groupable: true,
-                sortable: true, 
+                sortable: true,
                 hidden: false,
                 type: "number"
-            }, 
+            },
             {
                 field: "paymentPercent",
                 title: Resources["paymentPercent"][currentLanguage],
                 width: 15,
                 groupable: true,
-                sortable: true, 
+                sortable: true,
                 hidden: false,
                 type: "text"
-            }, 
+            },
             {
                 field: "wasAdded",
                 title: Resources["status"][currentLanguage],
-                width: 10,
+                width: 15,
                 groupable: true,
                 sortable: true,
-                 hidden: true,
+                hidden: false,
                 type: "text"
             },
             {
@@ -134,7 +162,7 @@ class ContractedQtyVSEarnedQty extends Component {
                 width: 10,
                 groupable: true,
                 sortable: true,
-                 hidden: false,
+                hidden: false,
                 type: "text"
             },
             {
@@ -146,15 +174,17 @@ class ContractedQtyVSEarnedQty extends Component {
                 hidden: false,
                 type: "text"
             }
-             ];
+        ];
         this.state = {
             isLoading: false,
             PaymentRequisitionList: [],
+            projectsList: [],
             SelectedPaymentRequisition: { label: Resources.paymentRequistion[currentLanguage], value: "0" },
+            SelectedProject: { label: Resources.projectName[currentLanguage], value: "0" },
             rows: [],
-            pageSize: 200,
-            pageNumber:0,
-            totalRows:0
+            pageSize: 1000,
+            pageNumber: 0,
+            totalRows: 0
         }
         if (!Config.IsAllow(10074)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -164,41 +194,60 @@ class ContractedQtyVSEarnedQty extends Component {
         }
         this.fields = [
             {
+                title: Resources["projectName"][currentLanguage],
+                value: "",
+                type: "text"
+            },
+            {
                 title: Resources["paymentRequistion"][currentLanguage],
                 value: "",
                 type: "text"
             }
         ];
+        this.exportData = {
+            docTypeId: "121",
+            docId: "",
+            approvalStatus: true,
+            projectId: "",
+            documentName: Resources.contractQtyVsEarnedQty[currentLanguage],
+        }
     }
 
     componentDidMount() {
         this.setState({ isLoading: true })
-        Api.get(`GetContractsRequestPaymentsCustom?projectId=${projectId}&pageNumber=0&pageSize=1000`).then(result => {
-            let array = [];
-            if (result) {
-                result.data.forEach(element => {
-                    let obj = {};
-                    obj.label = element.subject;
-                    obj.value = element.id;
-                    array.push(obj)
-                });
-            }
+        Api.get(`GetAccountsProjectsByIdForList`).then(result => {
             this.setState({
-                PaymentRequisitionList: array,
+                projectsList: dropDownMap(result || [], "projectName", "projectId"),
                 isLoading: false
             });
-        }).catch(() => {
-            toast.error('somthing wrong')
+        }).catch((ex) => {
+            toast.error(console.log("ex...", ex))
         })
     }
 
-    getGridRows = (e) => {
+    handleProjectChange = (e) => {
+        Api.get(`GetContractsRequestPaymentsForList?projectId=${e.value}`).then(result => {
+            this.setState({
+                PaymentRequisitionList: dropDownMap(result || [], "subject", "id"),
+                isLoading: false
+            });
+        }).catch((ex) => {
+            toast.error(console.log("ex...", ex))
+        })
+    }
+
+    getGridRows = () => {
         this.setState({
-            SelectedPaymentRequisition: e,
             isLoading: true
         })
-        Api.get(`GetRequestItemsByRequestIdForReport?requestId=${e.value}&pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then((res) => {
+
+        Object.assign(this.exportData, {
+            docId: this.state.SelectedPaymentRequisition.value,
+            projectId: this.state.selectedProject.value
+        })
+        Api.get(`GetRequestItemsByRequestIdForReport?requestId=${this.state.SelectedPaymentRequisition.value}&pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then((res) => {
             this.setState({ rows: res || [], isLoading: false })
+            this.props.actions.ExportingData({ items: res });
         }).catch(() => {
             this.setState({ isLoading: false })
         })
@@ -214,8 +263,9 @@ class ContractedQtyVSEarnedQty extends Component {
             let url = `GetRequestItemsByRequestIdForReport?requestId=${this.state.SelectedPaymentRequisition.value}&pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
             Api.get(url).then(result => {
                 this.setState({
-                    rows: result.data || [],
-                    totalRows: result.total || 0,
+                    rows: result || [],
+                    // rows: result.data || [],
+                    // totalRows: result.total || 0,
                     isLoading: false
                 });
             })
@@ -233,19 +283,25 @@ class ContractedQtyVSEarnedQty extends Component {
             let url = `GetRequestItemsByRequestIdForReport?requestId=${this.state.SelectedPaymentRequisition.value}&pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
             Api.get(url).then(result => {
                 this.setState({
-                    rows: result.data || [],
-                    totalRows: result.total || 0,
+                    rows: result || [],
+                    // rows: result.data || [],
+                    // totalRows: result.total || 0,
                     isLoading: false
                 });
             })
         }
     };
 
+    Export = () => {
+        this.simpleDialog.show();
+        this.setState({ showModal: true })
+    }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="allocationOfProjectsOnComp"
+                key="ContractedQtyVsEarnedQty"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -255,9 +311,7 @@ class ContractedQtyVSEarnedQty extends Component {
                 rowClick={() => { }}
             />) : null
 
-        const btnExport =
-            <ExportDetails fieldsItems={this.columns}
-                rows={this.state.rows} fields={this.fields} fileName={Resources.contractQtyVsEarnedQty[currentLanguage]} />
+        const btnExport = <button onClick={() => this.Export()}>{Resources.export[currentLanguage]}</button>
 
         return (
             <div className="reports__content">
@@ -266,36 +320,79 @@ class ContractedQtyVSEarnedQty extends Component {
                     {btnExport}
                 </header>
                 <div className="submittalFilter readOnly__disabled">
-                <div className="filterBTNS">
-                <div className="linebylineInput valid-input">
-                    <Dropdown title='paymentRequistion'
-                        data={this.state.PaymentRequisitionList}
-                        name='SelectedPaymentRequisition'
-                        selectedValue={this.state.SelectedPaymentRequisition}
-                        handleChange={e => {
-                            this.fields[0].value = e.label
-                            this.getGridRows(e);
-                        }}
-                        value={this.state.SelectedPaymentRequisition} />
-                </div>
-                </div>
-                <div className="rowsPaginations readOnly__disabled">
-              <div className="rowsPagiRange">
-                <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -
-                <span>
-                  {  this.state.pageSize * this.state.pageNumber + this.state.pageSize}
-                </span>
-                {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
-                <span> {this.state.totalRows}</span>
-              </div>
-              <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
-              <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
-                <i className="angle right icon" />
-              </button>
-            </div>
+                    <div className="filterBTNS">
+                        <Formik
+                            initialValues={{
+                            }}
+                            enableReinitialize={true}
+                            validationSchema={companySchema}
+                            onSubmit={() => {
+                                this.getGridRows()
+                            }}>
+                            {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
+                                <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
+                                    <div className="linebylineInput valid-input" style={{ "width": "250px" }}>
+                                        <Dropdown title='projectName'
+                                            data={this.state.projectsList}
+                                            name='selectedProject'
+                                            selectedValue={this.state.selectedProject}
+                                            handleChange={e => {
+                                                this.handleProjectChange(e);
+                                                this.setState({ selectedProject: e })
+                                                this.fields[0].value = e.label
+                                            }}
+                                            value={this.state.selectedProject}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.selectedProject}
+                                            touched={touched.selectedProject}
+                                        />
+                                    </div>
+                                    <div className="linebylineInput valid-input" style={{ "width": "400px" }}>
+                                        <Dropdown title='paymentRequistion'
+                                            data={this.state.PaymentRequisitionList}
+                                            name='SelectedPaymentRequisition'
+                                            selectedValue={this.state.SelectedPaymentRequisition}
+                                            handleChange={e => {
+                                                this.setState({ SelectedPaymentRequisition: e })
+                                                this.fields[1].value = e.label
+
+                                            }}
+                                            value={this.state.SelectedPaymentRequisition}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.SelectedPaymentRequisition}
+                                            touched={touched.SelectedPaymentRequisition}
+                                        />
+                                    </div>
+                                    <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
+                    {/* <div className="rowsPaginations readOnly__disabled">
+                        <div className="rowsPagiRange">
+                            <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -
+                            <span>
+                                {this.state.pageSize * this.state.pageNumber + this.state.pageSize}
+                            </span>
+                            {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
+                            <span> {this.state.totalRows}</span>
+                        </div>
+                        <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
+                        <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+                            <i className="angle right icon" />
+                        </button>
+                    </div> */}
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
+                </div>
+                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources.export[currentLanguage]}>
+                        {console.log("this.props.items...",this.props.items)}
+                        {this.props.items.length > 0 ? (ExportDetails && <ExportDetails  {...this.exportData} />) : null}
+                    </SkyLight>
                 </div>
                 {this.state.isLoading == true ? <LoadingSection /> : null}
             </div>
@@ -303,4 +400,16 @@ class ContractedQtyVSEarnedQty extends Component {
     }
 }
 
-export default ContractedQtyVSEarnedQty
+function mapStateToProps(state, ownProps) {
+    return {
+        items: state.communication.items,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ContractedQtyVSEarnedQty));
+
