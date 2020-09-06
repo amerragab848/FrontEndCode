@@ -238,9 +238,10 @@ export default class Api {
         return this.xhr(route, params, "POST");
     }
     static xhr(route, params, verb, moduleId) {
-        if (moduleId < 1) moduleId = 1;
-        let apiPrefix = modules.find(x => x.key == moduleId);
-        const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
+        // if (moduleId < 1) moduleId = 1;
+        // let apiPrefix = modules.find(x => x.key == moduleId);
+        //const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
 
@@ -313,7 +314,7 @@ export default class Api {
     static postFile(route, params, header) {
 
         let json = "";
-        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
         const url = `${host}${route}`;
         let headers = {};
         headers.Authorization = Authorization;
@@ -363,7 +364,7 @@ export default class Api {
             });
     }
     static getPassword(route, password) {
-        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
 
         const url = `${host}${route}`;
         let headers = Api.headers();
@@ -510,8 +511,8 @@ export default class Api {
             {
                 method: "POST"
             }, {
-                body: JSON.stringify(req)
-            }
+            body: JSON.stringify(req)
+        }
         );
 
         options.headers = {
