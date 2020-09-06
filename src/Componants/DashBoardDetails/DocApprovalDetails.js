@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export";
-//import Filter from "../FilterComponent/filterComponent";
+import Export from "../OptionsPanels/Export"; 
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';

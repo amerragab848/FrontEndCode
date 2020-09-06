@@ -28,7 +28,7 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import GridCustom from 'react-customized-grid';
-import 'react-customized-grid/main.css';
+// import 'react-customized-grid/main.css';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';

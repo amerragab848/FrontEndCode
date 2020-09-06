@@ -248,6 +248,7 @@ export default function (state = initialState.app.communication, action) {
 
         case types.LeftMenuClick:
 
+        
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,

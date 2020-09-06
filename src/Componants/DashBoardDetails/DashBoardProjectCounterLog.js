@@ -4,8 +4,7 @@ import Api from "../../api";
 import Resources from "../../resources.json";
 import moment from "moment";
 import Export from "../OptionsPanels/Export";
-import DashBoardDefenition from "./DashBoardProjectDefenition";
-import Filter from "../FilterComponent/filterComponent";
+import DashBoardDefenition from "./DashBoardProjectDefenition"; 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as dashboardComponantActions from '../../store/actions/communication';
@@ -16,6 +15,7 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 class DashBoardProjectCounterLog extends Component {
+
   constructor(props) {
 
     super(props);
@@ -59,6 +59,7 @@ class DashBoardProjectCounterLog extends Component {
       };
     }
   }
+
   componentWillMount = () => {
 
     let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
@@ -66,6 +67,7 @@ class DashBoardProjectCounterLog extends Component {
     var e = { label: this.props.projectName, value: projectId };
     this.props.actions.RouteToDashboardProject(e);
   };
+
   componentDidMount() {
     if (this.state.apiDetails) {
       let spliteData = this.state.apiDetails.split("-");
@@ -93,11 +95,13 @@ class DashBoardProjectCounterLog extends Component {
       }
     }
   }
+
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
     return this.state.viewfilter;
   }
+
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
@@ -105,7 +109,6 @@ class DashBoardProjectCounterLog extends Component {
           ref='custom-data-grid'
           key={"DashBoardProjectCounterLog-" + this.state.gridKey}
           data={this.state.rows}
-          pageSize={this.state.rows.length}
           groups={[]}
           actions={[]}
           rowActions={[]}
@@ -118,9 +121,6 @@ class DashBoardProjectCounterLog extends Component {
     const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources[this.state.pageTitle][currentLanguage]} />
     ) : (<LoadingSection />);
 
-    const ComponantFilter = this.state.isLoading === false ? (<Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} />) : (
-      <LoadingSection />
-    );
 
     return (
       <div className="mainContainer">
@@ -152,7 +152,4 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(dashboardComponantActions, dispatch)
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DashBoardProjectCounterLog);
+export default connect(mapStateToProps, mapDispatchToProps)(DashBoardProjectCounterLog);

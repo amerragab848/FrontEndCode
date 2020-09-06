@@ -55,7 +55,7 @@ export default class IndexedDb {
             addColumn('permission', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
             addColumn('type', lf.Type.STRING).
-            addPrimaryKey(['id']); 
+            addPrimaryKey(['id']);
     }
 
     static initializeCachedAPI() {
@@ -180,7 +180,12 @@ export default class IndexedDb {
 
     }
 
-    static deleteCacheData() {  
+    static async DeleteData(tableName) {
+
+        await api.delete().from(tables[tableName]).exec();
+    }
+
+    static deleteCacheData() {
         var req = indexedDB.deleteDatabase('cachedAPI');
         req.onsuccess = function () {
             console.log("Deleted database successfully");
@@ -190,8 +195,8 @@ export default class IndexedDb {
         };
         req.onblocked = function () {
             console.log("Couldn't delete database due to the operation being blocked");
-        }; 
- 
+        };
+
     }
 
     static async GetCachedData(params, tableName, mainColumn) {
