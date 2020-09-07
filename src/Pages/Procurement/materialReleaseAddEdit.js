@@ -497,7 +497,7 @@ class materialReleaseAddEdit extends Component {
         if (Qty <= ActaulQty) {
             this.setState({ isLoading: true })
             let obj = {
-                materialReleaseId: this.state.document.id,
+                materialReleaseId: this.state.docId,
                 itemId: this.state.ItemDescriptionInfo.itemId,
                 areaId: this.state.SelectedArea.value === '0' ? undefined : this.state.SelectedArea.value,
                 locationId: this.state.SelectedLocation.value === '0' ? undefined : this.state.SelectedLocation.value,

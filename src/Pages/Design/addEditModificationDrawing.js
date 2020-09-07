@@ -82,7 +82,7 @@ class addEditModificationDrawing extends Component {
             }
             index++;
         }
-
+        console.log('isModification', isModification, isModification === true ? 114 : 37);
         this.state = {
             CurrentStep: 0,
             isModification: isModification,
@@ -164,9 +164,8 @@ class addEditModificationDrawing extends Component {
     GetNExtArrange() {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        // this.props.actions.GetNextArrange(url);
-        dataservice.GetNextArrangeMainDocument(url).then(res => {
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
             this.setState({
@@ -294,7 +293,7 @@ class addEditModificationDrawing extends Component {
         if (this.state.docId > 0) {
             let url = "GetLogsDrawingsForEdit?id=" + this.state.docId
             let PageName = isModification === true ? 'drawing' : 'drawingModification'
-            this.props.actions.documentForEdit(url, this.state.docTypeId, PageName);
+            this.props.actions.documentForEdit(url, isModification === true ? 114 : 37, PageName);
             dataservice.GetDataGrid('GetLogsDrawingsCyclesByDrawingId?drawingId=' + this.state.docId).then(
                 res => {
                     this.setState({ cyclesData: res });
@@ -317,7 +316,7 @@ class addEditModificationDrawing extends Component {
                 fileNumber: '',
                 area: '',
                 drawingNo: '',
-                isModification: true,
+                isModification: isModification,
                 progressPercent: 0,
                 approvalStatusId: ''
             };
@@ -626,7 +625,6 @@ class addEditModificationDrawing extends Component {
             saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             // dataservice.addObject('AddLogsDrawingsCycles', saveDocumentCycle).then(result => {
-
             //     toast.success(Resources["operationSuccess"][currentLanguage]);
             // });
         });
@@ -673,7 +671,7 @@ class addEditModificationDrawing extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3317) === true ?
-                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={isModification === true ? 114 : 37} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -1103,7 +1101,7 @@ class addEditModificationDrawing extends Component {
                                             }
                                             <DocumentActions
                                                 isApproveMode={this.state.isApproveMode}
-                                                docTypeId={this.state.docTypeId}
+                                                docTypeId={isModification === true ? 114 : 37}
                                                 docId={this.state.docId}
                                                 projectId={this.state.projectId}
                                                 previousRoute={this.state.previousRoute}
@@ -1121,13 +1119,13 @@ class addEditModificationDrawing extends Component {
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
                                         {this.state.docId > 0 ?
-                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            <UploadAttachment docTypeId={isModification === true ? 114 : 37 } docId={this.state.docId} projectId={this.state.projectId} />
                                             : null
                                         }
                                         {this.viewAttachments()}
 
                                         {this.props.changeStatus === true ?
-                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            <ViewWorkFlow docType={isModification === true ? 114 : 37} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null
                                         }
                                     </div>

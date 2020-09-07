@@ -283,7 +283,9 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-
+            if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+              obj.isModification = true;
+            }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -341,7 +343,9 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-
+            if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+              obj.isModification = true;
+            }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -398,7 +402,9 @@ class CommonLog extends Component {
                 isApproveMode: false,
                 perviousRoute: window.location.pathname + window.location.search
               };
-
+              if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+                obj.isModification = true;
+              }
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -634,7 +640,9 @@ class CommonLog extends Component {
             isApproveMode: false,
             perviousRoute: window.location.pathname + window.location.search
           };
-
+          if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+            obj.isModification = true;
+          }
           let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
           let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);

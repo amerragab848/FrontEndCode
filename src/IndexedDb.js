@@ -167,16 +167,17 @@ export default class IndexedDb {
 
     static async setData(mainColumn, value, label, tableName, data, params) {
         let rows = [];
-        data.forEach((item) => {
-            let widRow = tables[tableName].createRow({
-                'value': item[value],
-                'label': item[label],
-                [mainColumn]: params
+        if (data !=null) {
+            data.forEach((item) => {
+                let widRow = tables[tableName].createRow({
+                    'value': item[value],
+                    'label': item[label],
+                    [mainColumn]: params
+                });
+                rows.push(widRow);
             });
-            rows.push(widRow);
-        });
-
-        await api.insertOrReplace().into(tables[tableName]).values(rows).exec();
+            await api.insertOrReplace().into(tables[tableName]).values(rows).exec();
+        }
 
     }
 
