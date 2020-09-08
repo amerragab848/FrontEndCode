@@ -742,7 +742,7 @@ class materialRequestAddEdit extends Component {
                 this.state.pageSize
             ).then(res => {
                 if (res) {
-                    let maxArrange = Math.max.apply(Math, res.map(function (o) { return o.arrange; }))
+                    let maxArrange = res.length > 0 ? Math.max.apply(Math, res.map(function (o) { return o.arrange; })) : 0
                     let resetNormal = {
                         details: null,
                         arrange: maxArrange + 1,
@@ -777,7 +777,9 @@ class materialRequestAddEdit extends Component {
                 useQntyRevised: false,
                 status: true
             };
-            this.setState({ document: materialRequest });
+            let normalItems = this.state.normalItems;
+            normalItems.arrange = 1;
+            this.setState({ document: materialRequest, normalItems: normalItems });
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -1243,6 +1245,7 @@ class materialRequestAddEdit extends Component {
     }
 
     showBtnsSaving() {
+        // && this.props.changeStatus === true
         let btn = null;
         if (Config.IsAllow(117) || Config.IsAllow(116)) {
             if (this.state.docId === 0) {
@@ -1251,7 +1254,7 @@ class materialRequestAddEdit extends Component {
                         {Resources.save[currentLanguage]}
                     </button>
                 );
-            } else if (this.state.docId > 0 && this.props.changeStatus === true) {
+            } else if (this.state.docId > 0) {
                 btn = (
                     <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
                         {Resources.next[currentLanguage]}

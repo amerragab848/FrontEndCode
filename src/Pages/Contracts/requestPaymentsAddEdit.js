@@ -299,7 +299,9 @@ class requestPaymentsAddEdit extends Component {
             quantityComplete: 0,
             currentDocument: "",
             columnsApprovedInvoices: [],
-            CalculateRow: true
+            CalculateRow: true,
+            deductionTypesList:[],
+            selectedDeductionType:{label: Resources.selectDedutionType[currentLanguage], value: "0"}
         };
 
         //#endregion variableofState
@@ -827,9 +829,14 @@ class requestPaymentsAddEdit extends Component {
 
         let documentDeduction = {
             title: "",
-            deductionValue: 0
+            deductionValue: 0,
+            deductionTypeId:0
         };
-
+        dataservice.GetDataList('GetaccountsDefaultListForList?listType=deductionType', 'title', 'id').then(res => {
+            this.setState({
+                deductionTypesList: res
+            })
+        })
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
             this.props.actions.ExportingData({ items: [] });
@@ -1096,6 +1103,18 @@ class requestPaymentsAddEdit extends Component {
                 });
             }
         }
+    };
+    handleChangeDropDownDeduction(event, field, selectedValue) {
+        if (event == null) return;
+        let original_document = { ...this.state.documentDeduction };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            documentDeduction: updated_document,
+            [selectedValue]: event
+        });
     };
     editPaymentRequistion(event) {
 
@@ -3446,6 +3465,22 @@ class requestPaymentsAddEdit extends Component {
                                                                         onChange={e => this.handleChangeItem(e, "deductionValue")} />
                                                                     {touched.deductionValue ? (<em className="pError"> {errors.deductionValue} </em>) : null}
                                                                 </div>
+                                                            </div>
+                                                            <div className="linebylineInput valid-input">
+                                                                <Dropdown title="deductionType"
+                                                                    data={this.state.deductionTypesList}
+                                                                    selectedValue={this.state.selectedDeductionType}
+                                                                    handleChange={event => this.handleChangeDropDownDeduction(event, "deductionTypeId", "selectedDeductionType")}
+                                                                    index="deductionTypeId"
+                                                                    onChange={setFieldValue}
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.deductionTypeId}
+                                                                    touched={touched.deductionTypeId}
+                                                                    isClear={false}
+                                                                    name="deductionTypeId"
+                                                                    id="deductionTypeId"
+                                                                    classDrop="deductionTypeId"
+                                                                />
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">

@@ -80,6 +80,8 @@ class CommonLog extends Component {
         label: Resources.contactNameRequired[currentLanguage],
         value: "0"
       },
+      inventoryImportAttachmentModal: false,
+      showInventoryImportAttachBtn:false
     };
     this.actions = [
       {
@@ -568,6 +570,9 @@ class CommonLog extends Component {
     if (docTypeId == 19) {
       showDocTemplateBtn = true;
     }
+    if(docTypeId==50){
+      this.setState({showInventoryImportAttachBtn:true})
+    }
     filtersColumns = documentObj.filters;
 
     var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
@@ -757,6 +762,11 @@ class CommonLog extends Component {
       docTemplateModal: true
     });
   }
+  btnInventoryImportAttachShowModal = () => {
+    this.setState({
+      inventoryImportAttachmentModal: true
+    });
+  }
 
   btnExportServerShowModal = () => {
 
@@ -933,6 +943,8 @@ class CommonLog extends Component {
 
     const btnDocumentTemplate = this.state.showDocTemplateBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
       : null;
+    const btnInventoryImportAttach = this.state.showInventoryImportAttachBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnInventoryImportAttachShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
+      : null;
 
     const ComponantFilter = this.state.isLoading === false ?
       (
@@ -977,9 +989,12 @@ class CommonLog extends Component {
             <div className="filterBTNS">
               {btnExport}
               {btnExportServer}
-              &nbsp; 
+              &nbsp;
               {btnDocumentTemplate}
-              &nbsp; 
+              &nbsp;
+              &nbsp;
+              {btnInventoryImportAttach}
+              &nbsp;
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
@@ -1086,7 +1101,7 @@ class CommonLog extends Component {
               isVisible={this.state.docTemplateModal}>
               <div>
                 <div className="linebylineInput valid-input mix_dropdown">
-                 
+
                   <div className="supervisor__company">
                     <div className="super_name">
                       <Dropdown
@@ -1134,6 +1149,33 @@ class CommonLog extends Component {
             </SkyLightStateless>
           </div>
         ) : null}
+
+        {/* Material Inventory Import Section  Ahmed Yousry */}
+        {(this.state.inventoryImportAttachmentModal == true) ? (
+          <div className="largePopup largeModal " >
+
+            <SkyLightStateless
+              onOverlayClicked={() => this.setState({ inventoryImportAttachmentModal: false })}
+              title={Resources['DocTemplate'][currentLanguage]}
+              onCloseClicked={() => this.setState({ inventoryImportAttachmentModal: false })}
+              isVisible={this.state.inventoryImportAttachmentModal}>
+              <div>
+                <XSLfile
+                  key="MaterialInventory"
+                  docId={this.props.projectId}
+                  docType={50}
+                  link={
+                    Config.getPublicConfiguartion().downloads +
+                    "/downloads/excel/inventory.xlsx"
+                  }
+                  header="addManyItems"
+                  afterUpload={() => this.setState({inventoryImportAttachmentModal:false})}
+                />
+              </div>
+            </SkyLightStateless>
+          </div>
+        ) : null}
+        {/* End Material Inventory Import Section  Ahmed Yousry  */}
 
         {(this.props.document.id > 0 && this.state.showExportModal == true) ? (
           <div className="largePopup largeModal " >

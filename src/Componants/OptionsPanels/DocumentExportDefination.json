@@ -3312,5 +3312,67 @@
             "comment",
             "itemStatus"
         ]
+    },
+    "49": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "materialDeliveryType",
+                "value": "materialDeliveryTypeName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "approvedQuantity",
+            "rejectedQuantity",
+            "pendingQuantity",
+            "remaining",
+            "receivedDate",
+            "nextDeliveryDate",
+            "resourceCode",
+            "remarks"
+        ],
+        "friendlyNames": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "approvedQuantity",
+            "rejectedQuantity",
+            "pendingQuantity",
+            "remainingQuantity",
+            "recievedDate",
+            "nextDate",
+            "resourceCode",
+            "remarks"
+        ]
     }
 }

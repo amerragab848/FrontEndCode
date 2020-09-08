@@ -4639,8 +4639,6 @@
         "exportDataType": "s"
       }
     ],"forEditApi":"GetBoqForEdit",
-    "forEditApi":"GetBoqForEdit",  
-
     "filterApi": "BoqFilter",
     "filters": [
       {
