@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import Api from '../../api';
+import indexedDb from '../../IndexedDb';
 import Logo from '../../Styles/images/logo.svg';
 import Router from '../../URLRoutes';
 import Resources from '../../resources.json';
@@ -10,8 +11,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as dashboardComponantActions from '../../store/actions/communication';
 
-let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let currentProjectId =    localStorage.getItem('lastSelectedProject') == null        ? 0        : localStorage.getItem('lastSelectedProject');
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentProjectId = localStorage.getItem('lastSelectedProject') == null ? 0 : localStorage.getItem('lastSelectedProject');
 
 var viewModules = true;
 var viewEps = false;
@@ -19,6 +20,7 @@ var viewProjects = false;
 var ActivePanal = 0;
 
 class LeftMenu extends Component {
+
     constructor(props) {
         super(props);
 
@@ -75,64 +77,64 @@ class LeftMenu extends Component {
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         generalMenu.sort((a, b) =>
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         communication.sort((a, b) =>
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         siteMenu.sort((a, b) =>
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         contractMenu.sort((a, b) =>
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         qualityControlMenu.sort((a, b) =>
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         designMenu.sort((a, b) =>
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         timeMenu.sort((a, b) =>
             a.settings.order > b.settings.order
                 ? 1
                 : b.settings.order > a.settings.order
-                ? -1
-                : 0,
+                    ? -1
+                    : 0,
         );
 
         this.state = {
@@ -337,6 +339,7 @@ class LeftMenu extends Component {
         localStorage.setItem('lastSelectedProject', projectId);
         localStorage.setItem('lastSelectedprojectName', titleProject);
 
+        indexedDb.DeleteData('companies');
         this.props.actions.LeftMenuClick(e, moduleName);
     };
 
@@ -345,53 +348,53 @@ class LeftMenu extends Component {
             this.state.ListEps == null
                 ? null
                 : this.state.ListEps.map((eps, index) => {
-                      return (
-                          <Fragment key={eps.id}>
-                              <ul className="MainProjectsMenuUL zero">
-                                  <li className="EastWestProject PM-color">
-                                      <span
-                                          onClick={() =>
-                                              this.EpsHandler(eps.id, index)
-                                          }
-                                          className="EastMainLi">
-                                          {eps.name}
-                                      </span>
-                                      <ul
-                                          className={
-                                              this.state.currentIndex === index
-                                                  ? 'zero'
-                                                  : 'zero closeAccordion'
-                                          }>
-                                          {eps.projects.map(project => {
-                                              return (
-                                                  <li
-                                                      className={
-                                                          this.props
-                                                              .projectId ===
-                                                          project.id
-                                                              ? 'active'
-                                                              : ''
-                                                      }
-                                                      key={project.id}
-                                                      onClick={event =>
-                                                          this.selectProjectHandler(
-                                                              project.id,
-                                                              project.name,
-                                                          )
-                                                      }>
-                                                      <a>{project.name}</a>
-                                                  </li>
-                                              );
-                                          })}
-                                      </ul>
-                                      {eps.epses.length > 0
-                                          ? this.childEPSCompnent(eps.epses)
-                                          : null}
-                                  </li>
-                              </ul>
-                          </Fragment>
-                      );
-                  });
+                    return (
+                        <Fragment key={eps.id}>
+                            <ul className="MainProjectsMenuUL zero">
+                                <li className="EastWestProject PM-color">
+                                    <span
+                                        onClick={() =>
+                                            this.EpsHandler(eps.id, index)
+                                        }
+                                        className="EastMainLi">
+                                        {eps.name}
+                                    </span>
+                                    <ul
+                                        className={
+                                            this.state.currentIndex === index
+                                                ? 'zero'
+                                                : 'zero closeAccordion'
+                                        }>
+                                        {eps.projects.map(project => {
+                                            return (
+                                                <li
+                                                    className={
+                                                        this.props
+                                                            .projectId ===
+                                                            project.id
+                                                            ? 'active'
+                                                            : ''
+                                                    }
+                                                    key={project.id}
+                                                    onClick={event =>
+                                                        this.selectProjectHandler(
+                                                            project.id,
+                                                            project.name,
+                                                        )
+                                                    }>
+                                                    <a>{project.name}</a>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                    {eps.epses.length > 0
+                                        ? this.childEPSCompnent(eps.epses)
+                                        : null}
+                                </li>
+                            </ul>
+                        </Fragment>
+                    );
+                });
 
         return Eps;
     }
@@ -420,7 +423,7 @@ class LeftMenu extends Component {
                                             <li
                                                 className={
                                                     this.props.projectId ===
-                                                    project.id
+                                                        project.id
                                                         ? 'active'
                                                         : ''
                                                 }
@@ -434,8 +437,8 @@ class LeftMenu extends Component {
                                                 <a>{project.name}</a>
                                                 {eps.epses.length > 0
                                                     ? this.childEPSCompnent(
-                                                          eps.epses,
-                                                      )
+                                                        eps.epses,
+                                                    )
                                                     : null}
                                             </li>
                                         );
@@ -597,9 +600,9 @@ class LeftMenu extends Component {
                                                         <span>
                                                             {
                                                                 Resources[
-                                                                    'backtoModules'
+                                                                'backtoModules'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -660,7 +663,7 @@ class LeftMenu extends Component {
                                                         />
                                                         {
                                                             Resources[
-                                                                'backtoprojects'
+                                                            'backtoprojects'
                                                             ][currentLanguage]
                                                         }
                                                     </span>
@@ -697,7 +700,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        1
+                                                            1
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -712,9 +715,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 1,
                                                                 Resources[
-                                                                    'generalCoordination'
+                                                                'generalCoordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -757,9 +760,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'generalCoordination'
+                                                                'generalCoordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -782,12 +785,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -815,10 +818,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -832,7 +835,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        2
+                                                            2
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -847,9 +850,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 2,
                                                                 Resources[
-                                                                    'communication'
+                                                                'communication'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -892,9 +895,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'communication'
+                                                                'communication'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -917,12 +920,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -949,10 +952,10 @@ class LeftMenu extends Component {
                                                                             }>
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -965,9 +968,9 @@ class LeftMenu extends Component {
                                                             className={
                                                                 this.state[
                                                                     'doc-gen-com-' +
-                                                                        this
-                                                                            .state
-                                                                            .rowIndex
+                                                                    this
+                                                                        .state
+                                                                        .rowIndex
                                                                 ] === true
                                                                     ? 'active'
                                                                     : ' '
@@ -990,9 +993,9 @@ class LeftMenu extends Component {
                                                                 }>
                                                                 {
                                                                     Resources[
-                                                                        'doc-gen'
+                                                                    'doc-gen'
                                                                     ][
-                                                                        currentLanguage
+                                                                    currentLanguage
                                                                     ]
                                                                 }
                                                             </NavLink>
@@ -1003,7 +1006,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        4
+                                                            4
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1018,9 +1021,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 4,
                                                                 Resources[
-                                                                    'technicalOffice'
+                                                                'technicalOffice'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -1080,9 +1083,9 @@ class LeftMenu extends Component {
                                                             {' '}
                                                             {
                                                                 Resources[
-                                                                    'technicalOffice'
+                                                                'technicalOffice'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }{' '}
                                                         </span>
@@ -1105,12 +1108,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -1138,10 +1141,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -1155,7 +1158,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        5
+                                                            5
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1170,9 +1173,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 5,
                                                                 Resources[
-                                                                    'contractCoordination'
+                                                                'contractCoordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -1215,9 +1218,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'contractCoordination'
+                                                                'contractCoordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -1240,12 +1243,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -1273,10 +1276,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -1290,7 +1293,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        6
+                                                            6
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1305,9 +1308,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 6,
                                                                 Resources[
-                                                                    'timeCordination'
+                                                                'timeCordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -1350,9 +1353,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'timeCordination'
+                                                                'timeCordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -1375,12 +1378,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -1408,10 +1411,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -1425,7 +1428,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        7
+                                                            7
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1440,9 +1443,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 7,
                                                                 Resources[
-                                                                    'costControl'
+                                                                'costControl'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -1485,9 +1488,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'costControl'
+                                                                'costControl'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }{' '}
                                                         </span>
@@ -1510,12 +1513,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -1543,10 +1546,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -1560,7 +1563,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        9
+                                                            9
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1575,9 +1578,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 9,
                                                                 Resources[
-                                                                    'qualityControlList'
+                                                                'qualityControlList'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -1620,9 +1623,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'qualityControlList'
+                                                                'qualityControlList'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }{' '}
                                                         </span>
@@ -1645,12 +1648,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            9
+                                                                                9
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -1678,10 +1681,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -1695,7 +1698,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        10
+                                                            10
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1710,9 +1713,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 10,
                                                                 Resources[
-                                                                    'designCoordination'
+                                                                'designCoordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -1771,9 +1774,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'designCoordination'
+                                                                'designCoordination'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -1796,12 +1799,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -1829,10 +1832,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -1846,7 +1849,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        11
+                                                            11
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1861,9 +1864,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 11,
                                                                 Resources[
-                                                                    'procurement'
+                                                                'procurement'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -1905,9 +1908,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'procurement'
+                                                                'procurement'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -1930,12 +1933,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -1963,10 +1966,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>
@@ -1981,7 +1984,7 @@ class LeftMenu extends Component {
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
-                                                        12
+                                                            12
                                                             ? 'ActiveSubLi'
                                                             : ''
                                                     }>
@@ -1996,9 +1999,9 @@ class LeftMenu extends Component {
                                                             this.OpenSubMenu(
                                                                 12,
                                                                 Resources[
-                                                                    'reportsCenter'
+                                                                'reportsCenter'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ],
                                                             )
                                                         }>
@@ -2025,9 +2028,9 @@ class LeftMenu extends Component {
                                                         <span className="UlName">
                                                             {
                                                                 Resources[
-                                                                    'reportsCenter'
+                                                                'reportsCenter'
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </span>
@@ -2050,12 +2053,12 @@ class LeftMenu extends Component {
                                                                             this
                                                                                 .state[
                                                                                 index +
-                                                                                    '-' +
-                                                                                    this
-                                                                                        .state
-                                                                                        .rowIndex
+                                                                                '-' +
+                                                                                this
+                                                                                    .state
+                                                                                    .rowIndex
                                                                             ] ===
-                                                                            true
+                                                                                true
                                                                                 ? 'active'
                                                                                 : ' '
                                                                         }
@@ -2083,10 +2086,10 @@ class LeftMenu extends Component {
                                                                             activeClassName="active">
                                                                             {
                                                                                 Resources[
-                                                                                    r
-                                                                                        .title
+                                                                                r
+                                                                                    .title
                                                                                 ][
-                                                                                    currentLanguage
+                                                                                currentLanguage
                                                                                 ]
                                                                             }
                                                                         </NavLink>

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
-//import Filter from "../FilterComponent/filterComponent";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -460,6 +459,9 @@ class DocApprovalDetails extends Component {
         isApproveMode: true,
         perviousRoute: window.location.pathname + window.location.search
       }
+      if (obj.docLink == "addEditDrawing") {
+        objRout.isModification = true;
+      }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
       this.props.history.push({
@@ -494,6 +496,9 @@ class DocApprovalDetails extends Component {
               docApprovalId: cell.accountDocWorkFlowId,
               isApproveMode: true,
               perviousRoute: window.location.pathname + window.location.search
+            }
+            if (cell.docLink == "addEditDrawing") {
+              objRout.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);

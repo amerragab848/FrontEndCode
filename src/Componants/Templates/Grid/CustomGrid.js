@@ -513,7 +513,7 @@ export default class CustomGrid extends Component {
                                         return column.sortable === true && index <= 5 ? (
                                             <div className={"form-group linebylineInput " + classX} key={index}>
                                                 <label className="control-label" htmlFor={column.field}>
-                                                    {column.title + this.state[index + "-column"]}
+                                                    {column.title }
                                                 </label>
                                                 <div className={"ui input inputDev "} style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
                                                     <input type="text" autoComplete="off" key={index} placeholder={column.title}
