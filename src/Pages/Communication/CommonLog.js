@@ -21,7 +21,6 @@ import ExportDetails from "../../Componants/OptionsPanels/ExportDetails";
 import SkyLight from "react-skylight";
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import find from "lodash/find";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
@@ -81,7 +80,7 @@ class CommonLog extends Component {
         value: "0"
       },
       inventoryImportAttachmentModal: false,
-      showInventoryImportAttachBtn:false
+      showInventoryImportAttachBtn: false
     };
     this.actions = [
       {
@@ -285,7 +284,7 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-            if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
               obj.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -345,7 +344,7 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-            if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
               obj.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -404,7 +403,7 @@ class CommonLog extends Component {
                 isApproveMode: false,
                 perviousRoute: window.location.pathname + window.location.search
               };
-              if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+              if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
                 obj.isModification = true;
               }
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -573,6 +572,7 @@ class CommonLog extends Component {
     if (docTypeId == 19 || docTypeId == 23 || docTypeId == 42 || docTypeId == 28 || docTypeId == 103 || docTypeId == 25) {
       showExServerBtn = true;
     }
+    
     if (docTypeId == 19) {
       showDocTemplateBtn = true;
     }else{
@@ -583,6 +583,7 @@ class CommonLog extends Component {
     }else{
       this.setState({showInventoryImportAttachBtn:false})
     }
+
     filtersColumns = documentObj.filters;
 
     var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
@@ -649,7 +650,7 @@ class CommonLog extends Component {
             isApproveMode: false,
             perviousRoute: window.location.pathname + window.location.search
           };
-          if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+          if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
             obj.isModification = true;
           }
           let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -836,6 +837,7 @@ class CommonLog extends Component {
   changeValueOfProps = () => {
     this.setState({ isFilter: false });
   };
+  
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     if (event == null) return;
     let original_document = { ...this.state.document };
@@ -857,6 +859,7 @@ class CommonLog extends Component {
       });
     }
   }
+  
   render() {
 
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
@@ -915,10 +918,16 @@ class CommonLog extends Component {
                     isApproveMode: false,
                     perviousRoute: window.location.pathname + window.location.search
                   };
+                  if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+                    obj.isModification = true;
+                  } else {
+                    obj.isModification = false;
+                  }
                   if (rowData === "subject") {
                     obj.onClick = () => { };
                     obj.classes = 'bold'
                   }
+
                   if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
                     obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
                   }
@@ -999,14 +1008,12 @@ class CommonLog extends Component {
               </div>
             </div>
             <div className="filterBTNS">
+              
               {btnExport}
               {btnExportServer}
-              &nbsp;
               {btnDocumentTemplate}
-              &nbsp;
-              &nbsp;
               {btnInventoryImportAttach}
-              &nbsp;
+
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
@@ -1181,7 +1188,7 @@ class CommonLog extends Component {
                     "/downloads/excel/inventory.xlsx"
                   }
                   header="addManyItems"
-                  afterUpload={() => this.setState({inventoryImportAttachmentModal:false})}
+                  afterUpload={() => this.setState({ inventoryImportAttachmentModal: false })}
                 />
               </div>
             </SkyLightStateless>
@@ -1208,6 +1215,7 @@ class CommonLog extends Component {
       </Fragment>
     );
   };
+
 }
 
 function mapStateToProps(state, ownProps) {
