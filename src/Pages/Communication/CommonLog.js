@@ -575,9 +575,13 @@ class CommonLog extends Component {
     }
     if (docTypeId == 19) {
       showDocTemplateBtn = true;
+    }else{
+      showDocTemplateBtn = false;
     }
     if(docTypeId==50){
       this.setState({showInventoryImportAttachBtn:true})
+    }else{
+      this.setState({showInventoryImportAttachBtn:false})
     }
     filtersColumns = documentObj.filters;
 
@@ -951,7 +955,7 @@ class CommonLog extends Component {
 
     const btnDocumentTemplate = this.state.showDocTemplateBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
       : null;
-    const btnInventoryImportAttach = this.state.showInventoryImportAttachBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnInventoryImportAttachShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
+    const btnInventoryImportAttach = this.state.showInventoryImportAttachBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnInventoryImportAttachShowModal()}>{Resources["uploadAttach"][currentLanguage]}</button>
       : null;
 
     const ComponantFilter = this.state.isLoading === false ?

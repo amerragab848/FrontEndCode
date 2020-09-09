@@ -15,9 +15,9 @@
         "en": "Create Document",
         "ar": "انشاء مستند"
     },
-    "earnedQuantity":{
-        "en":"Earned Qty",
-        "ar":"الكمية المكتسبة"
+    "earnedQuantity": {
+        "en": "Earned Qty",
+        "ar": "الكمية المكتسبة"
     },
     "approvalModalReject": {
         "en": "Reject",
@@ -2664,6 +2664,10 @@
     "suppliersProposal": {
         "en": "Suppliers Proposal",
         "ar": "العروض "
+    },
+    "uploadAttach": {
+        "en": "Upload Attach",
+        "ar": "رفع ملف"
     },
     "addProposal": {
         "en": "Add Proposal",
@@ -8625,11 +8629,11 @@
         "en": "Replacment Text",
         "ar": "النص البديل"
     },
-    "deductionType":{
+    "deductionType": {
         "en": "Deduction Type",
         "ar": "نوع الاستقطاع"
     },
-    "selectDedutionType":{
+    "selectDedutionType": {
         "en": " Select Deduction Type",
         "ar": " اختر نوع الاستقطاع"
     }
