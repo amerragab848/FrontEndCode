@@ -21,7 +21,7 @@ import ExportDetails from "../../Componants/OptionsPanels/ExportDetails";
 import SkyLight from "react-skylight";
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import find from "lodash/find";
+//import find from "lodash/find";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
@@ -283,7 +283,7 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-            if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
               obj.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -343,7 +343,7 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-            if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
               obj.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -402,7 +402,7 @@ class CommonLog extends Component {
                 isApproveMode: false,
                 perviousRoute: window.location.pathname + window.location.search
               };
-              if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+              if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
                 obj.isModification = true;
               }
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -640,7 +640,7 @@ class CommonLog extends Component {
             isApproveMode: false,
             perviousRoute: window.location.pathname + window.location.search
           };
-          if (documentObj.documentAddEditLink.replace("/", "") == "addEditDrawing") {
+          if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
             obj.isModification = true;
           }
           let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -901,10 +901,16 @@ class CommonLog extends Component {
                     isApproveMode: false,
                     perviousRoute: window.location.pathname + window.location.search
                   };
+                  if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+                    obj.isModification = true;
+                  } else {
+                    obj.isModification = false;
+                  }
                   if (rowData === "subject") {
                     obj.onClick = () => { };
                     obj.classes = 'bold'
                   }
+
                   if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
                     obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
                   }
@@ -985,9 +991,9 @@ class CommonLog extends Component {
             <div className="filterBTNS">
               {btnExport}
               {btnExportServer}
-              &nbsp; 
+              &nbsp;
               {btnDocumentTemplate}
-              &nbsp; 
+              &nbsp;
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
@@ -1094,7 +1100,7 @@ class CommonLog extends Component {
               isVisible={this.state.docTemplateModal}>
               <div>
                 <div className="linebylineInput valid-input mix_dropdown">
-                 
+
                   <div className="supervisor__company">
                     <div className="super_name">
                       <Dropdown

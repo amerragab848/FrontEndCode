@@ -195,8 +195,7 @@ export default class CustomGrid extends Component {
                         handleGroupUpdate={this.handleGroupEvent}
                         showCheckAll={this.props.showCheckAll}
                     />
-                    : <LoadingSection />}
-
+                    : <LoadingSection />} 
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
                     <div className="grid__column--container">
