@@ -267,6 +267,7 @@ class materialDeliveryAddEdit extends Component {
                         descriptionDropData: ListData,
                         descriptionList: res
                     });
+                    this.props.actions.ExportingData({ items: res });
                 });
         }
 
@@ -351,6 +352,32 @@ class materialDeliveryAddEdit extends Component {
                 }
                 this.setState({ contractPoData: [...result] });
             });
+        dataservice.GetDataList("GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000", "title", "id").then(result => {
+            if (isEdit) {
+                let id = this.props.document.specsSectionId;
+                let selectedValue = {};
+                if (id) {
+                    selectedValue = find(result, function (i) {
+                        return i.value === id;
+                    });
+                    this.setState({ selectedSpecsSection: selectedValue });
+                }
+            }
+            this.setState({ specsSectionData: result });
+        });
+        dataservice.GetDataList("GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000", "title", "id").then(result => {
+            if (isEdit) {
+                let id = this.props.document.materialDeliveryTypeId;
+                let selectedValue = {};
+                if (id) {
+                    selectedValue = find(result, function (i) {
+                        return i.value === id;
+                    });
+                    this.setState({ selectedMaterialType: selectedValue });
+                }
+            }
+            this.setState({ materialTypeData: result });
+        });
     }
 
     handleChangeDropDown(

@@ -4757,6 +4757,10 @@
         "en": "Last Delivery Date",
         "ar": "اخر ميعاد للتسليم"
     },
+    "lastReleasedDate": {
+        "en": "Last Released Date",
+        "ar": "اخر ميعاد للصرف"
+    },
     "lastApproveDate": {
         "en": "Last Approve Date",
         "ar": "اخر ميعاد للموافقة"
@@ -8620,5 +8624,13 @@
     "replacmentText": {
         "en": "Replacment Text",
         "ar": "النص البديل"
+    },
+    "deductionType":{
+        "en": "Deduction Type",
+        "ar": "نوع الاستقطاع"
+    },
+    "selectDedutionType":{
+        "en": " Select Deduction Type",
+        "ar": " اختر نوع الاستقطاع"
     }
 }

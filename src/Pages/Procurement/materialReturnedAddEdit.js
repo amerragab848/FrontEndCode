@@ -314,6 +314,7 @@ class materialReturnedAddEdit extends Component {
                 )
                 .then(res => {
                     this.setState({ Items: res });
+                    this.props.actions.ExportingData({ items: res });
                 });
         }
 

@@ -223,6 +223,7 @@ class materialReleaseAddEdit extends Component {
             dataservice.GetDataGrid('GetLogsMaterialReleaseTickets?releaseId=' + doc.id).then(
                 res => {
                     this.setState({ Items: res })
+                    this.props.actions.ExportingData({ items: res });
                 }
             )
         }
@@ -898,7 +899,7 @@ class materialReleaseAddEdit extends Component {
                         <Formik
                             initialValues={{
                                 itemId: this.state.selectedItemId.value !== '0' ? this.state.selectedItemId : '',
-                                unitPrice: this.state.unitPrice,
+                                unitPrice: this.state.ItemDescriptionInfo.unitPrice,
                                 returnedQuantity: this.state.quantity,
                                 arrangeItem: this.state.arrangeItem,
                             }}
@@ -989,7 +990,7 @@ class materialReleaseAddEdit extends Component {
                                                 <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
                                                 <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
                                                     <input name='unitPrice' className="form-control" autoComplete='off' placeholder={Resources['unitPrice'][currentLanguage]}
-                                                        value={this.state.unitPrice} onChange={e => this.setState({ unitPrice: e.target.value })}
+                                                        value={this.state.ItemDescriptionInfo.unitPrice} onChange={e => this.setState({ unitPrice: e.target.value })}
                                                         onBlur={(e) => {
                                                             handleBlur(e)
                                                             handleChange(e)
@@ -1006,6 +1007,14 @@ class materialReleaseAddEdit extends Component {
                                             <div className="linebylineInput valid-input ">
                                                 <Dropdown data={this.state.LocationData} selectedValue={this.state.SelectedLocation}
                                                     title="location" handleChange={e => this.setState({ SelectedLocation: e })} />
+                                            </div>
+
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">{Resources['requestedQuantity'][currentLanguage]}  </label>
+                                                <div className="inputDev ui input has-success">
+                                                    <input className="form-control" placeholder={Resources['requestedQuantity'][currentLanguage]}
+                                                        readOnly value={this.state.ItemDescriptionInfo.requestedQuantity} />
+                                                </div>
                                             </div>
 
                                             <div className="slider-Btns fullWidthWrapper textLeft ">

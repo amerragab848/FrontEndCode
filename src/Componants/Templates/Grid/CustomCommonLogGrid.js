@@ -36,7 +36,7 @@ export default class CustomGrid extends Component {
             date: new Date(),
             setDate: moment(new Date()).format("DD/MM/YYYY"),
             fieldDate: {},
-            isFilter: false
+            isFilter: false,
         };
     }
 
@@ -91,7 +91,6 @@ export default class CustomGrid extends Component {
             groupsList: currentGP,
             GridLoading: false
         });
-
         setTimeout(() => {
             this.setState(state);
         }, 500);
@@ -108,7 +107,7 @@ export default class CustomGrid extends Component {
         return null
     };
 
-    componentDidUpdate(prevProps, prevState) { 
+    componentDidUpdate(prevProps, prevState) {
         if (this.props.isFilter && isEqual(prevState.rows, this.props.data)) {
             this.props.changeValueOfProps();
             this.setState({
@@ -166,7 +165,6 @@ export default class CustomGrid extends Component {
 
         this.setState({ groupsList: groups });
     }
-
     render() {
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
             return (
@@ -179,10 +177,12 @@ export default class CustomGrid extends Component {
                 </div>
             )
         })
+        const btnDocumentTemplate = this.state.showDocTemplateBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
+      : null;
         return (
             <Fragment>
+                {btnDocumentTemplate}
                 {this.state.GridLoading === false ?
-
                     <GridCustom
                         key={this.props.gridKey}
                         cells={this.props.cells}

@@ -72,7 +72,7 @@ class ProposalAddEdit extends Component {
       isApproveMode: isApproveMode,
       isView: false,
       docId: docId,
-      docTypeId: 21,
+      docTypeId: 22,
       projectId: projectId,
       docApprovalId: docApprovalId,
       perviousRoute: perviousRoute,
@@ -420,7 +420,7 @@ class ProposalAddEdit extends Component {
     return (
       <div className="mainContainer" id={"mainContainer"}>
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationProposalAdd[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.suppliersProposal[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
           <div className="doc-container">
             {this.props.changeStatus == true ? (
               <header className="main__header">

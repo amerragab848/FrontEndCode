@@ -244,8 +244,8 @@ class MaterialInventoryAddEdit extends Component {
                 sortabel: true
             },
             {
-                Header: Resources["lastDeliveryDate"][currentLanguage],
-                accessor: "lastDeliveryDate",
+                Header: Resources["lastReleasedDate"][currentLanguage],
+                accessor: "lastReleasedDate",
                 width: 200,
                 sortabel: true
             }
@@ -493,7 +493,8 @@ class MaterialInventoryAddEdit extends Component {
                 disciplineId: "",
                 specsSectionId: "",
                 resourceCode: "",
-                unit: ""
+                unit: "",
+                remainingQuantity: ""
             };
             this.setState({ document: mainDoc });
             this.fillDropDowns(false);
@@ -844,7 +845,7 @@ class MaterialInventoryAddEdit extends Component {
                                 : null
                         }
                         <div className="step-content">
-                            <XSLfile
+                            {/* <XSLfile
                                 key="MaterialInventory"
                                 docId={projectId}
                                 docType={this.state.docTypeId}
@@ -861,7 +862,7 @@ class MaterialInventoryAddEdit extends Component {
                                         : false
                                 }
                                 afterUpload={() => this.saveAndExit()}
-                            />
+                            /> */}
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
@@ -1016,22 +1017,34 @@ class MaterialInventoryAddEdit extends Component {
                                                                 name="specsSectionId"
                                                                 id="specsSectionId" />
                                                         </div>
+                                                        <div className="linebylineInput fullInputWidth">
+                                                            <label className="control-label">{Resources.remainingQuantity[currentLanguage]}</label>
+                                                            <div className="shareLinks">
+                                                                <div className={"inputDev ui input" + (errors.remainingQuantity && touched.remainingQuantity ? (" has-error") : !errors.remainingQuantity && touched.remainingQuantity ? (" has-success") : " ")} >
+                                                                    <input type="text" className="form-control" id="remainingQuantity"
+                                                                        onChange={(e) => this.handleChange(e, 'remainingQuantity')}
+                                                                        value={this.state.document.remainingQuantity}
+                                                                        name="remainingQuantity"
+                                                                        placeholder={Resources.remainingQuantity[currentLanguage]} />
+                                                                    {errors.remainingQuantity && touched.remainingQuantity ? (<em className="pError">{errors.remainingQuantity}</em>) : null}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
+                                                            <div className={"shareLinks " + (this.props.changeStatus === false ? "" : "disabled")}>
+                                                                <div className={"inputDev ui input" + (errors.unitPrice && touched.unitPrice ? (" has-error") : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")} >
+                                                                    <input type="text" className="form-control" id="unitPrice"
+                                                                        onChange={(e) => this.handleChange(e, 'unitPrice')}
+                                                                        value={this.state.document.unitPrice}
+                                                                        name="unitPrice"
+                                                                        placeholder={Resources.unitPrice[currentLanguage]} />
+                                                                    {touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         {
                                                             this.props.changeStatus === false ? <Fragment>
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
-                                                                    <div className="shareLinks">
-                                                                        <div className={"inputDev ui input" + (errors.unitPrice && touched.unitPrice ? (" has-error") : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")} >
-                                                                            <input type="text" className="form-control" id="unitPrice"
-                                                                                onChange={(e) => this.handleChange(e, 'unitPrice')}
-                                                                                value={this.state.document.unitPrice}
-                                                                                name="unitPrice"
-                                                                                placeholder={Resources.unitPrice[currentLanguage]} />
-                                                                            {touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.approvedQuantity[currentLanguage]}</label>
                                                                     <div className="shareLinks">
