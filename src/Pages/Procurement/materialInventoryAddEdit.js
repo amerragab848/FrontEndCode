@@ -845,7 +845,7 @@ class MaterialInventoryAddEdit extends Component {
                                 : null
                         }
                         <div className="step-content">
-                            <XSLfile
+                            {/* <XSLfile
                                 key="MaterialInventory"
                                 docId={projectId}
                                 docType={this.state.docTypeId}
@@ -862,7 +862,7 @@ class MaterialInventoryAddEdit extends Component {
                                         : false
                                 }
                                 afterUpload={() => this.saveAndExit()}
-                            />
+                            /> */}
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
