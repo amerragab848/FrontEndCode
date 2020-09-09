@@ -182,9 +182,12 @@ const BudgetVarianceReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/budgetVarianceReport'),
 );
 const ExpensesDetailsOnProjectsReport = AsyncComponent(() =>
-    import(
-        './Pages/ReportsCenter/ProjectReports/expensesDetailsOnProjectsReport'
-    ),
+    import('./Pages/ReportsCenter/ProjectReports/expensesDetailsOnProjectsReport'),
+);
+const ContractedQtyVSEarnedQtyReport = AsyncComponent(() =>
+import(
+    './Pages/ReportsCenter/ProjectReports/ContractedQtyVSEarnedQty'
+),
 );
 
 //Technical Office
@@ -1296,6 +1299,11 @@ let originalRoutes = [
     //<Route key="r-189" path="/:docType/gen/:projectId" component={DocGen} />,
 
     <Route key="r-190" path="Pages/ReportsCenter/ContractsPOReports/reqPaymInvoicesRpt" component={reqPaymInvoicesRpt} />,
+    <Route
+    key="r-191"
+    path="ProjectReports/ContractedQtyVSEarnedQty"
+    component={ContractedQtyVSEarnedQtyReport}
+/>
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

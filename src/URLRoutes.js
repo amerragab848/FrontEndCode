@@ -266,6 +266,13 @@ var routes = [
         nav: true,
         settings: { Reports: true, permission: 3654, order: 13 }
     },
+    { 
+        route: "ContractedQtyVSEarnedQty",
+        moduleId: "ProjectReports/ContractedQtyVSEarnedQty",
+        title: "contractQtyVsEarnedQty",
+        nav: true,
+        settings: { ProjectReports: true, permission: 10074, order: 21 }
+    },
     {
         route: "taskDetail",
         moduleId: "TimeSheet/EPSTimeSheetReport",
@@ -1298,19 +1305,19 @@ var routes = [
         nav: true,
         settings: { Contracts: false }
     },
-    {
-        route: "procurement",
-        moduleId: "commonLogs",
-        title: "proposalsComparison",
-        nav: true,
-        hash: "#procurement",
-        settings: {
-            Procurement: true,
-            caption: "procoor-icon-procurement",
-            permission: 170,
-            order: 9
-        }
-    }, 
+    // {
+    //     route: "procurement",
+    //     moduleId: "commonLogs",
+    //     title: "proposalsComparison",
+    //     nav: true,
+    //     hash: "#procurement",
+    //     settings: {
+    //         Procurement: true,
+    //         caption: "procoor-icon-procurement",
+    //         permission: 170,
+    //         order: 9
+    //     }
+    // }, 
     {
         route: "pco",
         moduleId: "commonLogs",

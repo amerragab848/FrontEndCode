@@ -14259,7 +14259,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .card-status .card-box .signature-h.signaturePendingd .avatarName h6 {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .card-status .card-box .signature-h.signaturePendingd .smallAvatarSize {
@@ -19311,12 +19311,12 @@ button.companies_icon {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0 17px;
+    padding: 0 12px;
 }
 
 .cardDeclined .Status__comment span,
 .cardApproval .Status__comment span {
-    margin-right: 25px;
+    margin-right: 15px;
     cursor: pointer;
 }
 
@@ -22368,3 +22368,5 @@ tbody.grid-body tr  .text.elipsisPadd {
     background-color: #E74C3C !important; color: #fff !important; 
 }
 /* Added New After devided*/
+
+ 

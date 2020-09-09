@@ -314,6 +314,7 @@ class materialReturnedAddEdit extends Component {
                 )
                 .then(res => {
                     this.setState({ Items: res });
+                    this.props.actions.ExportingData({ items: res });
                 });
         }
 
@@ -2351,7 +2352,7 @@ class materialReturnedAddEdit extends Component {
                         isViewMode={this.state.isViewMode}
                         perviousRoute={this.state.perviousRoute}
                         docTitle={
-                            Resources.communicationProposalAdd[currentLanguage]
+                            Resources.materialReturned[currentLanguage]
                         }
                         moduleTitle={Resources["procurement"][currentLanguage]}
                     />

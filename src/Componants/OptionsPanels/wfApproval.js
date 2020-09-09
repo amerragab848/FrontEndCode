@@ -14,6 +14,7 @@ import { withRouter } from "react-router-dom";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class wfApproval extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -100,7 +101,7 @@ class wfApproval extends Component {
         this.setState({ showConfirm: true, values: values });
       }
       else {
-        this.setState({ showConfirm: true, values: values });
+        this.setState({ showConfirm: false, values: values });
 
         Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
           if (result === true) {

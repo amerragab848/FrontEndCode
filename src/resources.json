@@ -15,6 +15,10 @@
         "en": "Create Document",
         "ar": "انشاء مستند"
     },
+    "earnedQuantity": {
+        "en": "Earned Qty",
+        "ar": "الكمية المكتسبة"
+    },
     "approvalModalReject": {
         "en": "Reject",
         "ar": "رفض"
@@ -1320,6 +1324,10 @@
     "LogControls": {
         "en": "Actions",
         "ar": "عمليات الجدول"
+    },
+    "contractQtyVsEarnedQty": {
+        "en": "Contracted Qty Vs Earned Qty Report",
+        "ar": "كمية العقود مقابل الكمية المكتسبة"
     },
     "addToEmailRecord": {
         "en": "Add To Email Record",
@@ -2657,6 +2665,10 @@
         "en": "Suppliers Proposal",
         "ar": "العروض "
     },
+    "uploadAttach": {
+        "en": "Upload Excel",
+        "ar": "رفع ملف"
+    },
     "addProposal": {
         "en": "Add Proposal",
         "ar": "اضافة عرض "
@@ -3729,6 +3741,14 @@
         "en": "Payment Requisition",
         "ar": "سجل المستخلصات"
     },
+    "paymentRequistion": {
+        "en": "Payment Requisition",
+        "ar": " المستخلصات"
+    },
+    "paymentRequistionRequired": {
+        "en": "Payment Requisition Required",
+        "ar": " المستخلصات مطلوبة"
+    },
     "siteRequest": {
         "en": "Material Request",
         "ar": "طلب خامات"
@@ -4740,6 +4760,10 @@
     "lastDeliveryDate": {
         "en": "Last Delivery Date",
         "ar": "اخر ميعاد للتسليم"
+    },
+    "lastReleasedDate": {
+        "en": "Last Released Date",
+        "ar": "اخر ميعاد للصرف"
     },
     "lastApproveDate": {
         "en": "Last Approve Date",
@@ -8604,5 +8628,13 @@
     "replacmentText": {
         "en": "Replacment Text",
         "ar": "النص البديل"
+    },
+    "deductionType": {
+        "en": "Deduction Type",
+        "ar": "نوع الاستقطاع"
+    },
+    "selectDedutionType": {
+        "en": " Select Deduction Type",
+        "ar": " اختر نوع الاستقطاع"
     }
 }

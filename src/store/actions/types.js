@@ -79,3 +79,5 @@ export const FILL_LOCATIONS_DROPDOWN = 'FILL_LOCATIONS_DROPDOWN';
 export const FILL_COUNTRIES_DROPDOWN = 'FILL_COUNTRIES_DROPDOWN';
 export const GET_ITEMS = 'GET_ITEMS';
 export const Attachments_WF_Cycles = 'Attachments_WF_Cycles';
+export const Export_REPORT_Document ='Export_REPORT_Document';
+export const REPORT_FILTERS='REPORT_FILTERS';
