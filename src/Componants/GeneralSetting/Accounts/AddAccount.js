@@ -303,6 +303,7 @@ class AddAccount extends Component {
                                                                 className="form-control" id="UserName" placeholder={Resources['UserName'][currentLanguage]} autoComplete='off'
                                                                 onBlur={(e) => {
                                                                     this.checkUserName(e)
+                                                                    
                                                                     handleBlur(e)
                                                                 }} onChange={(e) => {
                                                                     handleChange(e)
