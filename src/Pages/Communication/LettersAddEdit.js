@@ -72,11 +72,13 @@ class LettersAddEdit extends Component {
             docAlertId = obj.docAlertId;
             arrange = obj.arrange;
             perviousRoute = obj.perviousRoute;
+            if (obj.prevLetterId) {
+                fromCompanyId = obj.fromCompanyId;
+                toCompanyId = obj.toCompanyId; 
+                fromContactId = obj.fromContactId;
+                toContactId = obj.toContactId; 
+            } 
             prevLetterId = obj.prevLetterId;
-            fromCompanyId = obj.replyToCompId;
-            fromContactId = obj.replyToContactId;
-            toCompanyId = obj.replyFromCompId;
-            toContactId = obj.replyFromContId;
         }
 
         this.state = {
@@ -216,7 +218,7 @@ class LettersAddEdit extends Component {
             };
 
             this.setState({
-                document: letter  
+                document: letter
             });
 
             this.fillDropDowns(false);
@@ -337,10 +339,8 @@ class LettersAddEdit extends Component {
                 });
             });
         }
-
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
-
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
                     this.setState({
@@ -351,7 +351,6 @@ class LettersAddEdit extends Component {
                     });
                     this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
                 }
-
                 let toCompanyId = this.props.document.toCompanyId;
                 if (toCompanyId) {
                     this.setState({
@@ -361,31 +360,35 @@ class LettersAddEdit extends Component {
                         }
                     });
 
-                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts"
-                    );
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts");
+                    
                 }
-            } else {
+            }
+             else {
                 if (fromCompanyId && toCompanyId) {
                     let fromCompany = find(result, function (item) { return item.value == fromCompanyId });
                     let toCompany = find(result, function (item) { return item.value == toCompanyId });
 
-                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", fromCompanyId, "fromContactId", "selectedFromContact", "fromContacts", "frmContactId");
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", fromCompany ? fromCompanyId : null, "fromContactId", "selectedFromContact", "fromContacts", "frmContactId");
 
-                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts", "tContactId");
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompany ? toCompanyId : null, "toContactId", "selectedToContact", "ToContacts", "tContactId");
 
                     this.setState({
                         selectedFromCompany: {
-                            label: fromCompany.label,
-                            value: fromCompanyId
+                            label:fromCompany ? fromCompany.label : "", 
+                            value:fromCompany ? fromCompanyId : "0"
                         },
                         selectedToCompany: {
-                            label: toCompany.label,
-                            value: toCompanyId
+                            label: toCompany ? toCompany.label : "",
+                            value: toCompany ? toCompanyId : "0"
                         }
-                    }, () => {
-                        cb();
+
                     });
+                    
+                this.handleChangeDropDown(fromCompany, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                this.handleChangeDropDown(toCompany, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")
                 }
+                
             }
 
             this.setState({
@@ -407,6 +410,7 @@ class LettersAddEdit extends Component {
                     });
                 }
             }
+
             this.setState({
                 discplines: [...result]
             });
@@ -421,6 +425,7 @@ class LettersAddEdit extends Component {
                         replyLetter = find(result, function (item) { return item.value == replyId });
                         this.setState({
                             selectedReplyLetter: replyLetter
+
                         });
                     }
                 } else {
@@ -435,7 +440,9 @@ class LettersAddEdit extends Component {
                                 value: replyId
                             }
                         });
+
                     }
+
                 }
                 this.setState({
                     letters: result
@@ -559,10 +566,12 @@ class LettersAddEdit extends Component {
             let obj = {
                 docId: 0,
                 prevLetterId: this.state.docId,
-                replyFromCompId: this.state.document.fromCompanyId,
+                replyFromCompId: this.state.document.fromCompanyId, //
                 replyFromContId: this.state.document.fromContactId,
+
                 replyToCompId: this.state.document.toCompanyId,
                 replyToContactId: this.state.document.toContactId,
+
                 projectId: this.props.document.projectId,
                 projectName: this.state.document.projectName,
                 arrange: 0,
@@ -587,6 +596,7 @@ class LettersAddEdit extends Component {
         this.setState({
             isLoading: true
         });
+        
         let saveDocument = { ...this.state.document };
         saveDocument.projectId = this.props.projectId
 
