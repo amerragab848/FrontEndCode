@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import Api from "../../api";
 
+import IndexedDb from "../../IndexedDb";
+import ConnectionContext from '../../Componants/Layouts/Context'
 
 class ApprovedWidget extends Component {
   constructor(props) {
@@ -14,13 +16,22 @@ class ApprovedWidget extends Component {
     };
   }
 
-  componentDidMount() {
-    Api.get(this.props.props.api).then(result => {
+  async componentDidMount() {
+    if (this.context.isDisconnected == false) {
+      await Api.getForWidgets(this.props.props.api).then(result => {
 
-      this.setState({
-        dataList: result != null ? result : []
+        this.setState({
+          dataList: result != null ? result : []
+        });
+        IndexedDb.seedWidgetsOfflineData(this.state.dataList, this.props.props.api);
       });
-    });
+    }
+    // else {
+    //   const result = await IndexedDb.getAllWidgetsOfflineData();
+    //   this.setState({
+    //     dataList: result != null ? result : []
+    //   });
+    // }
   }
 
   onOpenModal = (action, value) => {
@@ -71,7 +82,7 @@ class ApprovedWidget extends Component {
       });
       return (
 
-        <div className="summerisItem">
+        <div className="summerisItem" >
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
             <p className="number" onClick={() => this.onOpenModal(high.action, high[this.props.props.value])}>
@@ -113,5 +124,7 @@ class ApprovedWidget extends Component {
     );
   }
 }
+
+ApprovedWidget.contextType = ConnectionContext;
 
 export default withRouter(ApprovedWidget);

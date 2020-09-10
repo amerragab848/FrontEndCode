@@ -233,9 +233,102 @@ export default class Api {
     static get(route, params) {
         return this.xhr(route, params === null ? null : params, "GET");
     }
+    static async getForWidgets(route, params) {
+        return await this.xhrForWidgets(route, params === null ? null : params, "GET");
+    }
     static post(route, params) {
         return this.xhr(route, params, "POST");
     }
+
+
+    xhrForWidgets(route, params, verb, cb) {     
+        let xmlhttp = new XMLHttpRequest();
+
+        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
+        const url = `${host}${route}`;
+        xmlhttp.open("GET", url);
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.setRequestHeader("Authorization", "application/json;charset=UTF-8");
+        xmlhttp.send(JSON.stringify(params));
+
+        fetch((url, options) =>
+        {
+
+            const response = JSON.parse(xmlhttp.responseText);
+            console.log(response);
+
+            return cb(response);
+        },
+        // (error) => {
+        //     return cb(response);
+        // },
+            { enableHighAccuracy: true, timeout: 20000 }
+        );
+    }
+    // static async xhrForWidgets(route, params, verb) {
+    //     const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
+    //     const url = `${host}${route}`;
+    //     let json = null;
+
+    //     let options = Object.assign(
+    //         {
+    //             method: verb
+    //         },
+    //         params
+    //             ? {
+    //                 body: JSON.stringify(params)
+    //             }
+    //             : null
+    //     );
+
+    //     options.headers = Api.headers();
+    //     return new Promise((resolve, reject) => {
+    //         let xmlhttp = new XMLHttpRequest();
+
+    //         xmlhttp.onload = () => {
+    //             if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
+    //                 const response = JSON.parse(xmlhttp.responseText);
+    //                 console.log(response);
+    //                 resolve(response.resultFiles);
+    //             } else {
+    //                 reject(xmlhttp.responseText);
+    //             }
+    //         };
+
+    //         xmlhttp.open("GET", url);
+    //         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    //         xmlhttp.setRequestHeader("Authorization", "application/json;charset=UTF-8");
+    //         xmlhttp.send(JSON.stringify(params));
+    //     });
+    // return await fetch(url, options)
+    //     .then(resp => {
+    //         if (resp.status === 200) {
+    //             json = resp.json();
+    //             if (json === undefined) return null;
+    //             return json;
+    //         } else if (resp.status === 401) {
+    //             localStorage.removeItem("userToken");
+    //             json = "";
+    //             window.location.reload();
+    //             return json;
+    //         } else if (resp.status === 500) {
+    //             json = null;
+    //             toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
+    //             return json;
+    //         } else if (resp.status === 409) {
+    //             return resp;
+    //         }
+
+    //         return json.then(err => {
+    //             throw err;
+    //         });
+    //     })
+    //     .then(json => (json.result ? json.result : json))
+    //     .catch(reason => {
+    //         return null;
+    //     });
+
     static xhr(route, params, verb) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;

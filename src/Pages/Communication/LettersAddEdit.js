@@ -22,6 +22,7 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from "lodash/find";
+import ConnectionContext from '../../Componants/Layouts/Context'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -180,7 +181,8 @@ class LettersAddEdit extends Component {
         });
     }
 
-    componentDidMount() {
+    componentDidMount() { 
+
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
 
         for (var i = 0; i < links.length; i++) {
@@ -970,7 +972,7 @@ class LettersAddEdit extends Component {
         );
     }
 }
-
+ 
 function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,

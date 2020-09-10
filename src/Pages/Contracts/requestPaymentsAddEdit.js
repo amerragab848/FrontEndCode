@@ -2,7 +2,7 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment ,useContext } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
@@ -28,6 +28,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
+import ConnectionContext from '../../Componants/Layouts/Context';
 
 //import "react-table/react-table.css";
 //#endregion importComponent
@@ -816,6 +817,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     componentDidMount() {
+     
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -3991,7 +3993,8 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
     };
-}
+} 
+   
 function mapStateToProps(state) {
     return {
         document: state.communication.document,
