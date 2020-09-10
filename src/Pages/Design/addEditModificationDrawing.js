@@ -108,7 +108,13 @@ class addEditModificationDrawing extends Component {
             permission: [{ name: 'sendByEmail', code: 3522 }, { name: 'sendByInbox', code: 3521 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 3530 },
             { name: 'createTransmittal', code: 3531 }, { name: 'sendToWorkFlow', code: 3525 },
-            { name: 'viewAttachments', code: 3528 }, { name: 'deleteAttachments', code: 3144 }, { name: 'addAttachments', code: 3526 }],
+            { name: 'viewAttachments', code: 3528 }, { name: 'deleteAttachments', code: 3144 },
+            { name: 'addAttachments', code: 3526 }, { name: 'EditAttachments', code: 3527 }],
+            permissionModification: [{ name: 'sendByEmail', code: 208 }, { name: 'sendByInbox', code: 207 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 982 },
+            { name: 'createTransmittal', code: 3068 }, { name: 'sendToWorkFlow', code: 730 },
+            { name: 'viewAttachments', code: 3330 }, { name: 'deleteAttachments', code: 898 },
+            { name: 'addAttachments', code: 897 }, { name: 'EditAttachments', code: 3236 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFlowCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -179,21 +185,6 @@ class addEditModificationDrawing extends Component {
     }
 
     componentDidMount() {
-
-
-        //Ahmed Yousry
-        console.log("rpops...", this.props)
-        let per = JSON.parse(CryptoJS.enc.Base64.parse(permissions).toString(CryptoJS.enc.Utf8))
-        per.forEach(item => {
-            if (item == "875" || item == "3239")
-                console.log("Permissions....", item);
-        })
-
-        // End Ahmed Yousry
-
-
-
-
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -1119,19 +1110,15 @@ class addEditModificationDrawing extends Component {
 
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
-                                        {/* {this.state.docId > 0 ?
-                                            <UploadAttachment docTypeId={isModification === true ? 114 : 37} 
-                                            docId={this.state.docId} 
-                                            projectId={this.state.projectId} />
-                                            : null
-                                        } */}
-                                    {this.state.docId > 0 && this.state.isViewMode === false ?
-                                         (<UploadAttachment changeStatus={this.props.changeStatus} 
-                                         AddAttachments={permissions.AddAttachments} EditAttachments={permissions.EditAttachments} 
-                                         ShowDropBox={3607} ShowGoogleDrive={3608} 
-                                         docTypeId={isModification === true ? 114 : 37} 
-                                         docId={this.state.docId} 
-                                         projectId={this.state.projectId} />) : null}
+                                        {this.state.docId > 0 && this.state.isViewMode === false ?
+                                            (<UploadAttachment changeStatus={this.props.changeStatus}
+                                                AddAttachments={isModification === true ? this.state.permissionModification.find(x => x.name == "addAttachments").code : this.state.permission.find(x => x.name == "addAttachments").code}
+                                                EditAttachments={isModification === true ? this.state.permissionModification.find(x => x.name == "EditAttachments").code : this.state.permission.find(x => x.name == "EditAttachments").code}
+                                                ShowDropBox={isModification === true ? 3633 : 3635}
+                                                ShowGoogleDrive={isModification === true ? 3634 : 3636}
+                                                docTypeId={isModification === true ? 114 : 37}
+                                                docId={this.state.docId}
+                                                projectId={this.state.projectId} />) : null}
 
                                         {this.viewAttachments()}
 
