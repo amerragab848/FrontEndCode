@@ -30,7 +30,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
+let permissions = localStorage.getItem('permissions');
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     bicContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
@@ -146,7 +146,7 @@ class addEditModificationDrawing extends Component {
         } else {
             if (!Config.IsAllow(3133) || !Config.IsAllow(3134) || !Config.IsAllow(3136)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
-                this.props.history.push(this.state.perviousRoute); 
+                this.props.history.push(this.state.perviousRoute);
             }
 
         }
@@ -179,6 +179,21 @@ class addEditModificationDrawing extends Component {
     }
 
     componentDidMount() {
+
+
+        //Ahmed Yousry
+        console.log("rpops...", this.props)
+        let per = JSON.parse(CryptoJS.enc.Base64.parse(permissions).toString(CryptoJS.enc.Utf8))
+        per.forEach(item => {
+            if (item == "875" || item == "3239")
+                console.log("Permissions....", item);
+        })
+
+        // End Ahmed Yousry
+
+
+
+
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -594,10 +609,10 @@ class addEditModificationDrawing extends Component {
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-               
+
                 this.props.history.push(
                     this.state.perviousRoute
-                ); 
+                );
             }
         });
     }
@@ -625,7 +640,7 @@ class addEditModificationDrawing extends Component {
     saveAndExit(event) {
 
         this.props.history.push(this.state.perviousRoute);
-       
+
     }
 
     showNEwCycle() {
@@ -1104,10 +1119,20 @@ class addEditModificationDrawing extends Component {
 
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
-                                        {this.state.docId > 0 ?
-                                            <UploadAttachment docTypeId={isModification === true ? 114 : 37} docId={this.state.docId} projectId={this.state.projectId} />
+                                        {/* {this.state.docId > 0 ?
+                                            <UploadAttachment docTypeId={isModification === true ? 114 : 37} 
+                                            docId={this.state.docId} 
+                                            projectId={this.state.projectId} />
                                             : null
-                                        }
+                                        } */}
+                                    {this.state.docId > 0 && this.state.isViewMode === false ?
+                                         (<UploadAttachment changeStatus={this.props.changeStatus} 
+                                         AddAttachments={permissions.AddAttachments} EditAttachments={permissions.EditAttachments} 
+                                         ShowDropBox={3607} ShowGoogleDrive={3608} 
+                                         docTypeId={isModification === true ? 114 : 37} 
+                                         docId={this.state.docId} 
+                                         projectId={this.state.projectId} />) : null}
+
                                         {this.viewAttachments()}
 
                                         {this.props.changeStatus === true ?
@@ -1152,7 +1177,7 @@ class addEditModificationDrawing extends Component {
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                 <div className="workingHours__cycle">
-                                   
+
                                     <div className="proForm first-proform">
 
                                         <div className="linebylineInput valid-input">
@@ -1537,7 +1562,7 @@ class addEditModificationDrawing extends Component {
                 </div>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={isModification === true ?  Resources.drawingModification[currentLanguage] :Resources.drawing[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} perviousRoute={this.state.perviousRoute} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={isModification === true ? Resources.drawingModification[currentLanguage] : Resources.drawing[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} perviousRoute={this.state.perviousRoute} />
                     <div className="doc-container">
 
                         <div className="step-content">
