@@ -1687,7 +1687,9 @@ class requestPaymentsAddEdit extends Component {
         saveDocument.requestId = this.state.docId;
 
         dataservice.addObject("AddContractsRequestPaymentsDeductions", saveDocument).then(result => {
-
+            if(result){
+             let deductionName=this.state.deductionTypesList.find(x=>x.value==result.deductionTypeId);
+             result.deductionTypeName=deductionName?deductionName.label:null
             let list = [...this.state.deductionObservableArray];
             list.push(result);
 
@@ -1704,6 +1706,7 @@ class requestPaymentsAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
+        }
         }).catch(res => {
             this.setState({
                 isLoading: false
