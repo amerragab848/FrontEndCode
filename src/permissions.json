@@ -15821,6 +15821,23 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Contracted Qty Vs Earned Qty Report",
+            "ar": "كمية العقود مقابل الكمية المكتسبة "
+          },
+          "id": 1243,
+          "permissions": [
+            {
+              "code": 10074,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     }

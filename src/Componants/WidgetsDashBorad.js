@@ -4,7 +4,7 @@ var widgets = [
     refrence: 0,
     canView: false,
     order: 1,
-    checked: false,
+    checked: true,
     widgets: [
       {
         title: "docApproval",
@@ -23,14 +23,14 @@ var widgets = [
           isModal: false,
           // key: "0-1-2"
         },
-        checked: false
+        checked: true
       },
       {
         title: "docRejected",
         permission: 0,
         // key: "0-1-4",
         canView: false,
-        checked: false,
+        checked: true,
         order: 4,
         type: "oneWidget",
         props: {
@@ -49,7 +49,7 @@ var widgets = [
         permission: 0,
         // key: "0-1-5",
         canView: false,
-        checked: false,
+        checked: true,
         order: 5,
         type: "oneWidget",
         props: {
@@ -68,7 +68,7 @@ var widgets = [
         permission: 0,
         // key: "0-1-6",
         canView: false,
-        checked: false,
+        checked: true,
         order: 6,
         type: "oneWidget",
         props: {
@@ -86,7 +86,7 @@ var widgets = [
         title: "monitorTasks",
         permission: 0,
         canView: false,
-        checked: false,
+        checked: true,
         order: 7,
         type: "oneWidget",
         props: {
@@ -103,7 +103,7 @@ var widgets = [
         title: "followUpsSummary",
         permission: 0,
         canView: false,
-        checked: false,
+        checked: true,
         order: 6,
         type: "oneWidget",
         props: {

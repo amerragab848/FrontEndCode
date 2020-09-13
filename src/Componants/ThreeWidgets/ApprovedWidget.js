@@ -16,22 +16,13 @@ class ApprovedWidget extends Component {
     };
   }
 
-  async componentDidMount() {
-    if (this.context.isDisconnected == false) {
-      await Api.getForWidgets(this.props.props.api).then(result => {
+  componentDidMount() {
+    Api.get(this.props.props.api).then(result => {
 
-        this.setState({
-          dataList: result != null ? result : []
-        });
-        IndexedDb.seedWidgetsOfflineData(this.state.dataList, this.props.props.api);
+      this.setState({
+        dataList: result != null ? result : []
       });
-    }
-    // else {
-    //   const result = await IndexedDb.getAllWidgetsOfflineData();
-    //   this.setState({
-    //     dataList: result != null ? result : []
-    //   });
-    // }
+    });
   }
 
   onOpenModal = (action, value) => {

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Api from "../../api"; 
+import React, { Component, Fragment } from "react";
+import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
-import Resources from "../../resources.json"; 
+import Export from "../OptionsPanels/Export";
+import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -49,7 +49,7 @@ class DistributionInboxListSummaryDetails extends Component {
         field: "comment",
         name: "comment",
         type: "string",
-        isCustom: true
+        isCustom: true,
       },
       {
         field: "creationDate",
@@ -70,26 +70,26 @@ class DistributionInboxListSummaryDetails extends Component {
       pageSize: 500,
       pageNumber: 0,
       totalRows: 0,
-      action: null
+      action: null, showPopup: false
     };
     this.actions = [
       {
         title: 'Update',
         handleClick: values => {
- 
+
           this.setState({
-            isLoading: true 
+            isLoading: true
           });
 
-          values.forEach((row) => {  
+          values.forEach((row) => {
             let item = find(this.state.rows, function (x) {
               return x.id == row;
-           }); 
+            });
             if (item.status !== true) {
               Api.get("UpdateStatusInbox?id=" + row);
-            } 
+            }
             this.setState({
-              isLoading: false 
+              isLoading: false
             });
           });
         },
@@ -140,11 +140,14 @@ class DistributionInboxListSummaryDetails extends Component {
       }, {
         field: 'comment',
         title: Resources['comment'][currentLanguage],
-        width: 20,
+        width: 25,
         groupable: true,
         fixed: false,
         type: "text",
-        sortable: true, href: 'link',
+        sortable: true,
+        classes: 'bold elipsisPadd fa fa-comments',
+        href: 'link',
+        onClick: cell => { this.showPopup(cell) }
       }, {
         field: 'creationDate',
         title: Resources['sendDate'][currentLanguage],
@@ -314,7 +317,25 @@ class DistributionInboxListSummaryDetails extends Component {
       }
     }
   }
+  showPopup(e) {
+    if (e.comment != null) {
+      this.setState({
+        showPopup: true,
+        comment: e.comment
+      });
+    } else {
+      this.setState({
+        showPopup: true,
+        comment: "No Comment"
+      });
+    }
+  }
 
+  closePopup(e) {
+    this.setState({
+      showPopup: false
+    });
+  }
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
@@ -381,12 +402,13 @@ class DistributionInboxListSummaryDetails extends Component {
   }
 
   render() {
+
     const dataGrid =
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
           gridKey="ClosedSummaryDetails"
-          data={this.state.rows} 
+          data={this.state.rows}
           groups={[]}
           actions={this.actions}
           rowActions={[]}
@@ -398,8 +420,9 @@ class DistributionInboxListSummaryDetails extends Component {
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
- 
+
     return (
+
       <div className="mainContainer main__withouttabs">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
@@ -443,6 +466,16 @@ class DistributionInboxListSummaryDetails extends Component {
           </div>
         </div>
         <div>{dataGrid}</div>
+        <Fragment>
+          <div className={this.state.showPopup === true ? "popupMedium active" : "popupMedium"}>
+            <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn" type="button" >x</button>
+            <div className={this.state.showPopup === true ? "ui modal smallModal active workflowComment" : "ui modal smallModal workflowComment"} id="smallModal2">
+              <h2 className="header zero">Comment</h2>
+              <p className="zero">{this.state.comment}</p>
+              <button onClick={(e) => this.closePopup()} type="button" className="smallBtn primaryBtn-1 btn approve">Close</button>
+            </div>
+          </div>
+        </Fragment>
       </div>
     );
   }

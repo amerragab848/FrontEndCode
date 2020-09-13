@@ -3262,5 +3262,117 @@
             }
         ],
         "friendlyNames": []
+    },
+    "121": {
+        "fields": [
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "paymentRequistion",
+                "value": "paymentRequistion",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "boqType",
+            "secondLevel",
+            "itemCode",
+            "subject",
+            "unit",
+            "unitPrice",
+            "quantity",
+            "revisedQuantity",
+            "earnedQuantity",
+            "quantityComplete",
+            "paymentPercent",
+            "wasAdded",
+            "totalExcutedPayment",
+            "lastComment",
+            "itemStatus"
+        ],
+        "friendlyNames": [
+            "no",
+            "boqType",
+            "boqTypeChild",
+            "itemCode",
+            "description",
+            "unit",
+            "unitPrice",
+            "boqQuanty",
+            "approvedQuantity",
+            "earnedQuantity",
+            "quantityComplete",
+            "paymentPercent",
+            "status",
+            "totalAmount",
+            "comment",
+            "itemStatus"
+        ]
+    },
+    "49": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "materialDeliveryType",
+                "value": "materialDeliveryTypeName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "approvedQuantity",
+            "rejectedQuantity",
+            "pendingQuantity",
+            "remaining",
+            "receivedDate",
+            "nextDeliveryDate",
+            "resourceCode",
+            "remarks"
+        ],
+        "friendlyNames": [
+            "arrange",
+            "description",
+            "quantity",
+            "unitPrice",
+            "approvedQuantity",
+            "rejectedQuantity",
+            "pendingQuantity",
+            "remainingQuantity",
+            "recievedDate",
+            "nextDate",
+            "resourceCode",
+            "remarks"
+        ]
     }
 }

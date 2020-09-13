@@ -300,7 +300,9 @@ class requestPaymentsAddEdit extends Component {
             quantityComplete: 0,
             currentDocument: "",
             columnsApprovedInvoices: [],
-            CalculateRow: true
+            CalculateRow: true,
+            deductionTypesList:[],
+            selectedDeductionType:{label: Resources.selectDedutionType[currentLanguage], value: "0"}
         };
 
         //#endregion variableofState
@@ -724,7 +726,7 @@ class requestPaymentsAddEdit extends Component {
             { field: 'secondLevel', title: 'boqTypeChild', type: "text" }
         ];
 
-       
+
         if (selectedCols.length === 0) {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
@@ -829,9 +831,14 @@ class requestPaymentsAddEdit extends Component {
 
         let documentDeduction = {
             title: "",
-            deductionValue: 0
+            deductionValue: 0,
+            deductionTypeId:0
         };
-
+        dataservice.GetDataList('GetaccountsDefaultListForList?listType=deductionType', 'title', 'id').then(res => {
+            this.setState({
+                deductionTypesList: res
+            })
+        })
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
             this.props.actions.ExportingData({ items: [] });
@@ -864,7 +871,9 @@ class requestPaymentsAddEdit extends Component {
                 useQuantity: false,
                 percentComplete: "",
                 quantityComplete: "",
-                paymentPercent: ""
+                paymentPercent: "",
+                nextId: 0,
+                previousId: 0
             };
 
             this.setState(
@@ -1096,6 +1105,18 @@ class requestPaymentsAddEdit extends Component {
                 });
             }
         }
+    };
+    handleChangeDropDownDeduction(event, field, selectedValue) {
+        if (event == null) return;
+        let original_document = { ...this.state.documentDeduction };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            documentDeduction: updated_document,
+            [selectedValue]: event
+        });
     };
     editPaymentRequistion(event) {
 
@@ -1543,7 +1564,7 @@ class requestPaymentsAddEdit extends Component {
                         i = updateRow;
                     }
                 });
-            }); 
+            });
             this.setState({
                 editRows: editRows,
                 paymentsItems: paymentsItems,
@@ -1555,7 +1576,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: false,
                 isEditingPercentage: "true",
                 ColumnsHideShow: this.state.columns,
-                isMultipleItems: false 
+                isMultipleItems: false
             });
 
             this.reqPayModal.hide();
@@ -1584,7 +1605,7 @@ class requestPaymentsAddEdit extends Component {
             let index = pItems.findIndex(x => x.id === newValue.id);
 
             pItems[index] = newValue;
- 
+
             this.setState({
                 editRows: editRows,
                 paymentsItems: pItems,
@@ -1600,7 +1621,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     changeValueOfProps = () => {
- 
+
         this.setState({ isFilter: false });
     };
 
@@ -2477,24 +2498,44 @@ class requestPaymentsAddEdit extends Component {
     };
 
     renderingGrid() {
-         const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
+        const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
 
             <GridCustom
                 gridKey='ReqPaymentsItems'
-                data={this.state.paymentsItems} 
+                data={this.state.paymentsItems}
                 groups={this.state.groups}
                 isFilter={this.state.isFilter}
                 actions={this.actions}
                 openModalColumn={this.state.columnsModal}
-                cells={this.state.columns} 
+                cells={this.state.columns}
                 rowActions={this.state.isViewMode !== true && this.props.changeStatus ? this.rowActions : []}
-                rowClick={cell => { this.onRowClick(cell); }} 
+                rowClick={cell => { this.onRowClick(cell); }}
                 changeValueOfProps={this.changeValueOfProps.bind(this)}
             />
         ) : <div style={{ position: 'relative' }}><LoadingSection isCustomLoader={true} /></div>;
 
         return ItemsGrid;
     };
+
+    getById = (id) => {
+        if (id > 0) {
+            let obj = {
+                docId: id,
+                projectId: projectId,
+                projectName: projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+            this.props.history.push({ pathname: "/requestPaymentsAddEdit", search: "?id=" + encodedPaylod });
+            window.location.reload();
+        }
+    }
     render() {
 
         let columns = [];
@@ -2876,6 +2917,10 @@ class requestPaymentsAddEdit extends Component {
                         docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
+                            <div className="rowsPaginations readOnly__disabled " style={{ 'justify-content': 'space-between' }}>
+                                {this.state.document.previousId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Prevoius Payment" style={{ 'border-radius': '20px' }}><i className="angle left icon" onClick={() => this.getById(this.state.document.previousId)}></i></button> : null}
+                                {this.state.document.nextId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Next Payment" style={{ 'border-radius': '20px' }}><i className="angle right icon" onClick={() => this.getById(this.state.document.nextId)}></i></button> : null}
+                            </div>
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
@@ -3422,6 +3467,22 @@ class requestPaymentsAddEdit extends Component {
                                                                         onChange={e => this.handleChangeItem(e, "deductionValue")} />
                                                                     {touched.deductionValue ? (<em className="pError"> {errors.deductionValue} </em>) : null}
                                                                 </div>
+                                                            </div>
+                                                            <div className="linebylineInput valid-input">
+                                                                <Dropdown title="deductionType"
+                                                                    data={this.state.deductionTypesList}
+                                                                    selectedValue={this.state.selectedDeductionType}
+                                                                    handleChange={event => this.handleChangeDropDownDeduction(event, "deductionTypeId", "selectedDeductionType")}
+                                                                    index="deductionTypeId"
+                                                                    onChange={setFieldValue}
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.deductionTypeId}
+                                                                    touched={touched.deductionTypeId}
+                                                                    isClear={false}
+                                                                    name="deductionTypeId"
+                                                                    id="deductionTypeId"
+                                                                    classDrop="deductionTypeId"
+                                                                />
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">

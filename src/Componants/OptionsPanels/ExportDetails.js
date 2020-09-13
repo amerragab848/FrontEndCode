@@ -1291,8 +1291,7 @@ class ExportDetails extends Component {
 
         {this.state.isLoading === true ? <LoadingSection /> : null}
         {/* excel export */}
-        <div style={{ display: 'none' }}>
-          {/* {this.props.docTypeId != 19 ? this.drawFields() : null} */}
+        <div style={{ display: 'none' }}> 
           {this.drawFields()}
           {this.props.docTypeId != 120 ? this.drawItems() : null}
 

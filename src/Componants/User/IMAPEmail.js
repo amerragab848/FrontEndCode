@@ -33,7 +33,7 @@ class IMApEmails extends Component {
                 subject: null,
                 docDate: null,
                 status: true,
-                refDoc: null
+                refDoc: ""
             },
             imapEmailsList: [],
             projectsList: [],
@@ -46,7 +46,7 @@ class IMApEmails extends Component {
             totalRows: 0,
             ShowPopup: false,
             isLoading: false,
-            emailBody:null,
+            emailBody: null,
             selectedImapEmail: { label: Resources.imapConfigurationName[currentLanguage], value: 0 },
             selectedProject: { label: Resources.projectName[currentLanguage], value: 0 },
             selectedCompany: { label: Resources.CompanyName[currentLanguage], value: 0 },
@@ -90,6 +90,15 @@ class IMApEmails extends Component {
         })
     }
 
+    refDocHandleChange = (e) => {
+        let originalDocument = { ...this.state.imapObj }
+        let newDocument = {};
+        newDocument["refDoc"] = e.target.value;
+        Object.assign(originalDocument, newDocument);
+        this.setState({
+            imapObj: originalDocument
+        })
+    }
     projectHandleChange = (e) => {
         dataservice.GetDataList(`GetProjectProjectsCompaniesForList?projectId=${e.value}`, 'companyName', 'companyId').then(result => {
             this.setState({ companiesList: result || [] });
@@ -103,26 +112,28 @@ class IMApEmails extends Component {
     }
 
     addInboxToEmailRecord = () => {
-        let imapObj = {
-            id: null,
-            projectId: null,
-            fromCompanyId: null,
-            fromContactId: null,
-            subject: null,
-            docDate: null,
-            status: true,
-            refDoc: null
-        }
+
         let params = { ...this.state.imapObj }
         params.subject = this.state.selectedRow.subject;
         params.docDate = this.state.selectedRow.date;
+        params.msgId = this.state.selectedRow.msgId;
+        params.message = this.state.emailBody;
         this.setState({ isLoading: true })
         dataservice.addObject(`AddToEmailRecord`, params).then(result => {
             toast.success(Resources.successAlert[currentLanguage])
+            let imapObj = {
+                id: null,
+                projectId: null,
+                fromCompanyId: null,
+                fromContactId: null,
+                subject: null,
+                docDate: null,
+                status: true,
+                refDoc: ""
+            }
             this.setState({
                 selectedRow: {},
                 imapObj: imapObj,
-                selectedImapEmail: { label: Resources.imapConfigurationName[currentLanguage], value: 0 },
                 selectedProject: { label: Resources.projectName[currentLanguage], value: 0 },
                 selectedCompany: { label: Resources.CompanyName[currentLanguage], value: 0 },
                 selectedContact: { label: Resources.ContactName[currentLanguage], value: 0 },
@@ -169,10 +180,11 @@ class IMApEmails extends Component {
         }
     };
 
-    preparePopUp=(element)=>{
-        let url=`GetEmailBody?messageId=${element.msgId}&configurationSetId=${this.state.selectedImapEmail.value}`
-        dataservice.GetRowById(url).then(result=>{
-            this.setState({ selectedRow: element,emailBody:result.textBody, ShowPopup: true })
+    preparePopUp = (element) => {
+        this.setState({ isLoading: true })
+        let url = `GetEmailBody?messageId=${element.msgId}&configurationSetId=${this.state.selectedImapEmail.value}`
+        dataservice.GetRowById(url).then(result => {
+            this.setState({ selectedRow: element, emailBody:result !==null? result.textBody:null, ShowPopup: true, isLoading: false })
         })
         //this.setState({ selectedRow: element, ShowPopup: true })
     }
@@ -277,9 +289,10 @@ class IMApEmails extends Component {
                                                 <div className={"inputDev ui input" + (errors.refDoc && touched.refDoc ? (" has-error") : !errors.refDoc && touched.refDoc ? (" has-success") : " ")} >
                                                     <div className="inputDev ui input">
                                                         <input autoComplete="off" className="form-control"
-                                                            value={this.state.imapObj.refDoc} name="refDoc"
-                                                            defaultValue={this.state.imapObj.refDoc}
-                                                            onBlur={handleBlur} onChange={(e) => this.popupHandleChange('imapObj', 'refDoc', e, '')}
+                                                            value={this.state.imapObj.refDoc}
+                                                            name="refDoc" 
+                                                            onBlur={handleBlur}
+                                                            onChange={(e) => this.refDocHandleChange(e)}
                                                             placeholder={Resources['reference'][currentLanguage]} />
                                                         {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
                                                     </div>

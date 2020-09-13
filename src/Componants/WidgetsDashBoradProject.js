@@ -4,7 +4,7 @@ var DashBoardWidgets = [
     refrence: 0,
     key: "0-1",
     canView: false,
-    checked: false,
+    checked: true,
     order: 1,
     widgets: [
       {
@@ -12,7 +12,7 @@ var DashBoardWidgets = [
         key: "0-1-1",
         permission: 10048,
         canView: false,
-        checked: false,
+        checked: true,
         order: 1,
         type: "oneWidget",
         props: {
@@ -29,7 +29,7 @@ var DashBoardWidgets = [
         title: "materialRequestcount",
         key: "0-1-2",
         canView: false,
-        checked: false,
+        checked: true,
         order: 2,
         permission: 10049,
         type: "oneWidget",
@@ -47,7 +47,7 @@ var DashBoardWidgets = [
         title: "monthlyPaymentRequisitions",
         key: "0-1-3",
         canView: false,
-        checked: false,
+        checked: true,
         permission: 10050,
         order: 3,
         type: "oneWidget",

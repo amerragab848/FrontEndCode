@@ -21,7 +21,6 @@ import ExportDetails from "../../Componants/OptionsPanels/ExportDetails";
 import SkyLight from "react-skylight";
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import find from "lodash/find";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
@@ -80,6 +79,8 @@ class CommonLog extends Component {
         label: Resources.contactNameRequired[currentLanguage],
         value: "0"
       },
+      inventoryImportAttachmentModal: false,
+      showInventoryImportAttachBtn: false
     };
     this.actions = [
       {
@@ -283,7 +284,9 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-
+            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+              obj.isModification = true;
+            }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -341,7 +344,9 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-
+            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+              obj.isModification = true;
+            }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -398,7 +403,9 @@ class CommonLog extends Component {
                 isApproveMode: false,
                 perviousRoute: window.location.pathname + window.location.search
               };
-
+              if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+                obj.isModification = true;
+              }
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -565,9 +572,18 @@ class CommonLog extends Component {
     if (docTypeId == 19 || docTypeId == 23 || docTypeId == 42 || docTypeId == 28 || docTypeId == 103 || docTypeId == 25) {
       showExServerBtn = true;
     }
+    
     if (docTypeId == 19) {
       showDocTemplateBtn = true;
+    }else{
+      showDocTemplateBtn = false;
     }
+    if(docTypeId==50){
+      this.setState({showInventoryImportAttachBtn:true})
+    }else{
+      this.setState({showInventoryImportAttachBtn:false})
+    }
+
     filtersColumns = documentObj.filters;
 
     var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
@@ -634,7 +650,9 @@ class CommonLog extends Component {
             isApproveMode: false,
             perviousRoute: window.location.pathname + window.location.search
           };
-
+          if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+            obj.isModification = true;
+          }
           let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
           let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -757,6 +775,11 @@ class CommonLog extends Component {
       docTemplateModal: true
     });
   }
+  btnInventoryImportAttachShowModal = () => {
+    this.setState({
+      inventoryImportAttachmentModal: true
+    });
+  }
 
   btnExportServerShowModal = () => {
 
@@ -814,6 +837,7 @@ class CommonLog extends Component {
   changeValueOfProps = () => {
     this.setState({ isFilter: false });
   };
+  
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     if (event == null) return;
     let original_document = { ...this.state.document };
@@ -835,6 +859,7 @@ class CommonLog extends Component {
       });
     }
   }
+  
   render() {
 
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
@@ -893,10 +918,16 @@ class CommonLog extends Component {
                     isApproveMode: false,
                     perviousRoute: window.location.pathname + window.location.search
                   };
+                  if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+                    obj.isModification = true;
+                  } else {
+                    obj.isModification = false;
+                  }
                   if (rowData === "subject") {
                     obj.onClick = () => { };
                     obj.classes = 'bold'
                   }
+
                   if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
                     obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
                   }
@@ -932,6 +963,8 @@ class CommonLog extends Component {
       : null;
 
     const btnDocumentTemplate = this.state.showDocTemplateBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
+      : null;
+    const btnInventoryImportAttach = this.state.showInventoryImportAttachBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnInventoryImportAttachShowModal()}>{Resources["uploadAttach"][currentLanguage]}</button>
       : null;
 
     const ComponantFilter = this.state.isLoading === false ?
@@ -975,11 +1008,12 @@ class CommonLog extends Component {
               </div>
             </div>
             <div className="filterBTNS">
+              
               {btnExport}
               {btnExportServer}
-              &nbsp; 
               {btnDocumentTemplate}
-              &nbsp; 
+              {btnInventoryImportAttach}
+
               {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
@@ -1086,7 +1120,7 @@ class CommonLog extends Component {
               isVisible={this.state.docTemplateModal}>
               <div>
                 <div className="linebylineInput valid-input mix_dropdown">
-                 
+
                   <div className="supervisor__company">
                     <div className="super_name">
                       <Dropdown
@@ -1135,6 +1169,33 @@ class CommonLog extends Component {
           </div>
         ) : null}
 
+        {/* Material Inventory Import Section  Ahmed Yousry */}
+        {(this.state.inventoryImportAttachmentModal == true) ? (
+          <div className="largePopup largeModal " >
+
+            <SkyLightStateless
+              onOverlayClicked={() => this.setState({ inventoryImportAttachmentModal: false })}
+              title={Resources['DocTemplate'][currentLanguage]}
+              onCloseClicked={() => this.setState({ inventoryImportAttachmentModal: false })}
+              isVisible={this.state.inventoryImportAttachmentModal}>
+              <div>
+                <XSLfile
+                  key="MaterialInventory"
+                  docId={this.props.projectId}
+                  docType={50}
+                  link={
+                    Config.getPublicConfiguartion().downloads +
+                    "/downloads/excel/inventory.xlsx"
+                  }
+                  header="addManyItems"
+                  afterUpload={() => this.setState({ inventoryImportAttachmentModal: false })}
+                />
+              </div>
+            </SkyLightStateless>
+          </div>
+        ) : null}
+        {/* End Material Inventory Import Section  Ahmed Yousry  */}
+
         {(this.props.document.id > 0 && this.state.showExportModal == true) ? (
           <div className="largePopup largeModal " >
             <SkyLight hideOnOverlayClicked
@@ -1154,6 +1215,7 @@ class CommonLog extends Component {
       </Fragment>
     );
   };
+
 }
 
 function mapStateToProps(state, ownProps) {

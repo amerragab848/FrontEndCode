@@ -15,35 +15,37 @@ let widgets = [
         groupable: true,
         fixed: true,
         type: "text",
+        sortable: true,
+        classes: 'bold',
+        showTip: true
+      },
+      {
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 6,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true
-    },
-    {
-      field: 'statusName',
-      title: Resources['status'][currentLanguage],
-      width: 10,
-      groupable: true,
-      fixed: false,
-      type: "text",
-      sortable: true
-  },
-  {
-    field: 'projectName',
-    title: Resources['projectName'][currentLanguage],
-    width: 10,
-    groupable: true,
-    fixed: false,
-    type: "text",
-    sortable: true
-},
-{
-  field: 'docDate',
-  title: Resources['docDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-}
+      },
+      {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 8,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 6,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      }
     ],
     filterApi: "",
     filters: [
@@ -77,63 +79,63 @@ let widgets = [
   },
   {
     title: "materialRequestcount",
-    key:  "0-1-2",
+    key: "0-1-2",
     apiDetails: "GetTotalMaterialRequestCountingForProject?projectId=",
     columns: [
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],
-        width: 10,
+        width: 6,
         groupable: true,
         fixed: true,
         type: "text",
         sortable: true
-    },
-    {
-      field: 'projectName',
-      title: Resources['projectName'][currentLanguage],
-      width: 10,
-      groupable: true,
-      fixed: false,
-      type: "text",
-      sortable: true
-  },
-  {
-    field: 'subject',
-    title: Resources['subject'][currentLanguage],
-    width: 10,
-    groupable: true,
-    fixed: false,
-    type: "text",
-    sortable: true
-},
-{
-  field: 'companyName',
-  title: Resources['CompanyName'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'disciplineName',
-  title: Resources['descipline'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'docDate',
-  title: Resources['docDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-}
+      },
+      {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 8,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'companyName',
+        title: Resources['CompanyName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'disciplineName',
+        title: Resources['descipline'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      }
     ],
     filterApi: "",
     filters: [
@@ -177,63 +179,56 @@ let widgets = [
   },
   {
     title: "monthlyPaymentRequisitions",
-    key:  "0-1-3",
+    key: "0-1-3",
     apiDetails: "GetTotalPaymentDetailsForProject?projectId=",
     columns: [
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
-        width: 20,
+        width: 25,
         groupable: true,
         fixed: true,
         type: "text",
+        sortable: true,
+        classes: 'bold',
+        showTip: true
+      },
+      {
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 6,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true
-    },
-    {
-      field: 'statusName',
-      title: Resources['status'][currentLanguage],
-      width: 10,
-      groupable: true,
-      fixed: false,
-      type: "text",
-      sortable: true
-  },
-  {
-    field: 'projectName',
-    title: Resources['projectName'][currentLanguage],
-    width: 10,
-    groupable: true,
-    fixed: false,
-    type: "text",
-    sortable: true
-},
-{
-  field: 'contractName',
-  title: Resources['contractSubject'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'totalEarned',
-  title: Resources['totalEarned'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'docDate',
-  title: Resources['docDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-}
+      }, 
+      {
+        field: 'contractName',
+        title: Resources['contractSubject'][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'totalEarned',
+        title: Resources['totalEarned'][currentLanguage],
+        width: 12,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 8,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      }
     ],
     filterApi: "",
     filters: [
@@ -281,159 +276,159 @@ let widgets = [
     key: "0-2-1",
     apiDetails: "GetApprocalStatusDetails?status=true&projectId=",
     columns: [
-    {
-      field: 'refNo',
-      title: Resources['refNo'][currentLanguage],
-      width: 10,
-      groupable: true,
-      fixed: true,
-      type: "text",
-      sortable: true
-  },
-  {
-    field: 'statusName',
-    title: Resources['statusName'][currentLanguage],
-    width: 10,
-    groupable: true,
-    fixed: false,
-    type: "text",
-    sortable: true
-},
-{
-  field: 'subject',
-  title: Resources['subject'][currentLanguage],
-  width: 20,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'approvalStatusName',
-  title: Resources['approvalStatus'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'docDate',
-  title: Resources['docDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'approvedDate',
-  title: Resources['approvedDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'lastWorkFlow',
-  title: Resources['lastWorkFlow'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'contractName',
-  title: Resources['contractName'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'duration',
-  title: Resources['duration'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'docCloseDate',
-  title: Resources['docClosedate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'cycleDate',
-  title: Resources['cycleDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'cycleCloseDate',
-  title: Resources['cycleCloseDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'submittalType',
-  title: Resources['submittalType'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'cyclesCount',
-  title: Resources['cyclesCount'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'disciplineName',
-  title: Resources['disciplineName'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'area',
-  title: Resources['area'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'location',
-  title: Resources['location'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-}
+      {
+        field: 'refNo',
+        title: Resources['refNo'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'statusName',
+        title: Resources['statusName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'approvalStatusName',
+        title: Resources['approvalStatus'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'approvedDate',
+        title: Resources['approvedDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'lastWorkFlow',
+        title: Resources['lastWorkFlow'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'contractName',
+        title: Resources['contractName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'duration',
+        title: Resources['duration'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docCloseDate',
+        title: Resources['docClosedate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'cycleDate',
+        title: Resources['cycleDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'cycleCloseDate',
+        title: Resources['cycleCloseDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'submittalType',
+        title: Resources['submittalType'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'cyclesCount',
+        title: Resources['cyclesCount'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'disciplineName',
+        title: Resources['disciplineName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'area',
+        title: Resources['area'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'location',
+        title: Resources['location'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      }
     ],
     filterApi: "",
     filters: [
@@ -547,7 +542,7 @@ let widgets = [
     title: "openedSubmittals",
     key: "0-2-2",
     apiDetails: "GetOpenedDocumentsDetails?docType=42&projectId=",
-     columns: [
+    columns: [
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
@@ -556,34 +551,34 @@ let widgets = [
         fixed: true,
         type: "text",
         sortable: true
-    },
-    {
-      field: 'statusName',
-      title: Resources['status'][currentLanguage],
-      width: 10,
-      groupable: true,
-      fixed: false,
-      type: "text",
-      sortable: true
-  },
-  {
-    field: 'projectName',
-    title: Resources['projectName'][currentLanguage],
-    width: 10,
-    groupable: true,
-    fixed: false,
-    type: "text",
-    sortable: true
-},
-{
-  field: 'docDate',
-  title: Resources['docDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-}
+      },
+      {
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      }
     ],
     filterApi: "",
     filters: [
@@ -627,151 +622,151 @@ let widgets = [
         fixed: true,
         type: "text",
         sortable: true
-    },
-    {
-      field: 'statusName',
-      title: Resources['statusName'][currentLanguage],
-      width: 10,
-      groupable: true,
-      fixed: false,
-      type: "text",
-      sortable: true
-  },
-  {
-    field: 'subject',
-    title: Resources['subject'][currentLanguage],
-    width: 20,
-    groupable: true,
-    fixed: false,
-    type: "text",
-    sortable: true
-},
-{
-  field: 'approvalStatusName',
-  title: Resources['approvalStatus'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'docDate',
-  title: Resources['docDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'approvedDate',
-  title: Resources['approvedDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'lastWorkFlow',
-  title: Resources['lastWorkFlow'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'contractName',
-  title: Resources['contractName'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'duration',
-  title: Resources['duration'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'docCloseDate',
-  title: Resources['docClosedate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'cycleDate',
-  title: Resources['cycleDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'cycleCloseDate',
-  title: Resources['cycleCloseDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "date",
-  sortable: true
-},
-{
-  field: 'submittalType',
-  title: Resources['submittalType'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'cyclesCount',
-  title: Resources['cyclesCount'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'disciplineName',
-  title: Resources['disciplineName'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'area',
-  title: Resources['area'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-},
-{
-  field: 'location',
-  title: Resources['location'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: false,
-  type: "text",
-  sortable: true
-}
+      },
+      {
+        field: 'statusName',
+        title: Resources['statusName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'approvalStatusName',
+        title: Resources['approvalStatus'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'approvedDate',
+        title: Resources['approvedDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'lastWorkFlow',
+        title: Resources['lastWorkFlow'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'contractName',
+        title: Resources['contractName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'duration',
+        title: Resources['duration'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docCloseDate',
+        title: Resources['docClosedate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'cycleDate',
+        title: Resources['cycleDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'cycleCloseDate',
+        title: Resources['cycleCloseDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'submittalType',
+        title: Resources['submittalType'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'cyclesCount',
+        title: Resources['cyclesCount'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'disciplineName',
+        title: Resources['disciplineName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'area',
+        title: Resources['area'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'location',
+        title: Resources['location'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      }
     ],
     filterApi: "",
     filters: [
@@ -956,7 +951,7 @@ let widgets = [
     title: "openedIR",
     key: "0-3-2",
     apiDetails: "GetOpenedDocumentsDetails?docType=25&projectId=",
-     columns: [
+    columns: [
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
@@ -1323,7 +1318,7 @@ let widgets = [
     title: "openedTransmittals",
     key: "0-3-4",
     apiDetails: "GetOpenedDocumentsDetails?docType=28&projectId=",
-     columns: [
+    columns: [
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
@@ -1394,7 +1389,7 @@ let widgets = [
     title: "countinspectionPanding",
     key: "0-4-1",
     apiDetails: "GetCountInspectionDetails?status=null&projectId=",
-   columns: [
+    columns: [
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],
@@ -1480,7 +1475,7 @@ let widgets = [
     title: "countinspectionReject",
     key: "0-4-2",
     apiDetails: "GetCountInspectionDetails?status=false&projectId=",
-   columns: [
+    columns: [
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],

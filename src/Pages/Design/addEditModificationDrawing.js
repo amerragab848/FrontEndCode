@@ -30,7 +30,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
+let permissions = localStorage.getItem('permissions');
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     bicContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
@@ -82,7 +82,7 @@ class addEditModificationDrawing extends Component {
             }
             index++;
         }
-
+        console.log('isModification', isModification, isModification === true ? 114 : 37);
         this.state = {
             CurrentStep: 0,
             isModification: isModification,
@@ -108,7 +108,13 @@ class addEditModificationDrawing extends Component {
             permission: [{ name: 'sendByEmail', code: 3522 }, { name: 'sendByInbox', code: 3521 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 3530 },
             { name: 'createTransmittal', code: 3531 }, { name: 'sendToWorkFlow', code: 3525 },
-            { name: 'viewAttachments', code: 3528 }, { name: 'deleteAttachments', code: 3144 }, { name: 'addAttachments', code: 3526 }],
+            { name: 'viewAttachments', code: 3528 }, { name: 'deleteAttachments', code: 3144 },
+            { name: 'addAttachments', code: 3526 }, { name: 'EditAttachments', code: 3527 }],
+            permissionModification: [{ name: 'sendByEmail', code: 208 }, { name: 'sendByInbox', code: 207 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 982 },
+            { name: 'createTransmittal', code: 3068 }, { name: 'sendToWorkFlow', code: 730 },
+            { name: 'viewAttachments', code: 3330 }, { name: 'deleteAttachments', code: 898 },
+            { name: 'addAttachments', code: 897 }, { name: 'EditAttachments', code: 3236 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFlowCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -131,12 +137,11 @@ class addEditModificationDrawing extends Component {
             showDeleteModal: false,
         }
         steps_defination = [
-
-            { name: isModification ? "drawing" : 'drawingModification', callBackFn: null },
+            { name: isModification === false ? "drawing" : 'drawingModification', callBackFn: null },
             { name: "cyclesCount", callBackFn: null }
         ];
 
-        if (isModification === true) {
+        if (isModification === false) {
             if (!Config.IsAllow(3516) || !Config.IsAllow(3517) || !Config.IsAllow(3519)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
                 this.props.history.push(
@@ -147,9 +152,7 @@ class addEditModificationDrawing extends Component {
         } else {
             if (!Config.IsAllow(3133) || !Config.IsAllow(3134) || !Config.IsAllow(3136)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
-                this.props.history.push({
-                    pathname: "/drawingModification/" + projectId
-                });
+                this.props.history.push(this.state.perviousRoute);
             }
 
         }
@@ -164,8 +167,7 @@ class addEditModificationDrawing extends Component {
     GetNExtArrange() {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        // this.props.actions.GetNextArrange(url);
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
@@ -293,8 +295,8 @@ class addEditModificationDrawing extends Component {
 
         if (this.state.docId > 0) {
             let url = "GetLogsDrawingsForEdit?id=" + this.state.docId
-            let PageName = isModification === true ? 'drawing' : 'drawingModification'
-            this.props.actions.documentForEdit(url, this.state.docTypeId, PageName);
+            let PageName = isModification === false ? 'drawing' : 'drawingModification'
+            this.props.actions.documentForEdit(url, isModification === true ? 114 : 37, PageName);
             dataservice.GetDataGrid('GetLogsDrawingsCyclesByDrawingId?drawingId=' + this.state.docId).then(
                 res => {
                     this.setState({ cyclesData: res });
@@ -317,7 +319,7 @@ class addEditModificationDrawing extends Component {
                 fileNumber: '',
                 area: '',
                 drawingNo: '',
-                isModification: true,
+                isModification: isModification,
                 progressPercent: 0,
                 approvalStatusId: ''
             };
@@ -598,15 +600,10 @@ class addEditModificationDrawing extends Component {
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                if (isModification === true) {
-                    this.props.history.push({
-                        pathname: "/drawing/" + this.state.projectId
-                    });
-                } else {
-                    this.props.history.push(
-                        this.state.perviousRoute
-                    );
-                }
+
+                this.props.history.push(
+                    this.state.perviousRoute
+                );
             }
         });
     }
@@ -626,22 +623,15 @@ class addEditModificationDrawing extends Component {
             saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             // dataservice.addObject('AddLogsDrawingsCycles', saveDocumentCycle).then(result => {
-
             //     toast.success(Resources["operationSuccess"][currentLanguage]);
             // });
         });
     }
 
     saveAndExit(event) {
-        if (isModification === true) {
-            this.props.history.push({
-                pathname: "/drawing/" + this.state.projectId
-            });
-        } else {
-            this.props.history.push({
-                pathname: "/drawingModification/" + this.state.projectId
-            });
-        }
+
+        this.props.history.push(this.state.perviousRoute);
+
     }
 
     showNEwCycle() {
@@ -673,7 +663,7 @@ class addEditModificationDrawing extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3317) === true ?
-                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={isModification === true ? 114 : 37} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -1103,7 +1093,7 @@ class addEditModificationDrawing extends Component {
                                             }
                                             <DocumentActions
                                                 isApproveMode={this.state.isApproveMode}
-                                                docTypeId={this.state.docTypeId}
+                                                docTypeId={isModification === true ? 114 : 37}
                                                 docId={this.state.docId}
                                                 projectId={this.state.projectId}
                                                 previousRoute={this.state.previousRoute}
@@ -1120,14 +1110,20 @@ class addEditModificationDrawing extends Component {
 
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
-                                        {this.state.docId > 0 ?
-                                            <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null
-                                        }
+                                        {this.state.docId > 0 && this.state.isViewMode === false ?
+                                            (<UploadAttachment changeStatus={this.props.changeStatus}
+                                                AddAttachments={isModification === true ? this.state.permissionModification.find(x => x.name == "addAttachments").code : this.state.permission.find(x => x.name == "addAttachments").code}
+                                                EditAttachments={isModification === true ? this.state.permissionModification.find(x => x.name == "EditAttachments").code : this.state.permission.find(x => x.name == "EditAttachments").code}
+                                                ShowDropBox={isModification === true ? 3633 : 3635}
+                                                ShowGoogleDrive={isModification === true ? 3634 : 3636}
+                                                docTypeId={isModification === true ? 114 : 37}
+                                                docId={this.state.docId}
+                                                projectId={this.state.projectId} />) : null}
+
                                         {this.viewAttachments()}
 
                                         {this.props.changeStatus === true ?
-                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                            <ViewWorkFlow docType={isModification === true ? 114 : 37} docId={this.state.docId} projectId={this.state.projectId} />
                                             : null
                                         }
                                     </div>
@@ -1168,9 +1164,7 @@ class addEditModificationDrawing extends Component {
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                 <div className="workingHours__cycle">
-                                    {/* <header>
-                                        <h3 className="zero">{Resources["CycleDetails"][currentLanguage]}</h3>
-                                    </header> */}
+
                                     <div className="proForm first-proform">
 
                                         <div className="linebylineInput valid-input">
@@ -1555,7 +1549,7 @@ class addEditModificationDrawing extends Component {
                 </div>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={isModification === true ? Resources.drawing[currentLanguage] : Resources.drawingModification[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} perviousRoute={this.state.perviousRoute} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={isModification === true ? Resources.drawingModification[currentLanguage] : Resources.drawing[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} perviousRoute={this.state.perviousRoute} />
                     <div className="doc-container">
 
                         <div className="step-content">
@@ -1575,7 +1569,7 @@ class addEditModificationDrawing extends Component {
 
                         <Fragment>
                             <Steps steps_defination={steps_defination}
-                                exist_link={isModification === true ? "/drawing/" : "/drawingModification/"}
+                                exist_link={isModification === false ? "/drawing/" : "/drawingModification/"}
                                 docId={this.state.docId}
                                 changeCurrentStep={stepNo =>
                                     this.changeCurrentStep(stepNo)
