@@ -8636,5 +8636,13 @@
     "selectDedutionType": {
         "en": " Select Deduction Type",
         "ar": " اختر نوع الاستقطاع"
+    },
+    "RequestPaymentDeductionTypeReport": {
+        "en": "Request Payment Deduction Type Report",
+        "ar": "تقرير نوع الاستقطاعات للمستخلصات"
+    },
+    "deductionValue": {
+        "en": "Deduction Value",
+        "ar": "قيمة الاستقطاع"
     }
 }

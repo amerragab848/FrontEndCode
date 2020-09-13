@@ -2569,6 +2569,14 @@ class requestPaymentsAddEdit extends Component {
                     sortabel: true,
                     title: Resources["deductions"][currentLanguage],
                     field: 'deductionValue'
+                },
+                {
+                    Header: Resources["deductionType"][currentLanguage],
+                    accessor: "deductionTypeName",
+                    width: 200,
+                    sortabel: true,
+                    title: Resources["deductionType"][currentLanguage],
+                    field: 'deductionTypeName'
                 }
             );
         } else {

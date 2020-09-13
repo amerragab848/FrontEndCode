@@ -15838,6 +15838,23 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Request Payment Deduction Type Report",
+            "ar": "تقرير نوع الاستقطاع للمستخلص"
+          },
+          "id": 1244,
+          "permissions": [
+            {
+              "code": 10075,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     }

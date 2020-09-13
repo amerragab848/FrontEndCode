@@ -185,9 +185,12 @@ const ExpensesDetailsOnProjectsReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/expensesDetailsOnProjectsReport'),
 );
 const ContractedQtyVSEarnedQtyReport = AsyncComponent(() =>
-import(
-    './Pages/ReportsCenter/ProjectReports/ContractedQtyVSEarnedQty'
-),
+    import(
+        './Pages/ReportsCenter/ProjectReports/ContractedQtyVSEarnedQty'
+    ),
+);
+const RequestPaymentDeductionTypeReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/ContractsPOReports/RequestPaymentDeductionTypeReport'),
 );
 
 //Technical Office
@@ -601,11 +604,11 @@ const BaseAddEdit = AsyncComponent(() =>
 const PrivacySetting = AsyncComponent(() =>
     import('../src/Componants/User/PrivacySetting'),
 );
-const IMAPConfiguration =  AsyncComponent(() =>
-import('../src/Componants/User/IMAPConfigurationSettings'),
+const IMAPConfiguration = AsyncComponent(() =>
+    import('../src/Componants/User/IMAPConfigurationSettings'),
 );
-const IMAPEmails =  AsyncComponent(() =>
-import('../src/Componants/User/IMAPEmail'),
+const IMAPEmails = AsyncComponent(() =>
+    import('../src/Componants/User/IMAPEmail'),
 );
 const ProfileSetting = AsyncComponent(() =>
     import('../src/Componants/User/index'),
@@ -1300,10 +1303,12 @@ let originalRoutes = [
 
     <Route key="r-190" path="Pages/ReportsCenter/ContractsPOReports/reqPaymInvoicesRpt" component={reqPaymInvoicesRpt} />,
     <Route
-    key="r-191"
-    path="ProjectReports/ContractedQtyVSEarnedQty"
-    component={ContractedQtyVSEarnedQtyReport}
-/>
+        key="r-191"
+        path="ProjectReports/ContractedQtyVSEarnedQty"
+        component={ContractedQtyVSEarnedQtyReport}
+    />,
+    <Route key="r-192" path="ContractsPOReports/RequestPaymentDeductionTypeReport"
+        component={RequestPaymentDeductionTypeReport} />,
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];
