@@ -12,9 +12,9 @@ const DashboardProject = AsyncComponent(() => import('./DashboardProject'));
 const Chart = AsyncComponent(() => import('./Componants/ChartsWidgets/BarChartComp'));
 
 //Document Generator
-const DocGen = AsyncComponent(() =>
-    import('./Componants/Templates/DocumentGenerator'),
-);
+// const DocGen = AsyncComponent(() =>
+//     import('./Componants/Templates/DocumentGenerator'),
+// );
 
 //Communication
 
@@ -1296,7 +1296,7 @@ let originalRoutes = [
         path="/PaymentCertificationAddEdit"
         component={PaymentCertification}
     />,
-    <Route key="r-189" path="/:docType/gen/:projectId" component={DocGen} />,
+    //<Route key="r-189" path="/:docType/gen/:projectId" component={DocGen} />,
 
     <Route key="r-190" path="Pages/ReportsCenter/ContractsPOReports/reqPaymInvoicesRpt" component={reqPaymInvoicesRpt} />,
     <Route

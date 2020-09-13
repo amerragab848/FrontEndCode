@@ -1,6 +1,6 @@
 import React, { Component } from 'react'; 
 import ContentEditable from 'react-contenteditable'; 
-import { Editor, Frame, useNode, Canvas, useEditor } from '@craftjs/core'; 
+//import { Editor, Frame, useNode, Canvas, useEditor } from '@craftjs/core'; 
 import { v1 as uuidv1 } from 'uuid'; 
 import './styles.css';
 
