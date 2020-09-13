@@ -670,6 +670,7 @@ class Accounts extends Component {
                         let id = cell.id;
                         if (config.IsAllow(797)) {
                             if (cell) {
+                                console.log(this.props);
                                 this.props.history.push({
                                     pathname: "/EditAccount",
                                     search: "?id=" + id
