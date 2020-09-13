@@ -63,6 +63,7 @@ class CopyTo extends Component {
 
   saveCopyTo() {
     if (this.state.selectedValue.value != "0") {
+      
       this.props.actions.copyTo("CopyDocument", this.state.objCopyTo);
     }
   }
