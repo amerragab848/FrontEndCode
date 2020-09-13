@@ -2,19 +2,24 @@ import lf from 'lovefield';
 import WidgetStructure from './Componants/WidgetsDashBorad';
 import WidgetsDashBoradProject from './Componants/WidgetsDashBoradProject';
 import keyBy from 'lodash/keyBy';
+import { v1 as uuidv1 } from 'uuid';
 
 const schemaBuilder = lf.schema.create('widgets', 1);
 const schemaBuilderDashBoardProjects = lf.schema.create('widgetsDashBoardProjects', 1);
 const cachedData = lf.schema.create('cachedAPI', 1);
+const OfflineDataSchema = lf.schema.create('widgetsOffline', 1);
 
 let db = null;
 let dbDashBoard = null;
+let widgetsOfflineData = null;
 let api = null;
+let uuid = uuidv1();
 
 const tables = {
     'widgetType': null,
     'widgetCategory': null,
     'widget': null,
+    'offlineWidgets': null,
     'projects': null,
     'companies': null,
     'defaultLists': null
@@ -25,8 +30,14 @@ const tableProjects = {
     'widget': null
 }
 
+const tablesOffline = {
+    'offlineWidgets': null
+}
+
 export default class IndexedDb {
+
     static initialize() {
+
         schemaBuilder.createTable('WidgetType').
             addColumn('id', lf.Type.INTEGER).
             addColumn('title', lf.Type.STRING).
@@ -55,7 +66,7 @@ export default class IndexedDb {
             addColumn('permission', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
             addColumn('type', lf.Type.STRING).
-            addPrimaryKey(['id']); 
+            addPrimaryKey(['id']);
     }
 
     static initializeCachedAPI() {
@@ -97,6 +108,46 @@ export default class IndexedDb {
             addColumn('order', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
             addPrimaryKey(['id']);
+    }
+
+    static initializeWidgetsOfflineDB() {
+        OfflineDataSchema.createTable('offlineWidgets').
+            addColumn('key', lf.Type.STRING).
+            addColumn('widgetData', lf.Type.STRING).
+            addPrimaryKey(['key']);
+    }
+
+    static async seedWidgetsOfflineData(dataRow, key) {
+        //widgetsOfflineData = await OfflineDataSchema.connect();
+        await OfflineDataSchema.connect().then((res) => {
+            widgetsOfflineData = res;
+            console.log('fields added');
+ 
+        }, (error) => {
+            console.log('error is' + error);
+ 
+        }); 
+        tablesOffline.offlineWidgets = OfflineDataSchema.getSchema().table('offlineWidgets'); 
+        // let rows = await widgetsOfflineData.select().from(tablesOffline.offlineWidgets)
+        //     .where(tablesOffline.offlineWidgets.key.eq(key))
+        //     .exec();
+
+        // if (rows.length === 0) {
+        let offlineData = [
+            tablesOffline.offlineWidgets.createRow({
+                'key': key,
+                'widgetData': JSON.stringify(dataRow)
+            })];
+        await widgetsOfflineData.insertOrReplace().into(tablesOffline.offlineWidgets).values(offlineData).exec().then(() => {
+       
+            console.log('fields added');
+
+            widgetsOfflineData.close();
+        }, (error) => {
+            console.log('error is' + error);
+
+            widgetsOfflineData.close();
+        }); 
     }
 
     static async seed() {
@@ -167,20 +218,26 @@ export default class IndexedDb {
 
     static async setData(mainColumn, value, label, tableName, data, params) {
         let rows = [];
-        data.forEach((item) => {
-            let widRow = tables[tableName].createRow({
-                'value': item[value],
-                'label': item[label],
-                [mainColumn]: params
+        if (data !=null) {
+            data.forEach((item) => {
+                let widRow = tables[tableName].createRow({
+                    'value': item[value],
+                    'label': item[label],
+                    [mainColumn]: params
+                });
+                rows.push(widRow);
             });
-            rows.push(widRow);
-        });
-
-        await api.insertOrReplace().into(tables[tableName]).values(rows).exec();
+            await api.insertOrReplace().into(tables[tableName]).values(rows).exec();
+        }
 
     }
 
-    static deleteCacheData() {  
+    static async DeleteData(tableName) {
+
+        await api.delete().from(tables[tableName]).exec();
+    }
+
+    static deleteCacheData() {
         var req = indexedDB.deleteDatabase('cachedAPI');
         req.onsuccess = function () {
             console.log("Deleted database successfully");
@@ -190,8 +247,8 @@ export default class IndexedDb {
         };
         req.onblocked = function () {
             console.log("Couldn't delete database due to the operation being blocked");
-        }; 
- 
+        };
+
     }
 
     static async GetCachedData(params, tableName, mainColumn) {

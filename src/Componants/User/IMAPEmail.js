@@ -184,7 +184,7 @@ class IMApEmails extends Component {
         this.setState({ isLoading: true })
         let url = `GetEmailBody?messageId=${element.msgId}&configurationSetId=${this.state.selectedImapEmail.value}`
         dataservice.GetRowById(url).then(result => {
-            this.setState({ selectedRow: element, emailBody: result.textBody, ShowPopup: true, isLoading: false })
+            this.setState({ selectedRow: element, emailBody:result !==null? result.textBody:null, ShowPopup: true, isLoading: false })
         })
         //this.setState({ selectedRow: element, ShowPopup: true })
     }

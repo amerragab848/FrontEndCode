@@ -15,9 +15,9 @@
         "en": "Create Document",
         "ar": "انشاء مستند"
     },
-    "earnedQuantity":{
-        "en":"Earned Qty",
-        "ar":"الكمية المكتسبة"
+    "earnedQuantity": {
+        "en": "Earned Qty",
+        "ar": "الكمية المكتسبة"
     },
     "approvalModalReject": {
         "en": "Reject",
@@ -2665,6 +2665,10 @@
         "en": "Suppliers Proposal",
         "ar": "العروض "
     },
+    "uploadAttach": {
+        "en": "Upload Excel",
+        "ar": "رفع ملف"
+    },
     "addProposal": {
         "en": "Add Proposal",
         "ar": "اضافة عرض "
@@ -4761,6 +4765,10 @@
     "lastDeliveryDate": {
         "en": "Last Delivery Date",
         "ar": "اخر ميعاد للتسليم"
+    },
+    "lastReleasedDate": {
+        "en": "Last Released Date",
+        "ar": "اخر ميعاد للصرف"
     },
     "lastApproveDate": {
         "en": "Last Approve Date",
@@ -8625,5 +8633,21 @@
     "replacmentText": {
         "en": "Replacment Text",
         "ar": "النص البديل"
+    },
+    "deductionType": {
+        "en": "Deduction Type",
+        "ar": "نوع الاستقطاع"
+    },
+    "selectDedutionType": {
+        "en": " Select Deduction Type",
+        "ar": " اختر نوع الاستقطاع"
+    },
+    "RequestPaymentDeductionTypeReport": {
+        "en": "Request Payment Deduction Type Report",
+        "ar": "تقرير نوع الاستقطاعات للمستخلصات"
+    },
+    "deductionValue": {
+        "en": "Deduction Value",
+        "ar": "قيمة الاستقطاع"
     }
 }

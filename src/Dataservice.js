@@ -46,6 +46,7 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
+
     static GetDataListWithAdditionalParam(url, label, value, param) {
         let Data = []
         return Api.get(url).then(result => {
@@ -66,14 +67,15 @@ export default class Dataservice {
         if (rows.length == 0) {
             rows = await this.callAPIGetDataList(url, label, value, params);
             IndexedDb.setData(mainColumn, value, label, tableName, rows, params);
-
-            rows.forEach(item => {
-                var obj = {};
-                obj.label = item[label];
-                obj.value = item[value];
-                obj[mainColumn] = item[mainColumn];
-                Data.push(obj);
-            });
+            if (rows !=null) {
+                rows.forEach(item => {
+                    var obj = {};
+                    obj.label = item[label];
+                    obj.value = item[value];
+                    obj[mainColumn] = item[mainColumn];
+                    Data.push(obj);
+                });
+            }
             rows = Data;
         }
         return rows;

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
-//import Filter from "../FilterComponent/filterComponent";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -460,6 +459,9 @@ class DocApprovalDetails extends Component {
         isApproveMode: true,
         perviousRoute: window.location.pathname + window.location.search
       }
+      if (obj.docLink == "drawingModification") {
+        objRout.isModification = true;
+      }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
       this.props.history.push({
@@ -495,6 +497,9 @@ class DocApprovalDetails extends Component {
               isApproveMode: true,
               perviousRoute: window.location.pathname + window.location.search
             }
+            if (cell.docLink == "drawingModification") {
+              objRout.isModification = true;
+            }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
             this.props.history.push({
@@ -527,15 +532,7 @@ class DocApprovalDetails extends Component {
             </div>
           </div>
           <div className="rowsPaginations readOnly__disabled">
-            <div className="linebylineInput valid-input">
-              <label className="control-label">
-                {Resources.totalDocs[currentLanguage]}
-              </label>
-              <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
-                <input type="text" className="form-control" id="totalDocs" value={this.state.rows.length} readOnly name="totalDocs"
-                  placeholder={Resources.totalDocs[currentLanguage]} />
-              </div>
-            </div>
+            
             <div className="linebylineInput valid-input">
               <label className="control-label">
                 {Resources.readedDocs[currentLanguage]}

@@ -2,7 +2,7 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment ,useContext } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
@@ -28,6 +28,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
+import ConnectionContext from '../../Componants/Layouts/Context';
 
 //import "react-table/react-table.css";
 //#endregion importComponent
@@ -299,7 +300,9 @@ class requestPaymentsAddEdit extends Component {
             quantityComplete: 0,
             currentDocument: "",
             columnsApprovedInvoices: [],
-            CalculateRow: true
+            CalculateRow: true,
+            deductionTypesList:[],
+            selectedDeductionType:{label: Resources.selectDedutionType[currentLanguage], value: "0"}
         };
 
         //#endregion variableofState
@@ -816,6 +819,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     componentDidMount() {
+     
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -827,9 +831,14 @@ class requestPaymentsAddEdit extends Component {
 
         let documentDeduction = {
             title: "",
-            deductionValue: 0
+            deductionValue: 0,
+            deductionTypeId:0
         };
-
+        dataservice.GetDataList('GetaccountsDefaultListForList?listType=deductionType', 'title', 'id').then(res => {
+            this.setState({
+                deductionTypesList: res
+            })
+        })
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
             this.props.actions.ExportingData({ items: [] });
@@ -1096,6 +1105,18 @@ class requestPaymentsAddEdit extends Component {
                 });
             }
         }
+    };
+    handleChangeDropDownDeduction(event, field, selectedValue) {
+        if (event == null) return;
+        let original_document = { ...this.state.documentDeduction };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            documentDeduction: updated_document,
+            [selectedValue]: event
+        });
     };
     editPaymentRequistion(event) {
 
@@ -2550,6 +2571,14 @@ class requestPaymentsAddEdit extends Component {
                     sortabel: true,
                     title: Resources["deductions"][currentLanguage],
                     field: 'deductionValue'
+                },
+                {
+                    Header: Resources["deductionType"][currentLanguage],
+                    accessor: "deductionTypeName",
+                    width: 200,
+                    sortabel: true,
+                    title: Resources["deductionType"][currentLanguage],
+                    field: 'deductionTypeName'
                 }
             );
         } else {
@@ -3447,6 +3476,22 @@ class requestPaymentsAddEdit extends Component {
                                                                     {touched.deductionValue ? (<em className="pError"> {errors.deductionValue} </em>) : null}
                                                                 </div>
                                                             </div>
+                                                            <div className="linebylineInput valid-input">
+                                                                <Dropdown title="deductionType"
+                                                                    data={this.state.deductionTypesList}
+                                                                    selectedValue={this.state.selectedDeductionType}
+                                                                    handleChange={event => this.handleChangeDropDownDeduction(event, "deductionTypeId", "selectedDeductionType")}
+                                                                    index="deductionTypeId"
+                                                                    onChange={setFieldValue}
+                                                                    onBlur={setFieldTouched}
+                                                                    error={errors.deductionTypeId}
+                                                                    touched={touched.deductionTypeId}
+                                                                    isClear={false}
+                                                                    name="deductionTypeId"
+                                                                    id="deductionTypeId"
+                                                                    classDrop="deductionTypeId"
+                                                                />
+                                                            </div>
                                                         </div>
                                                         <div className="slider-Btns">
                                                             {this.state.isLoading === false ?
@@ -4017,7 +4062,8 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
     };
-}
+} 
+   
 function mapStateToProps(state) {
     return {
         document: state.communication.document,
