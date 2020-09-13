@@ -234,15 +234,19 @@ export default class Api {
     static get(route, params, moduleId) {
         return this.xhr(route, params === null ? null : params, "GET", moduleId ? moduleId : 1);
     }
+    static async getForWidgets(route, params) {
+        return await this.xhrForWidgets(route, params === null ? null : params, "GET");
+    }
     static post(route, params) {
         return this.xhr(route, params, "POST");
     }
+ 
     static xhr(route, params, verb, moduleId) {
         // if (moduleId < 1) moduleId = 1;
         // let apiPrefix = modules.find(x => x.key == moduleId);
         //const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
         const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
-        const url = `${host}${route}`;
+         const url = `${host}${route}`;
         let json = null;
 
         let options = Object.assign(
