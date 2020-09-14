@@ -101,21 +101,23 @@ class RequestPaymentDeductionTypeReport extends Component {
     getGridtData = () => {
         if (this.state.selectedDeductionType.value != '-1') {
             this.setState({ isLoading: true })
-            Api.get(`GetRequestPaymentDeductionTypeForReport?deductionTypeId=${this.state.selectedDeductionType.value}&start=${this.state.startDate}&end=${this.state.finishDate}`).then(rows => {
+            let startDate = moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            let endDate = moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            Api.get(`GetRequestPaymentDeductionTypeForReport?deductionTypeId=${this.state.selectedDeductionType.value}&start=${startDate}&end=${endDate}`).then(rows => {
                 rows.forEach(row => {
                     let obj = {
                         docId: row.requestId,
                         projectId: row.projectId,
                         projectName: row.projectName,
-                        docApprovalId : 0,
-                        arrange : 0,
+                        docApprovalId: 0,
+                        arrange: 0,
                         isApproveMode: false,
                         perviousRoute: window.location.pathname + window.location.search
                     };
                     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
                     let doc_view = "/requestPaymentsAddEdit?id=" + encodedPaylod
-                    row.link = doc_view;
+                    row.link = (Config.IsAllow(185) || Config.IsAllow(187)) ? doc_view : "link";
                 });
                 this.setState({ rows, isLoading: false })
             }).catch(() => {
@@ -128,6 +130,11 @@ class RequestPaymentDeductionTypeReport extends Component {
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
+
+    onRowClick = (cell) => {
+        (Config.IsAllow(185) || Config.IsAllow(187)) ? this.props.history.push(cell.link) : toast.success(Resources["missingPermissions"][currentLanguage]);
+    }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
@@ -139,7 +146,7 @@ class RequestPaymentDeductionTypeReport extends Component {
                 actions={[]}
                 rowActions={[]}
                 cells={this.columns}
-                rowClick={() => { }}
+                rowClick={(cell) => { this.onRowClick(cell) }}
             />) : <LoadingSection />
 
         const btnExport = <ExportDetails fieldsItems={this.columns}
