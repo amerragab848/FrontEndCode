@@ -2538,8 +2538,24 @@
         "ar": "الحاله"
     },
     "subject": {
-        "en": "Subject",
+        "en": " Subject",
         "ar": "العنوان"
+    },
+    "materialReleasedsubject":{
+        "en": " Material Releasedsub Subject",
+        "ar": "العنوان"
+    },
+    "materialReleasedarrange":{
+        "en": "Material Released Arrange",
+        "ar": "ترتيب صرف المواد"
+    },
+    "materialReleasedDate":{
+        "en": "Material Released Date",
+        "ar": "تاريخ صرف المواد"
+    },
+    "contractsItems":{
+        "en": "Material Release Items",
+        "ar": " العناصر"
     },
     "subjectRequired": {
         "en": "Please Enter Subject",
@@ -8157,6 +8173,10 @@
     "variationOrderItems": {
         "en": "Variation Orders Items",
         "ar": "قائمة طلبات التغيير المقترح"
+    },
+    "materialReleased":{
+        "en":"Material Released",
+        "ar":"صرف المواد"
     },
     "closeDocument": {
         "en": "Sorry, You can't edit this document",
