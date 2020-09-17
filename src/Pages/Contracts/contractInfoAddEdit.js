@@ -22,6 +22,7 @@ import ContractInsurance from "./ContractInsurance";
 import Schedule from "./Schedule";
 import SubContract from "./SubContractLog";
 import SubPurchaseOrderLog from "./subPurchaseOrderLog";
+import MaterialReleased from "./MaterialReleased";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
@@ -114,6 +115,8 @@ class ContractInfoAddEdit extends Component {
       pageNumber: 0,
       voPageNumber: 0,
       voPageSize: 50,
+      maPageNumber: 0,
+      maPageSize: 5,
       pageSize: 2000,
       CurrStep: 0,
       firstComplete: false,
@@ -138,6 +141,10 @@ class ContractInfoAddEdit extends Component {
       Contracts: [],
       contacts: [],
       voItems: [],
+      materialItems:[],
+      marPageNumber:0,
+      materialReleaseItems: [],
+      materialReleaseItemsLength:0,
       voItemsLength: 0,
       selectedVO: {},
       variationOrders: [],
@@ -732,10 +739,34 @@ class ContractInfoAddEdit extends Component {
 
   changeTab = tabName => {
     this.setState({ activeTab: tabName });
-    if (tabName == 'voi')
+    if (tabName == 'voi'){
       this.getVoItems()
-  };
 
+    }
+    
+    if(tabName =='matReleased'){
+          this.getMaterialRelease();
+    }
+   
+  };
+getMaterialRelease(){
+  if (this.state.materialReleaseItems.length == 0) {
+    this.setState({ isLoading: true })
+    Api.get('GetMaterialReleaseTicketsByContractId?contractId=' + this.state.docId + '&pageNumber=' + this.state.maPageNumber + '&pageSize=' + this.state.maPageSize).then(result => {
+      let maItems = [];
+      if (result.length > 0){
+        maItems = result;
+       this.state.marPageNumber= this.state.marPageNumber+1;
+      }
+      this.setState({ 
+        materialItems: maItems,
+         materialReleaseItemsLength: result.length, 
+         isLoading: false 
+        });
+
+    }).catch(() => { this.setState({ isLoading: false }) })
+  }
+}
   getVoItems = () => {
     if (this.state.voItems.length == 0) {
       this.setState({ isLoading: true })
@@ -1722,6 +1753,9 @@ class ContractInfoAddEdit extends Component {
             <li className={"data__tabs--list " + (this.state.activeTab == "voi" ? "active" : "")} onClick={() => this.changeTab("voi")}>
               {Resources.variationOrderItems[currentLanguage]}
             </li>
+            <li className={"data__tabs--list " + (this.state.activeTab == "matReleased" ? "active" : "")} onClick={() => this.changeTab("matReleased")}>
+              {Resources.materialReleased[currentLanguage]}
+            </li>
           </ul>
         </div>
         <Fragment>
@@ -1735,6 +1769,7 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId=' + this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId=" + docId} type="Contract" docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
+          {this.state.activeTab == "matReleased" ? (<MaterialReleased contractId={this.state.docId} items={this.state.materialItems}  pageNumberinit={this.state.marPageNumber} totalRows={this.state.materialReleaseItemsLength} />) : null}
           {this.state.activeTab == "voi" ? (<Fragment>{voiContent}</Fragment>) : null}
 
         </Fragment>
