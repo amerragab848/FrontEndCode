@@ -497,7 +497,7 @@ class CommonLog extends Component {
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
-
+//added
     let docTypeId = documentObj.docTyp;
     let showExServerBtn = false;
     let showDocTemplateBtn = false;

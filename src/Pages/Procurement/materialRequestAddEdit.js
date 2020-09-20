@@ -131,6 +131,7 @@ const normalItemsSchema = Yup.object().shape({
 });
 let docId = 0;
 let projectId = 0;
+let contractId=0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
@@ -367,6 +368,7 @@ class materialRequestAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
+            contractId:contractId,
             docTypeId: 88,
             docType: 51,
             projectId: projectId,
@@ -2126,6 +2128,7 @@ class materialRequestAddEdit extends Component {
             requestId: this.state.docId,
             projectId: this.state.projectId,
             arrange: this.state.M_arrange,
+            contractId:this.selectedContract.value,
             docCloseDate: moment(values.docDate, "YYYY-MM-DD").format(
                 "YYYY-MM-DD[T]HH:mm:ss.SSS"
             )

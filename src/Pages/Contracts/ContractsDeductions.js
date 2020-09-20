@@ -20,7 +20,7 @@ class ContractsDeductions extends Component {
     }
 
     componentWillMount = () => {
-        dataservice.GetDataGrid('GetContractsDeductionsList?contractId=' + this.state.contractId + '').then(
+        dataservice.GetDataGrid('GetContractsDeductionsList?contractId=' + this.state.contractId + 'pageNumber=0&pageSize=10').then(
             res => {
                 this.setState({
                     ContractsDeductionsList: res
