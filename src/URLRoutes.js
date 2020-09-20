@@ -2649,6 +2649,17 @@ var routes = [
             order: 6
         }
     }, 
+    {
+        route: "RequestPaymentDeductionTypeReport",
+        moduleId: "ContractsPOReports/RequestPaymentDeductionTypeReport",
+        title: "RequestPaymentDeductionTypeReport",
+        nav: true,
+        settings: {
+            ContractsPo: true,
+            permission: 10075,
+            order: 10
+        }
+    }, 
     { //start inventory Items Routes
         route: "inventoryRpt",
         moduleId: "InventoryItemsReports/InventoryItems",

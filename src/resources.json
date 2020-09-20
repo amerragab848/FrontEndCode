@@ -3309,6 +3309,10 @@
         "en": "Bill of Quantities",
         "ar": "سجل قائمة الكميات"
     },
+    "contractBoq": {
+        "en": "Contracts",
+        "ar": "العقود"
+    },
     "boq": {
         "en": "Bill of Quantities",
         "ar": "قائمة الكميات"
@@ -3317,6 +3321,7 @@
         "en": "Please select a Bill of  Quantity",
         "ar": "برجاء اختيار قائمة الكميات"
     },
+  
     "newBoq": {
         "en": "Create Bill of Quantity",
         "ar": "اضافه قائمه الكميات"
@@ -8636,5 +8641,13 @@
     "selectDedutionType": {
         "en": " Select Deduction Type",
         "ar": " اختر نوع الاستقطاع"
+    },
+    "RequestPaymentDeductionTypeReport": {
+        "en": "Request Payment Deduction Type Report",
+        "ar": "تقرير نوع الاستقطاعات للمستخلصات"
+    },
+    "deductionValue": {
+        "en": "Deduction Value",
+        "ar": "قيمة الاستقطاع"
     }
 }
