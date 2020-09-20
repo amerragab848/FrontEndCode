@@ -34,7 +34,7 @@ class AddDocAttachment extends Component {
       currentId: null,
       selectedRows: [],
       modalAdd: false,
-      isRelatedLink: this.props.docTypeId === 108 || this.props.docTypeId === 90 ? true : false,
+      isRelatedLink: this.props.docTypeId === 108 || this.props.docTypeId === 90 || this.props.docTypeId === 101 || this.props.docTypeId === 25 ? true : false,
       focused: false,
       dateRange: moment().format("YYYY-MM-DD"),
       documentData: [], filtered: [],
@@ -119,6 +119,21 @@ class AddDocAttachment extends Component {
 
   renderLink(row) {
 
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId ? row.projectId : this.props.projectId,
+      projectName: row.projectName ? row.projectName : this.props.projectName,
+      arrange: 0, docApprovalId: 0, isApproveMode: false
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    let doc_view = "/" + row.docLink.replace('/', '') + "?id=" + encodedPaylod
+    return <a href={doc_view}>{row.subject}</a>;
+  }
+
+  renderEditable(cellInfo) {
+    let row=cellInfo.original;
     let obj = {
       docId: row.docId,
       projectId: row.projectId ? row.projectId : this.props.projectId,
@@ -361,16 +376,12 @@ class AddDocAttachment extends Component {
         {
           Header: Resources["subject"][currentLanguage],
           accessor: "subject",
-          Cell: ({ row }) => {
-            return (
-              <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }}>  {e => this.renderLink(row._original)} </div>
-            );
-          },
+          Cell: this.renderEditable.bind(this),
           width: 200
         },
         {
           Header: Resources["docStatus"][currentLanguage],
-          accessor: "statusText",
+          accessor: "docStatusName",
           width: 200,
           sortabel: true
         },
@@ -390,7 +401,7 @@ class AddDocAttachment extends Component {
             <header>
               <h2 className="zero">{Resources.relatedLink[currentLanguage]}</h2>
             </header>
-
+            {console.log("this.props.relatedLinkData...", this.props.relatedLinkData)}
             <ReactTable
               id="relatedLink"
               data={this.props.relatedLinkData}
