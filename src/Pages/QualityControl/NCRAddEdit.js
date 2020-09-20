@@ -321,7 +321,7 @@ class NCRAddEdit extends Component {
                 if (companyId) {
                     this.setState({
                         // selectedFromCompany: { label: this.props.document.fromCompany, value: companyId } 
-                        selectedFromCompany: { label: fromCompanyName.label, value: companyId }
+                        selectedFromCompany: { label: fromCompanyName?fromCompanyName.label:null, value: companyId }
 
                     });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
