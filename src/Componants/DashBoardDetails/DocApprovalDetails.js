@@ -33,8 +33,10 @@ class DocApprovalDetails extends Component {
         width: 6,
         sortable: true,
         type: "text",
-        hidden: false,
-        classes: 'gridBtns status '
+        hidden: false, 
+        conditionalClasses: obj => {
+          return obj.readStatusText == "Read" ? ' gridBtns status Read' : ' gridBtns status UnRead';
+      }
       },
       {
         field: "subject",

@@ -16,8 +16,8 @@ import Config from "./Services/Config";
 import IndexedDb from "./IndexedDb";
 
 import "react-customized-grid/main.css";
-import ConnectionProvider from "./Componants/Layouts/Layout";
-import ConnectionConsomer from "./Componants/Layouts/ConsomerLayout";
+// import ConnectionProvider from "./Componants/Layouts/Layout";
+// import ConnectionConsomer from "./Componants/Layouts/ConsomerLayout";
 
 const loadingStyle = {
     container: {
@@ -53,6 +53,7 @@ const store = configureStore();
 const IsAuthorize = Config.IsAuthorized();
 
 class App extends Component {
+
     constructor(props) {
         super(props);
 
@@ -110,9 +111,9 @@ class App extends Component {
 
         return this.state.cssLoaded ? (
             <Provider store={store}>
-                <ConnectionProvider>  
+                {/* <ConnectionProvider>  
                     <ConnectionConsomer/>
-                </ConnectionProvider>
+                </ConnectionProvider> */}
                 <ErrorHandler>
                     <div>
                         {showComp}
