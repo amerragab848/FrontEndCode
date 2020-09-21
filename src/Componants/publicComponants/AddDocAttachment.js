@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import "../../Styles/css/rodal.css";
+// import "../../Styles/css/rodal.css";
 import CryptoJS from 'crypto-js';
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import ReactTable from "react-table"; 
 import moment from "moment";
 import dataservice from "../../Dataservice";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
@@ -133,9 +132,9 @@ class AddDocAttachment extends Component {
   }
 
   renderEditable(cellInfo) {
-    let row=cellInfo.original;
+    let row = cellInfo.original;
     let obj = {
-      docId: row.docId,
+      docId: row.docIds,
       projectId: row.projectId ? row.projectId : this.props.projectId,
       projectName: row.projectName ? row.projectName : this.props.projectName,
       arrange: 0, docApprovalId: 0, isApproveMode: false
@@ -194,6 +193,7 @@ class AddDocAttachment extends Component {
     })
     // return <Calendar onChange={date => this.onChange()} selectRange={true} />
   }
+
   onFilteredChangeCustom = (value, accessor) => {
     let filtered = this.state.filtered;
     let insertNewFilter = 1;
@@ -215,10 +215,8 @@ class AddDocAttachment extends Component {
 
     this.setState({ filtered: filtered });
   };
-  render() {
 
-
-
+  render() { 
     let columnsDocument =
       [
         this.props.isViewMode ?
@@ -254,7 +252,7 @@ class AddDocAttachment extends Component {
               </div>
             );
           },
-          width: 200
+          width: 400
         },
         {
           Header: Resources["docType"][currentLanguage],
@@ -293,7 +291,7 @@ class AddDocAttachment extends Component {
         {
           Header: Resources["subject"][currentLanguage],
           accessor: "subject",
-          width: 200,
+          width: 450,
           filterable: true,
         },
         {
@@ -401,7 +399,6 @@ class AddDocAttachment extends Component {
             <header>
               <h2 className="zero">{Resources.relatedLink[currentLanguage]}</h2>
             </header>
-            {console.log("this.props.relatedLinkData...", this.props.relatedLinkData)}
             <ReactTable
               id="relatedLink"
               data={this.props.relatedLinkData}
