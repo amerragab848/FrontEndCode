@@ -96,6 +96,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
             SelectedCurrency: { label: Resources.pleaseSelectCurrency[currentLanguage], value: "0" },
             ActionByCompanyData: [],
             TotalPages: 0,
+            contactsList:[]
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -355,7 +356,14 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 })
         }
     }
-
+    HandlerChangeActionByCompanyDrop = (e) => {
+        Api.get('GetContactsByCompanyId?companyId=?' + e.value).then(
+            res => {
+                this.setState({contactsList:res})
+            }).catch(ex => {
+               console.log("error...",ex)
+            })
+    }
 
 
     render() {
@@ -404,8 +412,41 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 sortabel: true
             },
             {
+                Header: Resources["actualStartDate"][currentLanguage],
+                accessor: "actualStartDate",
+                width: 200,
+                sortabel: true,
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'No Date' : moment(row.value).format("DD/MM/YYYY")}</span>
+                    </span>
+                )
+            },
+            {
                 Header: Resources["actualFinishDate"][currentLanguage],
                 accessor: "actualFinishDate",
+                width: 200,
+                sortabel: true,
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'No Date' : moment(row.value).format("DD/MM/YYYY")}</span>
+                    </span>
+                )
+            },
+            {
+                Header: Resources["plannedStart"][currentLanguage],
+                accessor: "start_date",
+                width: 200,
+                sortabel: true,
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'No Date' : moment(row.value).format("DD/MM/YYYY")}</span>
+                    </span>
+                )
+            },
+            {
+                Header: Resources["plannedFinish"][currentLanguage],
+                accessor: "finish_date",
                 width: 200,
                 sortabel: true,
                 Cell: row => (
@@ -425,7 +466,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             <div className="customD_Menu">
                                 <Select options={this.state.ActionByCompanyData}
                                     defaultValue={find(this.state.ActionByCompanyData, function (i) { return i.value == row.value })}
-                                    onChange={e => this.HandlerChangeTableDrop(row.original, e, "ABCompany")}
+                                    onChange={e => this.HandlerChangeActionByCompanyDrop(e)}
+                                />
+                            </div>
+                            <div className="customD_Menu">
+                                <Select options={this.state.contactsList}
+                                    defaultValue={find(this.state.contactsList, function (i) { return i.value == row.value })}
+                                    onChange={e => this.HandlerChangeTableDrop(row.original, e, "ABContact")}
                                 />
                             </div>
                         </div>)
