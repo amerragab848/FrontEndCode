@@ -100,13 +100,18 @@ class DistributionInboxListSummaryDetails extends Component {
       { field: 'id', title: '', type: 'check-box', fixed: true, hidden: false },
       {
 
+        field: 'statusText',
         title: Resources['statusName'][currentLanguage],
         width: 10,
         groupable: true,
         sortable: true,
         fixed: true,
         type: "text",
-        classes: 'gridBtns status '
+        classes: 'gridBtns status ',
+        conditionalClasses: obj => {
+          //'Read' : 'UnRead' Read
+          return obj.status == true ? ' Read' : ' UnRead';
+        }
       }, {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
@@ -260,12 +265,12 @@ class DistributionInboxListSummaryDetails extends Component {
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
               row.link = "/" + spliteLink[0] + "?id=" + encodedPaylod
               subject = row.subject;
-              setTimeout(() => {
-                var tableRow = document.querySelectorAll('.grid-body  tr');
-                for (let x = 0; x < tableRow.length; x++) {
-                  if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
-                }
-              }, 500);
+              // setTimeout(() => {
+              //   var tableRow = document.querySelectorAll('.grid-body  tr');
+              //   for (let x = 0; x < tableRow.length; x++) {
+              //     if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
+              //   }
+              // }, 500);
             });
           }
           this.setState({

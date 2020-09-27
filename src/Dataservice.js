@@ -18,6 +18,34 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
+    
+    static GetDataListSiteRequestNewVersion=(url, label, value,contractId,contractName) =>{
+        let Data = []
+        return Api.get(url).then(result => {
+            (result.data).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                obj.contractId=item[contractId];
+                obj.contractName=item[contractName];
+                Data.push(obj);
+            });
+            return Data;
+        }).catch(ex => Data);
+    };
+    static GetDataListForContract(url, label, value,boqId) {
+        let Data = []
+        return Api.get(url).then(result => {
+            (result).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                obj.boqId=item[boqId];
+                Data.push(obj);
+            });
+            return Data;
+        }).catch(ex => Data);
+    };
 
     static GetDataListWithAdditionalParam(url, label, value, param) {
         let Data = []

@@ -246,7 +246,9 @@ export default class Api {
         // let apiPrefix = modules.find(x => x.key == moduleId);
         //const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
         const host = Config.getPublicConfiguartion().static + "/PM/api/Procoor/";
+ 
         const url = `${host}${route}`;
+ 
         let json = null;
 
         let options = Object.assign(

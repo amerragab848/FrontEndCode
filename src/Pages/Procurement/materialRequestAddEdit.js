@@ -131,6 +131,7 @@ const normalItemsSchema = Yup.object().shape({
 });
 let docId = 0;
 let projectId = 0;
+let contractId=0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
@@ -367,6 +368,7 @@ class materialRequestAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
+            contractId:contractId,
             docTypeId: 88,
             docType: 51,
             projectId: projectId,
@@ -419,7 +421,14 @@ class materialRequestAddEdit extends Component {
                 label: Resources.boqLog[currentLanguage],
                 value: "0"
             },
+            
             boqLog: { label: Resources.selectBoq[currentLanguage], value: "0" },
+             //added
+             selectedContract:{
+                label:Resources.selectContract[currentLanguage],
+                value:"0",
+                boqId:"0"
+            },
             area: { label: Resources.selectArea[currentLanguage], value: "0" },
             location: {
                 label: Resources.locationRequired[currentLanguage],
@@ -459,6 +468,7 @@ class materialRequestAddEdit extends Component {
                 unitPrice: null
             },
             itemTypesList: [],
+            contractBoqLogs:[],
             unitsList: [],
             selectedItemType: null,
             selectedUnit: null,
@@ -826,7 +836,7 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList("GetContractsBoqShowInSiteRequest?projectId=" + this.state.projectId, "subject", "id")
+            .GetDataList("GetContractsBoqShowInSiteRequest?projectId=" + this.state.projectId, "subject", "boqId")
             .then(result => {
                 if (isEdit) {
                     let boqId = this.props.document.boqId;
@@ -845,6 +855,29 @@ class materialRequestAddEdit extends Component {
                     isLoading: false
                 });
             });
+            //added
+            this.setState({ isLoading: true });
+            dataservice
+                .GetDataListForContract("GetContractsWithBoqsForDrop?projectId=" + this.state.projectId, "subject", "id","boqId")
+                .then(result => {
+                    
+                    if (isEdit) {
+                        let boqId = this.props.document.boqId;
+                        this.GetBoqItemsStracture(boqId);
+                        if (boqId) {
+                            let contract = result.find(function (item) {
+                                return item.boqId == boqId;
+                            });
+                            this.setState({
+                                selectedContract: contract
+                            });
+                        }
+                    }
+                    this.setState({
+                        contractBoqLogs: result,
+                        isLoading: false
+                    });
+                });
         this.setState({ isLoading: true });
         dataservice
             .GetDataListCached(
@@ -1031,6 +1064,7 @@ class materialRequestAddEdit extends Component {
 
     GetBoqItemsStracture(boqId) {
         this.setState({ isLoading: true });
+      
         Api.get("GetBoqItemsStracture?boqId=" + boqId)
             .then(res => {
                 if (res) this.setState({ items: res, isLoading: false });
@@ -1140,8 +1174,9 @@ class materialRequestAddEdit extends Component {
             saveDocument.requiredDate,
             "YYYY-MM-DD"
         ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-        saveDocument.boqId = this.state.boqLog.value;
+        saveDocument.boqId = this.state.selectedContract.boqId;
         saveDocument.companyId = this.state.fromCompany.value;
+       // saveDocument.contractName=this.selectedContract.contr
         saveDocument.area = this.state.area.label;
         saveDocument.location = this.state.location.label;
         saveDocument.disciplineId = this.state.discipline.value;
@@ -1165,7 +1200,7 @@ class materialRequestAddEdit extends Component {
     }
 
     saveMaterialReques(event) {
-        if (this.state.boqLog.value != "0") {
+        if (this.state.selectedContract.value != "0"&&this.state.selectedContract.boqId != "0") {
             if (this.state.items.length > 0) {
                 this.setState({ isLoading: true });
                 let saveDocument = { ...this.state.document };
@@ -1177,7 +1212,7 @@ class materialRequestAddEdit extends Component {
                     saveDocument.requiredDate,
                     "YYYY-MM-DD"
                 ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-                saveDocument.boqId = this.state.boqLog.value;
+                saveDocument.boqId = this.state.selectedContract.boqId;
                 saveDocument.companyId = this.state.fromCompany.value;
                 saveDocument.companyName = this.state.fromCompany.value;
                 saveDocument.area = this.state.area.label;
@@ -1214,7 +1249,7 @@ class materialRequestAddEdit extends Component {
                 saveDocument.requiredDate,
                 "YYYY-MM-DD"
             ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            saveDocument.boqId = this.state.boqLog.value;
+            saveDocument.boqId = this.state.selectedContract.boqId;
             saveDocument.companyId = this.state.fromCompany.value;
             saveDocument.companyName = this.state.fromCompany.value;
             saveDocument.area = this.state.area.label;
@@ -2093,6 +2128,7 @@ class materialRequestAddEdit extends Component {
             requestId: this.state.docId,
             projectId: this.state.projectId,
             arrange: this.state.M_arrange,
+            contractId:this.selectedContract.value,
             docCloseDate: moment(values.docDate, "YYYY-MM-DD").format(
                 "YYYY-MM-DD[T]HH:mm:ss.SSS"
             )
@@ -2608,19 +2644,20 @@ class materialRequestAddEdit extends Component {
                                         />
                                     </div>
                                     <div className="linebylineInput valid-input">
+                                   
                                         <Dropdown
-                                            title="boqLog"
-                                            isDisabled={this.props.changeStatus}
-                                            data={this.state.boqLogs}
-                                            selectedValue={this.state.boqLog}
+                                            title="contractBoq"
+                                             isDisabled={this.props.changeStatus}
+                                            data={this.state.contractBoqLogs}
+                                            selectedValue={this.state.selectedContract}
                                             handleChange={event => {
-                                                this.setState({ boqLog: event });
+                                                this.setState({ selectedContract: event });
                                                 this.GetBoqItemsStracture(
-                                                    event.value
+                                                    event.boqId
                                                 );
                                             }}
                                         />
-                                    </div>
+                                    </div> 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
                                             title="area"

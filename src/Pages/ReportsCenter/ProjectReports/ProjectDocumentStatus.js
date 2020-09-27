@@ -8,6 +8,10 @@ import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import ExportDetails from "../ExportReportCenterDetails";
+import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
+import moment from 'moment';
+import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
@@ -30,7 +34,9 @@ class ProjectDocumentStatus extends Component {
             isLoading: false,
             ProjectsData: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
-            rows: []
+            rows: [],
+            finishDate: moment(),
+            startDate: moment()
         }
 
         if (!Config.IsAllow(4027)) {
@@ -42,6 +48,15 @@ class ProjectDocumentStatus extends Component {
             title: Resources["Projects"][currentLanguage],
             value: "",
             type: "text"
+        },
+        {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
         }];
     }
 
@@ -58,7 +73,9 @@ class ProjectDocumentStatus extends Component {
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('ProjectDocumentStatus?projectId=' + this.state.selectedProject.value).then(res => {
+        let startDate = moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        let endDate = moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        Dataservice.GetDataGrid(`ProjectDocumentStatus?start=${startDate}&end=${endDate}&projectId=${this.state.selectedProject.value}` ).then(res => {
             this.setState({
                 rows: res,
                 isLoading: false
@@ -66,6 +83,10 @@ class ProjectDocumentStatus extends Component {
         }).catch(() => {
             this.setState({ isLoading: false })
         })
+    }
+
+    handleChange = (name, value) => {
+        this.setState({ [name]: value })
     }
 
     render() {
@@ -102,6 +123,16 @@ class ProjectDocumentStatus extends Component {
                                         error={errors.selectedProject}
                                         touched={touched.selectedProject}
                                         value={values.selectedProject} />
+                                </div>
+                                <div className="linebylineInput valid-input alternativeDate">
+                                    <DatePicker title='startDate'
+                                        startDate={this.state.startDate}
+                                        handleChange={e => { this.handleChange('startDate', e); this.fields[1].value = e }} />
+                                </div>
+                                <div className="linebylineInput valid-input alternativeDate">
+                                    <DatePicker title='finishDate'
+                                        startDate={this.state.finishDate}
+                                        handleChange={e => { this.handleChange('finishDate', e); this.fields[2].value = e }} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                             </Form>
@@ -154,6 +185,7 @@ class ProjectDocumentStatus extends Component {
                             </tbody>
                         </table> : null}
                 </div>
+                 {this.state.isLoading==true?<LoadingSection />:null}
             </React.Fragment>
         )
     }
