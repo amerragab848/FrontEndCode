@@ -240,17 +240,13 @@ export default class Api {
     static post(route, params) {
         return this.xhr(route, params, "POST");
     }
- 
+
     static xhr(route, params, verb, moduleId) {
         // if (moduleId < 1) moduleId = 1;
         // let apiPrefix = modules.find(x => x.key == moduleId);
         //const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
         const host = Config.getPublicConfiguartion().static + "/PM/api/Procoor/";
-<<<<<<< HEAD
-         const url = `${host}${route}`;
-=======
         const url = `${host}${route}`;
->>>>>>> 32c2917d9e7a3558c857241f9fcefdd8a11aab4e
         let json = null;
 
         let options = Object.assign(
@@ -519,8 +515,8 @@ export default class Api {
             {
                 method: "POST"
             }, {
-            body: JSON.stringify(req)
-        }
+                body: JSON.stringify(req)
+            }
         );
 
         options.headers = {
