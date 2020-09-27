@@ -96,7 +96,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
             SelectedCurrency: { label: Resources.pleaseSelectCurrency[currentLanguage], value: "0" },
             ActionByCompanyData: [],
             TotalPages: 0,
-            contactsList:[]
+            contactsList: []
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -336,10 +336,9 @@ class projectPrimaveraScheduleAddEdit extends Component {
     }
 
     HandlerChangeTableDrop = (key, e, Name) => {
-        console.log(key, e, Name)
-
+        let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
+        key.bic_contact_id = e.value;
         if (Name === 'Status') {
-            let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
             Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=true&status=' + e.value + '').then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -348,7 +347,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 })
         }
         else {
-            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + e.value + '&isStatus=false&status=false').then(
+            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=false&status=false+&action_by_contact=' + e.value).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -356,12 +355,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 })
         }
     }
-    HandlerChangeActionByCompanyDrop = (e) => {
-        Api.get('GetContactsByCompanyId?companyId=?' + e.value).then(
+    HandlerChangeParentDrop = (e, subDropList, key) => {
+        key.bic_company_id = e.value;
+        dataservice.GetDataList('GetContactsByCompanyId?companyId=' + e.value, "contactName", "id").then(
             res => {
-                this.setState({contactsList:res})
+                this.setState({ [subDropList]: res || [] })
             }).catch(ex => {
-               console.log("error...",ex)
+                console.log("error...", ex)
             })
     }
 
@@ -466,17 +466,34 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             <div className="customD_Menu">
                                 <Select options={this.state.ActionByCompanyData}
                                     defaultValue={find(this.state.ActionByCompanyData, function (i) { return i.value == row.value })}
-                                    onChange={e => this.HandlerChangeActionByCompanyDrop(e)}
+                                    onChange={e => { this.HandlerChangeParentDrop(e, `contactsList${row.index}`, row.original) }}
                                 />
                             </div>
-                            <div className="customD_Menu">
-                                <Select options={this.state.contactsList}
-                                    defaultValue={find(this.state.contactsList, function (i) { return i.value == row.value })}
-                                    onChange={e => this.HandlerChangeTableDrop(row.original, e, "ABContact")}
-                                />
-                            </div>
-                        </div>)
+                        </div>
+                    )
                 },
+            },
+            {
+                Header: Resources["actionByContact"][currentLanguage],
+                accessor: "bic_contact_id",
+                width: 200,
+                sortabel: true,
+                Cell: row => {
+                    return (
+                        <div className="fillter-status fillter-item-c">
+                            {this.state.docId > 0 ? <div className="customD_Menu">
+                                <input className="inputDev ui input" value={row.contactName} name="actionContactName" disabled />
+                            </div> :
+                                <div className="customD_Menu">
+                                    <Select options={this.state[`contactsList${row.index}`]}
+                                        defaultValue={find(this.state[`contactsList${row.index}`], function (i) { return i.value == row.value })}
+                                        onChange={e => this.HandlerChangeTableDrop(row.original, e, "ABContact")}
+                                    />
+                                </div>
+                            }
+                        </div>
+                    )
+                }
             },
             {
                 Header: Resources["actualDuration"][currentLanguage],
