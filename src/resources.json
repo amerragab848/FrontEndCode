@@ -597,6 +597,10 @@
         "en": "Description",
         "ar": "الوصف"
     },
+    "deductionDescription": {
+        "en": "Deduction Description",
+        "ar": "وصف الاستقطاع"
+    },
     "descriptionEn": {
         "en": "Description English",
         "ar": " الوصف بالانجليزيه"

@@ -19,6 +19,12 @@ class RequestPaymentDeductionTypeReport extends Component {
         super(props)
         this.state = {
             deductionTypesList: [],
+            selectedProject: { 
+                label: Resources.projectName[currentLanguage],
+                 value:null
+                 },
+
+            projectsList:[],
             rows: [],
             selectedDeductionType: { label: Resources.deductionType[currentLanguage], value: "-1" },
             finishDate: moment(),
@@ -36,9 +42,19 @@ class RequestPaymentDeductionTypeReport extends Component {
                 sortable: true,
                 href: 'link',
                 classes: 'bold'
-            }, {
+            },
+            {
+                field: "requestPaymentDate",
+                title: Resources["requestDate"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
+                sortable: true,
+            },
+             {
                 field: "description",
-                title: Resources["description"][currentLanguage],
+                title: Resources["deductionDescription"][currentLanguage],
                 width: 18,
                 groupable: true,
                 fixed: false,
@@ -52,7 +68,10 @@ class RequestPaymentDeductionTypeReport extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            }, {
+            },
+
+         
+             {
                 field: "deductionName",
                 title: Resources["deductionType"][currentLanguage],
                 width: 18,
@@ -60,15 +79,26 @@ class RequestPaymentDeductionTypeReport extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            }, {
-                field: "requestPaymentDate",
-                title: Resources["requestDate"][currentLanguage],
+            }, 
+            //added field
+            {
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
                 width: 18,
                 groupable: true,
                 fixed: false,
-                type: "date",
+                type: "text",
                 sortable: true,
-            }
+            }, 
+            {
+                field: "contractName",
+                title: Resources["contractSubject"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            }, 
         ];
         if (!Config.IsAllow(10075)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -89,12 +119,23 @@ class RequestPaymentDeductionTypeReport extends Component {
             title: Resources["finishDate"][currentLanguage],
             value: this.state.finishDate,
             type: "D"
-        }];
+        },
+        {
+            title: Resources["projectName"][currentLanguage],
+            value: "",
+            type: "text"
+        }
+    ];
     }
     componentDidMount() {
         this.setState({ isLoading: true })
         dataService.GetDataList('GetaccountsDefaultListForList?listType=deductionType', 'title', 'id').then(res => {
             this.setState({ deductionTypesList: res, isLoading: false })
+        })
+
+        this.setState({ isLoading: true })
+        dataService.GetDataList('GetAccountsProjectsByIdForList', 'projectName', 'id').then(response => {
+            this.setState({ projectsList: response, isLoading: false })
         })
     }
 
@@ -103,7 +144,7 @@ class RequestPaymentDeductionTypeReport extends Component {
             this.setState({ isLoading: true })
             let startDate = moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
             let endDate = moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-            Api.get(`GetRequestPaymentDeductionTypeForReport?deductionTypeId=${this.state.selectedDeductionType.value}&start=${startDate}&end=${endDate}`).then(rows => {
+            Api.get(`GetRequestPaymentDeductionTypeForReport?projectId=${this.state.selectedProject}&deductionTypeId=${this.state.selectedDeductionType.value}&start=${startDate}&end=${endDate}`).then(rows => {
                 rows.forEach(row => {
                     let obj = {
                         docId: row.requestId,
@@ -166,6 +207,16 @@ class RequestPaymentDeductionTypeReport extends Component {
                             handleChange={event => { this.setState({ selectedDeductionType: event }); this.fields[0].value = event.label }}
                             name="deductionType"
                             index="deductionType"
+                        />
+
+                    </div>
+                    <div className="linebylineInput valid-input">                     
+                        <Dropdown title="projectName"
+                            data={this.state.projectsList}
+                            selectedValue={this.state.selectedProject}
+                            handleChange={event=>{ this.setState({ selectedProject: event }); this.fields[3].value = event.label }}
+                            name="projectName"
+                            index="projectName"
                         />
                     </div>
                     <div className="linebylineInput valid-input alternativeDate">
