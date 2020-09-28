@@ -182,7 +182,7 @@ class bogAddEdit extends Component {
                 groupable: true,
                 fixed: false,
                 sortable: true,
-                type: "text"
+                type: "number"
             },
             {
                 field: "revisedQuantity",
@@ -242,7 +242,7 @@ class bogAddEdit extends Component {
                 groupable: true,
                 fixed: false,
                 sortable: true,
-                type: "text"
+                type: "number"
             },
             {
                 field: "resourceCode",
@@ -421,7 +421,8 @@ class bogAddEdit extends Component {
                 { name: "deleteAttachments", code: 862 }
             ],
             document: {},
-            _items: []
+            _items: [],
+            createdBoqTotal: 0
         };
 
         if (!Config.IsAllow(616) && !Config.IsAllow(617) && !Config.IsAllow(619)) {
@@ -516,7 +517,7 @@ class bogAddEdit extends Component {
             if (isEdit) {
                 let disciplineIds = this.state.document.discplineIds;
                 if (disciplineIds) {
-                    let disciplines=res.filter(function(item) {
+                    let disciplines = res.filter(function (item) {
                         return disciplineIds.indexOf(item.value) !== -1;
                     });
                     this.setState({
@@ -736,8 +737,8 @@ class bogAddEdit extends Component {
             project: this.state.projectId,
             documentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             company: this.state.selectedFromCompany.value,
-           // discipline: this.state.selectedDiscipline.value,
-            discplineIds: this.state.selectedDiscipline.map(x=>x.value),
+            // discipline: this.state.selectedDiscipline.value,
+            discplineIds: this.state.selectedDiscipline.map(x => x.value),
             status: values.status,
             arrange: this.state.document.arrange,
             subject: values.subject,
@@ -776,7 +777,7 @@ class bogAddEdit extends Component {
                 DocumentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
                 Company: Config.getPayload().cmi,
                 //Discipline: this.state.selectedDiscipline.value,
-                discplineIds: this.state.selectedDiscipline.map(x=>x.value),
+                discplineIds: this.state.selectedDiscipline.map(x => x.value),
                 Status: values.status,
                 Subject: values.subject,
                 ShowInCostCoding: false,
@@ -844,6 +845,15 @@ class bogAddEdit extends Component {
     };
 
     changeCurrentStep = stepNo => {
+        if (stepNo == 2 && this.state.docId > 0) {
+            this.setState({ isLoading: true })
+            Api.get(`GetBoqTotal?id=${this.state.docId}`).then(result => {
+                this.setState({
+                    createdBoqTotal: result || 0,
+                    isLoading: false
+                })
+            })
+        }
         this.setState({ CurrStep: stepNo });
     };
 
@@ -2255,7 +2265,7 @@ class bogAddEdit extends Component {
                                     discipline:
                                         this.state.selectedDiscipline != undefined ?
                                             (this.state.selectedDiscipline.length > 0
-                                                ? this.state.selectedDiscipline.map(x=>x.value)
+                                                ? this.state.selectedDiscipline.map(x => x.value)
                                                 : []) : [],
                                     status: this.props.changeStatus
                                         ? this.props.document.status
@@ -2756,7 +2766,8 @@ class bogAddEdit extends Component {
                                 {Resources.total[currentLanguage]}
                             </span>
                             <div className="ui basic label greyLabel">
-                                {this.props.document.total}
+                                {/* {this.props.document.total} */}
+                                {this.state.createdBoqTotal }
                             </div>
                         </div>
                     </div>

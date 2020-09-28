@@ -96,7 +96,8 @@ class projectPrimaveraScheduleAddEdit extends Component {
             SelectedCurrency: { label: Resources.pleaseSelectCurrency[currentLanguage], value: "0" },
             ActionByCompanyData: [],
             TotalPages: 0,
-            contactsList: []
+            contactsList: [],
+            showContactDrop:true
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -173,7 +174,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     componentWillMount() {
         if (docId > 0) {
-
+           this.setState({showContactDrop:false})
             let url = "GetPrimaveraScheduleForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
             this.setState({
@@ -334,7 +335,15 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
         )
     }
-
+    onCellClick = (e,obj, cell) => {
+        if(obj.bic_company_id>0 && cell.id=="bic_contact_id")
+        dataservice.GetDataList('GetContactsByCompanyId?companyId=' + obj.bic_company_id, "contactName", "id").then(
+            res => {
+                this.setState({ contactsList: res || [],showContactDrop:true })
+            }).catch(ex => {
+                console.log("error...", ex)
+            })
+    }
     HandlerChangeTableDrop = (key, e, Name) => {
         let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
         key.bic_contact_id = e.value;
@@ -481,13 +490,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 Cell: row => {
                     return (
                         <div className="fillter-status fillter-item-c">
-                            {this.state.docId > 0 ? <div className="customD_Menu">
+                            {this.state.showContactDrop !== true ? <div className="customD_Menu">
                                 <input className="inputDev ui input" value={row.contactName} name="actionContactName" disabled />
                             </div> :
                                 <div className="customD_Menu">
                                     <Select options={this.state[`contactsList${row.index}`]}
                                         defaultValue={find(this.state[`contactsList${row.index}`], function (i) { return i.value == row.value })}
-                                        onChange={e => this.HandlerChangeTableDrop(row.original, e, "ABContact")}
+                                        //onChange={e => {this.HandlerChangeTableDrop(row.original, e, "ABContact")}}
                                     />
                                 </div>
                             }
@@ -664,7 +673,11 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                         columns={columnsCycles}
                                         defaultPageSize={5}
                                         noDataText={Resources["noData"][currentLanguage]}
-                                        className="-striped -highlight" />
+                                        className="-striped -highlight"
+                                        getTdProps={(state, rowInfo, column, instance) => {
+                                            return { onClick: e => { this.onCellClick(e,rowInfo.original, column) } };
+                                        }} />
+
                                 </Fragment>
                             }
                         </div>
