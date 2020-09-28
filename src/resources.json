@@ -8026,6 +8026,10 @@
         "en": "You Have Already Added Contract Assigned To This BOQ",
         "ar": "هذا العقد موجود  مسبقا"
     },
+    "assignContact": {
+        "en": "Assign Contact",
+        "ar": "تعيين جهة اتصال"
+    },
     "responsibleCompanyName": {
         "en": "Action Owner",
         "ar": " الشركه المسئوله"

@@ -117,7 +117,8 @@ class ScheduleAlertsSummaryDetails extends Component {
     if (action) {
       Api.get("GetScheduleAlertSummary?action=" + action+ "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
         this.setState({
-          rows: result != null ? result : [],
+          rows: result != null ? result.data : [],
+          totalRows:result !=null?result.total:0,
           isLoading: false
         });
       }
