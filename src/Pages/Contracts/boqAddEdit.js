@@ -342,10 +342,11 @@ class bogAddEdit extends Component {
                 label: Resources.fromCompanyRequired[currentLanguage],
                 value: "0"
             },
-            selectedDiscipline: {
-                label: Resources.disciplineRequired[currentLanguage],
-                value: "0"
-            },
+            // selectedDiscipline: {
+            //     label: Resources.disciplineRequired[currentLanguage],
+            //     value: "0"
+            // },
+            selectedDiscipline: [],
             rows: [],
             items: {
                 parentId: 0,
@@ -513,13 +514,13 @@ class bogAddEdit extends Component {
 
         DataService.GetDataListCached("GetAccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(res => {
             if (isEdit) {
-                let disciplineId = this.state.document.discipline;
-                if (disciplineId) {
-                    let discipline = find(res, function (x) {
-                        return x.value == disciplineId;
+                let disciplineIds = this.state.document.discplineIds;
+                if (disciplineIds) {
+                    let disciplines=res.filter(function(item) {
+                        return disciplineIds.indexOf(item.value) !== -1;
                     });
                     this.setState({
-                        selectedDiscipline: discipline
+                        selectedDiscipline: disciplines
                     });
                 }
             }
@@ -735,7 +736,8 @@ class bogAddEdit extends Component {
             project: this.state.projectId,
             documentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             company: this.state.selectedFromCompany.value,
-            discipline: this.state.selectedDiscipline.value,
+           // discipline: this.state.selectedDiscipline.value,
+            discplineIds: this.state.selectedDiscipline.map(x=>x.value),
             status: values.status,
             arrange: this.state.document.arrange,
             subject: values.subject,
@@ -773,7 +775,8 @@ class bogAddEdit extends Component {
                 arrange: this.state.document.arrange,
                 DocumentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
                 Company: Config.getPayload().cmi,
-                Discipline: this.state.selectedDiscipline.value,
+                //Discipline: this.state.selectedDiscipline.value,
+                discplineIds: this.state.selectedDiscipline.map(x=>x.value),
                 Status: values.status,
                 Subject: values.subject,
                 ShowInCostCoding: false,
@@ -2251,10 +2254,9 @@ class bogAddEdit extends Component {
                                             : "",
                                     discipline:
                                         this.state.selectedDiscipline != undefined ?
-                                            (this.state.selectedDiscipline.value != "0"
-                                                ? this.state.selectedDiscipline
-                                                    .value
-                                                : "") : "",
+                                            (this.state.selectedDiscipline.length > 0
+                                                ? this.state.selectedDiscipline.map(x=>x.value)
+                                                : []) : [],
                                     status: this.props.changeStatus
                                         ? this.props.document.status
                                         : true,
@@ -2486,6 +2488,7 @@ class bogAddEdit extends Component {
                                                 <div className="linebylineInput valid-input">
                                                     <Dropdown
                                                         title="discipline"
+                                                        isMulti={true}
                                                         data={
                                                             this.state.Disciplines
                                                         }

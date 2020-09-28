@@ -19,6 +19,7 @@ import Dropzone from 'react-dropzone';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import api from '../../api'
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
+import ConnectionContext from '../../Componants/Layouts/Context'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
@@ -81,6 +82,7 @@ class HeaderAndFooter extends Component {
             { label: Resources['footer'][currentLanguage], value: 'Footer' },
         ]
         this.state = {
+            //isDisconnected: this.context.isDisconnected,
             showCheckbox: false,
             columns: columnsGrid,
             isLoading: true,
@@ -113,9 +115,12 @@ class HeaderAndFooter extends Component {
         ]
     }
 
-    componentDidMount() {
+    componentDidMount() {  
+        this.context.setConnection();
         this.props.actions.FillGridLeftMenu();
  
+        const cs = this.context.isDisconnected;
+
         let projectId = window.localStorage.getItem("lastSelectedProject") ? window.localStorage.getItem("lastSelectedProject") : null;
         Api.get('ProjectHeaderFooterGet?projectId=' + projectId + '&pageNumber=' + this.state.PageNumber + '&pageSize=' + this.state.PageSize).then(res => {
             this.setState({ rows: res.data, isLoading: false, totalRows: res.total })
@@ -499,7 +504,9 @@ class HeaderAndFooter extends Component {
         )
 
     }
-}
+} 
+
+HeaderAndFooter.contextType = ConnectionContext;
 
 function mapStateToProps(state, ownProps) {
     return {

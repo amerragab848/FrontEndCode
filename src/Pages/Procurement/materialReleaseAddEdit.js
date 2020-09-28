@@ -140,7 +140,12 @@ class materialReleaseAddEdit extends Component {
             selectedFromCompany: { label: Resources.fromCompany[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
-            selectedMaterialRelease: { label: Resources.materialReleaseTypeSelection[currentLanguage], value: "0" },
+            selectedMaterialRelease: { 
+                label: Resources.materialReleaseTypeSelection[currentLanguage], 
+                value: "0" ,
+                contractId:"0",
+                contractName:""
+            },
             selectedCostCoding: { label: Resources.costCodingSelection[currentLanguage], value: "0" },
             SpecsSectionData: [],
             FromCompaniesData: [],
@@ -166,6 +171,7 @@ class materialReleaseAddEdit extends Component {
             ItemDescriptionInfo: {},
             BtnLoading: false,
             ShowPopup: false,
+            contractName:'',
             objItemForEdit: {},
             quantityEdit: 0,
             IsAddMood: false,
@@ -259,6 +265,7 @@ class materialReleaseAddEdit extends Component {
 
     fillSubDropDown = (value, isEdit) => {
         let action = 'GetContactsByCompanyId?companyId=' + value
+        
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (isEdit) {
                 let toSubField = this.state.document.orderFromContactId;
@@ -298,18 +305,45 @@ class materialReleaseAddEdit extends Component {
             this.setState({ SpecsSectionData: [...result] })
         })
 
-        dataservice.GetDataListWithNewVersion('GetContractsSiteRequestByProjectId?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000', 'subject', 'id').then(result => {
+        dataservice.GetDataListSiteRequestNewVersion('GetContractsSiteRequestByProjectId?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000', 'subject', 'id','contractId','contractName').then(result => {
             if (isEdit) {
                 let id = this.props.document.siteRequestId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i)
+                     {
+                         // return i.value == id 
+                           if( i.value == id )
+                             return i
+                            
+
+                        });
                     this.setState({ selectedMaterialRelease: selectedValue })
                 }
             }
             this.setState({ MaterialReleaseData: [...result] })
         })
-
+        // dataservice
+        // .GetDataListSiteRequestNewVersion('GetContractsSiteRequestByProjectId?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=1000', 'subject', 'id','contractId')
+        // .then(result => {
+        //     if (isEdit) {
+        //         let id = this.props.document.siteRequestId;
+        //         let selectedValue = {};
+        //         if (id) {
+        //             if(result){
+        //                 selectedValue = find(result, function (i) { 
+                        
+        //                     // if( i.value == id )
+        //                   // return i.contractName
+        //                      return i.value == id;                                               
+        //              });
+        //              this.setState({ selectedMaterialRelease: selectedValue })
+        //             }
+                   
+        //         }
+        //     }
+        //     this.setState({ MaterialReleaseData: [...result] })
+        // })
         dataservice.GetDataListWithNewVersion('GetContractsBoq?projectId=2&pageNumber=0&pageSize=1000000000', 'subject', 'id').then(result => {
             if (isEdit) {
                 let id = this.props.document.boqId;
@@ -760,6 +794,15 @@ class materialReleaseAddEdit extends Component {
                                             handleChange={event => this.handleChangeDropDown(event, "siteRequestId", false, "selectedMaterialRelease")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.materialReleaseId}
                                             touched={touched.materialReleaseId} name="materialReleaseId" id="materialReleaseId" />
+                                    </div>
+                                    {/* added */}
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.contract[currentLanguage]}</label>
+                                        {/* + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ") */}
+                                        <div className={"inputDev ui input" } width="100%" >
+                                            <input name='contract' className="form-control fsadfsadsa" id="contract" value={this.props.changeStatus == true ?this.props.document.contractName:this.state.selectedMaterialRelease.contractName}
+                                                autoComplete='off' readOnly="true" /> 
+                                        </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title="materialReleaseType" data={this.state.MaterialReleaseType} selectedValue={this.state.SelectedMaterialReleaseType}

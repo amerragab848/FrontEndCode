@@ -2,7 +2,7 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment ,useContext } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
@@ -28,6 +28,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
+import ConnectionContext from '../../Componants/Layouts/Context';
 
 //import "react-table/react-table.css";
 //#endregion importComponent
@@ -818,6 +819,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     componentDidMount() {
+     
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -1685,7 +1687,9 @@ class requestPaymentsAddEdit extends Component {
         saveDocument.requestId = this.state.docId;
 
         dataservice.addObject("AddContractsRequestPaymentsDeductions", saveDocument).then(result => {
-
+            if(result){
+             let deductionName=this.state.deductionTypesList.find(x=>x.value==result.deductionTypeId);
+             result.deductionTypeName=deductionName?deductionName.label:null
             let list = [...this.state.deductionObservableArray];
             list.push(result);
 
@@ -1702,6 +1706,7 @@ class requestPaymentsAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
+        }
         }).catch(res => {
             this.setState({
                 isLoading: false
@@ -2569,6 +2574,14 @@ class requestPaymentsAddEdit extends Component {
                     sortabel: true,
                     title: Resources["deductions"][currentLanguage],
                     field: 'deductionValue'
+                },
+                {
+                    Header: Resources["deductionType"][currentLanguage],
+                    accessor: "deductionTypeName",
+                    width: 200,
+                    sortabel: true,
+                    title: Resources["deductionType"][currentLanguage],
+                    field: 'deductionTypeName'
                 }
             );
         } else {
@@ -4052,7 +4065,8 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
     };
-}
+} 
+   
 function mapStateToProps(state) {
     return {
         document: state.communication.document,
