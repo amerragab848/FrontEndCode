@@ -4579,11 +4579,11 @@
         "ar": "المورد"
     },
     "drawingSets": {
-        "en": "Drawing Sets",
+        "en": "Handing Over of Drawing Sets",
         "ar": "مجموعات الرسم"
     },
     "drawingSetsAdd": {
-        "en": "Add Drawing Sets",
+        "en": "Add Handing Over of  Drawing Sets",
         "ar": "اضافة مجموعات الرسم"
     },
     "drawingList": {
@@ -8338,6 +8338,14 @@
         "en": "Progress Planned ",
         "ar": "العمل المخطط"
     },
+    "plannedStart": {
+        "en": "Planned Start",
+        "ar": "بداية المخطط"
+    },
+    "plannedFinish": {
+        "en": "Planned Finish",
+        "ar": "انتهاء المخطط"
+    },
     "riskMitigationProgress": {
         "en": "Risk Mitigation Progress ",
         "ar": "التقدم في تخفيف المخاطر"
@@ -8673,5 +8681,9 @@
     "deductionValue": {
         "en": "Deduction Value",
         "ar": "قيمة الاستقطاع"
+    },
+    "chooseExcelFormat":{
+        "en":"Choose Excel Format",
+        "ar":"اختر صيغة"
     }
 }

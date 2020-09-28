@@ -305,8 +305,7 @@ class NCRAddEdit extends Component {
             }
         });
     }
-
-
+ 
     FillDropDowns = () => {
 
 
@@ -321,7 +320,7 @@ class NCRAddEdit extends Component {
                 if (companyId) {
                     this.setState({
                         // selectedFromCompany: { label: this.props.document.fromCompany, value: companyId } 
-                        selectedFromCompany: { label: fromCompanyName.label, value: companyId }
+                        selectedFromCompany: { label: fromCompanyName?fromCompanyName.label:null, value: companyId }
 
                     });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
@@ -596,12 +595,7 @@ class NCRAddEdit extends Component {
 
 
 
-    }
-
-
-
-
-
+    } 
 
     onChangeMessage = (value) => {
         if (value != null) {
@@ -802,9 +796,8 @@ class NCRAddEdit extends Component {
 
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
-    }
-
-
+    } 
+    
     render() {
 
         let AddNewCycle = () => {
@@ -835,10 +828,7 @@ class NCRAddEdit extends Component {
                                     <div className="step-content">
                                         <div className='document-fields'>
                                             <div className="proForm datepickerContainer">
-                                                <div className="proForm first-proform fullWidthWrapper textLeft">
-
-
-
+                                                <div className="proForm first-proform fullWidthWrapper textLeft"> 
                                                     <div className={'ui input inputDev linebylineInput ' + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
                                                         <label className="control-label">{Resources['subject'][currentLanguage]}</label>
                                                         <div className="inputDev ui input">
@@ -869,11 +859,8 @@ class NCRAddEdit extends Component {
                                                                 defaultChecked={this.state.Status ? null : 'checked'}
                                                                 onChange={(e) => this.setState({ Status: e.target.value })} />
                                                             <label> {Resources['closed'][currentLanguage]}</label>
-                                                        </div>
-
-                                                    </div>
-
-
+                                                        </div> 
+                                                    </div> 
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
