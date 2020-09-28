@@ -53,7 +53,6 @@ class ExportDetails extends Component {
 
       var route = 'ExportDocumentServerSide';
       var title = this.props.documentName.replace(/ /g, '_');
-
       Dataservice.GetNextArrangeMainDocument(route + `?documentName=${title}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
         .then(result => {
           if (result != null) {

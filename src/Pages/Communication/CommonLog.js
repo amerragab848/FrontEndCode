@@ -99,7 +99,9 @@ class CommonLog extends Component {
       {
         title: 'Export Doc & Attachments',
         handleClick: value => {
+          
           let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
+          
           let documentObj = this.state.documentObj
           this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle);
           this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId);
@@ -893,7 +895,7 @@ class CommonLog extends Component {
           gridKey={'CommonLog-' + this.state.documentName}
           data={this.state.rows}
           actions={this.actions}
-          rowActions={this.rowActions}
+          rowActions={this.state.documentObj.forEditApi !=undefined ? this.rowActions:null}
           cells={this.state.columns}
 
           openModalColumn={this.state.columnsModal}

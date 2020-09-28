@@ -12135,7 +12135,7 @@
         "exportDataType": "s"
       }
     ],
-    
+    "forEditApi":"GetInspectionRequestForEdit",
     "filterApi": "CommunicationRequestFilter",
     "filters": [
       {
@@ -16796,7 +16796,7 @@
         "exportDataType": "s"
       }
     ],
-    
+    "forEditApi":"GetLogsSubmittalForEdit",
     "filterApi": "SubmittalsFilter",
     "filters": [
       {
@@ -18704,7 +18704,6 @@
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ClaimsFilters",
     "filters": [
       {
