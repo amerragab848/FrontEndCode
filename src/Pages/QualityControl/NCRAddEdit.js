@@ -305,8 +305,7 @@ class NCRAddEdit extends Component {
             }
         });
     }
-
-
+ 
     FillDropDowns = () => {
 
 
@@ -596,12 +595,7 @@ class NCRAddEdit extends Component {
 
 
 
-    }
-
-
-
-
-
+    } 
 
     onChangeMessage = (value) => {
         if (value != null) {
@@ -802,9 +796,8 @@ class NCRAddEdit extends Component {
 
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
-    }
-
-
+    } 
+    
     render() {
 
         let AddNewCycle = () => {

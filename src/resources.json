@@ -8334,6 +8334,14 @@
         "en": "Progress Planned ",
         "ar": "العمل المخطط"
     },
+    "plannedStart": {
+        "en": "Planned Start",
+        "ar": "بداية المخطط"
+    },
+    "plannedFinish": {
+        "en": "Planned Finish",
+        "ar": "انتهاء المخطط"
+    },
     "riskMitigationProgress": {
         "en": "Risk Mitigation Progress ",
         "ar": "التقدم في تخفيف المخاطر"
@@ -8669,5 +8677,9 @@
     "deductionValue": {
         "en": "Deduction Value",
         "ar": "قيمة الاستقطاع"
+    },
+    "chooseExcelFormat":{
+        "en":"Choose Excel Format",
+        "ar":"اختر صيغة"
     }
 }

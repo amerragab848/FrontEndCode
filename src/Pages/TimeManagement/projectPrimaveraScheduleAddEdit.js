@@ -96,6 +96,8 @@ class projectPrimaveraScheduleAddEdit extends Component {
             SelectedCurrency: { label: Resources.pleaseSelectCurrency[currentLanguage], value: "0" },
             ActionByCompanyData: [],
             TotalPages: 0,
+            contactsList: [],
+            showContactDrop:true
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -172,7 +174,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     componentWillMount() {
         if (docId > 0) {
-
+           this.setState({showContactDrop:false})
             let url = "GetPrimaveraScheduleForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
             this.setState({
@@ -333,12 +335,19 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
         )
     }
-
+    onCellClick = (e,obj, cell) => {
+        if(obj.bic_company_id>0 && cell.id=="bic_contact_id")
+        dataservice.GetDataList('GetContactsByCompanyId?companyId=' + obj.bic_company_id, "contactName", "id").then(
+            res => {
+                this.setState({ contactsList: res || [],showContactDrop:true })
+            }).catch(ex => {
+                console.log("error...", ex)
+            })
+    }
     HandlerChangeTableDrop = (key, e, Name) => {
-        console.log(key, e, Name)
-
+        let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
+        key.bic_contact_id = e.value;
         if (Name === 'Status') {
-            let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
             Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=true&status=' + e.value + '').then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -347,7 +356,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 })
         }
         else {
-            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + e.value + '&isStatus=false&status=false').then(
+            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=false&status=false+&action_by_contact=' + e.value).then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -355,7 +364,15 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 })
         }
     }
-
+    HandlerChangeParentDrop = (e, subDropList, key) => {
+        key.bic_company_id = e.value;
+        dataservice.GetDataList('GetContactsByCompanyId?companyId=' + e.value, "contactName", "id").then(
+            res => {
+                this.setState({ [subDropList]: res || [] })
+            }).catch(ex => {
+                console.log("error...", ex)
+            })
+    }
 
 
     render() {
@@ -404,8 +421,41 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 sortabel: true
             },
             {
+                Header: Resources["actualStartDate"][currentLanguage],
+                accessor: "actualStartDate",
+                width: 200,
+                sortabel: true,
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'No Date' : moment(row.value).format("DD/MM/YYYY")}</span>
+                    </span>
+                )
+            },
+            {
                 Header: Resources["actualFinishDate"][currentLanguage],
                 accessor: "actualFinishDate",
+                width: 200,
+                sortabel: true,
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'No Date' : moment(row.value).format("DD/MM/YYYY")}</span>
+                    </span>
+                )
+            },
+            {
+                Header: Resources["plannedStart"][currentLanguage],
+                accessor: "start_date",
+                width: 200,
+                sortabel: true,
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'No Date' : moment(row.value).format("DD/MM/YYYY")}</span>
+                    </span>
+                )
+            },
+            {
+                Header: Resources["plannedFinish"][currentLanguage],
+                accessor: "finish_date",
                 width: 200,
                 sortabel: true,
                 Cell: row => (
@@ -425,11 +475,34 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             <div className="customD_Menu">
                                 <Select options={this.state.ActionByCompanyData}
                                     defaultValue={find(this.state.ActionByCompanyData, function (i) { return i.value == row.value })}
-                                    onChange={e => this.HandlerChangeTableDrop(row.original, e, "ABCompany")}
+                                    onChange={e => { this.HandlerChangeParentDrop(e, `contactsList${row.index}`, row.original) }}
                                 />
                             </div>
-                        </div>)
+                        </div>
+                    )
                 },
+            },
+            {
+                Header: Resources["actionByContact"][currentLanguage],
+                accessor: "bic_contact_id",
+                width: 200,
+                sortabel: true,
+                Cell: row => {
+                    return (
+                        <div className="fillter-status fillter-item-c">
+                            {this.state.showContactDrop !== true ? <div className="customD_Menu">
+                                <input className="inputDev ui input" value={row.contactName} name="actionContactName" disabled />
+                            </div> :
+                                <div className="customD_Menu">
+                                    <Select options={this.state[`contactsList${row.index}`]}
+                                        defaultValue={find(this.state[`contactsList${row.index}`], function (i) { return i.value == row.value })}
+                                        //onChange={e => {this.HandlerChangeTableDrop(row.original, e, "ABContact")}}
+                                    />
+                                </div>
+                            }
+                        </div>
+                    )
+                }
             },
             {
                 Header: Resources["actualDuration"][currentLanguage],
@@ -600,7 +673,11 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                         columns={columnsCycles}
                                         defaultPageSize={5}
                                         noDataText={Resources["noData"][currentLanguage]}
-                                        className="-striped -highlight" />
+                                        className="-striped -highlight"
+                                        getTdProps={(state, rowInfo, column, instance) => {
+                                            return { onClick: e => { this.onCellClick(e,rowInfo.original, column) } };
+                                        }} />
+
                                 </Fragment>
                             }
                         </div>
