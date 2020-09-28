@@ -119,6 +119,7 @@ class AddAccount extends Component {
     }
 
     companyNamehandleChange = (e) => {
+        debugger
         this.setState({ CompanyId: e });
         dataservice.GetDataList('GetContactsNotUsersByCompanyId?companyId=' + e.value + '', 'contactName', 'id').then(
             result => {
