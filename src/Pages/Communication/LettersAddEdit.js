@@ -958,6 +958,7 @@ class LettersAddEdit extends Component {
                                                                     showOptionPanel={this.showOptionPanel}
                                                                     permission={this.state.permission}
                                                                     documentName="lettertitle"
+
                                                                 />
                                                             </div>
                                                         </div>
