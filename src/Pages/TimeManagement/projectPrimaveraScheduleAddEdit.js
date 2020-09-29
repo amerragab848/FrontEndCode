@@ -24,7 +24,8 @@ import Select from 'react-select';
 import Api from "../../api";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
+import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -40,8 +41,13 @@ const find = require('lodash/find')
 let StatusDataDrop = [{ label: 'Opended', value: true }, { label: 'Closed', value: false }]
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+   subject:Yup.string().required(Resources['subjectRequired'][currentLanguage])
 })
+const ItemsValidationSchema = Yup.object().shape({
+    companyId: Yup.string().required(Resources['actionByCompanyRequired'][currentLanguage]),
+    contactId: Yup.string().required(Resources['actionByContactRequired'][currentLanguage])
+})
+
 
 class projectPrimaveraScheduleAddEdit extends Component {
 
@@ -97,7 +103,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
             ActionByCompanyData: [],
             TotalPages: 0,
             contactsList: [],
-            showContactDrop:true
+            selectedRows: [],
+            showAssignModal: false,
+            selectedContact: { label: Resources.actionByContactsSummary[currentLanguage], value: "0" },
+            selectedCompany: { label: Resources.actionByCompany[currentLanguage], value: "0" }
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -174,7 +183,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     componentWillMount() {
         if (docId > 0) {
-           this.setState({showContactDrop:false})
+            this.setState({ showContactDrop: false })
             let url = "GetPrimaveraScheduleForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url);
             this.setState({
@@ -335,19 +344,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
         )
     }
-    onCellClick = (e,obj, cell) => {
-        if(obj.bic_company_id>0 && cell.id=="bic_contact_id")
-        dataservice.GetDataList('GetContactsByCompanyId?companyId=' + obj.bic_company_id, "contactName", "id").then(
-            res => {
-                this.setState({ contactsList: res || [],showContactDrop:true })
-            }).catch(ex => {
-                console.log("error...", ex)
-            })
-    }
+
     HandlerChangeTableDrop = (key, e, Name) => {
-        let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
-        key.bic_contact_id = e.value;
         if (Name === 'Status') {
+            let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
             Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=true&status=' + e.value + '').then(
                 res => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -355,17 +355,16 @@ class projectPrimaveraScheduleAddEdit extends Component {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 })
         }
-        else {
-            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=false&status=false+&action_by_contact=' + e.value).then(
-                res => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                })
-        }
+        // else {
+        //     Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=false&status=false+&action_by_contact=' + e.value).then(
+        //         res => {
+        //             toast.success(Resources["operationSuccess"][currentLanguage]);
+        //         }).catch(ex => {
+        //             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        //         })
+        // }
     }
-    HandlerChangeParentDrop = (e, subDropList, key) => {
-        key.bic_company_id = e.value;
+    HandlerChangeParentDrop = (e, subDropList) => {
         dataservice.GetDataList('GetContactsByCompanyId?companyId=' + e.value, "contactName", "id").then(
             res => {
                 this.setState({ [subDropList]: res || [] })
@@ -373,11 +372,63 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 console.log("error...", ex)
             })
     }
+    assignContact = () => {
+        let ids = this.state.selectedRows.map(x => x.id);
+        this.setState({ isLoading: true })
+        Api.post('UpdatePrimaveraScheduleItem?ids=' + ids + '&action_by_company=' + this.state.selectedCompany.value + '&action_by_contact=' + this.state.selectedContact.value).then(
+            res => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                let rows = this.state.rows;
+                this.state.selectedRows.forEach(i=>{
+                    let rowIndex = rows.findIndex(x => x.id == i.id);
+                    rows[rowIndex].bic_company_name = this.state.selectedCompany.label;
+                    rows[rowIndex].bic_contact_name = this.state.selectedContact.label;
+                })
+                this.setState({
+                    rows: rows,
+                    selectedRows: [],
+                    showAssignModal: false,
+                    isLoading: false,
+                    selectedCompany: { label: Resources.actionByCompany[currentLanguage], value: "0" },
+                    selectedContact: { label: Resources.actionByContactsSummary[currentLanguage], value: "0" }
+                });
+            }).catch(ex => {
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            })
+    }
+    toggleRow(obj) {
+        let selectedRows = this.state.selectedRows;
+        let setIndex = selectedRows.findIndex(x => x.id === obj.id);
+        if (setIndex > -1) {
+            selectedRows.splice(setIndex, 1);
+        } else {
+            selectedRows.push(obj);
+        }
+        this.setState({
+            selectedRows: selectedRows
+        });
+    }
 
 
     render() {
-
         const columnsCycles = [
+            {
+                Header: Resources["checkList"][currentLanguage],
+                id: "checkbox",
+                accessor: 'id',
+                Cell: ({ row }) => {
+                    return (
+                        <div className="ui checked checkbox  checkBoxGray300 ">
+                            <input type="checkbox"
+                                className="checkbox"
+                                checked={this.state.selectedRows.findIndex(x => x.id == row._original.id) > -1 ? true : false}
+                                onChange={() => this.toggleRow(row._original)} />
+                            <label></label>
+                        </div>
+                    );
+                },
+                width: 50
+            },
             {
                 Header: Resources["numberAbb"][currentLanguage],
                 accessor: "arrange",
@@ -466,43 +517,25 @@ class projectPrimaveraScheduleAddEdit extends Component {
             },
             {
                 Header: Resources["actionByCompany"][currentLanguage],
-                accessor: "bic_company_id",
+                accessor: "bic_company_name",
                 width: 200,
                 sortabel: true,
-                Cell: row => {
-                    return (
-                        <div className="fillter-status fillter-item-c">
-                            <div className="customD_Menu">
-                                <Select options={this.state.ActionByCompanyData}
-                                    defaultValue={find(this.state.ActionByCompanyData, function (i) { return i.value == row.value })}
-                                    onChange={e => { this.HandlerChangeParentDrop(e, `contactsList${row.index}`, row.original) }}
-                                />
-                            </div>
-                        </div>
-                    )
-                },
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'Not Selected' : row.value}</span>
+                    </span>
+                )
             },
             {
                 Header: Resources["actionByContact"][currentLanguage],
-                accessor: "bic_contact_id",
+                accessor: "bic_contact_name",
                 width: 200,
                 sortabel: true,
-                Cell: row => {
-                    return (
-                        <div className="fillter-status fillter-item-c">
-                            {this.state.showContactDrop !== true ? <div className="customD_Menu">
-                                <input className="inputDev ui input" value={row.contactName} name="actionContactName" disabled />
-                            </div> :
-                                <div className="customD_Menu">
-                                    <Select options={this.state[`contactsList${row.index}`]}
-                                        defaultValue={find(this.state[`contactsList${row.index}`], function (i) { return i.value == row.value })}
-                                        //onChange={e => {this.HandlerChangeTableDrop(row.original, e, "ABContact")}}
-                                    />
-                                </div>
-                            }
-                        </div>
-                    )
-                }
+                Cell: row => (
+                    <span>
+                        <span>{row.value === null ? 'Not Selected' : row.value}</span>
+                    </span>
+                )
             },
             {
                 Header: Resources["actualDuration"][currentLanguage],
@@ -523,25 +556,57 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 sortabel: true
             },
         ];
+        const assignContactModal = (<Formik
+            initialValues={{ companyId: this.state.selectedCompany.value, contactId: this.state.selectedContact.value }}
+            validationSchema={ItemsValidationSchema}
+            enableReinitialize={true}
+            onSubmit={() => {
+                this.assignContact()
+            }}>
+            {({ errors, touched, handleBlur, handleChange, handleSubmit, values, setFieldTouched }) => (
+                <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                    <Dropdown title="actionByCompany" data={this.state.ActionByCompanyData}
+                        selectedValue={this.state.selectedCompany}
+                        handleChange={event => { this.HandlerChangeParentDrop(event, "contactsList"); this.setState({ selectedCompany: { label: event.label, value: event.value } }) }}
+                        onBlur={setFieldTouched}
+                        error={errors.companyId}
+                        touched={touched.companyId}
+                        name="companyId"
+                        index="companyId"
+                    />
+                    <Dropdown title="actionByContactsSummary" data={this.state.contactsList}
+                        selectedValue={this.state.selectedContact}
+                        handleChange={event => this.setState({ selectedContact: { label: event.label, value: event.value } })}
+                        onBlur={setFieldTouched}
+                        error={errors.companyId}
+                        touched={touched.companyId}
+                        name="contactId"
+                        index="contactId"
+                    />
+                    <div className="fullWidthWrapper">
+                        <button
+                            className="primaryBtn-1 btn mediumBtn"
+                            type="submit"
+                        >  {Resources['save'][currentLanguage]}
+                        </button>
 
 
+                    </div>
+                </Form>
+            )}
+        </Formik>);
         return (
 
             <div className="mainContainer">
 
-                {this.state.isLoading ? <LoadingSection /> : null}
+                {this.state.isLoading == true ? <LoadingSection /> : null}
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
 
-
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.primaveraLog[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
-
-
                     <div className="doc-container">
-
                         <div className="step-content">
                             {this.state.CurrentStep == 0 ?
                                 <div className="subiTabsContent">
@@ -646,11 +711,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                                 </Form>
                                             )}
                                         </Formik>
-
-
                                     </div>
-
-
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={871} EditAttachments={3250} ShowDropBox={3557} ShowGoogleDrive={3558} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
@@ -668,15 +729,12 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                         docType='gen_primavera_schedule_items' CantDownload={true} CustomUpload={true} projectId={this.state.projectId}
                                         afterUpload={() => this.getTabelData()}
                                     />
-
+                                    {this.state.selectedRows.length > 0 ? <button type="button" onClick={() => { this.simpleDialog.show(); this.setState({ showAssignModal: true }) }} className={"btn btn-success "} >Assign</button> : null}
                                     <ReactTable data={this.state.rows}
                                         columns={columnsCycles}
                                         defaultPageSize={5}
                                         noDataText={Resources["noData"][currentLanguage]}
-                                        className="-striped -highlight"
-                                        getTdProps={(state, rowInfo, column, instance) => {
-                                            return { onClick: e => { this.onCellClick(e,rowInfo.original, column) } };
-                                        }} />
+                                        className="-striped -highlight" />
 
                                 </Fragment>
                             }
@@ -690,6 +748,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             }
                             stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
                         />
+
+                        <div className="largePopup" style={{ display: this.state.showAssignModal == true ? 'block' : 'none' }}>
+                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources["assignContact"][currentLanguage]}>
+                                {assignContactModal}
+                            </SkyLight>
+                        </div>
+
                     </div>
 
                 </div>
