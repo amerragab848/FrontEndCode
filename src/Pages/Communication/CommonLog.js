@@ -522,7 +522,7 @@ class CommonLog extends Component {
           type: item.dataType === "number" ? item.dataType : (item.dataType === "date" ? item.dataType : "text")
         };
 
-        if (item.field === "subject") {
+        if (item.field === "subject" || (docTypeId==50&&item.field=="description")) {
           obj.href = 'link';
           obj.onClick = () => { };
           obj.classes = 'bold';

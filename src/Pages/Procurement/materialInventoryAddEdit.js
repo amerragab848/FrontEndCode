@@ -729,7 +729,7 @@ class MaterialInventoryAddEdit extends Component {
                             multiSeries="no"
                             series={this.state.purchasedDataForChart}
                             xAxis={this.state.xAxis}
-                            title={Resources['contractorsPerformance'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} /> : null
+                            title={Resources['purchased'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} /> : null
                     }
 
                 </div>
@@ -753,7 +753,7 @@ class MaterialInventoryAddEdit extends Component {
                         multiSeries="no"
                         series={this.state.transferedDataForChart}
                         xAxis={this.state.xAxis}
-                        title={Resources['contractorsPerformance'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} /> : null}
+                        title={Resources['transfered'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} /> : null}
 
                 </div>
 

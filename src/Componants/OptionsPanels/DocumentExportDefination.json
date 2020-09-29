@@ -547,6 +547,52 @@
             "remarks"
         ]
     },
+    "50": {
+        "fields": [
+            {
+                "name": "description",
+                "value": "description",
+                "type": "S"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "unit",
+                "value": "unit",
+                "type": "S"
+            },
+            {
+                "name": "resourceCode",
+                "value": "resourceCode",
+                "type": "S"
+            },
+            {
+                "name": "disciplineName",
+                "value": "disciplineName",
+                "type": "S"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "remainingQuantity",
+                "value": "remainingQuantity",
+                "type": "S"
+            },
+            {
+                "name": "unitPrice",
+                "value": "unitPrice",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
     "109": {
         "fields": [
             {
