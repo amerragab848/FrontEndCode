@@ -278,6 +278,7 @@ class PurchaseOrderAddEdit extends Component {
         ];
 
         this.state = {
+            showMyModal:true,
             currentStep: 0,
             currentId: 0,
             purchaseOrderDataItems: [],
@@ -1118,7 +1119,7 @@ class PurchaseOrderAddEdit extends Component {
                     }
         });
 
-        this.simpleDialog.show();
+      //  this.simpleDialog.show();
     };
 
     getTabelData() {
@@ -3535,6 +3536,7 @@ class PurchaseOrderAddEdit extends Component {
                                                                         .document
                                                                         .originalContractSum
                                                                 }
+                                                                value={this.state.document.originalPurchaseOrderSum}
                                                                 name="originalContractSum"
                                                                 placeholder={
                                                                     Resources
@@ -3545,7 +3547,7 @@ class PurchaseOrderAddEdit extends Component {
                                                             />
                                                         </div>
                                                     </div>
-
+{/* 
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
@@ -3575,8 +3577,8 @@ class PurchaseOrderAddEdit extends Component {
                                                                 }
                                                             />
                                                         </div>
-                                                    </div>
-
+                                                    </div> */}
+{/* 
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
@@ -3606,9 +3608,9 @@ class PurchaseOrderAddEdit extends Component {
                                                                 }
                                                             />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="linebylineInput valid-input">
+                                                    {/* <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
                                                                 Resources.balance[
@@ -3636,7 +3638,7 @@ class PurchaseOrderAddEdit extends Component {
                                                                 }
                                                             />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         </Fragment>
@@ -3706,7 +3708,7 @@ class PurchaseOrderAddEdit extends Component {
                             }) => (
                                     <Form
                                         id="signupForm1"
-                                        className="proForm datepickerContainer customProform"
+                                        className="proForm  customProform"
                                         noValidate="novalidate">
                                         <header className="main__header">
                                             <div className="main__header--div">
@@ -4373,11 +4375,12 @@ class PurchaseOrderAddEdit extends Component {
                                         previousRoute={this.state.previousRoute}
                                         docApprovalId={this.state.docApprovalId}
                                         currentArrange={this.state.arrange}
-                                        showModal={this.props.showModal}
+                                        showModal={this.state.showMyModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
+                                        documentName="PurchaseOrders"
                                     />
-
+                                              
                                 </div>
                             </div>
                         ) : null}

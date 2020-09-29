@@ -2990,6 +2990,94 @@
             "totalContractor"
         ]
     },
+    "70":{
+     
+        "fields": [
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "CompanyName",
+                "value": "companyName",
+                "type": "S"
+            },
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "documentDate",
+                "type": "D"
+            },
+            {
+                "name": "completionDate",
+                "value": "completionDate",
+                "type": "D"
+            },
+            {
+                "name": "contract",
+                "value": "contractName",
+                "type": "S"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "ToContact",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "advancePaymentPercent",
+                "value": "advancePaymentPercent",
+                "type": "S"
+            },
+            {
+                "name": "originalPurchaseOrderSum",
+                "value": "originalPurchaseOrderSum",
+                "type": "S"
+            },
+
+             {
+                "name": "actualExceuted",
+                "value": "actualExceuted",
+                "type": "S"
+            },
+            {
+                "name": "advancedPayment",
+                "value": "advancePaymentAmount",
+                "type": "S"
+            }
+            
+          ],
+          "columnsItems": [
+      
+        ],
+        "friendlyNames": [
+         
+        ]
+    },
     "77": {
         "fields": [
             {
