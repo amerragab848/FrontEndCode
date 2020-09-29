@@ -26,7 +26,10 @@ class RequestPaymentDeductionTypeReport extends Component {
 
             projectsList:[],
             rows: [],
-            selectedDeductionType: { label: Resources.deductionType[currentLanguage], value: "-1" },
+            selectedDeductionType: { 
+                label: Resources.deductionType[currentLanguage],
+                 value: null
+                },
             finishDate: moment(),
             startDate: moment(),
         }
@@ -140,11 +143,11 @@ class RequestPaymentDeductionTypeReport extends Component {
     }
 
     getGridtData = () => {
-        if (this.state.selectedDeductionType.value != '-1') {
+       // if (this.state.selectedDeductionType.value != '-1') {
             this.setState({ isLoading: true })
             let startDate = moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
             let endDate = moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-            Api.get(`GetRequestPaymentDeductionTypeForReport?projectId=${this.state.selectedProject}&deductionTypeId=${this.state.selectedDeductionType.value}&start=${startDate}&end=${endDate}`).then(rows => {
+            Api.get(`GetRequestPaymentDeductionTypeForReport?projectId=${this.state.selectedProject.value}&deductionTypeId=${this.state.selectedDeductionType.value}&start=${startDate}&end=${endDate}`).then(rows => {
                 rows.forEach(row => {
                     let obj = {
                         docId: row.requestId,
@@ -165,7 +168,7 @@ class RequestPaymentDeductionTypeReport extends Component {
                 this.setState({ isLoading: false })
                 toast.error(Resources.operationCanceled[currentLanguage])
             })
-        }
+      //  }
     }
 
     handleChange = (name, value) => {
@@ -199,6 +202,15 @@ class RequestPaymentDeductionTypeReport extends Component {
                     {btnExport}
                 </header>
                 <div className='proForm reports__proForm'>
+                <div className="linebylineInput ">                     
+                        <Dropdown title="projectName"
+                            data={this.state.projectsList}
+                            selectedValue={this.state.selectedProject}
+                            handleChange={event=>{ this.setState({ selectedProject: event }); this.fields[3].value = event.label }}
+                            name="projectName"
+                            index="projectName"
+                        />
+                </div>
                     <div className="linebylineInput valid-input">
                         <Dropdown
                             title="deductionType"
@@ -210,15 +222,7 @@ class RequestPaymentDeductionTypeReport extends Component {
                         />
 
                     </div>
-                    <div className="linebylineInput valid-input">                     
-                        <Dropdown title="projectName"
-                            data={this.state.projectsList}
-                            selectedValue={this.state.selectedProject}
-                            handleChange={event=>{ this.setState({ selectedProject: event }); this.fields[3].value = event.label }}
-                            name="projectName"
-                            index="projectName"
-                        />
-                    </div>
+                
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}

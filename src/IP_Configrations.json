@@ -1,3 +1,4 @@
+
 {
     "BlobStorageContainerName": "project-files-demov4",
     "acApp": "AC",
@@ -11,25 +12,14 @@
     "exportStatic": "https://demov4.procoor.com",
     "fmApp": "FM",
     "hrApp": "HR",
-<<<<<<< HEAD
-    "local": "http://172.30.1.17:8900",
-    "loginServer": "http://172.30.1.17:8901",
-    "pmApp": "PM",
-    "static": "http://172.30.1.17:8900",
-=======
     "local": "http://172.30.1.17:8900/",
     "loginServer": "http://172.30.1.17:8901",
     "pmApp": "PM",
     "static": "http://172.30.1.17:8900/",
->>>>>>> 1645dbc019628e5ecedbe9240872d0d9d9e207af
     "downloads": "http://172.30.1.17:8900",
     "dropBoxappKey": "r8iiezlpm1pvlry",
     "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
     "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
     "googleDriveKey": "uof5qzvtwpq1dao",
     "refAutomatic": false
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 1645dbc019628e5ecedbe9240872d0d9d9e207af
