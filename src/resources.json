@@ -885,6 +885,15 @@
         "en": "To Company Name",
         "ar": "إلى شركه"
     },
+    "fromContactName":{
+        "en":"From Contact Name",
+        "ar":"الشخص المسئول "
+    },
+    "fromCompanyName":{
+        "en":"From Company Name",
+        "ar":"من شركة"
+    }
+    ,
     "toContactName": {
         "en": "To Contact Name",
         "ar": "الشخص المسئول"
