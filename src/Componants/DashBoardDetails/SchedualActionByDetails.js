@@ -242,7 +242,8 @@ class SchedualActionByDetails extends Component {
               <div className="rowsPagiRange">
                 <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -
                 <span>
-                  {this.state.filterMode ? this.state.totalRows : this.state.pageSize * this.state.pageNumber + this.state.pageSize}
+                  {/* {this.state.filterMode ? this.state.totalRows : this.state.pageSize * this.state.pageNumber + this.state.pageSize} */}
+                  {this.state.filterMode ? this.state.totalRows : this.state.rows.length+(this.state.pageSize * this.state.pageNumber)}
                 </span>
                 {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
                 <span> {this.state.totalRows}</span>

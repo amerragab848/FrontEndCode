@@ -14897,9 +14897,9 @@
     "documentColumns": [
       {
         "field": "id",
-        "friendlyName": "transfer",
-        "minWidth": 85,
-        "width": "3%",
+        "friendlyName": "arrange",
+        "minWidth": 6,
+        "width": "5%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -14928,7 +14928,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -14948,7 +14947,7 @@
         "friendlyName": "remainingQuantity",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
         
@@ -14960,7 +14959,7 @@
         "friendlyName": "unitPrice",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
         
@@ -14972,7 +14971,7 @@
         "friendlyName": "total",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
         
@@ -14984,7 +14983,7 @@
         "friendlyName": "deliveredQuantity",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
         
@@ -14996,7 +14995,7 @@
         "friendlyName": "releasedQuantity",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
         

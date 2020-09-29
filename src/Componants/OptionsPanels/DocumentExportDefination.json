@@ -1,4 +1,70 @@
-{
+{   "22": {
+    "fields": [
+        {
+            "name":"fromCompany",
+            "value":"fromCompanyName",
+            "type":"S"
+        },
+        {
+        "name":"refDoc",
+        "value":"refDoc",
+        "type":"S"
+        },
+       {
+        "name": "description",
+        "value": "description",
+        "type": "S"
+       },
+        {
+            "name": "subject",
+            "value": "subject",
+            "type": "S"
+        },
+        {
+            "name": "numberAbb",
+            "value": "arrange",
+            "type": "S"
+        },
+        {
+            "name": "docDate",
+            "value": "docDate",
+            "type": "D"
+        },
+        {
+            "name": "status",
+            "value": "statusName",
+            "type": "S"
+        },
+        {
+            "name": "fromContact",
+            "value": "fromContactName",
+            "type": "S"
+        },
+        {
+            "name": "toCompany",
+            "value": "toCompanyName",
+            "type": "S"
+        },
+        {
+            "name": "attention",
+            "value": "toContactName",
+            "type": "S"
+        },
+        {
+            "name": "projectName",
+            "value": "projectName",
+            "type": "S"
+        }
+    ],
+    "columnsItems": [
+
+        
+    ],
+    "friendlyNames": [
+
+    ]
+},
+
     "10": {
         "fields": [
             {
@@ -480,6 +546,52 @@
             "location",
             "remarks"
         ]
+    },
+    "50": {
+        "fields": [
+            {
+                "name": "description",
+                "value": "description",
+                "type": "S"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "unit",
+                "value": "unit",
+                "type": "S"
+            },
+            {
+                "name": "resourceCode",
+                "value": "resourceCode",
+                "type": "S"
+            },
+            {
+                "name": "disciplineName",
+                "value": "disciplineName",
+                "type": "S"
+            },
+            {
+                "name": "specsSection",
+                "value": "specsSectionName",
+                "type": "S"
+            },
+            {
+                "name": "remainingQuantity",
+                "value": "remainingQuantity",
+                "type": "S"
+            },
+            {
+                "name": "unitPrice",
+                "value": "unitPrice",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
     },
     "109": {
         "fields": [
