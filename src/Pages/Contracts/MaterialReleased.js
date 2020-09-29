@@ -416,7 +416,7 @@ class MaterialReleased extends Component {
             { field: 'title', title: Resources['total'][currentLanguage] },
             { field: 'total', title: Resources['deductions'][currentLanguage] },
         ]
-        const btnExport = this.state.gridLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columnsGrid} fileName={this.state.pageTitle} /> : null;
+        const btnExport = this.state.gridLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={ExportColumns} fileName={this.state.pageTitle} /> : null;
 
         const dataGrid =
             this.state.gridLoading === false ? (

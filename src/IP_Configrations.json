@@ -1,3 +1,4 @@
+
 {
     "BlobStorageContainerName": "project-files-demov4",
     "acApp": "AC",
@@ -11,10 +12,17 @@
     "exportStatic": "https://demov4.procoor.com",
     "fmApp": "FM",
     "hrApp": "HR",
+<<<<<<< HEAD
     "local": "http://172.30.1.17:8900",
     "loginServer": "http://172.30.1.17:8901",
     "pmApp": "PM",
     "static": "http://172.30.1.17:8900",
+=======
+    "local": "http://172.30.1.17:8900/",
+    "loginServer": "http://172.30.1.17:8901",
+    "pmApp": "PM",
+    "static": "http://172.30.1.17:8900/",
+>>>>>>> 13c0d8bf0ca8004ff9e63fc4b2930a31b9f5e34c
     "downloads": "http://172.30.1.17:8900",
     "dropBoxappKey": "r8iiezlpm1pvlry",
     "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",

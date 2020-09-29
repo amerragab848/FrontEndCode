@@ -597,6 +597,10 @@
         "en": "Description",
         "ar": "الوصف"
     },
+    "deductionDescription": {
+        "en": "Deduction Description",
+        "ar": "وصف الاستقطاع"
+    },
     "descriptionEn": {
         "en": "Description English",
         "ar": " الوصف بالانجليزيه"
@@ -8034,6 +8038,10 @@
     "alreadyContract": {
         "en": "You Have Already Added Contract Assigned To This BOQ",
         "ar": "هذا العقد موجود  مسبقا"
+    },
+    "assignContact": {
+        "en": "Assign Contact",
+        "ar": "تعيين جهة اتصال"
     },
     "responsibleCompanyName": {
         "en": "Action Owner",

@@ -107,10 +107,8 @@ class Login extends Component {
                         );
                     }
                     Api.get("GetPrimeData?token=undefined").then(primeData => {
-                        if (
-                            primeData.permissions &&
-                            primeData.permissions.length > 0
-                        ) {
+                        if ( primeData.permissions &&primeData.permissions.length > 0) 
+                        {
                             let permission = CryptoJS.enc.Utf8.parse(
                                 JSON.stringify(primeData.permissions)
                             );
