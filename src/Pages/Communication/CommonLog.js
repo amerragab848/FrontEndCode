@@ -99,9 +99,9 @@ class CommonLog extends Component {
       {
         title: 'Export Doc & Attachments',
         handleClick: value => {
-          
+
           let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
-          
+
           let documentObj = this.state.documentObj
           this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle);
           this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId);
@@ -110,7 +110,7 @@ class CommonLog extends Component {
             showExportModal: true
           });
         }
-
+        
       }
     ];
 
@@ -499,7 +499,7 @@ class CommonLog extends Component {
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
-//added
+    //added
     let docTypeId = documentObj.docTyp;
     let showExServerBtn = false;
     let showDocTemplateBtn = false;
@@ -574,16 +574,16 @@ class CommonLog extends Component {
     if (docTypeId == 19 || docTypeId == 23 || docTypeId == 42 || docTypeId == 28 || docTypeId == 103 || docTypeId == 25) {
       showExServerBtn = true;
     }
-    
+
     if (docTypeId == 19) {
       showDocTemplateBtn = true;
-    }else{
+    } else {
       showDocTemplateBtn = false;
     }
-    if(docTypeId==50){
-      this.setState({showInventoryImportAttachBtn:true})
-    }else{
-      this.setState({showInventoryImportAttachBtn:false})
+    if (docTypeId == 50) {
+      this.setState({ showInventoryImportAttachBtn: true })
+    } else {
+      this.setState({ showInventoryImportAttachBtn: false })
     }
 
     filtersColumns = documentObj.filters;
@@ -839,7 +839,7 @@ class CommonLog extends Component {
   changeValueOfProps = () => {
     this.setState({ isFilter: false });
   };
-  
+
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     if (event == null) return;
     let original_document = { ...this.state.document };
@@ -861,7 +861,7 @@ class CommonLog extends Component {
       });
     }
   }
-  
+
   render() {
 
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
@@ -895,7 +895,7 @@ class CommonLog extends Component {
           gridKey={'CommonLog-' + this.state.documentName}
           data={this.state.rows}
           actions={this.actions}
-          rowActions={this.state.documentObj.forEditApi !=undefined ? this.rowActions:null}
+          rowActions={this.state.documentObj.forEditApi != undefined ? this.rowActions : null}
           cells={this.state.columns}
 
           openModalColumn={this.state.columnsModal}
@@ -1010,7 +1010,7 @@ class CommonLog extends Component {
               </div>
             </div>
             <div className="filterBTNS">
-              
+
               {btnExport}
               {btnExportServer}
               {btnDocumentTemplate}
