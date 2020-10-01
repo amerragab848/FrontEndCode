@@ -78,7 +78,7 @@ class ViewAttachmments extends Component {
 
     goEditPdf = (item, ext) => {
         let accountId = Config.getPayload().aci;
-        alert(accountId);
+        //alert(accountId);
         var stamp = new Date().getTime();
         var data = JSON.stringify({
             refer: window.location.href.replace("#", "-hashfill-"),
