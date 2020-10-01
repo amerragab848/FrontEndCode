@@ -1149,9 +1149,11 @@ class PurchaseOrderAddEdit extends Component {
         setFieldTouched
     ) => {
         return (
-            <div className="proForm datepickerContainer letterFullWidth">
+            <div className="proForm  letterFullWidth">
+                <div className="proForm datepickerContainer letterFullWidth">
                 {this.state.viewDisription === 0 ? (
                     <Fragment>
+                        {/* finded */}
                         <div className="proForm datepickerContainer letterFullWidth">
                             <div className="linebylineInput valid-input">
                                 <Dropdown
@@ -2005,7 +2007,7 @@ class PurchaseOrderAddEdit extends Component {
                             </div>
                         </Fragment>
                     )}
-
+                 </div>
                 <div className="step-content">
                     <XSLfile
                         key="POImport"
@@ -3165,8 +3167,8 @@ class PurchaseOrderAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div className="proForm datepickerContainer">
+                                                            
+                                        <div className="proForm datepickeCrontainer">
                                             <div className="linebylineInput fullInputWidth">
                                                 <label className="control-label">
                                                     {
@@ -3643,7 +3645,7 @@ class PurchaseOrderAddEdit extends Component {
                                             </div>
                                         </Fragment>
                                     ) : null}
-                                    <div className="doc-pre-cycle letterFullWidth">
+                                    <div className="doc-pre-cycle letterFullWidth" >
                                         <div>
                                             {this.state.docId > 0 &&
                                                 this.state.isViewMode === false &&
