@@ -8058,67 +8058,7 @@
         
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "unit",
-        "friendlyName": "unit",
-        "minWidth": 85,
-        "width": "7%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        
-        "isCustom": false,
-        "exportDataType": "s"
-      },
-      {
-        "field": "resourceCode",
-        "friendlyName": "resourceCode",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        
-        "isCustom": false,
-        "exportDataType": "s"
-      },
-      {
-        "field": "quantity",
-        "friendlyName": "quantity",
-        "minWidth": 85,
-        "width": "6%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        
-        "isCustom": false,
-        "exportDataType": "n"
-      },
-      {
-        "field": "deliverdQuantity",
-        "friendlyName": "deliveredQuantity",
-        "minWidth": 85,
-        "width": "6%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        
-        "isCustom": false,
-        "exportDataType": "n"
-      },
-      {
-        "field": "remainingQuantity",
-        "friendlyName": "remainingQuantity",
-        "minWidth": 85,
-        "width": "3%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        
-        "isCustom": false,
-        "exportDataType": "n"
-      },
+      },  
       {
         "field": "docCloseDate",
         "friendlyName": "docClosedate",

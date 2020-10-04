@@ -528,7 +528,7 @@ class materialReleaseAddEdit extends Component {
 
     SaveItem = (values) => {
         let Qty = parseInt(this.state.quantity)
-        let ActaulQty = parseInt(this.state.ItemDescriptionInfo.quantity)
+        let ActaulQty = parseInt(this.state.ItemDescriptionInfo.originalQuantity)
         if (Qty <= ActaulQty) {
             this.setState({ isLoading: true })
             let obj = {
@@ -539,7 +539,7 @@ class materialReleaseAddEdit extends Component {
                 boqItemId: this.state.ItemDescriptionInfo.boqItemId,
                 arrange: this.state.arrangeItem,
                 quantity: this.state.quantity,
-                requestedQuantity: this.state.ItemDescriptionInfo.quantity,
+                requestedQuantity: this.state.ItemDescriptionInfo.originalQuantity,
                 unitPrice: this.state.unitPrice,
                 description: this.state.ItemDescriptionInfo.description,
                 remarks: this.state.remarks,
@@ -1218,10 +1218,10 @@ class materialReleaseAddEdit extends Component {
                                                 title="boqItem" handleChange={e => this.setState({ SelectedBoqItemForEdit: e })} />
                                         </div> */}
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
                                             <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
-                                                <input name='unitPrice' className="form-control" autoComplete='off' placeholder={Resources['unitPrice'][currentLanguage]}
+                                                <input  type="text"  name='unitPrice' className="form-control" autoComplete='off' placeholder={Resources['unitPrice'][currentLanguage]}
                                                     value={this.state.objItemForEdit.unitPrice} onChange={e => this.HandleChangeItemsForEdit('unitPrice', e)}
                                                     onBlur={(e) => {
                                                         handleBlur(e)
