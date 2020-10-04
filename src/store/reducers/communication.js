@@ -11,6 +11,12 @@ export default function (state = initialState.app.communication, action) {
 
     switch (action.type) {
 
+        case types.INVENTORY_ITEMS:
+            let inventoryItems = action.items
+            return {
+                ...state, inventoryItems: inventoryItems
+            }
+
         case types.Export_Document:
             let _items = state.items.length > 0 ? state.items : action.items.length > 0 ? action.items : []
             return {
@@ -248,7 +254,7 @@ export default function (state = initialState.app.communication, action) {
 
         case types.LeftMenuClick:
 
-        
+
             return {
                 ...state,
                 showLeftMenu: action.showLeftMenu,
@@ -384,9 +390,9 @@ export default function (state = initialState.app.communication, action) {
 
         case types.Export_REPORT_Document:
             return { ...state, items: action.items }
-        
+
         case types.REPORT_FILTERS:
-            return {...state,document:action.document}
+            return { ...state, document: action.document }
 
         case types.SET_LOADING:
             return { ...state, isLoading: true, isLoadingFilesUpload: true }
@@ -395,6 +401,8 @@ export default function (state = initialState.app.communication, action) {
             return { ...state, items: action.document }
         case types.Attachments_WF_Cycles:
             return { ...state, files: action.files, workFlowCycles: action.workFlowCycles }
+        case types.EMPTY_LIST:
+            return { ...state, [action.name]: [] }
 
         default:
             return {

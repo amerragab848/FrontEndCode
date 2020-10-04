@@ -278,6 +278,7 @@ class PurchaseOrderAddEdit extends Component {
         ];
 
         this.state = {
+            showMyModal:true,
             currentStep: 0,
             currentId: 0,
             purchaseOrderDataItems: [],
@@ -1118,7 +1119,7 @@ class PurchaseOrderAddEdit extends Component {
                     }
         });
 
-        this.simpleDialog.show();
+      //  this.simpleDialog.show();
     };
 
     getTabelData() {
@@ -1148,9 +1149,11 @@ class PurchaseOrderAddEdit extends Component {
         setFieldTouched
     ) => {
         return (
-            <div className="proForm datepickerContainer letterFullWidth">
+            <div className="proForm  letterFullWidth">
+                <div className="proForm datepickerContainer letterFullWidth">
                 {this.state.viewDisription === 0 ? (
                     <Fragment>
+                        {/* finded */}
                         <div className="proForm datepickerContainer letterFullWidth">
                             <div className="linebylineInput valid-input">
                                 <Dropdown
@@ -2004,7 +2007,7 @@ class PurchaseOrderAddEdit extends Component {
                             </div>
                         </Fragment>
                     )}
-
+                 </div>
                 <div className="step-content">
                     <XSLfile
                         key="POImport"
@@ -3164,8 +3167,8 @@ class PurchaseOrderAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div className="proForm datepickerContainer">
+                                                            
+                                        <div className="proForm datepickeCrontainer">
                                             <div className="linebylineInput fullInputWidth">
                                                 <label className="control-label">
                                                     {
@@ -3535,6 +3538,7 @@ class PurchaseOrderAddEdit extends Component {
                                                                         .document
                                                                         .originalContractSum
                                                                 }
+                                                                value={this.state.document.originalPurchaseOrderSum}
                                                                 name="originalContractSum"
                                                                 placeholder={
                                                                     Resources
@@ -3545,7 +3549,7 @@ class PurchaseOrderAddEdit extends Component {
                                                             />
                                                         </div>
                                                     </div>
-
+{/* 
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
@@ -3575,8 +3579,8 @@ class PurchaseOrderAddEdit extends Component {
                                                                 }
                                                             />
                                                         </div>
-                                                    </div>
-
+                                                    </div> */}
+{/* 
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
@@ -3606,9 +3610,9 @@ class PurchaseOrderAddEdit extends Component {
                                                                 }
                                                             />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="linebylineInput valid-input">
+                                                    {/* <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
                                                                 Resources.balance[
@@ -3636,12 +3640,12 @@ class PurchaseOrderAddEdit extends Component {
                                                                 }
                                                             />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         </Fragment>
                                     ) : null}
-                                    <div className="doc-pre-cycle letterFullWidth">
+                                    <div className="doc-pre-cycle letterFullWidth" >
                                         <div>
                                             {this.state.docId > 0 &&
                                                 this.state.isViewMode === false &&
@@ -3706,7 +3710,7 @@ class PurchaseOrderAddEdit extends Component {
                             }) => (
                                     <Form
                                         id="signupForm1"
-                                        className="proForm datepickerContainer customProform"
+                                        className="proForm  customProform"
                                         noValidate="novalidate">
                                         <header className="main__header">
                                             <div className="main__header--div">
@@ -4373,11 +4377,12 @@ class PurchaseOrderAddEdit extends Component {
                                         previousRoute={this.state.previousRoute}
                                         docApprovalId={this.state.docApprovalId}
                                         currentArrange={this.state.arrange}
-                                        showModal={this.props.showModal}
+                                        showModal={this.state.showMyModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
+                                        documentName="PurchaseOrders"
                                     />
-
+                                              
                                 </div>
                             </div>
                         ) : null}

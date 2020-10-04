@@ -8,6 +8,7 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import InventoryItemsModal from "../../Componants/publicComponants/InventoryItemsModal"
 import documentDefenition from "../../documentDefenition.json";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
@@ -23,6 +24,7 @@ import { SkyLightStateless } from 'react-skylight';
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import { thisExpression } from "@babel/types";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
@@ -32,7 +34,6 @@ class CommonLog extends Component {
   constructor(props) {
 
     super(props);
-
     this.state = {
       groups: [],
       projectName: localStorage.getItem("lastSelectedprojectName"),
@@ -61,6 +62,8 @@ class CommonLog extends Component {
       isCustom: true,
       showDeleteModal: false,
       showExportModal: false,
+      showInventoryItemsModal: false,
+      inventoryItems: [],
       docTemplateModal: false,
       selectedRows: [],
       minimizeClick: false,
@@ -99,7 +102,13 @@ class CommonLog extends Component {
       {
         title: 'Export Doc & Attachments',
         handleClick: value => {
+<<<<<<< HEAD
           let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
+=======
+
+          let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
+
+>>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
           let documentObj = this.state.documentObj
           this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle);
           this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId);
@@ -111,7 +120,50 @@ class CommonLog extends Component {
 
       }
     ];
+    this.inventoryRowActions = [
+      {
+        title: 'Transfer To Project',
+        handleClick: value => {
+          debugger
+          if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
+            let obj = {
+              docId: value.id,
+              projectId: this.props.projectId,
+              projectName: this.state.projectName,
+              arrange: 0,
+              docApprovalId: 0,
+              isApproveMode: false,
+              perviousRoute: window.location.pathname + window.location.search
+            };
 
+            if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+              obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+            }
+
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+            this.props.history.push({ pathname: "/TransferInventory", search: "?id=" + encodedPaylod });
+
+          }
+          else {
+            toast.warning(Resources["missingPermissions"][currentLanguage]);
+          }
+        }
+      },
+      {
+        title: 'Items',
+        handleClick: value => {
+          let url = 'GetMaterialInventoryItems' + '?id=' + value.id + ''
+          this.props.actions.GetItemsInventory(url)
+          this.setState({
+            inventoryItems: this.props.inventoryItems,
+            showInventoryItemsModal: true 
+          });
+        }
+      }
+    ]
     this.ClosxMX = this.ClosxMX.bind(this);
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
@@ -120,7 +172,6 @@ class CommonLog extends Component {
   componentDidMount() {
 
     this.props.actions.FillGridLeftMenu();
-
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
 
   };
@@ -166,6 +217,8 @@ class CommonLog extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+
+
     if (prevState.match !== this.props.match) {
       this.renderComponent(this.props.match.params.document, this.props.projectId, true);
     }
@@ -173,6 +226,7 @@ class CommonLog extends Component {
     if (this.props.document.id > 0) {
       this.ExportDetailsDialog.show();
     }
+
 
     if (this.props.projectId !== prevProps.projectId) {
       if (!this.state.documentObj.documentApi) {
@@ -266,7 +320,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url).then(result => {
+      Api.get(url, undefined, 2).then(result => {
 
         let oldRows = []; // this.state.rows;
 
@@ -326,7 +380,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url).then(result => {
+      Api.get(url, undefined, 2).then(result => {
 
         let oldRows = [];
 
@@ -388,7 +442,7 @@ class CommonLog extends Component {
     });
 
     if (stringifiedQuery !== "{}") {
-      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
+      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 2).then(result => {
         if (result.data.length > 0) {
 
           result.data.forEach(row => {
@@ -444,7 +498,11 @@ class CommonLog extends Component {
   };
 
   onCloseModal = () => {
+
     this.setState({ showDeleteModal: false });
+  };
+  onInventoryItemsCloseModal = () => {
+    this.setState({ showInventoryItemsModal: false })
   };
 
   clickHandlerCancelMain = () => {
@@ -497,7 +555,7 @@ class CommonLog extends Component {
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
-//added
+    //added
     let docTypeId = documentObj.docTyp;
     let showExServerBtn = false;
     let showDocTemplateBtn = false;
@@ -572,16 +630,16 @@ class CommonLog extends Component {
     if (docTypeId == 19 || docTypeId == 23 || docTypeId == 42 || docTypeId == 28 || docTypeId == 103 || docTypeId == 25) {
       showExServerBtn = true;
     }
-    
+
     if (docTypeId == 19) {
       showDocTemplateBtn = true;
-    }else{
+    } else {
       showDocTemplateBtn = false;
     }
-    if(docTypeId==50){
-      this.setState({showInventoryImportAttachBtn:true})
-    }else{
-      this.setState({showInventoryImportAttachBtn:false})
+    if (docTypeId == 50) {
+      this.setState({ showInventoryImportAttachBtn: true })
+    } else {
+      this.setState({ showInventoryImportAttachBtn: false })
     }
 
     filtersColumns = documentObj.filters;
@@ -635,9 +693,11 @@ class CommonLog extends Component {
       this.setState({ isLoading: false });
     }
   };
-
+  clickMoreDetailsHandler = () => {
+    this.addRecord()
+  }
   GetLogData(url) {
-    Api.get(url).then(result => {
+    Api.get(url, undefined, 2).then(result => {
       result.data.forEach(row => {
         let subject = "";
         if (row) {
@@ -837,7 +897,7 @@ class CommonLog extends Component {
   changeValueOfProps = () => {
     this.setState({ isFilter: false });
   };
-  
+
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     if (event == null) return;
     let original_document = { ...this.state.document };
@@ -859,7 +919,7 @@ class CommonLog extends Component {
       });
     }
   }
-  
+
   render() {
 
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
@@ -886,14 +946,20 @@ class CommonLog extends Component {
           </div>
       )
     })
-
     const dataGrid = this.state.isLoading === false ?
       (
         <GridCustom
           gridKey={'CommonLog-' + this.state.documentName}
           data={this.state.rows}
           actions={this.actions}
-          rowActions={this.rowActions}
+<<<<<<< HEAD
+          rowActions={
+            (this.state.documentObj.docTyp == 50 ? this.inventoryRowActions : (this.state.documentObj.forEditApi != undefined ? this.rowActions : null))
+          }
+
+=======
+          rowActions={this.state.documentObj.forEditApi != undefined ? this.rowActions : null}
+>>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
           cells={this.state.columns}
 
           openModalColumn={this.state.columnsModal}
@@ -1008,7 +1074,7 @@ class CommonLog extends Component {
               </div>
             </div>
             <div className="filterBTNS">
-              
+
               {btnExport}
               {btnExportServer}
               {btnDocumentTemplate}
@@ -1212,6 +1278,19 @@ class CommonLog extends Component {
             </SkyLight>
           </div>
         ) : null}
+        {this.state.showInventoryItemsModal == true ? (
+          <div className="largePopup largeModal " >
+            <InventoryItemsModal
+              title={Resources["items"][currentLanguage]}
+              buttonName="MoreDetails"
+              inventoryItems={this.state.inventoryItems}
+              closed={this.onInventoryItemsCloseModal}
+              showInventoryItemsModal={this.state.showInventoryItemsModal}
+              clickMoreDetailsHandler={this.clickMoreDetailsHandler}
+
+            />
+          </div>
+        ) : null}
       </Fragment>
     );
   };
@@ -1228,6 +1307,7 @@ function mapStateToProps(state, ownProps) {
     document: state.communication.document,
     files: state.communication.files,
     workFlowCycles: state.communication.workFlowCycles,
+    inventoryItems: state.communication.inventoryItems
   };
 }
 

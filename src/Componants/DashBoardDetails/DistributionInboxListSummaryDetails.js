@@ -264,13 +264,7 @@ class DistributionInboxListSummaryDetails extends Component {
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
               row.link = "/" + spliteLink[0] + "?id=" + encodedPaylod
-              subject = row.subject;
-              // setTimeout(() => {
-              //   var tableRow = document.querySelectorAll('.grid-body  tr');
-              //   for (let x = 0; x < tableRow.length; x++) {
-              //     if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
-              //   }
-              // }, 500);
+              subject = row.subject; 
             });
           }
           this.setState({

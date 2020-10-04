@@ -167,7 +167,7 @@ class EditAccount extends Component {
     }
 
     handleDropDown(selectedValue, event, isNew, fillDrop) {
-
+debugger
         this.setState({ [selectedValue]: event });
 
         const selected = isNew === true ? "selectedSupervisorCompany" : "";
@@ -186,7 +186,7 @@ class EditAccount extends Component {
     }
 
     editAccount = (value) => {
-
+debugger
         let accountCompanyId = config.getPublicConfiguartion().accountCompanyId;
 
         this.setState({

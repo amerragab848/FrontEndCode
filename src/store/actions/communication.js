@@ -693,3 +693,27 @@ export function getAttachmentsAndWFCycles(DocType, docId, projectId) {
 }
 //#endregion
 
+
+// inventor items
+export function GetItemsInventory(url) {
+    
+    return (dispatch) => {
+        return Api.get(url).then(res => {
+            
+            dispatch({ type: types.INVENTORY_ITEMS, items: res })
+        }).catch((ex) => {
+            dispatch({ type: types.INVENTORY_ITEMS })
+        });
+    }
+}
+export function emptyList(stateName) {
+    
+    return (dispatch) => {
+       
+            dispatch({ type: types.EMPTY_LIST,
+                 name: stateName ,
+                })
+        
+    }
+}
+

@@ -597,6 +597,10 @@
         "en": "Description",
         "ar": "الوصف"
     },
+    "deductionDescription": {
+        "en": "Deduction Description",
+        "ar": "وصف الاستقطاع"
+    },
     "descriptionEn": {
         "en": "Description English",
         "ar": " الوصف بالانجليزيه"
@@ -885,6 +889,15 @@
         "en": "To Company Name",
         "ar": "إلى شركه"
     },
+    "fromContactName":{
+        "en":"From Contact Name",
+        "ar":"الشخص المسئول "
+    },
+    "fromCompanyName":{
+        "en":"From Company Name",
+        "ar":"من شركة"
+    }
+    ,
     "toContactName": {
         "en": "To Contact Name",
         "ar": "الشخص المسئول"
@@ -2877,6 +2890,15 @@
         "en": "Items",
         "ar": "العناصر"
     },
+    "MoreDetails":{
+        "en":"More Details",
+        "ar":"مزيدا من التفاصيل"
+    },
+    "lastApproveTime":{
+        "en":"last Approve Time",
+        "ar":"وقت الموافقة الأخير"
+    }
+    ,
     "checkList": {
         "en": "Check List",
         "ar": "قائمة التحقق"
@@ -8026,6 +8048,10 @@
         "en": "You Have Already Added Contract Assigned To This BOQ",
         "ar": "هذا العقد موجود  مسبقا"
     },
+    "assignContact": {
+        "en": "Assign Contact",
+        "ar": "تعيين جهة اتصال"
+    },
     "responsibleCompanyName": {
         "en": "Action Owner",
         "ar": " الشركه المسئوله"
@@ -8333,6 +8359,14 @@
     "actionPlanned": {
         "en": "Progress Planned ",
         "ar": "العمل المخطط"
+    },
+    "plannedStart": {
+        "en": "Planned Start",
+        "ar": "بداية المخطط"
+    },
+    "plannedFinish": {
+        "en": "Planned Finish",
+        "ar": "انتهاء المخطط"
     },
     "riskMitigationProgress": {
         "en": "Risk Mitigation Progress ",
@@ -8669,5 +8703,9 @@
     "deductionValue": {
         "en": "Deduction Value",
         "ar": "قيمة الاستقطاع"
+    },
+    "chooseExcelFormat":{
+        "en":"Choose Excel Format",
+        "ar":"اختر صيغة"
     }
 }

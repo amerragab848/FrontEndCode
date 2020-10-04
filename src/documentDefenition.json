@@ -23,7 +23,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -35,7 +34,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -48,7 +46,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -59,7 +56,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -71,7 +67,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -83,7 +78,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -95,7 +89,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -107,7 +100,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -119,7 +111,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -131,7 +122,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -143,7 +133,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -155,7 +144,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -167,7 +155,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -179,7 +166,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -191,7 +177,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -203,7 +188,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -215,11 +199,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
-    ], 
+    ],
     "forEditApi": "GetLettersById",
     "filterApi": "LettersFilters",
     "filters": [
@@ -319,7 +302,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -331,7 +313,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -344,7 +325,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -355,7 +335,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -367,7 +346,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -379,7 +357,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -391,7 +368,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -403,7 +379,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -415,7 +390,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -427,7 +401,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -439,7 +412,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -451,7 +423,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -463,7 +434,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -475,7 +445,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -487,12 +456,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetCommunicationEmailsForEdit",
     "filterApi": "emailsFilter",
     "filters": [
@@ -590,7 +557,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -602,7 +568,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -615,7 +580,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -626,7 +590,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -638,7 +601,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -650,7 +612,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -662,7 +623,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -674,7 +634,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -686,7 +645,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -698,7 +656,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -710,7 +667,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -722,7 +678,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -734,7 +689,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -746,7 +700,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -758,7 +711,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -770,7 +722,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -782,11 +733,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
-    ],  
+    ],
     "forEditApi": "GetCommunicationInternalMemoForEdit",
     "filterApi": "InternalMemoFilter",
     "filters": [
@@ -896,7 +846,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -908,7 +857,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -921,7 +869,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -932,7 +879,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -944,7 +890,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -956,7 +901,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -968,7 +912,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -980,7 +923,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -992,7 +934,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1004,7 +945,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1016,7 +956,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1028,7 +967,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1040,7 +978,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1052,7 +989,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1064,7 +1000,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1076,7 +1011,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1088,7 +1022,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1100,7 +1033,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1112,11 +1044,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
-    ], 
+    ],
     "forEditApi": "GetCommunicationMeetingAgendaForEdit",
     "filterApi": "MeetingAgendFilter",
     "filters": [
@@ -1238,7 +1169,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -1250,7 +1180,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1263,7 +1192,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -1274,7 +1202,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1286,7 +1213,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1298,7 +1224,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1310,7 +1235,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1322,7 +1246,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1334,7 +1257,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1346,7 +1268,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1358,7 +1279,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -1370,7 +1290,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1382,7 +1301,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1394,7 +1312,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1406,7 +1323,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1418,7 +1334,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1430,7 +1345,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1442,7 +1356,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1454,7 +1367,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1466,7 +1378,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1478,11 +1389,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
-    ], 
+    ],
     "forEditApi": "GetCommunicationNCRsForEdit",
     "filterApi": "nCRFilter",
     "filters": [
@@ -1635,7 +1545,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -1647,7 +1556,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1660,7 +1568,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -1671,7 +1578,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1683,7 +1589,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1695,7 +1600,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1707,7 +1611,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1719,7 +1622,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1731,7 +1633,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -1743,7 +1644,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1755,7 +1655,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1767,7 +1666,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1779,7 +1677,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1791,7 +1688,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1803,7 +1699,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1815,7 +1710,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1827,12 +1721,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetPhoneById",
     "filterApi": "PhonsFilter",
     "filters": [
@@ -1941,7 +1833,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -1953,7 +1844,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1966,7 +1856,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -1977,7 +1866,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -1989,7 +1877,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2001,7 +1888,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2013,7 +1899,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2025,7 +1910,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2037,7 +1921,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -2049,7 +1932,6 @@
         "dataType": "date",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2061,7 +1943,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2073,7 +1954,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2085,7 +1965,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2097,7 +1976,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2109,7 +1987,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2121,7 +1998,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2133,7 +2009,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2145,12 +2020,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetCommunicationProposalForEdit",
     "filterApi": "ProposalFilter",
     "filters": [
@@ -2266,7 +2139,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -2279,7 +2151,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -2290,7 +2161,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2302,7 +2172,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2314,7 +2183,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2326,7 +2194,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2338,7 +2205,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2350,7 +2216,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -2362,7 +2227,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2374,7 +2238,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2386,7 +2249,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2398,7 +2260,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2410,7 +2271,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2422,7 +2282,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2434,7 +2293,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2446,7 +2304,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2458,12 +2315,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetRequestProposalById",
     "filterApi": "RequestProposalFilter",
     "filters": [
@@ -2571,7 +2426,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -2583,7 +2437,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2596,7 +2449,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -2607,7 +2459,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2619,7 +2470,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2631,7 +2481,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2643,7 +2492,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2655,7 +2503,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2667,7 +2514,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -2679,7 +2525,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2691,7 +2536,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2703,7 +2547,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2715,7 +2558,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2727,7 +2569,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2739,7 +2580,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2751,7 +2591,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -2763,7 +2602,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2775,12 +2613,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetCommunicationReportForEdit",
     "filterApi": "ReportsFilter",
     "filters": [
@@ -2896,7 +2732,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2909,7 +2744,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -2920,7 +2754,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2932,7 +2765,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2944,7 +2776,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2956,7 +2787,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -2968,7 +2798,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2980,7 +2809,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -2992,7 +2820,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3004,7 +2831,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -3016,7 +2842,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -3028,7 +2853,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3040,7 +2864,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3052,7 +2875,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3064,7 +2886,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3076,7 +2897,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3088,7 +2908,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3100,7 +2919,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3112,7 +2930,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3124,7 +2941,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3136,7 +2952,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3148,7 +2963,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3160,12 +2974,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetCommunicationRfiForEdit",
     "filterApi": "CommunicationRFIFilter",
     "filters": [
@@ -3317,7 +3129,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -3329,7 +3140,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3342,7 +3152,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -3353,7 +3162,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3365,7 +3173,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3377,7 +3184,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3389,7 +3195,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3401,7 +3206,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -3413,7 +3217,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3425,7 +3228,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3437,7 +3239,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3449,7 +3250,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3461,7 +3261,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3473,7 +3272,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3485,7 +3283,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3497,7 +3294,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3509,7 +3305,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3521,7 +3316,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3533,7 +3327,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3545,7 +3338,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3557,12 +3349,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetCommunicationTransmittalForEdit",
     "filterApi": "TransmittalFilter",
     "filters": [
@@ -3707,7 +3497,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -3719,7 +3508,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3732,7 +3520,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -3743,7 +3530,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3755,7 +3541,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -3767,7 +3552,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3779,7 +3563,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -3791,7 +3574,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3803,7 +3585,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3815,7 +3596,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3827,7 +3607,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3839,7 +3618,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3851,7 +3629,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3863,7 +3640,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3875,7 +3651,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3887,7 +3662,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3899,7 +3673,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3911,7 +3684,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3923,7 +3695,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3935,7 +3706,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3947,12 +3717,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetCommunicationMeetingMinutesForEdit",
     "filterApi": "MeetingMinutesFilter",
     "filters": [
@@ -4086,7 +3854,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -4098,7 +3865,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -4111,7 +3877,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -4122,7 +3887,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -4134,7 +3898,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -4146,7 +3909,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4158,7 +3920,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -4170,7 +3931,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4182,7 +3942,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4194,7 +3953,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4206,7 +3964,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4218,7 +3975,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4230,7 +3986,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4242,7 +3997,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4254,7 +4008,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4266,7 +4019,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4278,7 +4030,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4290,7 +4041,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4302,7 +4052,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4314,7 +4063,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4326,12 +4074,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "forEditApi": "GetCommunicationMeetingMinutesForEdit",
     "filterApi": "MeetingMinutesFilter",
     "filters": [
@@ -4465,7 +4211,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -4477,7 +4222,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -4490,7 +4234,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -4501,7 +4244,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -4513,7 +4255,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4525,21 +4266,8 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
-      },
-      {
-        "field": "disciplineName",
-        "friendlyName": "disciplineName",
-        "minWidth": 150,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        
-        "isCustom": false,
-        "exportDataType": "s"
       },
       {
         "field": "openedBy",
@@ -4549,7 +4277,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4561,7 +4288,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4573,7 +4299,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4585,7 +4310,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4597,7 +4321,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4609,7 +4332,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4621,7 +4343,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4633,12 +4354,11 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
-    ], 
-    "forEditApi":"GetBoqForEdit",
+    ],
+    "forEditApi": "GetBoqForEdit",
     "filterApi": "BoqFilter",
     "filters": [
       {
@@ -4678,13 +4398,7 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true
-      },
-      {
-        "name": "disciplineName",
-        "field": "disciplineName",
-        "type": "string",
-        "isCustom": false
-      },
+      }, 
       {
         "name": "openedBy",
         "field": "openedBy",
@@ -4735,7 +4449,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -4747,7 +4460,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -4760,7 +4472,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -4771,7 +4482,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -4783,7 +4493,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4795,7 +4504,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4807,7 +4515,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4819,7 +4526,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -4831,7 +4537,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4843,7 +4548,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4855,7 +4559,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4867,7 +4570,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4879,7 +4581,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4891,7 +4592,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4903,7 +4603,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4915,7 +4614,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4927,7 +4625,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -4939,7 +4636,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -4951,12 +4647,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ChangeOrderFilter",
     "filters": [
       {
@@ -5077,7 +4771,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -5089,7 +4782,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -5102,7 +4794,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -5113,7 +4804,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -5125,7 +4815,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -5137,7 +4826,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5149,7 +4837,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5161,7 +4848,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5173,7 +4859,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5185,7 +4870,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -5197,7 +4881,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5209,7 +4892,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5221,7 +4903,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5233,7 +4914,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5245,7 +4925,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5257,7 +4936,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5269,7 +4947,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5281,7 +4958,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5293,12 +4969,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ClientModificationFilter",
     "filters": [
       {
@@ -5419,7 +5093,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -5431,7 +5104,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -5444,7 +5116,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -5455,7 +5126,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5467,7 +5137,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -5479,7 +5148,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5491,7 +5159,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5503,7 +5170,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5515,7 +5181,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -5527,7 +5192,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5539,7 +5203,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -5551,7 +5214,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -5563,7 +5225,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -5575,7 +5236,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -5587,7 +5247,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -5599,7 +5258,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5611,7 +5269,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5623,7 +5280,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5635,7 +5291,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5647,7 +5302,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5659,7 +5313,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5671,12 +5324,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ProjectContractFilter",
     "filters": [
       {
@@ -5786,7 +5437,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -5797,7 +5447,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -5809,7 +5458,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5821,7 +5469,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -5833,7 +5480,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5845,7 +5491,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5857,7 +5502,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5869,12 +5513,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "BoqFilter",
     "filters": [
       {
@@ -5951,7 +5593,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -5963,7 +5604,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -5975,7 +5615,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -5988,7 +5627,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -5999,7 +5637,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -6011,7 +5648,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -6023,7 +5659,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -6035,7 +5670,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -6047,7 +5681,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -6059,7 +5692,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6071,7 +5703,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6083,7 +5714,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6095,7 +5725,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6107,7 +5736,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6119,7 +5747,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6131,7 +5758,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6143,7 +5769,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6155,7 +5780,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6167,7 +5791,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6179,7 +5802,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6191,12 +5813,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "InvoiceForPoFilter",
     "filters": [
       {
@@ -6329,7 +5949,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -6341,7 +5960,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -6354,7 +5972,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-      
         "exportDataType": "s"
       },
       {
@@ -6365,7 +5982,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6377,7 +5993,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6389,7 +6004,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -6401,7 +6015,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -6413,7 +6026,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6425,7 +6037,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6437,7 +6048,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6449,7 +6059,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -6461,7 +6070,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6473,7 +6081,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6485,7 +6092,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -6497,7 +6103,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6509,7 +6114,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6521,7 +6125,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6533,7 +6136,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6545,7 +6147,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6557,7 +6158,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6569,7 +6169,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6581,7 +6180,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6593,12 +6191,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ContractPcoFilter",
     "filters": [
       {
@@ -6743,7 +6339,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -6755,7 +6350,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -6768,7 +6362,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -6779,7 +6372,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -6791,7 +6383,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6803,7 +6394,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -6815,7 +6405,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6827,7 +6416,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6839,7 +6427,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6851,12 +6438,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "ProjectIssuesFilter",
     "filters": [
       {
@@ -6947,7 +6532,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -6959,7 +6543,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -6972,7 +6555,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-       
         "exportDataType": "s"
       },
       {
@@ -6983,7 +6565,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -6995,7 +6576,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7007,7 +6587,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7019,7 +6598,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7031,7 +6609,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7043,7 +6620,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7055,7 +6631,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -7067,7 +6642,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -7079,7 +6653,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -7091,7 +6664,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -7103,7 +6675,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7115,7 +6686,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -7127,7 +6697,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7139,7 +6708,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7151,7 +6719,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7163,7 +6730,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7175,7 +6741,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7187,7 +6752,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7199,7 +6763,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7211,7 +6774,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7223,7 +6785,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7235,12 +6796,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ContractsPurchaseOrderFilter",
     "filters": [
       {
@@ -7396,7 +6955,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -7408,7 +6966,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -7421,7 +6978,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -7432,7 +6988,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7444,7 +6999,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7456,7 +7010,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -7468,7 +7021,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7480,7 +7032,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7492,7 +7043,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7504,7 +7054,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7516,7 +7065,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7528,7 +7076,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7540,7 +7087,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7552,7 +7098,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7564,12 +7109,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ContractsQsFilter",
     "filters": [
       {
@@ -7666,7 +7209,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -7678,7 +7220,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -7691,7 +7232,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -7702,7 +7242,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -7714,7 +7253,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7726,7 +7264,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -7738,7 +7275,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -7750,7 +7286,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -7762,7 +7297,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7774,7 +7308,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7786,7 +7319,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7798,7 +7330,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -7810,7 +7341,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -7822,7 +7352,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7834,7 +7363,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7846,7 +7374,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7858,7 +7385,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7870,7 +7396,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7882,7 +7407,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -7894,7 +7418,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -7906,12 +7429,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "RequestPaymentFilter",
     "filters": [
       {
@@ -8019,7 +7540,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -8031,7 +7551,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8044,7 +7563,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -8055,9 +7573,8 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s" 
       },  
       {
         "field": "docCloseDate",
@@ -8067,7 +7584,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8079,7 +7595,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -8091,7 +7606,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8103,7 +7617,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8115,7 +7628,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8127,7 +7639,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8139,7 +7650,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8151,7 +7661,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8163,7 +7672,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8175,7 +7683,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8187,7 +7694,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8199,7 +7705,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8211,7 +7716,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8223,12 +7727,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "SiteRequestFilter",
     "filters": [
       {
@@ -8379,7 +7881,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -8391,7 +7892,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8404,7 +7904,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -8415,7 +7914,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8427,7 +7925,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8439,7 +7936,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8451,7 +7947,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8463,7 +7958,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8475,7 +7969,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8487,7 +7980,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -8499,7 +7991,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8511,7 +8002,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8523,7 +8013,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8535,7 +8024,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8547,12 +8035,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "VariationRequestFilter",
     "filters": [
       {
@@ -8649,7 +8135,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8661,7 +8146,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8673,7 +8157,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8696,7 +8179,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8708,7 +8190,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8720,7 +8201,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -8732,7 +8212,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8744,7 +8223,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8756,7 +8234,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -8768,7 +8245,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8780,7 +8256,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8792,7 +8267,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8804,7 +8278,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8816,7 +8289,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8828,7 +8300,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -8840,7 +8311,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -8852,12 +8322,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "LogsDrawingsFilter",
     "filters": [
       {
@@ -8988,7 +8456,7 @@
         "width": "8%",
         "dataType": "status",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -9000,7 +8468,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9011,7 +8478,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9022,7 +8489,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9033,7 +8500,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9044,7 +8511,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9055,7 +8522,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9066,7 +8533,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9077,7 +8544,7 @@
         "width": "15%",
         "dataType": "date",
         "isDate": true,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -9088,7 +8555,7 @@
         "width": "15%",
         "dataType": "date",
         "isDate": true,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -9099,7 +8566,7 @@
         "width": "15%",
         "dataType": "date",
         "isDate": true,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -9110,7 +8577,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9121,7 +8588,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9132,7 +8599,7 @@
         "width": "15%",
         "dataType": "string",
         "isDate": false,
-        "isTime": false, 
+        "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9144,7 +8611,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -9156,7 +8622,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9168,7 +8633,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -9180,15 +8644,12 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "LogsDrawingsFilter",
     "filters": [
-      
       {
         "name": "status",
         "field": "status",
@@ -9307,7 +8768,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -9320,7 +8780,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -9331,7 +8790,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -9343,7 +8801,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9355,7 +8812,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9367,7 +8823,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9379,12 +8834,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "DesignDrawingListFilter",
     "filters": [
       {
@@ -9457,7 +8910,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -9469,7 +8921,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -9482,7 +8933,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -9493,7 +8943,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9505,7 +8954,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -9517,7 +8965,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9529,7 +8976,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9541,7 +8987,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -9553,12 +8998,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "DesignDrawingPhasesFilter",
     "filters": [
       {
@@ -9642,7 +9085,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -9655,7 +9097,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -9666,7 +9107,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -9678,7 +9118,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9690,7 +9129,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9702,7 +9140,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9714,7 +9151,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9726,12 +9162,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "DesignDrawingListFilter",
     "filters": [
       {
@@ -9807,7 +9241,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -9819,7 +9252,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -9831,7 +9263,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -9843,7 +9274,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9855,7 +9285,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9867,7 +9296,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -9879,12 +9307,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "EstimationBaseFilter",
     "filters": [
       {
@@ -9954,7 +9380,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -9966,12 +9391,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ProjectProjectsExpensesFilter",
     "filters": [
       {
@@ -10011,7 +9434,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10023,7 +9445,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -10035,7 +9456,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -10047,7 +9467,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10059,7 +9478,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10071,7 +9489,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10083,7 +9500,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10095,7 +9511,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -10107,7 +9522,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -10119,7 +9533,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -10131,12 +9544,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       }
     ],
-    
     "filterApi": "EstimationBudgetfileFilter",
     "filters": [
       {
@@ -10231,7 +9642,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -10244,7 +9654,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -10255,7 +9664,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -10267,7 +9675,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -10279,7 +9686,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10291,7 +9697,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -10303,7 +9708,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10315,7 +9719,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10327,7 +9730,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10339,7 +9741,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10351,7 +9752,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10363,7 +9763,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10375,7 +9774,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10387,7 +9785,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10399,12 +9796,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "EstimationProjectEstimateFilter",
     "filters": [
       {
@@ -10499,7 +9894,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -10512,7 +9906,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -10523,7 +9916,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -10535,7 +9927,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -10547,7 +9938,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -10559,7 +9949,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10571,7 +9960,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -10583,7 +9971,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10595,7 +9982,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10607,7 +9993,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10619,7 +10004,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10631,7 +10015,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10643,7 +10026,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10655,7 +10037,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10667,12 +10048,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "EstimationTenderAnalysisFilter",
     "filters": [
       {
@@ -10768,7 +10147,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -10780,7 +10158,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -10793,7 +10170,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -10804,7 +10180,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -10816,7 +10191,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10828,7 +10202,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10840,7 +10213,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10852,7 +10224,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10864,7 +10235,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10876,7 +10246,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10888,7 +10257,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10900,7 +10268,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10912,7 +10279,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -10924,7 +10290,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -10936,12 +10301,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ScheduleFilter",
     "filters": [
       {
@@ -11038,7 +10401,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -11050,7 +10412,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11063,7 +10424,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -11074,7 +10434,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -11086,7 +10445,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11098,7 +10456,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11110,7 +10467,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11122,7 +10478,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11134,7 +10489,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11146,7 +10500,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11158,7 +10511,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11170,7 +10522,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11182,7 +10533,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11194,7 +10544,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11206,12 +10555,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "PrimaveraFilter",
     "filters": [
       {
@@ -11308,7 +10655,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11320,7 +10666,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11333,7 +10678,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -11344,7 +10688,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11356,7 +10699,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11368,7 +10710,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11380,7 +10721,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11392,7 +10732,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -11404,7 +10743,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11416,7 +10754,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11428,7 +10765,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11440,7 +10776,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11452,7 +10787,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11464,7 +10798,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11476,7 +10809,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11488,7 +10820,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11500,7 +10831,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11512,7 +10842,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11524,7 +10853,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11536,7 +10864,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11548,7 +10875,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11560,7 +10886,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11572,7 +10897,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11584,7 +10908,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11596,12 +10919,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ClientSelectionFilter",
     "filters": [
       {
@@ -11758,7 +11079,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11770,7 +11090,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11783,7 +11102,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -11794,7 +11112,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11806,7 +11123,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11818,7 +11134,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11830,7 +11145,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11842,7 +11156,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11854,7 +11167,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11866,7 +11178,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11878,7 +11189,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11890,7 +11200,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11902,7 +11211,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11914,7 +11222,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -11926,7 +11233,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -11938,7 +11244,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11950,7 +11255,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -11962,7 +11266,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11974,7 +11277,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11986,7 +11288,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -11998,7 +11299,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12010,7 +11310,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12022,7 +11321,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12034,7 +11332,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12046,7 +11343,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12058,7 +11354,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12070,12 +11365,11 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
+    "forEditApi": "GetInspectionRequestForEdit",
     "filterApi": "CommunicationRequestFilter",
     "filters": [
       {
@@ -12243,7 +11537,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12255,7 +11548,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12268,7 +11560,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -12279,7 +11570,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12291,7 +11581,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12303,7 +11592,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -12315,7 +11603,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12327,7 +11614,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12339,7 +11625,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12351,7 +11636,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12363,7 +11647,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12375,7 +11658,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12387,7 +11669,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12399,7 +11680,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12411,12 +11691,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "LogsMaterialDeliveryFilter",
     "filters": [
       {
@@ -12513,7 +11791,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12525,7 +11802,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12538,7 +11814,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -12549,7 +11824,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12561,7 +11835,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12573,7 +11846,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12585,7 +11857,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12597,7 +11868,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12609,7 +11879,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12621,7 +11890,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12633,7 +11901,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12645,7 +11912,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12657,7 +11923,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12669,7 +11934,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -12681,7 +11945,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12693,7 +11956,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12705,7 +11967,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12717,7 +11978,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12729,7 +11989,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12741,7 +12000,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12753,7 +12011,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12765,7 +12022,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12777,7 +12033,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12789,7 +12044,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12801,7 +12055,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12813,7 +12066,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12825,12 +12077,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "MaterialRequestFilter",
     "filters": [
       {
@@ -13003,7 +12253,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -13015,7 +12264,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13027,7 +12275,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13039,7 +12286,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13051,7 +12297,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13063,7 +12308,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -13075,7 +12319,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -13087,7 +12330,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -13099,7 +12341,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -13111,7 +12352,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -13123,7 +12363,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13135,7 +12374,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13147,7 +12385,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13159,7 +12396,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13171,7 +12407,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13183,7 +12418,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13195,7 +12429,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13207,12 +12440,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "InvoiceForPoFilterAll",
     "filters": [
       {
@@ -13331,7 +12562,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13343,7 +12573,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13355,7 +12584,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13367,7 +12595,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13379,7 +12606,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13391,7 +12617,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13403,7 +12628,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13415,7 +12639,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13427,7 +12650,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13439,7 +12661,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13451,7 +12672,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13463,7 +12683,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13475,7 +12694,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13487,7 +12705,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -13499,7 +12716,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13511,7 +12727,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13523,7 +12738,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13535,7 +12749,6 @@
         "dataType": "date",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13547,7 +12760,6 @@
         "dataType": "date",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13559,7 +12771,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13571,7 +12782,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13583,7 +12793,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13595,12 +12804,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "CommunicationRequestFilterAll",
     "filters": [
       {
@@ -13767,7 +12974,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -13779,7 +12985,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13791,7 +12996,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13803,7 +13007,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13815,7 +13018,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13827,7 +13029,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13839,7 +13040,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13851,7 +13051,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13863,7 +13062,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13875,7 +13073,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -13887,7 +13084,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13899,7 +13095,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13911,7 +13106,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13923,7 +13117,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13935,12 +13128,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "SiteInstructionFilter",
     "filters": [
       {
@@ -14059,7 +13250,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -14071,7 +13261,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14083,7 +13272,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14095,7 +13283,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14107,7 +13294,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14119,7 +13305,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14131,7 +13316,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14143,7 +13327,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14155,7 +13338,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14167,7 +13349,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14179,7 +13360,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -14191,7 +13371,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14203,7 +13382,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14215,7 +13393,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14227,7 +13404,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14239,7 +13415,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14251,7 +13426,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14263,7 +13437,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14275,7 +13448,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14287,12 +13459,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "NCRFilterAll",
     "filters": [
       {
@@ -14423,7 +13593,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14435,7 +13604,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14447,7 +13615,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14459,7 +13626,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14471,7 +13637,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14483,7 +13648,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14495,7 +13659,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14507,7 +13670,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14519,7 +13681,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14531,7 +13692,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14543,7 +13703,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14555,7 +13714,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14567,7 +13725,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14579,7 +13736,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -14591,7 +13747,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -14603,7 +13758,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14615,7 +13769,6 @@
         "dataType": "date",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14627,7 +13780,6 @@
         "dataType": "date",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14639,7 +13791,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14651,7 +13802,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14663,7 +13813,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14675,12 +13824,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "MaterialRequestFilterAll",
     "filters": [
       {
@@ -14837,13 +13984,12 @@
     "documentColumns": [
       {
         "field": "id",
-        "friendlyName": "transfer",
-        "minWidth": 85,
-        "width": "3%",
+        "friendlyName": "arrange", 
+        "minWidth": 6,
+        "width": "5%", 
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "exportDataType": "s",
         "isCustom": true
       },
@@ -14855,7 +14001,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "exportDataType": "s",
         "isCustom": true
       },
@@ -14868,7 +14013,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -14879,7 +14023,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -14888,10 +14031,9 @@
         "friendlyName": "remainingQuantity",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -14900,10 +14042,9 @@
         "friendlyName": "unitPrice",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -14912,10 +14053,9 @@
         "friendlyName": "total",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -14924,10 +14064,9 @@
         "friendlyName": "deliveredQuantity",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -14936,10 +14075,9 @@
         "friendlyName": "releasedQuantity",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "string",
+        "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -14951,7 +14089,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -14963,7 +14100,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "n"
       },
@@ -14975,7 +14111,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "exportDataType": "n",
         "isCustom": false
       },
@@ -14987,7 +14122,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "exportDataType": "n",
         "isCustom": false
       },
@@ -14999,7 +14133,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15011,7 +14144,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15023,7 +14155,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15035,7 +14166,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15047,7 +14177,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15059,12 +14188,11 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
+    "TransferInventoryApi":"",  
     "filterApi": "LogsMaterialInventoryFilter",
     "filters": [
       {
@@ -15177,7 +14305,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15189,7 +14316,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15202,7 +14328,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -15213,7 +14338,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15225,7 +14349,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15237,7 +14360,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15249,7 +14371,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15261,7 +14382,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -15273,7 +14393,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15285,7 +14404,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15297,7 +14415,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15309,7 +14426,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15321,7 +14437,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15333,7 +14448,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15345,7 +14459,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15357,7 +14470,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15369,7 +14481,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15381,12 +14492,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "LogsMaterialReleaseFilter",
     "filters": [
       {
@@ -15501,7 +14610,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15513,7 +14621,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15526,7 +14633,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -15537,7 +14643,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15549,7 +14654,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15561,7 +14665,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15573,7 +14676,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15585,7 +14687,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -15597,7 +14698,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15609,7 +14709,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15621,7 +14720,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15633,7 +14731,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15645,7 +14742,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15657,7 +14753,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15669,7 +14764,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15681,7 +14775,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15693,7 +14786,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15705,12 +14797,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "LogsMaterialReturnedFilter",
     "filters": [
       {
@@ -15825,7 +14915,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15837,7 +14926,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15850,7 +14938,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -15861,7 +14948,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -15873,7 +14959,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15885,7 +14970,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15897,7 +14981,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15909,7 +14992,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -15921,7 +15003,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15933,7 +15014,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15945,7 +15025,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15957,7 +15036,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -15969,7 +15047,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15981,7 +15058,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -15993,7 +15069,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16005,7 +15080,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16017,12 +15091,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "PunchListFilter",
     "filters": [
       {
@@ -16131,7 +15203,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -16143,7 +15214,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16156,7 +15226,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -16167,7 +15236,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16179,7 +15247,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16191,7 +15258,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16203,7 +15269,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16215,7 +15280,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16227,7 +15291,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -16239,7 +15302,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16251,7 +15313,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16263,7 +15324,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16275,7 +15335,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16287,7 +15346,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16299,7 +15357,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16311,7 +15368,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16323,7 +15379,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16335,12 +15390,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "SiteInstructionFilter",
     "filters": [
       {
@@ -16455,7 +15508,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16467,7 +15519,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16480,7 +15531,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -16491,7 +15541,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16503,7 +15552,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -16515,7 +15563,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16527,7 +15574,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16539,7 +15585,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16551,7 +15596,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16563,7 +15607,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16575,7 +15618,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16587,7 +15629,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16599,7 +15640,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16611,7 +15651,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16623,7 +15662,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16635,7 +15673,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16647,7 +15684,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16659,7 +15695,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16671,7 +15706,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16683,7 +15717,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16695,7 +15728,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16707,7 +15739,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16719,7 +15750,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16731,12 +15761,11 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
+    "forEditApi": "GetLogsSubmittalForEdit",
     "filterApi": "SubmittalsFilter",
     "filters": [
       {
@@ -16860,7 +15889,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16872,7 +15900,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -16885,7 +15912,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -16896,7 +15922,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16908,7 +15933,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16920,7 +15944,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16932,7 +15955,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -16944,7 +15966,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16956,7 +15977,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16968,7 +15988,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -16980,7 +15999,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -16992,7 +16010,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17004,7 +16021,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17016,7 +16032,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17028,7 +16043,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17040,12 +16054,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "ApprovedLastCycleFilter",
     "filters": [
       {
@@ -17171,7 +16183,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -17183,7 +16194,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17196,7 +16206,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -17207,7 +16216,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17219,7 +16227,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17231,7 +16238,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17243,7 +16249,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -17255,7 +16260,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -17267,7 +16271,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17279,7 +16282,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17291,7 +16293,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17303,7 +16304,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17315,12 +16315,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "LogsubmittalSetsFilter",
     "filters": [
       {
@@ -17429,7 +16427,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -17441,7 +16438,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17454,7 +16450,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -17465,7 +16460,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -17477,7 +16471,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -17489,7 +16482,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17501,7 +16493,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17513,7 +16504,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17525,12 +16515,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "getProjectTaskGroupsFilter",
     "filters": [
       {
@@ -17615,7 +16603,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -17628,7 +16615,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -17639,7 +16625,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -17651,7 +16636,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -17663,7 +16647,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17675,7 +16658,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17687,7 +16669,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17699,12 +16680,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "ProjectDistributionListFilter",
     "filters": [
       {
@@ -17792,7 +16771,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17804,7 +16782,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17816,7 +16793,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17828,7 +16804,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -17840,7 +16815,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -17852,7 +16826,6 @@
         "dataType": "string",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17864,7 +16837,6 @@
         "dataType": "string",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -17876,7 +16848,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -17888,7 +16859,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17900,7 +16870,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17912,7 +16881,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17924,7 +16892,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -17936,7 +16903,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -17948,12 +16914,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "TransmittalFilter",
     "filters": [
       {
@@ -18086,7 +17050,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -18098,7 +17061,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18111,7 +17073,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -18122,7 +17083,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -18134,7 +17094,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18146,7 +17105,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18158,7 +17116,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18170,7 +17127,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18182,7 +17138,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18194,12 +17149,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ProjectWorkFlowFilter",
     "filters": [
       {
@@ -18287,7 +17240,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -18300,7 +17252,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -18311,7 +17262,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18323,7 +17273,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18335,7 +17284,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -18347,7 +17295,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18359,12 +17306,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "PicturesFilters",
     "filters": [
       {
@@ -18435,7 +17380,6 @@
         "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -18447,7 +17391,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18460,7 +17403,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -18471,7 +17413,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18483,7 +17424,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18495,7 +17435,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18507,7 +17446,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18519,7 +17457,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18531,7 +17468,6 @@
         "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -18543,7 +17479,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18555,7 +17490,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18567,7 +17501,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18579,7 +17512,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -18591,7 +17523,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18603,7 +17534,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18615,7 +17545,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18627,7 +17556,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18639,12 +17567,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "ClaimsFilters",
     "filters": [
       {
@@ -18741,7 +17667,6 @@
         "dataType": "number",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -18753,7 +17678,6 @@
         "dataType": "status",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18766,7 +17690,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -18777,7 +17700,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -18789,7 +17711,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -18801,7 +17722,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18813,7 +17733,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18825,7 +17744,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18837,7 +17755,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18849,7 +17766,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18861,7 +17777,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18873,7 +17788,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18885,7 +17799,6 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -18897,12 +17810,10 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        
         "isCustom": false,
         "exportDataType": "s"
       }
     ],
-    
     "filterApi": "DailyReportsFilter",
     "filters": [
       {
@@ -18989,7 +17900,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "n"
       },
@@ -19001,7 +17911,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -19014,7 +17923,6 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        
         "exportDataType": "s"
       },
       {
@@ -19025,7 +17933,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -19037,7 +17944,6 @@
         "dataType": "string",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -19049,7 +17955,6 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -19061,7 +17966,6 @@
         "dataType": "date",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -19073,7 +17977,6 @@
         "dataType": "date",
         "isDate": false,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       },
@@ -19085,12 +17988,10 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        
         "isCustom": true,
         "exportDataType": "d"
       }
     ],
-    
     "filterApi": "FilterPaymentCertification",
     "filters": [
       {

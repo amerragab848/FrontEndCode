@@ -2,7 +2,6 @@ import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
-//import moment from "moment";
 let Authorization = localStorage.getItem("userToken");
 
 let modules = [{ api: 'PM/api/Procoor/', key: 1 }, { api: 'ExportAPI/api/ExportController/', key: 2 }, { api: 'ExportAPI/api/ExportController/', key: 3 }]
@@ -242,6 +241,7 @@ export default class Api {
     }
 
     static xhr(route, params, verb, moduleId) {
+<<<<<<< HEAD
         // if (moduleId < 1) moduleId = 1;
         // let apiPrefix = modules.find(x => x.key == moduleId);
         //const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
@@ -249,6 +249,14 @@ export default class Api {
  
         const url = `${host}${route}`;
  
+=======
+     
+
+        if (moduleId < 1) moduleId = 1;
+        let apiPrefix = modules.find(x => x.key == moduleId);
+        const host = Config.getPublicConfiguartion().static + apiPrefix.api; 
+        const url = `${host}${route}`;
+>>>>>>> a0ae7124d2af2c8f55af8dc688634d19aa85cb02
         let json = null;
 
         let options = Object.assign(
