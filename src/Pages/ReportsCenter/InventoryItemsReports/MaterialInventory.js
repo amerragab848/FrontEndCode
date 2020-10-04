@@ -85,6 +85,7 @@ class ExpensesStatus extends Component {
     }
 
     componentDidMount() {
+        
         Dataservice.GetDataList('GetMaterialInventoryProjects?pageNumber=1&pageSize=1000', 'projectName', 'projectId').then(
             result => {
                 this.setState({

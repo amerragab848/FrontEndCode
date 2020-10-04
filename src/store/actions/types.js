@@ -81,3 +81,8 @@ export const GET_ITEMS = 'GET_ITEMS';
 export const Attachments_WF_Cycles = 'Attachments_WF_Cycles';
 export const Export_REPORT_Document ='Export_REPORT_Document';
 export const REPORT_FILTERS='REPORT_FILTERS';
+
+
+// inventory items
+export const INVENTORY_ITEMS='INVENTORY_ITEMS';
+export const EMPTY_LIST='EMPTY_LIST';
