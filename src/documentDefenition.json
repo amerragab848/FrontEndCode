@@ -14040,13 +14040,8 @@
       {
         "field": "id",
         "friendlyName": "arrange",
-<<<<<<< HEAD
-        "minWidth": 85,
-        "width": "3%",
-=======
         "minWidth": 6,
         "width": "5%",
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -14252,10 +14247,6 @@
         "exportDataType": "s"
       }
     ],
-<<<<<<< HEAD
-    "TransferInventoryApi":"",  
-=======
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
     "filterApi": "LogsMaterialInventoryFilter",
     "filters": [
       {
@@ -17109,7 +17100,7 @@
         "field": "arrange",
         "friendlyName": "numberAbb",
         "minWidth": 65,
-        "width": "3%",
+        "width": "5%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -17131,7 +17122,7 @@
         "field": "subject",
         "friendlyName": "subject",
         "minWidth": 200,
-        "width": "20%",
+        "width": "25%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
