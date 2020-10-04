@@ -268,7 +268,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, 1).then(result => {
 
         let oldRows = []; // this.state.rows;
 
@@ -328,7 +328,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, 1).then(result => {
 
         let oldRows = [];
 
@@ -390,7 +390,7 @@ class CommonLog extends Component {
     });
 
     if (stringifiedQuery !== "{}") {
-      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 2).then(result => {
+      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 1).then(result => {
         if (result.data.length > 0) {
 
           result.data.forEach(row => {
@@ -639,7 +639,7 @@ class CommonLog extends Component {
   };
 
   GetLogData(url) {
-    Api.get(url, undefined, 2).then(result => {
+    Api.get(url, undefined, 1).then(result => {
       result.data.forEach(row => {
         let subject = "";
         if (row) {

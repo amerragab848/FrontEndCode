@@ -241,6 +241,7 @@ export default class Api {
     }
 
     static xhr(route, params, verb, moduleId) {
+        if (!moduleId) moduleId = 1;
      
 
         if (moduleId < 1) moduleId = 1;

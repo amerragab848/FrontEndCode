@@ -92,7 +92,7 @@ class ViewAttachmments extends Component {
             stamp: stamp,
             editable: Config.IsAllow(4501),
             accountId: accountId,
-            server: Config.getPublicConfiguartion().static + "/api/Procoor/"
+            server: Config.getPublicConfiguartion().static + "PM/api/Procoor/"
         });
 
         window.open(
