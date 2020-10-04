@@ -431,7 +431,7 @@ class MaterialInventoryAddEdit extends Component {
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInventory');
 
             dataservice.GetDataGrid("GetPurchasedMaterial?materialId=" + this.state.docId).then(result => {
-
+                if(result.length>0){
                 let setDataChart = [];
 
                 let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
@@ -446,11 +446,12 @@ class MaterialInventoryAddEdit extends Component {
                     purchasedData: result,
                     purchasedDataForChart: setDataChart
                 })
+            }
             });
 
             dataservice.GetDataGrid("GetTransferedMaterial?materialId=" + this.state.docId).then(result => {
-                let setDataChart = [];
 
+                let setDataChart = [];
                 let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
 
                 result.forEach(item => {
@@ -464,8 +465,9 @@ class MaterialInventoryAddEdit extends Component {
                     transferedData: result,
                     transferedDataForChart: setDataChart
                 })
+            
             });
-
+        
             dataservice.GetDataGrid("GetMaterialReleased?materialId=" + this.state.docId).then(result => {
                 this.setState({
                     releasedData: result

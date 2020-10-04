@@ -14897,7 +14897,7 @@
     "documentColumns": [
       {
         "field": "id",
-        "friendlyName": "transfer",
+        "friendlyName": "arrange",
         "minWidth": 85,
         "width": "3%",
         "dataType": "string",
@@ -15124,7 +15124,7 @@
         "exportDataType": "s"
       }
     ],
-    
+    "TransferInventoryApi":"",  
     "filterApi": "LogsMaterialInventoryFilter",
     "filters": [
       {

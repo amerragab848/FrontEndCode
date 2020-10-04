@@ -2890,6 +2890,15 @@
         "en": "Items",
         "ar": "العناصر"
     },
+    "MoreDetails":{
+        "en":"More Details",
+        "ar":"مزيدا من التفاصيل"
+    },
+    "lastApproveTime":{
+        "en":"last Approve Time",
+        "ar":"وقت الموافقة الأخير"
+    }
+    ,
     "checkList": {
         "en": "Check List",
         "ar": "قائمة التحقق"
