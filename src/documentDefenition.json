@@ -13984,9 +13984,15 @@
     "documentColumns": [
       {
         "field": "id",
+<<<<<<< HEAD
         "friendlyName": "arrange", 
         "minWidth": 6,
         "width": "5%", 
+=======
+        "friendlyName": "arrange",
+        "minWidth": 6,
+        "width": "5%",
+>>>>>>> f19d24fc03c96730e707646b3b9462ffdd67dff9
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -14192,7 +14198,10 @@
         "exportDataType": "s"
       }
     ],
+<<<<<<< HEAD
     "TransferInventoryApi":"",  
+=======
+>>>>>>> f19d24fc03c96730e707646b3b9462ffdd67dff9
     "filterApi": "LogsMaterialInventoryFilter",
     "filters": [
       {
@@ -17046,7 +17055,7 @@
         "field": "arrange",
         "friendlyName": "numberAbb",
         "minWidth": 65,
-        "width": "3%",
+        "width": "5%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -17068,7 +17077,7 @@
         "field": "subject",
         "friendlyName": "subject",
         "minWidth": 200,
-        "width": "20%",
+        "width": "25%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
