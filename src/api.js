@@ -241,22 +241,12 @@ export default class Api {
     }
 
     static xhr(route, params, verb, moduleId) {
-<<<<<<< HEAD
-        // if (moduleId < 1) moduleId = 1;
-        // let apiPrefix = modules.find(x => x.key == moduleId);
-        //const host = Config.getPublicConfiguartion().static + apiPrefix.api;// "/api/Procoor/";
-        const host = Config.getPublicConfiguartion().static + "/PM/api/Procoor/";
  
-        const url = `${host}${route}`;
- 
-=======
-     
-
-        if (moduleId < 1) moduleId = 1;
+        // if (moduleId < 1)
+         moduleId = 1;
         let apiPrefix = modules.find(x => x.key == moduleId);
-        const host = Config.getPublicConfiguartion().static + apiPrefix.api; 
-        const url = `${host}${route}`;
->>>>>>> a0ae7124d2af2c8f55af8dc688634d19aa85cb02
+        const host = Config.getPublicConfiguartion().static + "/"+apiPrefix.api; 
+        const url = `${host}${route}`; 
         let json = null;
 
         let options = Object.assign(

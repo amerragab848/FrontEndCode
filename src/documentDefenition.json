@@ -14049,7 +14049,7 @@
         "exportDataType": "n"
       },
       {
-        "field": "total",
+        "field": "remainingTotalPrice",
         "friendlyName": "total",
         "minWidth": 85,
         "width": "8%",

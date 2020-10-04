@@ -101,14 +101,8 @@ class CommonLog extends Component {
     this.rowActions = [
       {
         title: 'Export Doc & Attachments',
-        handleClick: value => {
-<<<<<<< HEAD
-          let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
-=======
-
-          let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
-
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
+        handleClick: value => { 
+          let url = this.state.documentObj.forEditApi + '?id=' + value.id + '' 
           let documentObj = this.state.documentObj
           this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle);
           this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId);
@@ -951,17 +945,11 @@ class CommonLog extends Component {
         <GridCustom
           gridKey={'CommonLog-' + this.state.documentName}
           data={this.state.rows}
-          actions={this.actions}
-<<<<<<< HEAD
+          actions={this.actions} 
           rowActions={
             (this.state.documentObj.docTyp == 50 ? this.inventoryRowActions : (this.state.documentObj.forEditApi != undefined ? this.rowActions : null))
-          }
-
-=======
-          rowActions={this.state.documentObj.forEditApi != undefined ? this.rowActions : null}
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
-          cells={this.state.columns}
-
+          } 
+          cells={this.state.columns} 
           openModalColumn={this.state.columnsModal}
           rowClick={cell => {
             if (cell.id != 0) {
