@@ -605,12 +605,12 @@ class invoicesForPoAddEdit extends Component {
         let maxQnty = data[index]['maxQnty']
         let value = parseInt(e.target.value)
         if (value > maxQnty) {
-            // e.target.value = quantityComplete
-            toast.warn("value can not be more than " + maxQnty);
+             e.target.value = quantityComplete
+            toast.warn("value can not be more than maximum quantity " + maxQnty);
         }
         else if (value < minQnty) {
-            // e.target.value = quantityComplete
-            toast.warn("value can not be less than " + minQnty);
+             e.target.value = quantityComplete
+            toast.warn("value can not be less than minimum quantity " + minQnty);
         } else {
             Api.post("EditContractsInvoicesForPoItems", element).then(res => {
                 toast.success(Resources.operationSuccess[currentLanguage])
@@ -1516,7 +1516,7 @@ class invoicesForPoAddEdit extends Component {
                         </Formik>
                         <div className="doc-pre-cycle">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>NEXT STEP</button>
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.props.history.push(this.state.perviousRoute)}>{Resources.finish[currentLanguage]}</button>
                             </div>
                         </div>
 

@@ -41,7 +41,7 @@ const find = require('lodash/find')
 let StatusDataDrop = [{ label: 'Opended', value: true }, { label: 'Closed', value: false }]
 
 const validationSchema = Yup.object().shape({
-   subject:Yup.string().required(Resources['subjectRequired'][currentLanguage])
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage])
 })
 const ItemsValidationSchema = Yup.object().shape({
     companyId: Yup.string().required(Resources['actionByCompanyRequired'][currentLanguage]),
@@ -379,7 +379,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let rows = this.state.rows;
-                this.state.selectedRows.forEach(i=>{
+                this.state.selectedRows.forEach(i => {
                     let rowIndex = rows.findIndex(x => x.id == i.id);
                     rows[rowIndex].bic_company_name = this.state.selectedCompany.label;
                     rows[rowIndex].bic_contact_name = this.state.selectedContact.label;
@@ -556,7 +556,8 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 sortabel: true
             },
         ];
-        const assignContactModal = (<Formik
+        const assignContactModal = (
+        <Formik
             initialValues={{ companyId: this.state.selectedCompany.value, contactId: this.state.selectedContact.value }}
             validationSchema={ItemsValidationSchema}
             enableReinitialize={true}
@@ -564,34 +565,32 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 this.assignContact()
             }}>
             {({ errors, touched, handleBlur, handleChange, handleSubmit, values, setFieldTouched }) => (
-                <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                    <Dropdown title="actionByCompany" data={this.state.ActionByCompanyData}
-                        selectedValue={this.state.selectedCompany}
-                        handleChange={event => { this.HandlerChangeParentDrop(event, "contactsList"); this.setState({ selectedCompany: { label: event.label, value: event.value } }) }}
-                        onBlur={setFieldTouched}
-                        error={errors.companyId}
-                        touched={touched.companyId}
-                        name="companyId"
-                        index="companyId"
-                    />
-                    <Dropdown title="actionByContactsSummary" data={this.state.contactsList}
-                        selectedValue={this.state.selectedContact}
-                        handleChange={event => this.setState({ selectedContact: { label: event.label, value: event.value } })}
-                        onBlur={setFieldTouched}
-                        error={errors.companyId}
-                        touched={touched.companyId}
-                        name="contactId"
-                        index="contactId"
-                    />
-                    <div className="fullWidthWrapper">
-                        <button
-                            className="primaryBtn-1 btn mediumBtn"
-                            type="submit"
-                        >  {Resources['save'][currentLanguage]}
-                        </button>
-
-
-                    </div>
+                <Form id="letterForm" className="proForm datepickerContainer customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                <Dropdown title="actionByCompany" data={this.state.ActionByCompanyData}
+                                    selectedValue={this.state.selectedCompany}
+                                    handleChange={event => { this.HandlerChangeParentDrop(event, "contactsList"); this.setState({ selectedCompany: { label: event.label, value: event.value } }) }}
+                                    onBlur={setFieldTouched}
+                                    error={errors.companyId}
+                                    touched={touched.companyId}
+                                    name="companyId"
+                                    index="companyId"
+                                />
+                                <Dropdown title="actionByContactsSummary" data={this.state.contactsList}
+                                    selectedValue={this.state.selectedContact}
+                                    handleChange={event => this.setState({ selectedContact: { label: event.label, value: event.value } })}
+                                    onBlur={setFieldTouched}
+                                    error={errors.companyId}
+                                    touched={touched.companyId}
+                                    name="contactId"
+                                    index="contactId"
+                                />
+                            <div className="fullWidthWrapper">
+                                <button
+                                    className="primaryBtn-1 btn mediumBtn"
+                                    type="submit"
+                                >  {Resources['save'][currentLanguage]}
+                                </button>
+                            </div>
                 </Form>
             )}
         </Formik>);
