@@ -8,12 +8,14 @@ import * as communicationActions from '../../store/actions/communication';
 import { bindActionCreators } from 'redux'
 import dataservice from "../../Dataservice";
 import * as Yup from 'yup';
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const validationSchema = Yup.object().shape({
     priorityId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     toCompanyId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    toContactIds: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
 })
 
 class SendToInbox extends Component {
@@ -27,7 +29,8 @@ class SendToInbox extends Component {
                 docType: this.props.docTypeId,
                 priorityId: "",
                 toCompanyId: "",
-                toContactId: "",
+                //toContactId: "",
+                toContactIds: [],
                 ccCompanyId: "",
                 cc: [],
                 Comment: ""
@@ -36,7 +39,8 @@ class SendToInbox extends Component {
             To_Cc_CompanyData: [],
             AttentionData: [],
             Cc_ContactData: [],
-            Cc_Selected: []
+            Cc_Selected: [],
+            Comment: ""
         }
     }
     componentDidMount = () => {
@@ -50,28 +54,37 @@ class SendToInbox extends Component {
     }
     sendInbox = (values, { resetForm }) => {
         let obj = this.state.sendingData
-        obj.Comment = values.Comment
+        obj.Comment = this.state.Comment
         let cc = []
         let ccContactsdd = this.state.ccContactsdd ? this.state.ccContactsdd : [];
         ccContactsdd.map(i => {
             let ia = i.value
             cc.push(ia)
         });
+        let toContactIds = []
+        let toContactsdd = this.state.toContactIds ? this.state.toContactIds : [];
+        toContactsdd.map(i => {
+            let ia = i.value
+            toContactIds.push(ia)
+        });
+
         obj.cc = cc;
-        this.setState({ submitLoading: true })
+        obj.toContactIds = toContactIds;
+        this.setState({ submitLoading: true, Comment: "", toContactIds: [], ccContactsdd: [] })
         values.Comment = '';
         values.priorityId = '';
         values.toCompanyId = '';
-        values.toContactId = '';
+        // values.toContactId = '';
+        values.toContactIds = [];
         values.ccCompanydd = '';
         values.ccContactsdd = '';
-        this.props.actions.SendByEmail_Inbox("SendByInbox", obj);
+        this.props.actions.SendByEmail_Inbox("SendByInboxV5", obj);
         resetForm();
     }
 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.showModal == false) {
-            return { submitLoading: false, priorityId: "", toContactId: "", toCompanyId: "", ccCompanydd: "", ccContactsdd: [] };
+            return { submitLoading: false, priorityId: "", toContactIds: [], toCompanyId: "", ccCompanydd: "", ccContactsdd: [] };
         }
         return null
     }
@@ -86,9 +99,26 @@ class SendToInbox extends Component {
         sendingData[state] = event.value;
         this.setState({ [state]: event, sendingData });
     }
-    handleChangeCC = (values) => {
-        this.setState({ ccContactsdd: values })
+    handleChangeMulti = (name, values) => {
+        this.setState({ [name]: values })
     }
+    onChangeComment = (value, field) => {
+
+        if (value != null) {
+            let original_document = { ...this.state.sendingData };
+
+            let updated_document = {};
+
+            updated_document[field] = value;
+
+            updated_document = Object.assign(original_document, updated_document);
+
+            this.setState({
+                sendingData: updated_document,
+                [field]: value
+            });
+        }
+    };
 
     render() {
         return (
@@ -98,8 +128,8 @@ class SendToInbox extends Component {
                     initialValues={{
                         priorityId: null,
                         toCompanyId: null,
-                        toContactId: null,
-                        Comment: '',
+                        toContactIds: [],
+                        Comment: this.state.Comment,
                         ccCompanydd: '',
                         ccContactsdd: [],
                         ccCompanyId: null
@@ -123,17 +153,6 @@ class SendToInbox extends Component {
                                 touched={touched.priorityId}
                                 selectedValue={this.state.priorityId} />
 
-                            <div className={this.props.fullwidth == "true" ? "letterFullWidth fullInputWidth linebylineInput" : "fillter-status fillter-item-c"}>
-                                <label className="control-label">
-                                    {Resources["comments"][currentLanguage]}
-                                </label>
-                                <div className="inputDev ui input">
-                                    <input type={this.props.type === undefined ? "text" : this.props.type}
-                                        className="form-control" id="Comment" name="Comment"
-                                        defaultValue={values.Comment} onChange={handleChange} />
-                                </div>
-                            </div>
-
                             <Dropdown
                                 title="toCompanyName"
                                 data={this.state.To_Cc_CompanyData}
@@ -146,18 +165,21 @@ class SendToInbox extends Component {
                                 error={errors.toCompanyId}
                                 touched={touched.toCompanyId}
                                 selectedValue={this.state.toCompanyId} />
-
-                            <Dropdown title="ToContact" data={this.state.AttentionData}
-                                index='toContactId'
-                                name="toContactId"
-                                id="toContactId"
-                                onChange={setFieldValue}
-                                handleChange={event => this.handleChange('toContactId', event, false, null, null)}
-                                onBlur={setFieldTouched}
-                                error={errors.toContactId}
-                                touched={touched.toContactId}
-                                selectedValue={this.state.toContactId}
-                            />
+                            <div className="filterWrapper">
+                                <Dropdown title="ToContact" data={this.state.AttentionData}
+                                    index='toContactIds'
+                                    name="toContactIds"
+                                    id="toContactIds"
+                                    onChange={setFieldValue} isMulti={true}
+                                    //handleChange={event => this.handleChange('toContactId', event, false, null, null)}
+                                    handleChange={event => this.handleChangeMulti('toContactIds', event)}
+                                    onBlur={setFieldTouched}
+                                    error={errors.toContactIds}
+                                    touched={touched.toContactIds}
+                                    value={this.state.toContactIds}
+                                    selectedValue={this.state.toContactIds}
+                                />
+                            </div>
                             <Dropdown title="ccCompany"
                                 data={this.state.To_Cc_CompanyData}
                                 name="ccCompanyId"
@@ -172,11 +194,21 @@ class SendToInbox extends Component {
                             <div className="filterWrapper">
                                 <Dropdown title="ccContact" data={this.state.Cc_ContactData}
                                     name="ccContactsdd"
-                                    handleChange={event => this.handleChangeCC(event)}
+                                    handleChange={event => this.handleChangeMulti("ccContactsdd", event)}
                                     index='ccContactsddinbox' isMulti={true}
+                                    value={this.state.ccContactsdd}
                                     selectedValue={this.state.ccContactsdd}
                                 />
 
+                            </div>
+                            <div className="letterFullWidth fullInputWidth linebylineInput">
+                                <label className="control-label">{Resources.comments[currentLanguage]}</label>
+                                <div className="inputDev ui input">
+                                    <TextEditor
+                                        value={this.state.Comment || ''}
+                                        onChange={event => this.onChangeComment(event, "Comment")}
+                                    />
+                                </div>
                             </div>
 
                             <div className="fullWidthWrapper">

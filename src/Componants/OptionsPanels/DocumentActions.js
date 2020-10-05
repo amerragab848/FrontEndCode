@@ -108,14 +108,12 @@ class DocumentActions extends Component {
     handleShowAction = (item) => {
         if (item.value != "-1") {
             import(`${item.path}`).then(module => {
-                debugger
                 ///cahnage approvalStatus (true or false ) to set correct parameter for document approvel 
                 if (item.value == 3)
                     this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false, currentArrange: this.props.currentArrange, docTypeId: this.props.docTypeId, documentTitle: this.props.documentName });
                 else
                     this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true, currentArrange: this.props.currentArrange, docTypeId: this.props.docTypeId, documentTitle: this.props.documentName });
 
-                debugger
                 this.setState({ module: module.default, currentTitle: item.title })
                 this.props.showOptionPanel();
                 this.simpleDialog.show();
