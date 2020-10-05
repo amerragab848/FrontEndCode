@@ -209,9 +209,22 @@ class bogAddEdit extends Component {
                 groupable: true,
                 fixed: false,
                 sortable: true,
-                handleChange: (e, cell) => {
-                    cell.unitPrice = e.target.value;
+                handleChange: (e, cell) => {   
+                  
+                    this.setState({ isLoading: true });
+                  
+                    let cellInstance = Object.assign({}, cell);
 
+                    cellInstance.unitPrice = parseFloat(e.target.value);
+     
+                    let boqItems = JSON.parse(JSON.stringify(this.state._items));
+    
+                    let cellIndex = boqItems.findIndex(c => c.id == cell.id);
+    
+                    boqItems[cellIndex] = cellInstance; 
+                  
+                  
+                    //this.reloadGrid(boqItems);
                 },
                 handleBlur: (e, cell) => {
                     if (Config.IsAllow(617)) {
@@ -302,6 +315,7 @@ class bogAddEdit extends Component {
                 }
             }
         ];
+    
         this.groups = [
             { title: 'boqType', field: 'boqType', type: 'text' },
             { title: 'boqSubType', field: 'boqSubType', type: 'text' }
@@ -310,7 +324,7 @@ class bogAddEdit extends Component {
         this.state = {
             isCompany: Config.getPayload().uty === "company" ? true : false,
             showForm: false,
-            isLoadingEdit: false,
+            isLoadingEdit: false, 
             loadingContractPurchase: false,
             AddedPurchase: false,
             loadingContract: false,
@@ -445,7 +459,12 @@ class bogAddEdit extends Component {
         ];
 
     }
-
+    // reloadGrid = (boqItems) => {
+    //     this.setState({
+    //         _items: boqItems ,
+    //         isLoading : false 
+    //     });
+    // };
     customButton = () => {
         return (
             <button className="companies_icon" style={{ cursor: "pointer" }}>
@@ -1152,7 +1171,7 @@ class bogAddEdit extends Component {
 
     render() {
 
-        let ItemsGrid = this.state.isLoading === false ? (
+        let ItemsGrid = this.state.isLoading === false  ? (
             <GridCustom
                 cells={this.boqItems}
                 data={this.state._items}
