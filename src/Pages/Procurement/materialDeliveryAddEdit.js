@@ -17,8 +17,7 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
-import moment from "moment";
-import SkyLight from "react-skylight";
+import moment from "moment"; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
@@ -43,6 +42,7 @@ let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
 const find = require("lodash/find");
+const includes = require("lodash/includes");
 
 let selectedRows = [];
 
@@ -327,11 +327,9 @@ class materialDeliveryAddEdit extends Component {
                     if (id) {
                         selectedValue = find(result, function (i) {
                             return i.value === id;
-                        });
-                        // this.setState({ selectedContractId: selectedValue });
+                        }); 
                     }
-                }
-                // this.setState({ contractPoData: [...result] });
+                } 
             });
 
         dataservice.GetDataList(
@@ -569,36 +567,46 @@ class materialDeliveryAddEdit extends Component {
     }
 
     ConfirmationDeleteItem = () => {
+        let originalRows = this.state.Items;
         this.setState({ isLoading: true });
+
         let ids = [];
         selectedRows.map(s => {
             ids.push(s.id);
         });
-        Api.post("DeleteMultipleLogsMaterialDeliveryTickets", ids)
-            .then(res => {
-                let originalRows = this.state.Items;
+        let output = originalRows.filter((v) => includes(ids, v.id));
+        let checkInventoryQty = find(output, function (o) { return o.isInInventory == false });
+        if (checkInventoryQty) {
+            toast.error(
+                "There is at least one Item With Quantity Not In Inventory"
+            );
+        }
+        else {
+            Api.post("DeleteMultipleLogsMaterialDeliveryTickets", ids)
+                .then(res => {
 
-                ids.map(i => {
-                    originalRows = originalRows.filter(r => r.id !== i);
+                    ids.map(i => {
+                        originalRows = originalRows.filter(r => r.id !== i);
+                    });
+                    selectedRows = [];
+                    let data = { items: originalRows };
+                    this.props.actions.ExportingData(data);
+                    this.setState({
+                        Items: originalRows,
+                        showDeleteModal: false,
+                        isLoading: false
+                    });
+                }, toast.success(Resources["smartSentAccountingMessage"][currentLanguage].successTitle))
+                .catch(ex => {
+                    this.setState({
+                        showDeleteModal: false,
+                        isLoading: false
+                    });
+                    toast.error(
+                        Resources["operationCanceled"][currentLanguage].successTitle
+                    );
                 });
-                selectedRows = [];
-                let data = { items: originalRows };
-                this.props.actions.ExportingData(data);
-                this.setState({
-                    Items: originalRows,
-                    showDeleteModal: false,
-                    isLoading: false
-                });
-            }, toast.success(Resources["smartSentAccountingMessage"][currentLanguage].successTitle))
-            .catch(ex => {
-                this.setState({
-                    showDeleteModal: false,
-                    isLoading: false
-                });
-                toast.error(
-                    Resources["operationCanceled"][currentLanguage].successTitle
-                );
-            });
+        }
     };
 
     SaveItem = values => {
@@ -697,7 +705,7 @@ class materialDeliveryAddEdit extends Component {
     };
 
     PendingQuantityHandelChange = e => {
-        let value = e.target.value;
+        let value = parseInt(e.target.value);
         let originalValue = this.state.objItem.pendingQuantity;
         if (value <= originalValue) {
             this.setState({
@@ -711,7 +719,7 @@ class materialDeliveryAddEdit extends Component {
     };
 
     EditPendingQty = () => {
-        if (this.state.PendingQuantityCheck) {
+        if (!this.state.PendingQuantityCheck) {
             this.setState({ isLoading: true });
             Api.post(
                 "UpdateQuantityMaterialDelivery?materialDeliveryId=" +
@@ -1948,7 +1956,10 @@ class materialDeliveryAddEdit extends Component {
                         closed={e => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={e =>
-                            this.setState({ showDeleteModal: false })
+                            this.setState({
+                                showDeleteModal: false,
+                                isLoading: true
+                            })
                         }
                         buttonName="delete"
                         clickHandlerContinue={this.ConfirmationDeleteItem}

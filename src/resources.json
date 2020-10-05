@@ -4492,6 +4492,10 @@
         "en": "Send To",
         "ar": "ارسال من"
     },
+    "sendFor": {
+        "en": "Send For",
+        "ar": "ارسال ل"
+    },
     "returnedBy": {
         "en": "Returned By",
         "ar": "ارجاع الي "
@@ -6011,6 +6015,10 @@
     "send": {
         "en": "Send",
         "ar": "ارسال"
+    },
+    "sendMethod": {
+        "en": "Send Method",
+        "ar": "طريقة الارسال"
     },
     "lateTimeSheet": {
         "en": "Late Time Sheet",

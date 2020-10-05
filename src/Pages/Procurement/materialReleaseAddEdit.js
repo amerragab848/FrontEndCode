@@ -303,10 +303,8 @@ class materialReleaseAddEdit extends Component {
             }
             this.setState({ SpecsSectionData: [...result] })
         })
-
-        //dataservice.GetDataListForContract("GetContractsWithBoqsForDrop?projectId=" + this.state.projectId, "subject", "id", "boqId")
-//GetContractsSiteRequestByProjectId
-        dataservice.GetDataListSiteRequestNewVersion('GetSiteRequestForListByProjectId', 'subject', 'id','contractId','contractName').then(result => {
+ 
+        dataservice.GetDataListSiteRequestNewVersion("GetSiteRequestForListByProjectId?projectId=" + this.state.projectId, 'subject', 'id','contractId','contractName').then(result => {
             if (isEdit) {
                 let id = this.props.document.siteRequestId;
                 let selectedValue = {};
@@ -438,6 +436,7 @@ class materialReleaseAddEdit extends Component {
         if (Mood === 'EditMood') {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.contractId=this.state.selectedMaterialRelease.contractId;
             dataservice.addObject('EditLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -448,6 +447,7 @@ class materialReleaseAddEdit extends Component {
         } else {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.contractId=this.state.selectedMaterialRelease.contractId;
             dataservice.addObject('AddLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, docId: result.id, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -1269,15 +1269,7 @@ class materialReleaseAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialRelease[currentLanguage]} perviousRoute={this.state.perviousRoute} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
-                        <div className="step-content">
-
-                            {this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero"> {Resources.goEdit[currentLanguage]} </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header> : null}
+                        <div className="step-content"> 
                             {this.state.isLoading ? <LoadingSection /> : null}
                             {this.state.CurrentStep === 0 ?
                                 <Fragment>
