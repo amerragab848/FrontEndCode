@@ -460,7 +460,7 @@ class materialRequestAddEdit extends Component {
             contractLoading: false,
             showPoModal: false,
             inventoryTable: [],
-            showInventory: false,
+            showInventory: true,
             normalItems: {
                 requestId: null,
                 details: null,
@@ -2894,7 +2894,7 @@ class materialRequestAddEdit extends Component {
                 <div>
                     <div className="proForm first-proform letterFullWidth radio__only">
                         <div className="linebylineInput valid-input">
-                            <div className="ui checkbox radio radioBoxBlue">
+                            {/* <div className="ui checkbox radio radioBoxBlue">
                                 <input
                                     type="radio"
                                     name="status"
@@ -2917,8 +2917,8 @@ class materialRequestAddEdit extends Component {
                                         ]
                                     }
                                 </label>
-                            </div>
-                            <div className="ui checkbox radio radioBoxBlue">
+                            </div> */}
+                            {/* <div className="ui checkbox radio radioBoxBlue">
                                 <input
                                     type="radio"
                                     name="status"
@@ -2937,7 +2937,7 @@ class materialRequestAddEdit extends Component {
                                 <label>
                                     {Resources.fromInventory[currentLanguage]}
                                 </label>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     {
