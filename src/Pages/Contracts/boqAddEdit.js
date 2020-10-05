@@ -210,8 +210,7 @@ class bogAddEdit extends Component {
                 fixed: false,
                 sortable: true,
                 handleChange: (e, cell) => {
-                    cell.unitPrice = e.target.value;
-
+                     cell.unitPrice = e.target.value;
                 },
                 handleBlur: (e, cell) => {
                     if (Config.IsAllow(617)) {
@@ -2767,7 +2766,7 @@ class bogAddEdit extends Component {
                             </span>
                             <div className="ui basic label greyLabel">
                                 {/* {this.props.document.total} */}
-                                {this.state.createdBoqTotal }
+                                {this.state.createdBoqTotal}
                             </div>
                         </div>
                     </div>

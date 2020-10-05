@@ -459,6 +459,7 @@ class materialReleaseAddEdit extends Component {
         if (Mood === 'EditMood') {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.contractId=this.state.selectedMaterialRelease.contractId;
             dataservice.addObject('EditLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -469,6 +470,7 @@ class materialReleaseAddEdit extends Component {
         } else {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.contractId=this.state.selectedMaterialRelease.contractId;
             dataservice.addObject('AddLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, docId: result.id, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
