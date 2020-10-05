@@ -1157,7 +1157,7 @@ class HeaderMenu extends Component {
 
   render() {
     //let totalNotification = this.state.notifications.length + this.state.taskes.length;
-    let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length + this.state.taskes.length;
+    let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length ;
 
     return (
       <div>
