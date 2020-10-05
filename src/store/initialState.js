@@ -23,6 +23,7 @@ export default {
             viewModel: false,
             documentCycle: {},
             items: [],
+            inventoryItems: [],
             fields: [],
             columns: [],
             fieldsItems: [],

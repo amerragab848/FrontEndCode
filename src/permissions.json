@@ -11074,6 +11074,54 @@
                 "ar": "انشاء ارسالية"
               },
               "value": false
+            },
+            {
+              "code": 31002,
+              "title": {
+                "en": "Add Attachments",
+                "ar": "اضافة مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 31003,
+              "title": {
+                "en": "Edit Attachments",
+                "ar": "تعديل مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 31004,
+              "title": {
+                "en": "Delete Attachments",
+                "ar": "حذف مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 31005,
+              "title": {
+                "en": "View Attachments",
+                "ar": "عرض مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 31006,
+              "title": {
+                "en": "Show Drop Box",
+                "ar": "اظهار الدروب بوكس"
+              },
+              "value": false
+            },
+            {
+              "code": 31007,
+              "title": {
+                "en": "Show Google Drive",
+                "ar": "اظهار جوجل دريف"
+              },
+              "value": false
             }
           ]
         },

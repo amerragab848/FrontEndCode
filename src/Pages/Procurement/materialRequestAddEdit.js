@@ -307,6 +307,15 @@ class materialRequestAddEdit extends Component {
                 sortable: true,
             },
             {
+                field: 'unitPrice',
+                title: Resources['unitPrice'][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "number",
+                sortable: true,
+            },
+            {
                 field: 'days',
                 title: Resources['days'][currentLanguage],
                 width: 10,
@@ -458,6 +467,7 @@ class materialRequestAddEdit extends Component {
                 arrange: null,
                 unit: null,
                 quantity: null,
+                originalQuantity: null,
                 stock: null,
                 resourceCode: null,
                 itemType: null,
@@ -758,6 +768,7 @@ class materialRequestAddEdit extends Component {
                         arrange: maxArrange + 1,
                         unit: null,
                         quantity: null,
+                        originalQuantity: null,
                         stock: null,
                         resourceCode: null,
                         itemType: null,
@@ -1367,6 +1378,7 @@ class materialRequestAddEdit extends Component {
         if (item.quantity > 0) {
             this.setState({ isLoading: true });
             item.requestId = this.state.docId;
+            item.originalQuantity = item.quantity;
             Api.post("AddContractsSiteRequestItems", item).then(() => {
                 const _items = this.state._items;
                 _items.push(item);
@@ -1376,6 +1388,7 @@ class materialRequestAddEdit extends Component {
                     arrange: maxArrange + 1,
                     unit: null,
                     quantity: null,
+                    originalQuantity: null,
                     stock: null,
                     resourceCode: null,
                     itemType: null,
@@ -1413,6 +1426,8 @@ class materialRequestAddEdit extends Component {
                 item.requestId = this.state.docId;
                 item.days == null ? item.days = 1 : item.days = item.days;
                 item.details = item.description;
+                item.originalQuantity = item.quantity; 
+                item.stock = item.quantity;
                 Api.post("AddContractsSiteRequestItems", item).then(() => {
                     const _items = this.state._items;
                     _items.push(item);
@@ -1439,6 +1454,7 @@ class materialRequestAddEdit extends Component {
             arrange: maxArrange + 1,
             unit: null,
             quantity: null,
+            originalQuantity: null,
             stock: null,
             resourceCode: null,
             itemType: null,
@@ -1456,6 +1472,7 @@ class materialRequestAddEdit extends Component {
             if (item.quantity > 0) {
                 this.setState({ isLoading: true });
                 item.requestId = this.state.docId;
+                item.originalQuantity = item.quantity;
                 Api.post("AddContractsSiteRequestItems", item).then(() => {
                     const _items = this.state._items;
                     _items.push(item);
@@ -1724,6 +1741,42 @@ class materialRequestAddEdit extends Component {
                                 touched={touched.unit}
                             />
                         </div>
+                        <div className="linebylineInput">
+                            <label className="control-label">
+                                {Resources["unitPrice"][currentLanguage]}{" "}
+                            </label>
+                            <div
+                                className={
+                                    "inputDev ui input " +
+                                    (errors.unitPrice
+                                        ? "has-error"
+                                        : !errors.unitPrice &&
+                                            touched.unitPrice
+                                            ? " has-success"
+                                            : " ")
+                                }>
+                                <input
+                                    name="unitPrice"
+                                    className="form-control"
+                                    id="unitPrice"
+                                    placeholder={
+                                        Resources["unitPrice"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.normalItems.unitPrice}
+                                    value={this.state.normalItems.unitPrice}
+                                    onChange={e => this.handleChangeNormalInput(e, "unitPrice")}
+                                />
+                                {errors.unitPrice ? (
+                                    <em className="pError">
+                                        {errors.unitPrice}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
                         <div className="slider-Btns">
                             {this.state.isLoading ? (
                                 <button className="primaryBtn-1 btn disabled">
@@ -1852,6 +1905,7 @@ class materialRequestAddEdit extends Component {
                 this.setState({ isLoading: true });
                 let updatedItem = { ...item };
                 updatedItem.requestId = this.state.docId;
+                updatedItem.originalQuantity = item.quantity;
                 Api.post("AddContractsSiteRequestItems", updatedItem).then(
                     () => {
                         const _items = this.state._items;

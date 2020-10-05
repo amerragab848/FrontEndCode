@@ -21,7 +21,6 @@ import { bindActionCreators } from "redux";
 import moment from "moment";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config";
-// import _ from "lodash";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let activeURL = "";
@@ -78,6 +77,7 @@ class ViewAttachmments extends Component {
     };
 
     goEditPdf = (item, ext) => {
+        let accountId = Config.getPayload().aci; 
         var stamp = new Date().getTime();
         var data = JSON.stringify({
             refer: window.location.href.replace("#", "-hashfill-"),
@@ -90,16 +90,12 @@ class ViewAttachmments extends Component {
             fileId: item.id,
             stamp: stamp,
             editable: Config.IsAllow(4501),
-            server: Config.getPublicConfiguartion().static + "/api/Procoor/"
+            accountId: accountId,
+            server: Config.getPublicConfiguartion().static + "PM/api/Procoor/"
         });
 
         window.open(
-            Config.getPublicConfiguartion().exportLocal +
-            "/edit-pdf/?zoom=page-actual&q=" +
-            this.b64EncodeUnicode(data) +
-            "#/public/edit-pdf/" +
-            stamp +
-            item.parentAttachFile.split("/")[4]
+            Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#/public/edit-pdf/" + stamp + item.parentAttachFile.split("/")[4]
         );
     };
 

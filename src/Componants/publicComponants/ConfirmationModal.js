@@ -21,11 +21,13 @@ class ConfirmationModal extends Component {
   };
 
   closeModal = e => {
+    
     this.props.closed();
   }
 
   componentDidMount() {
     this.simpleDialog.show();
+    
   }
 
   componentWillReceiveProps() {
