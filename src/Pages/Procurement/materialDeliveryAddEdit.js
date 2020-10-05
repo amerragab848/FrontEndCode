@@ -319,11 +319,7 @@ class materialDeliveryAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataListCached(
-            "GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId,
-            "companyName",
-            "companyId", 'companies', this.state.projectId, "projectId"
-        )
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId")
             .then(result => {
                 if (isEdit) {
                     let id = this.props.document.contractId;
