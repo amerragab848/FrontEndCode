@@ -78,7 +78,7 @@ class SendToInbox extends Component {
         values.toContactIds = [];
         values.ccCompanydd = '';
         values.ccContactsdd = '';
-        this.props.actions.SendByEmail_Inbox("SendByInbox", obj);
+        this.props.actions.SendByEmail_Inbox("SendByInboxV5", obj);
         resetForm();
     }
 

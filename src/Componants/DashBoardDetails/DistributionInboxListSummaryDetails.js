@@ -56,6 +56,12 @@ class DistributionInboxListSummaryDetails extends Component {
         name: "sendDate",
         type: "date",
         isCustom: true
+      },
+      {
+        field: "sendFor",
+        name: "sendFor",
+        type: "string",
+        isCustom: true
       }
     ];
 
@@ -161,7 +167,17 @@ class DistributionInboxListSummaryDetails extends Component {
         fixed: false,
         sortable: true,
         type: "date",
-      }
+      },
+      {
+        field: 'sendFor',
+        title: Resources['sendFor'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+        showTip: true,
+      },
     ];
   }
   GetNextData() {

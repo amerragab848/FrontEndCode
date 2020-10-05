@@ -4492,6 +4492,10 @@
         "en": "Send To",
         "ar": "ارسال من"
     },
+    "sendFor": {
+        "en": "Send For",
+        "ar": "ارسال ل"
+    },
     "returnedBy": {
         "en": "Returned By",
         "ar": "ارجاع الي "
