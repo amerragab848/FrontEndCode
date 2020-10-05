@@ -191,7 +191,9 @@ export default function (state = initialState.app.communication, action) {
         case types.CopyTo:
             return {
                 ...state,
-                showModal: action.showModal
+                showModal: action.showModal,
+                isLoading:false,
+                isLoadingFilesUpload:false
             };
 
 
