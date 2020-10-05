@@ -48,10 +48,11 @@ class TransferInventory extends Component {
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
+          
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
+                     
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
@@ -100,34 +101,19 @@ class TransferInventory extends Component {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
             else { links[i].classList.add("odd") }
         }
-        //        this.checkDocumentIsView()
+            let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId
+            dataservice.GetDataGrid(url).then(result => {
+                debugger
+                this.setState({
+                    document:result
+                })
+            })
+
+            this.fillDropDowns(true);
+
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
-            let doc = nextProps.document
-            this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
-            let isEdit = nextProps.document.id > 0 ? true : false
-            this.fillDropDowns(isEdit);
-            //            this.checkDocumentIsView();
-        }
-        if (nextProps.projectId !== this.props.projectId) {
-          
-            this.setState({ projectId: nextProps.projectId, })
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            //            this.checkDocumentIsView();
-        }
-    }
-
-    componentWillMount() {
-        let url = "GetRequestTransferItemEdit?id=" + this.state.docId;
-        this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialDelivery')
-    }
-
+  
     fillDropDowns(isEdit) {
 
         dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.state.projectId, 'projectName', 'projectId').then(result => {
@@ -186,14 +172,15 @@ class TransferInventory extends Component {
 
     saveDoc = () => {
         let obj = {
-            id: this.state.document.id,
-            fromProjectId: this.state.document.fromProjectId,
+            id: 0,
+            fromProjectId: this.state.document.projectId,
             toProjectId: this.state.selectedProject.value,
             approvedQuantity: this.state.document.approvedQuantity,
             rejectedQuantity: this.state.document.rejectedQuantity,
             pendingQuantity: this.state.document.pendingQuantity,
-            inventoryId: this.state.document.inventoryId
+            inventoryId:this.state.document.id 
         }
+        debugger
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);

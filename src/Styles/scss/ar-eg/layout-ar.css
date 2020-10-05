@@ -16681,6 +16681,12 @@ table edition
     padding-bottom: 20px;
     position: relative;
 }
+.grid-container-inventory-items {
+    min-height: 350px;
+    padding-bottom: 20px;
+    position: relative;
+    width: 80%
+}
 
 .approveReject {
     display: flex;

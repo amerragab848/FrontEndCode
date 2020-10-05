@@ -16,10 +16,13 @@
     "pmApp": "PM",
     "static": "https://BadyaServices.procoor.com/",
     "downloads": "https://BadyaServices.procoor.com",
-    "dropBoxappKey":"r8iiezlpm1pvlry",
-    "dropBoxToken":"H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
-    "googleDriveClientId":"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
-    "googleDriveKey":"uof5qzvtwpq1dao",
-    "refAutomatic": false ,
-    "exportCore" : "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/"
+    "dropBoxappKey": "r8iiezlpm1pvlry",
+    "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
+    "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
+    "googleDriveKey": "uof5qzvtwpq1dao",
+    "refAutomatic": false,
+    "exportCore": "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/",
+    
+    "client_id": "elXUJfeXNiv0ZDxlOB5JrJWn9GksYQq3",
+    "client_secret": "RiaukssWQvBiD32T"
 }

@@ -7574,63 +7574,8 @@
         "isDate": false,
         "isTime": false,
         "isCustom": false,
-        "exportDataType": "s"
-      },
-      {
-        "field": "unit",
-        "friendlyName": "unit",
-        "minWidth": 85,
-        "width": "7%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
-      {
-        "field": "resourceCode",
-        "friendlyName": "resourceCode",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
-      {
-        "field": "quantity",
-        "friendlyName": "quantity",
-        "minWidth": 85,
-        "width": "6%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "n"
-      },
-      {
-        "field": "deliverdQuantity",
-        "friendlyName": "deliveredQuantity",
-        "minWidth": 85,
-        "width": "6%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "n"
-      },
-      {
-        "field": "remainingQuantity",
-        "friendlyName": "remainingQuantity",
-        "minWidth": 85,
-        "width": "3%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "n"
-      },
+        "exportDataType": "s" 
+      },  
       {
         "field": "docCloseDate",
         "friendlyName": "docClosedate",
@@ -14104,7 +14049,7 @@
         "exportDataType": "n"
       },
       {
-        "field": "total",
+        "field": "remainingTotalPrice",
         "friendlyName": "total",
         "minWidth": 85,
         "width": "8%",
@@ -17100,7 +17045,7 @@
         "field": "arrange",
         "friendlyName": "numberAbb",
         "minWidth": 65,
-        "width": "3%",
+        "width": "5%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -17122,7 +17067,7 @@
         "field": "subject",
         "friendlyName": "subject",
         "minWidth": 200,
-        "width": "20%",
+        "width": "25%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,

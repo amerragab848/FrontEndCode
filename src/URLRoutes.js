@@ -1783,7 +1783,7 @@ var routes = [
     },
     {
         route:
-            "TransferInventory/:id(/:inventoryId)(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)",
+            "TransferInventory/:id(/:inventoryId)",
         moduleId: "site/TransferInventory",
         title: "transferToProject",
         nav: true

@@ -20,10 +20,11 @@ class WFActivityReport extends Component {
             isLoading: false,
             employeesList: [],
             dropDownList: [],
+            accountId: 0,
             selectedEmployee: { label: Resources.selectEmployee[currentLanguage], value: "0" },
             rows: [],
-            startDate:moment(),
-            finishDate:moment()
+            startDate: moment(),
+            finishDate: moment()
         }
 
         if (!Config.IsAllow(4017)) {
@@ -32,6 +33,7 @@ class WFActivityReport extends Component {
                 pathname: "/"
             });
         }
+
         this.columns = [
             {
                 "field": "arrange",
@@ -103,7 +105,7 @@ class WFActivityReport extends Component {
             title: Resources["employee"][currentLanguage],
             value: "",
             type: "text"
-        },{
+        }, {
             title: Resources["startDate"][currentLanguage],
             value: this.state.startDate,
             type: "D"
@@ -121,38 +123,64 @@ class WFActivityReport extends Component {
     }
 
     componentWillMount() {
-        Api.get('GetAllContactsWithAccount').then(result => {
-            let list = []
-            result.forEach((element) => {
-                list.push({ label: element.contactName, value: element.id })
+        if (Config.IsAllow(4022) || Config.getPayload().uty === 'company') {
+            Api.get('GetAllContactsWithAccount').then(result => {
+                let list = []
+                result.forEach((element) => {
+                    list.push({ label: element.contactName, value: element.id })
+                })
+                this.setState({
+                    employeesList: result,
+                    dropDownList: list
+                });
+            }).catch(() => {
+                toast.error('somthing wrong')
             })
+        } else {
+            let accId = Config.getPayload().aci;
+            let contactName = localStorage.getItem("contactName") !== null ? localStorage.getItem('contactName') : 'Procoor User'
+            let list = []
+            list.push({ label: contactName, value: accId })
+
             this.setState({
-                employeesList: result,
+                accountId: accId,
                 dropDownList: list
             });
-        }).catch(() => {
-            toast.error('somthing wrong')
-        })
+        }
     }
 
     getGridRows = () => {
         if (this.state.selectedEmployee.value != '0') {
-            this.state.employeesList.forEach(employee => {
-                if (employee.id == this.state.selectedEmployee.value) {
-                    this.setState({ isLoading: true })
-                    let obj={
-                        employeeId:employee.accountId,
-                        startDate:this.state.startDate,
-                        finishDate:this.state.finishDate
+            if (Config.IsAllow(4022) || Config.getPayload().uty === 'company') {
+                this.state.employeesList.forEach(employee => {
+                    if (employee.id == this.state.selectedEmployee.value) {
+                        this.setState({ isLoading: true })
+                        let obj = {
+                            employeeId: employee.accountId,
+                            startDate: this.state.startDate,
+                            finishDate: this.state.finishDate
+                        }
+                        Api.post('GetWorkFlowActivity', obj).then((res) => {
+                            this.setState({ rows: res, isLoading: false })
+                        }).catch(() => {
+                            this.setState({ isLoading: false })
+                        })
                     }
-                    Api.post('GetWorkFlowActivity',obj).then((res) => {
-                        this.setState({ rows: res, isLoading: false })
-                    }).catch(() => {
-                        this.setState({ isLoading: false })
-                    })
+                });
+            } else { 
+                this.setState({ isLoading: true })
+                
+                let obj = {
+                    employeeId: this.state.accountId,
+                    startDate: this.state.startDate,
+                    finishDate: this.state.finishDate
                 }
-            });
-
+                Api.post('GetWorkFlowActivity', obj).then((res) => {
+                    this.setState({ rows: res, isLoading: false })
+                }).catch(() => {
+                    this.setState({ isLoading: false })
+                })
+            }
         }
     }
 
@@ -160,15 +188,15 @@ class WFActivityReport extends Component {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
-                pageSize={this.state.rows?this.state.rows.length:0} actions={[]} rowActions={[]} rowClick={() => { }}
+                pageSize={this.state.rows ? this.state.rows.length : 0} actions={[]} rowActions={[]} rowClick={() => { }}
             />
         ) : <LoadingSection />;
 
         const btnExport = this.state.isLoading === false ?
             //<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'workFlowActivity'} />
             <ExportDetails fieldsItems={this.columns}
-           rows={this.state.rows}
-           fields={this.fields} fileName={'workFlowActivity'} /> 
+                rows={this.state.rows}
+                fields={this.fields} fileName={'workFlowActivity'} />
             : null
 
         return (
@@ -181,18 +209,18 @@ class WFActivityReport extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="employee" data={this.state.dropDownList} index="employees"
                             selectedValue={this.state.selectedEmployee} name="employees"
-                            handleChange={event => {this.setState({ selectedEmployee: event }); this.fields[0].value = event.label }} />
+                            handleChange={event => { this.setState({ selectedEmployee: event }); this.fields[0].value = event.label }} />
                     </div>
                     <div className="linebylineInput valid-input alternativeDate">
-                            <DatePicker title='startDate'
-                                startDate={this.state.startDate}
-                                handleChange={e => {this.handleChange('startDate', e); this.fields[1].value = e }} />
-                        </div>
-                         <div className="linebylineInput valid-input alternativeDate">
-                            <DatePicker title='finishDate'
-                                startDate={this.state.finishDate}
-                                handleChange={e => {this.handleChange('finishDate', e); this.fields[2].value = e }} />
-                        </div>
+                        <DatePicker title='startDate'
+                            startDate={this.state.startDate}
+                            handleChange={e => { this.handleChange('startDate', e); this.fields[1].value = e }} />
+                    </div>
+                    <div className="linebylineInput valid-input alternativeDate">
+                        <DatePicker title='finishDate'
+                            startDate={this.state.finishDate}
+                            handleChange={e => { this.handleChange('finishDate', e); this.fields[2].value = e }} />
+                    </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">

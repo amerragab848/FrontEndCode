@@ -239,14 +239,13 @@ export default class Api {
     static post(route, params) {
         return this.xhr(route, params, "POST");
     }
-
+ 
     static xhr(route, params, verb, moduleId) {
-     
-
+        if (!moduleId) moduleId = 1; 
         if (moduleId < 1) moduleId = 1;
         let apiPrefix = modules.find(x => x.key == moduleId);
-        const host = Config.getPublicConfiguartion().static + apiPrefix.api; 
-        const url = `${host}${route}`;
+        const host = Config.getPublicConfiguartion().static + "/"+apiPrefix.api; 
+        const url = `${host}${route}`; 
         let json = null;
 
         let options = Object.assign(
@@ -515,8 +514,8 @@ export default class Api {
             {
                 method: "POST"
             }, {
-            body: JSON.stringify(req)
-        }
+                body: JSON.stringify(req)
+            }
         );
 
         options.headers = {
