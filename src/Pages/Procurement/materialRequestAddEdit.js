@@ -5,8 +5,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import ReactTable from "react-table"; 
 import { toast } from "react-toastify";
 import { bindActionCreators } from "redux";
 import * as Yup from "yup";
@@ -131,7 +130,7 @@ const normalItemsSchema = Yup.object().shape({
 });
 let docId = 0;
 let projectId = 0;
-let contractId=0;
+let contractId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
@@ -377,7 +376,7 @@ class materialRequestAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
-            contractId:contractId,
+            contractId: contractId,
             docTypeId: 88,
             docType: 51,
             projectId: projectId,
@@ -430,13 +429,13 @@ class materialRequestAddEdit extends Component {
                 label: Resources.boqLog[currentLanguage],
                 value: "0"
             },
-            
+
             boqLog: { label: Resources.selectBoq[currentLanguage], value: "0" },
-             //added
-             selectedContract:{
-                label:Resources.selectContract[currentLanguage],
-                value:"0",
-                boqId:"0"
+            //added
+            selectedContract: {
+                label: Resources.selectContract[currentLanguage],
+                value: "0",
+                boqId: "0"
             },
             area: { label: Resources.selectArea[currentLanguage], value: "0" },
             location: {
@@ -478,7 +477,7 @@ class materialRequestAddEdit extends Component {
                 unitPrice: null
             },
             itemTypesList: [],
-            contractBoqLogs:[],
+            contractBoqLogs: [],
             unitsList: [],
             selectedItemType: null,
             selectedUnit: null,
@@ -866,36 +865,30 @@ class materialRequestAddEdit extends Component {
                     isLoading: false
                 });
             });
-            //added
-            this.setState({ isLoading: true });
-            dataservice
-                .GetDataListForContract("GetContractsWithBoqsForDrop?projectId=" + this.state.projectId, "subject", "id","boqId")
-                .then(result => {
-                    
-                    if (isEdit) {
-                        let boqId = this.props.document.boqId;
-                        this.GetBoqItemsStracture(boqId);
-                        if (boqId) {
-                            let contract = result.find(function (item) {
-                                return item.boqId == boqId;
-                            });
-                            this.setState({
-                                selectedContract: contract
-                            });
-                        }
-                    }
-                    this.setState({
-                        contractBoqLogs: result,
-                        isLoading: false
-                    });
-                });
+        //added
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataListCached(
-                "GetAccountsDefaultListForList?listType=discipline",
-                "title",
-                "id", 'defaultLists', "discipline", "listType"
-            )
+        dataservice.GetDataListForContract("GetContractsWithBoqsForDrop?projectId=" + this.state.projectId, "subject", "id", "boqId")
+            .then(result => {
+
+                if (isEdit) {
+                    let boqId = this.props.document.boqId;
+                    this.GetBoqItemsStracture(boqId);
+                    if (boqId) {
+                        let contract = result.find(function (item) {
+                            return item.boqId == boqId;
+                        });
+                        this.setState({
+                            selectedContract: contract
+                        });
+                    }
+                }
+                this.setState({
+                    contractBoqLogs: result,
+                    isLoading: false
+                });
+            });
+        this.setState({ isLoading: true });
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType")
             .then(result => {
                 if (isEdit) {
                     let disciplineId = this.props.document.disciplineId;
@@ -914,12 +907,7 @@ class materialRequestAddEdit extends Component {
                 });
             });
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataListCached(
-                "GetAccountsDefaultListForList?listType=buildingno",
-                "title",
-                "id", 'defaultLists', "buildingno", "listType"
-            )
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=buildingno", "title", "id", 'defaultLists', "buildingno", "listType")
             .then(result => {
                 if (isEdit) {
                     let buildingNoId = this.props.document.buildingNoId;
@@ -938,12 +926,7 @@ class materialRequestAddEdit extends Component {
                 });
             });
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataListCached(
-                "GetAccountsDefaultListForList?listType=apartmentno",
-                "title",
-                "id", 'defaultLists', "apartmentno", "listType"
-            )
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=apartmentno", "title", "id", 'defaultLists', "apartmentno", "listType")
             .then(result => {
                 if (isEdit) {
                     let apartmentNoId = this.props.document.apartmentNoId;
@@ -962,12 +945,7 @@ class materialRequestAddEdit extends Component {
                 });
             });
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataListCached(
-                "GetAccountsDefaultListForList?listType=location",
-                "title",
-                "id", 'defaultLists', "location", "listType"
-            )
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType")
             .then(result => {
                 if (isEdit) {
                     let location = this.props.document.location;
@@ -986,12 +964,7 @@ class materialRequestAddEdit extends Component {
                 });
             });
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataListCached(
-                "GetAccountsDefaultListForList?listType=area",
-                "title",
-                "id", 'defaultLists', "area", "listType"
-            )
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType")
             .then(result => {
                 if (isEdit) {
                     let area = this.props.document.area;
@@ -1007,12 +980,7 @@ class materialRequestAddEdit extends Component {
                 });
             });
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataListCached(
-                "GetAccountsDefaultListForList?listType=specsSection",
-                "title",
-                "id", 'defaultLists', "specsSection", "listType"
-            )
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=specsSection", "title", "id", 'defaultLists', "specsSection", "listType")
             .then(result => {
                 if (result)
                     this.setState({
@@ -1021,12 +989,7 @@ class materialRequestAddEdit extends Component {
                     });
             });
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataListCached(
-                "GetAccountsDefaultListForList?listType=materialtitle",
-                "title",
-                "id", 'defaultLists', "materialtitle", "listType"
-            )
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=materialtitle", "title", "id", 'defaultLists', "materialtitle", "listType")
             .then(result => {
                 if (result)
                     this.setState({
@@ -1035,11 +998,7 @@ class materialRequestAddEdit extends Component {
                     });
             });
         this.setState({ isLoading: true });
-        Api.get(
-            "GetContractsBoq?projectId=" +
-            this.state.projectId +
-            "&pageNumber=0&pageSize=10000"
-        ).then(result => {
+        Api.get("GetContractsBoq?projectId=" + this.state.projectId + "&pageNumber=0&pageSize=10000").then(result => {
             if (result.data) {
                 let data = [];
                 let temp = result.data;
@@ -1054,14 +1013,10 @@ class materialRequestAddEdit extends Component {
         });
 
         this.setState({ isLoading: true });
-        Api.get(
-            "GetContractsSiteRequestByProjectId?projectId=" +
-            this.state.projectId +
-            "&pageNumber=0&pageSize=1000"
-        ).then(result => {
+        Api.get("GetSiteRequestForListByProjectId?projectId=" + this.state.projectId ).then(result => {
             if (result.data) {
                 let data = [];
-                let temp = result.data;
+                let temp = result;
                 temp.forEach(element => {
                     data.push({ label: element.subject, value: element.id });
                 });
@@ -1075,7 +1030,7 @@ class materialRequestAddEdit extends Component {
 
     GetBoqItemsStracture(boqId) {
         this.setState({ isLoading: true });
-      
+
         Api.get("GetBoqItemsStracture?boqId=" + boqId)
             .then(res => {
                 if (res) this.setState({ items: res, isLoading: false });
@@ -1187,7 +1142,7 @@ class materialRequestAddEdit extends Component {
         ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.boqId = this.state.selectedContract.boqId;
         saveDocument.companyId = this.state.fromCompany.value;
-       // saveDocument.contractName=this.selectedContract.contr
+        // saveDocument.contractName=this.selectedContract.contr
         saveDocument.area = this.state.area.label;
         saveDocument.location = this.state.location.label;
         saveDocument.disciplineId = this.state.discipline.value;
@@ -1211,7 +1166,7 @@ class materialRequestAddEdit extends Component {
     }
 
     saveMaterialReques(event) {
-        if (this.state.selectedContract.value != "0"&&this.state.selectedContract.boqId != "0") {
+        if (this.state.selectedContract.value != "0" && this.state.selectedContract.boqId != "0") {
             if (this.state.items.length > 0) {
                 this.setState({ isLoading: true });
                 let saveDocument = { ...this.state.document };
@@ -1426,7 +1381,7 @@ class materialRequestAddEdit extends Component {
                 item.requestId = this.state.docId;
                 item.days == null ? item.days = 1 : item.days = item.days;
                 item.details = item.description;
-                item.originalQuantity = item.quantity; 
+                item.originalQuantity = item.quantity;
                 item.stock = item.quantity;
                 Api.post("AddContractsSiteRequestItems", item).then(() => {
                     const _items = this.state._items;
@@ -2182,7 +2137,7 @@ class materialRequestAddEdit extends Component {
             requestId: this.state.docId,
             projectId: this.state.projectId,
             arrange: this.state.M_arrange,
-            contractId:this.selectedContract.value,
+            contractId: this.selectedContract.value,
             docCloseDate: moment(values.docDate, "YYYY-MM-DD").format(
                 "YYYY-MM-DD[T]HH:mm:ss.SSS"
             )
@@ -2698,10 +2653,10 @@ class materialRequestAddEdit extends Component {
                                         />
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                   
+
                                         <Dropdown
                                             title="contractBoq"
-                                             isDisabled={this.props.changeStatus}
+                                            isDisabled={this.props.changeStatus}
                                             data={this.state.contractBoqLogs}
                                             selectedValue={this.state.selectedContract}
                                             handleChange={event => {
@@ -2711,7 +2666,7 @@ class materialRequestAddEdit extends Component {
                                                 );
                                             }}
                                         />
-                                    </div> 
+                                    </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
                                             title="area"
