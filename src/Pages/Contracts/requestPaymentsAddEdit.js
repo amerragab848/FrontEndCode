@@ -2928,7 +2928,7 @@ class requestPaymentsAddEdit extends Component {
                         docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            <div className="rowsPaginations readOnly__disabled " style={{ 'justify-content': 'space-between' }}>
+                            <div className="rowsPaginations readOnly__disabled " style={{ 'justifyContent': 'spaceBetween' }}>
                                 {this.state.document.previousId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Prevoius Payment" style={{ 'border-radius': '20px' }}><i className="angle left icon" onClick={() => this.getById(this.state.document.previousId)}></i></button> : null}
                                 {this.state.document.nextId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Next Payment" style={{ 'border-radius': '20px' }}><i className="angle right icon" onClick={() => this.getById(this.state.document.nextId)}></i></button> : null}
                             </div>
