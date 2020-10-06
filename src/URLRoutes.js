@@ -2047,13 +2047,6 @@ var routes = [
         settings: { Accounts: true }
     },
     {
-        route: "budgetVariance",
-        moduleId: "reports/budgetVariance",
-        title: "budgetVariance",
-        nav: true,
-        settings: { Reports: true, permission: 418, order: 8 }
-    },
-    {
         route: "Risk",
         moduleId: "commonLogs",
         title: "risk",

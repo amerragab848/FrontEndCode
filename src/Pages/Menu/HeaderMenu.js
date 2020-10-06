@@ -1361,7 +1361,7 @@ class HeaderMenu extends Component {
                                           <span>{item.documentName}</span>
                                           <a data-toggle="tooltip" title={item.title} href={link}
                                             onClick={() => this.navigateLink(currentLink[0], encodedPaylod).bind(this)}>
-                                            “{item.title + item.sendMethod?(" - " + item.sendMethod):""}”
+                                            “{item.title}”
                                           </a>
                                         </p>
                                       </div>
