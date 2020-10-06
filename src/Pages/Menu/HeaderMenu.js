@@ -1156,7 +1156,6 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    //let totalNotification = this.state.notifications.length + this.state.taskes.length;
     let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length ;
 
     return (
@@ -1362,7 +1361,7 @@ class HeaderMenu extends Component {
                                           <span>{item.documentName}</span>
                                           <a data-toggle="tooltip" title={item.title} href={link}
                                             onClick={() => this.navigateLink(currentLink[0], encodedPaylod).bind(this)}>
-                                            “{item.title + " - " + item.sendMethod}”
+                                            “{item.title + item.sendMethod?(" - " + item.sendMethod):""}”
                                           </a>
                                         </p>
                                       </div>
