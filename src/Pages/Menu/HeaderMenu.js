@@ -128,36 +128,36 @@ class HeaderMenu extends Component {
 
   componentDidMount = () => {
     this._isMounted = true;
-    this._isMounted && this.fillData(); 
+    this._isMounted && this.fillData();
   };
 
   fillData() {
     dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "projectId").then(result => {
-      this._isMounted &&  this.setState({
+      this._isMounted && this.setState({
         projects: result
       });
     });
 
     dataservice.GetDataGrid("GetNotificationPostit").then(result => {
-      this._isMounted &&  this.setState({
+      this._isMounted && this.setState({
         notifications: result
       });
     });
 
     dataservice.GetDataGrid("GetMyNotifcations").then(result => {
-      this._isMounted &&  this.setState({
+      this._isMounted && this.setState({
         taskes: result
       });
     });
 
     if (this.props.location.pathname === "/LeftReportMenu") {
       setTimeout(() => {
-        this._isMounted &&   this.setState({
+        this._isMounted && this.setState({
           activeTabs: 2
         })
       }, 500);
     } else if (this.props.location.pathname === "/TemplatesSettings") {
-      this._isMounted &&  setTimeout(() => {
+      this._isMounted && setTimeout(() => {
         this.setState({
           activeTabs: 1
         })
@@ -165,7 +165,7 @@ class HeaderMenu extends Component {
 
     } else {
       setTimeout(() => {
-        this._isMounted &&  this.setState({
+        this._isMounted && this.setState({
           activeTabs: 0
         })
       }, 500);
@@ -334,6 +334,12 @@ class HeaderMenu extends Component {
 
   updateStatus(obj) {
     dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
+      let notifcations = this.state.notifications;
+      let rowIndex = this.state.notifications.findIndex(x => x.id == obj.id);
+      if (notifcations.length > 0 && rowIndex >= 0) {
+        notifcations[rowIndex].viewStatus = true;
+        this.setState({ notifications: notifcations })
+      }
       if (obj.description) {
         let id = obj.description.split("/")[1];
 
@@ -1150,7 +1156,7 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    let totalNotification = this.state.notifications.length + this.state.taskes.length;
+    let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length ;
 
     return (
       <div>

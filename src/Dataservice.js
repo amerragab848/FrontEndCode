@@ -22,7 +22,7 @@ export default class Dataservice {
     static GetDataListSiteRequestNewVersion=(url, label, value,contractId,contractName) =>{
         let Data = []
         return Api.get(url).then(result => {
-            (result.data).forEach(item => {
+            (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];

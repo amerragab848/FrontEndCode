@@ -6016,6 +6016,10 @@
         "en": "Send",
         "ar": "ارسال"
     },
+    "sendMethod": {
+        "en": "Send Method",
+        "ar": "طريقة الارسال"
+    },
     "lateTimeSheet": {
         "en": "Late Time Sheet",
         "ar": "حضور وانصراف متاخر"

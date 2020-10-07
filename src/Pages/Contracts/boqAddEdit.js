@@ -2786,7 +2786,7 @@ class bogAddEdit extends Component {
                             </span>
                             <div className="ui basic label greyLabel">
                                 {/* {this.props.document.total} */}
-                                {this.state.createdBoqTotal }
+                                {this.state.createdBoqTotal}
                             </div>
                         </div>
                     </div>

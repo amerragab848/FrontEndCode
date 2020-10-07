@@ -17,8 +17,7 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
-import moment from "moment";
-import SkyLight from "react-skylight";
+import moment from "moment"; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
@@ -320,11 +319,7 @@ class materialDeliveryAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataListCached(
-            "GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId,
-            "companyName",
-            "companyId", 'companies', this.state.projectId, "projectId"
-        )
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId")
             .then(result => {
                 if (isEdit) {
                     let id = this.props.document.contractId;
@@ -332,11 +327,9 @@ class materialDeliveryAddEdit extends Component {
                     if (id) {
                         selectedValue = find(result, function (i) {
                             return i.value === id;
-                        });
-                        // this.setState({ selectedContractId: selectedValue });
+                        }); 
                     }
-                }
-                // this.setState({ contractPoData: [...result] });
+                } 
             });
 
         dataservice.GetDataList(
