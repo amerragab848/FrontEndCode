@@ -4064,6 +4064,10 @@
         "en": "Remaining  Quantity",
         "ar": "الكمية المتبقية"
     },
+    "grandRemainingQuantity": {
+        "en": " Grand Remaining  Quantity",
+        "ar": "الكمية  الكليةالمتبقية"
+    },
     "completedQuantity": {
         "en": "Completed  Quantity",
         "ar": "الكمية المنتهيه"

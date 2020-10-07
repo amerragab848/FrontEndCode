@@ -1355,7 +1355,8 @@ class HeaderMenu extends Component {
                                       <div className="notfiText">
                                         <div className="notifiName">
                                           <h3>{item.fromContactName}</h3>
-                                          <p>{diffDays.toFixed(0) + " Days"}</p>
+                                          <p>{diffDays.toFixed(0) + " Days "}</p>
+                                          <p>{item.sendMethod !==null?item.sendMethod:""}</p>
                                         </div>
                                         <p className="notofoWorkflow">
                                           <span>{item.documentName}</span>

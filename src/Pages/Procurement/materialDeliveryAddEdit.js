@@ -17,7 +17,7 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
-import moment from "moment"; 
+import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
@@ -327,9 +327,9 @@ class materialDeliveryAddEdit extends Component {
                     if (id) {
                         selectedValue = find(result, function (i) {
                             return i.value === id;
-                        }); 
+                        });
                     }
-                } 
+                }
             });
 
         dataservice.GetDataList(
@@ -584,19 +584,21 @@ class materialDeliveryAddEdit extends Component {
         else {
             Api.post("DeleteMultipleLogsMaterialDeliveryTickets", ids)
                 .then(res => {
-
-                    ids.map(i => {
-                        originalRows = originalRows.filter(r => r.id !== i);
-                    });
-                    selectedRows = [];
-                    let data = { items: originalRows };
-                    this.props.actions.ExportingData(data);
-                    this.setState({
-                        Items: originalRows,
-                        showDeleteModal: false,
-                        isLoading: false
-                    });
-                }, toast.success(Resources["smartSentAccountingMessage"][currentLanguage].successTitle))
+                    if (res) {
+                        ids.map(i => {
+                            originalRows = originalRows.filter(r => r.id !== i);
+                        });
+                        selectedRows = [];
+                        let data = { items: originalRows };
+                        this.props.actions.ExportingData(data);
+                        this.setState({
+                            Items: originalRows,
+                            showDeleteModal: false,
+                            isLoading: false
+                        });
+                        toast.success(Resources["smartSentAccountingMessage"][currentLanguage].successTitle)
+                    }
+                })
                 .catch(ex => {
                     this.setState({
                         showDeleteModal: false,
@@ -1219,6 +1221,11 @@ class materialDeliveryAddEdit extends Component {
                     width: 100
                 },
                 {
+                    Header: Resources["grandRemainingQuantity"][currentLanguage],
+                    accessor: "grandRemainingQuantity",
+                    width: 100
+                },
+                {
                     Header: Resources["recievedDate"][currentLanguage],
                     accessor: "receivedDate",
                     width: 100,
@@ -1760,6 +1767,7 @@ class materialDeliveryAddEdit extends Component {
                                         </div>
                                     </div>
                                 ) : null}
+                                <span>Grand Remaining Equation : (Approved Quantity + Rejected Quantity + Pending Quantity)-(Released Quantity)</span>
                                 <ReactTable
                                     filterable
                                     ref={r => {

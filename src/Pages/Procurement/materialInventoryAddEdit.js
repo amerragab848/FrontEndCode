@@ -496,7 +496,8 @@ class MaterialInventoryAddEdit extends Component {
                 specsSectionId: "",
                 resourceCode: "",
                 unit: "",
-                remainingQuantity: ""
+                remainingQuantity: "",
+                releasePrice:""
             };
             this.setState({ document: mainDoc });
             this.fillDropDowns(false);
@@ -1042,6 +1043,18 @@ class MaterialInventoryAddEdit extends Component {
                                                                         name="unitPrice"
                                                                         placeholder={Resources.unitPrice[currentLanguage]} />
                                                                     {touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="linebylineInput valid-input disabled">
+                                                            <label className="control-label">{Resources.releasePrice[currentLanguage]}</label>
+                                                            <div className={"shareLinks " + (this.props.changeStatus === false ? "" : "disabled")}>
+                                                                <div className={"inputDev ui input"} >
+                                                                    <input type="text" className="form-control" id="unitPrice"
+                                                                        onChange={() => {}}
+                                                                        value={this.state.document.releasePrice}
+                                                                        name="unitPrice"
+                                                                        placeholder={Resources.releasePrice[currentLanguage]} />
                                                                 </div>
                                                             </div>
                                                         </div>
