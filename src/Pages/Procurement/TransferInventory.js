@@ -29,7 +29,7 @@ let arrange = 0;
 const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
-    toProjectName: Yup.string().required(Resources['itemDescription'][currentLanguage]),
+    fromProjectId: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true),
 
     approvedQuantity: Yup.number().required(Resources['approvedQuantity'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -48,11 +48,11 @@ class TransferInventory extends Component {
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
-          
+
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     
+
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
@@ -76,7 +76,7 @@ class TransferInventory extends Component {
             projectId: this.props.projectId === 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId,
             docApprovalId: docApprovalId,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            selectedProject: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
+            selectedProject: { label: Resources.projectName[currentLanguage], value: "0" },
             ProjectsData: [],
             permission: [{ name: 'sendByEmail', code: '0' }, { name: 'sendByInbox', code: '0' },
             { name: 'sendTask', code: '0' }, { name: 'distributionList', code: '0' },
@@ -101,19 +101,18 @@ class TransferInventory extends Component {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
             else { links[i].classList.add("odd") }
         }
-            let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId
-            dataservice.GetDataGrid(url).then(result => {
-                debugger
-                this.setState({
-                    document:result
-                })
+        let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId
+        dataservice.GetDataGrid(url).then(result => {
+            debugger
+            this.setState({
+                document: result
             })
+        })
 
-            this.fillDropDowns(true);
+        this.fillDropDowns(true);
 
     }
 
-  
     fillDropDowns(isEdit) {
 
         dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.state.projectId, 'projectName', 'projectId').then(result => {
@@ -133,7 +132,7 @@ class TransferInventory extends Component {
         if (event == null) return
         let original_document = { ...this.state.document }
         let updated_document = {};
-        updated_document['fromProjectId'] = this.state.document.toProjectId;
+        updated_document['fromProjectId'] = event.value;
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ document: updated_document, selectedProject: event })
     }
@@ -142,6 +141,7 @@ class TransferInventory extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {}
         updated_document[field] = e.target.value;
+        //updated_document['fromProjectId'] = original_document.fromProjectId;
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ document: updated_document })
     }
@@ -178,7 +178,7 @@ class TransferInventory extends Component {
             approvedQuantity: this.state.document.approvedQuantity,
             rejectedQuantity: this.state.document.rejectedQuantity,
             pendingQuantity: this.state.document.pendingQuantity,
-            inventoryId:this.state.document.id 
+            inventoryId: this.state.document.id
         }
         debugger
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
@@ -203,7 +203,7 @@ class TransferInventory extends Component {
                 <div className="document-fields">
                     <Formik
                         initialValues={{
-                            toProjectName: this.state.document.toProjectName,
+                            fromProjectId: this.state.document.fromProjectId,
                             approvedQuantity: this.state.document.approvedQuantity,
                             pendingQuantity: this.state.document.pendingQuantity,
                             rejectedQuantity: this.state.document.rejectedQuantity,
@@ -219,10 +219,22 @@ class TransferInventory extends Component {
                                 <div className="proForm datepickerContainer">
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="contractPo" data={this.state.ProjectsData} selectedValue={this.state.selectedProject}
-                                            handleChange={e => this.handleChangeDropDown(e)}
-                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toProjectName}
-                                            touched={touched.toProjectName} name="toProjectName" id="toProjectName" />
+                                        <Dropdown
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.fromProjectId}
+                                            touched={touched.fromProjectId}
+                                            
+                                            name="fromProjectId"
+                                            id="fromProjectId"
+                                            index="fromProjectId"
+
+                                            title="Project"
+                                            data={this.state.ProjectsData}
+                                            selectedValue={this.state.selectedProject}
+                                            handleChange={e => this.handleChangeDropDown(e)} 
+                                            //em={touched.project}
+                                            />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
@@ -271,32 +283,32 @@ class TransferInventory extends Component {
                                 {this.props.changeStatus === true ?
                                     <div className="approveDocument">
                                         <div className="approveDocumentBTNS">
-                                        {this.state.isLoading ?
-                                                        <button className="primaryBtn-1 btn disabled">
-                                                            <div className="spinner">
-                                                                <div className="bounce1" />
-                                                                <div className="bounce2" />
-                                                                <div className="bounce3" />
-                                                            </div>
-                                                        </button> :
-                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                                    }
-                                                    <DocumentActions
-                                                        isApproveMode={this.state.isApproveMode}
-                                                        docTypeId={this.state.docTypeId}
-                                                        docId={this.state.docId}
-                                                        projectId={this.state.projectId}
-                                                        previousRoute={this.state.previousRoute}
-                                                        docApprovalId={this.state.docApprovalId}
-                                                        currentArrange={this.state.arrange}
-                                                        showModal={this.props.showModal}
-                                                        showOptionPanel={this.showOptionPanel}
-                                                        permission={this.state.permission}
-                                                    />
+                                            {this.state.isLoading ?
+                                                <button className="primaryBtn-1 btn disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button> :
+                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                                            }
+                                            <DocumentActions
+                                                isApproveMode={this.state.isApproveMode}
+                                                docTypeId={this.state.docTypeId}
+                                                docId={this.state.docId}
+                                                projectId={this.state.projectId}
+                                                previousRoute={this.state.previousRoute}
+                                                docApprovalId={this.state.docApprovalId}
+                                                currentArrange={this.state.arrange}
+                                                showModal={this.props.showModal}
+                                                showOptionPanel={this.showOptionPanel}
+                                                permission={this.state.permission}
+                                            />
 
-                                                </div>
-                                            </div>
-                                            : null}
+                                        </div>
+                                    </div>
+                                    : null}
 
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
@@ -338,7 +350,7 @@ class TransferInventory extends Component {
                             {StepOne()}
 
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
