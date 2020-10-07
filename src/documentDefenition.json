@@ -96,7 +96,7 @@
         "field": "openedBy",
         "friendlyName": "openedBy",
         "minWidth": 150,
-        "width": "8%",
+        "width": "15%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -112,6 +112,28 @@
         "isDate": true,
         "isTime": false,
         "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "replyLetterSubject",
+        "friendlyName": "replyLetterSubject",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "replyLetterDate",
+        "friendlyName": "replyLetterDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": true,
         "exportDataType": "d"
       },
       {
@@ -162,7 +184,7 @@
         "field": "refDoc",
         "friendlyName": "refDoc",
         "minWidth": 85,
-        "width": "3%",
+        "width": "8%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
