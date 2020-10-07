@@ -1111,7 +1111,7 @@ class materialReleaseAddEdit extends Component {
                     <Formik
                         initialValues={{
                             unitPrice: this.state.objItemForEdit.unitPrice,
-                            returnedQuantity: this.state.objItemForEdit.quantity,
+                            returnedQuantity: this.state.objItemForEdit.quantity != null ? this.state.objItemForEdit.quantity : 0,
                             arrangeItem: this.state.objItemForEdit.arrange,
                         }}
                         validationSchema={documentItemValidationSchemaForEdit}
@@ -1192,16 +1192,15 @@ class materialReleaseAddEdit extends Component {
                                                     value={this.state.objItemForEdit.remarks} onChange={e => this.HandleChangeItemsForEdit('remarks', e)} />
                                             </div>
                                         </div>
-
-                                        {/* <div className="linebylineInput valid-input ">
-                                            <Dropdown data={this.state.BoqItemData} selectedValue={this.state.SelectedBoqItemForEdit}
-                                                title="boqItem" handleChange={e => this.setState({ SelectedBoqItemForEdit: e })} />
-                                        </div> */}
-
+ 
                                         <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
                                             <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
-                                                <input  type="text"  name='unitPrice' className="form-control" autoComplete='off' placeholder={Resources['unitPrice'][currentLanguage]}
+                                                <input  
+                                                    name='unitPrice'
+                                                    className="form-control"
+                                                    autoComplete='off'
+                                                    placeholder={Resources['unitPrice'][currentLanguage]}
                                                     value={this.state.objItemForEdit.unitPrice} onChange={e => this.HandleChangeItemsForEdit('unitPrice', e)}
                                                     onBlur={(e) => {
                                                         handleBlur(e)
