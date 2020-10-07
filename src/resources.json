@@ -4492,6 +4492,10 @@
         "en": "Send To",
         "ar": "ارسال من"
     },
+    "sendFor": {
+        "en": "Send For",
+        "ar": "ارسال ل"
+    },
     "returnedBy": {
         "en": "Returned By",
         "ar": "ارجاع الي "
@@ -6012,6 +6016,10 @@
         "en": "Send",
         "ar": "ارسال"
     },
+    "sendMethod": {
+        "en": "Send Method",
+        "ar": "طريقة الارسال"
+    },
     "lateTimeSheet": {
         "en": "Late Time Sheet",
         "ar": "حضور وانصراف متاخر"
@@ -6156,6 +6164,18 @@
         "en": "Terms Of Purchase Order",
         "ar": "بنود امر الشراء"
     },
+    "replies": {
+        "en": "Replies",
+        "ar": "الردود السابقة"
+    },
+    "replyLetterSubject": {
+        "en": "Reply Letter Subject",
+        "ar": "خطاب الرد"
+    },
+    "replyLetterDate": {
+        "en": "Reply Letter Date",
+        "ar": "تاريخ خطاب الرد"
+    },  
     "selectReply": {
         "en": "-- Please Select a Reply --",
         "ar": "-- برجاء اختيار رد --"

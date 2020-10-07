@@ -55,14 +55,6 @@ class BoqStractureCost extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            }, {
-                field: "exists",
-                title: Resources["exists"][currentLanguage],
-                width: 25,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true,
             },
             {
                 field: "rowTotal",
@@ -83,7 +75,7 @@ class BoqStractureCost extends Component {
     }
 
     componentDidMount() {
-        Dataservice.GetDataList('GetBoqStracture', 'title', 'id').then(
+        Dataservice.GetDataList('GetBoqStracture', 'title', 'code').then(
             result => {
                 this.setState({
                     BoqTypeData: result

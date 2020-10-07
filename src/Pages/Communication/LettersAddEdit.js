@@ -22,6 +22,9 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from "lodash/find";
+import Api from "../../api";
+import arrow from '../../Styles/images/right-arrow.png'
+
 import ConnectionContext from '../../Componants/Layouts/Context'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -29,7 +32,9 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
+    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
+    sharedSettings: Yup.string().required(Resources["sharedSettings"][currentLanguage])
+                                .min(5, "Please Enter at least Five Character"),
 });
 
 let docId = 0;
@@ -75,14 +80,15 @@ class LettersAddEdit extends Component {
             perviousRoute = obj.perviousRoute;
             if (obj.prevLetterId) {
                 fromCompanyId = obj.fromCompanyId;
-                toCompanyId = obj.toCompanyId; 
+                toCompanyId = obj.toCompanyId;
                 fromContactId = obj.fromContactId;
-                toContactId = obj.toContactId; 
-            } 
+                toContactId = obj.toContactId;
+            }
             prevLetterId = obj.prevLetterId;
         }
 
         this.state = {
+            replies: [],
             tCompanyId: toCompanyId,
             frmCompanyId: fromCompanyId,
             tContactId: toContactId,
@@ -104,6 +110,7 @@ class LettersAddEdit extends Component {
             fromContacts: [],
             discplines: [],
             letters: [],
+            replyLink: "",
             permission: [
                 { name: "sendByEmail", code: 54 },
                 { name: "sendByInbox", code: 53 },
@@ -183,7 +190,7 @@ class LettersAddEdit extends Component {
         });
     }
 
-    componentDidMount() { 
+    componentDidMount() {
 
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
 
@@ -207,7 +214,7 @@ class LettersAddEdit extends Component {
                 fromContactId: replyFromContId || "",
                 toCompanyId: replyToCompId || "",
                 toContactId: replyToContId || "",
-                replayId: prevLetterId != null ? prevLetterId : "",
+                replyId: prevLetterId != null ? prevLetterId : "",
                 docDate: moment().format("YYYY-MM-DD"),
                 status: "true",
                 disciplineId: "",
@@ -230,6 +237,7 @@ class LettersAddEdit extends Component {
 
         this.checkDocumentIsView();
 
+        this.getReplies();
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -260,14 +268,12 @@ class LettersAddEdit extends Component {
             this.checkDocumentIsView();
         }
     }
-
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
-
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(49)) {
@@ -295,7 +301,42 @@ class LettersAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
+    getReplies() {
+        if (this.state.docId > 0) {
+            let url = "GetAllReplyLettersByletterId?letterId=" + this.state.docId;
+            this.GetLogData(url);
+        }
+    }
+    GetLogData(url) {
+        Api.get(url, undefined, 1).then(result => {
+            result.forEach(row => {
+                let subject = "";
+                if (row) {
+                    let obj = {
+                        docId: row.id,
+                        projectId: row.projectId,
+                        projectName: row.projectName,
+                        arrange: 0,
+                        docApprovalId: 0,
+                        isApproveMode: false,
+                        perviousRoute: window.location.pathname + window.location.search
+                    };
+                    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+                    let addView = "LettersAddEdit";
+                    var doc_view = addView + "?id=" + encodedPaylod;
+
+                    subject = doc_view;
+                }
+                row.link = subject;
+            });
+            this.setState({
+                replies: result
+            });
+        })
+    };
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource, toProps) {
         let action = url + "?" + param + "=" + value;
 
@@ -332,7 +373,65 @@ class LettersAddEdit extends Component {
             }
         });
     }
+    createReplyLink(docId) {
+        let addView = "LettersAddEdit";
 
+        let obj = {
+            docId: docId,
+            prevLetterId: 0,
+            replyFromCompId: this.state.document.toCompanyId, //
+            replyFromContId: this.state.document.toContactId,
+
+            replyToCompId: this.state.document.fromCompanyId,
+            replyToContactId: this.state.document.fromContactId,
+
+            projectId: this.props.document.projectId,
+            projectName: this.state.document.projectName,
+            arrange: 0,
+            docApprovalId: 0,
+            docAlertId: 0,
+            isApproveMode: false,
+            perviousRoute: window.location.pathname + window.location.search
+        };
+
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+        var url = addView + "?id=" + encodedPaylod;
+
+        this.setState({
+            replyLink: url
+        });
+    }
+    navigateToReplyFromTable(rowObj) {
+        let addView = "LettersAddEdit";
+
+        let obj = {
+            docId: rowObj.id,
+            prevLetterId: 0,
+            replyFromCompId: rowObj.fromCompanyId,
+            replyFromContId: rowObj.fromContactId,
+            replyToCompId: rowObj.toCompanyId,
+            replyToContactId: rowObj.toContactId,
+            projectId: rowObj.projectId,
+            projectName: rowObj.projectName,
+            arrange: 0,
+            docApprovalId: 0,
+            docAlertId: 0,
+            isApproveMode: false,
+            perviousRoute: window.location.pathname + window.location.search
+        };
+
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+        var url = addView + "?id=" + encodedPaylod;
+        var win = window.open(url, '_blank');
+
+        win.focus();
+    }
     fillDropDowns(isEdit, cb) {
         if (!isEdit) {
             dataservice.GetDataList("ProjectWorkFlowGetList?projectId=" + this.state.projectId, "subject", "id").then(result => {
@@ -363,10 +462,10 @@ class LettersAddEdit extends Component {
                     });
 
                     this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts");
-                    
+
                 }
             }
-             else {
+            else {
                 if (fromCompanyId && toCompanyId) {
                     let fromCompany = find(result, function (item) { return item.value == fromCompanyId });
                     let toCompany = find(result, function (item) { return item.value == toCompanyId });
@@ -377,8 +476,8 @@ class LettersAddEdit extends Component {
 
                     this.setState({
                         selectedFromCompany: {
-                            label:fromCompany ? fromCompany.label : "", 
-                            value:fromCompany ? fromCompanyId : "0"
+                            label: fromCompany ? fromCompany.label : "",
+                            value: fromCompany ? fromCompanyId : "0"
                         },
                         selectedToCompany: {
                             label: toCompany ? toCompany.label : "",
@@ -386,11 +485,11 @@ class LettersAddEdit extends Component {
                         }
 
                     });
-                    
-                this.handleChangeDropDown(fromCompany, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
-                this.handleChangeDropDown(toCompany, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")
+
+                    this.handleChangeDropDown(fromCompany, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                    this.handleChangeDropDown(toCompany, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")
                 }
-                
+
             }
 
             this.setState({
@@ -417,7 +516,6 @@ class LettersAddEdit extends Component {
                 discplines: [...result]
             });
         });
-
         dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id")
             .then(result => {
                 if (isEdit) {
@@ -425,6 +523,7 @@ class LettersAddEdit extends Component {
                     let replyLetter = {};
                     if (replyId) {
                         replyLetter = find(result, function (item) { return item.value == replyId });
+                        this.createReplyLink(replyLetter.value);
                         this.setState({
                             selectedReplyLetter: replyLetter
 
@@ -436,6 +535,8 @@ class LettersAddEdit extends Component {
 
                     if (replyId) {
                         replyLetter = find(result, function (item) { return item.value == replyId });
+                        this.createReplyLink(replyLetter.value);
+
                         this.setState({
                             selectedReplyLetter: {
                                 label: replyLetter.label,
@@ -598,7 +699,7 @@ class LettersAddEdit extends Component {
         this.setState({
             isLoading: true
         });
-        
+
         let saveDocument = { ...this.state.document };
         saveDocument.projectId = this.props.projectId
 
@@ -614,7 +715,14 @@ class LettersAddEdit extends Component {
     }
 
     saveAndExit(event) {
-        this.props.history.push(this.state.perviousRoute);
+        let replyId = this.state.document.replyId;
+        if (replyId) {
+            this.props.history.push({
+                pathname: "/Letters/" + this.props.projectId,
+            });
+        } else {
+            this.props.history.push(this.state.perviousRoute);
+        }
     }
 
     showBtnsSaving() {
@@ -646,6 +754,8 @@ class LettersAddEdit extends Component {
     }
 
     render() {
+        let replyId = this.state.document.replyId;
+
         return (
             <div className="mainContainer" id={"mainContainer"}>
                 <div
@@ -657,7 +767,7 @@ class LettersAddEdit extends Component {
                     <HeaderDocument
                         projectName={projectName}
                         isViewMode={this.state.isViewMode}
-                        perviousRoute={this.state.perviousRoute}
+                        perviousRoute={replyId ? "/Letters/" + this.props.projectId : this.state.perviousRoute}
                         docTitle={Resources.lettertitle[currentLanguage]}
                         moduleTitle={
                             Resources["communication"][currentLanguage]
@@ -869,19 +979,27 @@ class LettersAddEdit extends Component {
                                                                 } index="letter-discipline" />
                                                         </div>
                                                         <div className="linebylineInput valid-input" style={{ position: 'relative' }}>
-                                                            <Dropdown title="replyletter"
-                                                                data={this.state.letters}
-                                                                selectedValue={this.state.selectedReplyLetter}
-                                                                handleChange={event =>
-                                                                    this.handleChangeDropDown(event, "replyId", false, "", "", "", "selectedReplyLetter")
-                                                                } index="letter-replyId" />
-                                                            {this.props.changeStatus === true ?
-                                                                <i onClick={() => this.replyNewLetter()}
-                                                                    style={{ position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475' }}
-                                                                    className="fa fa-reply" aria-hidden="true">
-                                                                </i>
-                                                                : null
-                                                            }
+                                                            <div className="shareLinks">
+
+                                                                <Dropdown title="replyletter"
+                                                                    data={this.state.letters}
+                                                                    selectedValue={this.state.selectedReplyLetter}
+                                                                    handleChange={event =>
+                                                                        this.handleChangeDropDown(event, "replyId", false, "", "", "", "selectedReplyLetter")
+                                                                    } index="letter-replyId" />
+                                                                {this.props.changeStatus === true ?
+                                                                    <i onClick={() => this.replyNewLetter()}
+                                                                        style={{ position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475' }}
+                                                                        className="fa fa-reply" aria-hidden="true">
+                                                                    </i>
+                                                                    : null
+                                                                }
+                                                                {this.state.selectedReplyLetter.value > 0 ?
+                                                                    <a style={{ marginLeft: '7%', marginTop: '2%' }} target="_blank" href={this.state.replyLink}>
+                                                                        <span> {Resources.openFolder[currentLanguage]}  </span>
+                                                                    </a>
+                                                                    : null}
+                                                            </div>
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">
@@ -967,6 +1085,129 @@ class LettersAddEdit extends Component {
                                             )}
                                         </Formik>
                                     </div>
+                                    <div>
+                                        <div className="drive__wrapper">
+                                            <h2 className="title">
+                                                {Resources["replies"][currentLanguage]}
+                                            </h2>
+                                        </div>
+                                        <table className="attachmentTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div className="headCell">
+                                                            <span>
+                                                                Actions
+                                                        </span>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell">
+                                                            <span>
+                                                                Subject
+                                                        </span>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell">
+                                                            <span>
+                                                                ProjectName
+                                                        </span>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell">
+                                                            <span>
+                                                                From Company
+                                                        </span>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell">
+                                                            <span>
+                                                                From Contact
+                                                         </span>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell">
+                                                            <span>
+                                                                To Company
+                                                        </span>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell">
+                                                            <span>
+                                                                To Contact
+                                                        </span>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.replies.map((ele, index) => {
+                                                    return (
+                                                        <tr key={ele.id}>
+                                                            <td className="removeTr">
+                                                                <div className="contentCell tableCell-1">
+                                                                    <span className="pdfImage" onClick={() => this.navigateToReplyFromTable(ele, index)}>
+                                                                        <a>
+                                                                            <i className="fa fa-link" aria-hidden="true">
+                                                                            </i>
+                                                                        </a>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell">
+                                                                    <a data-toggle="tooltip" title={ele.subject != null ? ele.subject : ""}>
+                                                                        {ele.subject}
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell">
+                                                                    <a data-toggle="tooltip" title={ele.projectName != null ? ele.projectName : ""}>
+                                                                        {ele.projectName}
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell">
+                                                                    <a data-toggle="tooltip" title={ele.fromCompanyName != null ? ele.fromCompanyName : ""}>
+                                                                        {ele.fromCompanyName}
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell">
+                                                                    <a data-toggle="tooltip" title={ele.fromContactName != null ? ele.fromContactName : ""}>
+                                                                        {ele.fromContactName}
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell">
+                                                                    <a data-toggle="tooltip" title={ele.toCompanyName != null ? ele.toCompanyName : ""}>
+                                                                        {ele.toCompanyName}
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell">
+                                                                    <a data-toggle="tooltip" title={ele.toContactName != null ? ele.toContactName : ""}>
+                                                                        {ele.toContactName}
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                }
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={839} EditAttachments={3223} ShowDropBox={3607} ShowGoogleDrive={3608} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
@@ -979,11 +1220,11 @@ class LettersAddEdit extends Component {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         );
     }
 }
- 
+
 function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,

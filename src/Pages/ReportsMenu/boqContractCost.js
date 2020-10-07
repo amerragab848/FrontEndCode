@@ -12,7 +12,9 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Export from "../../Componants/OptionsPanels/Export";
-import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+// import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import GridCustom from 'react-customized-grid';
+import 'react-customized-grid/main.css';
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -34,7 +36,7 @@ class BoqContractCost extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "itemCode",
@@ -43,7 +45,7 @@ class BoqContractCost extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "resourceCode",
@@ -52,61 +54,61 @@ class BoqContractCost extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "quantity",
                 title: Resources["originalQuantity"][currentLanguage],
-                width: 10,
+                width: 7,
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "executedQuantity",
                 title: Resources["executedQuantity"][currentLanguage],
-                width: 10,
+                width: 7,
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "mainContractQty",
                 title: Resources["contractQty"][currentLanguage],
-                width: 10,
+                width: 7,
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "subContractQty",
                 title: Resources["subContractQty"][currentLanguage],
-                width: 10,
+                width: 7,
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "poQuantity",
                 title: Resources["poQuantity"][currentLanguage],
-                width: 10,
+                width: 7,
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "percent",
                 title: Resources["percentage"][currentLanguage],
-                width: 10,
+                width: 5,
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "expenseseTotal",
@@ -115,7 +117,7 @@ class BoqContractCost extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "executedTotal",
@@ -124,9 +126,9 @@ class BoqContractCost extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
-         
+
         ];
 
         this.state = {
@@ -191,7 +193,14 @@ class BoqContractCost extends Component {
     render() {
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridCustom  cells={this.columnsGrid}  data={this.state.rows}  groups={[]} pageSize={50}   pageSize={50} actions={[]} rowActions={[]} rowClick={()=>{}} />: null
+                // <GridCustom ref='custom-data-grid' cells={this.columnsGrid}
+                //     data={this.state.rows} groups={[]} pageSize={50}
+                //     pageSize={50} actions={[]} rowActions={[]} rowClick={() => { }} />
+                    <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} 
+                    cells={this.columnsGrid}
+                        pageSize={this.state.rows.length} actions={[]} rowActions={[]}
+                        rowClick={() => { }}
+                    />
             ) : (
                 <LoadingSection />
             );
