@@ -29,7 +29,7 @@ let arrange = 0;
 const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
-    toProjectName: Yup.string().required(Resources['itemDescription'][currentLanguage]),
+    selectedProject: Yup.string().required(Resources['projectName'][currentLanguage]).nullable(true),
 
     approvedQuantity: Yup.number().required(Resources['approvedQuantity'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -76,7 +76,7 @@ class TransferInventory extends Component {
             projectId: this.props.projectId === 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId,
             docApprovalId: docApprovalId,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            selectedProject: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
+            selectedProject: { label: Resources.projectName[currentLanguage], value: "0" },
             ProjectsData: [],
             permission: [{ name: 'sendByEmail', code: '0' }, { name: 'sendByInbox', code: '0' },
             { name: 'sendTask', code: '0' }, { name: 'distributionList', code: '0' },
@@ -219,10 +219,16 @@ class TransferInventory extends Component {
                                 <div className="proForm datepickerContainer">
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="contractPo" data={this.state.ProjectsData} selectedValue={this.state.selectedProject}
+                                        <Dropdown title="projectName" data={this.state.ProjectsData} selectedValue={this.state.selectedProject}
                                             handleChange={e => this.handleChangeDropDown(e)}
-                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toProjectName}
-                                            touched={touched.toProjectName} name="toProjectName" id="toProjectName" />
+                                            onChange={setFieldValue} 
+                                            onBlur={setFieldTouched} 
+                                            error={errors.selectedProject}//fromProjectId toProjectName
+                                            touched={touched.selectedProject} 
+                                            name="selectedProject" 
+                                            id="selectedProject" />
+                                          {errors.selectedProject ? (<em className="pError">{errors.selectedProject}</em>) : null}
+
                                     </div>
 
                                     <div className="linebylineInput valid-input">

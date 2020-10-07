@@ -90,7 +90,7 @@ let docApprovalId = 0;
 let perviousRoute = 0;
 let arrange = 0;
 var steps_defination = [];
-
+let itm=[];
 class bogAddEdit extends Component {
     constructor(props) {
         super(props);
@@ -209,10 +209,28 @@ class bogAddEdit extends Component {
                 groupable: true,
                 fixed: false,
                 sortable: true,
+               
+               
                 handleChange: (e, cell) => {
-                    cell.unitPrice = e.target.value;
 
+                    let cellIns = Object.assign({}, cell);
+    
+                    cellIns.unitPrice = parseFloat(e.target.value);
+    
+                    let pItems = JSON.parse(JSON.stringify(this.state._items));
+    
+                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
+    
+                    pItems[cellIndex] = cellIns;
+    
+                    this.setState({
+                        _items: pItems
+                      
+                    });
+                    // let rowIndex=itm.findIndex(x=>x.id==cell.id);
+                    // itm[rowIndex].unitPrice=e.target.value;
                 },
+             
                 handleBlur: (e, cell) => {
                     if (Config.IsAllow(617)) {
 
@@ -222,7 +240,7 @@ class bogAddEdit extends Component {
                             toast.success(
                                 Resources["operationSuccess"][currentLanguage]
                             );
-                            this.setState({ isLoading: false });
+                           this.setState({ isLoading: false });
                         }).catch(() => {
                             toast.error(
                                 Resources["operationCanceled"][currentLanguage]
@@ -233,7 +251,8 @@ class bogAddEdit extends Component {
                         toast.warning(Resources["missingPermissions"][currentLanguage]);
                     }
                 },
-                type: Config.IsAllow(617) ? "input" : "text"
+                 type: Config.IsAllow(617) ? "input" : "text"
+              
             },
             {
                 field: "total",
@@ -308,6 +327,7 @@ class bogAddEdit extends Component {
         ];
 
         this.state = {
+            value: '',
             isCompany: Config.getPayload().uty === "company" ? true : false,
             showForm: false,
             isLoadingEdit: false,
@@ -554,7 +574,7 @@ class bogAddEdit extends Component {
             }
         );
     }
-
+   
     componentDidMount() {
         var links = document.querySelectorAll(
             ".noTabs__document .doc-container .linebylineInput"
@@ -592,7 +612,10 @@ class bogAddEdit extends Component {
             showPopUp: false
         });
     }
-
+    handleChange=(event) =>
+    {    
+        this.setState({value: event.target.value});  
+    }
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true });
@@ -683,6 +706,7 @@ class bogAddEdit extends Component {
                     resourceCode: element.resourceCode
                 });
             });
+           // itm=Table || [];
             this.setState({ _items: Table });
             this.props.actions.ExportingData(data);
             setTimeout(() => {
