@@ -102,13 +102,7 @@ class CommonLog extends Component {
       {
         title: 'Export Doc & Attachments',
         handleClick: value => {
-<<<<<<< HEAD
           let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
-=======
-
-          let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
-
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
           let documentObj = this.state.documentObj
           this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle);
           this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId);
@@ -585,7 +579,7 @@ class CommonLog extends Component {
           obj.showTip = true;
         }
 
-        if (item.field === "statusName") {
+        if (item.field === "statusName"||item.field === "statusText") {
           obj.classes = 'grid-status';
           obj.fixed = false;
           obj.leftPadding = 17;
@@ -952,14 +946,10 @@ class CommonLog extends Component {
           gridKey={'CommonLog-' + this.state.documentName}
           data={this.state.rows}
           actions={this.actions}
-<<<<<<< HEAD
           rowActions={
             (this.state.documentObj.docTyp == 50 ? this.inventoryRowActions : (this.state.documentObj.forEditApi != undefined ? this.rowActions : null))
           }
 
-=======
-          rowActions={this.state.documentObj.forEditApi != undefined ? this.rowActions : null}
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
           cells={this.state.columns}
 
           openModalColumn={this.state.columnsModal}

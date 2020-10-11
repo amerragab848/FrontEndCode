@@ -578,8 +578,11 @@ class materialDeliveryAddEdit extends Component {
         selectedRows.map(s => {
             ids.push(s.id);
         });
+
+
         Api.post("DeleteMultipleLogsMaterialDeliveryTickets", ids)
             .then(res => {
+
                 let originalRows = this.state.Items;
 
                 ids.map(i => {

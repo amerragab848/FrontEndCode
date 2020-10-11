@@ -14040,13 +14040,8 @@
       {
         "field": "id",
         "friendlyName": "arrange",
-<<<<<<< HEAD
         "minWidth": 85,
         "width": "3%",
-=======
-        "minWidth": 6,
-        "width": "5%",
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -14252,10 +14247,7 @@
         "exportDataType": "s"
       }
     ],
-<<<<<<< HEAD
     "TransferInventoryApi":"",  
-=======
->>>>>>> 9d71fb54621ceafd3ed44ded1ff5f71423ea38f9
     "filterApi": "LogsMaterialInventoryFilter",
     "filters": [
       {
