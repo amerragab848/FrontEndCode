@@ -102,7 +102,6 @@ class CommonLog extends Component {
         title: 'Export Doc & Attachments',
         handleClick: value => {
           let url = this.state.documentObj.forEditApi + '?id=' + value.id + ''
-
           let documentObj = this.state.documentObj
           this.props.actions.documentForEdit(url, documentObj.docTyp, documentObj.documentTitle);
           this.props.actions.getAttachmentsAndWFCycles(documentObj.docTyp, value.id, this.props.projectId);
@@ -579,7 +578,7 @@ class CommonLog extends Component {
           obj.showTip = true;
         }
 
-        if (item.field === "statusName") {
+        if (item.field === "statusName"||item.field === "statusText") {
           obj.classes = 'grid-status';
           obj.fixed = false;
           obj.leftPadding = 17;
