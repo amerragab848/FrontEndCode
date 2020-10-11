@@ -68,6 +68,7 @@ class Login extends Component {
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(
                         _payLoad
                     );
+                    
                     tokenStore.setItem("claims", encodedPaylod);
                     let browserObj = this.createBrowserObject();
                     let cookie = this.getCookie();

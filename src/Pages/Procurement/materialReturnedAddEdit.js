@@ -436,6 +436,7 @@ class materialReturnedAddEdit extends Component {
                 "id"
             )
             .then(result => {
+                debugger
                 if (isEdit) {
                     let id = this.props.document.materialReleaseId;
                     let selectedValue = {};
