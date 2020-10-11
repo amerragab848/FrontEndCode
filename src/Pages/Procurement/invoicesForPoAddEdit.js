@@ -598,7 +598,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     OnBlurTaxesValue = (e, index) => {
-        debugger
+        
         let data = this.state.InvoicesItems
         let element = data[index]
         let quantityComplete = data[index]['minQnty']

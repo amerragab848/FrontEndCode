@@ -11115,6 +11115,7 @@
         "isCustom": true,
         "exportDataType": "s"
       },
+     
       {
         "field": "subject",
         "friendlyName": "subject",
@@ -11388,6 +11389,28 @@
         "isDate": false,
         "isTime": true,
         "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "bicCompanyName",
+        "friendlyName": "actionByCompany",
+        "minWidth": 155,
+        "width": "15%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "bicContactName",
+        "friendlyName": "actionByContact",
+        "minWidth": 155,
+        "width": "15%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
         "exportDataType": "s"
       }
     ],
