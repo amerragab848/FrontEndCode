@@ -474,7 +474,7 @@ class invoicesForPoAddEdit extends Component {
             });
         }
         if (field === 'purchaseOrderId') {
-            if (docId === 0) {
+            if (docId ===0) {
                 Api.get('GetContractsOrdersItemsExcutionPoByPurchaseId?purchaseId=' + event.value).then(
                     result => {
                         this.setState({
@@ -598,6 +598,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     OnBlurTaxesValue = (e, index) => {
+        debugger
         let data = this.state.InvoicesItems
         let element = data[index]
         let quantityComplete = data[index]['minQnty']
@@ -612,15 +613,16 @@ class invoicesForPoAddEdit extends Component {
              e.target.value = quantityComplete
             toast.warn("value can not be less than minimum quantity " + minQnty);
         } else {
+            if(this.state.docId>0){
             Api.post("EditContractsInvoicesForPoItems", element).then(res => {
                 toast.success(Resources.operationSuccess[currentLanguage])
                 let data = this.state.InvoicesItems;
                 data.splice(index, 1, res);
-
                 this.setState({
                     InvoicesItems: data
                 })
             })
+        }
         }
     }
 
