@@ -540,6 +540,7 @@ class PurchaseOrderAddEdit extends Component {
                     this.setState({
                         purchaseOrderDataItems: result
                     });
+                    this.props.actions.ExportingData({ items: result});
                 });
 
             dataservice

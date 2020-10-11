@@ -1947,6 +1947,17 @@
         "exportDataType": "d"
       },
       {
+        "field": "completionDate",
+        "friendlyName": "completionDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
         "field": "refDoc",
         "friendlyName": "refDoc",
         "minWidth": 85,
