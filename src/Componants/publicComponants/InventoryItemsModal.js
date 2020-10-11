@@ -1,17 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import Resources from "../../resources.json";
 import SkyLight from "react-skylight";
-import { withRouter } from "react-router-dom";
-import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
-//import GridCustom from 'react-customized-grid';
+import { withRouter } from "react-router-dom"; 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication"; 
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import { inherits } from '@babel/types';
-
+import ReactTable from "react-table";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
+let columns = [];
 
 class InventoryItemsModal extends Component {
 
@@ -21,201 +19,107 @@ class InventoryItemsModal extends Component {
         this.state = {
             showInventoryItemsModal: this.props.showInventoryItemsModal,
             inventoryItems: [],
-            gridLoading : false
+            gridLoading: false
         };
-        this.columns = [
-            {
-                field: 'id',
-                title: Resources['arrange'][currentLanguage],
-                width: 5,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
-            },
-            {
-                field: 'resourceCode',
-                title: Resources['resourceCode'][currentLanguage],
-                width: 5,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+        columns = [{
+            accessor: 'id',
+            Header: Resources['arrange'][currentLanguage],
+            width: 50
+        },
+        {
+            accessor: 'resourceCode',
+            Header: Resources['resourceCode'][currentLanguage],
+            width: 130
 
-            },
-            {
-                field: 'description',
-                title: Resources['description'][currentLanguage],
-                width: 17,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+        },
+        {
+            accessor: 'description',
+            Header: Resources['description'][currentLanguage],
+            width: 170
 
-            },
-            {
-                field: 'disciplineName',
-                title: Resources['disciplineName'][currentLanguage],
-                width: 13,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+        },
+        {
+            accessor: 'disciplineName',
+            Header: Resources['disciplineName'][currentLanguage],
+            width: 130
 
-            }
+        }
             ,
-            {
-                field: 'remainingQuantity',
-                title: Resources['remainingQuantity'][currentLanguage],
-                width: 7,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+        {
+            accessor: 'remainingQuantity',
+            Header: Resources['remainingQuantity'][currentLanguage],
+            width: 160
 
-            }, {
-                field: 'unitPrice',
-                title: Resources['unitPrice'][currentLanguage],
-                width: 7,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+        }, {
+            accessor: 'unitPrice',
+            Header: Resources['unitPrice'][currentLanguage],
+            width: 160
 
-            }
+        }
             , {
-                field: 'total',
-                title: Resources['total'][currentLanguage],
-                width: 7,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+            accessor: 'total',
+            Header: Resources['total'][currentLanguage],
+            width: 160
 
-            }, {
-                field: 'quantity',
-                title: Resources['quantity'][currentLanguage],
-                width: 7,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+        }, {
+            accessor: 'quantity',
+            Header: Resources['quantity'][currentLanguage],
+            width: 160
 
-            },
-            {
-                field: 'releasedQuantity',
-                title: Resources['releasedQuantity'][currentLanguage],
-                width: 7,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+        },
+        {
+            accessor: 'releasedQuantity',
+            Header: Resources['releasedQuantity'][currentLanguage],
+            width: 160
 
-            }
+        }
             , {
-                field: 'unit',
-                title: Resources['unit'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+            accessor: 'unit',
+            Header: Resources['unit'][currentLanguage],
+            width: 150
 
-            }, {
-                field: 'approvedQuantity',
-                title: Resources['approvedQuantity'][currentLanguage],
-                width: 5,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
-
-            }
+        }, {
+            accessor: 'approvedQuantity',
+            Header: Resources['approvedQuantity'][currentLanguage],
+            width: 150
+        }
             , {
-                field: 'rejectedQuantity',
-                title: Resources['rejectedQuantity'][currentLanguage],
-                width: 5,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
-
-            }
+            accessor: 'rejectedQuantity',
+            Header: Resources['rejectedQuantity'][currentLanguage],
+            width: 150
+        }
             , {
-                field: 'pendingQuantity',
-                title: Resources['pendingQuantity'][currentLanguage],
-                width: 5,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
-
-            }, {
-                field: 'releasePrice',
-                title: Resources['releasePrice'][currentLanguage],
-                width: 5,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
-
-            },
-            {
-                field: 'lastDeliveryDate',
-                title: Resources['lastDeliveryDate'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
-
-            }, {
-                field: 'lastSendDate',
-                title: Resources['lastSendDate'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: false,
-                type: "date",
-                sortable: true
-
-            }
+            accessor: 'pendingQuantity',
+            Header: Resources['pendingQuantity'][currentLanguage],
+            width: 150
+        }, {
+            accessor: 'releasePrice',
+            Header: Resources['releasePrice'][currentLanguage],
+            width: 150
+        },
+        {
+            accessor: 'lastDeliveryDate',
+            Header: Resources['lastDeliveryDate'][currentLanguage],
+            width: 100
+        }, {
+            accessor: 'lastSendDate',
+            Header: Resources['lastSendDate'][currentLanguage],
+            width: 100
+        }
             , {
-                field: 'lastSendTime',
-                title: Resources['lastSendTime'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
+            accessor: 'lastSendTime',
+            Header: Resources['lastSendTime'][currentLanguage],
+            width: 100
+        }, {
+            accessor: 'lastApproveDate',
+            Header: Resources['lastApproveDate'][currentLanguage],
+            width: 100
 
-            }, {
-                field: 'lastApproveDate',
-                title: Resources['lastApproveDate'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: false,
-                type: "date",
-                sortable: true
-
-            }, {
-                field: 'lastApproveDate',
-                title: Resources['lastApproveDate'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: false,
-                type: "date",
-                sortable: true
-
-            }, {
-                field: 'lastApproveTime',
-                title: Resources['lastApproveTime'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: false,
-                type: "text",
-                sortable: true
-
-            }]
+        },  {
+            accessor: 'lastApproveTime',
+            Header: Resources['lastApproveTime'][currentLanguage],
+            width: 100
+        }]
     }
     clickMoreDetailsHandler = e => {
         this.props.clickMoreDetailsHandler();
@@ -239,66 +143,38 @@ class InventoryItemsModal extends Component {
             });
         }
     }
-    render() {
-        const dataGrid = (
-            <GridCustom
-                ref='custom-data-grid'
-                key="Inventory-Items-Modal"
-                groups={[]}
-                cells={this.columns}
-                data={this.props.inventoryItems || []}
-                pageSize={this.props.inventoryItems.length}
-                actions={[]}
-                rowActions={[]}
-                rowClick={() => { }}
-            />
-        );
-
+    render() { 
         return (
-            <div className="mainContainer">
+            <div>
                 {this.state.showInventoryItemsModal == true ? (
-                    <div className="largePopup largeModal" id="largeModal">
-                        <SkyLight
-                            ref={ref => this.simpleDialog = ref}
-                            title={this.props.title}
-                            beforeClose={this.closeModal}
-                        >
-                            <div className="fullWidthWrapper" id="smallModal">
-                                <button onClick={this.clickMoreDetailsHandler}
-                                    className="primaryBtn-1 btn mediumBtn"
-                                    type="submit"
-                                >  {Resources[this.props.buttonName][currentLanguage]}
-                                </button>
-
-                                <div className="grid-container fixed__loading">
-                                    <br />
-                                    {this.state.gridLoading == true ? (
-                                    dataGrid
-                                    ): null} 
-                                </div>
-                            </div>
-                        </SkyLight>
-                    </div>
+                    <SkyLight
+                        ref={ref => this.simpleDialog = ref}
+                        title={this.props.title}
+                        beforeClose={this.closeModal}
+                    >
+                        <div className="fullWidthWrapper" id="smallModal">
+                            <button onClick={this.clickMoreDetailsHandler}
+                                className="primaryBtn-1 btn mediumBtn"
+                                type="submit"
+                            >  {Resources[this.props.buttonName][currentLanguage]}
+                            </button>
+                            <br />
+                            <div className="doc-pre-cycle"> 
+                                <ReactTable
+                                    ref={(r) => {
+                                        this.selectTable = r;
+                                    }}
+                                    data={this.props.inventoryItems}
+                                    columns={columns}
+                                    defaultPageSize={10}
+                                    minRows={2}
+                                    noDataText={Resources['noData'][currentLanguage]}
+                                />
+                            </div> 
+                        </div>
+                    </SkyLight>
                 ) : null}
             </div>
-            // <div>
-            //     <SkyLight ref={ref => (this.simpleDialog = ref)}>
-            //         <div className="ui modal smallModal ConfirmationModal" id="smallModal">
-            //             <div className="header zero">
-            //                 {this.props.title}
-            //             </div>
-            //             <div className="actions">
-            //                 <button className="defaultBtn btn cancel smallBtn" type="button" onClick={this.clickHandlerCancel}>
-            //                     {this.props.cancel ? Resources[this.props.cancel][currentLanguage] : Resources["cancel"][currentLanguage]}
-            //                 </button>
-
-            //                 <button className="smallBtn primaryBtn-1 btn approve" type="button" onClick={this.clickHandlerContinue}>
-            //                     {this.props != null ? Resources[this.props.buttonName][currentLanguage] : Resources["goEdit"][currentLanguage]}
-            //                 </button>
-            //             </div>
-            //         </div>
-            //     </SkyLight>
-            // </div>
         );
     }
 }

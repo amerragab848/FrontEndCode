@@ -910,7 +910,13 @@ class postitNotificationsDetail extends Component {
             <span>{moment(row.value).format("DD/MM/YYYY")}</span>
           </span>
         )
-      }
+      },
+      {
+        Header: Resources["sendMethod"][currentLanguage],
+        accessor: "sendMethod",
+        width: 200,
+        sortabel: true
+      },
     ];
 
     return (

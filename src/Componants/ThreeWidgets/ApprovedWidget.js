@@ -116,6 +116,6 @@ class ApprovedWidget extends Component {
   }
 }
 
-ApprovedWidget.contextType = ConnectionContext;
+//ApprovedWidget.contextType = ConnectionContext;
 
 export default withRouter(ApprovedWidget);

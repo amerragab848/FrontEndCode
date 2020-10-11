@@ -24,8 +24,7 @@ import { SkyLightStateless } from 'react-skylight';
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
-import { thisExpression } from "@babel/types";
-
+ 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
 
@@ -153,7 +152,7 @@ class CommonLog extends Component {
           this.props.actions.GetItemsInventory(url)
           this.setState({
             inventoryItems: this.props.inventoryItems,
-            showInventoryItemsModal: true 
+            showInventoryItemsModal: true
           });
         }
       }
@@ -314,7 +313,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, 1).then(result => {
 
         let oldRows = []; // this.state.rows;
 
@@ -374,7 +373,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, 1).then(result => {
 
         let oldRows = [];
 
@@ -436,7 +435,7 @@ class CommonLog extends Component {
     });
 
     if (stringifiedQuery !== "{}") {
-      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 2).then(result => {
+      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 1).then(result => {
         if (result.data.length > 0) {
 
           result.data.forEach(row => {
@@ -691,7 +690,7 @@ class CommonLog extends Component {
     this.addRecord()
   }
   GetLogData(url) {
-    Api.get(url, undefined, 2).then(result => {
+    Api.get(url, undefined, 1).then(result => {
       result.data.forEach(row => {
         let subject = "";
         if (row) {
@@ -949,7 +948,6 @@ class CommonLog extends Component {
           rowActions={
             (this.state.documentObj.docTyp == 50 ? this.inventoryRowActions : (this.state.documentObj.forEditApi != undefined ? this.rowActions : null))
           }
-
           cells={this.state.columns}
 
           openModalColumn={this.state.columnsModal}

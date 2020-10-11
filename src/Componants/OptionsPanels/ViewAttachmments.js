@@ -77,8 +77,7 @@ class ViewAttachmments extends Component {
     };
 
     goEditPdf = (item, ext) => {
-        let accountId = Config.getPayload().aci;
-        //alert(accountId);
+        let accountId = Config.getPayload().aci; 
         var stamp = new Date().getTime();
         var data = JSON.stringify({
             refer: window.location.href.replace("#", "-hashfill-"),
@@ -92,7 +91,7 @@ class ViewAttachmments extends Component {
             stamp: stamp,
             editable: Config.IsAllow(4501),
             accountId: accountId,
-            server: Config.getPublicConfiguartion().static + "/api/Procoor/"
+            server: Config.getPublicConfiguartion().static + "PM/api/Procoor/"
         });
 
         window.open(

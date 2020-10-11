@@ -90,7 +90,7 @@ let docApprovalId = 0;
 let perviousRoute = 0;
 let arrange = 0;
 var steps_defination = [];
-
+let itm=[];
 class bogAddEdit extends Component {
     constructor(props) {
         super(props);
@@ -209,10 +209,29 @@ class bogAddEdit extends Component {
                 groupable: true,
                 fixed: false,
                 sortable: true,
+               
+               
                 handleChange: (e, cell) => {
-                    cell.unitPrice = e.target.value;
 
-                },
+                    let cellIns = Object.assign({}, cell);
+    
+                    cellIns.unitPrice = parseFloat(e.target.value);
+    
+                    let pItems = JSON.parse(JSON.stringify(this.state._items));
+    
+                    let cellIndex = pItems.findIndex(c => c.id == cell.id);
+    
+                    pItems[cellIndex] = cellIns;
+    
+                    this.setState({
+                        _items: pItems
+                      
+                    });
+                    // let rowIndex=itm.findIndex(x=>x.id==cell.id);
+                    // itm[rowIndex].unitPrice=e.target.value;
+              
+            },
+             
                 handleBlur: (e, cell) => {
                     if (Config.IsAllow(617)) {
 
@@ -222,7 +241,7 @@ class bogAddEdit extends Component {
                             toast.success(
                                 Resources["operationSuccess"][currentLanguage]
                             );
-                            this.setState({ isLoading: false });
+                           this.setState({ isLoading: false });
                         }).catch(() => {
                             toast.error(
                                 Resources["operationCanceled"][currentLanguage]
@@ -233,7 +252,8 @@ class bogAddEdit extends Component {
                         toast.warning(Resources["missingPermissions"][currentLanguage]);
                     }
                 },
-                type: Config.IsAllow(617) ? "input" : "text"
+                 type: Config.IsAllow(617) ? "input" : "text"
+              
             },
             {
                 field: "total",
@@ -302,15 +322,17 @@ class bogAddEdit extends Component {
                 }
             }
         ];
+    
         this.groups = [
             { title: 'boqType', field: 'boqType', type: 'text' },
             { title: 'boqSubType', field: 'boqSubType', type: 'text' }
         ];
 
         this.state = {
+            value: '',
             isCompany: Config.getPayload().uty === "company" ? true : false,
             showForm: false,
-            isLoadingEdit: false,
+            isLoadingEdit: false, 
             loadingContractPurchase: false,
             AddedPurchase: false,
             loadingContract: false,
@@ -445,7 +467,12 @@ class bogAddEdit extends Component {
         ];
 
     }
-
+    // reloadGrid = (boqItems) => {
+    //     this.setState({
+    //         _items: boqItems ,
+    //         isLoading : false 
+    //     });
+    // };
     customButton = () => {
         return (
             <button className="companies_icon" style={{ cursor: "pointer" }}>
@@ -554,7 +581,7 @@ class bogAddEdit extends Component {
             }
         );
     }
-
+   
     componentDidMount() {
         var links = document.querySelectorAll(
             ".noTabs__document .doc-container .linebylineInput"
@@ -592,7 +619,10 @@ class bogAddEdit extends Component {
             showPopUp: false
         });
     }
-
+    handleChange=(event) =>
+    {    
+        this.setState({value: event.target.value});  
+    }
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true });
@@ -683,6 +713,7 @@ class bogAddEdit extends Component {
                     resourceCode: element.resourceCode
                 });
             });
+           // itm=Table || [];
             this.setState({ _items: Table });
             this.props.actions.ExportingData(data);
             setTimeout(() => {
@@ -1152,7 +1183,7 @@ class bogAddEdit extends Component {
 
     render() {
 
-        let ItemsGrid = this.state.isLoading === false ? (
+        let ItemsGrid = this.state.isLoading === false  ? (
             <GridCustom
                 cells={this.boqItems}
                 data={this.state._items}
@@ -2767,7 +2798,7 @@ class bogAddEdit extends Component {
                             </span>
                             <div className="ui basic label greyLabel">
                                 {/* {this.props.document.total} */}
-                                {this.state.createdBoqTotal }
+                                {this.state.createdBoqTotal}
                             </div>
                         </div>
                     </div>

@@ -45,10 +45,6 @@ let toCompanyId = 0;
 let fromCompanyId = 0;
 let toContactId = 0;
 let fromContactId = 0;
-let replyFromCompId = 0;
-let replyFromContId = 0;
-let replyToCompId = 0;
-let replyToContId = 0;
 
 class tenderAnalysisAddEdit extends Component {
 
@@ -71,7 +67,6 @@ class tenderAnalysisAddEdit extends Component {
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
-                    //prevLetterId = obj.prevLetterId;
                     fromCompanyId = obj.replyToCompId;
                     fromContactId = obj.replyToContactId;
                     toCompanyId = obj.replyFromCompId;
@@ -111,8 +106,9 @@ class tenderAnalysisAddEdit extends Component {
                 { name: "createTransmittal", code: 3101 },
                 { name: "sendToWorkFlow", code: 761 },
 
-                // { name: "sendTask", code: 1 }, { name: "viewAttachments", code: 3317 },
-                // { name: "deleteAttachments", code: 840 }
+                { name: "sendTask", code: 1 },
+                { name: "viewAttachments", code: 31005 },
+                { name: "deleteAttachments", code: 31004 }
             ],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
@@ -690,7 +686,14 @@ class tenderAnalysisAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={839} EditAttachments={3223} ShowDropBox={3607} ShowGoogleDrive={3608} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (
+                                                <UploadAttachment changeStatus={this.props.changeStatus}
+                                                    AddAttachments={31002}
+                                                    EditAttachments={31003}
+                                                    ShowDropBox={31006}
+                                                    ShowGoogleDrive={31007}
+                                                    docTypeId={this.state.docTypeId}
+                                                    docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                         </div>

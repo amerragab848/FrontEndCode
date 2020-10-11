@@ -5,6 +5,8 @@ import Resources from "../../resources.json";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class CopyTo extends Component {
@@ -63,14 +65,14 @@ class CopyTo extends Component {
 
   saveCopyTo() {
     if (this.state.selectedValue.value != "0") {
-      
+      this.props.actions.setLoading();
       this.props.actions.copyTo("CopyDocument", this.state.objCopyTo);
     }
   }
 
   render() {
     return (
-      <div className="proForm">
+      this.props.isLoading==true?<LoadingSection />: <div className="proForm">
         <Dropdown title="Projects" data={this.state.Projects} selectedValue={this.state.selectedValue} handleChange={value => this.selectValue(value)} placeholder="Projects" />
         <div className="fullWidthWrapper">
           {this.state.isLoading === false ? (
@@ -95,7 +97,8 @@ class CopyTo extends Component {
 function mapStateToProps(state) {
 
   return {
-    showModal: state.communication.showModal
+    showModal: state.communication.showModal,
+    isLoading:state.communication.isLoading
   }
 }
 

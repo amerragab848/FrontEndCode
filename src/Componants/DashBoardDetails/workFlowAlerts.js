@@ -28,7 +28,7 @@ class workFlowAlerts extends Component {
       {
         field: 'subject',
         title: Resources['subject'][currentLanguage],
-        width: 15,
+        width: 25,
         groupable: true,
         fixed: false,
         type: "text",

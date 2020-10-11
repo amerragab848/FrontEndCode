@@ -47,7 +47,7 @@ class CollectedPaymentRequisition extends Component {
                 width: 40,
                 groupable: true,
                 fixed: true,
-                type: "text",
+                type: "number",
                 sortable: true,
             },
             {
