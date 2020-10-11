@@ -1382,7 +1382,7 @@ class materialRequestAddEdit extends Component {
                 item.days == null ? item.days = 1 : item.days = item.days;
                 item.details = item.description;
                 item.originalQuantity = item.quantity;
-                item.stock = item.quantity;
+                item.stock = item.stockQty;
                 Api.post("AddContractsSiteRequestItems", item).then(() => {
                     const _items = this.state._items;
                     _items.push(item);
@@ -1428,6 +1428,7 @@ class materialRequestAddEdit extends Component {
                 this.setState({ isLoading: true });
                 item.requestId = this.state.docId;
                 item.originalQuantity = item.quantity;
+                item.stock = item.stockQty;
                 Api.post("AddContractsSiteRequestItems", item).then(() => {
                     const _items = this.state._items;
                     _items.push(item);
