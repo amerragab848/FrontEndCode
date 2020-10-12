@@ -3106,23 +3106,13 @@
      
         "fields": [
             {
-                "name": "projectName",
-                "value": "projectName",
-                "type": "S"
-            },
-            {
-                "name": "CompanyName",
-                "value": "companyName",
-                "type": "S"
-            },
-            {
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
             },
             {
-                "name": "status",
-                "value": "statusName",
+                "name": "refDoc",
+                "value": "refDoc",
                 "type": "S"
             },
             {
@@ -3134,20 +3124,15 @@
                 "name": "completionDate",
                 "value": "completionDate",
                 "type": "D"
-            },
+            },  
             {
-                "name": "contract",
-                "value": "contractName",
+                "name": "CompanyName",
+                "value": "companyName",
                 "type": "S"
             },
             {
-                "name": "arrange",
-                "value": "arrange",
-                "type": "S"
-            },
-            {
-                "name": "refDoc",
-                "value": "refDoc",
+                "name": "projectName",
+                "value": "projectName",
                 "type": "S"
             },
             {
@@ -3155,6 +3140,13 @@
                 "value": "toCompanyName",
                 "type": "S"
             },
+          
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+
             {
                 "name": "ToContact",
                 "value": "toContactName",
@@ -3180,14 +3172,24 @@
                 "name": "advancedPayment",
                 "value": "advancePaymentAmount",
                 "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "completionDate",
+                "value": "completionDate",
+                "type": "D"
             }
             
           ],
           "columnsItems": [
-      
+            "arrange", "details", "unit", "quantity", "unitPrice", "total", "resourceCode"
         ],
         "friendlyNames": [
-         
+            "arrange", "details", "unit", "quantity", "unitPrice", "total", "resourceCode"
         ]
     },
     "77": {

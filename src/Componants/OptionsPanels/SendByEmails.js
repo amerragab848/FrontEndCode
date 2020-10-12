@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import Dropdown from "./DropdownMelcous";
-import "react-table/react-table.css";
+import Dropdown from "./DropdownMelcous"; 
 import Resources from "../../resources.json";
 import dataservice from "../../Dataservice";
 import { connect } from 'react-redux';
