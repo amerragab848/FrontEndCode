@@ -2062,6 +2062,10 @@
         "en": "Select a Project Type",
         "ar": "من فضلك اختر نوع المشروع"
     },
+    "currentCredit": {
+        "en": "Current Credit",
+        "ar": "الكمية الحالية"
+    },
     "credit": {
         "en": "Credit",
         "ar": "دائن"
