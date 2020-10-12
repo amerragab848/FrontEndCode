@@ -3716,6 +3716,10 @@
         "en": "Date Approved",
         "ar": "تاريخ الاعتماد"
     },
+    "totalApproved": {
+        "en": "total Approved",
+        "ar": " المجموع المعتمد"
+    },
     "executed": {
         "en": " Executed",
         "ar": "المُنَفّذ "

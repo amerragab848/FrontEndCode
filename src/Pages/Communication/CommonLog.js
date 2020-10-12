@@ -1237,7 +1237,7 @@ class CommonLog extends Component {
                 <XSLfile
                   key="MaterialInventory"
                   docId={this.props.projectId}
-                  docType={50}
+                  docType={"inventory"}
                   link={
                     Config.getPublicConfiguartion().downloads +
                     "/downloads/excel/inventory.xlsx"

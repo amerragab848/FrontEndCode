@@ -14071,8 +14071,19 @@
         "exportDataType": "n"
       },
       {
-        "field": "remainingTotalPrice",
+        "field": "total",
         "friendlyName": "total",
+        "minWidth": 85,
+        "width": "8%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "totalApproved",
+        "friendlyName": "totalApproved",
         "minWidth": 85,
         "width": "8%",
         "dataType": "number",
