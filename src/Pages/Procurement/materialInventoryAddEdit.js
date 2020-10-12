@@ -293,6 +293,12 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "quantity",
                 width: 200,
                 sortabel: true
+            }, 
+            {
+                Header: Resources["credit"][currentLanguage],
+                accessor: "currentCredit",
+                width: 200,
+                sortabel: true
             },
             {
                 Header: Resources["unitPrice"][currentLanguage],
