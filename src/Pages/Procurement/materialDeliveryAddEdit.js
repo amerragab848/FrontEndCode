@@ -577,9 +577,12 @@ class materialDeliveryAddEdit extends Component {
         let output = originalRows.filter((v) => includes(ids, v.id));
         let checkInventoryQty = find(output, function (o) { return o.isInInventory == false });
         if (checkInventoryQty) {
-            toast.error(
-                "There is at least one Item With Quantity Not In Inventory"
-            );
+            toast.error("There is at least one Item With Quantity Not In Inventory");
+            selectedRows = [];
+            this.setState({
+                showDeleteModal: false,
+                isLoading: false
+            });
         }
         else {
             Api.post("DeleteMultipleLogsMaterialDeliveryTickets", ids)
