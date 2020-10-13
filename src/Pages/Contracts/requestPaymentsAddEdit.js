@@ -118,13 +118,9 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const find = require("lodash/find");
-//let type = 1;
-//const partialRight = require("lodash/partialRight");
-//const pick = require("lodash/pick");
+const find = require("lodash/find"); 
 let itemsColumns = [];
-let VOItemsColumns = [];
-//const isCompany = Config.getPayload().uty == "company" ? true : false;
+let VOItemsColumns = []; 
 var steps_defination = [];
 //#endregion globalVariable
 
