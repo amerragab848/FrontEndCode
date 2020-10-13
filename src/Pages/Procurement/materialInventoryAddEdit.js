@@ -319,12 +319,6 @@ class MaterialInventoryAddEdit extends Component {
                 sortabel: true
             },
             {
-                Header: Resources["transactionTypeName"][currentLanguage],
-                accessor: "transactionTypeName",
-                width: 200,
-                sortabel: true
-            },
-            {
                 Header: Resources["lastDeliveryDate"][currentLanguage],
                 accessor: "lastDeliveryDate",
                 width: 200,
