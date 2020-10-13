@@ -267,7 +267,7 @@ class MaterialInventoryAddEdit extends Component {
             {
                 Header: Resources["details"][currentLanguage],
                 accessor: "description",
-                width: 200,
+                width: 500,
                 sortabel: true
             },
             {
