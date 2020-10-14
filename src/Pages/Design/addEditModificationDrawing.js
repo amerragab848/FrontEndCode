@@ -287,7 +287,8 @@ class addEditModificationDrawing extends Component {
             flowCompanyId: '',
             flowContactId: '',
             progressPercent: 0,
-            arrange: 0
+            arrange: 0,
+            serial:0
         };
 
         this.setState({
@@ -305,8 +306,7 @@ class addEditModificationDrawing extends Component {
                 }
             )
         } else
-         {
-            this.isModification=false;
+         { 
             let drawing = {
                 subject: '',
                 id: 0,
@@ -323,33 +323,34 @@ class addEditModificationDrawing extends Component {
                 fileNumber: '',
                 area: '',
                 drawingNo: '',
-                isModification:false, //isModification,
+                isModification:isModification,
                 progressPercent: 0,
-                approvalStatusId: ''
+                approvalStatusId: '',
+                serial:''
             };
-
-            // this.setState({
-            //     document: drawing,
-            //     drawingCycle: drawingCycle
-            // }, function () {
-            //     classObj.GetNExtArrange();
-            // });
 
             this.setState({
                 document: drawing,
                 drawingCycle: drawingCycle
+            }, function () {
+                classObj.GetNExtArrange();
             });
+
+            // this.setState({
+            //     document: drawing,
+            //     drawingCycle: drawingCycle
+            // });
        // let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
-            dataservice.GetNextArrangeMainDocument(url2).then(
-                res => {
-                    const Document = {
-                        projectId: projectId, arrange: res, status: "true", subject: "",
-                        docDate: moment(), companyId: '', companyId: '',
-                    }
-                    this.setState({ document: Document })
-                }
-            )
+        // let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
+        //     dataservice.GetNextArrangeMainDocument(url2).then(
+        //         res => {
+        //             const Document = {
+        //                 projectId: projectId, arrange: res, status: "true", subject: "",
+        //                 docDate: moment(), companyId: '', companyId: '',
+        //             }
+        //             this.setState({ document: Document })
+        //         }
+        //     )
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -964,7 +965,7 @@ class addEditModificationDrawing extends Component {
                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                         <div className="ui input inputDev"  >
                                             <input type="text" className="form-control" id="arrange" readOnly
-                                                value={this.state.document.arrange}
+                                                value= {isModification==true? this.state.document.serial:this.state.document.arrange}
                                                 name="arrange"
                                                 placeholder={Resources.arrange[currentLanguage]}
                                                 onBlur={(e) => {
