@@ -81,8 +81,7 @@ class addEditModificationDrawing extends Component {
                 }
             }
             index++;
-        }
-        console.log('isModification', isModification, isModification === true ? 114 : 37);
+        } 
         this.state = {
             CurrentStep: 0,
             isModification: isModification,
@@ -335,22 +334,7 @@ class addEditModificationDrawing extends Component {
             }, function () {
                 classObj.GetNExtArrange();
             });
-
-            // this.setState({
-            //     document: drawing,
-            //     drawingCycle: drawingCycle
-            // });
-       // let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        // let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
-        //     dataservice.GetNextArrangeMainDocument(url2).then(
-        //         res => {
-        //             const Document = {
-        //                 projectId: projectId, arrange: res, status: "true", subject: "",
-        //                 docDate: moment(), companyId: '', companyId: '',
-        //             }
-        //             this.setState({ document: Document })
-        //         }
-        //     )
+ 
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -1569,19 +1553,10 @@ class addEditModificationDrawing extends Component {
                 </div>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={isModification === true ? Resources.drawingModification[currentLanguage] : Resources.drawing[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} perviousRoute={this.state.perviousRoute} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={isModification != true ? Resources.drawingModification[currentLanguage] : Resources.drawing[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} perviousRoute={this.state.perviousRoute} />
                     <div className="doc-container">
 
-                        <div className="step-content">
-
-                            {this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero"> {Resources.goEdit[currentLanguage]} </h2>
-                                        <p className="doc-infohead">
-                                            <span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header> : null}
+                        <div className="step-content"> 
                             {this.state.isLoading ? <LoadingSection /> : null}
 
                             {this.state.CurrentStep === 0 ? <Fragment>{Drawing()}</Fragment> : Cycles()}

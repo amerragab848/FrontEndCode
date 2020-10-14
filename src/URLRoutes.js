@@ -1553,7 +1553,7 @@ var routes = [
         title: "paymentCertificationLog",
         nav: true,
         hash: "#paymentCertification",
-        settings: { Contracts: true, caption: "procoor-icon-Issues", permission: 24 }
+        settings: { Contracts: true, caption: "procoor-icon-Issues", permission: 10070 }
     },
     {
         route: "purchaseOrderAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",

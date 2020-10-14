@@ -50,25 +50,35 @@ class LeftMenu extends Component {
         Router.map(route => {
             if (route.settings) {
                 if (route.settings.Communication === true) {
-                    communication.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        communication.push(route);
                 } else if (route.settings.Procurement === true) {
-                    procurementMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        procurementMenu.push(route);
                 } else if (route.settings.Site === true) {
-                    siteMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        siteMenu.push(route);
                 } else if (route.settings.Contracts === true) {
-                    contractMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        contractMenu.push(route);
                 } else if (route.settings.Design === true) {
-                    designMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        designMenu.push(route);
                 } else if (route.settings.Time === true) {
-                    timeMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        timeMenu.push(route);
                 } else if (route.settings.Estimation === true) {
-                    estimationMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        estimationMenu.push(route);
                 } else if (route.settings.QualityControl === true) {
-                    qualityControlMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        qualityControlMenu.push(route);
                 } else if (route.settings.CostControl === true) {
-                    costControlMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        costControlMenu.push(route);
                 } else if (route.settings.Reports === true) {
-                    reportsMenu.push(route);
+                    if (Config.IsAllow(route.settings.permission))
+                        reportsMenu.push(route);
                 }
             }
         });
