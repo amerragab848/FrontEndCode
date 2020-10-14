@@ -173,11 +173,14 @@ class PaymentCertificationAddEdit extends Component {
 
     updateDocument() {
         let objDocument = this.state.document;
-
-        dataservice.addObject("UpdateContractsPaymentsCertification", objDocument).then(res => {
-            this.props.history.push('/paymentCertification/' + this.state.projectId);
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        })
+        if (Config.IsAllow(10068)) {
+            dataservice.addObject("UpdateContractsPaymentsCertification", objDocument).then(res => {
+                this.props.history.push('/paymentCertification/' + this.state.projectId);
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            })
+        }else{
+            toast.warning(Resources["missingPermissions"][currentLanguage]);
+        }
     }
 
     render() {

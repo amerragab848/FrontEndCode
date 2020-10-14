@@ -8147,8 +8147,8 @@
 
   "drawingModification": {
     "documentTitle": "drawingModification",
-    "docTyp": 114,
-    "documentAddEditLink": "addEditModificationDrawing",
+    "docTyp": 37,
+    "documentAddEditLink": "addEditDrawing",
     "documentAddEditPopUp": "",
     "documentAddPermission": 202,
     "documentEditPermission": 203,
@@ -8156,11 +8156,22 @@
     "documentViewPermission": 205,
     "documentPermission": 206,
     "documentApi": {
-      "get": "GetLogsDrawingsModificationByProjectId",
-      "getCustom": "GetLogsDrawingsModificationByProjectIdCustom",
+      "get": "GetLogsDrawingsByProjectId",
+      "getCustom": "GetLogsDrawingsByProjectIdCustom",
       "delete": "DeleteLogDrawingMultiple"
     },
     "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "10%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "n"
+      },
       {
         "field": "statusName",
         "friendlyName": "status",
@@ -8458,8 +8469,8 @@
   },
   "drawing": {
     "documentTitle": "drawing",
-    "docTyp": 37,
-    "documentAddEditLink": "addEditDrawing",
+    "docTyp": 114,
+    "documentAddEditLink": "addEditModificationDrawing",
     "documentAddEditPopUp": "",
     "documentAddPermission": 3516,
     "documentEditPermission": 3517,
@@ -8467,8 +8478,8 @@
     "documentViewPermission": 3519,
     "documentPermission": 3520,
     "documentApi": {
-      "get": "GetLogsDrawingsByProjectId",
-      "getCustom": "GetLogsDrawingsByProjectIdCustom",
+      "get": "GetLogsDrawingsModificationByProjectId",
+      "getCustom": "GetLogsDrawingsModificationByProjectIdCustom",
       "delete": "DeleteLogDrawingMultiple"
     },
     "documentColumns": [
@@ -14250,19 +14261,8 @@
         "exportDataType": "n"
       },
       {
-        "field": "total",
+        "field": "remainingTotalPrice",
         "friendlyName": "total",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "number",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": true,
-        "exportDataType": "n"
-      },
-      {
-        "field": "totalApproved",
-        "friendlyName": "totalApproved",
         "minWidth": 85,
         "width": "8%",
         "dataType": "number",
