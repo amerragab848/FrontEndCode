@@ -8161,6 +8161,17 @@
     },
     "documentColumns": [
       {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "10%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
         "field": "statusName",
         "friendlyName": "status",
         "minWidth": 155,

@@ -53,7 +53,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-let isModification = true;
+let isModification = true;//edited
 
 const find = require('lodash/find')
 class addEditModificationDrawing extends Component {
@@ -168,7 +168,8 @@ class addEditModificationDrawing extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        dataservice.GetNextArrangeMainDocument(url).then(res => {
+        let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
+        dataservice.GetNextArrangeMainDocument(url2).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
             this.setState({
@@ -194,6 +195,7 @@ class addEditModificationDrawing extends Component {
                 links[i].classList.add('odd');
             }
         }
+
         this.checkDocumentIsView();
     };
 
@@ -274,7 +276,7 @@ class addEditModificationDrawing extends Component {
     }
 
     componentWillMount() {
-
+   let classObj=this;
         let drawingCycle = {
             drawingId: null,
             subject: 'Cycle No. R ',
@@ -285,7 +287,7 @@ class addEditModificationDrawing extends Component {
             flowCompanyId: '',
             flowContactId: '',
             progressPercent: 0,
-            arrange: ''
+            arrange: 0
         };
 
         this.setState({
@@ -302,7 +304,9 @@ class addEditModificationDrawing extends Component {
                     this.setState({ cyclesData: res });
                 }
             )
-        } else {
+        } else
+         {
+            this.isModification=false;
             let drawing = {
                 subject: '',
                 id: 0,
@@ -319,17 +323,33 @@ class addEditModificationDrawing extends Component {
                 fileNumber: '',
                 area: '',
                 drawingNo: '',
-                isModification: isModification,
+                isModification:false, //isModification,
                 progressPercent: 0,
                 approvalStatusId: ''
             };
 
+            // this.setState({
+            //     document: drawing,
+            //     drawingCycle: drawingCycle
+            // }, function () {
+            //     classObj.GetNExtArrange();
+            // });
+
             this.setState({
                 document: drawing,
                 drawingCycle: drawingCycle
-            }, function () {
-                this.GetNExtArrange();
             });
+       // let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+        let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
+            dataservice.GetNextArrangeMainDocument(url2).then(
+                res => {
+                    const Document = {
+                        projectId: projectId, arrange: res, status: "true", subject: "",
+                        docDate: moment(), companyId: '', companyId: '',
+                    }
+                    this.setState({ document: Document })
+                }
+            )
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -612,7 +632,7 @@ class addEditModificationDrawing extends Component {
         let saveDocument = { ...this.state.document };
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
-
+             
         dataservice.addObject('AddLogsDrawings', saveDocument).then(result => {
             this.setState({
                 docId: result.id
@@ -1558,7 +1578,8 @@ class addEditModificationDrawing extends Component {
                                 <header className="main__header">
                                     <div className="main__header--div">
                                         <h2 className="zero"> {Resources.goEdit[currentLanguage]} </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
+                                        <p className="doc-infohead">
+                                            <span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
                                     </div>
                                 </header> : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
