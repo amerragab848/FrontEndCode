@@ -30,8 +30,8 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 let docId = 0;
 let projectId = 0;
-let projectName = 0;
-let isApproveMode = 0;
+let projectName = "";
+let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
@@ -214,7 +214,7 @@ class NCRAddEdit extends Component {
                 IsEditMode: true
             })
 
-            Api.get('GetCommunicationNCRCyclessByParentId?projectId=' + docId + '').then(
+            Api.get('GetCommunicationNCRCyclessByParentId?projectId=' + docId  ).then(
                 res => {
                     this.setState({
                         NCRCycle: res
@@ -580,21 +580,7 @@ class NCRAddEdit extends Component {
                 });
             }
 
-        });
-
-
-
-
-        // if (this.state.IsEditMode === false) {
-        //     dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-        //         this.setState({
-        //             contractsPos: [...result]
-        //         });
-        //     });
-        // }
-
-
-
+        }); 
     } 
 
     onChangeMessage = (value) => {

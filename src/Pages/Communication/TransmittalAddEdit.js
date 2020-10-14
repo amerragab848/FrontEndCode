@@ -38,7 +38,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let docAlertId = 0;
- 
+
 let perviousRoute = '';
 let arrange = 0;
 
@@ -76,8 +76,8 @@ class TransmittalAddEdit extends Component {
             docTypeId: 28,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            docAlertId:docAlertId,
-            
+            docAlertId: docAlertId,
+
             docAlertId: 0,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
@@ -98,7 +98,7 @@ class TransmittalAddEdit extends Component {
             { name: 'sendToWorkFlow', code: 1025 },
             { name: 'viewAttachments', code: 3327 },
             { name: 'deleteAttachments', code: 824 },
-        
+
             { name: "previousVersions", code: 8080800 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
@@ -151,7 +151,8 @@ class TransmittalAddEdit extends Component {
                 submittedForId: "",
                 description: "",
                 sendingMethodId: "",
-                sharedSettings: ""
+                sharedSettings: "",
+                localPath: ""
             };
 
             this.setState({
@@ -287,7 +288,7 @@ class TransmittalAddEdit extends Component {
         })
 
         //discplines
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "title", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.discipline;
                 if (disciplineId) {
@@ -299,7 +300,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //area
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "title", 'defaultLists', "area", "listType").then(result => {
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
@@ -311,7 +312,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //location
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "title", 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
                 let locationId = this.props.document.location;
                 if (locationId) {
@@ -520,6 +521,14 @@ class TransmittalAddEdit extends Component {
 
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
+    }
+
+    copyLocalPath = () => {
+        let copyText = document.getElementById("localPath");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        toast.success("Copied Successfully");
     }
 
     render() {
@@ -754,6 +763,17 @@ class TransmittalAddEdit extends Component {
                                                                     this.state.document.sharedSettings === undefined ? null : <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>}
                                                             </div>
                                                         </div>
+                                                        <div className="linebylineInput fullInputWidth disabled">
+                                                            <label className="control-label">{Resources.localPath[currentLanguage]}</label>
+                                                            <div className="shareLinks">
+                                                                <div className="inputDev ui input">
+                                                                    <input type="text" className="form-control" id="localPath"
+                                                                        value={this.state.document.localPath || ''} name="localPath"
+                                                                        placeholder={Resources.localPath[currentLanguage]} />
+                                                                </div>
+                                                                <span className="btn btn-default" onClick={() => { this.copyLocalPath() }} >{Resources.copy[currentLanguage]}</span>
+                                                            </div>
+                                                        </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
@@ -788,7 +808,7 @@ class TransmittalAddEdit extends Component {
                                                                     docId={this.state.docId}
                                                                     projectId={this.state.projectId}
                                                                     previousRoute={this.state.previousRoute}
-                                                                    docApprovalId={this.state.docApprovalId} 
+                                                                    docApprovalId={this.state.docApprovalId}
                                                                     docAlertId={this.state.docAlertId}
                                                                     currentArrange={this.state.arrange}
                                                                     showModal={this.props.showModal}

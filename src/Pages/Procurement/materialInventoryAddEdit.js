@@ -267,7 +267,7 @@ class MaterialInventoryAddEdit extends Component {
             {
                 Header: Resources["details"][currentLanguage],
                 accessor: "description",
-                width: 200,
+                width: 500,
                 sortabel: true
             },
             {
@@ -289,8 +289,20 @@ class MaterialInventoryAddEdit extends Component {
                 sortabel: true
             },
             {
+                Header: Resources["transactionType"][currentLanguage],
+                accessor: "transactionTypeName",
+                width: 200,
+                sortabel: true
+            },
+            {
                 Header: Resources["totalQuantity"][currentLanguage],
                 accessor: "quantity",
+                width: 200,
+                sortabel: true
+            }, 
+            {
+                Header: Resources["currentCredit"][currentLanguage],
+                accessor: "currentCredit",
                 width: 200,
                 sortabel: true
             },
