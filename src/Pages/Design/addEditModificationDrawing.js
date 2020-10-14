@@ -950,7 +950,7 @@ class addEditModificationDrawing extends Component {
 
                                 <div className="proForm datepickerContainer">
 
-                                    {/* <div className="linebylineInput valid-input alternativeDate">
+                                    <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='docDate'
                                             onChange={e => setFieldValue('docDate', e)}
                                             onBlur={setFieldTouched}
@@ -959,7 +959,7 @@ class addEditModificationDrawing extends Component {
                                             name="docDate"
                                             startDate={this.state.document.docDate}
                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
-                                    </div> */}
+                                    </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                         <div className="ui input inputDev"  >
