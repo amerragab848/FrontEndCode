@@ -432,6 +432,7 @@ class LettersAddEdit extends Component {
 
         win.focus();
     }
+    
     fillDropDowns(isEdit, cb) {
         if (!isEdit) {
             dataservice.GetDataList("ProjectWorkFlowGetList?projectId=" + this.state.projectId, "subject", "id").then(result => {

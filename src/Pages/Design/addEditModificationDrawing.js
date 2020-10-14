@@ -147,13 +147,11 @@ class addEditModificationDrawing extends Component {
                     this.state.perviousRoute
                 );
             }
-
         } else {
             if (!Config.IsAllow(3133) && !Config.IsAllow(3134) && !Config.IsAllow(3136)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
                 this.props.history.push(this.state.perviousRoute);
             }
-
         }
     }
 
