@@ -146,7 +146,7 @@ class DocumentActions extends Component {
             }
         }
         else {
-            if (name === 'export' || name === 'copyTo')
+            if (name === 'export' || name === 'copyTo'  )
                 return true;
             else
                 return false;
