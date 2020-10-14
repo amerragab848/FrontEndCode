@@ -107,7 +107,8 @@ class GeneralConfiguration extends Component {
             showDeleteModal: false,
             IsVacation: false,
             isLoading: false,
-            showDefaultInterim: "true"
+            showDefaultInterim: true,
+            showInventoryRadioButtonInItemsTab:true
         }
     }
 
@@ -118,6 +119,7 @@ class GeneralConfiguration extends Component {
                 this.setState({
                     DefaultConfigurations: res,
                     showDefaultInterim: res["showDefaultInterim"],
+                    showInventoryRadioButtonInItemsTab: res["showInventoryRadioButtonInItemsTab"],
                     SelectedTimesheet: SelectedTimesheet
                 })
             }
@@ -245,7 +247,7 @@ class GeneralConfiguration extends Component {
         let objAdd = this.state.DefaultConfigurations
 
         objAdd.showDefaultInterim = this.state.showDefaultInterim;
-
+        objAdd.showInventoryRadioButtonInItemsTab = this.state.showInventoryRadioButtonInItemsTab;
         dataservice.addObject('EditConfigurationById', objAdd).then(
             res => {
                 this.props.history.push({
@@ -276,9 +278,9 @@ class GeneralConfiguration extends Component {
         })
     }
 
-    handleChecked(e) {
+    handleChecked(e,stateName) {
         this.setState({
-            showDefaultInterim: e.target.value
+            [stateName]: e
         })
     }
 
@@ -530,12 +532,23 @@ class GeneralConfiguration extends Component {
                                                 <div className="linebylineInput linebylineInput__checkbox">
                                                     <label data-toggle="tooltip" title={Resources['refrenceDocument'][currentLanguage]} className="control-label"> {Resources['refrenceDocument'][currentLanguage]} </label>
                                                     <div className="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="showDefaultInterim" checked={this.state.showDefaultInterim === "true"} value={"true"} onChange={(e) => { this.handleChecked(e) }} />
+                                                        <input type="radio" name="showDefaultInterim" checked={this.state.showDefaultInterim === true} value={true} onChange={(e) => { this.handleChecked(true,"showDefaultInterim") }} />
                                                         <label>{Resources['automatic'][currentLanguage]}</label>
                                                     </div>
                                                     <div className="ui checkbox radio radioBoxBlue checked">
-                                                        <input type="radio" name="showDefaultInterim" checked={this.state.showDefaultInterim === "false"} value={"false"} onChange={(e) => { this.handleChecked(e) }} />
+                                                        <input type="radio" name="showDefaultInterim" checked={this.state.showDefaultInterim === false} value={false} onChange={(e) => { this.handleChecked(false,"showDefaultInterim") }} />
                                                         <label> {Resources['normal'][currentLanguage]}</label>
+                                                    </div>
+                                                </div>
+                                                <div className="linebylineInput linebylineInput__checkbox">
+                                                    <label data-toggle="tooltip" title={Resources['showInventoryRadioButtonInItemsTab'][currentLanguage]} className="control-label"> {Resources['showInventoryRadioButtonInItemsTab'][currentLanguage]} </label>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="showInventoryRadioButtonInItemsTab" checked={this.state.showInventoryRadioButtonInItemsTab === true} value={true} onChange={(e) => { this.handleChecked(true,"showInventoryRadioButtonInItemsTab") }} />
+                                                        <label>{Resources['yes'][currentLanguage]}</label>
+                                                    </div>
+                                                    <div className="ui checkbox radio radioBoxBlue checked">
+                                                        <input type="radio" name="showInventoryRadioButtonInItemsTab" checked={this.state.showInventoryRadioButtonInItemsTab === false} value={false} onChange={(e) => { this.handleChecked(false,"showInventoryRadioButtonInItemsTab") }} />
+                                                        <label> {Resources['no'][currentLanguage]}</label>
                                                     </div>
                                                 </div>
                                             </div>

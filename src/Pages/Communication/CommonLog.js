@@ -331,7 +331,7 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+            if (documentObj.documentAddEditLink.replace("/", "") == "addEditModificationDrawing") {
               obj.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -391,7 +391,7 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-            if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+            if (documentObj.documentAddEditLink.replace("/", "") == "addEditModificationDrawing") {
               obj.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -450,7 +450,7 @@ class CommonLog extends Component {
                 isApproveMode: false,
                 perviousRoute: window.location.pathname + window.location.search
               };
-              if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+              if (documentObj.documentAddEditLink.replace("/", "") == "addEditModificationDrawing") {
                 obj.isModification = true;
               }
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -703,7 +703,7 @@ class CommonLog extends Component {
             isApproveMode: false,
             perviousRoute: window.location.pathname + window.location.search
           };
-          if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+          if (documentObj.documentAddEditLink.replace("/", "") == "addEditModificationDrawing") {
             obj.isModification = true;
           }
           let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -972,7 +972,7 @@ class CommonLog extends Component {
                     isApproveMode: false,
                     perviousRoute: window.location.pathname + window.location.search
                   };
-                  if (documentObj.documentAddEditLink.replace("/", "") == "drawingModification") {
+                  if (documentObj.documentAddEditLink.replace("/", "") == "addEditModificationDrawing") {
                     obj.isModification = true;
                   } else {
                     obj.isModification = false;
@@ -1236,7 +1236,7 @@ class CommonLog extends Component {
                 <XSLfile
                   key="MaterialInventory"
                   docId={this.props.projectId}
-                  docType={50}
+                  docType={"inventory"}
                   link={
                     Config.getPublicConfiguartion().downloads +
                     "/downloads/excel/inventory.xlsx"

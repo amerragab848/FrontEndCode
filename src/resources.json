@@ -3720,6 +3720,10 @@
         "en": "Date Approved",
         "ar": "تاريخ الاعتماد"
     },
+    "totalApproved": {
+        "en": "total Approved",
+        "ar": " المجموع المعتمد"
+    },
     "executed": {
         "en": " Executed",
         "ar": "المُنَفّذ "
@@ -7655,6 +7659,10 @@
     "countContract": {
         "en": "Count Contract",
         "ar": "مجموع العقود "
+    },
+    "showInventoryRadioButtonInItemsTab":{
+        "en":"Show Inventory Radio Button In Items Tab",
+        "ar":"اظهار المخزن فى العناصر"
     },
     "maxLength": {
         "en": "Max Length",

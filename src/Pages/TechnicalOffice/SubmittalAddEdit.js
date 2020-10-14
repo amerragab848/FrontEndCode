@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Formik, Form } from "formik";
-import ReactTable from "react-table"; 
+import ReactTable from "react-table";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -127,7 +127,7 @@ class SubmittalAddEdit extends Component {
       projectId: projectId,
       docApprovalId: docApprovalId,
       docAlertId: docAlertId,
-      docAlertId:0,
+      docAlertId: 0,
       arrange: arrange,
       SecondStepComplate: false,
       ThirdStepComplate: false,
@@ -178,8 +178,8 @@ class SubmittalAddEdit extends Component {
         { label: "ITP", value: "ITP" },
         { label: "Safty Plan", value: "Safty Plan" },
         { label: "Release Submittal", value: "Release Submittal" },
-        { label: "Organization Chart", value: "Organization Chart" } ,
-        { label: "BBS", value: "BBS" } 
+        { label: "Organization Chart", value: "Organization Chart" },
+        { label: "BBS", value: "BBS" }
       ],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -986,7 +986,7 @@ class SubmittalAddEdit extends Component {
     saveDocumentCycle.submittalId = this.state.docId;
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     // this.changeCurrentStep(2);
-    this.setState({isLoading:true});
+    this.setState({ isLoading: true });
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
 
@@ -2185,7 +2185,7 @@ class SubmittalAddEdit extends Component {
                     subject={this.props.document.subject}
                     previousRoute={this.state.previousRoute}
                     docApprovalId={this.state.docApprovalId}
-                    docAlertId={this.state.docAlertId} 
+                    docAlertId={this.state.docAlertId}
                     currentArrange={this.state.arrange}
                     showModal={this.props.showModal}
                     showOptionPanel={this.showOptionPanel}
@@ -2195,8 +2195,8 @@ class SubmittalAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            <Steps 
-              steps_defination={steps_defination} 
+            <Steps
+              steps_defination={steps_defination}
               exist_link="/submittal/" docId={this.state.docId}
               changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
               stepNo={this.state.currentStep}
