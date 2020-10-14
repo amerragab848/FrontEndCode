@@ -82,7 +82,6 @@ class addEditModificationDrawing extends Component {
             }
             index++;
         }
-        console.log('isModification', isModification, isModification === true ? 114 : 37);
         this.state = {
             CurrentStep: 0,
             isModification: isModification,
@@ -142,15 +141,15 @@ class addEditModificationDrawing extends Component {
         ];
 
         if (isModification === false) {
-            if (!Config.IsAllow(3516) || !Config.IsAllow(3517) || !Config.IsAllow(3519)) {
-                toast.success(Resources["missingPermissions"][currentLanguage]);
+            if (!Config.IsAllow(3516) && !Config.IsAllow(3517) && !Config.IsAllow(3519)) {
+                toast.error(Resources["missingPermissions"][currentLanguage]);
                 this.props.history.push(
                     this.state.perviousRoute
                 );
             }
 
         } else {
-            if (!Config.IsAllow(3133) || !Config.IsAllow(3134) || !Config.IsAllow(3136)) {
+            if (!Config.IsAllow(3133) && !Config.IsAllow(3134) && !Config.IsAllow(3136)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
                 this.props.history.push(this.state.perviousRoute);
             }
@@ -168,7 +167,7 @@ class addEditModificationDrawing extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
+        let url2 = "GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
         dataservice.GetNextArrangeMainDocument(url2).then(res => {
             updated_document.arrange = res;
             updated_document = Object.assign(original_document, updated_document);
@@ -276,7 +275,7 @@ class addEditModificationDrawing extends Component {
     }
 
     componentWillMount() {
-   let classObj=this;
+        let classObj = this;
         let drawingCycle = {
             drawingId: null,
             subject: 'Cycle No. R ',
@@ -288,7 +287,7 @@ class addEditModificationDrawing extends Component {
             flowContactId: '',
             progressPercent: 0,
             arrange: 0,
-            serial:0
+            serial: 0
         };
 
         this.setState({
@@ -305,8 +304,7 @@ class addEditModificationDrawing extends Component {
                     this.setState({ cyclesData: res });
                 }
             )
-        } else
-         { 
+        } else {
             let drawing = {
                 subject: '',
                 id: 0,
@@ -323,10 +321,10 @@ class addEditModificationDrawing extends Component {
                 fileNumber: '',
                 area: '',
                 drawingNo: '',
-                isModification:isModification,
+                isModification: isModification,
                 progressPercent: 0,
                 approvalStatusId: '',
-                serial:''
+                serial: ''
             };
 
             this.setState({
@@ -340,17 +338,17 @@ class addEditModificationDrawing extends Component {
             //     document: drawing,
             //     drawingCycle: drawingCycle
             // });
-       // let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        // let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
-        //     dataservice.GetNextArrangeMainDocument(url2).then(
-        //         res => {
-        //             const Document = {
-        //                 projectId: projectId, arrange: res, status: "true", subject: "",
-        //                 docDate: moment(), companyId: '', companyId: '',
-        //             }
-        //             this.setState({ document: Document })
-        //         }
-        //     )
+            // let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+            // let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
+            //     dataservice.GetNextArrangeMainDocument(url2).then(
+            //         res => {
+            //             const Document = {
+            //                 projectId: projectId, arrange: res, status: "true", subject: "",
+            //                 docDate: moment(), companyId: '', companyId: '',
+            //             }
+            //             this.setState({ document: Document })
+            //         }
+            //     )
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -613,27 +611,33 @@ class addEditModificationDrawing extends Component {
         this.setState({
             isLoading: true
         });
+        let canEdit = isModification === false ? 3517 : 3134;
         let saveDocument = { ...this.state.document };
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-        dataservice.addObject('EditLogDrawing', saveDocument).then(result => {
-            this.setState({
-                isLoading: true
-            });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            if (this.state.isApproveMode === false) {
+        if (Config.IsAllow(canEdit)) {
+            dataservice.addObject('EditLogDrawing', saveDocument).then(result => {
+                this.setState({
+                    isLoading: true
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                if (this.state.isApproveMode === false) {
 
-                this.props.history.push(
-                    this.state.perviousRoute
-                );
-            }
-        });
+                    this.props.history.push(
+                        this.state.perviousRoute
+                    );
+                }
+            });
+        } else {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+        }
     }
 
     saveDrawing(event) {
         let saveDocument = { ...this.state.document };
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
-             
+        let canAdd = isModification === false ? 3516 : 3133;
+        if (Config.IsAllow(canAdd)) {
         dataservice.addObject('AddLogsDrawings', saveDocument).then(result => {
             this.setState({
                 docId: result.id
@@ -647,6 +651,9 @@ class addEditModificationDrawing extends Component {
             //     toast.success(Resources["operationSuccess"][currentLanguage]);
             // });
         });
+    } else {
+        toast.success(Resources["missingPermissions"][currentLanguage]);
+    }
     }
 
     saveAndExit(event) {
@@ -964,7 +971,7 @@ class addEditModificationDrawing extends Component {
                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                         <div className="ui input inputDev"  >
                                             <input type="text" className="form-control" id="arrange" readOnly
-                                                value= {isModification==true? this.state.document.serial:this.state.document.arrange}
+                                                value={isModification == true ? this.state.document.serial : this.state.document.arrange}
                                                 name="arrange"
                                                 placeholder={Resources.arrange[currentLanguage]}
                                                 onBlur={(e) => {

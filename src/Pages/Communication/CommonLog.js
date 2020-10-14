@@ -24,7 +24,7 @@ import { SkyLightStateless } from 'react-skylight';
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
- 
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
 
@@ -342,7 +342,9 @@ class CommonLog extends Component {
 
             subject = doc_view;
           }
-          row.link = subject;
+          if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+            row.link = subject;
+          }
         });
         this.setState({
           rows: newRows,
@@ -402,7 +404,9 @@ class CommonLog extends Component {
 
             subject = doc_view;
           }
-          row.link = subject;
+          if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+            row.link = subject;
+          }
         });
 
         this.setState({
@@ -462,7 +466,9 @@ class CommonLog extends Component {
 
               subject = doc_view;
             }
-            row.link = subject;
+            if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+              row.link = subject;
+            }
           });
 
 
@@ -545,9 +551,9 @@ class CommonLog extends Component {
   };
 
   renderComponent(documentName, projectId, isCustom) {
-  //  if(!Config.IsAllow(this.state.documentObj.documentPermission)){
-  //   toast.warning(Resources["missingPermissions"][currentLanguage]);
-  //  }else{
+    //  if(!Config.IsAllow(this.state.documentObj.documentPermission)){
+    //   toast.warning(Resources["missingPermissions"][currentLanguage]);
+    //  }else{
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
@@ -581,7 +587,7 @@ class CommonLog extends Component {
           obj.showTip = true;
         }
 
-        if (item.field === "statusName"||item.field === "statusText") {
+        if (item.field === "statusName" || item.field === "statusText") {
           obj.classes = 'grid-status';
           obj.fixed = false;
           obj.leftPadding = 17;
@@ -679,7 +685,7 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-  //}
+    //}
   };
 
   GetRecordOfLog(api, projectId) {
@@ -718,7 +724,9 @@ class CommonLog extends Component {
 
           subject = doc_view;
         }
-        row.link = subject;
+        if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+          row.link = subject;
+        }
       });
       this.setState({
         rows: result.data,
