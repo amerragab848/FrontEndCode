@@ -383,6 +383,7 @@ class materialRequestAddEdit extends Component {
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
+            showRadioButton:this.props.document ? this.props.document.showRadioButton : false,
             companies: [],
             contacts: [],
             discplines: [],
@@ -693,6 +694,7 @@ class materialRequestAddEdit extends Component {
                     : moment(doc.requiredDate).format("YYYY-MM-DD");
             this.setState({
                 document: doc,
+                showRadioButton:doc?doc.showRadioButton:false,
                 hasWorkflow: nextProps.hasWorkflow
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -795,11 +797,11 @@ class materialRequestAddEdit extends Component {
                 requiredDate: moment(),
                 showInDashboard: false,
                 useQntyRevised: false,
-                status: true
+                status: true,
             };
             let normalItems = this.state.normalItems;
             normalItems.arrange = 1;
-            this.setState({ document: materialRequest, normalItems: normalItems });
+            this.setState({ document: materialRequest, normalItems: normalItems});
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -2849,8 +2851,9 @@ class materialRequestAddEdit extends Component {
                 </header>
                 <div>
                     <div className="proForm first-proform letterFullWidth radio__only">
+                    {this.state.showRadioButton==true?
                         <div className="linebylineInput valid-input">
-                            {/* <div className="ui checkbox radio radioBoxBlue">
+                            <div className="ui checkbox radio radioBoxBlue">
                                 <input
                                     type="radio"
                                     name="status"
@@ -2873,8 +2876,8 @@ class materialRequestAddEdit extends Component {
                                         ]
                                     }
                                 </label>
-                            </div> */}
-                            {/* <div className="ui checkbox radio radioBoxBlue">
+                            </div> 
+                             <div className="ui checkbox radio radioBoxBlue">
                                 <input
                                     type="radio"
                                     name="status"
@@ -2893,8 +2896,9 @@ class materialRequestAddEdit extends Component {
                                 <label>
                                     {Resources.fromInventory[currentLanguage]}
                                 </label>
-                            </div> */}
+                            </div>
                         </div>
+                        :null}
                     </div>
                     {
                         this.state.showInventory == true ? this.renderInventory() :

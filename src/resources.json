@@ -7660,6 +7660,10 @@
         "en": "Count Contract",
         "ar": "مجموع العقود "
     },
+    "showInventoryRadioButtonInItemsTab":{
+        "en":"Show Inventory Radio Button In Items Tab",
+        "ar":"اظهار المخزن فى العناصر"
+    },
     "maxLength": {
         "en": "Max Length",
         "ar": "تم الوصول للحد الاقصي "

@@ -268,10 +268,13 @@ class punchListAddEdit extends Component {
             docId: 0
         });
     }
-
+    
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
+        }
+        if(this.props.document.id != prevProps.document.id && this.props.changeStatus==true){
+            this.FillDropDowns()
         }
     }
 
@@ -285,7 +288,7 @@ class punchListAddEdit extends Component {
                         IsEditMode: true,
                         rows: res
                     })
-                    this.FillDropDowns()
+                    //this.FillDropDowns()
                     let data = { items: res };
                     this.props.actions.ExportingData(data);
 
@@ -475,7 +478,7 @@ class punchListAddEdit extends Component {
         });
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             if (this.state.IsEditMode) {
-                let approvalStatusId = this.state.document.approvalStatusId;
+                let approvalStatusId = this.props.document.approvalstatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
                     approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
@@ -596,7 +599,7 @@ class punchListAddEdit extends Component {
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit">{Resources.next[currentLanguage]}</button>
+            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn mediumBtn 2"} type="submit">{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -651,6 +654,7 @@ class punchListAddEdit extends Component {
         else {
             let SnagListObj = this.state.document
             SnagListObj.docDate = moment(SnagListObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            SnagListObj.approvalStatusId=SnagListObj.approvalStatus;
             this.setState({ isLoading: true })
             if (docId > 0) {
                 this.changeCurrentStep(1);
@@ -948,18 +952,59 @@ class punchListAddEdit extends Component {
                                                     handleChange={event => this.handleChangeDropDown(event, 'approvalStatus', false, '', '', '', 'selectedApprovalStatus')} />
                                             </div>
                                         </div>
-
-                                        <div className="slider-Btns">
-                                            {this.state.isLoading ?
-                                                <button className="primaryBtn-1 btn disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
+                                        <div className="doc-pre-cycle letterFullWidth">
+                                            {
+                                                this.props.changeStatus === true ?
+                                                    <Fragment>
+                                                        <div className="slider-Btns">
+                                                            {console.log("this.state.isViewMode...",this.state.isViewMode)}
+                                                            {this.state.isViewMode === false ?
+                                                                <div className="doc-pre-cycle">
+                                                                    <div className="slider-Btns">
+                                                                        {this.state.isLoading ?
+                                                                            <button className="primaryBtn-1 btn disabled">
+                                                                                <div className="spinner">
+                                                                                    <div className="bounce1" />
+                                                                                    <div className="bounce2" />
+                                                                                    <div className="bounce3" />
+                                                                                </div>
+                                                                            </button> :
+                                                                            <button className="primaryBtn-1 btn meduimBtn" >{Resources['next'][currentLanguage]}</button>
+                                                                        }
+                                                                    </div>
+                                                                </div> : null}
+                                                        </div>
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.arrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                    documentName={Resources.punchList[currentLanguage]}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </Fragment>
+                                                    : <div className="slider-Btns">
+                                                        {this.state.isLoading ?
+                                                            <button className="primaryBtn-1 btn disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button> :
+                                                            this.showBtnsSaving()}
                                                     </div>
-                                                </button> : this.showBtnsSaving()}
+                                            }
                                         </div>
-
                                     </Form>
                                 )}
                             </Formik>
@@ -1271,9 +1316,9 @@ class punchListAddEdit extends Component {
                                             <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
                                         </header>
                                         {dataGrid}
-                                        <div className="slider-Btns">
+                                        {/* <div className="slider-Btns">
                                             <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>}
                         </div>
@@ -1297,40 +1342,6 @@ class punchListAddEdit extends Component {
                             buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                         />
                     ) : null}
-
-                    <div className="doc-pre-cycle letterFullWidth">
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-                                        {this.state.isLoading ?
-                                            <button className="primaryBtn-1 btn disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button> :
-                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                        }
-                                        <DocumentActions
-                                            isApproveMode={this.state.isApproveMode}
-                                            docTypeId={this.state.docTypeId}
-                                            docId={this.state.docId}
-                                            projectId={this.state.projectId}
-                                            previousRoute={this.state.previousRoute}
-                                            docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.arrange}
-                                            showModal={this.props.showModal}
-                                            showOptionPanel={this.showOptionPanel}
-                                            permission={this.state.permission}
-                                            documentName={Resources.punchList[currentLanguage]}
-                                        />
-                                    </div>
-                                </div>
-                                : null
-                        }
-                    </div>
                 </div>
             </div>
         )
