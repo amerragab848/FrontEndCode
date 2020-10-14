@@ -96,8 +96,8 @@ let columns = [
 
 let docId = 0;
 let projectId = 0;
-let projectName = 0;
-let isApproveMode = 0;
+let projectName = "";
+let isApproveMode = false;
 let docApprovalId = 0;
 let docAlertId = 0;
 
@@ -137,12 +137,12 @@ class materialInspectionRequestAddEdit extends Component {
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
+            IsEditMode: false,
             docId: docId,
-            docAlertId:0,
             docTypeId: 103,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            docAlertId:docAlertId,
+            docAlertId: docAlertId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             documentCycle: {},
@@ -154,10 +154,10 @@ class materialInspectionRequestAddEdit extends Component {
             letters: [],
             IRCycles: [],
             specsSections: [],
-            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 },
+            permission: [{ name: 'sendByEmail', code: 936 }, { name: 'sendByInbox', code: 935 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 960 },
+            { name: 'createTransmittal', code: 3046 }, { name: 'sendToWorkFlow', code: 939 },
+            { name: 'viewAttachments', code: 3316 }, { name: 'deleteAttachments', code: 941 },
             { name: "previousVersions", code: 8080800 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
@@ -192,6 +192,7 @@ class materialInspectionRequestAddEdit extends Component {
 
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
+
         steps_defination = [
             {
                 name: "materialInspectionRequest",
@@ -202,7 +203,6 @@ class materialInspectionRequestAddEdit extends Component {
                 callBackFn: null
             }
         ];
-
     }
 
     componentWillUnmount() {
@@ -223,6 +223,10 @@ class materialInspectionRequestAddEdit extends Component {
             }
         }
         if (this.state.docId > 0) {
+            this.setState({
+                IsEditMode: true
+            });
+
             let url = "GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInspectionRequest');
             dataservice.GetDataGrid("GetMaterialInspectionRequestCycles?materialInspectionId=" + this.state.docId).then(result => {
@@ -272,12 +276,12 @@ class materialInspectionRequestAddEdit extends Component {
                 requiredDate: moment(),
                 resultDate: moment(),
                 reasonForIssueId: ''
-
             };
 
             this.setState({ document: materialInspectionRequest }, function () {
                 this.GetNExtArrange();
             });
+
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -1293,26 +1297,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 </div>
                                                                             </div> : null}
                                                                     </div>
-                                                                    <div className="approveDocument">
-                                                                        <div className="approveDocumentBTNS">
-                                                                            <DocumentActions
-                                                                                isApproveMode={this.state.isApproveMode}
-                                                                                docTypeId={this.state.docTypeId}
-                                                                                docId={this.state.docId}
-                                                                                projectId={this.state.projectId}
-                                                                                previousRoute={this.state.previousRoute}
-                                                                                docApprovalId={this.state.docApprovalId}
-                                                                                 
-                                                                                docAlertId={this.state.docAlertId}
 
-                                                                                currentArrange={this.state.arrange}
-                                                                                showModal={this.props.showModal}
-                                                                                showOptionPanel={this.showOptionPanel}
-                                                                                permission={this.state.permission}
-                                                                                documentName={Resources.materialInspectionRequest[currentLanguage]}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
                                                                 </Fragment>
                                                                 :
                                                                 <div className="slider-Btns">
@@ -1389,15 +1374,40 @@ class materialInspectionRequestAddEdit extends Component {
                                     }
                                 </div>
                             </div>
+
                         </div>
+
+                        {this.props.changeStatus == true ?
+                            <div className="approveDocument">
+                                <div className="approveDocumentBTNS">
+                                    <DocumentActions
+                                        isApproveMode={this.state.isApproveMode}
+                                        docTypeId={this.state.docTypeId}
+                                        docId={this.state.docId}
+                                        projectId={this.state.projectId}
+                                        previousRoute={this.state.previousRoute}
+                                        docApprovalId={this.state.docApprovalId}
+
+                                        docAlertId={this.state.docAlertId}
+
+                                        currentArrange={this.state.arrange}
+                                        showModal={this.props.showModal}
+                                        showOptionPanel={this.showOptionPanel}
+                                        permission={this.state.permission}
+                                        documentName={Resources.materialInspectionRequest[currentLanguage]}
+                                    />
+                                </div>
+                            </div>
+                            : null}
+
+
                         <Steps
                             steps_defination={steps_defination}
                             exist_link="/materialInspectionRequest/"
                             docId={this.state.docId}
-                            changeCurrentStep={stepNo =>
-                                this.changeCurrentStep(stepNo)
-                            }
-                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
+                            changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+                            stepNo={this.state.CurrentStep}
+                            changeStatus={docId === 0 ? false : true}
                         />
                     </div>
                 </div>
