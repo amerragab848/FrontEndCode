@@ -268,22 +268,13 @@ class punchListAddEdit extends Component {
             docId: 0
         });
     }
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     if (nextProps.document.id !== prevState.document.id && nextProps.changeStatus === true) {
-    //         let SnagListDoc = nextProps.document
-    //         SnagListDoc.docDate = SnagListDoc.docDate === null ? moment().format('YYYY-MM-DD') : moment(SnagListDoc.docDate).format('YYYY-MM-DD')
-    //         this.checkDocumentIsView();
-    //         return {
-    //             document: SnagListDoc,
-    //             IsEditMode: true,
-    //             hasWorkflow: nextProps.hasWorkflow,
-    //         }
-    //     }
-    // }
-
+    
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
+        }
+        if(this.props.document.id != prevProps.document.id && this.props.changeStatus==true){
+            this.FillDropDowns()
         }
     }
 
@@ -297,7 +288,7 @@ class punchListAddEdit extends Component {
                         IsEditMode: true,
                         rows: res
                     })
-                    this.FillDropDowns()
+                    //this.FillDropDowns()
                     let data = { items: res };
                     this.props.actions.ExportingData(data);
 
@@ -487,7 +478,7 @@ class punchListAddEdit extends Component {
         });
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             if (this.state.IsEditMode) {
-                let approvalStatusId = this.state.document.approvalStatusId;
+                let approvalStatusId = this.props.document.approvalstatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
                     approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
@@ -663,6 +654,7 @@ class punchListAddEdit extends Component {
         else {
             let SnagListObj = this.state.document
             SnagListObj.docDate = moment(SnagListObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            SnagListObj.approvalStatusId=SnagListObj.approvalStatus;
             this.setState({ isLoading: true })
             if (docId > 0) {
                 this.changeCurrentStep(1);
