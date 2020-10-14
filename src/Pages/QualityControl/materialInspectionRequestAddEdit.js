@@ -728,6 +728,7 @@ class materialInspectionRequestAddEdit extends Component {
                     id: result.id
                 };
                 let newCycle = {
+                    id: result.id,
                     subject: result.subject,
                     docDate: result.docDate,
                     arrange: result.arrange,
@@ -740,6 +741,10 @@ class materialInspectionRequestAddEdit extends Component {
                     comment: result.cycleComment,
                 }
                 let IRCycles = this.state.IRCycles;
+                let rowIndex=IRCycles.findIndex(x=>x.id==result.id);
+                if(rowIndex > -1 &&saveDocument.typeAddOrEdit === "editLastCycle" ){
+                    IRCycles.splice(rowIndex,1);
+                }
                 IRCycles.push(newCycle);
                 this.setState({
                     IRCycles,
