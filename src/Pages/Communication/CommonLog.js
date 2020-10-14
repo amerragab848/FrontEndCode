@@ -436,6 +436,7 @@ class CommonLog extends Component {
 
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 1).then(result => {
+        debugger
         if (result.data.length > 0) {
 
           result.data.forEach(row => {

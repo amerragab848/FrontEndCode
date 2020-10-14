@@ -566,7 +566,9 @@ const AddEditModificationDrawing = AsyncComponent(() =>
 const DrawingListAddEdit = AsyncComponent(() =>
     import('./Pages/Design/drawingListAddEdit'),
 );
-
+const DrawingSetsAddEdit = AsyncComponent(() =>
+    import('./Pages/Design/drawingSetsAddEdit'),
+);
 //EPS
 
 const EpsPermission = AsyncComponent(() => import('./Pages/Eps/EpsPermission'));
@@ -987,6 +989,11 @@ let originalRoutes = [
         key="r-101"
         path="/drawingListAddEdit"
         component={DrawingListAddEdit}
+    />,
+    <Route
+        key="r-101"
+        path="/DrawingSetsAddEdit"
+        component={DrawingSetsAddEdit}
     />,
     <Route
         key="r-102"
