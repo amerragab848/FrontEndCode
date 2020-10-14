@@ -1253,6 +1253,7 @@ class inspectionRequestAddEdit extends Component {
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
                                                                     <div className="slider-Btns">
+                                                                    {console.log("this.state.isViewMode...",this.state.isViewMode)}
                                                                         {this.state.isViewMode === false ?
                                                                             <div className="doc-pre-cycle">
                                                                                 <div className="slider-Btns">
