@@ -78,7 +78,7 @@ class OptionContainer extends React.Component {
             showModal: false,
             defualtValue: { label: Resources["action"][currentLanguage], value: '0' },
             data: [
-                { title: "export", value: <ExportDetails />, label: Resources["export"][currentLanguage] },
+                { title: "export", value: <ExportDetails docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["export"][currentLanguage] },
                 { title: "copyTo", value: <CopyTo docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["copyTo"][currentLanguage] },
                 { title: "sendByEmail", value: <SendByEmails docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["sendByEmail"][currentLanguage] },
                 { title: "sendByInbox", value: <SendToInbox docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["sendByInbox"][currentLanguage] },
