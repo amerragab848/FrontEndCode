@@ -740,6 +740,10 @@ class materialInspectionRequestAddEdit extends Component {
                     comment: result.cycleComment,
                 }
                 let IRCycles = this.state.IRCycles;
+                // let rowIndex=IRCycles.findIndex(x=>x.id==result.id);
+                // if(rowIndex > -1 &&saveDocument.typeAddOrEdit === "editLastCycle" ){
+                //     IRCycles.splice(IRCycles,rowIndex);
+                // }
                 IRCycles.push(newCycle);
                 this.setState({
                     IRCycles,
