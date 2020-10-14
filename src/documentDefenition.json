@@ -8144,6 +8144,7 @@
       }
     ]
   },
+
   "drawingModification": {
     "documentTitle": "drawingModification",
     "docTyp": 114,
@@ -8160,6 +8161,17 @@
       "delete": "DeleteLogDrawingMultiple"
     },
     "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "10%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "n"
+      },
       {
         "field": "statusName",
         "friendlyName": "status",
@@ -8919,6 +8931,149 @@
       }
     ]
   },
+  "drawingSets": {
+    "documentTitle": "drawingSets",
+    "docTyp": 38,
+    "documentAddEditLink": "DrawingSetsAddEdit",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 301,
+    "documentEditPermission": 302,
+    "documentDeletePermission": 303,
+    "documentViewPermission": 304,
+    "documentPermission": 305,
+    "documentApi": {
+      "get": "GetLogsDrawingsSetssByProjectId",
+      "getCustom": "GetLogsDrawingsSetssByProjectIdCustom",
+      "delete": "DeleteLogsDrawingsSetsMultiple"
+    },
+    "documentColumns": [
+      {
+        "field": "statusName",
+        "friendlyName": "status",
+        "minWidth": 155,
+        "width": "8%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "openedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "closedBy",
+        "friendlyName": "closedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditBy",
+        "friendlyName": "lastEdit",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "d"
+      }
+    ],
+    "filterApi": "LogsDrawingsSetsFilter",
+    "filters": [
+      {
+        "name": "status",
+        "field": "status",
+        "isCustom": true,
+        "type": "toggle",
+        "trueLabel": "oppened",
+        "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "docClosedate",
+        "field": "docCloseDate",
+        "type": "date",
+        "isCustom": false
+      },
+      {
+        "name": "openedBy",
+        "field": "openedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "closedBy",
+        "field": "closedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEdit",
+        "field": "lastEditBy",
+        "type": "string",
+        "isCustom": false
+      }
+    ]
+  }
+  ,
   "drawingPhases": {
     "documentTitle": "designPhasingLog",
     "docTyp": 40,
@@ -14105,19 +14260,8 @@
         "exportDataType": "n"
       },
       {
-        "field": "total",
+        "field": "remainingTotalPrice",
         "friendlyName": "total",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "number",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": true,
-        "exportDataType": "n"
-      },
-      {
-        "field": "totalApproved",
-        "friendlyName": "totalApproved",
         "minWidth": 85,
         "width": "8%",
         "dataType": "number",
