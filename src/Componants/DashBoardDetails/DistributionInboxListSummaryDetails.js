@@ -17,6 +17,18 @@ const find = require("lodash/find");
 class DistributionInboxListSummaryDetails extends Component {
   constructor(props) {
     super(props);
+    let id = null;
+    let isDistribution = false;
+    const query = new URLSearchParams(this.props.location.search);
+    for (let param of query.entries()) {
+      if (param[0] === "id") {
+        id = param[1];
+      }
+    }
+
+    if (id === "1") {
+      isDistribution = true;
+    }
 
     const filtersColumns = [
       {
@@ -76,8 +88,10 @@ class DistributionInboxListSummaryDetails extends Component {
       pageSize: 500,
       pageNumber: 0,
       totalRows: 0,
-      action: null, showPopup: false
+      action: null, showPopup: false,
+      isDistribution: isDistribution
     };
+
     this.actions = [
       {
         title: 'Update',
@@ -102,10 +116,10 @@ class DistributionInboxListSummaryDetails extends Component {
         classes: '',
       }
     ];
+
     this.columnsGrid = [
       { field: 'id', title: '', type: 'check-box', fixed: true, hidden: false },
       {
-
         field: 'statusText',
         title: Resources['statusName'][currentLanguage],
         width: 10,
@@ -115,7 +129,6 @@ class DistributionInboxListSummaryDetails extends Component {
         type: "text",
         classes: 'gridBtns status ',
         conditionalClasses: obj => {
-          //'Read' : 'UnRead' Read
           return obj.status == true ? ' Read' : ' UnRead';
         }
       }, {
@@ -133,7 +146,7 @@ class DistributionInboxListSummaryDetails extends Component {
       }, {
         field: 'projectName',
         title: Resources['projectName'][currentLanguage],
-        width: 20,
+        width: 10,
         groupable: true,
         showTip: true,
         fixed: false,
@@ -142,7 +155,7 @@ class DistributionInboxListSummaryDetails extends Component {
       }, {
         field: 'fromAccountName',
         title: Resources['from'][currentLanguage],
-        width: 20,
+        width: 15,
         groupable: true,
         fixed: false,
         type: "text",
@@ -151,7 +164,7 @@ class DistributionInboxListSummaryDetails extends Component {
       }, {
         field: 'comment',
         title: Resources['comment'][currentLanguage],
-        width: 25,
+        width: 15,
         groupable: true,
         fixed: false,
         type: "text",
@@ -167,19 +180,22 @@ class DistributionInboxListSummaryDetails extends Component {
         fixed: false,
         sortable: true,
         type: "date",
-      },
-      {
+      }
+    ];
+    if (isDistribution == false) {
+      this.columnsGrid.push({
         field: 'sendFor',
         title: Resources['sendFor'][currentLanguage],
         width: 10,
         groupable: true,
         fixed: false,
         type: "text",
-        sortable: true,
-        showTip: true,
-      },
-    ];
+        sortable: true 
+      });
+      console.log(this.columnsGrid);
+    }
   }
+
   GetNextData() {
     let pageNumber = this.state.pageNumber + 1;
 
@@ -257,14 +273,12 @@ class DistributionInboxListSummaryDetails extends Component {
         pageTitle: Resources["inboxSummary"][currentLanguage],
         action: action
       });
-
-      this.columnsGrid[0].field = 'readUnread';
+ 
       if (action) {
         Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
           if (result) {
             result.data.forEach((row, index) => {
-              let doc_view = "";
-              let subject = "";
+
               let spliteLink = row.docView.split('/');
 
               let obj = {
@@ -279,8 +293,7 @@ class DistributionInboxListSummaryDetails extends Component {
 
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-              row.link = "/" + spliteLink[0] + "?id=" + encodedPaylod
-              subject = row.subject; 
+              row.link = "/" + spliteLink[0] + "?id=" + encodedPaylod 
             });
           }
           this.setState({
@@ -294,8 +307,7 @@ class DistributionInboxListSummaryDetails extends Component {
       this.setState({
         pageTitle: Resources["distributionSummary"][currentLanguage],
         action: action
-      });
-      this.columnsGrid[1].field = 'statusText';
+      }); 
       if (action) {
         Api.get("GetDocApprovalDetailsDistributionList?action=" + action + "&pageNumber=" + 0 + "&pageSize=" + this.state.pageSize).then(result => {
           if (result) {
@@ -315,12 +327,7 @@ class DistributionInboxListSummaryDetails extends Component {
               let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
               let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
               row.link = "/" + spliteLink[0] + "?id=" + encodedPaylod;
-              setTimeout(() => {
-                var tableRow = document.querySelectorAll('.grid-body  tr');
-                for (let x = 0; x < tableRow.length; x++) {
-                  if (x === index) tableRow[x].querySelector('.gridBtns.status ').classList.add(row.status === true ? 'Read' : 'UnRead')
-                }
-              }, 500);
+              
             });
           }
           this.setState({
