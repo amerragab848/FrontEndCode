@@ -33,8 +33,8 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
-    sharedSettings: Yup.string().required(Resources["sharedSettings"][currentLanguage])
-                                .min(5, "Please Enter at least Five Character"),
+    // sharedSettings: Yup.string().required(Resources["sharedSettings"][currentLanguage])
+    //                             .min(5, "Please Enter at least Five Character"),
 });
 
 let docId = 0;
