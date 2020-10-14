@@ -696,9 +696,10 @@ class LettersAddEdit extends Component {
     }
 
     saveLetter(event) {
+
         this.setState({
             isLoading: true
-        });
+        });  
 
         let saveDocument = { ...this.state.document };
         saveDocument.projectId = this.props.projectId

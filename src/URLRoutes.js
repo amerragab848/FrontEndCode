@@ -1720,6 +1720,18 @@ var routes = [
         }
     },
     {
+        route: "drawingSets",
+        moduleId: "commonLogs",
+        title: "drawingSets",
+        nav: true,
+        hash: "#drawingSets",
+        settings: {
+            Design: true,
+            caption: "procoor-icon-drawing-list",
+            permission: 305
+        }
+    },
+    {
         route: "siteInstructions",
         moduleId: "commonLogs",
         title: "siteInstructions",
