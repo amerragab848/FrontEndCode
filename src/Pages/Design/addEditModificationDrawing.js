@@ -960,7 +960,7 @@ class addEditModificationDrawing extends Component {
                                             startDate={this.state.document.docDate}
                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                     </div>
-
+                                       {/* added              */}
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                         <div className="ui input inputDev"  >
