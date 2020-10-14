@@ -41,7 +41,7 @@ class CreateTransmittal extends Component {
                 sendingMethodId: '',
                 status: true,
                 submittFor: '',
-                refDoc: null
+                refDoc: this.props.document.refNo
             },
             PriorityData: [],
             ToCompany: [],

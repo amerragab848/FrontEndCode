@@ -423,6 +423,10 @@
         "en": "right",
         "ar": "left"
     },
+    "localPath": {
+        "en": "Local Path",
+        "ar": "الرابط المحلى"
+    },
     "direction": {
         "en": "left",
         "ar": "right"
@@ -889,15 +893,14 @@
         "en": "To Company Name",
         "ar": "إلى شركه"
     },
-    "fromContactName":{
-        "en":"From Contact Name",
-        "ar":"الشخص المسئول "
+    "fromContactName": {
+        "en": "From Contact Name",
+        "ar": "الشخص المسئول "
     },
-    "fromCompanyName":{
-        "en":"From Company Name",
-        "ar":"من شركة"
-    }
-    ,
+    "fromCompanyName": {
+        "en": "From Company Name",
+        "ar": "من شركة"
+    },
     "toContactName": {
         "en": "To Contact Name",
         "ar": "الشخص المسئول"
@@ -2558,19 +2561,19 @@
         "en": " Subject",
         "ar": "العنوان"
     },
-    "materialReleasedsubject":{
+    "materialReleasedsubject": {
         "en": " Material Releasedsub Subject",
         "ar": "العنوان"
     },
-    "materialReleasedarrange":{
+    "materialReleasedarrange": {
         "en": "Material Released Arrange",
         "ar": "ترتيب صرف المواد"
     },
-    "materialReleasedDate":{
+    "materialReleasedDate": {
         "en": "Material Released Date",
         "ar": "تاريخ صرف المواد"
     },
-    "contractsItems":{
+    "contractsItems": {
         "en": "Material Release Items",
         "ar": " العناصر"
     },
@@ -2894,15 +2897,14 @@
         "en": "Items",
         "ar": "العناصر"
     },
-    "MoreDetails":{
-        "en":"More Details",
-        "ar":"مزيدا من التفاصيل"
+    "MoreDetails": {
+        "en": "More Details",
+        "ar": "مزيدا من التفاصيل"
     },
-    "lastApproveTime":{
-        "en":"last Approve Time",
-        "ar":"وقت الموافقة الأخير"
-    }
-    ,
+    "lastApproveTime": {
+        "en": "last Approve Time",
+        "ar": "وقت الموافقة الأخير"
+    },
     "checkList": {
         "en": "Check List",
         "ar": "قائمة التحقق"
@@ -3363,7 +3365,6 @@
         "en": "Please select a Bill of  Quantity",
         "ar": "برجاء اختيار قائمة الكميات"
     },
-  
     "newBoq": {
         "en": "Create Bill of Quantity",
         "ar": "اضافه قائمه الكميات"
@@ -6187,7 +6188,7 @@
     "replyLetterDate": {
         "en": "Reply Letter Date",
         "ar": "تاريخ خطاب الرد"
-    },  
+    },
     "selectReply": {
         "en": "-- Please Select a Reply --",
         "ar": "-- برجاء اختيار رد --"
@@ -7660,9 +7661,9 @@
         "en": "Count Contract",
         "ar": "مجموع العقود "
     },
-    "showInventoryRadioButtonInItemsTab":{
-        "en":"Show Inventory Radio Button In Items Tab",
-        "ar":"اظهار المخزن فى العناصر"
+    "showInventoryRadioButtonInItemsTab": {
+        "en": "Show Inventory Radio Button In Items Tab",
+        "ar": "اظهار المخزن فى العناصر"
     },
     "maxLength": {
         "en": "Max Length",
@@ -8236,9 +8237,9 @@
         "en": "Variation Orders Items",
         "ar": "قائمة طلبات التغيير المقترح"
     },
-    "materialReleased":{
-        "en":"Material Released",
-        "ar":"صرف المواد"
+    "materialReleased": {
+        "en": "Material Released",
+        "ar": "صرف المواد"
     },
     "closeDocument": {
         "en": "Sorry, You can't edit this document",
@@ -8740,8 +8741,8 @@
         "en": "Deduction Value",
         "ar": "قيمة الاستقطاع"
     },
-    "chooseExcelFormat":{
-        "en":"Choose Excel Format",
-        "ar":"اختر صيغة"
+    "chooseExcelFormat": {
+        "en": "Choose Excel Format",
+        "ar": "اختر صيغة"
     }
 }
