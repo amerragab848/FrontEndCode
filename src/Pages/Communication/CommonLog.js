@@ -551,9 +551,6 @@ class CommonLog extends Component {
   };
 
   renderComponent(documentName, projectId, isCustom) {
-    //  if(!Config.IsAllow(this.state.documentObj.documentPermission)){
-    //   toast.warning(Resources["missingPermissions"][currentLanguage]);
-    //  }else{
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
@@ -685,7 +682,6 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-    //}
   };
 
   GetRecordOfLog(api, projectId) {
@@ -1224,7 +1220,7 @@ class CommonLog extends Component {
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
-                  docType="docTemplate"
+                  docType = {this.state.docType}
                   documentTemplate={true}
                   link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
                   header="addManyItems"

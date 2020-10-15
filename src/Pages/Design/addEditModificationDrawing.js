@@ -192,7 +192,6 @@ class addEditModificationDrawing extends Component {
                 links[i].classList.add('odd');
             }
         }
-
         this.checkDocumentIsView();
     };
 
@@ -287,12 +286,9 @@ class addEditModificationDrawing extends Component {
             arrange: 0,
             serial: 0
         };
-
         this.setState({
             drawingCycle: drawingCycle
         });
-
-
         if (this.state.docId > 0) {
             let url = "GetLogsDrawingsForEdit?id=" + this.state.docId
             let PageName = isModification === false ? 'drawing' : 'drawingModification'
@@ -347,7 +343,7 @@ class addEditModificationDrawing extends Component {
             //             this.setState({ document: Document })
             //         }
             //     )
- 
+
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -637,22 +633,22 @@ class addEditModificationDrawing extends Component {
         saveDocument.projectId = this.state.projectId;
         let canAdd = isModification === false ? 3516 : 3133;
         if (Config.IsAllow(canAdd)) {
-        dataservice.addObject('AddLogsDrawings', saveDocument).then(result => {
-            this.setState({
-                docId: result.id
-            });
+            dataservice.addObject('AddLogsDrawings', saveDocument).then(result => {
+                this.setState({
+                    docId: result.id
+                });
 
-            let saveDocumentCycle = { ...this.state.drawingCycle };
-            saveDocumentCycle.drawingId = result.id;
-            saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            // dataservice.addObject('AddLogsDrawingsCycles', saveDocumentCycle).then(result => {
-            //     toast.success(Resources["operationSuccess"][currentLanguage]);
-            // });
-        });
-    } else {
-        toast.success(Resources["missingPermissions"][currentLanguage]);
-    }
+                let saveDocumentCycle = { ...this.state.drawingCycle };
+                saveDocumentCycle.drawingId = result.id;
+                saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+                saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+                // dataservice.addObject('AddLogsDrawingsCycles', saveDocumentCycle).then(result => {
+                //     toast.success(Resources["operationSuccess"][currentLanguage]);
+                // });
+            });
+        } else {
+            toast.success(Resources["missingPermissions"][currentLanguage]);
+        }
     }
 
     saveAndExit(event) {
@@ -1578,7 +1574,7 @@ class addEditModificationDrawing extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={isModification != true ? Resources.drawingModification[currentLanguage] : Resources.drawing[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} perviousRoute={this.state.perviousRoute} />
                     <div className="doc-container">
 
-                        <div className="step-content"> 
+                        <div className="step-content">
                             {this.state.isLoading ? <LoadingSection /> : null}
 
                             {this.state.CurrentStep === 0 ? <Fragment>{Drawing()}</Fragment> : Cycles()}
