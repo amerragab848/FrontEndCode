@@ -270,7 +270,7 @@ class SubmittalAddEdit extends Component {
         this.setState({
           itemData: data
         });
-        this.props.actions.ExportingCylcleData({ itemsCycle: data });
+       // this.props.actions.ExportingData({ items: data });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     } else {
