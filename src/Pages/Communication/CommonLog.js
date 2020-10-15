@@ -1220,7 +1220,7 @@ class CommonLog extends Component {
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
-                  docType="docTemplate"
+                  docType = {this.state.docType}
                   documentTemplate={true}
                   link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
                   header="addManyItems"
