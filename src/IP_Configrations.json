@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 {
   "BlobStorageContainerName": "project-files-demov4",
@@ -26,4 +27,43 @@
   
   "client_id": "ahfzjNdy6bKklC7jwyhRDrjxRHR66snA",
   "client_secret": "FZLvWKu1t3gvUYIV"
+=======
+<<<<<<< HEAD
+{ 
+=======
+
+
+{
+>>>>>>> 3c2343b7b7dd930a01ec7debbcccddcc51ebaeec
+    "BlobStorageContainerName": "project-files-demov4",
+    "acApp": "AC",
+    "accountCompanyId": "2",
+    "azureStorage": true,
+    "canSendAlert": "false",
+    "cdn": "https://newgiza.azureedge.net",
+    "chatLocal": "https://demov4.procoor.com",
+    "chatStatic": "https://demov4.procoor.com",
+    "exportLocal": "https://demov4.procoor.com",
+    "exportStatic": "https://demov4.procoor.com",
+    "fmApp": "FM",
+    "hrApp": "HR",
+    "local": "http://172.30.1.17:8900/",
+    "loginServer": "http://172.30.1.17:8901",
+<<<<<<< HEAD
+    "pmApp": "PM", 
+=======
+    "pmApp": "PM",
+>>>>>>> 3c2343b7b7dd930a01ec7debbcccddcc51ebaeec
+    "static": "http://172.30.1.17:8900/",
+    "downloads": "http://172.30.1.17:8900",
+    "dropBoxappKey": "r8iiezlpm1pvlry",
+    "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
+    "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
+    "googleDriveKey": "uof5qzvtwpq1dao",
+    "refAutomatic": false
+<<<<<<< HEAD
+}  
+=======
+>>>>>>> ae3696caad612ee3f8c1e6d6dba530a3e6e2b8b5
 }
+>>>>>>> 3c2343b7b7dd930a01ec7debbcccddcc51ebaeec

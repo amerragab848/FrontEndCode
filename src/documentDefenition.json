@@ -8947,6 +8947,7 @@
       "delete": "DeleteLogsDrawingsSetsMultiple"
     },
     "documentColumns": [
+      
       {
         "field": "statusName",
         "friendlyName": "status",

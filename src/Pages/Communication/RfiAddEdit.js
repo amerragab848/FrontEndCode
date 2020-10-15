@@ -248,6 +248,7 @@ class RfiAddEdit extends Component {
                 }
 
                 let toCompanyId = this.props.document.toCompanyId;
+                
                 if (toCompanyId) {
                     this.setState({
                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
@@ -283,9 +284,11 @@ class RfiAddEdit extends Component {
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
 
             if (isEdit) {
+                debugger
                 let areaId = this.props.document.area;
+                
                 if (areaId) {
-                    let area = result.find(i => i.value === areaId);
+                    let area = result.find(i => i.label === areaId);
                     if (area) {
                         this.setState({
                             selectedArea: { label: area.label, value: areaId }
@@ -305,7 +308,7 @@ class RfiAddEdit extends Component {
                 let locationId = this.props.document.location;
 
                 if (locationId) {
-                    let location = result.find(i => i.value === locationId);
+                    let location = result.find(i => i.label === locationId);
                     if (location) {
                         this.setState({
                             selectedLocation: { label: location.label, value: locationId }
@@ -457,6 +460,7 @@ class RfiAddEdit extends Component {
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        
         saveDocument.area = this.state.selectedArea.label;
         saveDocument.location = this.state.selectedLocation.label;
         dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
