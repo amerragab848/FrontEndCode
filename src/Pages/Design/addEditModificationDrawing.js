@@ -54,6 +54,7 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 let isModification = true;//edited
+let havePermission=true;
 
 const find = require('lodash/find')
 class addEditModificationDrawing extends Component {
@@ -142,6 +143,7 @@ class addEditModificationDrawing extends Component {
 
         if (isModification === false) {
             if (!Config.IsAllow(3516) && !Config.IsAllow(3517) && !Config.IsAllow(3519)) {
+                havePermission=false;
                 toast.error(Resources["missingPermissions"][currentLanguage]);
                 this.props.history.push(
                     this.state.perviousRoute
@@ -149,8 +151,9 @@ class addEditModificationDrawing extends Component {
             }
         } else {
             if (!Config.IsAllow(3133) && !Config.IsAllow(3134) && !Config.IsAllow(3136)) {
-                toast.success(Resources["missingPermissions"][currentLanguage]);
-                this.props.history.push(this.state.perviousRoute);
+                havePermission=false;
+                toast.error(Resources["missingPermissions"][currentLanguage]);
+                return this.props.history.push(this.state.perviousRoute);
             }
         }
     }
@@ -183,95 +186,7 @@ class addEditModificationDrawing extends Component {
     }
 
     componentDidMount() {
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add('even');
-            }
-            else {
-                links[i].classList.add('odd');
-            }
-        }
-        this.checkDocumentIsView();
-    };
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
-            let doc = nextProps.document
-            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
-
-            this.setState({
-                document: doc,
-                hasWorkflow: nextProps.hasWorkflow
-            });
-
-            dataservice.GetRowById("getLogsDrawingsCyclesForEdit?id=" + nextProps.document.id).then(result => {
-                let data = { items: result };
-                ///this.props.actions.ExportingData(data);
-                this.setState({
-                    drawingCycle: { ...result }
-                });
-                this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            });
-            this.checkDocumentIsView();
-        }
-    };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (isModification === true) {
-            if (this.props.changeStatus === true) {
-                if (!(Config.IsAllow(3517))) {
-                    this.setState({ isViewMode: true });
-                }
-                if (Config.getUserTypeIsAdmin() === true) {
-                    this.setState({ isViewMode: false });
-                } else {
-                    if (this.state.isApproveMode != true && Config.IsAllow(3517)) {
-                        if (this.props.hasWorkflow == false && Config.IsAllow(3517)) {
-                            if (this.props.document.status !== false && Config.IsAllow(3517)) {
-                                this.setState({ isViewMode: false });
-                            } else {
-                                this.setState({ isViewMode: true });
-                            }
-                        } else {
-                            this.setState({ isViewMode: true });
-                        }
-                    }
-                }
-            }
-            else {
-                this.setState({ isViewMode: false });
-            }
-        } else {
-            if (this.props.changeStatus === true) {
-                if (!(Config.IsAllow(3134))) {
-                    this.setState({ isViewMode: true });
-                }
-                if (this.state.isApproveMode != true && Config.IsAllow(3134)) {
-                    if (this.props.hasWorkflow == false && Config.IsAllow(3134)) {
-                        if (this.props.document.status !== false && Config.IsAllow(3134)) {
-                            this.setState({ isViewMode: false });
-                        } else {
-                            this.setState({ isViewMode: true });
-                        }
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                }
-            }
-            else {
-                this.setState({ isViewMode: false });
-            }
-        }
-    }
-
-    componentWillMount() {
+        if(havePermission==true){
         let classObj = this;
         let drawingCycle = {
             drawingId: null,
@@ -347,7 +262,91 @@ class addEditModificationDrawing extends Component {
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
+
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add('even');
+            }
+            else {
+                links[i].classList.add('odd');
+            }
+        }
+    }
     };
+    componentDidUpdate(prevProps) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+            this.checkDocumentIsView();
+        }
+
+        if (this.props.document.id !== prevProps.document.id) {
+            let doc = this.props.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+
+            this.setState({
+                document: doc,
+                hasWorkflow: this.props.hasWorkflow
+            });
+
+            dataservice.GetRowById("getLogsDrawingsCyclesForEdit?id=" + this.props.document.id).then(result => {
+                let data = { items: result };
+                ///this.props.actions.ExportingData(data);
+                this.setState({
+                    drawingCycle: { ...result }
+                });
+                this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            });
+            this.checkDocumentIsView();
+        }
+    }
+
+    checkDocumentIsView() {
+        if (isModification === true) {
+            if (this.props.changeStatus === true) {
+                if (!(Config.IsAllow(3517))) {
+                    this.setState({ isViewMode: true });
+                }
+                if (Config.getUserTypeIsAdmin() === true) {
+                    this.setState({ isViewMode: false });
+                } else {
+                    if (this.state.isApproveMode != true && Config.IsAllow(3517)) {
+                        if (this.props.hasWorkflow == false && Config.IsAllow(3517)) {
+                            if (this.props.document.status !== false && Config.IsAllow(3517)) {
+                                this.setState({ isViewMode: false });
+                            } else {
+                                this.setState({ isViewMode: true });
+                            }
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
+                    }
+                }
+            }
+            else {
+                this.setState({ isViewMode: false });
+            }
+        } else {
+            if (this.props.changeStatus === true) {
+                if (!(Config.IsAllow(3134))) {
+                    this.setState({ isViewMode: true });
+                }
+                if (this.state.isApproveMode != true && Config.IsAllow(3134)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(3134)) {
+                        if (this.props.document.status !== false && Config.IsAllow(3134)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                }
+            }
+            else {
+                this.setState({ isViewMode: false });
+            }
+        }
+    }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
