@@ -265,9 +265,12 @@ class SubmittalAddEdit extends Component {
 
       });
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
+    
+     
         this.setState({
           itemData: data
         });
+       // this.props.actions.ExportingData({ items: data });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     } else {
@@ -1544,7 +1547,7 @@ class SubmittalAddEdit extends Component {
       },
       {
         Header: Resources["approvedDate"][currentLanguage],
-        accessor: "approvedDate",
+        accessor: "docCloseDate",
         width: 200,
         sortabel: true
       }

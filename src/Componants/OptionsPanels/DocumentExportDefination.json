@@ -2262,7 +2262,9 @@
             "docDate",
             "statusName",
             "flowCompanyName",
-            "flowContactName"
+            "flowContactName",
+             "docCloseDate"
+            
         ],
         "friendlyNames": [
             "numberAbb",
@@ -2270,8 +2272,11 @@
             "docDate",
             "status",
             "CompanyName",
-            "ContactName"
+            "ContactName",
+            "approvedDate"
+          
         ]
+
     },
     "72": {
         "fields": [
