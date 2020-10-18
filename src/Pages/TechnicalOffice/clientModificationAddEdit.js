@@ -28,7 +28,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
 
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
 
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
@@ -541,7 +541,7 @@ class clientModificationAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
-                                            onSubmit={(values) => {
+                                            onSubmit={ values => {
                                                 if (this.props.showModal) { return; }
 
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
@@ -553,27 +553,24 @@ class clientModificationAddEdit extends Component {
                                                 }
                                             }}  >
 
-                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
+                                            {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
                                                     <div className="proForm first-proform">
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.subject[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                                <input name='subject' className="form-control fsadfsadsa"
-                                                                    id="subject"
-                                                                    placeholder={Resources.subject[currentLanguage]}
-                                                                    autoComplete='off'
-                                                                    value={this.state.document.subject}
-                                                                    onBlur={(e) => {
-                                                                        handleBlur(e)
-                                                                        handleChange(e)
-                                                                    }}
-                                                                    onChange={(e) => this.handleChange(e, 'subject')} />
-                                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                     <div className="linebylineInput valid-input">
+                                                        <label className="control-label">
+                                                        {Resources.subject[currentLanguage]}
+                                                        </label>
+                                                        <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
+                                                        <input id="subject" name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
+                                                            autoComplete="off"
+                                                            value={this.state.document.subject || ''}
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            onChange={e => this.handleChange(e, "subject")} />
+                                                        {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
 
-                                                            </div>
+                                                          </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
