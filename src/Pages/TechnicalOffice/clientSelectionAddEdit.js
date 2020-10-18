@@ -26,9 +26,9 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
 
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
 
-    refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
+    refDoc: Yup.string().required(Resources['refernceRequired'][currentLanguage]).nullable(true),
 
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
@@ -561,7 +561,7 @@ class clientSelectionAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            enableReinitialize={this.props.changeStatus}
+                                            enableReinitialize={true}//this.props.changeStatus
                                             onSubmit={(values) => {
 
                                                 if (this.props.showModal) { return; }

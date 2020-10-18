@@ -28,20 +28,24 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
 
-    subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
+    subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]).nullable(true),
 
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
     toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage]),
+        .required(Resources['toContactRequired'][currentLanguage]).nullable(true),
 
     approvalStatusId: Yup.string()
-        .required(Resources['approvalStatusSelection'][currentLanguage]),
+        .required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
 
     total: Yup.string()
         .required(Resources['total'][currentLanguage])
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]).nullable(true),
+   //
+    fromCompanyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]).nullable(true),
+    toCompanyId: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]).nullable(true),
+    refDoc: Yup.string().required(Resources['refernceRequired'][currentLanguage]).nullable(true),
 
 })
 
@@ -540,7 +544,7 @@ class clientModificationAddEdit extends Component {
                                         <Formik
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            enableReinitialize={this.props.changeStatus}
+                                            enableReinitialize={true}
                                             onSubmit={ values => {
                                                 if (this.props.showModal) { return; }
 
@@ -568,7 +572,7 @@ class clientModificationAddEdit extends Component {
                                                             value={this.state.document.subject || ''}
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             onChange={e => this.handleChange(e, "subject")} />
-                                                        {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                           {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
 
                                                           </div>
                                                         </div>
@@ -611,7 +615,8 @@ class clientModificationAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
+                                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? " has-error" : "ui input inputDev")} >
+                                                         
                                                                 <input type="text" className="form-control"
                                                                     id="refDoc"
                                                                     value={this.state.document.refDoc}
@@ -622,7 +627,7 @@ class clientModificationAddEdit extends Component {
                                                                         handleBlur(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'refDoc')} />
-                                                                {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
+                                                                   {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
 
                                                             </div>
                                                         </div>
@@ -647,7 +652,10 @@ class clientModificationAddEdit extends Component {
                                                                         classDrop="companyName1"
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" />
+                                                                        id="fromCompanyId"
+                                                                        index="fromCompanyId"
+                                                                         />
+
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -661,7 +669,7 @@ class clientModificationAddEdit extends Component {
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
                                                                         isClear={false}
-                                                                        index="clientSelection-fromContactId"
+                                                                        index="fromContactId"//clientSelection-
                                                                         name="fromContactId"
                                                                         id="fromContactId"
                                                                         classDrop="contactName1"
@@ -689,6 +697,7 @@ class clientModificationAddEdit extends Component {
                                                                         name="toCompanyId"
                                                                         styles={CompanyDropdown}
                                                                         classDrop="companyName1"
+                                                                        index="toCompanyId"
                                                                     />
                                                                 </div>
                                                                 <div className="super_company">
@@ -703,7 +712,7 @@ class clientModificationAddEdit extends Component {
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
                                                                         isClear={false}
-                                                                        index="clientSelection-toContactId"
+                                                                        index="toContactId"//clientSelection-
                                                                         name="toContactId"
                                                                         id="toContactId"
                                                                         classDrop="contactName1"
@@ -744,7 +753,7 @@ class clientModificationAddEdit extends Component {
                                                                 error={errors.approvalStatusId}
                                                                 touched={touched.approvalStatusId}
                                                                 isClear={false}
-                                                                index="clientSelection-approvalStatusId"
+                                                                index="approvalStatusId"// clientSelection-
                                                                 name="approvalStatusId"
                                                                 id="approvalStatusId" />
                                                         </div>
