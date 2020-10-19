@@ -1397,6 +1397,10 @@
         "en": "Title Required",
         "ar": "برجاء ادخال اللقب"
     },
+    "refernceRequired": {
+        "en": "Please Enter Reference",
+        "ar": "برجاء ادخال المرجع"
+    },
     "ToContact": {
         "en": "Attention",
         "ar": "مرسل الى"
