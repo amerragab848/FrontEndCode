@@ -9,6 +9,8 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from '../../api';
 import config from "../../Services/Config";
+//import { Form } from "semantic-ui-react";
+import { Formik, Form } from "formik";
 
 
 
@@ -171,7 +173,18 @@ class MaterialReleased extends Component {
                 width: 16,
                 sortable: true,
                 type: "number"
-            }
+            },
+            {
+
+
+                field: "materialType",
+                title: Resources["materialType"][currentLanguage],
+                groupable: true,
+
+                width: 16,
+                sortable: true,
+                type: "text"
+            },
         ]
 
         this.groups = [];
@@ -206,6 +219,8 @@ class MaterialReleased extends Component {
             filterMode: false,
             api: 'GetMaterialReleaseTicketsByContractId?',
             pageTitle:  Resources['contractsItems'][currentLanguage],
+            totalvalues:this.props.totalVals,
+            totalRturnedvalues:this.props.totalRturnedvals
         }
     }
     GetNextData = () => {
@@ -230,11 +245,36 @@ class MaterialReleased extends Component {
              this.state.totalRows = this.state.totalRows+ result.length;
 
              }
+             const totalList = result.map(item=>{
+                if(item.materialType=="MaterialReleasedItem")
+                return item.total;
+                else{
+                  return 0;
+                }
+              });
+        
+              const totalRteurnedList = result.map(item=>{
+                if(item.materialType=="MaterialReleasedItemRetrurned")
+                return item.total;
+                else{
+                  return 0;
+                }
+              });
+        
+              const totalvalues = totalList.reduce(
+              (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+              0);
+        
+              const totalRturnedvalues = totalRteurnedList.reduce(
+                (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+                0);
             this.setState({
                 rows: newRows,
-               
+                totalvalues:totalvalues,
+                totalRturnedvalues:totalRturnedvalues,
                 isLoading: false,
-                gridLoading:false
+                gridLoading:false,
+
             });
         }).catch(ex => {
             let oldRows = this.state.rows;
@@ -261,12 +301,38 @@ class MaterialReleased extends Component {
         Api.get(url).then(result => {
             let oldRows = result; //[];// this.state.rows;
             const newRows = oldRows;//[...oldRows, ...result];
+            const totalList = result.map(item=>{
+                if(item.materialType=="MaterialReleasedItem")
+                return item.total;
+                else{
+                  return 0;
+                }
+              });
+        
+              const totalRteurnedList = result.map(item=>{
+                if(item.materialType=="MaterialReleasedItemRetrurned")
+                return item.total;
+                else{
+                  return 0;
+                }
+              });
+        
+              const totalvalues = totalList.reduce(
+              (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+              0);
+        
+              const totalRturnedvalues = totalRteurnedList.reduce(
+                (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+                0);
 
             this.setState({
                 rows: newRows,
                 totalRows: result.length,
+                totalvalues:totalvalues,
+                totalRturnedvalues:totalRturnedvalues,
                 isLoading: false,
-                gridLoading:false
+                gridLoading:false,
+               
             });
         }).catch(ex => {
             let oldRows = this.state.rows;
@@ -311,7 +377,9 @@ class MaterialReleased extends Component {
         if (this.props.items !== prevProps.items) {
             this.setState({
                  rows: this.props.items,
-                  gridLoading: false,
+                 totalvalues:this.props.totalVals,
+                 totalRturnedvalues:this.props.totalRturnedvals,
+                 gridLoading: false,
                  totalRows: this.props.totalRows,
              });
         }
@@ -413,8 +481,8 @@ class MaterialReleased extends Component {
             { field: 'locationName', title: Resources['location'][currentLanguage] },
             { field: 'remarks', title: Resources['remarks'][currentLanguage] },
 
-            { field: 'title', title: Resources['total'][currentLanguage] },
-            { field: 'total', title: Resources['deductions'][currentLanguage] },
+            { field: 'title', title: Resources['title'][currentLanguage] },
+            { field: 'total', title: Resources['total'][currentLanguage] },
         ]
         const btnExport = this.state.gridLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={ExportColumns} fileName={this.state.pageTitle} /> : null;
 
@@ -437,6 +505,10 @@ class MaterialReleased extends Component {
         return (
 
             <Fragment >
+               
+
+                             
+
                 <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['contractsItems'][currentLanguage]}</h3>
@@ -481,8 +553,39 @@ class MaterialReleased extends Component {
                 </div>
                 {this.state.gridLoading === false ? (
 
-                    <div className="grid-container">
+                    <div >
+                        
+                 <Form className="customProform"    noValidate="novalidate">
+                    <div className="proForm datepickerContainer  ">
+
+                        <div className="linebylineInput valid-input">
+                        <label className="control-label">{Resources.totalRelease[currentLanguage]}</label>
+                        <div className={"inputDev ui input"} >
+                            <input name='total' className="form-control fsadfsadsa" id="total"
+                                
+                                autoComplete='off' 
+                                value={this.state.totalvalues}
+                                readOnly
+                                /> 
+                        </div>
+                    </div>
+
+                        <div className="linebylineInput valid-input">
+                        <label className="control-label">{Resources.totalRturned[currentLanguage]}</label>
+                        <div className={"inputDev ui input"} >
+                            <input name='total' className="form-control fsadfsadsa" id="total"
+                                
+                                autoComplete='off' 
+                                value={this.state.totalRturnedvalues}
+                                readOnly
+                                /> 
+                        </div>
+                        </div>
+                     </div>
+                     </Form>
+                    <div  className="grid-container">
                         {dataGrid}
+                   </div>
                     </div>
                 ) : <LoadingSection />}
 

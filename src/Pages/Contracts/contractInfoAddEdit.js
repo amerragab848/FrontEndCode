@@ -142,6 +142,8 @@ class ContractInfoAddEdit extends Component {
       contacts: [],
       voItems: [],
       materialItems:[],
+      totalVal:0,
+      totalRturnedVal:0,
       marPageNumber:0,
       materialReleaseItems: [],
       materialReleaseItemsLength:0,
@@ -758,10 +760,37 @@ getMaterialRelease(){
         maItems = result;
        this.state.marPageNumber= this.state.marPageNumber+1;
       }
+      const totalList = result.map(item=>{
+        if(item.materialType=="MaterialReleasedItem")
+        return item.total;
+        else{
+          return 0;
+        }
+      });
+
+      const totalRteurnedList = result.map(item=>{
+        if(item.materialType=="MaterialReleasedItemRetrurned")
+        return item.total;
+        else{
+          return 0;
+        }
+      });
+
+      const totalvalues = totalList.reduce(
+      (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+      0);
+
+      const totalRturnedvalues = totalRteurnedList.reduce(
+        (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+        0);
+
       this.setState({ 
         materialItems: maItems,
          materialReleaseItemsLength: result.length, 
-         isLoading: false 
+         totalVal:totalvalues,
+         totalRturnedVal:totalRturnedvalues,
+         isLoading: false ,
+       
         });
 
     }).catch(() => { this.setState({ isLoading: false }) })
@@ -1769,7 +1798,7 @@ getMaterialRelease(){
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId=' + this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId=" + docId} type="Contract" docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
-          {this.state.activeTab == "matReleased" ? (<MaterialReleased contractId={this.state.docId} items={this.state.materialItems}  pageNumberinit={this.state.marPageNumber} totalRows={this.state.materialReleaseItemsLength} />) : null}
+          {this.state.activeTab == "matReleased" ? (<MaterialReleased contractId={this.state.docId} items={this.state.materialItems} totalVals={this.state.totalVal} totalRturnedvals={this.state.totalRturnedVal}  pageNumberinit={this.state.marPageNumber} totalRows={this.state.materialReleaseItemsLength} />) : null}
           {this.state.activeTab == "voi" ? (<Fragment>{voiContent}</Fragment>) : null}
 
         </Fragment>

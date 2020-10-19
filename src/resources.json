@@ -1309,6 +1309,10 @@
         "en": "Material Transfer",
         "ar": "تحويل خامات"
     },
+    "materialType": {
+        "en": "Material Type",
+        "ar": "نوع الخامات"
+    },
     "usePermissionsOnLogs": {
         "en": "User Permission on Logs Created by Others",
         "ar": "صلاحيه رؤيه سجلات المستخدمين الاخرين"
@@ -1396,6 +1400,10 @@
     "empTitleRequired": {
         "en": "Title Required",
         "ar": "برجاء ادخال اللقب"
+    },
+    "refernceRequired": {
+        "en": "Please Enter Reference",
+        "ar": "برجاء ادخال المرجع"
     },
     "ToContact": {
         "en": "Attention",
@@ -4808,6 +4816,10 @@
     "returnedQuantity": {
         "en": "Returned Quantity",
         "ar": "الكمية المرتجعة"
+    },
+    "totalRturned": {
+        "en": "Total Material Returned",
+        "ar": "المرتجعه الكليه"
     },
     "released": {
         "en": "Released ",
