@@ -4,7 +4,6 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import { withRouter } from "react-router-dom";
-import Config from "../../Services/Config.js";
 import conf from "../../Services/Config";
 let Autodesk = null;
 
@@ -30,12 +29,6 @@ let fileName = "";
 let id = 0;
 let projectId = 0;
 
-let oDocument = null,
-    oViewer = null;
-let oViews3D = null,
-    oViews2D = null;
-let urn = null;
-
 class AutoDeskViewer extends Component {
     constructor(props) {
         super(props);
@@ -43,7 +36,7 @@ class AutoDeskViewer extends Component {
         const query = new URLSearchParams(this.props.location.search);
 
         let index = 0;
-       
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
@@ -92,7 +85,7 @@ class AutoDeskViewer extends Component {
             viewer: null,
             loadingPer: false
         };
-        
+
     }
 
     getForgeToken() {
@@ -137,10 +130,14 @@ class AutoDeskViewer extends Component {
             script.onload = function () {
                 resolve();
                 console.log("script has loaded");
+
             };
             script.onerror = function () {
                 resolve();
                 console.log("[Error] script not loaded");
+            };
+            script.onerror = function () {
+                resolve();
             };
             script.src = url;
 
@@ -150,28 +147,24 @@ class AutoDeskViewer extends Component {
     }
 
     async componentDidMount() {
-        // await this.fetchStyle(
-        //     "https://developer.api.autodesk.com/modelderivative/v2/viewers/6"
-        // );
+        await this.fetchStyle("https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css");
 
-        await this.fetchStyle(
-            "https://developer.api.autodesk.com/derivativeservice/v2/viewers/7.*/style.min.css"
-        );
-
-        await this.fetchScript(
-            "https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"
-        );
-
-        // await this.fetchScript(
-        //     "https://developer.api.autodesk.com/derivativeservice/v2/viewers/viewer3D.js?v=v6.2"
-        // );
+        await this.fetchScript("https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js");
 
         Autodesk = window.Autodesk;
 
         var PercentageID = document.getElementById("precent");
 
         this.animateValue(PercentageID, 0, 98);
+        this.drawModel();
 
+        console.log('finish componentDidMount.... ');
+
+    }
+
+    drawModel = e => {
+
+        console.log('starting drawModel.... ');
         let obj = {
             fileName: this.state.fileName,
             attachFile: decodeURIComponent(this.state.attachFile),
@@ -182,8 +175,7 @@ class AutoDeskViewer extends Component {
             this.showModel(data);
         });
 
-        Api.get("GetAllMarkUps?docId=" + this.state.docId + "&docType=" + this.state.docType + "&docFileId=" + this.state.docFileId)
-        .then(markups => {
+        Api.get("GetAllMarkUps?docId=" + this.state.docId + "&docType=" + this.state.docType + "&docFileId=" + this.state.docFileId).then(markups => {
             this.setState({ markups });
             let markupsList = [];
             markups.forEach((item, index) => {
@@ -195,6 +187,8 @@ class AutoDeskViewer extends Component {
         this.setState({
             selectedMode: { label: "View Markups", value: 2 }
         });
+
+        console.log('finish drawModel.... ');
     }
 
     animateValue(id, start, end) {
@@ -204,7 +198,7 @@ class AutoDeskViewer extends Component {
 
         var timer = setInterval(function () {
             current = current + 1;
-         obj.innerHTML = current + "%";
+            obj.innerHTML = current + "%";
             if (current === end) {
                 clearInterval(timer);
             }
@@ -233,36 +227,18 @@ class AutoDeskViewer extends Component {
                 viewEditMarkUps: false
             });
         }
-
-        // this.setState({
-        //     showCheckBox: !this.state.showCheckBox,
-        //     showAll: !this.state.showAll,
-        //     isViewEdit: !this.state.isViewEdit,
-        //     viewEditMarkUps: !this.state.viewEditMarkUps,
-        // });
-
-        // if (this.state.showAll == true) {
-        //     this.setState({ showAll: false, viewEditMarkUps: true });
-        // } else {
-        //     this.setState({ viewEditMarkUps: false, showAll: true });
-        //     this.state.markups.forEach(item => {
-        //         this.restoreState(item.svg, item.viewerState);
-        //     });
-        // }
     };
 
     restoreState = (svg, name) => {
         let markup = svg;
         let viewer = this.state.viewer;
-        viewer
-            .loadExtension("Autodesk.Viewing.MarkupsCore")
-            .then(markupsExt => {
-                let markupCore = markupsExt;
-                // load the markups
-                markupCore.show();
-                markupCore.loadMarkups(markup, name);
-                this.setState({ markupCore });
-            });
+        viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+            let markupCore = markupsExt;
+            // load the markups
+            markupCore.show();
+            markupCore.loadMarkups(markup, name);
+            this.setState({ markupCore });
+        });
     };
 
     modeIdToggle = value => {
@@ -303,60 +279,44 @@ class AutoDeskViewer extends Component {
     editingMarkUps = () => {
         if (this.state.markups.length > 0) {
             this.state.markups.forEach(item => {
-                this.state.viewer
-                    .loadExtension("Autodesk.Viewing.MarkupsCore")
-                    .then(markupsExt => {
-                        let markupCore = markupsExt;
-                        // load the markups
-                        markupCore.show();
-                        markupCore.loadMarkups(item.svg, item.viewerState);
-                        markupCore.enterEditMode();
-                        this.setState({ markupCore });
-                    });
+                this.state.viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+                    let markupCore = markupsExt;
+                    // load the markups
+                    markupCore.show();
+                    markupCore.loadMarkups(item.svg, item.viewerState);
+                    markupCore.enterEditMode();
+                    this.setState({ markupCore });
+                });
             });
         } else {
             let viewer = this.state.viewer;
-            viewer
-                .loadExtension("Autodesk.Viewing.MarkupsCore")
-                .then(markupsExt => {
-                    this.setState({ markupCore: markupsExt, viewer });
-                });
+            viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+                this.setState({ markupCore: markupsExt, viewer });
+            });
         }
     };
 
     showModel = urn => {
-     
+
         var documentId = "urn:" + urn;
-      let classobj=this;
-        //console.log("classobj...",classobj)
-        // var options = {
-        //     env: "AutodeskProduction",
-        //     getAccessToken: this.getAccessToken,
-        //     refreshToken: this.getAccessToken,
-        //     useADP: true
-        // };
-    this.getAccessTokenNew(function (data) {
-           // accessToken = "Bearer " + data.access_token
+        let classobj = this;
+
+        this.getAccessTokenNew(function (data) {
             var options = {
                 env: 'AutodeskProduction',
-             
-                getAccessToken: function (onTokenReady) { 
+                getAccessToken: function (onTokenReady) {
                     var token = data.access_token;
-                    var timeInSeconds = 600; 
+                    var timeInSeconds = 600;
                     onTokenReady(token, timeInSeconds);
                 },
-              
                 api: 'derivativeV2'   //derivativeV2_EU
             };
-            // Autodesk.Viewing.Initializer(options, function onInitialized() {
-            //     Autodesk.Viewing.Document.load(documentId,onDocumentLoadSuccess,this.onDocumentLoadFailure);
-            // });
 
             Autodesk.Viewing.Initializer(options, () => {
-                Autodesk.Viewing.Document.load=()=>(
-                    documentId,
-                    doc => {
-                        // A document contains references to 3D and 2D geometries.
+                return new Promise((resolve, reject) => {
+
+                    Autodesk.Viewing.Document.load(documentId, (doc) => {
+                        resolve(doc)
                         var geometries = doc.getRoot().search({ type: "geometry" });
                         if (geometries.length === 0) {
                             console.error("Document contains no geometries.");
@@ -366,126 +326,143 @@ class AutoDeskViewer extends Component {
                         var initGeom = geometries[0];
                         // Create Viewer instance
                         var viewerDiv = document.getElementById("forgeViewer");
-                        var config = {
-                            extensions: initGeom.extensions() || []
-                        };
-                        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
-                            viewerDiv,
-                            config
-                        );
-                        var svfUrl = doc.getViewablePath(initGeom);
+
+                        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+
                         var modelOptions = {
-                            sharedPropertyDbPath: doc.getPropertyDbPath()
+                            sharedPropertyDbPath: doc.getFullPath(doc.getRoot().findPropertyDbPath())
                         };
-                        viewer.start(
-                           
-                            svfUrl,
-                            modelOptions,
+
+                        var svfUrl = doc.getViewablePath(initGeom);
+
+                        viewer.start(svfUrl, modelOptions,
                             () => {
                                 debugger;
                                 this.state.markups.forEach(item => {
                                     this.restoreState(item.svg, item.viewerState);
                                 });
                             },
-                           console.log("....Loading fail model autoDesk"),
+                            console.log("....Loading fail model autoDesk"),
 
                         );
                         classobj.setState({ viewer, loaded: true });
-                    },
-                    function (errorCode, errorMessage) {
-                        console.log(
-                            "....Loading fail model autoDesk",
-                            errorCode,
-                            errorMessage
-                        );
-                    }
-                  
+                    }, (errCode) => {
 
-                );
-                classobj.setState({ loadingPer: true });
+                        reject(errCode);
+                        console.error('onLoadModelError() - errorCode:' + errCode);
+                    })
+                })
+                // Autodesk.Viewing.Document.load(documentId, this.onDocumentLoadSuccess(), this.onDocumentLoadFailure());
+                // Autodesk.Viewing.Document.load = () => (
+                //     documentId,
+                //     doc => {
+                //         // A document contains references to 3D and 2D geometries.
+                //         var geometries = doc.getRoot().search({ type: "geometry" });
+                //         if (geometries.length === 0) {
+                //             console.error("Document contains no geometries.");
+                //             return;
+                //         }
+                //         // Choose any of the avialable geometries
+                //         var initGeom = geometries[0];
+                //         // Create Viewer instance
+                //         var viewerDiv = document.getElementById("forgeViewer");
+
+                //         var viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+
+                //         var modelOptions = {
+                //             sharedPropertyDbPath: doc.getFullPath(doc.getRoot().findPropertyDbPath())
+                //         };
+
+                //         var svfUrl = doc.getViewablePath(initGeom);
+
+                //         viewer.start(svfUrl, modelOptions,
+                //             () => {
+                //                 debugger;
+                //                 this.state.markups.forEach(item => {
+                //                     this.restoreState(item.svg, item.viewerState);
+                //                 });
+                //             },
+                //             console.log("....Loading fail model autoDesk"),
+
+                //         );
+                //         classobj.setState({ viewer, loaded: true });
+                //     },
+                //     function (errorCode, errorMessage) {
+                //         console.log("....Loading fail model autoDesk", errorCode, errorMessage);
+                //     } 
+                // );
+                // classobj.setState({ loadingPer: true });
 
             });
-        }, function (data) { }); 
-       
-     
+
+        }, function (data) { });
+
+
     };
-     onDocumentLoadSuccess=(doc)=> {
+    onDocumentLoadSuccess = (doc) => {
 
         var geometries = doc.getRoot().search({ type: "geometry" });
-                        if (geometries.length === 0) {
-                            console.error("Document contains no geometries.");
-                            return;
-                        }
-                        // Choose any of the avialable geometries
-                        var initGeom = geometries[0];
-                        // Create Viewer instance
-                        var viewerDiv = document.getElementById("forgeViewer");
-                        var config = {
-                            extensions: initGeom.extensions() || []
-                        };
-                        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
-                            viewerDiv,
-                            config
-                        );
-                        var svfUrl = doc.getViewablePath(initGeom);
-                        var modelOptions = {
-                            sharedPropertyDbPath: doc.getPropertyDbPath()
-                        };
-                        viewer.start(
-                            svfUrl,
-                            modelOptions,
-                            () => {
-                                this.state.markups.forEach(item => {
-                                    this.restoreState(item.svg, item.viewerState);
-                                });
-                            },
-                            console.log("....Loading fail model autoDesk")
-                        );
-                        this.setState({ viewer, loaded: true });
+        if (geometries.length === 0) {
+            console.error("Document contains no geometries.");
+            return;
+        }
+        // Choose any of the avialable geometries
+        var initGeom = geometries[0];
+        // Create Viewer instance
+        var viewerDiv = document.getElementById("forgeViewer");
+
+        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+
+        var modelOptions = {
+            sharedPropertyDbPath: doc.getFullPath(doc.getRoot().findPropertyDbPath())
+        };
+
+        var svfUrl = doc.getViewablePath(initGeom);
+
+        viewer.start(svfUrl, modelOptions,
+            () => {
+                this.state.markups.forEach(item => {
+                    this.restoreState(item.svg, item.viewerState);
+                });
+            }, this.onLoadModelError);
+        this.setState({ viewer, loaded: true });
     }
 
- 
-     onDocumentLoadFailure=(errorCode,errorMessage) =>{
-    
-                        console.log(
-                            "....Loading fail model autoDesk",
-                            errorCode,
-                            errorMessage
-                        );
-                        this.setState({ loadingPer: true });
-                 
-    }
+    onLoadModelError(viewerErrorCode) {
+        console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
+    };
 
-    getAccessTokenNew = (successCallback,errorCallback) => {
+    onDocumentLoadFailure = (errorCode, errorMessage) => {
+
+        console.log(
+            "....Loading fail model autoDesk",
+            errorCode,
+            errorMessage
+        );
+        this.setState({ loadingPer: true });
+
+    };
+
+    getAccessTokenNew = (successCallback, errorCallback) => {
         var xmlHttp = null;
-        let c_secret=conf.getPublicConfiguartion().client_secret;
-        let c_id=conf.getPublicConfiguartion().client_id;
+        let c_secret = conf.getPublicConfiguartion().client_secret;
+        let c_id = conf.getPublicConfiguartion().client_id;
 
         xmlHttp = new XMLHttpRequest();
-       // xmlHttp.open("GET", Config.getPublicConfiguartion().static + "/api/Procoor/getAccessToken", false /*forge viewer requires SYNC*/);
         xmlHttp.open('POST', "https://developer.api.autodesk.com/authentication/v1/authenticate", true);
-       // xmlHttp.send(null);
-        //xmlHttp.send( Config.getPublicConfiguartion().static + "/api/Procoor/getAccessToken");
-        
         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-
-
         xmlHttp.onload = function (e) {
-            //let token = JSON.parse(this.response).access_token;
-            //return JSON.parse(this.response);
             if (this.status === 200) {
                 successCallback(JSON.parse(this.response));
             } else {
                 if (this.status === 400) {
                     errorCallback({ message: this.responseText });
-                } else { 
+                } else {
                     errorCallback({ message: this.statusText });
                 }
             }
         };
-      xmlHttp.send("grant_type=client_credentials&scope=data:read&client_secret=" + c_secret + "&client_id=" + c_id);
-       // return xmlHttp.responseText;
+        xmlHttp.send("grant_type=client_credentials&scope=data:read&client_secret=" + c_secret + "&client_id=" + c_id);
     };
 
     undo = () => {
@@ -508,9 +485,7 @@ class AutoDeskViewer extends Component {
         if (this.state.markupCore) {
             let viewer = this.state.viewer;
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
-            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(
-                this.state.markupCore
-            );
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markupCore);
             extension.enterEditMode();
             extension.changeEditMode(mode);
         }
@@ -600,12 +575,7 @@ class AutoDeskViewer extends Component {
             // current view state (zoom, direction, sections)
             let markUpObj = markUpsModel;
             markUpObj.svg = markupsPersist;
-            markUpObj.viewerState =
-                this.state.contactName +
-                "-" +
-                moment().format("DD/MM/YYYY") +
-                "-" +
-                new Date().getTime();
+            markUpObj.viewerState = this.state.contactName + "-" + moment().format("DD/MM/YYYY") + "-" + new Date().getTime();
             markUpObj.docType = this.state.docType;
             markUpObj.docId = this.state.docId;
             markUpObj.docFileId = this.state.docFileId;
@@ -642,217 +612,217 @@ class AutoDeskViewer extends Component {
             <div className="mainContainer main__withouttabs white-bg">
                 {
                     this.state.loaded == true ?
-                 (
-                    //  edited
-                    <Fragment>
-                        <div className="autoDisk__dropdown">
-                            <div className="autoDisk__dropdown--comp">
-                                <Dropdown
-                                    title="mode"
-                                    data={listOfOptions}
-                                    selectedValue={this.state.selectedMode}
-                                    handleChange={event => {
-                                        this.modeIdToggle(event.value);
-                                        this.setState({ selectedMode: event });
-                                    }}
-                                    index="mode"
-                                />
-                            </div>
+                        (
+                            //  edited
+                            <Fragment>
+                                <div className="autoDisk__dropdown">
+                                    <div className="autoDisk__dropdown--comp">
+                                        <Dropdown
+                                            title="mode"
+                                            data={listOfOptions}
+                                            selectedValue={this.state.selectedMode}
+                                            handleChange={event => {
+                                                this.modeIdToggle(event.value);
+                                                this.setState({ selectedMode: event });
+                                            }}
+                                            index="mode"
+                                        />
+                                    </div>
 
-                            <div className="autoDisk__dropdown--comp">
-                                <Dropdown
-                                    title="markups"
-                                    data={this.state.markupsList}
-                                    selectedValue={this.state.selectedMarkup}
-                                    handleChange={event =>
-                                        this.changeMarkup(event.value)
-                                    }
-                                    index="markups"
-                                />
-                            </div>
+                                    <div className="autoDisk__dropdown--comp">
+                                        <Dropdown
+                                            title="markups"
+                                            data={this.state.markupsList}
+                                            selectedValue={this.state.selectedMarkup}
+                                            handleChange={event =>
+                                                this.changeMarkup(event.value)
+                                            }
+                                            index="markups"
+                                        />
+                                    </div>
 
-                            <div
-                                style={{ marginLeft: "10px" }}
-                                className={
-                                    "ui checkbox checkBoxGray300 " +
-                                    (this.state.showAll == true
-                                        ? "checked"
-                                        : "")
-                                }
-                                onClick={this.showAllToggle}>
-                                <input
-                                    name="CheckBox"
-                                    type="checkbox"
-                                    id="allPermissionInput"
-                                    checked={
-                                        this.state.showAll == true
-                                            ? "checked"
-                                            : ""
-                                    }
-                                />
-                                <label>Show</label>
-                            </div>
-                        </div>
-                        {this.state.isViewEdit == true ? (
-                            <div
-                                id="markup-panel"
-                                className="docking-panel"
-                                style={{
-                                    resize: "none",
-                                    border: "1px solid rgba(0, 0, 0, 0.2)",
-                                    backgroundColor: "transparent",
-                                    top: "20%",
-                                    width: "15%",
-                                    height: "27%",
-                                    maxHeight: "513px",
-                                    maxWidth: "881.406px"
-                                }}>
-                                <section
-                                    className="docking-panel-title"
-                                    style={{
-                                        color: "#0a131c",
-                                        backgroundColor: "transparent",
-                                        borderBottom:
-                                            "solid 1px rgba(0, 0, 0, 0.2)"
-                                    }}>
-                                    Markup Editor
+                                    <div
+                                        style={{ marginLeft: "10px" }}
+                                        className={
+                                            "ui checkbox checkBoxGray300 " +
+                                            (this.state.showAll == true
+                                                ? "checked"
+                                                : "")
+                                        }
+                                        onClick={this.showAllToggle}>
+                                        <input
+                                            name="CheckBox"
+                                            type="checkbox"
+                                            id="allPermissionInput"
+                                            checked={
+                                                this.state.showAll == true
+                                                    ? "checked"
+                                                    : ""
+                                            }
+                                        />
+                                        <label>Show</label>
+                                    </div>
+                                </div>
+                                {this.state.isViewEdit == true ? (
+                                    <div
+                                        id="markup-panel"
+                                        className="docking-panel"
+                                        style={{
+                                            resize: "none",
+                                            border: "1px solid rgba(0, 0, 0, 0.2)",
+                                            backgroundColor: "transparent",
+                                            top: "20%",
+                                            width: "15%",
+                                            height: "27%",
+                                            maxHeight: "513px",
+                                            maxWidth: "881.406px"
+                                        }}>
+                                        <section
+                                            className="docking-panel-title"
+                                            style={{
+                                                color: "#0a131c",
+                                                backgroundColor: "transparent",
+                                                borderBottom:
+                                                    "solid 1px rgba(0, 0, 0, 0.2)"
+                                            }}>
+                                            Markup Editor
                                 </section>
-                                <section className="docking-panel-close" />
-                                <div className="docking-panel-footer" />
-                                <div
-                                    className="docking-panel-scroll docking-panel-container-solid-color-a right"
-                                    id="markup-panel-scroll-container">
-                                    <div className="markups-panel-content">
-                                        <div className="edit-tools">
-                                            <div
-                                                className="markup-actions"
-                                                style={{
-                                                    marginTop: "7%",
-                                                    textAlign: "center"
-                                                }}>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    dataToggle="tooltip"
-                                                    title="Undo"
-                                                    onClick={this.undo}>
-                                                    Undo
-                                                </button>
-                                                <button
-                                                    className="primaryBtn-2 btnbtn table-btn-tooltip btn-xs btn-default"
-                                                    dataToggle="tooltip"
-                                                    title="Redo"
-                                                    onClick={this.redo}>
-                                                    Redo
-                                                </button>
-                                            </div>
-                                            <div
-                                                className="markup-buttons"
-                                                style={{
-                                                    marginTop: "7%",
-                                                    textAlign: "center"
-                                                }}>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Arrow"
-                                                    onClick={this.addArrow}>
-                                                    <i
+                                        <section className="docking-panel-close" />
+                                        <div className="docking-panel-footer" />
+                                        <div
+                                            className="docking-panel-scroll docking-panel-container-solid-color-a right"
+                                            id="markup-panel-scroll-container">
+                                            <div className="markups-panel-content">
+                                                <div className="edit-tools">
+                                                    <div
+                                                        className="markup-actions"
                                                         style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-long-arrow-up"
-                                                    />
+                                                            marginTop: "7%",
+                                                            textAlign: "center"
+                                                        }}>
+                                                        <button
+                                                            className="primaryBtn-1 btn"
+                                                            dataToggle="tooltip"
+                                                            title="Undo"
+                                                            onClick={this.undo}>
+                                                            Undo
                                                 </button>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    dataToggle="tooltip"
-                                                    title="Comment"
-                                                    onClick={this.addComment}>
-                                                    <i
+                                                        <button
+                                                            className="primaryBtn-2 btnbtn table-btn-tooltip btn-xs btn-default"
+                                                            dataToggle="tooltip"
+                                                            title="Redo"
+                                                            onClick={this.redo}>
+                                                            Redo
+                                                </button>
+                                                    </div>
+                                                    <div
+                                                        className="markup-buttons"
                                                         style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-comments"
-                                                    />
-                                                </button>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Circle"
-                                                    onClick={this.addCircle}>
-                                                    <i
+                                                            marginTop: "7%",
+                                                            textAlign: "center"
+                                                        }}>
+                                                        <button
+                                                            className="btn primaryBtn-2"
+                                                            dataToggle="tooltip"
+                                                            title="Arrow"
+                                                            onClick={this.addArrow}>
+                                                            <i
+                                                                style={{
+                                                                    fontSize: "1.6em"
+                                                                }}
+                                                                className="fa fa-long-arrow-up"
+                                                            />
+                                                        </button>
+                                                        <button
+                                                            className="primaryBtn-1 btn"
+                                                            dataToggle="tooltip"
+                                                            title="Comment"
+                                                            onClick={this.addComment}>
+                                                            <i
+                                                                style={{
+                                                                    fontSize: "1.6em"
+                                                                }}
+                                                                className="fa fa-comments"
+                                                            />
+                                                        </button>
+                                                        <button
+                                                            className="btn primaryBtn-2"
+                                                            dataToggle="tooltip"
+                                                            title="Circle"
+                                                            onClick={this.addCircle}>
+                                                            <i
+                                                                style={{
+                                                                    fontSize: "1.6em"
+                                                                }}
+                                                                className="fa fa-circle"
+                                                            />
+                                                        </button>
+                                                        <button
+                                                            className="primaryBtn-1 btn"
+                                                            dataToggle="tooltip"
+                                                            title="Rectangle"
+                                                            onClick={this.addRectangle}>
+                                                            <i
+                                                                style={{
+                                                                    fontSize: "1.6em"
+                                                                }}
+                                                                className="fa fa-square-o"
+                                                            />
+                                                        </button>
+                                                        <button
+                                                            className="btn primaryBtn-2"
+                                                            dataToggle="tooltip"
+                                                            title="Freehand"
+                                                            onClick={this.Freehand}>
+                                                            <i
+                                                                style={{
+                                                                    fontSize: "1.6em"
+                                                                }}
+                                                                className="fa fa-pencil"
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                    <div
+                                                        className="panel-actions"
                                                         style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-circle"
-                                                    />
+                                                            marginTop: "7%",
+                                                            textAlign: "center"
+                                                        }}>
+                                                        <button
+                                                            className="btn primaryBtn-2"
+                                                            dataToggle="tooltip"
+                                                            title="Clear"
+                                                            onClick={this.clear}>
+                                                            Clear
                                                 </button>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    dataToggle="tooltip"
-                                                    title="Rectangle"
-                                                    onClick={this.addRectangle}>
-                                                    <i
-                                                        style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-square-o"
-                                                    />
+                                                        <button
+                                                            className="primaryBtn-1 btn"
+                                                            style={{ margin: "0 5px" }}
+                                                            dataToggle="tooltip"
+                                                            title="Close"
+                                                            onClick={this.close}>
+                                                            Close
                                                 </button>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Freehand"
-                                                    onClick={this.Freehand}>
-                                                    <i
-                                                        style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-pencil"
-                                                    />
+                                                        <button
+                                                            className="btn primaryBtn-2"
+                                                            dataToggle="tooltip"
+                                                            title="Save"
+                                                            onClick={this.saveState}>
+                                                            Save
                                                 </button>
-                                            </div>
-                                            <div
-                                                className="panel-actions"
-                                                style={{
-                                                    marginTop: "7%",
-                                                    textAlign: "center"
-                                                }}>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Clear"
-                                                    onClick={this.clear}>
-                                                    Clear
-                                                </button>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    style={{ margin: "0 5px" }}
-                                                    dataToggle="tooltip"
-                                                    title="Close"
-                                                    onClick={this.close}>
-                                                    Close
-                                                </button>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Save"
-                                                    onClick={this.saveState}>
-                                                    Save
-                                                </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                ) : null}
+                            </Fragment>
+                        ) : this.state.loadingPer === true ? null : (
+                            <div id="my_percentage" className="loadingShow">
+                                <span />
+                                <div className="percentage" id="precent" />
                             </div>
-                        ) : null}
-                    </Fragment>
-                ) : this.state.loadingPer === true ? null : (
-                    <div id="my_percentage" className="loadingShow">
-                        <span />
-                        <div className="percentage" id="precent" />
-                    </div>
-                )
+                        )
                 }
                 <div id="forgeViewer" />
             </div>

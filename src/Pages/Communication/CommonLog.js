@@ -6,7 +6,6 @@ import dataservice from "../../Dataservice";
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import InventoryItemsModal from "../../Componants/publicComponants/InventoryItemsModal"
 import documentDefenition from "../../documentDefenition.json";
