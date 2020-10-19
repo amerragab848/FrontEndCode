@@ -2917,6 +2917,11 @@
                 "name": "projectName",
                 "value": "projectName",
                 "type": "S"
+            },
+            {
+                "name": "contractName",
+                "value": "contractName",
+                "type": "S"
             }
         ],
         "columnsItems": [

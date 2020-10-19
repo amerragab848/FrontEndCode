@@ -29,12 +29,6 @@ let fileName = "";
 let id = 0;
 let projectId = 0;
 
-let oDocument = null,
-    oViewer = null;
-let oViews3D = null,
-    oViews2D = null;
-let urn = null;
-
 class AutoDeskViewer extends Component {
     constructor(props) {
         super(props);
@@ -136,10 +130,14 @@ class AutoDeskViewer extends Component {
             script.onload = function () {
                 resolve();
                 console.log("script has loaded");
+
             };
             script.onerror = function () {
                 resolve();
                 console.log("[Error] script not loaded");
+            };
+            script.onerror = function () {
+                resolve();
             };
             script.src = url;
 
@@ -149,7 +147,6 @@ class AutoDeskViewer extends Component {
     }
 
     async componentDidMount() {
- 
         await this.fetchStyle("https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css");
 
         await this.fetchScript("https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js");
@@ -159,7 +156,15 @@ class AutoDeskViewer extends Component {
         var PercentageID = document.getElementById("precent");
 
         this.animateValue(PercentageID, 0, 98);
+        this.drawModel();
 
+        console.log('finish componentDidMount.... ');
+
+    }
+
+    drawModel = e => {
+
+        console.log('starting drawModel.... ');
         let obj = {
             fileName: this.state.fileName,
             attachFile: decodeURIComponent(this.state.attachFile),
@@ -170,19 +175,20 @@ class AutoDeskViewer extends Component {
             this.showModel(data);
         });
 
-        Api.get("GetAllMarkUps?docId=" + this.state.docId + "&docType=" + this.state.docType + "&docFileId=" + this.state.docFileId)
-            .then(markups => {
-                this.setState({ markups });
-                let markupsList = [];
-                markups.forEach((item, index) => {
-                    markupsList.push({ label: item.viewerState, value: index });
-                });
-                this.setState({ markupsList });
+        Api.get("GetAllMarkUps?docId=" + this.state.docId + "&docType=" + this.state.docType + "&docFileId=" + this.state.docFileId).then(markups => {
+            this.setState({ markups });
+            let markupsList = [];
+            markups.forEach((item, index) => {
+                markupsList.push({ label: item.viewerState, value: index });
             });
+            this.setState({ markupsList });
+        });
 
         this.setState({
             selectedMode: { label: "View Markups", value: 2 }
         });
+
+        console.log('finish drawModel.... ');
     }
 
     animateValue(id, start, end) {
@@ -221,36 +227,18 @@ class AutoDeskViewer extends Component {
                 viewEditMarkUps: false
             });
         }
-
-        // this.setState({
-        //     showCheckBox: !this.state.showCheckBox,
-        //     showAll: !this.state.showAll,
-        //     isViewEdit: !this.state.isViewEdit,
-        //     viewEditMarkUps: !this.state.viewEditMarkUps,
-        // });
-
-        // if (this.state.showAll == true) {
-        //     this.setState({ showAll: false, viewEditMarkUps: true });
-        // } else {
-        //     this.setState({ viewEditMarkUps: false, showAll: true });
-        //     this.state.markups.forEach(item => {
-        //         this.restoreState(item.svg, item.viewerState);
-        //     });
-        // }
     };
 
     restoreState = (svg, name) => {
         let markup = svg;
         let viewer = this.state.viewer;
-        viewer
-            .loadExtension("Autodesk.Viewing.MarkupsCore")
-            .then(markupsExt => {
-                let markupCore = markupsExt;
-                // load the markups
-                markupCore.show();
-                markupCore.loadMarkups(markup, name);
-                this.setState({ markupCore });
-            });
+        viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+            let markupCore = markupsExt;
+            // load the markups
+            markupCore.show();
+            markupCore.loadMarkups(markup, name);
+            this.setState({ markupCore });
+        });
     };
 
     modeIdToggle = value => {
@@ -291,24 +279,20 @@ class AutoDeskViewer extends Component {
     editingMarkUps = () => {
         if (this.state.markups.length > 0) {
             this.state.markups.forEach(item => {
-                this.state.viewer
-                    .loadExtension("Autodesk.Viewing.MarkupsCore")
-                    .then(markupsExt => {
-                        let markupCore = markupsExt;
-                        // load the markups
-                        markupCore.show();
-                        markupCore.loadMarkups(item.svg, item.viewerState);
-                        markupCore.enterEditMode();
-                        this.setState({ markupCore });
-                    });
+                this.state.viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+                    let markupCore = markupsExt;
+                    // load the markups
+                    markupCore.show();
+                    markupCore.loadMarkups(item.svg, item.viewerState);
+                    markupCore.enterEditMode();
+                    this.setState({ markupCore });
+                });
             });
         } else {
             let viewer = this.state.viewer;
-            viewer
-                .loadExtension("Autodesk.Viewing.MarkupsCore")
-                .then(markupsExt => {
-                    this.setState({ markupCore: markupsExt, viewer });
-                });
+            viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+                this.setState({ markupCore: markupsExt, viewer });
+            });
         }
     };
 
@@ -316,35 +300,23 @@ class AutoDeskViewer extends Component {
 
         var documentId = "urn:" + urn;
         let classobj = this;
-        //console.log("classobj...",classobj)
-        // var options = {
-        //     env: "AutodeskProduction",
-        //     getAccessToken: this.getAccessToken,
-        //     refreshToken: this.getAccessToken,
-        //     useADP: true
-        // };
+
         this.getAccessTokenNew(function (data) {
-            // accessToken = "Bearer " + data.access_token
             var options = {
                 env: 'AutodeskProduction',
-
                 getAccessToken: function (onTokenReady) {
                     var token = data.access_token;
                     var timeInSeconds = 600;
                     onTokenReady(token, timeInSeconds);
                 },
-
                 api: 'derivativeV2'   //derivativeV2_EU
             };
-            // Autodesk.Viewing.Initializer(options, function onInitialized() {
-            //     Autodesk.Viewing.Document.load(documentId,onDocumentLoadSuccess,this.onDocumentLoadFailure);
-            // });
 
             Autodesk.Viewing.Initializer(options, () => {
-                Autodesk.Viewing.Document.load = () => (
-                    documentId,
-                    doc => {
-                        // A document contains references to 3D and 2D geometries.
+                return new Promise((resolve, reject) => {
+
+                    Autodesk.Viewing.Document.load(documentId, (doc) => {
+                        resolve(doc)
                         var geometries = doc.getRoot().search({ type: "geometry" });
                         if (geometries.length === 0) {
                             console.error("Document contains no geometries.");
@@ -354,21 +326,16 @@ class AutoDeskViewer extends Component {
                         var initGeom = geometries[0];
                         // Create Viewer instance
                         var viewerDiv = document.getElementById("forgeViewer");
-                        var config = {
-                            extensions: initGeom.extensions() || []
-                        };
-                        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
-                            viewerDiv,
-                            config
-                        );
-                        var svfUrl = doc.getViewablePath(initGeom);
-                        var modelOptions = {
-                            sharedPropertyDbPath: doc.getPropertyDbPath()
-                        };
-                        viewer.start(
 
-                            svfUrl,
-                            modelOptions,
+                        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+
+                        var modelOptions = {
+                            sharedPropertyDbPath: doc.getFullPath(doc.getRoot().findPropertyDbPath())
+                        };
+
+                        var svfUrl = doc.getViewablePath(initGeom);
+
+                        viewer.start(svfUrl, modelOptions,
                             () => {
                                 debugger;
                                 this.state.markups.forEach(item => {
@@ -379,20 +346,55 @@ class AutoDeskViewer extends Component {
 
                         );
                         classobj.setState({ viewer, loaded: true });
-                    },
-                    function (errorCode, errorMessage) {
-                        console.log(
-                            "....Loading fail model autoDesk",
-                            errorCode,
-                            errorMessage
-                        );
-                    }
+                    }, (errCode) => {
 
+                        reject(errCode);
+                        console.error('onLoadModelError() - errorCode:' + errCode);
+                    })
+                })
+                // Autodesk.Viewing.Document.load(documentId, this.onDocumentLoadSuccess(), this.onDocumentLoadFailure());
+                // Autodesk.Viewing.Document.load = () => (
+                //     documentId,
+                //     doc => {
+                //         // A document contains references to 3D and 2D geometries.
+                //         var geometries = doc.getRoot().search({ type: "geometry" });
+                //         if (geometries.length === 0) {
+                //             console.error("Document contains no geometries.");
+                //             return;
+                //         }
+                //         // Choose any of the avialable geometries
+                //         var initGeom = geometries[0];
+                //         // Create Viewer instance
+                //         var viewerDiv = document.getElementById("forgeViewer");
 
-                );
-                classobj.setState({ loadingPer: true });
+                //         var viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+
+                //         var modelOptions = {
+                //             sharedPropertyDbPath: doc.getFullPath(doc.getRoot().findPropertyDbPath())
+                //         };
+
+                //         var svfUrl = doc.getViewablePath(initGeom);
+
+                //         viewer.start(svfUrl, modelOptions,
+                //             () => {
+                //                 debugger;
+                //                 this.state.markups.forEach(item => {
+                //                     this.restoreState(item.svg, item.viewerState);
+                //                 });
+                //             },
+                //             console.log("....Loading fail model autoDesk"),
+
+                //         );
+                //         classobj.setState({ viewer, loaded: true });
+                //     },
+                //     function (errorCode, errorMessage) {
+                //         console.log("....Loading fail model autoDesk", errorCode, errorMessage);
+                //     } 
+                // );
+                // classobj.setState({ loadingPer: true });
 
             });
+
         }, function (data) { });
 
 
@@ -408,29 +410,27 @@ class AutoDeskViewer extends Component {
         var initGeom = geometries[0];
         // Create Viewer instance
         var viewerDiv = document.getElementById("forgeViewer");
-        var config = {
-            extensions: initGeom.extensions() || []
-        };
-        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
-            viewerDiv,
-            config
-        );
-        var svfUrl = doc.getViewablePath(initGeom);
+
+        var viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+
         var modelOptions = {
-            sharedPropertyDbPath: doc.getPropertyDbPath()
+            sharedPropertyDbPath: doc.getFullPath(doc.getRoot().findPropertyDbPath())
         };
-        viewer.start(
-            svfUrl,
-            modelOptions,
+
+        var svfUrl = doc.getViewablePath(initGeom);
+
+        viewer.start(svfUrl, modelOptions,
             () => {
                 this.state.markups.forEach(item => {
                     this.restoreState(item.svg, item.viewerState);
                 });
-            },
-            console.log("....Loading fail model autoDesk")
-        );
+            }, this.onLoadModelError);
         this.setState({ viewer, loaded: true });
     }
+
+    onLoadModelError(viewerErrorCode) {
+        console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
+    };
 
     onDocumentLoadFailure = (errorCode, errorMessage) => {
 
@@ -441,7 +441,7 @@ class AutoDeskViewer extends Component {
         );
         this.setState({ loadingPer: true });
 
-    }
+    };
 
     getAccessTokenNew = (successCallback, errorCallback) => {
         var xmlHttp = null;
@@ -485,9 +485,7 @@ class AutoDeskViewer extends Component {
         if (this.state.markupCore) {
             let viewer = this.state.viewer;
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
-            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(
-                this.state.markupCore
-            );
+            var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markupCore);
             extension.enterEditMode();
             extension.changeEditMode(mode);
         }
@@ -577,12 +575,7 @@ class AutoDeskViewer extends Component {
             // current view state (zoom, direction, sections)
             let markUpObj = markUpsModel;
             markUpObj.svg = markupsPersist;
-            markUpObj.viewerState =
-                this.state.contactName +
-                "-" +
-                moment().format("DD/MM/YYYY") +
-                "-" +
-                new Date().getTime();
+            markUpObj.viewerState = this.state.contactName + "-" + moment().format("DD/MM/YYYY") + "-" + new Date().getTime();
             markUpObj.docType = this.state.docType;
             markUpObj.docId = this.state.docId;
             markUpObj.docFileId = this.state.docFileId;
