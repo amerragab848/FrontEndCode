@@ -160,7 +160,7 @@ class boqStructure extends Component {
                 //item.collapse = item.id != parentId ? true : item.collapse; 
             }
             updateTrees.push(item);
-            if (item.trees &&item.trees.length > 0) {
+            if (item.trees && item.trees.length > 0) {
                 this.search(id, item.trees, updateTrees, parentId);
             }
         });
@@ -229,7 +229,7 @@ class boqStructure extends Component {
                                     <i className="dropdown icon" />
                                 </span>
 
-                                <span className="accordionTitle">{item.title + '-' + item.code}</span>
+                                <span className="accordionTitle">{(item.title == "" ? item.titleEn : item.title) + '-' + item.code}</span>
                             </div>
                             <div className="Project__num">
                                 <div className="eps__actions">
@@ -325,35 +325,36 @@ class boqStructure extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     }
+    generateNewTree(ItemList, SelectedNode) {
+        let data = ItemList;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].id == SelectedNode.perentId) {
 
-    UpdateTree = (SelectedNode, NewNode) => {
-
-        //let x = this.state.trees.trees.filter(s => s.perentId === NewNode.perentId)
-
-        if (SelectedNode.perentId !== null) {
-            if (this.state.IsEditMode) {
+                data[i].trees.push(SelectedNode);
             }
             else {
-                let data = this.state.trees
-                let SelectedParent = ''
-
-                data.map(element => {
-                    if (element.trees) {
-                        SelectedParent = element.trees.filter(s => s.id === SelectedNode.perentId)
-                    }
-                })
+                this.generateNewTree(data[i].trees, SelectedNode);
             }
+        }
+        return data;
+    };
+    UpdateTree = (SelectedNode, NewNode) => {
+        if (SelectedNode.perentId !== null) {
+            let data = this.state.trees
+
+            let newtree = this.generateNewTree(data, SelectedNode);
+
             this.setState({
+                trees: newtree,
                 isLoading: false,
                 viewPopUp: false
             })
         }
-
         else {
             let data = this.state.trees
             if (this.state.IsEditMode) {
-                data= data.filter(s => s.id !== SelectedNode.id)
-                 data.push(NewNode)
+                data = data.filter(s => s.id !== SelectedNode.id)
+                data.push(NewNode)
             }
 
             else {
@@ -372,8 +373,19 @@ class boqStructure extends Component {
     AddEditNode = () => {
 
         this.setState({ isLoading: true })
+  
+        let EditObj = {
+            id: this.state.SelectedNode.id,
+            title: this.state.SelectedNode.title,
+            code: this.state.SelectedNode.code,
+            perentId: this.state.IsFirstParent ? '' : this.state.SelectedNode.perentId,
+            projectId: this.state.projectId,
+            showPaymentRequsition: false,
+            titleEn: this.state.SelectedNode.titleEn,
+            titleAr: this.state.SelectedNode.titleAr,
+            costCodingId: undefined, trees: [],
+        }
 
-        let EditObj = this.state.SelectedNode
         if (this.state.IsEditMode) {
             if (EditObj.perentId !== null) {
                 EditObj.showPaymentRequsition = this.state.ShowPayment
@@ -382,6 +394,7 @@ class boqStructure extends Component {
             dataservice.addObject('EditBoqStructure', EditObj).then(
                 res => {
                     this.setState({ isLoading: false, viewPopUp: false })
+                    EditObj.id = res.id;
                     this.UpdateTree(EditObj, res)
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -403,6 +416,7 @@ class boqStructure extends Component {
             dataservice.addObject('AddBoqStructure', AddingObj).then(
                 res => {
                     this.setState({ isLoading: false, viewPopUp: false })
+                    EditObj.id = res.id;
                     this.UpdateTree(EditObj, res)
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -434,10 +448,10 @@ class boqStructure extends Component {
                                 placeholder={Resources.numberAbb[currentLanguage]}
                                 onChange={e => this.setState({ number: e.target.value })}
                             />
-                        </div> 
+                        </div>
                         <div className="fullWidthWrapper">
                             <button className="primaryBtn-1 btn middle__btn" type="submit" onClick={e => this.CopyMultipleNode(e)} >{Resources["save"][currentLanguage]}</button>
-                        </div> 
+                        </div>
                     </div>
                 </Fragment>
             )
@@ -536,7 +550,7 @@ class boqStructure extends Component {
                                                 </div>
                                             </div>
                                             <div className="epsContent">
-                                                {item.trees?item.trees.length > 0 ? this.printChild(item.trees) : null:null}
+                                                {item.trees ? item.trees.length > 0 ? this.printChild(item.trees) : null : null}
                                             </div>
                                         </Fragment>
                                     )

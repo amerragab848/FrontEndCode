@@ -16,13 +16,13 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state, inventoryItems: inventoryItems
             }
-
-        case types.Export_Document:
+            
+          case types.Export_Document:
             let _items = state.items.length > 0 ? state.items : action.items.length > 0 ? action.items : []
             return {
                 ...state, items: _items
             }
-
+        
         case types.Document_for_Edit:
             return {
                 ...state,
