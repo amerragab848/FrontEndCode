@@ -541,7 +541,7 @@ class clientModificationAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
-                                            onSubmit={(values) => {
+                                            onSubmit={() => {
                                                 if (this.props.showModal) { return; }
 
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {

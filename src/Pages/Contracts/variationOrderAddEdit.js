@@ -991,8 +991,12 @@ class variationOrderAddEdit extends Component {
 
                       {this.state.isLoading ? <LoadingSection /> :
                         <GridCustom
-                          cells={this.cells} data={this.state.voItems} groups={[]} pageSize={50} actions={this.state.document.executed === "no" ? this.actions : []}
-                          rowActions={this.rowActions} rowClick={cell => { (this.state.document.executed === "No" || this.state.document.executed === "no") ? this.onRowClick(cell) : console.log('error') }}
+                          gridKey="Variation-Order-Items-Grid"
+                          cells={this.cells} data={this.state.voItems}
+                          groups={[]} pageSize={50}
+                          actions={this.state.document.executed === "no" ? this.actions : []}
+                          rowActions={this.rowActions}
+                          rowClick={cell => { (this.state.document.executed === "No" || this.state.document.executed === "no") ? this.onRowClick(cell) : toast.error("You Can not Edit Executed Document") }}
                         />
                       }
                       <div>
