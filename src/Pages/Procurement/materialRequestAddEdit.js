@@ -494,8 +494,7 @@ class materialRequestAddEdit extends Component {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
-    }
-
+    } 
     renderEditable = cellInfo => {
         if (Config.IsAllow(117)) {
             if (cellInfo.original.childerns.length == 0) {
@@ -593,8 +592,7 @@ class materialRequestAddEdit extends Component {
                 />
             );
         }
-    };
-
+    }; 
     renderEditableQuantity = cellInfo => {
         return (
             <div
@@ -632,8 +630,7 @@ class materialRequestAddEdit extends Component {
                 }}
             />
         );
-    };
-
+    }; 
     editChildren = cellInfo => {
         return (
             <div style={{ color: "#4382f9 ", padding: "0px 6px", margin: "5px 0px", border: "1px dashed", cursor: "pointer" }}
@@ -658,8 +655,7 @@ class materialRequestAddEdit extends Component {
                 }}
             />
         );
-    };
-
+    }; 
     componentDidMount() {
         dataservice.GetDataList("GetaccountsDefaultListWithAction?listType=estimationitemtype", "title", "action").then(result => {
             this.setState({ itemTypesList: result });
@@ -679,8 +675,7 @@ class materialRequestAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
-    }
-
+    } 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id != this.props.document.id) {
             let doc = nextProps.document;
@@ -701,15 +696,13 @@ class materialRequestAddEdit extends Component {
             this.checkDocumentIsView();
         }
 
-    }
-
+    } 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
-    }
-
+    } 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (
@@ -718,8 +711,7 @@ class materialRequestAddEdit extends Component {
         ) {
             this.checkDocumentIsView();
         }
-    }
-
+    } 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(119)) {
@@ -744,8 +736,7 @@ class materialRequestAddEdit extends Component {
         } else {
             this.setState({ isViewMode: false });
         }
-    }
-
+    } 
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsSiteRequestForEdit?id=" + this.state.docId;
@@ -805,8 +796,7 @@ class materialRequestAddEdit extends Component {
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
-    }
-
+    } 
     getNextArrange(companyId) {
         this.setState({ isLoading: true });
         Api.get(
@@ -823,8 +813,7 @@ class materialRequestAddEdit extends Component {
                 isLoading: false
             });
         });
-    }
-
+    } 
     fillDropDowns(isEdit) {
         this.setState({ isLoading: true });
         dataservice
@@ -1028,8 +1017,7 @@ class materialRequestAddEdit extends Component {
                 });
             }
         });
-    }
-
+    } 
     GetBoqItemsStracture(boqId) {
         this.setState({ isLoading: true });
 
@@ -1085,8 +1073,7 @@ class materialRequestAddEdit extends Component {
             normalItems: updated_document,
             [selected]: event
         });
-    }
-
+    } 
     handleChange(e, field) {
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -1095,8 +1082,7 @@ class materialRequestAddEdit extends Component {
         this.setState({
             document: updated_document
         });
-    }
-
+    } 
     handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -1105,8 +1091,7 @@ class materialRequestAddEdit extends Component {
         this.setState({
             document: updated_document
         });
-    }
-
+    } 
     handleCheckBox(e) {
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -1116,8 +1101,7 @@ class materialRequestAddEdit extends Component {
         this.setState({
             document: updated_document
         });
-    }
-
+    } 
     getMarterialArrange() {
         this.setState({ isLoading: true });
         Api.get(
@@ -1129,8 +1113,7 @@ class materialRequestAddEdit extends Component {
         ).then(arrange => {
             this.setState({ M_arrange: arrange, isLoading: false });
         });
-    }
-
+    } 
     editMaterialRequest(event) {
         this.setState({ isLoading: true });
         let saveDocument = { ...this.state.document };
@@ -1165,8 +1148,7 @@ class materialRequestAddEdit extends Component {
                 this.setState({ isLoading: false });
                 toast.success(Resources["operationCanceled"][currentLanguage]);
             });
-    }
-
+    } 
     saveMaterialReques(event) {
         if (this.state.selectedContract.value != "0" && this.state.selectedContract.boqId != "0") {
             if (this.state.items.length > 0) {
@@ -1241,12 +1223,10 @@ class materialRequestAddEdit extends Component {
                     );
                 });
         }
-    }
-
+    } 
     saveAndExit(event) {
         this.changeCurrentStep(1);
-    }
-
+    } 
     showBtnsSaving() {
         // && this.props.changeStatus === true
         let btn = null;
@@ -1267,8 +1247,7 @@ class materialRequestAddEdit extends Component {
         }
 
         return btn;
-    }
-
+    } 
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3282) === true ? (
@@ -1280,8 +1259,7 @@ class materialRequestAddEdit extends Component {
                 />
             ) : null
         ) : null;
-    }
-
+    } 
     actionsChange(event) {
         switch (event.value) {
             case 1:
@@ -1854,8 +1832,7 @@ class materialRequestAddEdit extends Component {
                 </div>
             </div>
         )
-    }
-
+    } 
     addChild = () => {
         let length = this.state.updatedchilderns.length;
         this.state.updatedchilderns.forEach((item, index) => {
@@ -1892,16 +1869,13 @@ class materialRequestAddEdit extends Component {
                 );
             }
         });
-    };
-
+    }; 
     onCloseModal() {
         this.setState({ showDeleteModal: false });
-    }
-
+    } 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
-    };
-
+    }; 
     ConfirmDelete = () => {
         this.setState({ isLoading: true });
         Api.post(
@@ -1927,8 +1901,7 @@ class materialRequestAddEdit extends Component {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ showDeleteModal: false, isLoading: false });
             });
-    };
-
+    }; 
     clickHandlerDeleteRowsMain = selectedRows => {
         if (Config.IsAllow(118)) {
             this.setState({
@@ -1938,8 +1911,7 @@ class materialRequestAddEdit extends Component {
         } else {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
         }
-    };
-
+    }; 
     // _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     //     let updateRow = this.state._items[fromRow];
     //     this.setState(
@@ -2061,8 +2033,7 @@ class materialRequestAddEdit extends Component {
         // } else if (column.key == "customBtn") {
         //     this.itemization(value);
         // }
-    };
-
+    }; 
     addContract(values) {
         this.setState({ contractLoading: true });
         let contract = {
@@ -2091,8 +2062,7 @@ class materialRequestAddEdit extends Component {
             .catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
             });
-    }
-
+    } 
     addPurchaseOrder(values) {
         this.setState({ contractLoading: true });
         let contract = {
@@ -2122,8 +2092,7 @@ class materialRequestAddEdit extends Component {
             .catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
             });
-    }
-
+    } 
     addMR(values) {
         let MR = {
             docDate: moment(values.docDate, "YYYY-MM-DD").format(
@@ -2167,8 +2136,7 @@ class materialRequestAddEdit extends Component {
             .catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
             });
-    }
-
+    } 
     handleChangeDropDown(event) {
         this.setState({ isLoading: true });
         dataservice.GetDataList("GetContactsByCompanyId?companyId=" + event.value, "contactName", "id").then(res => {
@@ -2179,8 +2147,7 @@ class materialRequestAddEdit extends Component {
                     M_fromCompany: event
                 });
         });
-    }
-
+    } 
     showChildern(childerns) {
         if (Config.IsAllow(117)) {
             this.setState({ showChildren: true, childerns });
@@ -2188,22 +2155,18 @@ class materialRequestAddEdit extends Component {
         } else {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
         }
-    }
-
+    } 
     _executeAfterModalOpen() {
         document.body.classList.add("noScrolling");
         window.scrollTo(0, 0);
-    }
-
+    } 
     _executeBeforeModalOpen() {
         document.body.classList.add("noScrolling");
         window.scrollTo(0, 0);
-    }
-
+    } 
     _executeAfterModalClose() {
         document.body.classList.remove("noScrolling");
-    }
-
+    } 
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
@@ -2240,8 +2203,7 @@ class materialRequestAddEdit extends Component {
                     });
                 });
         }
-    }
-
+    } 
     GetNextData() {
         let pageNumber = this.state.pageNumber + 1;
 
@@ -2276,16 +2238,13 @@ class materialRequestAddEdit extends Component {
                     isLoading: false
                 });
             });
-    }
-
+    } 
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
-    }
-
+    } 
     changeCurrentStep = stepNo => {
         this.setState({ CurrStep: stepNo });
-    };
-
+    }; 
     render() {
         const childerns =
             this.state.isLoading == false ? (
