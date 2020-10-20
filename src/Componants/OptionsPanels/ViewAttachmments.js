@@ -79,6 +79,7 @@ class ViewAttachmments extends Component {
     goEditPdf = (item, ext) => {
         let accountId = Config.getPayload().aci; 
         var stamp = new Date().getTime();
+
         var data = JSON.stringify({
             refer: window.location.href.replace("#", "-hashfill-"),
             docTypeId: this.props.docTypeId,
@@ -94,8 +95,9 @@ class ViewAttachmments extends Component {
             server: Config.getPublicConfiguartion().static + "PM/api/Procoor/"
         });
 
+        console.log( item.parentAttachFile,'+ item.parentAttachFile....');
         window.open(
-            Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#/public/edit-pdf/" + stamp + item.parentAttachFile.split("/")[4]
+            Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#"  + item.parentAttachFile
         );
     };
 
