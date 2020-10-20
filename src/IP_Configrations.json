@@ -12,7 +12,7 @@
     "hrApp": "HR",
     "acApp": "AC",
     "pmApp": "PM",
-    "local": "https://newgizaServices.procoor.com/",
+    "local": "https://newgizaServices.procoor.com/", 
     "loginServer": "https://procoorauthorization.procoor.com",
     "static": "https://newgizaServices.procoor.com/",
     "downloads": "https://newgizaServices.procoor.com",
@@ -22,6 +22,6 @@
     "googleDriveKey":"uof5qzvtwpq1dao",
     "exportCore" : "https://newgizaServices.procoor.com/ExportAPI/api/ExportController/",
   
-    "client_id": "IZrgqCNIdDDVdxLCaXEmW2WRcp7xZSeY",
-    "client_secret": "yPxLEpoiSnGvAFrm"
+    "client_id": "elXUJfeXNiv0ZDxlOB5JrJWn9GksYQq3",
+    "client_secret": "RiaukssWQvBiD32T"
   } 
