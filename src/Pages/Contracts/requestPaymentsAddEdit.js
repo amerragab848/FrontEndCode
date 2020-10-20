@@ -1419,7 +1419,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     showRowEditModal(value) {
-
+debugger
         let original_document = { ...this.state.currentObject };
 
         let updated_document = {};
@@ -1439,6 +1439,7 @@ class requestPaymentsAddEdit extends Component {
         this.addCommentModal.show();
     }
     showRowEditConstantModal(value) {
+        
         let original_document = { ...this.state.currentObject };
 
         let updated_document = {};
@@ -1458,7 +1459,7 @@ class requestPaymentsAddEdit extends Component {
     }
 
     onRowClick = (value) => {
-
+debugger
         let userType = Config.getPayload();
 
         let obj = this.state.document;
@@ -1622,6 +1623,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     editRowsClick() {
+        debugger
         this.setState({ isLoading: true });
         let saveDocument = { ...this.state.document };
 
@@ -3343,11 +3345,22 @@ class requestPaymentsAddEdit extends Component {
                                                             No.Update Rows.
                                                             {this.state.editRows.length}
                                                         </span>
+                                                    
+                                                         {this.state.isLoading === true ?(
+                                                        <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button>
+                                                    )
+                                                    :(
                                                         <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.editRowsClick(e)}>
                                                             {
                                                                 Resources["edit"][currentLanguage]
                                                             }
-                                                        </button>
+                                                        </button>)}
                                                     </div>
                                                 </div>
                                             ) : null}
