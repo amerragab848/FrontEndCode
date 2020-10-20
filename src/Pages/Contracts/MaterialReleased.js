@@ -246,7 +246,7 @@ class MaterialReleased extends Component {
 
              }
              const totalList = result.map(item=>{
-                if(item.materialType=="MaterialReleasedItem")
+                if(item.materialType=="Released")
                 return item.total;
                 else{
                   return 0;
@@ -254,7 +254,7 @@ class MaterialReleased extends Component {
               });
         
               const totalRteurnedList = result.map(item=>{
-                if(item.materialType=="MaterialReleasedItemRetrurned")
+                if(item.materialType=="Returned")
                 return item.total;
                 else{
                   return 0;
@@ -302,7 +302,7 @@ class MaterialReleased extends Component {
             let oldRows = result; //[];// this.state.rows;
             const newRows = oldRows;//[...oldRows, ...result];
             const totalList = result.map(item=>{
-                if(item.materialType=="MaterialReleasedItem")
+                if(item.materialType=="Released")
                 return item.total;
                 else{
                   return 0;
@@ -310,7 +310,7 @@ class MaterialReleased extends Component {
               });
         
               const totalRteurnedList = result.map(item=>{
-                if(item.materialType=="MaterialReleasedItemRetrurned")
+                if(item.materialType=="Returned")
                 return item.total;
                 else{
                   return 0;
@@ -553,14 +553,14 @@ class MaterialReleased extends Component {
                 </div>
                 {this.state.gridLoading === false ? (
 
-                    <div >
+                    <div  className="document-fields">
                         
-                 <Form className="customProform"    noValidate="novalidate">
-                    <div className="proForm datepickerContainer  ">
+                 <Form id="signupForm1" className="proForm datepickerContainer customProform"    noValidate="novalidate">
+                    <div className="proForm datepickerContainer">
 
-                        <div className="linebylineInput valid-input">
+                        <div className="linebylineInput valid-input" >
                         <label className="control-label">{Resources.totalRelease[currentLanguage]}</label>
-                        <div className={"inputDev ui input"} >
+                        <div className="ui input inputDev" >
                             <input name='total' className="form-control fsadfsadsa" id="total"
                                 
                                 autoComplete='off' 
@@ -570,9 +570,9 @@ class MaterialReleased extends Component {
                         </div>
                     </div>
 
-                        <div className="linebylineInput valid-input">
+                        <div className="linebylineInput valid-input" >
                         <label className="control-label">{Resources.totalRturned[currentLanguage]}</label>
-                        <div className={"inputDev ui input"} >
+                        <div className="ui input inputDev" >
                             <input name='total' className="form-control fsadfsadsa" id="total"
                                 
                                 autoComplete='off' 
