@@ -208,8 +208,7 @@ class AddDocAttachment extends Component {
   changeDate() {
     this.setState({
       focused: true
-    })
-    // return <Calendar onChange={date => this.onChange()} selectRange={true} />
+    }) 
   }
 
   onFilteredChangeCustom = (value, accessor) => {
@@ -331,7 +330,7 @@ class AddDocAttachment extends Component {
           groupable: true,
           fixed: false,
           sortable: true,
-          type: "text",
+          type: "date",
         }
       ];
 
@@ -346,12 +345,7 @@ class AddDocAttachment extends Component {
             selectedValue={this.state.selectDocument} handleChange={event => this.dropDownsEvent(event, "docType")} />
 
           {this.state.documentData.length ?
-            <Fragment>
-
-              {/* {this.state.selectedRows.length ?
-                <div className="fullWidthWrapper">
-                  <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={e => this.save()}>{Resources["save"][currentLanguage]} </button>
-                </div> : null} */}
+            <Fragment> 
               <div className="grid-container">
                 {this.state.isLoading === false ? (
                   <GridCustom
@@ -465,8 +459,7 @@ class AddDocAttachment extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    //docsAttachData: state.communication.docsAttachData, 
+  return { 
     docsAttachData: state.communication.docsAttachData,
     relatedLinkData: state.communication.relatedLinkData,
     documentData: state.communication.documentData,
