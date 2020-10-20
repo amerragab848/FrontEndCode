@@ -18,7 +18,19 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
-    
+    static GetDataListForMaterialReturned(url, label, value,contractId) {
+        let Data = []
+        return Api.get(url).then(result => {
+            (result).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                obj.contractId=item[contractId];
+                Data.push(obj);
+            });
+            return Data;
+        }).catch(ex => Data);
+    };
     static GetDataListSiteRequestNewVersion=(url, label, value,contractId,contractName) =>{
         let Data = []
         return Api.get(url).then(result => {
