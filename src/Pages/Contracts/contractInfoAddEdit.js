@@ -761,7 +761,7 @@ getMaterialRelease(){
        this.state.marPageNumber= this.state.marPageNumber+1;
       }
       const totalList = result.map(item=>{
-        if(item.materialType=="MaterialReleasedItem")
+        if(item.materialType=="Released")
         return item.total;
         else{
           return 0;
@@ -769,7 +769,7 @@ getMaterialRelease(){
       });
 
       const totalRteurnedList = result.map(item=>{
-        if(item.materialType=="MaterialReleasedItemRetrurned")
+        if(item.materialType=="Returned")
         return item.total;
         else{
           return 0;
