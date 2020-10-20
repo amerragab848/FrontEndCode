@@ -461,7 +461,7 @@ class DocApprovalDetails extends Component {
         isApproveMode: true,
         perviousRoute: window.location.pathname + window.location.search
       }
-      if (obj.docLink == "drawingModification") {
+      if (obj.docLink == "addEditModificationDrawing") {
         objRout.isModification = true;
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
@@ -499,7 +499,7 @@ class DocApprovalDetails extends Component {
               isApproveMode: true,
               perviousRoute: window.location.pathname + window.location.search
             }
-            if (cell.docLink == "drawingModification") {
+            if (cell.docLink == "addEditModificationDrawing") {
               objRout.isModification = true;
             }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
