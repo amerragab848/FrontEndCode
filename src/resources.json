@@ -2570,8 +2570,8 @@
         "ar": "العنوان"
     },
     "materialReleasedsubject": {
-        "en": " Material Releasedsub Subject",
-        "ar": "العنوان"
+        "en": " Material Released Subject",
+        "ar": "صرف المواد"
     },
     "materialReleasedarrange": {
         "en": "Material Released Arrange",
@@ -7880,6 +7880,10 @@
     "showInReport": {
         "en": "Show In Report",
         "ar": "عرض فى التقارير"
+    },
+    "hasInventory":{
+        "en":"Pull All Inventory Items",
+        "ar":"سحب جميع عناصر المخزون"
     },
     "replyMessage": {
         "en": "Reply Message",

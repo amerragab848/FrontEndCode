@@ -174,7 +174,8 @@ class materialReturnedAddEdit extends Component {
             },
             selectedMaterialRelease: {
                 label: Resources.materialReleaseTypeSelection[currentLanguage],
-                value: "0"
+                value: "0",
+                contractId:"0"
             },
             selectedCostCoding: {
                 label: Resources.costCodingSelection[currentLanguage],
@@ -238,6 +239,7 @@ class materialReturnedAddEdit extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.document.contractId)
         var links = document.querySelectorAll(
             ".noTabs__document .doc-container .linebylineInput"
         );
@@ -360,7 +362,8 @@ class materialReturnedAddEdit extends Component {
                         orderFromCompanyId: "",
                         docCloseDate: moment(),
                         materialReleaseId: "",
-                        strictNumber: ""
+                        strictNumber: "",
+                        contractId:0
                     };
                     this.setState({ document: Document });
                 });
@@ -429,15 +432,17 @@ class materialReturnedAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
+            .GetDataListForMaterialReturned(
                 "GetLogsMaterialReleaseForList?projectId=" +
                 this.state.projectId,
                 "subject",
-                "id"
+                "id",
+                "contractId"
             )
             .then(result => {
                 debugger
                 if (isEdit) {
+                    
                     let id = this.props.document.materialReleaseId;
                     let selectedValue = {};
                     if (id) {
@@ -632,7 +637,11 @@ class materialReturnedAddEdit extends Component {
                     );
                 });
         } else {
-            let doc = { ...this.state.document };
+            let doc = { 
+                ...this.state.document 
+              //  ,contractId:this.state.selectedMaterialRelease.contractId
+            };
+            doc.contractId=this.state.selectedMaterialRelease.contractId;
             doc.docDate = moment(doc.docDate, "YYYY-MM-DD").format(
                 "YYYY-MM-DD[T]HH:mm:ss.SSS"
             );

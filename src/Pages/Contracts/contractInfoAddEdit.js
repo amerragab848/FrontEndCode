@@ -116,7 +116,7 @@ class ContractInfoAddEdit extends Component {
       voPageNumber: 0,
       voPageSize: 50,
       maPageNumber: 0,
-      maPageSize: 5,
+      maPageSize: 50,
       pageSize: 2000,
       CurrStep: 0,
       firstComplete: false,

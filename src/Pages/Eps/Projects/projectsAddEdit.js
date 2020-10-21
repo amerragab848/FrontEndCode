@@ -26,10 +26,10 @@ const validationSchema = Yup.object().shape({
         return !en.test(value);
     }).required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
     projectNameAr: Yup.string()
-    // .test('projectNameAr', 'Name cannot be english', value => {
-    //     return ar.test(value)
-    // })
-    .required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
+        // .test('projectNameAr', 'Name cannot be english', value => {
+        //     return ar.test(value)
+        // })
+        .required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
     job: Yup.string().required(Resources['referenceCode'][currentLanguage]),
     projectType: Yup.string().required(Resources['pleaseSelectProjectType'][currentLanguage]),
     country: Yup.string().required(Resources['pleaseSelectCountry'][currentLanguage]),
@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
 })
 
 let docId = 0;
-let epsId = 0; 
+let epsId = 0;
 class projectsAddEdit extends Component {
     constructor(props) {
         super(props);
@@ -155,6 +155,7 @@ class projectsAddEdit extends Component {
                 currencyId: '',
                 epsId: '',
                 showInReport: false,
+                hasInventory: false
             };
             this.setState({ document, emailSection: false });
             this.fillDropDowns(false);
@@ -357,7 +358,7 @@ class projectsAddEdit extends Component {
                             docTitle={this.state.docId > 0 ? Resources.projectsEdit[currentLanguage] : Resources.projectsAdd[currentLanguage]}
                         />
                     </div>
-                    <div className="doc-container"> 
+                    <div className="doc-container">
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -489,20 +490,6 @@ class projectsAddEdit extends Component {
                                                         <div className="linebylineInput valid-input mix_dropdown">
                                                             <label className="control-label">{Resources.projectManagerCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
-                                                                <div className="super_name">
-                                                                    <Dropdown
-                                                                        name="projectManagerContact"
-                                                                        data={this.state.projectManagerContacts}
-                                                                        handleChange={event => this.setState({ selectedProjectManagerContact: event })}
-                                                                        placeholder='ContactName'
-                                                                        selectedValue={this.state.selectedProjectManagerContact}
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.projectManagerContact}
-                                                                        touched={touched.projectManagerContact}
-                                                                        index="projectManagerContact"
-                                                                        id="projectManagerContact" styles={CompanyDropdown} classDrop="companyName1 " />
-                                                                </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
                                                                         data={this.state.companies}
@@ -519,26 +506,25 @@ class projectsAddEdit extends Component {
                                                                         name="projectManagerCompany"
                                                                         id="projectManagerCompany" classDrop=" contactName1" styles={ContactDropdown} />
                                                                 </div>
+                                                                <div className="super_name">
+                                                                    <Dropdown
+                                                                        name="projectManagerContact"
+                                                                        data={this.state.projectManagerContacts}
+                                                                        handleChange={event => this.setState({ selectedProjectManagerContact: event })}
+                                                                        placeholder='ContactName'
+                                                                        selectedValue={this.state.selectedProjectManagerContact}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.projectManagerContact}
+                                                                        touched={touched.projectManagerContact}
+                                                                        index="projectManagerContact"
+                                                                        id="projectManagerContact" styles={CompanyDropdown} classDrop="companyName1 " />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">
                                                             <label className="control-label">{Resources.executiveManagerCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
-                                                                <div className="super_name">
-                                                                    <Dropdown
-                                                                        title='executiveManagerCompany'
-                                                                        name="executiveManagerContact"
-                                                                        data={this.state.executiveManagerContacts}
-                                                                        handleChange={event => this.setState({ selectedExecutiveManagerContact: event })}
-                                                                        placeholder='ContactName'
-                                                                        selectedValue={this.state.selectedExecutiveManagerContact}
-                                                                        onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.executiveManagerContact}
-                                                                        touched={touched.executiveManagerContact}
-                                                                        index="executiveManagerContact"
-                                                                        id="executiveManagerContact" styles={CompanyDropdown} classDrop="companyName1 " />
-                                                                </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
                                                                         data={this.state.companies}
@@ -553,6 +539,21 @@ class projectsAddEdit extends Component {
                                                                         }}
                                                                         name="executiveManagerCompany"
                                                                         id="executiveManagerCompany" classDrop=" contactName1" styles={ContactDropdown} />
+                                                                </div>
+                                                                <div className="super_name">
+                                                                    <Dropdown
+                                                                        title='executiveManagerCompany'
+                                                                        name="executiveManagerContact"
+                                                                        data={this.state.executiveManagerContacts}
+                                                                        handleChange={event => this.setState({ selectedExecutiveManagerContact: event })}
+                                                                        placeholder='ContactName'
+                                                                        selectedValue={this.state.selectedExecutiveManagerContact}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.executiveManagerContact}
+                                                                        touched={touched.executiveManagerContact}
+                                                                        index="executiveManagerContact"
+                                                                        id="executiveManagerContact" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -647,6 +648,11 @@ class projectsAddEdit extends Component {
                                                             <div style={{ marginTop: ' 8px' }} className="ui checkbox checkBoxGray300 checked">
                                                                 <input type="checkbox" name='showInReport' defaultChecked={values.showInReport == true ? 'checked' : null} onChange={e => setFieldValue('showInReport', e.target.checked)} />
                                                                 <label>{Resources.showInReport[currentLanguage]}</label>
+                                                            </div>
+
+                                                            <div style={{ marginTop: ' 8px', marginLeft: '10px' }} className="ui checkbox checkBoxGray300 checked">
+                                                                <input type="checkbox" name='hasInventory' defaultChecked={values.hasInventory == true ? 'checked' : null} onChange={e => setFieldValue('hasInventory', e.target.checked)} />
+                                                                <label>{Resources.hasInventory[currentLanguage]}</label>
                                                             </div>
                                                         </div>
                                                     </div>
