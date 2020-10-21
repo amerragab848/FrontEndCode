@@ -7881,6 +7881,10 @@
         "en": "Show In Report",
         "ar": "عرض فى التقارير"
     },
+    "hasInventory":{
+        "en":"Pull All Inventory Items",
+        "ar":"سحب جميع عناصر المخزون"
+    },
     "replyMessage": {
         "en": "Reply Message",
         "ar": "الرد على الرسالة"
