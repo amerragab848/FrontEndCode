@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import CryptoJS from 'crypto-js';
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import ReactTable from "react-table"; 
+import ReactTable from "react-table";
 import moment from "moment";
 import dataservice from "../../Dataservice";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
@@ -13,7 +13,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
-import Calendar from "react-calendar";
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+const filter = require('lodash/filter')
+const indexOf = require('lodash/indexOf')
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class AddDocAttachment extends Component {
@@ -37,8 +40,24 @@ class AddDocAttachment extends Component {
       focused: false,
       dateRange: moment().format("YYYY-MM-DD"),
       documentData: [], filtered: [],
-      isFilter: false
+      isFilter: false,
+      isLoading: false
     };
+
+    this.actions = [{
+      title: 'Add',
+      handleClick: values => {
+        let selectedRows = this.state.selectedRows;
+        let checkedRow = filter(this.state.documentData, (v) => indexOf(values, v.id) != -1)
+
+        var twoArraysBecomeOne = [...selectedRows, ...checkedRow];
+
+        this.setState({
+          selectedRows: twoArraysBecomeOne
+        })
+        this.save(twoArraysBecomeOne);
+      }
+    }]
   }
 
   componentDidMount() {
@@ -73,13 +92,12 @@ class AddDocAttachment extends Component {
     }
 
     else if (name === "docType") {
-      this.setState({ selectDocument: value, isFilter: false });
+      this.setState({ selectDocument: value, isFilter: false, isLoading: true });
       //In Handel Change Drop Down Document Fill Documnet Table
       this.props.actions.getCommunicationDocument(this.props.projectId, value.value);
     }
 
   }
-
   toggleRow(obj) {
 
     const newSelected = Object.assign({}, this.state.selected);
@@ -96,10 +114,10 @@ class AddDocAttachment extends Component {
     this.setState({ selected: newSelected, selectedRows: originalData });
   }
 
-  save() {
-    if (this.state.selectedRows.length > 0) {
-      this.props.actions.addCommunicationDocsAttach(this.state.selectedRows, this.props.projectId, this.props.docTypeId, this.props.docId);
-      this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [], selected: {} });
+  save(selectedRows) {
+    if (selectedRows.length > 0) {
+      this.props.actions.addCommunicationDocsAttach(selectedRows, this.props.projectId, this.props.docTypeId, this.props.docId);
+      this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [], selected: {} , modalAdd : false});
     }
     else {
       toast.warning(Resources["arrayEmpty"][currentLanguage]);
@@ -180,8 +198,8 @@ class AddDocAttachment extends Component {
     if (nextProps.documentData != prevState.documentData && prevState.isFilter === false) {
       return {
         documentData: nextProps.documentData,
-        isFilter: true
-
+        isFilter: true,
+        isLoading: false
       };
     }
     return null
@@ -190,8 +208,7 @@ class AddDocAttachment extends Component {
   changeDate() {
     this.setState({
       focused: true
-    })
-    // return <Calendar onChange={date => this.onChange()} selectRange={true} />
+    }) 
   }
 
   onFilteredChangeCustom = (value, accessor) => {
@@ -216,7 +233,7 @@ class AddDocAttachment extends Component {
     this.setState({ filtered: filtered });
   };
 
-  render() { 
+  render() {
     let columnsDocument =
       [
         this.props.isViewMode ?
@@ -274,49 +291,46 @@ class AddDocAttachment extends Component {
 
       let columns = [
         {
-          Header: Resources["checkList"][currentLanguage],
-          id: "checkbox",
-          accessor: "id",
-          Cell: ({ row }) => {
-            return (
-              <div className="ui checked checkbox  checkBoxGray300 ">
-                <input type="checkbox" className="checkbox" checked={this.state.selected[row._original.id] === true}
-                  onChange={() => this.toggleRow(row._original)} />
-                <label />
-              </div>
-            );
-          },
-          width: 50
+          field: 'id',
+          title: '',
+          type: 'check-box',
+          fixed: true,
+          hidden: false 
         },
         {
-          Header: Resources["subject"][currentLanguage],
-          accessor: "subject",
-          width: 450,
-          filterable: true,
+          field: 'subject',
+          title: Resources['subject'][currentLanguage],
+          width: 40,
+          fixed: false,
+          groupable: true,
+          type: "text",
+          sortable: true,
+          showTip: false,
+          classes: ' bold elipsisPadd',
+          onRightClick: cell => { this.cellClick(cell) },
+          href: 'link',
         },
         {
-          Header: Resources["docStatus"][currentLanguage],
-          accessor: "statusText",
-          width: 200,
-          filterable: true
+          field: 'statusText',
+          title: Resources['docStatus'][currentLanguage],
+          width: 20,
+          groupable: true,
+          sortable: true,
+          fixed: true,
+          type: "text",
+          classes: 'gridBtns status ',
+          conditionalClasses: obj => {
+            return obj.status == true ? ' Read' : ' UnRead';
+          }
         },
         {
-          Header: Resources["docDate"][currentLanguage],
-          accessor: "docDate",
-          filterable: true,
-          Filter: ({ filter, onChange }) => {
-            return <><input type="text" autoComplete="off"
-              value={this.state.dateRange}
-              onFocus={() => this.changeDate()} />
-              <div className="viewCalender__reactTable" tabIndex={0} onMouseLeave={this.resetDate} ref={index => { this.index = index; }}>
-                {this.state.focused ? <Calendar onChange={date => this.setDateFilter(date)} selectRange={true} /> : null}
-              </div></>
-          },
-          Cell: row => (
-            <span>
-              <span>{moment(row.value).format("YYYY-MM-DD")}</span>
-            </span>
-          )
+          field: 'docDate',
+          title: Resources['docDate'][currentLanguage],
+          width: 20,
+          groupable: true,
+          fixed: false,
+          sortable: true,
+          type: "date",
         }
       ];
 
@@ -331,36 +345,20 @@ class AddDocAttachment extends Component {
             selectedValue={this.state.selectDocument} handleChange={event => this.dropDownsEvent(event, "docType")} />
 
           {this.state.documentData.length ?
-            <Fragment>
-
-              {this.state.selectedRows.length ?
-                <div className="fullWidthWrapper">
-                  <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={e => this.save()}>{Resources["save"][currentLanguage]} </button>
-                </div> : null}
-              <div className="precycle-grid modalTable">
-                <ReactTable
-                  columns={columns}
-                  data={this.state.documentData}
-                  filterable
-                  filtered={this.state.filtered}
-                  onFilteredChange={(filtered, column, value) => {
-                    this.onFilteredChangeCustom(value, column.id || column.accessor);
-                  }}
-                  defaultFilterMethod={(filter, row, column) => {
-                    const id = filter.pivotId || filter.id;
-                    if (typeof filter.value === "object") {
-                      return row[id] !== undefined
-                        ? filter.value.indexOf(row[id]) > -1
-                        : true;
-                    } else {
-                      return row[id] !== undefined
-                        ? (String(row[id]).toLowerCase()).indexOf(filter.value.toLowerCase()) > -1
-                        : true;
-                    }
-                  }}
-                  className="-striped -highlight"
-                  defaultPageSize={10}
-                  noDataText={Resources["noData"][currentLanguage]} />
+            <Fragment> 
+              <div className="grid-container">
+                {this.state.isLoading === false ? (
+                  <GridCustom
+                    gridKey="newAttach"
+                    data={this.state.documentData}
+                    pageSize={this.state.documentData.length}
+                    groups={[]}
+                    actions={this.actions}
+                    rowActions={[]}
+                    cells={columns}
+                    rowClick={cell => { }}
+                  />
+                ) : <LoadingSection />}
               </div>
             </Fragment>
             : null}
@@ -461,8 +459,7 @@ class AddDocAttachment extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    //docsAttachData: state.communication.docsAttachData, 
+  return { 
     docsAttachData: state.communication.docsAttachData,
     relatedLinkData: state.communication.relatedLinkData,
     documentData: state.communication.documentData,

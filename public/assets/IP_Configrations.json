@@ -1,27 +1,42 @@
-{   "BlobStorageContainerName": "project-files",
-    "accountCompanyId": "1",
+<<<<<<< HEAD
+{ 
+=======
+{
+>>>>>>> 32e577db6274087f088461e4ca35e0b52ccf8dec
+    "BlobStorageContainerName": "project-files-demov4",
+    "acApp": "AC",
+    "accountCompanyId": "2",
     "azureStorage": true,
-    "canSendAlert": "true",
-    "refAutomatic": false, 
+    "canSendAlert": "false",
     "cdn": "https://newgiza.azureedge.net",
-    "chatLocal": "https://newgiza5.procoor.com",
-    "chatStatic": "https://newgiza5.procoor.com",
-    "exportLocal": "https://newgiza5.procoor.com",
-    "exportStatic": "https://newgiza5.procoor.com",
+    "chatLocal": "https://demov4.procoor.com",
+    "chatStatic": "https://demov4.procoor.com",
+    "exportLocal": "https://demov4.procoor.com",
+    "exportStatic": "https://demov4.procoor.com",
     "fmApp": "FM",
     "hrApp": "HR",
-    "acApp": "AC",
+    "local": "http://172.30.1.17:8900/",
+    "loginServer": "http://172.30.1.17:8901",
+<<<<<<< HEAD
+    "pmApp": "PM", 
+=======
     "pmApp": "PM",
-    "local": "https://newgizaServices.procoor.com/",
-    "loginServer": "https://procoorauthorization.procoor.com",
-    "static": "https://newgizaServices.procoor.com/",
-    "downloads": "https://newgizaServices.procoor.com",
-    "dropBoxappKey":"r8iiezlpm1pvlry",
-    "dropBoxToken":"H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
-    "googleDriveClientId":"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
-    "googleDriveKey":"uof5qzvtwpq1dao",
-    "exportCore" : "https://newgizaServices.procoor.com/ExportAPI/api/ExportController/",
+>>>>>>> 32e577db6274087f088461e4ca35e0b52ccf8dec
+    "static": "http://172.30.1.17:8900/",
+    "downloads": "http://172.30.1.17:8900",
+    "dropBoxappKey": "r8iiezlpm1pvlry",
+    "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
+    "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
+    "googleDriveKey": "uof5qzvtwpq1dao",
+<<<<<<< HEAD
+    "refAutomatic": false
+  }  
   
-    "client_id": "PK4VX54r7A1hbMaYdbecJjhL1VChVXBu",
-    "client_secret": "v6p8tn5mezX5HUn5"
-  } 
+=======
+    "refAutomatic": false,
+  "exportCore": "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/",
+    
+    "client_id": "ahfzjNdy6bKklC7jwyhRDrjxRHR66snA",
+    "client_secret": "FZLvWKu1t3gvUYIV"
+}
+>>>>>>> 32e577db6274087f088461e4ca35e0b52ccf8dec
