@@ -237,6 +237,7 @@ export default class Api {
         return await this.xhrForWidgets(route, params === null ? null : params, "GET");
     }
     static post(route, params) {
+        debugger
         return this.xhr(route, params, "POST");
     }
 
@@ -368,6 +369,7 @@ export default class Api {
             });
     }
     static getPassword(route, password) {
+        
         const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
 
         const url = `${host}${route}`;

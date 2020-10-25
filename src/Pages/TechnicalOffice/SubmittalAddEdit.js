@@ -1126,7 +1126,7 @@ class SubmittalAddEdit extends Component {
   }
 
   viewAttachments() {
-    return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
+    return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
   }
 
   getLogsSubmittalItems = () => {

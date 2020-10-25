@@ -111,6 +111,8 @@ class clientModificationAddEdit extends Component {
             selectedClientSelection: { label: Resources.clientSelectionType[currentLanguage], value: "0" },
             selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
             selectedbuildingno: { label: Resources.Buildings[currentLanguage], value: "0" },
+            selecetedArea: { label: Resources.area[currentLanguage], value: "0" },
+
             answer: '',
             isLoading: false,
 
@@ -166,7 +168,7 @@ class clientModificationAddEdit extends Component {
                         bicCompanyId: '',
                         bicContactId: '',
                         fileNumberId: '',
-                        areaId: '',
+                        area: '',
                         building: '',
                         unitType: '',
                         apartment: '',
@@ -304,7 +306,7 @@ class clientModificationAddEdit extends Component {
                 let areaId = this.props.document.area;
                 let area = {};
                 if (areaId) {
-                    area = find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.label.toLowerCase() == areaId.toLowerCase(); });
 
                     this.setState({
                         selecetedArea: area
@@ -471,7 +473,7 @@ class clientModificationAddEdit extends Component {
         let saveDocument = { ...this.state.document };
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
-
+        saveDocument.area=this.state.selecetedArea.label;
         dataservice.addObject('AddContractsClientModifications', saveDocument).then(res => {
             this.setState({
                 isLoading: false,

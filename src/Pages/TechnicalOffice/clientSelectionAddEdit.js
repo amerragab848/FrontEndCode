@@ -102,7 +102,7 @@ class clientSelectionAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedClientSelection: { label: Resources.clientSelectionType[currentLanguage], value: "0" },
-            selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
+            selectedLocation: { label: Resources.location[currentLanguage], value: "0" },         
             selectedbuildingno: { label: Resources.Buildings[currentLanguage], value: "0" },
             answer: '',
         }
