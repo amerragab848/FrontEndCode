@@ -1888,7 +1888,7 @@
             },
             {
                 "name": "area",
-                "value": "areaName",
+                "value": "area",
                 "type": "S"
             },
             {
