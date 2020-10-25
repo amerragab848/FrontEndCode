@@ -158,7 +158,7 @@ class ExportDetails extends Component {
   drawFields() {
     let fields = DED[this.props.docTypeId]
     let data = this.props.document
-debugger
+    debugger
     let rows = fields.fields.map((field, index) => {
       let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
       let nextIndex = (index + 1);
@@ -292,10 +292,10 @@ debugger
         </thead>
         <tbody>
           {this.props.files.map((file, index) => {
-            return (<tr key={index}> 
+            return (<tr key={index}>
               <td>
                 <div className="contentCell tableCell-2">
-                <a className="pdfPopup various zero">{file.fileNameDisplay}</a>
+                  <a className="pdfPopup various zero">{file.fileNameDisplay}</a>
                 </div>
               </td>
               <td>
@@ -307,7 +307,7 @@ debugger
                 <div className="contentCell tableCell-4">
                   <p className="zero">{file.uploadedBy}</p>
                 </div>
-              </td> 
+              </td>
               <td>
                 <div className="contentCell tableCell-4">
                   <a href={file.parentAttachFile}>{file.fileNameDisplay}</a>
@@ -586,7 +586,7 @@ debugger
               {this.props.files.map((file, index) => {
                 return (
                   <a href={file.parentAttachFile}>{(index + 1) + ' - ' + file.fileNameDisplay}</a>
-                  )
+                )
               })}
             </div>
           </div>
@@ -742,7 +742,7 @@ debugger
                 {this.drawWorkFlowCycles()}
               </div>
               <div class="newPrint__workflow--comment">
-                <h3>WorkFlow Notes</h3>
+                <h3>WorkFlow Notes </h3>
                 {this.drawWorkFlowComment()}
               </div>
             </Fragment>
@@ -822,10 +822,12 @@ debugger
                         <h3 className="zero">{cycle.contactName}</h3>
                         <p className="zero">{cycle.companyName}</p>
                       </span>
-                      {cycle.signature != null ?
+                      {cycle.statusVal != null ?
                         <div className="signature_img">
                           <img src={cycle.signature != null ? Config.getPublicConfiguartion().downloads + "/" + cycle.signature : Signature} alt="..." />
-                        </div> : null}
+                        </div> : null
+                      }
+
                       <div className="workflow__statue">
                         <h5 className="zero">
                           <img style={{ margin: '0 3px' }} src={cycle.statusVal == null ? pending : cycle.statusVal === true ? approval : declined} />
@@ -1290,7 +1292,7 @@ debugger
 
         {this.state.isLoading === true ? <LoadingSection /> : null}
         {/* excel export */}
-        <div style={{ display: 'none' }}> 
+        <div style={{ display: 'none' }}>
           {this.drawFields()}
           {this.props.docTypeId != 120 ? this.drawItems() : null}
 
