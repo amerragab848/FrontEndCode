@@ -1163,6 +1163,7 @@ class materialRequestAddEdit extends Component {
                     "YYYY-MM-DD"
                 ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
                 saveDocument.boqId = this.state.selectedContract.boqId;
+                saveDocument.contractId = this.state.selectedContract.value;
                 saveDocument.companyId = this.state.fromCompany.value;
                 saveDocument.companyName = this.state.fromCompany.value;
                 saveDocument.area = this.state.area.label;
@@ -1200,6 +1201,7 @@ class materialRequestAddEdit extends Component {
                 "YYYY-MM-DD"
             ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             saveDocument.boqId = this.state.selectedContract.boqId;
+            saveDocument.contractId = this.state.selectedContract.value;
             saveDocument.companyId = this.state.fromCompany.value;
             saveDocument.companyName = this.state.fromCompany.value;
             saveDocument.area = this.state.area.label;

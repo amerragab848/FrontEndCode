@@ -1600,18 +1600,24 @@ class projectWorkFlowAddEdit extends Component {
                             </header>
                             <div className='document-fields'>
                                 <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput">
-                                        <Dropdown title="company" data={this.state.CompanyData} name="SelectedCompanyForEditContacts"
-                                            selectedValue={this.state.SelectedCompanyForEditContacts} onChange={setFieldValue}
-                                            handleChange={(e) => this.handleChangeDrops(e, "SelectedCompanyForEditContacts")} touched={touched.SelectedCompanyForEditContacts}
-                                            onBlur={setFieldTouched} error={errors.SelectedCompanyForEditContacts} value={values.SelectedCompanyForEditContacts} />
+                                    <div className="linebylineInput fullInputWidth disabled">
+                                        <label className="control-label">{Resources['company'][currentLanguage]}</label>
+                                        <div className="ui input inputDev">
+                                            <input autoComplete="off" value={this.state.SelectedCompanyForEditContacts?this.state.SelectedCompanyForEditContacts.label:null} className="form-control" name="SelectedCompanyForEditContacts"
+                                                 onChange={() => { }}
+                                                placeholder={Resources['company'][currentLanguage]} />
+                                        </div>
                                     </div>
-                                    <div className="linebylineInput">
-                                        <Dropdown title="ContactName" data={this.state.ContactData} name="SelectedContactForEditContacts"
-                                            selectedValue={values.SelectedContactForEditContacts} onChange={setFieldValue} value={values.SelectedContactForEditContacts}
-                                            handleChange={(e) => this.handleChangeDrops(e, "SelectedContactForEditContacts")}
-                                            onBlur={setFieldTouched} error={errors.SelectedContactForEditContacts} touched={touched.SelectedContactForEditContacts} />
+
+                                    <div className="linebylineInput fullInputWidth disabled">
+                                        <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
+                                        <div className="ui input inputDev">
+                                            <input autoComplete="off" value={values.SelectedContactForEditContacts?values.SelectedContactForEditContacts.label:null} className="form-control" name="SelectedContactForEditContacts"
+                                                 onChange={() => { }}
+                                                placeholder={Resources['ContactName'][currentLanguage]} />
+                                        </div>
                                     </div>
+
                                     <div className="linebylineInput fullInputWidth">
                                         <label className="control-label">{Resources['levelNo'][currentLanguage]}</label>
                                         <div className={'ui input inputDev ' + (errors.levelNoForEdit && touched.levelNoForEdit ? 'has-error' : null) + ' '}>

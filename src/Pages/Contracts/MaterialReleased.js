@@ -8,8 +8,7 @@ import Export from "../../Componants/OptionsPanels/Export";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from '../../api';
-import config from "../../Services/Config";
-//import { Form } from "semantic-ui-react";
+import config from "../../Services/Config"; 
 import { Formik, Form } from "formik";
 
 
@@ -22,165 +21,115 @@ class MaterialReleased extends Component {
     constructor(props) {
         super(props)
         this.columnsGrid = [
-            {
-                //  Header: Resources["select"][currentLanguage],
-                //  id: "checkbox",
-                //  accessor: "id",
-                //  Cell: ({ row }) => {
-                //      return (
-                //          <div className="ui checked checkbox  checkBoxGray300 ">
-                //              <input type="checkbox" className="checkbox" checked={this.state.selected[row._original.id] === true} onChange={() => this.toggleRow(row._original)} />
-                //              <label />
-                //          </div>
-                //      );
-                //  },
-                //  width: 70,
+            { 
                 field: "id",
                 title: Resources["select"][currentLanguage],
                 groupable: true,
                 fixed: true,
                 width: 16,
                 sortable: true,
-                type: "text",
-             
+                type: "text" 
             },
-            {
-
-
+            { 
                 field: "arrange",
                 title: Resources["arrange"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "text"
-            }, {
-
-
+            }, { 
                 field: "description",
                 title: Resources["description"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            {
-
+            { 
                 field: "quantity",
                 title: Resources["quantity"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            {
-
+            { 
                 field: "unitPrice",
                 title: Resources["unitPrice"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "number"
             },
-            {
-
-
+            { 
                 field: "resourceCode",
                 title: Resources["resourceCode"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "number"
             },
-            {
-
-
+            { 
                 field: "materialReleaseName",
                 title: Resources["materialReleasedsubject"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            {
-
+            { 
                 field: "materialReleaseArrange",
                 title: Resources["materialReleasedarrange"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            {
-
-
+            { 
                 field: "materialReleaseDate",
                 title: Resources["materialReleasedDate"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
-                type: "text"
+                type: "date"
             },
             {
-
-
                 field: "areaName",
                 title: Resources["area"][currentLanguage],
                 groupable: true,
-
                 width: 16,
                 sortable: true,
                 type: "text"
             },
             {
-
-
                 field: "locationName",
                 title: Resources["location"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "text"
 
             },
-            {
-
-
+            { 
                 field: "remarks",
                 title: Resources["remarks"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "number"
-            },
-
-            {
-
-
+            }, 
+            { 
                 field: "total",
                 title: Resources["total"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "number"
             },
-            {
-
-
+            { 
                 field: "materialType",
                 title: Resources["materialType"][currentLanguage],
-                groupable: true,
-
+                groupable: true, 
                 width: 16,
                 sortable: true,
                 type: "text"
@@ -214,13 +163,13 @@ class MaterialReleased extends Component {
             rows: this.props.items,
             selectedRows: [],
             totalRows: this.props.totalRows,
-            pageSize: 5,
-            pageNumber: 0,//this.props.pageNumberinit?this.props.pageNumberinit:0,
+            pageSize: 50,
+            pageNumber: 0,
             filterMode: false,
             api: 'GetMaterialReleaseTicketsByContractId?',
-            pageTitle:  Resources['contractsItems'][currentLanguage],
-            totalvalues:this.props.totalVals,
-            totalRturnedvalues:this.props.totalRturnedvals
+            pageTitle: Resources['contractsItems'][currentLanguage],
+            totalvalues: this.props.totalVals,
+            totalRturnedvalues: this.props.totalRturnedvals
         }
     }
     GetNextData = () => {
@@ -231,7 +180,7 @@ class MaterialReleased extends Component {
         if (this.state.pageSize * this.state.pageNumber <= maxRows) {
             this.setState({
                 isLoading: true,
-                gridLoading:true,
+                gridLoading: true,
                 pageNumber: pageNumber
             });
         }
@@ -239,41 +188,40 @@ class MaterialReleased extends Component {
         let url = this.state.api + "contractId=" + this.state.contractId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
         Api.get(url).then(result => {
             let oldRows = result; //this.state.rows;
-             const newRows = oldRows; //[...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
-             if(result)
-             {
-             this.state.totalRows = this.state.totalRows+ result.length;
+            const newRows = oldRows; //[...oldRows, ...result]; // arr3 ==> [1,2,3,3,4,5]
+            if (result) {
+                this.state.totalRows = this.state.totalRows + result.length;
 
-             }
-             const totalList = result.map(item=>{
-                if(item.materialType=="Released")
-                return item.total;
-                else{
-                  return 0;
+            }
+            const totalList = result.map(item => {
+                if (item.materialType == "Released")
+                    return item.total;
+                else {
+                    return 0;
                 }
-              });
-        
-              const totalRteurnedList = result.map(item=>{
-                if(item.materialType=="Returned")
-                return item.total;
-                else{
-                  return 0;
+            });
+
+            const totalRteurnedList = result.map(item => {
+                if (item.materialType == "Returned")
+                    return item.total;
+                else {
+                    return 0;
                 }
-              });
-        
-              const totalvalues = totalList.reduce(
-              (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
-              0);
-        
-              const totalRturnedvalues = totalRteurnedList.reduce(
-                (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+            });
+
+            const totalvalues = totalList.reduce(
+                (previousTotal, currentTotal, index) => previousTotal + currentTotal,
+                0);
+
+            const totalRturnedvalues = totalRteurnedList.reduce(
+                (previousTotal, currentTotal, index) => previousTotal + currentTotal,
                 0);
             this.setState({
                 rows: newRows,
-                totalvalues:totalvalues,
-                totalRturnedvalues:totalRturnedvalues,
+                totalvalues: totalvalues,
+                totalRturnedvalues: totalRturnedvalues,
                 isLoading: false,
-                gridLoading:false,
+                gridLoading: false,
 
             });
         }).catch(ex => {
@@ -281,7 +229,7 @@ class MaterialReleased extends Component {
             this.setState({
                 rows: oldRows,
                 isLoading: false,
-                gridLoading:false
+                gridLoading: false
             });
         });
     };
@@ -293,7 +241,7 @@ class MaterialReleased extends Component {
 
             this.setState({
                 isLoading: true,
-                gridLoading:true,
+                gridLoading: true,
                 pageNumber: pageNumber
             });
         }
@@ -301,45 +249,45 @@ class MaterialReleased extends Component {
         Api.get(url).then(result => {
             let oldRows = result; //[];// this.state.rows;
             const newRows = oldRows;//[...oldRows, ...result];
-            const totalList = result.map(item=>{
-                if(item.materialType=="Released")
-                return item.total;
-                else{
-                  return 0;
+            const totalList = result.map(item => {
+                if (item.materialType == "Released")
+                    return item.total;
+                else {
+                    return 0;
                 }
-              });
-        
-              const totalRteurnedList = result.map(item=>{
-                if(item.materialType=="Returned")
-                return item.total;
-                else{
-                  return 0;
+            });
+
+            const totalRteurnedList = result.map(item => {
+                if (item.materialType == "Returned")
+                    return item.total;
+                else {
+                    return 0;
                 }
-              });
-        
-              const totalvalues = totalList.reduce(
-              (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
-              0);
-        
-              const totalRturnedvalues = totalRteurnedList.reduce(
-                (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
+            });
+
+            const totalvalues = totalList.reduce(
+                (previousTotal, currentTotal, index) => previousTotal + currentTotal,
+                0);
+
+            const totalRturnedvalues = totalRteurnedList.reduce(
+                (previousTotal, currentTotal, index) => previousTotal + currentTotal,
                 0);
 
             this.setState({
                 rows: newRows,
                 totalRows: result.length,
-                totalvalues:totalvalues,
-                totalRturnedvalues:totalRturnedvalues,
+                totalvalues: totalvalues,
+                totalRturnedvalues: totalRturnedvalues,
                 isLoading: false,
-                gridLoading:false,
-               
+                gridLoading: false,
+
             });
         }).catch(ex => {
             let oldRows = this.state.rows;
             this.setState({
                 rows: oldRows,
                 isLoading: false,
-                gridLoading:false
+                gridLoading: false
             });
         });
     };
@@ -370,20 +318,20 @@ class MaterialReleased extends Component {
         }
     }
     formSubmitHandler = (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
     }
     componentDidUpdate(prevProps) {
 
         if (this.props.items !== prevProps.items) {
             this.setState({
-                 rows: this.props.items,
-                 totalvalues:this.props.totalVals,
-                 totalRturnedvalues:this.props.totalRturnedvals,
-                 gridLoading: false,
-                 totalRows: this.props.totalRows,
-             });
+                rows: this.props.items,
+                totalvalues: this.props.totalVals,
+                totalRturnedvalues: this.props.totalRturnedvals,
+                gridLoading: false,
+                totalRows: this.props.totalRows,
+            });
         }
-      
+
     }
     render() {
         let columnsItem = [
@@ -502,13 +450,8 @@ class MaterialReleased extends Component {
                     rowClick={this.formSubmitHandler}
                 />
             ) : <LoadingSection />
-        return (
-
-            <Fragment >
-               
-
-                             
-
+        return ( 
+            <Fragment > 
                 <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['contractsItems'][currentLanguage]}</h3>
@@ -522,23 +465,15 @@ class MaterialReleased extends Component {
                                 </g>
                             </svg>
                         </span>
-                    </div>
-
-                    {/* {this.state.contractId ?
-                        <div className="filterBTNS">
-                            {config.IsAllow(1182) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.showPopup}>New</button>
-                                : null}
-                            {btnExport}
-                        </div>
-                        : null} */}
-                     <div className="filterBTNS">
+                    </div> 
+                    <div className="filterBTNS">
                         {btnExport}
-                       
+
                     </div>
                     <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>{(this.state.pageSize * this.state.pageNumber) + 1}
-                            {/* </span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of */}
+                                {/* </span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of */}
                             </span> - <span>{this.state.totalRows}</span> of
                             <span>{this.state.totalRows}</span>
                         </div>
@@ -553,39 +488,39 @@ class MaterialReleased extends Component {
                 </div>
                 {this.state.gridLoading === false ? (
 
-                    <div  className="document-fields">
-                        
-                 <Form id="signupForm1" className="proForm datepickerContainer customProform"    noValidate="novalidate">
-                    <div className="proForm datepickerContainer">
+                    <div className="document-fields">
 
-                        <div className="linebylineInput valid-input" >
-                        <label className="control-label">{Resources.totalRelease[currentLanguage]}</label>
-                        <div className="ui input inputDev" >
-                            <input name='total' className="form-control fsadfsadsa" id="total"
-                                
-                                autoComplete='off' 
-                                value={this.state.totalvalues}
-                                readOnly
-                                /> 
-                        </div>
-                    </div>
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
+                            <div className="proForm datepickerContainer">
 
-                        <div className="linebylineInput valid-input" >
-                        <label className="control-label">{Resources.totalRturned[currentLanguage]}</label>
-                        <div className="ui input inputDev" >
-                            <input name='total' className="form-control fsadfsadsa" id="total"
-                                
-                                autoComplete='off' 
-                                value={this.state.totalRturnedvalues}
-                                readOnly
-                                /> 
+                                <div className="linebylineInput valid-input" >
+                                    <label className="control-label">{Resources.totalRelease[currentLanguage]}</label>
+                                    <div className="ui input inputDev" >
+                                        <input name='total' className="form-control fsadfsadsa" id="total"
+
+                                            autoComplete='off'
+                                            value={this.state.totalvalues}
+                                            readOnly
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="linebylineInput valid-input" >
+                                    <label className="control-label">{Resources.totalRturned[currentLanguage]}</label>
+                                    <div className="ui input inputDev" >
+                                        <input name='total' className="form-control fsadfsadsa" id="total"
+
+                                            autoComplete='off'
+                                            value={this.state.totalRturnedvalues}
+                                            readOnly
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </Form>
+                        <div className="grid-container">
+                            {dataGrid}
                         </div>
-                        </div>
-                     </div>
-                     </Form>
-                    <div  className="grid-container">
-                        {dataGrid}
-                   </div>
                     </div>
                 ) : <LoadingSection />}
 

@@ -94,8 +94,7 @@ class ViewAttachmments extends Component {
             accountId: accountId,
             server: Config.getPublicConfiguartion().static + "PM/api/Procoor/"
         });
-
-        console.log( item.parentAttachFile,'+ item.parentAttachFile....');
+ 
         window.open(
             Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#"  + item.parentAttachFile
         );
