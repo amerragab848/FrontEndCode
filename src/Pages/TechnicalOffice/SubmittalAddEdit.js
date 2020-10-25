@@ -265,12 +265,12 @@ class SubmittalAddEdit extends Component {
 
       });
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-    
-     
+
+
         this.setState({
           itemData: data
         });
-       // this.props.actions.ExportingData({ items: data });
+        // this.props.actions.ExportingData({ items: data });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     } else {
@@ -1637,12 +1637,14 @@ class SubmittalAddEdit extends Component {
                                   {Resources.subject[currentLanguage]}
                                 </label>
                                 <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
-                                  <input name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
+                                  <textarea name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
                                     autoComplete="off"
                                     value={this.state.document.subject || ''}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                    onChange={e => this.handleChange(e, "subject")} />
-                                  {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                    onChange={e => this.handleChange(e, "subject")} >
+                                    {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+
+                                  </textarea>
 
                                 </div>
                               </div>
