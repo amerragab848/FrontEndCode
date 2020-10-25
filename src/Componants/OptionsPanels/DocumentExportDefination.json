@@ -1984,7 +1984,7 @@
             },
             {
                 "name": "area",
-                "value": "areaName",
+                "value": "area",
                 "type": "S"
             },
             {
@@ -1999,7 +1999,7 @@
             },
             {
                 "name": "apartmentNumber",
-                "value": "apartmentNumber",
+                "value": "apartment",
                 "type": "S"
             },
             {
