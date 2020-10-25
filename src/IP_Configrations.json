@@ -20,10 +20,9 @@
     "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
     "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
     "googleDriveKey": "uof5qzvtwpq1dao",
-    "refAutomatic": false
-<<<<<<< HEAD
-  }  
-  
-=======
+    "refAutomatic": false,
+    "exportCore": "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/",
+    "client_id": "ahfzjNdy6bKklC7jwyhRDrjxRHR66snA",
+    "client_secret": "FZLvWKu1t3gvUYIV"
 }  
->>>>>>> a9a032bacabedf713d8d300e7786432b6fc7c621
+
