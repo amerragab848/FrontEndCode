@@ -72,9 +72,9 @@ class addItemDescription extends Component {
                     id: nextProps.docId,
                     itemDescription: nextProps.item,
                     selectedUnit: { label: nextProps.item.unit, value: nextProps.item.unit },
-                    selectedBoqType:{ label: nextProps.item.boqType, value: nextProps.item.boqTypeId },
-                    selectedBoqSubType:{ label: nextProps.item.boqSubType, value: nextProps.item.boqSubTypeId },
-                    selectedBoqSubTypeChild:{ label: nextProps.item.boqTypeChild, value: nextProps.item.boqChildTypeId }
+                    selectedBoqType: { label: nextProps.item.boqType, value: nextProps.item.boqTypeId },
+                    selectedBoqSubType: { label: nextProps.item.boqSubType, value: nextProps.item.boqSubTypeId },
+                    selectedBoqSubTypeChild: { label: nextProps.item.boqTypeChild, value: nextProps.item.boqChildTypeId }
                 }
             }
             return null
@@ -103,8 +103,6 @@ class addItemDescription extends Component {
     }
 
     componentDidMount() {
-        //this.fillTable();
-
         DataService.GetDataList("GetDefaultListForUnit?listType=unit", "listType", "listType").then(res => {
             this.setState({ Units: [...res] });
         });
@@ -114,7 +112,7 @@ class addItemDescription extends Component {
         });
 
         if (this.props.showItemType === true) {
-            DataService.GetDataGrid("GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000").then(result => {
+            DataService.GetDataGrid("GetaccountsDefaultListForList?listType=estimationitemtype").then(result => {
                 let Data = [];
 
                 result.forEach(item => {
@@ -130,7 +128,7 @@ class addItemDescription extends Component {
                 });
             });
 
-            DataService.GetDataList("GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000", "title", "id").then(res => {
+            DataService.GetDataList("GetaccountsDefaultListForList?listType=equipmentType", "title", "id").then(res => {
                 this.setState({ equipmentTypes: [...res] });
             });
         }
@@ -139,14 +137,6 @@ class addItemDescription extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.isViewMode !== prevProps.isViewMode) {
         }
-    }
-
-    fillTable() {
-        // dataservice.GetDataGrid(this.props.getItemsApi).then(result => {
-        //     this.setState({
-        //         itemsList: [...result]
-        //     });
-        // });
     }
 
     saveVariationOrderItem(event) {
@@ -164,7 +154,7 @@ class addItemDescription extends Component {
             if (result) {
 
                 let arr = [];
-                
+
                 if (this.props.docType === "vo") arr.push(saveDocument);
                 else arr.push(result);
                 this.props.actions.editItemDescriptions(arr);
@@ -218,26 +208,19 @@ class addItemDescription extends Component {
 
     handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, fieldLabel) {
         if (event == null) return;
-        // selectedBoqType: { label: Resources.boqType[currentLanguage], value: "0" },
-        // selectedBoqSubType: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-        // selectedBoqSubTypeChild: { label: Resources.boqSubType[currentLanguage], value: "0" },
-        // selectedBoqType:{ label: nextProps.item.boqType, value: nextProps.item.boqTypeId },
-        // selectedBoqSubType:{ label: nextProps.item.boqSubType, value: nextProps.item.boqSubTypeId },
-        // selectedBoqSubTypeChild:{ label: nextProps.item.boqTypeChild, value: nextProps.item.boqChildTypeId }
-      
         let original_document = { ...this.state.itemDescription };
         let updated_document = {};
-        if(field=="boqTypeId"){
-            var obj={ label: Resources.boqTypeChild[currentLanguage], value: "0" };
+        if (field == "boqTypeId") {
+            var obj = { label: Resources.boqTypeChild[currentLanguage], value: "0" };
             updated_document["boqChildTypeId"] = "0";
             updated_document["boqTypeChild"] = Resources.boqTypeChild[currentLanguage];
-            this.setState({selectedBoqSubTypeChild:obj})
+            this.setState({ selectedBoqSubTypeChild: obj })
         }
-        if(field=="boqChildTypeId"){
-            var obj={ label: Resources.boqSubType[currentLanguage], value: "0" };
+        if (field == "boqChildTypeId") {
+            var obj = { label: Resources.boqSubType[currentLanguage], value: "0" };
             updated_document["boqSubTypeId"] = "0";
             updated_document["boqSubType"] = Resources.boqSubType[currentLanguage];
-            this.setState({selectedBoqSubType:obj})
+            this.setState({ selectedBoqSubType: obj })
         }
         updated_document[field] = event.value;
         updated_document[fieldLabel] = event.label;
@@ -294,7 +277,6 @@ class addItemDescription extends Component {
                         link={Config.getPublicConfiguartion().downloads + this.props.docLink}
                         header="addManyItems"
                         disabled={this.props.changeStatus ? this.props.docId > 0 ? true : false : false}
-                    //afterUpload={() => this.fillTable()}
                     />
                 ) : null}
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
@@ -410,14 +392,14 @@ class addItemDescription extends Component {
                                                 <div className="linebylineInput valid-input">
                                                     <Dropdown title="boqType" data={this.state.boqTypes}
                                                         selectedValue={this.state.selectedBoqType}
-                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqTypeId", "selectedBoqType", true, "GetAllBoqChild", "parentId", "BoqTypeChilds", "boqType")}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqTypeId", "selectedBoqType", true, "GetBoqChildForList", "parentId", "BoqTypeChilds", "boqType")}
                                                         name="boqType" index="boqType" />
                                                 </div>
                                                 <div className="linebylineInput valid-input">
                                                     <Dropdown title="boqTypeChild"
                                                         data={this.state.BoqTypeChilds}
                                                         selectedValue={this.state.selectedBoqSubTypeChild}
-                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqChildTypeId", "selectedBoqSubTypeChild", true, "GetAllBoqChild", "parentId", "BoqSubTypes", "boqChildType")}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqChildTypeId", "selectedBoqSubTypeChild", true, "GetBoqChildForList", "parentId", "BoqSubTypes", "boqChildType")}
                                                         name="boqTypeChild" index="boqTypeChild" />
                                                 </div>
                                                 <div className="letterFullWidth">
@@ -473,22 +455,6 @@ class addItemDescription extends Component {
                             </Form>
                         )}
                     </Formik>
-
-                    {/* <div className="doc-pre-cycle">
-                        <header>
-                            <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
-                        </header>
-                        <ReactTable
-                            ref={(r) => {
-                                this.selectTable = r;
-                            }}
-                            data={this.state.itemsList}
-                            columns={this.state.columns}
-                            defaultPageSize={10}
-                            minRows={2}
-                            noDataText={Resources['noData'][currentLanguage]}
-                        />
-                    </div> */}
                 </div>
             </div>
         );
@@ -499,7 +465,6 @@ function mapStateToProps(state) {
     return {
         docId: state.communication.docId,
         changeStatus: state.communication.changeStatus
-        // projectId: state.communication.projectId,
     };
 }
 

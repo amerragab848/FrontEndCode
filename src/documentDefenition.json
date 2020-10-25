@@ -10995,22 +10995,22 @@
         "friendlyName": "letterDate",
         "minWidth": 85,
         "width": "15%",
-        "dataType": "date",
+        "dataType": "string",
         "isDate": true,
         "isTime": false,
         "isCustom": false,
-        "exportDataType": "d"
+        "exportDataType": "s"
       },
       {
         "field": "drawingDate",
         "friendlyName": "drawingDate",
         "minWidth": 85,
         "width": "15%",
-        "dataType": "date",
+        "dataType": "string",
         "isDate": true,
         "isTime": false,
         "isCustom": false,
-        "exportDataType": "d"
+        "exportDataType": "s"
       },
       {
         "field": "refDoc",

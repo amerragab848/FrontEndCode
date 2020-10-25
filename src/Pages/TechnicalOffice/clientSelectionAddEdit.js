@@ -102,7 +102,7 @@ class clientSelectionAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedClientSelection: { label: Resources.clientSelectionType[currentLanguage], value: "0" },
-            selectedLocation: { label: Resources.location[currentLanguage], value: "0" },
+            selectedLocation: { label: Resources.location[currentLanguage], value: "0" },         
             selectedbuildingno: { label: Resources.Buildings[currentLanguage], value: "0" },
             answer: '',
         }
@@ -316,7 +316,7 @@ class clientSelectionAddEdit extends Component {
                 let areaId = this.props.document.area;
                 let area = {};
                 if (areaId) {
-                    area = find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.label.toLowerCase() == areaId.toLowerCase(); });
 
                     // area.lable = areaId;
                     // area.value = areaId;
@@ -335,7 +335,7 @@ class clientSelectionAddEdit extends Component {
                 let location = this.props.document.location;
                 let locationObj = {};
                 if (location) {
-                    locationObj = find(result, function (i) { return i.value == location; });
+                    locationObj = find(result, function (i) { return i.label.toLowerCase() == location.toLowerCase(); });
 
                     this.setState({
                         selectedLocation: locationObj
@@ -352,8 +352,9 @@ class clientSelectionAddEdit extends Component {
             if (isEdit) {
                 let buildingno = this.props.document.building;
                 let building = {};
+    
                 if (buildingno) {
-                    building = find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.label.toLowerCase() == buildingno.toLowerCase(); });
 
 
                     this.setState({
@@ -467,7 +468,27 @@ class clientSelectionAddEdit extends Component {
             });
         }
     }
+    handleChangeForSpecialDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+        if (event == null) return;
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document[field] = event.label;
+        updated_document = Object.assign(original_document, updated_document);
 
+        this.setState({
+            document: updated_document,
+            [selectedValue]: event
+        });
+
+        if (isSubscrib) {
+            let action = url + "?" + param + "=" + event.value
+            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                this.setState({
+                    [targetState]: result
+                });
+            });
+        }
+    }
     editLetter(event) {
         this.setState({
             isLoading: true
@@ -775,7 +796,7 @@ class clientSelectionAddEdit extends Component {
                                                                 isMulti={false}
                                                                 data={this.state.areas}
                                                                 selectedValue={this.state.selecetedArea}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selecetedArea')}
+                                                                handleChange={event => this.handleChangeForSpecialDropDown(event, 'area', false, '', '', '', 'selecetedArea')}
                                                                 index="areaId" />
                                                         </div>
 
@@ -785,7 +806,7 @@ class clientSelectionAddEdit extends Component {
                                                                 isMulti={false}
                                                                 data={this.state.locations}
                                                                 selectedValue={this.state.selectedLocation}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocation')}
+                                                                handleChange={event => this.handleChangeForSpecialDropDown(event, 'location', false, '', '', '', 'selectedLocation')}
                                                                 index="location" />
                                                         </div>
 
@@ -795,7 +816,7 @@ class clientSelectionAddEdit extends Component {
                                                                 isMulti={false}
                                                                 data={this.state.buildings}
                                                                 selectedValue={this.state.selectedbuildingno}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'building', false, '', '', '', 'selectedbuildingno')}
+                                                                handleChange={event => this.handleChangeForSpecialDropDown(event, 'building', false, '', '', '', 'selectedbuildingno')}
                                                                 index="building" />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
