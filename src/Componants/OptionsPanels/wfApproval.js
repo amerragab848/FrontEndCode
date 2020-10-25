@@ -93,6 +93,7 @@ class wfApproval extends Component {
   };
 
   sendToWorkFlow(values, fromConfirm) {
+    debugger
     if (values) {
       let selectedContacts = this.state.updateWorkFlow.contacts;
       let approvalStatus = this.state.updateWorkFlow.approvalStatus;
