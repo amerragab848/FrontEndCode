@@ -64,7 +64,7 @@ class addItemDescription extends Component {
             getItemsApi: this.props.getItemsApi,
             itemTypeTitle: "",
             collapsed: true,
-            showEquipmentDrop:false
+            showEquipmentDrop: false
         };
     }
 
@@ -275,6 +275,33 @@ class addItemDescription extends Component {
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
+                                                {
+                                                    Resources.arrange[
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                            </label>
+                                            <div className="ui input inputDev">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="arrange"
+                                                    readOnly
+                                                    defaultValue={
+                                                        this.state.itemDescription
+                                                            .arrange
+                                                    }
+                                                    name="arrange"
+                                                    placeholder={
+                                                        Resources.arrange[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
                                                 {Resources.quantity[currentLanguage]}
                                             </label>
                                             <div className="ui input inputDev">
@@ -285,7 +312,7 @@ class addItemDescription extends Component {
                                                 ) : null}
                                             </div>
                                         </div>
-                                        {/* {this.props.isUnitPrice === undefined ? <div className="linebylineInput valid-input">
+                                        {this.props.isUnitPrice === undefined ? <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources.unitPrice[currentLanguage]}
                                             </label>
@@ -298,7 +325,7 @@ class addItemDescription extends Component {
                                                 />
                                                 {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
                                             </div>
-                                        </div> : null} */}
+                                        </div> : null}
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources["itemCode"][currentLanguage]}
@@ -329,22 +356,22 @@ class addItemDescription extends Component {
                                             <Dropdown title="unit" data={this.state.Units} selectedValue={this.state.selectedUnit}
                                                 handleChange={event => this.handleChangeItemDropDown(event, "unit", "selectedUnit", false, "", "", "")} index="unit" />
                                         </div>
-                                        {this.state.action== 2 || this.state.action == 3?
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {Resources["days"][currentLanguage]}
-                                            </label>
-                                            <div className={"inputDev ui input " + (errors.days ? "has-error" : !errors.days && touched.days ? " has-success" : " ")}>
-                                                <input name="days" className="form-control" id="days"
-                                                    placeholder={Resources["days"][currentLanguage]}
-                                                    autoComplete="off"
-                                                    onBlur={handleBlur}
-                                                    value={this.state.itemDescription.days}
-                                                    onChange={e => this.handleChangeItem(e, "days")} />
-                                                {errors.days ? (<em className="pError"> {errors.days} </em>) : null}
+                                        {this.state.action == 2 || this.state.action == 3 ?
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {Resources["days"][currentLanguage]}
+                                                </label>
+                                                <div className={"inputDev ui input " + (errors.days ? "has-error" : !errors.days && touched.days ? " has-success" : " ")}>
+                                                    <input name="days" className="form-control" id="days"
+                                                        placeholder={Resources["days"][currentLanguage]}
+                                                        autoComplete="off"
+                                                        onBlur={handleBlur}
+                                                        value={this.state.itemDescription.days}
+                                                        onChange={e => this.handleChangeItem(e, "days")} />
+                                                    {errors.days ? (<em className="pError"> {errors.days} </em>) : null}
+                                                </div>
                                             </div>
-                                        </div>
-                                        :null}
+                                            : null}
                                         {this.props.showBoqType == true ? (
                                             <React.Fragment>
                                                 <div className="linebylineInput valid-input">
