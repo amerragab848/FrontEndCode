@@ -108,7 +108,7 @@ class GeneralConfiguration extends Component {
             IsVacation: false,
             isLoading: false,
             showDefaultInterim: true,
-            showInventoryRadioButtonInItemsTab:true
+            useNormalMR:true
         }
     }
 
@@ -119,7 +119,7 @@ class GeneralConfiguration extends Component {
                 this.setState({
                     DefaultConfigurations: res,
                     showDefaultInterim: res["showDefaultInterim"],
-                    showInventoryRadioButtonInItemsTab: res["showInventoryRadioButtonInItemsTab"],
+                    useNormalMR: res["useNormalMR"],
                     SelectedTimesheet: SelectedTimesheet
                 })
             }
@@ -247,7 +247,7 @@ class GeneralConfiguration extends Component {
         let objAdd = this.state.DefaultConfigurations
 
         objAdd.showDefaultInterim = this.state.showDefaultInterim;
-        objAdd.showInventoryRadioButtonInItemsTab = this.state.showInventoryRadioButtonInItemsTab;
+        objAdd.useNormalMR = this.state.useNormalMR;
         dataservice.addObject('EditConfigurationById', objAdd).then(
             res => {
                 this.props.history.push({
@@ -543,11 +543,11 @@ class GeneralConfiguration extends Component {
                                                 <div className="linebylineInput linebylineInput__checkbox">
                                                     <label data-toggle="tooltip" title={Resources['showInventoryRadioButtonInItemsTab'][currentLanguage]} className="control-label"> {Resources['showInventoryRadioButtonInItemsTab'][currentLanguage]} </label>
                                                     <div className="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="showInventoryRadioButtonInItemsTab" checked={this.state.showInventoryRadioButtonInItemsTab === true} value={true} onChange={(e) => { this.handleChecked(true,"showInventoryRadioButtonInItemsTab") }} />
+                                                        <input type="radio" name="useNormalMR" checked={this.state.useNormalMR === true} value={true} onChange={(e) => { this.handleChecked(true,"useNormalMR") }} />
                                                         <label>{Resources['yes'][currentLanguage]}</label>
                                                     </div>
                                                     <div className="ui checkbox radio radioBoxBlue checked">
-                                                        <input type="radio" name="showInventoryRadioButtonInItemsTab" checked={this.state.showInventoryRadioButtonInItemsTab === false} value={false} onChange={(e) => { this.handleChecked(false,"showInventoryRadioButtonInItemsTab") }} />
+                                                        <input type="radio" name="useNormalMR" checked={this.state.useNormalMR === false} value={false} onChange={(e) => { this.handleChecked(false,"useNormalMR") }} />
                                                         <label> {Resources['no'][currentLanguage]}</label>
                                                     </div>
                                                 </div>
