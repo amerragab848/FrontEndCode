@@ -814,22 +814,11 @@ class projectWorkFlowAddEdit extends Component {
             res => {
 
                 this.setState({ showPopUp: true, IsEditWorkFlowItem: true })
-                let Companies = this.state.CompanyData
-                let SelectedCompany = find(Companies, function (i) { return i.value == res.companyId });
-
-                dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + res.companyId + '', 'contactName', 'id').then(
-                    res => {
-                        this.setState({
-                            ContactData: res,
-                            Approval: res.approvalStatusText,
-                        })
-                    }
-                )
-
                 this.setState({
                     ContactDataForEdit: res,
                     SelectedApproval: { label: res.approvalStatusText, value: res.approvalId },
-                    SelectedCompanyForEditContacts: SelectedCompany,
+                    SelectedCompanyForEditContacts: { 'value': res.companyId, 'label': res.companyName },
+                    Approval: res.approvalStatusText,
                     SelectedContactForEditContacts: { 'value': res.contactId, 'label': res.contactName }
                 })
             }
