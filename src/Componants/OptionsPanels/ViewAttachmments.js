@@ -86,8 +86,8 @@ class ViewAttachmments extends Component {
             docId: this.props.docId,
             name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
             photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
-            file: item.parentAttachFile,
-            fileName: item.parentAttachFile.split("/")[4],
+            file: item.parentAttachFile != null ? item.parentAttachFile : item.attachFile,
+            fileName: item.parentAttachFile != null ? item.parentAttachFile.split("/")[4] : item.fileName,
             fileId: item.id,
             stamp: stamp,
             editable: Config.IsAllow(4501),
@@ -107,8 +107,8 @@ class ViewAttachmments extends Component {
             docId: this.props.docId,
             name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
             photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
-            file: item.parentAttachFile,
-            fileName: item.parentAttachFile.split("/")[4],
+            file: item.parentAttachFile != null ? item.parentAttachFile : item.attachFile,
+            fileName: item.parentAttachFile != null ? item.parentAttachFile.split("/")[4] : item.fileName,
             fileId: item.id,
             stamp: stamp,
             editable: Config.IsAllow(4501),
@@ -344,7 +344,7 @@ class ViewAttachmments extends Component {
                     let ext = newExt ? newExt.toLowerCase() : "png";
                     let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
                     if (ext == "pdf") {
-                        item.pdfLink = this.createLinkForPDF(item,Index);
+                        item.pdfLink = this.createLinkForPDF(item, Index);
                     }
                     let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
                     if (item.isCloud !== true) {
@@ -448,8 +448,8 @@ class ViewAttachmments extends Component {
                                     ) : null}
 
                                     {ext === "pdf" ? (
-                                        <a href={item.pdfLink} target='_blank' data-toggle="tooltip" className="rootIcon"  >
-                                            <i className=" fa fa-link" width="100%" height="100%" onClick={() => this.goEditPdf(item, ext)} />
+                                        <a href={item.pdfLink} target='_blank' data-toggle="tooltip" className="rootIcon" onClick={() => this.goEditPdf(item, ext)} >
+                                            <i className=" fa fa-link" width="100%" height="100%" />
                                         </a>
                                     ) : null}
 
