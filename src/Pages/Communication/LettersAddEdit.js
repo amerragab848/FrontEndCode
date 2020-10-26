@@ -432,7 +432,7 @@ class LettersAddEdit extends Component {
 
         win.focus();
     }
-    
+
     fillDropDowns(isEdit, cb) {
         if (!isEdit) {
             dataservice.GetDataList("ProjectWorkFlowGetList?projectId=" + this.state.projectId, "subject", "id").then(result => {
@@ -700,7 +700,7 @@ class LettersAddEdit extends Component {
 
         this.setState({
             isLoading: true
-        });  
+        });
 
         let saveDocument = { ...this.state.document };
         saveDocument.projectId = this.props.projectId
@@ -803,13 +803,15 @@ class LettersAddEdit extends Component {
                                                                 {Resources.subject[currentLanguage]}
                                                             </label>
                                                             <div className={"inputDev ui input" + (errors.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                                <input name="subject" id="subject" className="form-control fsadfsadsa"
+                                                                <textarea name="subject" id="subject" className="form-control fsadfsadsa"
                                                                     placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete="off"
                                                                     value={this.state.document.subject}
                                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                                    onChange={e => this.handleChange(e, "subject")} />
-                                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                    onChange={e => this.handleChange(e, "subject")} >
+                                                                        {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                    </textarea>
+                                                                
                                                             </div>
                                                         </div>
 

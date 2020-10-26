@@ -116,7 +116,6 @@ class CommonLog extends Component {
       {
         title: 'Transfer To Project',
         handleClick: value => {
-          debugger
           if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
             let obj = {
               docId: value.id,

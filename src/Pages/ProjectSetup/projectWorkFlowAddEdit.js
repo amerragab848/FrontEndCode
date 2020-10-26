@@ -89,12 +89,6 @@ const ValidtionSchemaForFollowUps = Yup.object().shape({
 });
 
 const ValidtionSchemaContactsForEdit = Yup.object().shape({
-    SelectedCompanyForEditContacts: Yup.string()
-        .required(Resources['toCompanyRequired'][currentLanguage])
-        .nullable(true),
-    SelectedContactForEditContacts: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage])
-        .nullable(false),
     levelNoForEdit: Yup.number()
         .required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),

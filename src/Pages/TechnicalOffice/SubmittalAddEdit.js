@@ -265,12 +265,15 @@ class SubmittalAddEdit extends Component {
 
       });
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-    
-     
         this.setState({
           itemData: data
         });
-       // this.props.actions.ExportingData({ items: data });
+    
+        this.props.actions.SetCyclesExportingData({
+          items: data,
+          cyclesFields: ["arrange", "description", "submitalDate", "refDoc", "reviewResultName"],
+          cyclesfriendlyNames: ["numberAbb", "subject", "submitalDate", "refDoc", "reviewResult"]
+        });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     } else {
@@ -988,7 +991,7 @@ class SubmittalAddEdit extends Component {
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.submittalId = this.state.docId;
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    // this.changeCurrentStep(2);
+
     this.setState({ isLoading: true });
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
@@ -1637,12 +1640,14 @@ class SubmittalAddEdit extends Component {
                                   {Resources.subject[currentLanguage]}
                                 </label>
                                 <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
-                                  <input name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
+                                  <textarea name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
                                     autoComplete="off"
                                     value={this.state.document.subject || ''}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                    onChange={e => this.handleChange(e, "subject")} />
-                                  {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                    onChange={e => this.handleChange(e, "subject")} >
+                                    {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+
+                                  </textarea>
 
                                 </div>
                               </div>

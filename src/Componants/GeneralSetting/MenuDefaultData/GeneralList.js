@@ -87,7 +87,8 @@ const DropGeneralData =
     { label: Resources["assetsTypes"][currentLanguage], value: "assets_types" },
     { label: Resources["companyType"][currentLanguage], value: "companyType" },
     { label: Resources["approvalText"][currentLanguage], value: "WFApprovalstatus" },
-    { label: Resources["deductionType"][currentLanguage], value: "deductionType" }
+    { label: Resources["deductionType"][currentLanguage], value: "deductionType" },
+    { label: Resources["attachedPaperSize"][currentLanguage], value: "attachedPaperSize" }
     ]
 
 class GeneralList extends Component {

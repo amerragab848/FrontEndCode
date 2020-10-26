@@ -77,7 +77,7 @@ class ViewAttachmments extends Component {
     };
 
     goEditPdf = (item, ext) => {
-        let accountId = Config.getPayload().aci; 
+        let accountId = Config.getPayload().aci;
         var stamp = new Date().getTime();
 
         var data = JSON.stringify({
@@ -86,18 +86,37 @@ class ViewAttachmments extends Component {
             docId: this.props.docId,
             name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
             photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
-            file: item.parentAttachFile,
-            fileName: item.parentAttachFile.split("/")[4],
+            file: item.parentAttachFile != null ? item.parentAttachFile : item.attachFile,
+            fileName: item.parentAttachFile != null ? item.parentAttachFile.split("/")[4] : item.fileName,
             fileId: item.id,
             stamp: stamp,
             editable: Config.IsAllow(4501),
             accountId: accountId,
             server: Config.getPublicConfiguartion().static + "PM/api/Procoor/"
         });
- 
-        window.open(
-            Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#"  + item.parentAttachFile
-        );
+
+        window.open(Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#" + item.parentAttachFile, "_self");
+    };
+    createLinkForPDF = (item, index) => {
+        let accountId = Config.getPayload().aci;
+        var stamp = new Date().getTime() + index;
+
+        var data = JSON.stringify({
+            refer: window.location.href.replace("#", "-hashfill-"),
+            docTypeId: this.props.docTypeId,
+            docId: this.props.docId,
+            name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
+            photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
+            file: item.parentAttachFile != null ? item.parentAttachFile : item.attachFile,
+            fileName: item.parentAttachFile != null ? item.parentAttachFile.split("/")[4] : item.fileName,
+            fileId: item.id,
+            stamp: stamp,
+            editable: Config.IsAllow(4501),
+            accountId: accountId,
+            server: Config.getPublicConfiguartion().static + "PM/api/Procoor/"
+        });
+
+        return Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#" + item.parentAttachFile;
     };
 
     b64EncodeUnicode = str => {
@@ -324,6 +343,9 @@ class ViewAttachmments extends Component {
                     let newExt = this.ext(item.attachFile);
                     let ext = newExt ? newExt.toLowerCase() : "png";
                     let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
+                    if (ext == "pdf") {
+                        item.pdfLink = this.createLinkForPDF(item, Index);
+                    }
                     let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
                     if (item.isCloud !== true) {
                         var containerIndex = item.attachFile ? item.attachFile.indexOf("/" + Config.getPublicConfiguartion().BlobStorageContainerName) : -1;
@@ -398,7 +420,11 @@ class ViewAttachmments extends Component {
                                         </a>
                                     ) : null}
 
-                                    <a href={item["attachFile"]} download={item.fileNameDisplay} target="_" className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                                    <a href={item["attachFile"]}
+                                        download={item.fileNameDisplay}
+                                        target="_" className="pdfPopup various zero attachPdf"
+                                        data-toggle="tooltip"
+                                        title={Resources["download"][currentLanguage]}>
 
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                             <g fill="none" fillRule="evenodd" transform="translate(1)">
@@ -422,7 +448,7 @@ class ViewAttachmments extends Component {
                                     ) : null}
 
                                     {ext === "pdf" ? (
-                                        <a className="rootIcon" onClick={() => this.goEditPdf(item, ext)}>
+                                        <a href={item.pdfLink} target='_blank' data-toggle="tooltip" className="rootIcon" onClick={() => this.goEditPdf(item, ext)} >
                                             <i className=" fa fa-link" width="100%" height="100%" />
                                         </a>
                                     ) : null}

@@ -13,31 +13,31 @@ let publicFonts = currentLanguage === "ar" ? 'cairo-sb' : 'Muli, sans-serif'
 
 const filterStyle = {
   control: (styles, { isFocused }) =>
-      ({
-          ...styles,
-          backgroundColor: '#fff',
-          width: '100%',
-          height: '36px',
-          borderRadius: '4px',
-          border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
-          boxShadow: 'none',
-          transition: ' all 0.4s ease-in-out',
-          minHeight: '36px'
-      }),
+    ({
+      ...styles,
+      backgroundColor: '#fff',
+      width: '100%',
+      height: '36px',
+      borderRadius: '4px',
+      border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
+      boxShadow: 'none',
+      transition: ' all 0.4s ease-in-out',
+      minHeight: '36px'
+    }),
   option: (styles, { isDisabled, isFocused, isSelected }) => {
-      return {
-          ...styles,
-          backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
-          color: '#3e4352',
-          fontSize: '14px',
-          cursor: isDisabled ? 'not-allowed' : 'pointer',
-          textTransform: 'capitalize',
-          fontFamily: publicFonts,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          zIndex: '155'
-      };
+    return {
+      ...styles,
+      backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+      color: '#3e4352',
+      fontSize: '14px',
+      cursor: isDisabled ? 'not-allowed' : 'pointer',
+      textTransform: 'capitalize',
+      fontFamily: publicFonts,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      zIndex: '155'
+    };
   },
   input: styles => ({ ...styles, maxWidth: '100%' }),
   placeholder: styles => ({ ...styles, color: '#A8B0BF', fontSize: '13px', width: '100%', fontFamily: publicFonts }),
@@ -61,7 +61,7 @@ class FilterComponent extends Component {
     };
   }
 
-  componentDidMount() { 
+  componentDidMount() {
   }
 
   componentWillMount() {
@@ -247,7 +247,7 @@ class FilterComponent extends Component {
                             { label: Resources[column.trueLabel][currentLanguage], value: true },
                             { label: Resources[column.falseLabel][currentLanguage], value: false }
                           ]}
-                          styles= {filterStyle}
+                          styles={filterStyle}
                         />
                       </div>
                     );
