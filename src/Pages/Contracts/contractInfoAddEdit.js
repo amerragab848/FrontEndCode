@@ -1676,6 +1676,17 @@ getMaterialRelease(){
                           </div>
                           <div className="linebylineInput valid-input">
                             <label className="control-label">
+                              {Resources.amendmentsSum[currentLanguage]}
+                            </label>
+                            <div className="ui input inputDev">
+                              <input type="text" className="form-control" id="amendmentsSum" readOnly
+                                onChange={handleChange} onBlur={handleBlur}
+                                defaultValue={this.props.document.amendmentsSum || 0}
+                                name="amendmentsSum" placeholder={Resources.amendmentsSum[currentLanguage]} />
+                            </div>
+                          </div>
+                          <div className="linebylineInput valid-input">
+                            <label className="control-label">
                               {Resources.contractExecutedToDate[currentLanguage]}
                             </label>
                             <div className="ui input inputDev">
