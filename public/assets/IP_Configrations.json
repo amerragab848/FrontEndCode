@@ -1,28 +1,31 @@
+
 {
-  "BlobStorageContainerName": "project-files-badya",
+  "BlobStorageContainerName": "project-files-tatweer",
   "acApp": "AC",
-  "accountCompanyId": "14",
+  "accountCompanyId": "16",
   "azureStorage": true,
   "canSendAlert": "false",
   "cdn": "https://newgiza.azureedge.net",
-  "chatLocal": "https://Badya.procoor.com",
-  "chatStatic": "https://Badya.procoor.com",
-  "exportLocal": "https://Badya.procoor.com",
-  "exportStatic": "https://Badya.procoor.com",
+  "chatLocal": "https://Tatweermisr.procoor.com",
+  "chatStatic": "https://Tatweermisr.procoor.com",
+  "exportLocal": "https://Tatweermisr.procoor.com",
+  "exportStatic": "https://Tatweermisr.procoor.com",
   "fmApp": "FM",
   "hrApp": "HR",
-  "local": "https://BadyaServices.procoor.com/",
+  "local": "https://TatweerServices.procoor.com/",
   "loginServer": "https://procoorauthorization.procoor.com",
   "pmApp": "PM",
-  "static": "https://BadyaServices.procoor.com/",
-  "downloads": "https://BadyaServices.procoor.com",
+  "static": "https://TatweerServices.procoor.com/",
+  "downloads": "https://TatweerServices.procoor.com",
   "dropBoxappKey":"r8iiezlpm1pvlry",
   "dropBoxToken":"H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
   "googleDriveClientId":"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
   "googleDriveKey":"uof5qzvtwpq1dao",
   "refAutomatic": false, 
-  "exportCore" : "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/"	,
+  "exportCore" : "https://TatweerServices.procoor.com/ExportAPI/api/ExportController/"	,
  
-  "client_id": "DlSeYObvI78EFYfvEzK9GOwcQ4jvERA8",
-  "client_secret": "8eVDuCjah3JhAn1O"
+  "client_id": "2MvAbMOWOAsUbYRjiK5ukyR59rmAhspo",
+  "client_secret": "gtGe2S9GhWeD8NxA" 
+
+
 }
