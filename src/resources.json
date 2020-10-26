@@ -7881,9 +7881,9 @@
         "en": "Show In Report",
         "ar": "عرض فى التقارير"
     },
-    "hasInventory":{
-        "en":"Pull All Inventory Items",
-        "ar":"سحب جميع عناصر المخزون"
+    "hasInventory": {
+        "en": "Pull All Inventory Items",
+        "ar": "سحب جميع عناصر المخزون"
     },
     "replyMessage": {
         "en": "Reply Message",
@@ -8760,5 +8760,13 @@
     "chooseExcelFormat": {
         "en": "Choose Excel Format",
         "ar": "اختر صيغة"
+    },
+    "attachedPaperSize": {
+        "en": "Attached Paper Size",
+        "ar": "حجم الورق المرفق"
+    },
+    "attachedPaperSizeRequired":{
+        "en":"Please Select Attached Paper Size",
+        "ar":" من فضلك اختر حجم الورق المرفق"
     }
 }

@@ -1,70 +1,65 @@
-{   "22": {
-    "fields": [
-        {
-            "name":"fromCompany",
-            "value":"fromCompanyName",
-            "type":"S"
-        },
-        {
-        "name":"refDoc",
-        "value":"refDoc",
-        "type":"S"
-        },
-       {
-        "name": "description",
-        "value": "description",
-        "type": "S"
-       },
-        {
-            "name": "subject",
-            "value": "subject",
-            "type": "S"
-        },
-        {
-            "name": "numberAbb",
-            "value": "arrange",
-            "type": "S"
-        },
-        {
-            "name": "docDate",
-            "value": "docDate",
-            "type": "D"
-        },
-        {
-            "name": "status",
-            "value": "statusName",
-            "type": "S"
-        },
-        {
-            "name": "fromContact",
-            "value": "fromContactName",
-            "type": "S"
-        },
-        {
-            "name": "toCompany",
-            "value": "toCompanyName",
-            "type": "S"
-        },
-        {
-            "name": "attention",
-            "value": "toContactName",
-            "type": "S"
-        },
-        {
-            "name": "projectName",
-            "value": "projectName",
-            "type": "S"
-        }
-    ],
-    "columnsItems": [
-
-        
-    ],
-    "friendlyNames": [
-
-    ]
-},
-
+{
+    "22": {
+        "fields": [
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "description",
+                "value": "description",
+                "type": "S"
+            },
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
     "10": {
         "fields": [
             {
@@ -521,9 +516,9 @@
                 "type": "S"
             },
             {
-                "name":"boqLog",
-                "value":"boqName",
-                "type":"S"
+                "name": "boqLog",
+                "value": "boqName",
+                "type": "S"
             }
         ],
         "columnsItems": [
@@ -1508,7 +1503,6 @@
                 "value": "subject",
                 "type": "S"
             },
-           
             {
                 "name": "status",
                 "value": "statusName",
@@ -2263,8 +2257,7 @@
             "statusName",
             "flowCompanyName",
             "flowContactName",
-             "docCloseDate"
-            
+            "docCloseDate"
         ],
         "friendlyNames": [
             "numberAbb",
@@ -2274,9 +2267,7 @@
             "CompanyName",
             "ContactName",
             "approvedDate"
-          
         ]
-
     },
     "72": {
         "fields": [
@@ -2311,39 +2302,39 @@
                 "type": "S"
             },
             {
-                "name":"CompanyName",
-                "value":"companyName",
-                "type":"S"
+                "name": "CompanyName",
+                "value": "companyName",
+                "type": "S"
             },
             {
-                "name":"BOQCostCoding",
-                "value":"boqName",
-                "type":"S"
+                "name": "BOQCostCoding",
+                "value": "boqName",
+                "type": "S"
             },
             {
-                "name":"costCodingTree",
-                "value":"costCodingTreeName",
-                "type":"S"
+                "name": "costCodingTree",
+                "value": "costCodingTreeName",
+                "type": "S"
             },
             {
-"name":"collectedStatus",
-"value":"collectedStatus",
-"type":"S"
+                "name": "collectedStatus",
+                "value": "collectedStatus",
+                "type": "S"
             },
             {
-                "name":"canceled",
-                "value":"cancelled",
-                "type":"S"
+                "name": "canceled",
+                "value": "cancelled",
+                "type": "S"
             },
             {
-                "name":"transactionTypeName",
-                "value":"transactionTypeTitle",
-                "type":"S"
+                "name": "transactionTypeName",
+                "value": "transactionTypeTitle",
+                "type": "S"
             },
             {
-                "name":"approvalStatusName",
-                "value":"approvalStatusName",
-                "type":"S"
+                "name": "approvalStatusName",
+                "value": "approvalStatusName",
+                "type": "S"
             }
         ],
         "columnsItems": [
@@ -2818,7 +2809,6 @@
                 "value": "approvedChangeOrder",
                 "type": "S"
             }
-            
         ],
         "columnsItems": [
             "details",
@@ -3112,8 +3102,7 @@
             "totalContractor"
         ]
     },
-    "70":{
-     
+    "70": {
         "fields": [
             {
                 "name": "subject",
@@ -3134,7 +3123,7 @@
                 "name": "completionDate",
                 "value": "completionDate",
                 "type": "D"
-            },  
+            },
             {
                 "name": "CompanyName",
                 "value": "companyName",
@@ -3150,13 +3139,11 @@
                 "value": "toCompanyName",
                 "type": "S"
             },
-          
             {
                 "name": "status",
                 "value": "statusName",
                 "type": "S"
             },
-
             {
                 "name": "ToContact",
                 "value": "toContactName",
@@ -3172,8 +3159,7 @@
                 "value": "originalPurchaseOrderSum",
                 "type": "S"
             },
-
-             {
+            {
                 "name": "actualExceuted",
                 "value": "actualExceuted",
                 "type": "S"
@@ -3193,13 +3179,24 @@
                 "value": "completionDate",
                 "type": "D"
             }
-            
-          ],
-          "columnsItems": [
-            "arrange", "details", "unit", "quantity", "unitPrice", "total", "resourceCode"
+        ],
+        "columnsItems": [
+            "arrange",
+            "details",
+            "unit",
+            "quantity",
+            "unitPrice",
+            "total",
+            "resourceCode"
         ],
         "friendlyNames": [
-            "arrange", "details", "unit", "quantity", "unitPrice", "total", "resourceCode"
+            "arrange",
+            "details",
+            "unit",
+            "quantity",
+            "unitPrice",
+            "total",
+            "resourceCode"
         ]
     },
     "77": {

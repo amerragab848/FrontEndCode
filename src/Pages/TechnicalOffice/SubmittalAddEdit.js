@@ -265,12 +265,15 @@ class SubmittalAddEdit extends Component {
 
       });
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-
-
         this.setState({
           itemData: data
         });
-        // this.props.actions.ExportingData({ items: data });
+    
+        this.props.actions.SetCyclesExportingData({
+          items: data,
+          cyclesFields: ["arrange", "description", "submitalDate", "refDoc", "reviewResultName"],
+          cyclesfriendlyNames: ["numberAbb", "subject", "submitalDate", "refDoc", "reviewResult"]
+        });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     } else {
@@ -988,7 +991,7 @@ class SubmittalAddEdit extends Component {
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.submittalId = this.state.docId;
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    // this.changeCurrentStep(2);
+
     this.setState({ isLoading: true });
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {

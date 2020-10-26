@@ -103,7 +103,6 @@ class TransferInventory extends Component {
         }
         let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId
         dataservice.GetDataGrid(url).then(result => {
-            debugger
             this.setState({
                 document: result
             })
@@ -180,7 +179,6 @@ class TransferInventory extends Component {
             pendingQuantity: this.state.document.pendingQuantity,
             inventoryId: this.state.document.id
         }
-        debugger
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
