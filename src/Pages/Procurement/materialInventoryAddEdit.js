@@ -74,50 +74,32 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "poSubject",
                 sortabel: true,
                 width: 200
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["originalQuantity"][currentLanguage],
                 accessor: "originalQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["deliveredQuantity"][currentLanguage],
                 accessor: "deliveredQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["remainingQuantity"][currentLanguage],
                 accessor: "remainingQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["poUnitPrice"][currentLanguage],
                 accessor: "poUnitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["unitPrice"][currentLanguage],
                 accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["lastDeliveryDate"][currentLanguage],
                 accessor: "lastDeliveryDate",
                 width: 200,
@@ -131,56 +113,22 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "arrange",
                 sortabel: true,
                 width: 80
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["approvedQuantity"][currentLanguage],
                 accessor: "approvedQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
-                Header: Resources["rejectedQuantity"][currentLanguage],
-                accessor: "rejectedQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["pendingQuantity"][currentLanguage],
-                accessor: "pendingQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["totalQuantity"][currentLanguage],
-                accessor: "quantity",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["unitPrice"][currentLanguage],
                 accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["total"][currentLanguage],
                 accessor: "total",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["fromProject"][currentLanguage],
                 accessor: "projectName",
                 width: 200,
@@ -194,44 +142,22 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "arrange",
                 sortabel: true,
                 width: 80
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["approvedQuantity"][currentLanguage],
                 accessor: "approvedQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
-                Header: Resources["totalQuantity"][currentLanguage],
-                accessor: "quantity",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["unitPrice"][currentLanguage],
                 accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["total"][currentLanguage],
                 accessor: "total",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["lastReleasedDate"][currentLanguage],
                 accessor: "lastReleasedDate",
                 width: 200,
@@ -245,46 +171,19 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "arrange",
                 sortabel: true,
                 width: 80
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
+            }, {
+                Header: Resources["unitPrice"][currentLanguage],
+                accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 500,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["approvedQuantity"][currentLanguage],
                 accessor: "approvedQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
-                Header: Resources["rejectedQuantity"][currentLanguage],
-                accessor: "rejectedQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["pendingQuantity"][currentLanguage],
-                accessor: "pendingQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["transactionType"][currentLanguage],
-                accessor: "transactionTypeName",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["totalQuantity"][currentLanguage],
-                accessor: "quantity",
+            }, {
+                Header: Resources["total"][currentLanguage],
+                accessor: "total",
                 width: 200,
                 sortabel: true
             },
@@ -293,20 +192,7 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "currentCredit",
                 width: 200,
                 sortabel: true
-            },
-            {
-                Header: Resources["unitPrice"][currentLanguage],
-                accessor: "unitPrice",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["total"][currentLanguage],
-                accessor: "total",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["lastDeliveryDate"][currentLanguage],
                 accessor: "lastDeliveryDate",
                 width: 200,
@@ -832,18 +718,7 @@ class MaterialInventoryAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.materialInventory[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
-                        {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
-                        }
+                        
                         <div className="step-content">
 
                             <div id="step1" className="step-content-body">
@@ -1015,14 +890,14 @@ class MaterialInventoryAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input disabled">
-                                                            <label className="control-label">{Resources.releasePrice[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.avgUnitPrice[currentLanguage]}</label>
                                                             <div className={"shareLinks " + (this.props.changeStatus === false ? "" : "disabled")}>
                                                                 <div className={"inputDev ui input"} >
                                                                     <input type="text" className="form-control" id="unitPrice"
                                                                         onChange={() => { }}
                                                                         value={this.state.document.releasePrice}
                                                                         name="unitPrice"
-                                                                        placeholder={Resources.releasePrice[currentLanguage]} />
+                                                                        placeholder={Resources.avgUnitPrice[currentLanguage]} />
                                                                 </div>
                                                             </div>
                                                         </div>
