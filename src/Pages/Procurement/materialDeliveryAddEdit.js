@@ -113,6 +113,7 @@ class materialDeliveryAddEdit extends Component {
             }
             index++;
         }
+        
         this.state = {
             selectedRows: [],
             CurrentStep: 0,

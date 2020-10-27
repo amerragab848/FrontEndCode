@@ -14239,8 +14239,8 @@
         "exportDataType": "s"
       },
       {
-        "field": "remainingQuantity",
-        "friendlyName": "remainingQuantity",
+        "field": "approvedQuantity",
+        "friendlyName": "approvedQuantity",
         "minWidth": 85,
         "width": "8%",
         "dataType": "number",
@@ -14259,18 +14259,7 @@
         "isTime": false,
         "isCustom": true,
         "exportDataType": "n"
-      },
-      {
-        "field": "total",
-        "friendlyName": "total",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "number",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": true,
-        "exportDataType": "n"
-      },
+      }, 
       {
         "field": "totalApproved",
         "friendlyName": "totalApproved",
@@ -14281,29 +14270,7 @@
         "isTime": false,
         "isCustom": true,
         "exportDataType": "n"
-      },
-      {
-        "field": "quantity",
-        "friendlyName": "deliveredQuantity",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "number",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "n"
-      },
-      {
-        "field": "releasedQuantity",
-        "friendlyName": "releasedQuantity",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "number",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "n"
-      },
+      }, 
       {
         "field": "unit",
         "friendlyName": "unit",
@@ -14314,40 +14281,7 @@
         "isTime": false,
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "approvedQuantity",
-        "friendlyName": "approvedQuantity",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "isCustom": false,
-        "exportDataType": "n"
-      },
-      {
-        "field": "rejectedQuantity",
-        "friendlyName": "rejectedQuantity",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "exportDataType": "n",
-        "isCustom": false
-      },
-      {
-        "field": "pendingQuantity",
-        "friendlyName": "pendingQuantity",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "exportDataType": "n",
-        "isCustom": false
-      },
+      },  
       {
         "field": "releasePrice",
         "friendlyName": "releasePrice",
@@ -14447,18 +14381,7 @@
         "type": "string",
         "isCustom": false
       },
-      {
-        "name": "rejectedQuantity",
-        "field": "rejectedQuantity",
-        "type": "string",
-        "isCustom": false
-      },
-      {
-        "name": "pendingQuantity",
-        "field": "pendingQuantity",
-        "type": "string",
-        "isCustom": false
-      },
+       
       {
         "name": "releasedQuantity",
         "field": "releasedQuantity",
@@ -14470,19 +14393,7 @@
         "field": "releasePrice",
         "type": "string",
         "isCustom": false
-      },
-      {
-        "name": "remainingQuantity",
-        "field": "remainingQuantity",
-        "type": "string",
-        "isCustom": false
-      },
-      {
-        "name": "quantity",
-        "field": "quantity",
-        "type": "string",
-        "isCustom": false
-      },
+      }, 
       {
         "name": "lastDeliveryDate",
         "field": "lastDeliveryDate",

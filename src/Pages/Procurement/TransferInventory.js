@@ -32,13 +32,7 @@ const validationSchema = Yup.object().shape({
     fromProjectId: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true),
 
     approvedQuantity: Yup.number().required(Resources['approvedQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    rejectedQuantity: Yup.number().required(Resources['rejectedQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    pendingQuantity: Yup.number().required(Resources['pendingQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
+        .typeError(Resources['onlyNumbers'][currentLanguage])
 
 })
 class TransferInventory extends Component {
@@ -101,27 +95,31 @@ class TransferInventory extends Component {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
             else { links[i].classList.add("odd") }
         }
-        let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId
+
+        let url = "GetRequestTransferItemEdit?id=" + this.state.docId;
+
         dataservice.GetDataGrid(url).then(result => {
+
             this.setState({
                 document: result
-            })
+            });
+            let selectedValue = { value: result.toProjectId, label: result.toProjectName };
+            this.setState({ selectedProject: selectedValue });
         })
 
         this.fillDropDowns(true);
-
     }
 
     fillDropDowns(isEdit) {
 
         dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.state.projectId, 'projectName', 'projectId').then(result => {
             if (isEdit) {
-                let id = this.props.document.toProjectId;
-                let selectedValue = {};
-                if (id) {
-                    selectedValue = find(result, function (i) { return i.value === id });
-                    this.setState({ selectedProject: selectedValue })
-                }
+                let id = this.state.document.toProjectId; 
+               // let selectedValue = {};
+                //if (id) {
+                    //selectedValue = find(result, function (i) { return i.id === id });
+                   // this.setState({ selectedProject: selectedValue })
+               // }
             }
             this.setState({ ProjectsData: [...result] })
         })
@@ -129,10 +127,13 @@ class TransferInventory extends Component {
 
     handleChangeDropDown = (event) => {
         if (event == null) return
+
         let original_document = { ...this.state.document }
         let updated_document = {};
+
         updated_document['fromProjectId'] = event.value;
         updated_document = Object.assign(original_document, updated_document);
+
         this.setState({ document: updated_document, selectedProject: event })
     }
 
@@ -222,7 +223,7 @@ class TransferInventory extends Component {
                                             onBlur={setFieldTouched}
                                             error={errors.fromProjectId}
                                             touched={touched.fromProjectId}
-                                            
+
                                             name="fromProjectId"
                                             id="fromProjectId"
                                             index="fromProjectId"
@@ -230,9 +231,9 @@ class TransferInventory extends Component {
                                             title="Project"
                                             data={this.state.ProjectsData}
                                             selectedValue={this.state.selectedProject}
-                                            handleChange={e => this.handleChangeDropDown(e)} 
-                                            //em={touched.project}
-                                            />
+                                            handleChange={e => this.handleChangeDropDown(e)}
+                                        //em={touched.project}
+                                        />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
@@ -249,32 +250,6 @@ class TransferInventory extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['pendingQuantity'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.pendingQuantity ? 'has-error' : !errors.pendingQuantity && touched.pendingQuantity ? (" has-success") : " ")}>
-                                            <input name='pendingQuantity' className="form-control" autoComplete='off' placeholder={Resources['pendingQuantity'][currentLanguage]}
-                                                value={this.state.document.pendingQuantity} onChange={e => this.HandelChangeInputs(e, 'pendingQuantity')}
-                                                onBlur={(e) => {
-                                                    handleBlur(e)
-                                                    handleChange(e)
-                                                }}
-                                            />
-                                            {errors.pendingQuantity ? (<em className="pError">{errors.pendingQuantity}</em>) : null}
-                                        </div>
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['rejectedQuantity'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.rejectedQuantity ? 'has-error' : !errors.rejectedQuantity && touched.rejectedQuantity ? (" has-success") : " ")}>
-                                            <input name='rejectedQuantity' className="form-control" autoComplete='off' placeholder={Resources['rejectedQuantity'][currentLanguage]}
-                                                value={this.state.document.rejectedQuantity} onChange={e => this.HandelChangeInputs(e, 'rejectedQuantity')}
-                                                onBlur={(e) => {
-                                                    handleBlur(e)
-                                                    handleChange(e)
-                                                }} />
-                                            {errors.rejectedQuantity ? (<em className="pError">{errors.rejectedQuantity}</em>) : null}
-                                        </div>
-                                    </div>
 
                                 </div>
 
