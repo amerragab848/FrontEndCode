@@ -1096,7 +1096,7 @@ class materialReleaseAddEdit extends Component {
                         </div>
                         <div className="doc-pre-cycle">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => { this.props.history.push("/materialRelease/2") }}>Finish</button>
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => { this.props.history.push("/materialRelease/"+ this.props.projectId) }}>Finish</button>
                             </div>
                         </div>
                     </div>

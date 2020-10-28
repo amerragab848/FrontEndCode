@@ -113,7 +113,7 @@ class materialDeliveryAddEdit extends Component {
             }
             index++;
         }
-        
+
         this.state = {
             selectedRows: [],
             CurrentStep: 0,
@@ -1701,22 +1701,12 @@ class materialDeliveryAddEdit extends Component {
                                                         false ? (
                                                             <button
                                                                 className={
-                                                                    "primaryBtn-1 btn " +
-                                                                    (this.props
-                                                                        .isViewMode ===
-                                                                        true
-                                                                        ? " disNone"
-                                                                        : "")
+                                                                    "primaryBtn-1 btn " + (this.props.isViewMode === true ? " disNone" : "")
                                                                 }
                                                                 type="submit"
-                                                                disabled={
-                                                                    this.props
-                                                                        .isViewMode
-                                                                }>
+                                                                disabled={this.props.isViewMode}>
                                                                 {
-                                                                    Resources["save"][
-                                                                    currentLanguage
-                                                                    ]
+                                                                    Resources["save"][currentLanguage]
                                                                 }
                                                             </button>
                                                         ) : (
@@ -1789,7 +1779,7 @@ class materialDeliveryAddEdit extends Component {
                         </div>
                         <div className="doc-pre-cycle">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>NEXT STEP</button>
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => { this.props.history.push("/materialDelivery/"+ this.props.projectId) }}>Finish</button>
                             </div>
                         </div>
                     </div>
@@ -1954,7 +1944,8 @@ class materialDeliveryAddEdit extends Component {
                                 changeCurrentStep={stepNo =>
                                     this.changeCurrentStep(stepNo)
                                 }
-                                stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
+                                stepNo={this.state.CurrentStep} 
+                                changeStatus={docId === 0 ? false : true}
                             />
                         </Fragment>
                     </div>
