@@ -20,6 +20,7 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
+let isTransferAdd = false;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
@@ -54,6 +55,7 @@ class TransferInventory extends Component {
                     docApprovalId = obj.docApprovalId;
                     perviousRoute = obj.perviousRoute;
                     arrange = obj.arrange;
+                    isTransferAdd = obj.isTransferAdd;
                 } catch { this.props.history.goBack(); }
             }
             index++;
@@ -72,10 +74,15 @@ class TransferInventory extends Component {
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             selectedProject: { label: Resources.projectName[currentLanguage], value: "0" },
             ProjectsData: [],
-            permission: [{ name: 'sendByEmail', code: '0' }, { name: 'sendByInbox', code: '0' },
-            { name: 'sendTask', code: '0' }, { name: 'distributionList', code: '0' },
-            { name: 'createTransmittal', code: '0' }, { name: 'sendToWorkFlow', code: '3775' },
-            { name: 'viewAttachments', code: '0' }, { name: 'deleteAttachments', code: '0' }],
+            permission: [
+                { name: 'sendByEmail', code: '0' },
+                { name: 'sendByInbox', code: '0' },
+                { name: 'sendTask', code: '0' },
+                { name: 'distributionList', code: '0' },
+                { name: 'createTransmittal', code: '0' },
+                { name: 'sendToWorkFlow', code: 3775 },
+                { name: 'viewAttachments', code: '0' },
+                { name: 'deleteAttachments', code: '0' }],
             approvedQuantity: 0,
             rejectedQuantity: 0,
             pendingQuantity: 0,
@@ -95,18 +102,30 @@ class TransferInventory extends Component {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
             else { links[i].classList.add("odd") }
         }
+        if (isTransferAdd != true) {
+            let url = "GetRequestTransferItemEdit?id=" + this.state.docId;
 
-        let url = "GetRequestTransferItemEdit?id=" + this.state.docId;
+            dataservice.GetDataGrid(url).then(result => {
 
-        dataservice.GetDataGrid(url).then(result => {
+                this.setState({
+                    document: result
+                });
+                let selectedValue = { value: result.toProjectId, label: result.toProjectName };
+                this.setState({ selectedProject: selectedValue });
+            })
 
-            this.setState({
-                document: result
-            });
-            let selectedValue = { value: result.toProjectId, label: result.toProjectName };
-            this.setState({ selectedProject: selectedValue });
-        })
+        }else{
+            let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId;
 
+            dataservice.GetDataGrid(url).then(result => {
+
+                this.setState({
+                    document: result
+                });
+                let selectedValue = { value: result.toProjectId, label: result.toProjectName };
+                this.setState({ selectedProject: selectedValue });
+            })
+        }
         this.fillDropDowns(true);
     }
 
@@ -114,12 +133,12 @@ class TransferInventory extends Component {
 
         dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.state.projectId, 'projectName', 'projectId').then(result => {
             if (isEdit) {
-                let id = this.state.document.toProjectId; 
-               // let selectedValue = {};
+                let id = this.state.document.toProjectId;
+                // let selectedValue = {};
                 //if (id) {
-                    //selectedValue = find(result, function (i) { return i.id === id });
-                   // this.setState({ selectedProject: selectedValue })
-               // }
+                //selectedValue = find(result, function (i) { return i.id === id });
+                // this.setState({ selectedProject: selectedValue })
+                // }
             }
             this.setState({ ProjectsData: [...result] })
         })
@@ -250,39 +269,36 @@ class TransferInventory extends Component {
                                         </div>
                                     </div>
 
+                                    {isTransferAdd != true ?
+                                        <div className="approveDocument">
+                                            <div className="approveDocumentBTNS">
+                                                {this.state.isLoading ?
+                                                    <button className="primaryBtn-1 btn disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button> :
+                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                                                }
+                                                <DocumentActions
+                                                    isApproveMode={this.state.isApproveMode}
+                                                    docTypeId={this.state.docTypeId}
+                                                    docId={this.state.docId}
+                                                    projectId={this.state.projectId}
+                                                    previousRoute={this.state.previousRoute}
+                                                    docApprovalId={this.state.docApprovalId}
+                                                    currentArrange={this.state.arrange}
+                                                    showModal={this.props.showModal}
+                                                    showOptionPanel={this.showOptionPanel}
+                                                    permission={this.state.permission}
+                                                />
 
-                                </div>
-
-                                {this.props.changeStatus === true ?
-                                    <div className="approveDocument">
-                                        <div className="approveDocumentBTNS">
-                                            {this.state.isLoading ?
-                                                <button className="primaryBtn-1 btn disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
-                                                </button> :
-                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                            }
-                                            <DocumentActions
-                                                isApproveMode={this.state.isApproveMode}
-                                                docTypeId={this.state.docTypeId}
-                                                docId={this.state.docId}
-                                                projectId={this.state.projectId}
-                                                previousRoute={this.state.previousRoute}
-                                                docApprovalId={this.state.docApprovalId}
-                                                currentArrange={this.state.arrange}
-                                                showModal={this.props.showModal}
-                                                showOptionPanel={this.showOptionPanel}
-                                                permission={this.state.permission}
-                                            />
-
+                                            </div>
                                         </div>
-                                    </div>
-                                    : null}
-
+                                        : null}
+                                </div>
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
                                         {this.props.changeStatus === true ?

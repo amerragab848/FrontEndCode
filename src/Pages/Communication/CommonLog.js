@@ -124,6 +124,7 @@ class CommonLog extends Component {
               arrange: 0,
               docApprovalId: 0,
               isApproveMode: false,
+              isTransferAdd : true,
               perviousRoute: window.location.pathname + window.location.search
             };
 
