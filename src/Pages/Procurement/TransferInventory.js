@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { Formik, Form, Field } from 'formik';
+import React, { Component } from "react";
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -11,9 +11,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
+import moment from "moment"; 
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
@@ -27,7 +25,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
     fromProjectId: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true),
@@ -36,6 +33,7 @@ const validationSchema = Yup.object().shape({
         .typeError(Resources['onlyNumbers'][currentLanguage])
 
 })
+
 class TransferInventory extends Component {
 
     constructor(props) {
@@ -97,6 +95,8 @@ class TransferInventory extends Component {
     }
 
     componentDidMount() {
+        this.props.actions.FillGridLeftMenu();
+        //to show left menu only
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
@@ -106,7 +106,6 @@ class TransferInventory extends Component {
             let url = "GetRequestTransferItemEdit?id=" + this.state.docId;
 
             dataservice.GetDataGrid(url).then(result => {
-
                 this.setState({
                     document: result
                 });
@@ -114,11 +113,10 @@ class TransferInventory extends Component {
                 this.setState({ selectedProject: selectedValue });
             })
 
-        }else{
+        } else {
             let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId;
 
             dataservice.GetDataGrid(url).then(result => {
-
                 this.setState({
                     document: result
                 });
@@ -132,14 +130,7 @@ class TransferInventory extends Component {
     fillDropDowns(isEdit) {
 
         dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.state.projectId, 'projectName', 'projectId').then(result => {
-            if (isEdit) {
-                let id = this.state.document.toProjectId;
-                // let selectedValue = {};
-                //if (id) {
-                //selectedValue = find(result, function (i) { return i.id === id });
-                // this.setState({ selectedProject: selectedValue })
-                // }
-            }
+
             this.setState({ ProjectsData: [...result] })
         })
     }
@@ -170,28 +161,10 @@ class TransferInventory extends Component {
         this.setState({ docId: 0 })
     }
 
-    showBtnsSaving() {
-        let btn = null;
-
-        if (this.state.docId === 0) {
-            btn = (
-                <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = (
-                <button className="primaryBtn-1 btn mediumBtn" type="submit">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
-        }
-        return btn;
-    }
 
     saveDoc = () => {
         let obj = {
-            id: 0,
+            id: isTransferAdd == true ? 0 : this.state.document.id,
             fromProjectId: this.state.document.projectId,
             toProjectId: this.state.selectedProject.value,
             approvedQuantity: this.state.document.approvedQuantity,
@@ -199,12 +172,13 @@ class TransferInventory extends Component {
             pendingQuantity: this.state.document.pendingQuantity,
             inventoryId: this.state.document.id
         }
+
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-
-                this.props.history.push("/materialInventory/" + this.state.projectId);
+                this.props.history.push("/requestsTransferItems/" + this.state.projectId);
             }
+
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
@@ -231,6 +205,7 @@ class TransferInventory extends Component {
                         onSubmit={values => {
                             if (this.props.showModal) { return; }
                             this.saveDoc()
+
                         }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="QsForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -251,7 +226,6 @@ class TransferInventory extends Component {
                                             data={this.state.ProjectsData}
                                             selectedValue={this.state.selectedProject}
                                             handleChange={e => this.handleChangeDropDown(e)}
-                                        //em={touched.project}
                                         />
                                     </div>
 
@@ -280,7 +254,8 @@ class TransferInventory extends Component {
                                                             <div className="bounce3" />
                                                         </div>
                                                     </button> :
-                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}
+                                                        type="submit">{Resources.edit[currentLanguage]}</button>
                                                 }
                                                 <DocumentActions
                                                     isApproveMode={this.state.isApproveMode}
@@ -306,13 +281,14 @@ class TransferInventory extends Component {
                                             : null}
                                     </div>
                                 </div>
-
-                                <div className="slider-Btns">
-                                    {/* {this.showBtnsSaving()} */}
-                                    <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                                        {Resources.save[currentLanguage]}
-                                    </button>
-                                </div>
+                                {isTransferAdd == true ?
+                                    <div className="slider-Btns">
+                                        <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                                            {Resources.save[currentLanguage]}
+                                        </button>
+                                    </div>
+                                    : null
+                                }
                             </Form>
                         )}
                     </Formik>
@@ -328,7 +304,6 @@ class TransferInventory extends Component {
                     <div className="doc-container">
 
                         <div className="step-content">
-
                             {this.props.changeStatus == true ?
                                 <header className="main__header">
                                     <div className="main__header--div">
@@ -337,7 +312,6 @@ class TransferInventory extends Component {
                                     </div>
                                 </header> : null}
                             {StepOne()}
-
                         </div>
 
                     </div>

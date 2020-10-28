@@ -15,7 +15,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -139,11 +139,11 @@ class materialReleaseAddEdit extends Component {
             selectedFromCompany: { label: Resources.fromCompany[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
-            selectedMaterialRelease: { 
-                label: Resources.materialReleaseTypeSelection[currentLanguage], 
-                value: "0" ,
-                contractId:"0",
-                contractName:""
+            selectedMaterialRelease: {
+                label: Resources.materialReleaseTypeSelection[currentLanguage],
+                value: "0",
+                contractId: "0",
+                contractName: ""
             },
             selectedCostCoding: { label: Resources.costCodingSelection[currentLanguage], value: "0" },
             SpecsSectionData: [],
@@ -170,7 +170,7 @@ class materialReleaseAddEdit extends Component {
             ItemDescriptionInfo: {},
             BtnLoading: false,
             ShowPopup: false,
-            contractName:'',
+            contractName: '',
             objItemForEdit: {},
             quantityEdit: 0,
             IsAddMood: false,
@@ -264,7 +264,7 @@ class materialReleaseAddEdit extends Component {
 
     fillSubDropDown = (value, isEdit) => {
         let action = 'GetContactsByCompanyId?companyId=' + value
-        
+
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (isEdit) {
                 let toSubField = this.state.document.orderFromContactId;
@@ -303,23 +303,22 @@ class materialReleaseAddEdit extends Component {
             }
             this.setState({ SpecsSectionData: [...result] })
         })
- 
-        dataservice.GetDataListSiteRequestNewVersion("GetSiteRequestForListByProjectId?projectId=" + this.state.projectId, 'subject', 'id','contractId','contractName').then(result => {
+
+        dataservice.GetDataListSiteRequestNewVersion("GetSiteRequestForListByProjectId?projectId=" + this.state.projectId, 'subject', 'id', 'contractId', 'contractName').then(result => {
             if (isEdit) {
                 let id = this.props.document.siteRequestId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = find(result, function (i)
-                     { 
-                           if( i.value == id )
-                             return i
+                    selectedValue = find(result, function (i) {
+                        if (i.value == id)
+                            return i
 
-                        });
+                    });
                     this.setState({ selectedMaterialRelease: selectedValue })
                 }
             }
             this.setState({ MaterialReleaseData: [...result] })
-        }) 
+        })
 
         dataservice.GetDataListWithNewVersion('GetContractsBoq?projectId=2&pageNumber=0&pageSize=1000000000', 'subject', 'id').then(result => {
             if (isEdit) {
@@ -436,7 +435,7 @@ class materialReleaseAddEdit extends Component {
         if (Mood === 'EditMood') {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.contractId=this.state.selectedMaterialRelease.contractId;
+            doc.contractId = this.state.selectedMaterialRelease.contractId;
             dataservice.addObject('EditLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -447,7 +446,7 @@ class materialReleaseAddEdit extends Component {
         } else {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.contractId=this.state.selectedMaterialRelease.contractId;
+            doc.contractId = this.state.selectedMaterialRelease.contractId;
             dataservice.addObject('AddLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, docId: result.id, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -507,7 +506,7 @@ class materialReleaseAddEdit extends Component {
 
     SaveItem = (values) => {
         let Qty = parseInt(this.state.quantity)
-        let ActaulQty = parseInt(this.state.ItemDescriptionInfo.originalQuantity)
+        let ActaulQty = parseInt(this.state.ItemDescriptionInfo.remainingQuantity)
         if (Qty <= ActaulQty) {
             this.setState({ isLoading: true })
             let obj = {
@@ -564,13 +563,12 @@ class materialReleaseAddEdit extends Component {
         let data = []
         data = this.state.descriptionList.filter(i => i.id === e.value)
         let obj = data[0]
-        console.log(obj)
+        console.log(obj,'handleChangeItemId...')
         this.setState({
             selectedItemId: e,
             unitPrice: obj.unitPrice,
             ItemDescriptionInfo: obj,
-            quantity: obj.quantity
-
+            quantity: obj.remainingQuantity 
         })
     }
 
@@ -778,10 +776,10 @@ class materialReleaseAddEdit extends Component {
                                     </div>
                                     {/* added */}
                                     <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources.contract[currentLanguage]}</label> 
-                                        <div className={"inputDev ui input" } width="100%" >
-                                            <input name='contract' className="form-control fsadfsadsa" id="contract" value={this.props.changeStatus == true ?this.props.document.contractName:this.state.selectedMaterialRelease.contractName}
-                                                autoComplete='off' readOnly="true" /> 
+                                        <label className="control-label">{Resources.contract[currentLanguage]}</label>
+                                        <div className={"inputDev ui input"} width="100%" >
+                                            <input name='contract' className="form-control fsadfsadsa" id="contract" value={this.props.changeStatus == true ? this.props.document.contractName : this.state.selectedMaterialRelease.contractName}
+                                                autoComplete='off' readOnly="true" />
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
@@ -1192,11 +1190,11 @@ class materialReleaseAddEdit extends Component {
                                                     value={this.state.objItemForEdit.remarks} onChange={e => this.HandleChangeItemsForEdit('remarks', e)} />
                                             </div>
                                         </div>
- 
+
                                         <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
                                             <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
-                                                <input  
+                                                <input
                                                     name='unitPrice'
                                                     className="form-control"
                                                     autoComplete='off'
@@ -1268,7 +1266,7 @@ class materialReleaseAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialRelease[currentLanguage]} perviousRoute={this.state.perviousRoute} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
-                        <div className="step-content"> 
+                        <div className="step-content">
                             {this.state.isLoading ? <LoadingSection /> : null}
                             {this.state.CurrentStep === 0 ?
                                 <Fragment>

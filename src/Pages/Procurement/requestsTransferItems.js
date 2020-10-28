@@ -101,6 +101,7 @@ class requestsTransferItems extends Component {
         this.setState({
             isLoading: true
         })
+        this.props.actions.FillGridLeftMenu();
         dataservice.GetDataGrid('GetAllRequestsTransferItems').then(res => {
             this.setState({
                 rows: res,
