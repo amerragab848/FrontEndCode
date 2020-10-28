@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
-import "react-table/react-table.css";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -28,8 +26,7 @@ const validationSchema = Yup.object().shape({
     disciplineId: Yup.string().required(Resources['disciplineRequired'][currentLanguage]).nullable(true),
     specsSectionId: Yup.string().required(Resources['specsSectionSelection'][currentLanguage]).nullable(true),
     approvedQuantity: Yup.number().required(Resources["approvedQuantityRequired"][currentLanguage]),
-    pendingQuantity: Yup.number().required(Resources["pendingQuantityRequired"][currentLanguage]),
-    rejectedQuantity: Yup.number().required(Resources["rejectedQuantityRequired"][currentLanguage]),
+
     resourceCode: Yup.string().required(Resources["resourceCodeRequired"][currentLanguage]),
     unitPrice: Yup.number().required(Resources["unitPriceRequired"][currentLanguage]),
 })
@@ -43,15 +40,6 @@ let perviousRoute = '';
 let arrange = 0;
 
 const find = require('lodash/find');
-
-const marginObject = {
-    left: 40,
-    right: 40,
-    top: 50,
-    bottom: 50
-};
-
-const colorSchema = ["#39bd3d", "#dfe2e6"];
 
 class MaterialInventoryAddEdit extends Component {
 
@@ -73,7 +61,7 @@ class MaterialInventoryAddEdit extends Component {
                     perviousRoute = obj.perviousRoute;
                     arrange = obj.arrange;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -86,50 +74,32 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "poSubject",
                 sortabel: true,
                 width: 200
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["originalQuantity"][currentLanguage],
                 accessor: "originalQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["deliveredQuantity"][currentLanguage],
                 accessor: "deliveredQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["remainingQuantity"][currentLanguage],
                 accessor: "remainingQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["poUnitPrice"][currentLanguage],
                 accessor: "poUnitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["unitPrice"][currentLanguage],
                 accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["lastDeliveryDate"][currentLanguage],
                 accessor: "lastDeliveryDate",
                 width: 200,
@@ -143,56 +113,22 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "arrange",
                 sortabel: true,
                 width: 80
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["approvedQuantity"][currentLanguage],
                 accessor: "approvedQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
-                Header: Resources["rejectedQuantity"][currentLanguage],
-                accessor: "rejectedQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["pendingQuantity"][currentLanguage],
-                accessor: "pendingQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["totalQuantity"][currentLanguage],
-                accessor: "quantity",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["unitPrice"][currentLanguage],
                 accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["total"][currentLanguage],
                 accessor: "total",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["fromProject"][currentLanguage],
                 accessor: "projectName",
                 width: 200,
@@ -206,44 +142,22 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "arrange",
                 sortabel: true,
                 width: 80
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["approvedQuantity"][currentLanguage],
                 accessor: "approvedQuantity",
                 width: 200,
                 sortabel: true
-            },
-            {
-                Header: Resources["totalQuantity"][currentLanguage],
-                accessor: "quantity",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["unitPrice"][currentLanguage],
                 accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["total"][currentLanguage],
                 accessor: "total",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["lastReleasedDate"][currentLanguage],
                 accessor: "lastReleasedDate",
                 width: 200,
@@ -257,68 +171,28 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "arrange",
                 sortabel: true,
                 width: 80
-            },
-            {
-                Header: Resources["resourceCode"][currentLanguage],
-                accessor: "resourceCode",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["details"][currentLanguage],
-                accessor: "description",
-                width: 500,
-                sortabel: true
-            },
-            {
-                Header: Resources["approvedQuantity"][currentLanguage],
-                accessor: "approvedQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["rejectedQuantity"][currentLanguage],
-                accessor: "rejectedQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["pendingQuantity"][currentLanguage],
-                accessor: "pendingQuantity",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["transactionType"][currentLanguage],
-                accessor: "transactionTypeName",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["totalQuantity"][currentLanguage],
-                accessor: "quantity",
-                width: 200,
-                sortabel: true
-            }, 
-            {
-                Header: Resources["currentCredit"][currentLanguage],
-                accessor: "currentCredit",
-                width: 200,
-                sortabel: true
-            },
-            {
+            }, {
                 Header: Resources["unitPrice"][currentLanguage],
                 accessor: "unitPrice",
                 width: 200,
                 sortabel: true
-            },
-            {
+            }, {
+                Header: Resources["approvedQuantity"][currentLanguage],
+                accessor: "approvedQuantity",
+                width: 200,
+                sortabel: true
+            }, {
                 Header: Resources["total"][currentLanguage],
                 accessor: "total",
                 width: 200,
                 sortabel: true
             },
             {
+                Header: Resources["currentCredit"][currentLanguage],
+                accessor: "currentCredit",
+                width: 200,
+                sortabel: true
+            }, {
                 Header: Resources["lastDeliveryDate"][currentLanguage],
                 accessor: "lastDeliveryDate",
                 width: 200,
@@ -359,8 +233,8 @@ class MaterialInventoryAddEdit extends Component {
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3074 }, { name: 'sendToWorkFlow', code: 707 }],
-            selectedDiscpline: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            selectedSpecifications: { label: Resources.toCompanyRequired[currentLanguage], value: "0" }
+            selectedDiscpline: { label: Resources.selectDescipline[currentLanguage], value: "0" },
+            selectedSpecifications: { label: Resources.selectSection[currentLanguage], value: "0" }
         }
 
         if (!Config.IsAllow(615) && !Config.IsAllow(616) && !Config.IsAllow(634)) {
@@ -443,22 +317,21 @@ class MaterialInventoryAddEdit extends Component {
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInventory');
 
             dataservice.GetDataGrid("GetPurchasedMaterial?materialId=" + this.state.docId).then(result => {
-                if(result.length>0){
-                let setDataChart = [];
+                if (result.length > 0) {
+                    let setDataChart = [];
 
-                let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
+                    let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
 
-                result.forEach(item => {
-                    setDataChart.push({ stack: stacks[0], name: stacks[0], value: item.approvedQuantity });
-                    setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
-                    setDataChart.push({ stack: stacks[2], name: stacks[2], value: item.pendingQuantity });
-                });
-                // moment(item.docDate).format("DD/MM/YYYY")
-                this.setState({
-                    purchasedData: result,
-                    purchasedDataForChart: setDataChart
-                })
-            }
+                    result.forEach(item => {
+                        setDataChart.push({ stack: stacks[0], name: stacks[0], value: item.approvedQuantity });
+                        setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
+                        setDataChart.push({ stack: stacks[2], name: stacks[2], value: item.pendingQuantity });
+                    });
+                    this.setState({
+                        purchasedData: result,
+                        purchasedDataForChart: setDataChart
+                    })
+                }
             });
 
             dataservice.GetDataGrid("GetTransferedMaterial?materialId=" + this.state.docId).then(result => {
@@ -471,15 +344,13 @@ class MaterialInventoryAddEdit extends Component {
                     setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
                     setDataChart.push({ stack: stacks[2], name: stacks[2], value: item.pendingQuantity });
                 });
-
-                // name: moment(item.docDate).format("DD/MM/YYYY")
                 this.setState({
                     transferedData: result,
                     transferedDataForChart: setDataChart
                 })
-            
+
             });
-        
+
             dataservice.GetDataGrid("GetMaterialReleased?materialId=" + this.state.docId).then(result => {
                 this.setState({
                     releasedData: result
@@ -509,7 +380,7 @@ class MaterialInventoryAddEdit extends Component {
                 resourceCode: "",
                 unit: "",
                 remainingQuantity: "",
-                releasePrice:""
+                releasePrice: ""
             };
             this.setState({ document: mainDoc });
             this.fillDropDowns(false);
@@ -847,37 +718,9 @@ class MaterialInventoryAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.materialInventory[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
-                        {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
-                        }
+                        
                         <div className="step-content">
-                            {/* <XSLfile
-                                key="MaterialInventory"
-                                docId={projectId}
-                                docType={this.state.docTypeId}
-                                link={
-                                    Config.getPublicConfiguartion().downloads +
-                                    "/downloads/excel/inventory.xlsx"
-                                }
-                                header="addManyItems"
-                                disabled={
-                                    this.props.changeStatus
-                                        ? this.props.docId === 0
-                                            ? true
-                                            : false
-                                        : false
-                                }
-                                afterUpload={() => this.saveAndExit()}
-                            /> */}
+
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
@@ -1032,19 +875,7 @@ class MaterialInventoryAddEdit extends Component {
                                                                 name="specsSectionId"
                                                                 id="specsSectionId" />
                                                         </div>
-                                                        <div className="linebylineInput fullInputWidth">
-                                                            <label className="control-label">{Resources.remainingQuantity[currentLanguage]}</label>
-                                                            <div className="shareLinks">
-                                                                <div className={"inputDev ui input" + (errors.remainingQuantity && touched.remainingQuantity ? (" has-error") : !errors.remainingQuantity && touched.remainingQuantity ? (" has-success") : " ")} >
-                                                                    <input type="text" className="form-control" id="remainingQuantity"
-                                                                        onChange={(e) => this.handleChange(e, 'remainingQuantity')}
-                                                                        value={this.state.document.remainingQuantity}
-                                                                        name="remainingQuantity"
-                                                                        placeholder={Resources.remainingQuantity[currentLanguage]} />
-                                                                    {errors.remainingQuantity && touched.remainingQuantity ? (<em className="pError">{errors.remainingQuantity}</em>) : null}
-                                                                </div>
-                                                            </div>
-                                                        </div>
+
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
                                                             <div className={"shareLinks " + (this.props.changeStatus === false ? "" : "disabled")}>
@@ -1059,61 +890,33 @@ class MaterialInventoryAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input disabled">
-                                                            <label className="control-label">{Resources.releasePrice[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.avgUnitPrice[currentLanguage]}</label>
                                                             <div className={"shareLinks " + (this.props.changeStatus === false ? "" : "disabled")}>
                                                                 <div className={"inputDev ui input"} >
                                                                     <input type="text" className="form-control" id="unitPrice"
-                                                                        onChange={() => {}}
+                                                                        onChange={() => { }}
                                                                         value={this.state.document.releasePrice}
                                                                         name="unitPrice"
-                                                                        placeholder={Resources.releasePrice[currentLanguage]} />
+                                                                        placeholder={Resources.avgUnitPrice[currentLanguage]} />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {
-                                                            this.props.changeStatus === false ? <Fragment>
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.approvedQuantity[currentLanguage]}</label>
-                                                                    <div className="shareLinks">
-                                                                        <div className={"inputDev ui input" + (errors.approvedQuantity && touched.approvedQuantity ? (" has-error") : !errors.approvedQuantity && touched.approvedQuantity ? (" has-success") : " ")} >
-                                                                            <input type="text" className="form-control" id="approvedQuantity"
-                                                                                onChange={(e) => this.handleChange(e, 'approvedQuantity')}
-                                                                                value={this.state.document.approvedQuantity}
-                                                                                name="approvedQuantity"
-                                                                                placeholder={Resources.approvedQuantity[currentLanguage]} />
-                                                                            {touched.approvedQuantity ? (<em className="pError">{errors.approvedQuantity}</em>) : null}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
 
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.pendingQuantity[currentLanguage]}</label>
-                                                                    <div className="shareLinks">
-                                                                        <div className={"inputDev ui input" + (errors.pendingQuantity && touched.pendingQuantity ? (" has-error") : !errors.pendingQuantity && touched.pendingQuantity ? (" has-success") : " ")} >
-                                                                            <input type="text" className="form-control" id="pendingQuantity"
-                                                                                onChange={(e) => this.handleChange(e, 'pendingQuantity')}
-                                                                                value={this.state.document.pendingQuantity}
-                                                                                name="pendingQuantity"
-                                                                                placeholder={Resources.pendingQuantity[currentLanguage]} />
-                                                                            {touched.pendingQuantity ? (<em className="pError">{errors.pendingQuantity}</em>) : null}
-                                                                        </div>
-                                                                    </div>
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">{Resources.approvedQuantity[currentLanguage]}</label>
+                                                            <div className={"shareLinks" + (this.props.changeStatus === false ? "" : "disabled")}>
+                                                                <div className={"inputDev ui input" + (errors.approvedQuantity && touched.approvedQuantity ? (" has-error") : !errors.approvedQuantity && touched.approvedQuantity ? (" has-success") : " ")} >
+                                                                    <input type="text" className="form-control" id="approvedQuantity"
+                                                                        onChange={(e) => this.handleChange(e, 'approvedQuantity')}
+                                                                        value={this.state.document.approvedQuantity}
+                                                                        name="approvedQuantity"
+                                                                        placeholder={Resources.approvedQuantity[currentLanguage]} />
+                                                                    {touched.approvedQuantity ? (<em className="pError">{errors.approvedQuantity}</em>) : null}
                                                                 </div>
+                                                            </div>
+                                                        </div>
 
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.rejectedQuantity[currentLanguage]}</label>
-                                                                    <div className="shareLinks">
-                                                                        <div className={"ui input inputDev fillter-item-c " + (errors.rejectedQuantity && touched.rejectedQuantity ? "has-error" : !errors.rejectedQuantity && touched.rejectedQuantity ? "has-success" : "")} >
-                                                                            <input type="text" className="form-control" id="rejectedQuantity"
-                                                                                onChange={(e) => this.handleChange(e, 'rejectedQuantity')}
-                                                                                value={this.state.document.rejectedQuantity}
-                                                                                name="rejectedQuantity"
-                                                                                placeholder={Resources.rejectedQuantity[currentLanguage]} />
-                                                                            {errors.rejectedQuantity && touched.rejectedQuantity ? (<em className="pError">{errors.rejectedQuantity}</em>) : null}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </Fragment> : null}
+
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.state.isLoading ?
