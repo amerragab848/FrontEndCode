@@ -1118,9 +1118,8 @@ class PurchaseOrderAddEdit extends Component {
                             Resources.specsSectionSelection[currentLanguage],
                         value: "0"
                     }
-        });
-
-        //  this.simpleDialog.show();
+        }); 
+        this.simpleDialog.show();
     };
 
     getTabelData() {
@@ -4330,7 +4329,7 @@ class PurchaseOrderAddEdit extends Component {
                                 this.state.CurrentStep === 6 ?
                                     <div className="doc-pre-cycle">
                                         <div className="slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => { this.props.history.push("/purchaseOrder/"+ this.props.projectId) }}>Finish</button>
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => { this.props.history.push("/purchaseOrder/" + this.props.projectId) }}>Finish</button>
                                         </div>
                                     </div> : null}
                         </div>
