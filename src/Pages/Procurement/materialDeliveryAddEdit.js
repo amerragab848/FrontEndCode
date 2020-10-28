@@ -205,9 +205,7 @@ class materialDeliveryAddEdit extends Component {
     }
 
     componentDidMount() {
-        var links = document.querySelectorAll(
-            ".noTabs__document .doc-container .linebylineInput"
-        );
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add("even");
@@ -217,24 +215,13 @@ class materialDeliveryAddEdit extends Component {
         }
         this.checkDocumentIsView();
 
-        dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=materialcode&pageNumber=0&pageSize=10000",
-                "title",
-                "id"
-            )
-            .then(res => {
-                this.setState({ MaterialCodeData: res });
-            });
+        dataservice.GetDataList("GetAccountsDefaultList?listType=materialcode&pageNumber=0&pageSize=10000", "title", "id").then(res => {
+            this.setState({ MaterialCodeData: res });
+        });
         if (this.state.docId !== 0) {
-            dataservice
-                .GetDataGrid(
-                    "GetLogsMaterialDeliveryTickets?deliveryId=" +
-                    this.state.docId
-                )
-                .then(res => {
-                    this.setState({ Items: res, arrangeItem: res.length + 1 });
-                });
+            dataservice.GetDataGrid("GetLogsMaterialDeliveryTickets?deliveryId=" + this.state.docId).then(res => {
+                this.setState({ Items: res, arrangeItem: res.length + 1 });
+            });
         }
     }
 
@@ -286,34 +273,23 @@ class materialDeliveryAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetMaterialDeliveryForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(
-                url,
-                this.state.docTypeId,
-                "materialDelivery"
-            );
+            this.props.actions.documentForEdit(url, this.state.docTypeId, "materialDelivery");
         } else {
-            dataservice
-                .GetNextArrangeMainDocument(
-                    "GetNextArrangeMainDoc?projectId=" +
-                    projectId +
-                    "&docType=" +
-                    this.state.docTypeId +
-                    "&companyId=undefined&contactId=undefined"
-                )
-                .then(res => {
-                    const Document = {
-                        projectId: projectId,
-                        arrange: res,
-                        status: "true",
-                        contractId: "",
-                        subject: "",
-                        docDate: moment(),
-                        specsSectionId: "",
-                        materialDeliveryTypeId: "",
-                        orderType: ""
-                    };
-                    this.setState({ document: Document });
-                });
+            dataservice.GetNextArrangeMainDocument("GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined").then(res => {
+                const Document = {
+                    projectId: projectId,
+                    applyInventory: false,
+                    arrange: res,
+                    status: "true",
+                    contractId: "",
+                    subject: "",
+                    docDate: moment(),
+                    specsSectionId: "",
+                    materialDeliveryTypeId: "",
+                    orderType: ""
+                };
+                this.setState({ document: Document });
+            });
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -496,60 +472,42 @@ class materialDeliveryAddEdit extends Component {
             doc.docDate = moment(doc.docDate, "YYYY-MM-DD").format(
                 "YYYY-MM-DD[T]HH:mm:ss.SSS"
             );
-            dataservice
-                .addObject("EditMaterialDelivery", doc)
-                .then(result => {
-                    this.setState({ isLoading: false });
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                })
-                .catch(ex => {
-                    this.setState({ Loading: false });
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                            .successTitle
-                    );
-                });
+            dataservice.addObject("EditMaterialDelivery", doc).then(result => {
+                this.setState({ isLoading: false });
+                toast.success(
+                    Resources["operationSuccess"][currentLanguage]
+                );
+            }).catch(ex => {
+                this.setState({ Loading: false });
+                toast.error(Resources["operationCanceled"][currentLanguage].successTitle);
+            });
         } else {
             let doc = { ...this.state.document };
 
-            doc.docDate = moment(doc.docDate, "YYYY-MM-DD").format(
-                "YYYY-MM-DD[T]HH:mm:ss.SSS"
-            );
-            dataservice
-                .addObject("AddMaterialDelivery", doc)
-                .then(result => {
-                    this.setState({ isLoading: false, docId: result.id });
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                    dataservice
-                        .GetDataGrid(
-                            "GetPoContractItemMaterial?id=" + result.id
-                        )
-                        .then(res => {
-                            let Data = res;
-                            let ListData = [];
-                            Data.map(i => {
-                                let obj = {};
-                                obj.value = i.id;
-                                obj.label = i.details;
-                                ListData.push(obj);
-                            });
-                            this.setState({
-                                descriptionDropData: ListData,
-                                descriptionList: res
-                            });
-                        });
-                })
-                .catch(ex => {
-                    this.setState({ Loading: false });
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                            .successTitle
-                    );
+            doc.docDate = moment(doc.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            dataservice.addObject("AddMaterialDelivery", doc).then(result => {
+                this.setState({ isLoading: false, docId: result.id });
+                toast.success(
+                    Resources["operationSuccess"][currentLanguage]
+                );
+                dataservice.GetDataGrid("GetPoContractItemMaterial?id=" + result.id).then(res => {
+                    let Data = res;
+                    let ListData = [];
+                    Data.map(i => {
+                        let obj = {};
+                        obj.value = i.id;
+                        obj.label = i.details;
+                        ListData.push(obj);
+                    });
+                    this.setState({
+                        descriptionDropData: ListData,
+                        descriptionList: res
+                    });
                 });
+            }).catch(ex => {
+                this.setState({ Loading: false });
+                toast.error(Resources["operationCanceled"][currentLanguage].successTitle);
+            });
         }
     };
 
@@ -806,16 +764,10 @@ class materialDeliveryAddEdit extends Component {
                             if (this.props.showModal) {
                                 return;
                             }
-                            if (
-                                this.props.changeStatus === true &&
-                                this.state.docId > 0
-                            ) {
+                            if (this.props.changeStatus === true && this.state.docId > 0) {
                                 this.SaveDoc("EditMood");
                                 this.changeCurrentStep(1);
-                            } else if (
-                                this.props.changeStatus === false &&
-                                this.state.docId === 0
-                            ) {
+                            } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                 this.SaveDoc("AddMood");
                             } else {
                                 this.changeCurrentStep(1);
@@ -888,55 +840,20 @@ class materialDeliveryAddEdit extends Component {
                                                 {Resources.status[currentLanguage]}
                                             </label>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input
-                                                    type="radio"
+                                                <input type="radio"
                                                     name="letter-status"
-                                                    defaultChecked={
-                                                        this.state.document
-                                                            .status === false
-                                                            ? null
-                                                            : "checked"
-                                                    }
+                                                    defaultChecked={this.state.document.status === false ? null : "checked"}
                                                     value="true"
-                                                    onChange={e =>
-                                                        this.handleChange(
-                                                            e,
-                                                            "status"
-                                                        )
-                                                    }
-                                                />
-                                                <label>
-                                                    {
-                                                        Resources.oppened[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
+                                                    onChange={e => this.handleChange(e, "status")} />
+                                                <label>{Resources.oppened[currentLanguage]}</label>
                                             </div>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input
-                                                    type="radio"
+                                                <input type="radio"
                                                     name="letter-status"
-                                                    defaultChecked={
-                                                        this.state.document
-                                                            .status === false
-                                                            ? "checked"
-                                                            : null
-                                                    }
+                                                    defaultChecked={this.state.document.status === false ? "checked" : null}
                                                     value="false"
-                                                    onChange={e =>
-                                                        this.handleChange(
-                                                            e,
-                                                            "status"
-                                                        )
-                                                    }
-                                                />
-                                                <label>
-                                                    {
-                                                        Resources.closed[
-                                                        currentLanguage
-                                                        ]
-                                                    }
+                                                    onChange={e => this.handleChange(e, "status")} />
+                                                <label>{Resources.closed[currentLanguage]}
                                                 </label>
                                             </div>
                                         </div>
@@ -1053,6 +970,30 @@ class materialDeliveryAddEdit extends Component {
                                                 }
                                             />
                                         </div>
+                                        {this.props.changeStatus === true ?
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {Resources.applyInventory[currentLanguage]}
+                                                </label>
+                                                <div className="ui checkbox radio radioBoxBlue">
+                                                    <input type="radio"
+                                                        name="letter-applyInventory"
+                                                        defaultChecked={this.state.document.applyInventory === true ? null : "checked"}
+                                                        value="false"
+                                                        onChange={e => this.handleChange(e, "applyInventory")} />
+                                                    <label>{Resources.no[currentLanguage]}</label>
+                                                </div>
+                                                <div className="ui checkbox radio radioBoxBlue">
+                                                    <input type="radio"
+                                                        name="letter-applyInventory"
+                                                        defaultChecked={this.state.document.applyInventory === true ? "checked" : null}
+                                                        value="true"
+                                                        onChange={e => this.handleChange(e, "applyInventory")} />
+                                                    <label>{Resources.yes[currentLanguage]}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            : null}
                                     </div>
 
                                     {this.props.changeStatus === true ? (

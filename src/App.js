@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import "./Styles/css/semantic.min.css";
-
+import "./Styles/css/semantic.min.css"; 
 import "react-table/react-table.css";
 import Menu from "./Pages/Menu/Menu";
 import Login from "./Componants/Layouts/Login";

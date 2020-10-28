@@ -6769,6 +6769,10 @@
         "en": "From Inventory",
         "ar": "من المخزن"
     },
+    "applyInventory": {
+        "en": "Apply to Inventory",
+        "ar": "تطبيقه المخزن"
+    },
     "includeFiles": {
         "en": "Include Some Files",
         "ar": "اضف بعض الملفات"
