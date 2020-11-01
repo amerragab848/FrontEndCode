@@ -43,9 +43,14 @@ let StatusDataDrop = [{ label: 'Opended', value: true }, { label: 'Closed', valu
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage])
 })
-const ItemsValidationSchema = Yup.object().shape({
+const AssignContactValidationSchema = Yup.object().shape({
     companyId: Yup.string().required(Resources['actionByCompanyRequired'][currentLanguage]),
     contactId: Yup.string().required(Resources['actionByContactRequired'][currentLanguage])
+})
+
+const EditItemValidationSchema = Yup.object().shape({
+    task_code: Yup.string().required(Resources['taskCodeRequired'][currentLanguage]),
+    description: Yup.string().required(Resources['activityDescriptionRequired'][currentLanguage])
 })
 
 
@@ -106,7 +111,20 @@ class projectPrimaveraScheduleAddEdit extends Component {
             selectedRows: [],
             showAssignModal: false,
             selectedContact: { label: Resources.actionByContactsSummary[currentLanguage], value: "0" },
-            selectedCompany: { label: Resources.actionByCompany[currentLanguage], value: "0" }
+            selectedCompany: { label: Resources.actionByCompany[currentLanguage], value: "0" },
+            showItemEditPopup: false,
+            itemObj: {
+                id: "",
+                task_code: "",
+                description: "",
+                earnedValue: "",
+                percentageWorkComplete: "",
+                start_date: moment().format(),
+                finish_date: moment().format(),
+                actualStartDate: moment().format(),
+                actualFinishDate: moment().format(),
+                status: false
+            }
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -173,6 +191,18 @@ class projectPrimaveraScheduleAddEdit extends Component {
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             document: updated_document
+        })
+
+    }
+
+    handleChangeItem(e, field) {
+
+        let original_document = { ...this.state.itemObj };
+        let updated_document = {};
+        updated_document[field] = e;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({
+            itemObj: updated_document
         })
 
     }
@@ -364,6 +394,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
         //         })
         // }
     }
+
     HandlerChangeParentDrop = (e, subDropList) => {
         dataservice.GetDataList('GetContactsByCompanyId?companyId=' + e.value, "contactName", "id").then(
             res => {
@@ -372,6 +403,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 console.log("error...", ex)
             })
     }
+
     assignContact = () => {
         let ids = this.state.selectedRows.map(x => x.id);
         this.setState({ isLoading: true })
@@ -396,6 +428,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             })
     }
+
     toggleRow(obj) {
         let selectedRows = this.state.selectedRows;
         let setIndex = selectedRows.findIndex(x => x.id === obj.id);
@@ -406,6 +439,52 @@ class projectPrimaveraScheduleAddEdit extends Component {
         }
         this.setState({
             selectedRows: selectedRows
+        });
+    }
+
+    onItemRowClick = (obj) => {
+        this.simpleDialogItem.show();
+       // let tempObj = {};
+        // tempObj.id = obj.id
+        // tempObj.activityId = obj.task_code;
+        // tempObj.activityName = obj.description;
+        // tempObj.plannedStart = obj.start_date;
+        // tempObj.plannedFinish = obj.finish_date;
+        // tempObj.earnedValue = obj.earnedValue;
+        // tempObj.percentageWorkComplete = obj.percentageWorkComplete;
+        // tempObj.plannedStart = obj.plannedStart;
+        // tempObj.plannedFinish = obj.plannedFinish;
+        // tempObj.actualStartDate = obj.actualStartDate;
+        // tempObj.actualFinishDate = obj.actualFinishDate;
+        // tempObj.status = obj.status;
+        this.setState({ showItemEditPopup: true, itemObj: obj })
+    }
+
+    EditItem = () => {
+        this.setState({ isLoading: true });
+        let serverObj = { ...this.state.itemObj };
+        serverObj.plannedStart = moment(serverObj.plannedStart, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        serverObj.plannedFinish = moment(serverObj.plannedFinish, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        dataservice.addObject('EditPrimaveraSchedulsItem', serverObj).then(result => {
+            if (result) {
+                this.setState({
+                    isLoading: true,
+                    showItemEditPopup: false,
+                    itemObj: {
+                        id: "",
+                        task_code: "",
+                        description: "",
+                        earnedValue: "",
+                        percentageWorkComplete: "",
+                        start_date: moment().format(),
+                        finish_date: moment().format(),
+                        actualStartDate: moment().format(),
+                        actualFinishDate: moment().format(),
+                        status: false
+                    }
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
         });
     }
 
@@ -557,43 +636,162 @@ class projectPrimaveraScheduleAddEdit extends Component {
             },
         ];
         const assignContactModal = (
-        <Formik
-            initialValues={{ companyId: this.state.selectedCompany.value, contactId: this.state.selectedContact.value }}
-            validationSchema={ItemsValidationSchema}
-            enableReinitialize={true}
-            onSubmit={() => {
-                this.assignContact()
-            }}>
-            {({ errors, touched, handleBlur, handleChange, handleSubmit, values, setFieldTouched }) => (
-                <Form id="letterForm" className="proForm datepickerContainer customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                <Dropdown title="actionByCompany" data={this.state.ActionByCompanyData}
-                                    selectedValue={this.state.selectedCompany}
-                                    handleChange={event => { this.HandlerChangeParentDrop(event, "contactsList"); this.setState({ selectedCompany: { label: event.label, value: event.value } }) }}
-                                    onBlur={setFieldTouched}
-                                    error={errors.companyId}
-                                    touched={touched.companyId}
-                                    name="companyId"
-                                    index="companyId"
-                                />
-                                <Dropdown title="actionByContactsSummary" data={this.state.contactsList}
-                                    selectedValue={this.state.selectedContact}
-                                    handleChange={event => this.setState({ selectedContact: { label: event.label, value: event.value } })}
-                                    onBlur={setFieldTouched}
-                                    error={errors.companyId}
-                                    touched={touched.companyId}
-                                    name="contactId"
-                                    index="contactId"
-                                />
-                            <div className="fullWidthWrapper">
-                                <button
-                                    className="primaryBtn-1 btn mediumBtn"
-                                    type="submit"
-                                >  {Resources['save'][currentLanguage]}
-                                </button>
+            <Formik
+                initialValues={{ companyId: this.state.selectedCompany.value, contactId: this.state.selectedContact.value }}
+                validationSchema={AssignContactValidationSchema}
+                enableReinitialize={true}
+                onSubmit={() => {
+                    this.assignContact()
+                }}>
+                {({ errors, touched, handleBlur, handleChange, handleSubmit, values, setFieldTouched }) => (
+                    <Form id="letterForm" className="proForm datepickerContainer customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                        <Dropdown title="actionByCompany" data={this.state.ActionByCompanyData}
+                            selectedValue={this.state.selectedCompany}
+                            handleChange={event => { this.HandlerChangeParentDrop(event, "contactsList"); this.setState({ selectedCompany: { label: event.label, value: event.value } }) }}
+                            onBlur={setFieldTouched}
+                            error={errors.companyId}
+                            touched={touched.companyId}
+                            name="companyId"
+                            index="companyId"
+                        />
+                        <Dropdown title="actionByContactsSummary" data={this.state.contactsList}
+                            selectedValue={this.state.selectedContact}
+                            handleChange={event => this.setState({ selectedContact: { label: event.label, value: event.value } })}
+                            onBlur={setFieldTouched}
+                            error={errors.companyId}
+                            touched={touched.companyId}
+                            name="contactId"
+                            index="contactId"
+                        />
+                        <div className="fullWidthWrapper">
+                            <button
+                                className="primaryBtn-1 btn mediumBtn"
+                                type="submit"
+                            >  {Resources['save'][currentLanguage]}
+                            </button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        );
+        const EditItemPopup = (
+            <Formik
+                initialValues={{ ...this.state.itemObj }}
+                validationSchema={EditItemValidationSchema}
+                enableReinitialize={true}
+                onSubmit={() => {
+                    this.EditItem()
+                }}>
+                {({ errors, touched, handleSubmit, handleBlur }) => (
+                    <Form id="letterForm" className="proForm datepickerContainer customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                        {Config.IsAllow(10076) ?
+                            <>
+                                <div className="proForm datepickerContainer">
+                                    <div className="fullInputWidth letterFullWidth">
+                                        <label className="control-label">{Resources.taskCode[currentLanguage]}</label>
+                                        <div className={"inputDev ui input" + (errors.task_code && touched.task_code ? (" has-error") : !errors.task_code && touched.task_code ? (" has-success") : " ")} >
+                                            <input name='task_code' id="task_code" className="form-control fsadfsadsa"
+                                                placeholder={Resources.taskCode[currentLanguage]}
+                                                autoComplete='off'
+                                                value={this.state.itemObj.task_code}
+                                                onBlur={(e) => { handleBlur(e); }}
+                                                onChange={(e) => this.handleChangeItem(e.target.value, 'task_code')} />
+                                            {errors.task_code && touched.task_code ? (<em className="pError">{errors.task_code}</em>) : null}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="proForm datepickerContainer">
+                                    <div className="fullInputWidth letterFullWidth">
+                                        <label className="control-label">{Resources.activityDescription[currentLanguage]}</label>
+                                        <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
+                                            <input name='description' id="description" className="form-control fsadfsadsa"
+                                                placeholder={Resources.activityDescription[currentLanguage]}
+                                                autoComplete='off'
+                                                value={this.state.itemObj.description}
+                                                onBlur={(e) => { handleBlur(e); }}
+                                                onChange={(e) => this.handleChangeItem(e.target.value, 'description')} />
+                                            {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="linebylineInput valid-input alternativeDate">
+                                    <DatePicker title='plannedStart'
+                                        name="start_date"
+                                        startDate={this.state.itemObj.start_date}
+                                        handleChange={e => this.handleChangeItem(e, 'start_date')} />
+                                </div>
+                                <div className="linebylineInput valid-input alternativeDate">
+                                    <DatePicker title='plannedFinish'
+                                        name="finish_date"
+                                        startDate={this.state.itemObj.finish_date}
+                                        handleChange={e => this.handleChangeItem(e, 'finish_date')} />
+                                </div>
+                            </> : null}
+                        {Config.IsAllow(10077) ? <>
+                            <div className="proForm datepickerContainer">
+                                <div className="fullInputWidth letterFullWidth">
+                                    <label className="control-label">{Resources.earnedValue[currentLanguage]}</label>
+                                    <div className={"inputDev ui input" + (errors.earnedValue && touched.earnedValue ? (" has-error") : !errors.earnedValue && touched.earnedValue ? (" has-success") : " ")} >
+                                        <input name='earnedValue' id="earnedValue" className="form-control fsadfsadsa"
+                                            placeholder={Resources.earnedValue[currentLanguage]}
+                                            autoComplete='off'
+                                            value={this.state.itemObj.earnedValue}
+                                            onBlur={(e) => { handleBlur(e); }}
+                                            onChange={(e) => this.handleChangeItem(e.target.value, 'earnedValue')} />
+                                        {errors.earnedValue && touched.earnedValue ? (<em className="pError">{errors.earnedValue}</em>) : null}
+                                    </div>
+                                </div>
                             </div>
-                </Form>
-            )}
-        </Formik>);
+                            <div className="proForm datepickerContainer">
+                                <div className="fullInputWidth letterFullWidth">
+                                    <label className="control-label">{Resources.percentageWorkComplete[currentLanguage]}</label>
+                                    <div className={"inputDev ui input" + (errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-error") : !errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-success") : " ")} >
+                                        <input name='percentageWorkComplete' id="percentageWorkComplete" className="form-control fsadfsadsa"
+                                            placeholder={Resources.percentageWorkComplete[currentLanguage]}
+                                            autoComplete='off'
+                                            value={this.state.itemObj.percentageWorkComplete}
+                                            onBlur={(e) => { handleBlur(e); }}
+                                            onChange={(e) => this.handleChangeItem(e.target.value, 'percentageWorkComplete')} />
+                                        {errors.percentageWorkComplete && touched.percentageWorkComplete ? (<em className="pError">{errors.percentageWorkComplete}</em>) : null}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="linebylineInput valid-input alternativeDate">
+                                <DatePicker title='actualStartDate'
+                                    name="actualStartDate"
+                                    startDate={this.state.itemObj.actualStartDate}
+                                    handleChange={e => this.handleChangeItem(e, 'actualStartDate')} />
+                            </div>
+                            <div className="linebylineInput valid-input alternativeDate">
+                                <DatePicker title='actualFinishDate'
+                                    name="actualFinishDate"
+                                    startDate={this.state.itemObj.actualFinishDate}
+                                    handleChange={e => this.handleChangeItem(e, 'actualFinishDate')} />
+                            </div>
+                            <div className="linebylineInput linebylineInput__checkbox">
+                                <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="status" defaultChecked={this.state.itemObj.status === false ? null : 'checked'} value="true" onChange={e => this.handleChangeItem(true, 'status')} />
+                                    <label>{Resources.yes[currentLanguage]}</label>
+                                </div>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="status" defaultChecked={this.state.itemObj.status === false ? 'checked' : null} value="false" onChange={e => this.handleChangeItem(false, 'status')} />
+                                    <label>{Resources.no[currentLanguage]}</label>
+                                </div>
+                            </div>
+                        </> : null}
+                        <div className="fullWidthWrapper">
+                            <button
+                                className="primaryBtn-1 btn mediumBtn"
+                                type="submit"
+                            >  {Resources['save'][currentLanguage]}
+                            </button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        );
+
         return (
 
             <div className="mainContainer">
@@ -733,7 +931,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                         columns={columnsCycles}
                                         defaultPageSize={5}
                                         noDataText={Resources["noData"][currentLanguage]}
-                                        className="-striped -highlight" />
+                                        className="-striped -highlight"
+                                        getTrProps={(state, rowInfo, column, instance) => {
+                                            return { onClick: e => { this.onItemRowClick(rowInfo.original) } };
+                                        }} />
 
                                 </Fragment>
                             }
@@ -751,6 +952,12 @@ class projectPrimaveraScheduleAddEdit extends Component {
                         <div className="largePopup" style={{ display: this.state.showAssignModal == true ? 'block' : 'none' }}>
                             <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources["assignContact"][currentLanguage]}>
                                 {assignContactModal}
+                            </SkyLight>
+                        </div>
+
+                        <div className="largePopup" style={{ display: this.state.showItemEditPopup == true ? 'block' : 'none' }}>
+                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogItem = ref} title={Resources["editTitle"][currentLanguage]}>
+                                {EditItemPopup}
                             </SkyLight>
                         </div>
 
