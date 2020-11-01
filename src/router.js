@@ -229,11 +229,7 @@ const ContractsConditions = AsyncComponent(() =>
 const VariationOrderAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationOrderAddEdit'),
 );
-
-const requestPaymentsAddEdit_New = AsyncComponent(() =>
-    import('./Pages/Contracts/requestPaymentsAddEdit_New'),
-);
-
+ 
 const requestPaymentsAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/requestPaymentsAddEdit'),
 );
@@ -967,11 +963,7 @@ let originalRoutes = [
         component={ProjectIssuesAddEdit}
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
-    <Route
-        key="r-96"
-        path="/requestPaymentsAddEdit_New"
-        component={requestPaymentsAddEdit_New}
-    />,
+    
     <Route
         key="r-96"
         path="/requestPaymentsAddEdit"
