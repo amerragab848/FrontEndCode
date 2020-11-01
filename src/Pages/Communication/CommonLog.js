@@ -124,7 +124,7 @@ class CommonLog extends Component {
               arrange: 0,
               docApprovalId: 0,
               isApproveMode: false,
-              isTransferAdd : true,
+              isTransferAdd: true,
               perviousRoute: window.location.pathname + window.location.search
             };
 
@@ -439,7 +439,7 @@ class CommonLog extends Component {
 
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 2).then(result => {
-        
+
         if (result.data.length > 0) {
 
           result.data.forEach(row => {
@@ -1219,7 +1219,7 @@ class CommonLog extends Component {
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
-                  docType = {this.state.docType}
+                  docType={this.state.docType}
                   documentTemplate={true}
                   link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
                   header="addManyItems"

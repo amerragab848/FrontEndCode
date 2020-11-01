@@ -154,7 +154,7 @@ class MaterialInventoryAddEdit extends Component {
                 sortabel: true
             }, {
                 Header: Resources["total"][currentLanguage],
-                accessor: "total",
+                accessor: "totalApprovedQty",
                 width: 200,
                 sortabel: true
             }, {
@@ -183,7 +183,7 @@ class MaterialInventoryAddEdit extends Component {
                 sortabel: true
             }, {
                 Header: Resources["total"][currentLanguage],
-                accessor: "total",
+                accessor: "totalApprovedQty",
                 width: 200,
                 sortabel: true
             },
