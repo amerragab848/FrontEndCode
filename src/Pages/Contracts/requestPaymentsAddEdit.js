@@ -496,7 +496,7 @@ class requestPaymentsAddEdit extends Component {
                 hidden: false,
                 type: "text"
             }, {
-                field: "subject",
+                field: "details",
                 title: Resources["description"][currentLanguage],
                 width: 15,
                 groupable: true,
@@ -621,7 +621,7 @@ class requestPaymentsAddEdit extends Component {
                 title: Resources["status"][currentLanguage],
                 width: 6,
                 groupable: true,
-                sortable: true, hidden: true,
+                sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "totalExcutedPayment",
