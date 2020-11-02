@@ -686,7 +686,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             <div className="proForm datepickerContainer">
                                 {Config.IsAllow(10076) ?
                                     <>
-                                        <div className="linebylineInput valid-input">
+                                        <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources.taskCode[currentLanguage]}</label>
                                             <div className={"inputDev ui input" + (errors.task_code && touched.task_code ? (" has-error") : !errors.task_code && touched.task_code ? (" has-success") : " ")} >
                                                 <div className="inputDev ui input">
@@ -700,7 +700,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="linebylineInput valid-input">
+                                        <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources.activityDescription[currentLanguage]}</label>
                                             <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
                                                 <div className="inputDev ui input">
@@ -714,13 +714,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="linebylineInput valid-input">
+                                        <div className="linebylineInput valid-input fullInputWidth">
                                             <DatePicker title='plannedStart'
                                                 name="start_date"
                                                 startDate={this.state.itemObj.start_date}
                                                 handleChange={e => this.handleChangeItem(e, 'start_date')} />
                                         </div>
-                                        <div className="linebylineInput valid-input">
+                                        <div className="linebylineInput valid-input fullInputWidth">
                                             <DatePicker title='plannedFinish'
                                                 name="finish_date"
                                                 startDate={this.state.itemObj.finish_date}
@@ -728,7 +728,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                         </div>
                                     </> : null}
                                 {Config.IsAllow(10077) ? <>
-                                    <div className="linebylineInput valid-input">
+                                    <div className="linebylineInput valid-input fullInputWidth">
                                         <label className="control-label">{Resources.earnedValue[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.earnedValue && touched.earnedValue ? (" has-error") : !errors.earnedValue && touched.earnedValue ? (" has-success") : " ")} >
                                             <input name='earnedValue' id="earnedValue" className="form-control fsadfsadsa"
@@ -740,7 +740,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                             {errors.earnedValue && touched.earnedValue ? (<em className="pError">{errors.earnedValue}</em>) : null}
                                         </div>
                                     </div>
-                                    <div className="linebylineInput valid-input ">
+                                    <div className="linebylineInput valid-input fullInputWidth">
                                         <label className="control-label">{Resources.percentageWorkComplete[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-error") : !errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-success") : " ")} >
                                             <input name='percentageWorkComplete' id="percentageWorkComplete" className="form-control fsadfsadsa"
@@ -752,13 +752,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                             {errors.percentageWorkComplete && touched.percentageWorkComplete ? (<em className="pError">{errors.percentageWorkComplete}</em>) : null}
                                         </div>
                                     </div>
-                                    <div className="linebylineInput valid-input">
+                                    <div className="linebylineInput valid-input fullInputWidth">
                                         <DatePicker title='actualStartDate'
                                             name="actualStartDate"
                                             startDate={this.state.itemObj.actualStartDate}
                                             handleChange={e => this.handleChangeItem(e, 'actualStartDate')} />
                                     </div>
-                                    <div className="linebylineInput valid-input">
+                                    <div className="linebylineInput valid-input fullInputWidth">
                                         <DatePicker title='actualFinishDate'
                                             name="actualFinishDate"
                                             startDate={this.state.itemObj.actualFinishDate}
@@ -953,7 +953,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             </SkyLight>
                         </div>
 
-                        <div className="largePopup" style={{ display: this.state.showItemEditPopup == true ? 'block' : 'none' }}>
+                        <div  className="skyLight__form" style={{ display: this.state.showItemEditPopup == true ? 'block' : 'none' }}>
                             <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogItem = ref} title={Resources["editTitle"][currentLanguage]}>
                                 {EditItemPopup}
                             </SkyLight>
