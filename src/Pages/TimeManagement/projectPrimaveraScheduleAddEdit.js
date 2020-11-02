@@ -53,6 +53,11 @@ const EditItemValidationSchema = Yup.object().shape({
     description: Yup.string().required(Resources['activityDescriptionRequired'][currentLanguage])
 })
 
+const UpdateItemValidationSchema = Yup.object().shape({
+    earnedValue: Yup.string().required(Resources['earnedValueRequired'][currentLanguage]),
+    percentageWorkComplete: Yup.string().required(Resources['percentageWorkCompleteRequired'][currentLanguage])
+})
+
 
 class projectPrimaveraScheduleAddEdit extends Component {
 
@@ -444,48 +449,41 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     onItemRowClick = (obj) => {
         this.simpleDialogItem.show();
-       // let tempObj = {};
-        // tempObj.id = obj.id
-        // tempObj.activityId = obj.task_code;
-        // tempObj.activityName = obj.description;
-        // tempObj.plannedStart = obj.start_date;
-        // tempObj.plannedFinish = obj.finish_date;
-        // tempObj.earnedValue = obj.earnedValue;
-        // tempObj.percentageWorkComplete = obj.percentageWorkComplete;
-        // tempObj.plannedStart = obj.plannedStart;
-        // tempObj.plannedFinish = obj.plannedFinish;
-        // tempObj.actualStartDate = obj.actualStartDate;
-        // tempObj.actualFinishDate = obj.actualFinishDate;
-        // tempObj.status = obj.status;
         this.setState({ showItemEditPopup: true, itemObj: obj })
     }
 
     EditItem = () => {
-        this.setState({ isLoading: true });
-        let serverObj = { ...this.state.itemObj };
-        serverObj.plannedStart = moment(serverObj.plannedStart, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        serverObj.plannedFinish = moment(serverObj.plannedFinish, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        dataservice.addObject('EditPrimaveraSchedulsItem', serverObj).then(result => {
-            if (result) {
-                this.setState({
-                    isLoading: true,
-                    showItemEditPopup: false,
-                    itemObj: {
-                        id: "",
-                        task_code: "",
-                        description: "",
-                        earnedValue: "",
-                        percentageWorkComplete: "",
-                        start_date: moment().format(),
-                        finish_date: moment().format(),
-                        actualStartDate: moment().format(),
-                        actualFinishDate: moment().format(),
-                        status: false
-                    }
-                });
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            }
-        });
+        if (Config.IsAllow(10076) || Config.IsAllow(10077)) {
+            this.setState({ isLoading: true });
+            let serverObj = { ...this.state.itemObj };
+            serverObj.start_date = moment(serverObj.start_date || moment().format(), 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            serverObj.finish_date = moment(serverObj.finish_date || moment().format(), 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            serverObj.actualStartDate = moment(serverObj.actualStartDate || moment().format(), 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            serverObj.actualFinishDate = moment(serverObj.actualFinishDate || moment().format(), 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            dataservice.addObject('EditPrimaveraSchedulsItem', serverObj).then(result => {
+                if (result) {
+                    this.setState({
+                        isLoading: false,
+                        showItemEditPopup: false,
+                        itemObj: {
+                            id: "",
+                            task_code: "",
+                            description: "",
+                            earnedValue: "",
+                            percentageWorkComplete: "",
+                            start_date: moment().format(),
+                            finish_date: moment().format(),
+                            actualStartDate: moment().format(),
+                            actualFinishDate: moment().format(),
+                            status: false
+                        }
+                    });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }
+            });
+        } else {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+        }
     }
 
 
@@ -677,115 +675,115 @@ class projectPrimaveraScheduleAddEdit extends Component {
         const EditItemPopup = (
             <Formik
                 initialValues={{ ...this.state.itemObj }}
-                validationSchema={EditItemValidationSchema}
+                validationSchema={Config.IsAllow(10076) && Config.IsAllow(10077) ? (EditItemValidationSchema.concat(UpdateItemValidationSchema)) : Config.IsAllow(10076) ? EditItemValidationSchema : Config.IsAllow(10077) ? UpdateItemValidationSchema : null}
                 enableReinitialize={true}
                 onSubmit={() => {
                     this.EditItem()
                 }}>
                 {({ errors, touched, handleSubmit, handleBlur }) => (
-                    <Form id="letterForm" className="proForm datepickerContainer customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                        {Config.IsAllow(10076) ?
-                            <>
-                                <div className="proForm datepickerContainer">
-                                    <div className="fullInputWidth letterFullWidth">
-                                        <label className="control-label">{Resources.taskCode[currentLanguage]}</label>
-                                        <div className={"inputDev ui input" + (errors.task_code && touched.task_code ? (" has-error") : !errors.task_code && touched.task_code ? (" has-success") : " ")} >
-                                            <input name='task_code' id="task_code" className="form-control fsadfsadsa"
-                                                placeholder={Resources.taskCode[currentLanguage]}
+                    <Form onSubmit={handleSubmit}>
+                        <div className='document-fields'>
+                            <div className="proForm datepickerContainer">
+                                {Config.IsAllow(10076) ?
+                                    <>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources.taskCode[currentLanguage]}</label>
+                                            <div className={"inputDev ui input" + (errors.task_code && touched.task_code ? (" has-error") : !errors.task_code && touched.task_code ? (" has-success") : " ")} >
+                                                <div className="inputDev ui input">
+                                                    <input name='task_code' id="task_code" className="form-control fsadfsadsa"
+                                                        placeholder={Resources.taskCode[currentLanguage]}
+                                                        autoComplete='off'
+                                                        value={this.state.itemObj.task_code}
+                                                        onBlur={(e) => { handleBlur(e); }}
+                                                        onChange={(e) => this.handleChangeItem(e.target.value, 'task_code')} />
+                                                    {errors.task_code && touched.task_code ? (<em className="pError">{errors.task_code}</em>) : null}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources.activityDescription[currentLanguage]}</label>
+                                            <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
+                                                <div className="inputDev ui input">
+                                                    <input name='description' id="description" className="form-control fsadfsadsa"
+                                                        placeholder={Resources.activityDescription[currentLanguage]}
+                                                        autoComplete='off'
+                                                        value={this.state.itemObj.description}
+                                                        onBlur={(e) => { handleBlur(e); }}
+                                                        onChange={(e) => this.handleChangeItem(e.target.value, 'description')} />
+                                                    {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <DatePicker title='plannedStart'
+                                                name="start_date"
+                                                startDate={this.state.itemObj.start_date}
+                                                handleChange={e => this.handleChangeItem(e, 'start_date')} />
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <DatePicker title='plannedFinish'
+                                                name="finish_date"
+                                                startDate={this.state.itemObj.finish_date}
+                                                handleChange={e => this.handleChangeItem(e, 'finish_date')} />
+                                        </div>
+                                    </> : null}
+                                {Config.IsAllow(10077) ? <>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.earnedValue[currentLanguage]}</label>
+                                        <div className={"inputDev ui input" + (errors.earnedValue && touched.earnedValue ? (" has-error") : !errors.earnedValue && touched.earnedValue ? (" has-success") : " ")} >
+                                            <input name='earnedValue' id="earnedValue" className="form-control fsadfsadsa"
+                                                placeholder={Resources.earnedValue[currentLanguage]}
                                                 autoComplete='off'
-                                                value={this.state.itemObj.task_code}
+                                                value={this.state.itemObj.earnedValue}
                                                 onBlur={(e) => { handleBlur(e); }}
-                                                onChange={(e) => this.handleChangeItem(e.target.value, 'task_code')} />
-                                            {errors.task_code && touched.task_code ? (<em className="pError">{errors.task_code}</em>) : null}
+                                                onChange={(e) => this.handleChangeItem(e.target.value, 'earnedValue')} />
+                                            {errors.earnedValue && touched.earnedValue ? (<em className="pError">{errors.earnedValue}</em>) : null}
                                         </div>
                                     </div>
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="fullInputWidth letterFullWidth">
-                                        <label className="control-label">{Resources.activityDescription[currentLanguage]}</label>
-                                        <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
-                                            <input name='description' id="description" className="form-control fsadfsadsa"
-                                                placeholder={Resources.activityDescription[currentLanguage]}
+                                    <div className="linebylineInput valid-input ">
+                                        <label className="control-label">{Resources.percentageWorkComplete[currentLanguage]}</label>
+                                        <div className={"inputDev ui input" + (errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-error") : !errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-success") : " ")} >
+                                            <input name='percentageWorkComplete' id="percentageWorkComplete" className="form-control fsadfsadsa"
+                                                placeholder={Resources.percentageWorkComplete[currentLanguage]}
                                                 autoComplete='off'
-                                                value={this.state.itemObj.description}
+                                                value={this.state.itemObj.percentageWorkComplete}
                                                 onBlur={(e) => { handleBlur(e); }}
-                                                onChange={(e) => this.handleChangeItem(e.target.value, 'description')} />
-                                            {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                                                onChange={(e) => this.handleChangeItem(e.target.value, 'percentageWorkComplete')} />
+                                            {errors.percentageWorkComplete && touched.percentageWorkComplete ? (<em className="pError">{errors.percentageWorkComplete}</em>) : null}
                                         </div>
                                     </div>
-                                </div>
-                                <div className="linebylineInput valid-input alternativeDate">
-                                    <DatePicker title='plannedStart'
-                                        name="start_date"
-                                        startDate={this.state.itemObj.start_date}
-                                        handleChange={e => this.handleChangeItem(e, 'start_date')} />
-                                </div>
-                                <div className="linebylineInput valid-input alternativeDate">
-                                    <DatePicker title='plannedFinish'
-                                        name="finish_date"
-                                        startDate={this.state.itemObj.finish_date}
-                                        handleChange={e => this.handleChangeItem(e, 'finish_date')} />
-                                </div>
-                            </> : null}
-                        {Config.IsAllow(10077) ? <>
-                            <div className="proForm datepickerContainer">
-                                <div className="fullInputWidth letterFullWidth">
-                                    <label className="control-label">{Resources.earnedValue[currentLanguage]}</label>
-                                    <div className={"inputDev ui input" + (errors.earnedValue && touched.earnedValue ? (" has-error") : !errors.earnedValue && touched.earnedValue ? (" has-success") : " ")} >
-                                        <input name='earnedValue' id="earnedValue" className="form-control fsadfsadsa"
-                                            placeholder={Resources.earnedValue[currentLanguage]}
-                                            autoComplete='off'
-                                            value={this.state.itemObj.earnedValue}
-                                            onBlur={(e) => { handleBlur(e); }}
-                                            onChange={(e) => this.handleChangeItem(e.target.value, 'earnedValue')} />
-                                        {errors.earnedValue && touched.earnedValue ? (<em className="pError">{errors.earnedValue}</em>) : null}
+                                    <div className="linebylineInput valid-input">
+                                        <DatePicker title='actualStartDate'
+                                            name="actualStartDate"
+                                            startDate={this.state.itemObj.actualStartDate}
+                                            handleChange={e => this.handleChangeItem(e, 'actualStartDate')} />
                                     </div>
-                                </div>
-                            </div>
-                            <div className="proForm datepickerContainer">
-                                <div className="fullInputWidth letterFullWidth">
-                                    <label className="control-label">{Resources.percentageWorkComplete[currentLanguage]}</label>
-                                    <div className={"inputDev ui input" + (errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-error") : !errors.percentageWorkComplete && touched.percentageWorkComplete ? (" has-success") : " ")} >
-                                        <input name='percentageWorkComplete' id="percentageWorkComplete" className="form-control fsadfsadsa"
-                                            placeholder={Resources.percentageWorkComplete[currentLanguage]}
-                                            autoComplete='off'
-                                            value={this.state.itemObj.percentageWorkComplete}
-                                            onBlur={(e) => { handleBlur(e); }}
-                                            onChange={(e) => this.handleChangeItem(e.target.value, 'percentageWorkComplete')} />
-                                        {errors.percentageWorkComplete && touched.percentageWorkComplete ? (<em className="pError">{errors.percentageWorkComplete}</em>) : null}
+                                    <div className="linebylineInput valid-input">
+                                        <DatePicker title='actualFinishDate'
+                                            name="actualFinishDate"
+                                            startDate={this.state.itemObj.actualFinishDate}
+                                            handleChange={e => this.handleChangeItem(e, 'actualFinishDate')} />
                                     </div>
-                                </div>
+                                    <div className="linebylineInput linebylineInput__checkbox">
+                                        <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                        <div className="ui checkbox radio radioBoxBlue">
+                                            <input type="radio" name="status" defaultChecked={this.state.itemObj.status === false ? null : 'checked'} value="true" onChange={e => this.handleChangeItem(true, 'status')} />
+                                            <label>{Resources.yes[currentLanguage]}</label>
+                                        </div>
+                                        <div className="ui checkbox radio radioBoxBlue">
+                                            <input type="radio" name="status" defaultChecked={this.state.itemObj.status === false ? 'checked' : null} value="false" onChange={e => this.handleChangeItem(false, 'status')} />
+                                            <label>{Resources.no[currentLanguage]}</label>
+                                        </div>
+                                    </div>
+                                </> : null}
                             </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='actualStartDate'
-                                    name="actualStartDate"
-                                    startDate={this.state.itemObj.actualStartDate}
-                                    handleChange={e => this.handleChangeItem(e, 'actualStartDate')} />
+                            <div className="slider-Btns">
+                                <button
+                                    className="primaryBtn-1 btn mediumBtn"
+                                    type="submit"
+                                >  {Resources['save'][currentLanguage]}
+                                </button>
                             </div>
-                            <div className="linebylineInput valid-input alternativeDate">
-                                <DatePicker title='actualFinishDate'
-                                    name="actualFinishDate"
-                                    startDate={this.state.itemObj.actualFinishDate}
-                                    handleChange={e => this.handleChangeItem(e, 'actualFinishDate')} />
-                            </div>
-                            <div className="linebylineInput linebylineInput__checkbox">
-                                <label className="control-label">{Resources.status[currentLanguage]}</label>
-                                <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="status" defaultChecked={this.state.itemObj.status === false ? null : 'checked'} value="true" onChange={e => this.handleChangeItem(true, 'status')} />
-                                    <label>{Resources.yes[currentLanguage]}</label>
-                                </div>
-                                <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="status" defaultChecked={this.state.itemObj.status === false ? 'checked' : null} value="false" onChange={e => this.handleChangeItem(false, 'status')} />
-                                    <label>{Resources.no[currentLanguage]}</label>
-                                </div>
-                            </div>
-                        </> : null}
-                        <div className="fullWidthWrapper">
-                            <button
-                                className="primaryBtn-1 btn mediumBtn"
-                                type="submit"
-                            >  {Resources['save'][currentLanguage]}
-                            </button>
                         </div>
                     </Form>
                 )}

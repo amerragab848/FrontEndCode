@@ -55,9 +55,17 @@
         "en": "Percentage Work Complete",
         "ar": "نسبه الاكتمال المئويه"
     },
+    "percentageWorkCompleteRequired": {
+        "en": "Percentage Work Complete Required",
+        "ar": "نسبه الاكتمال المئوية مطلوبة"
+    },
     "earnedValue": {
         "en": "Earned Value",
         "ar": "القيمه المكتسبه"
+    },
+    "earnedValueRequired": {
+        "en": "Earned Value Required",
+        "ar": "القيمه المكتسبة مطلوبة"
     },
     "sendToPeetyCash": {
         "en": "Send Petty Cash",
