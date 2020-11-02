@@ -2894,6 +2894,22 @@
               "value": false
             },
             {
+              "code": 10076,
+              "title": {
+                "en": "Edit Items",
+                "ar": "تعديل عناصر البريمافيرا"
+              },
+              "value": false
+            },
+            {
+              "code": 10077,
+              "title": {
+                "en": "Update Items",
+                "ar": "تحديث عناصر البريمافيرا"
+              },
+              "value": false
+            },
+            {
               "code": 587,
               "title": {
                 "en": "Send By Inbox",

@@ -55,9 +55,17 @@
         "en": "Percentage Work Complete",
         "ar": "نسبه الاكتمال المئويه"
     },
+    "percentageWorkCompleteRequired": {
+        "en": "Percentage Work Complete Required",
+        "ar": "نسبه الاكتمال المئوية مطلوبة"
+    },
     "earnedValue": {
         "en": "Earned Value",
         "ar": "القيمه المكتسبه"
+    },
+    "earnedValueRequired": {
+        "en": "Earned Value Required",
+        "ar": "القيمه المكتسبة مطلوبة"
     },
     "sendToPeetyCash": {
         "en": "Send Petty Cash",
@@ -326,6 +334,10 @@
     "taskCode": {
         "en": "Activity ID",
         "ar": "كود المهمة"
+    },
+    "taskCodeRequired": {
+        "en": "Activity ID Required ",
+        "ar": "كود المهمة مطلوب"
     },
     "maximumAllowedWidgets": {
         "en": "Maximum allowed widgets reached",
@@ -3297,6 +3309,10 @@
         "en": "Activity Name",
         "ar": "توصيف البند"
     },
+    "activityDescriptionRequired": {
+        "en": "Activity Name Required",
+        "ar": "توصيف البند مطلوب"
+    },
     "earlyStartDate": {
         "en": "Early Start Date",
         "ar": "تاريخ البداية المبكرة للبند"
@@ -5046,7 +5062,7 @@
         "ar": "التصميم"
     },
     "consultatnt": {
-        "en": " Consultatnt",
+        "en": " Consultant",
         "ar": "الاستشاري"
     },
     "weekNumber": {
@@ -8530,7 +8546,7 @@
         "ar": "Contractor"
     },
     "previousConsultatnt": {
-        "en": "Previous Consultatnt",
+        "en": "Previous Consultant",
         "ar": "السابقة"
     },
     "previousContractor": {
@@ -8538,7 +8554,7 @@
         "ar": "السابقة"
     },
     "currentConsultatnt": {
-        "en": "Current Consultatnt",
+        "en": "Current Consultant",
         "ar": "الحالية"
     },
     "currentContractor": {
@@ -8546,7 +8562,7 @@
         "ar": "الحالية"
     },
     "totalConsultatnt": {
-        "en": "Total Consultatnt",
+        "en": "Total Consultant",
         "ar": "الأجمالى"
     },
     "totalContractor": {
