@@ -13094,12 +13094,17 @@ h1, h2, h3, h4, h5 {
     padding-right: 35px;
 }
 
+
 .proForm .ui.input.inputDev {
     position: relative;
-    display: inline-block;
-    transition: .5s ease;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-transition: 0.5s ease;
+    transition: 0.5s ease;
     border-radius: 4px;
-}
+  }
+  
 
 .proForm .ui.input.inputDev .glyphicon {
     position: absolute;
@@ -13158,33 +13163,62 @@ h1, h2, h3, h4, h5 {
     z-index: -1;
 }
 
-.proForm .ui.input.inputDev input {
-    height: 48px;
+.proForm .ui.input.inputDev textarea, .proForm .ui.input.inputDev input {
     border-radius: 4px;
-    width: 360px;
+    height: 48px;
     border: solid 2px #E9ECF0;
     font-weight: normal;
     letter-spacing: -0.2px;
     color: #3E4352;
     background-color: #ffffff;
     font-size: 14px;
-    text-align: right;
-}
-
-.proForm .ui.input.inputDev input:hover {
+    text-align: left;
+    resize: none;
+  }
+  
+  .proForm .ui.input.inputDev textarea:hover, .proForm .ui.input.inputDev input:hover {
     border-color: #A8B0BF;
-}
-
-.proForm .ui.input.inputDev input:focus {
+  }
+  
+  .proForm .ui.input.inputDev textarea:focus, .proForm .ui.input.inputDev input:focus {
     background-color: #ffffff;
     border: solid 2px #83B4FC;
-}
-
-.proForm .ui.input.inputDev input::placeholder {
+  }
+  
+  .proForm .ui.input.inputDev textarea::-webkit-input-placeholder, .proForm .ui.input.inputDev input::-webkit-input-placeholder {
     letter-spacing: -0.2px;
     color: #A8B0BF;
     font-size: 14px;
-}
+  }
+  
+  .proForm .ui.input.inputDev textarea:-ms-input-placeholder, .proForm .ui.input.inputDev input:-ms-input-placeholder {
+    letter-spacing: -0.2px;
+    color: #A8B0BF;
+    font-size: 14px;
+  }
+  
+  .proForm .ui.input.inputDev textarea::-ms-input-placeholder, .proForm .ui.input.inputDev input::-ms-input-placeholder {
+    letter-spacing: -0.2px;
+    color: #A8B0BF;
+    font-size: 14px;
+  }
+  
+  .proForm .ui.input.inputDev textarea::placeholder, .proForm .ui.input.inputDev input::placeholder {
+    letter-spacing: -0.2px;
+    color: #A8B0BF;
+    font-size: 14px;
+  }
+  
+  .proForm .ui.input.inputDev textarea {
+    width: 100%;
+    padding: 11px 1em 0;
+    line-height: 1.6;
+  }
+  
+  .proForm .ui.input.inputDev input {
+    width: 360px;
+  }
+  
 
 .proForm .ui.input.inputDev.has-error .form-control {
     border: solid 2px #e74c3c;
@@ -14436,24 +14470,32 @@ h1, h2, h3, h4, h5 {
     z-index: unset;
 }
 
-.filter__warrper .proForm .linebylineInput .ui.input.inputDev input {
-    height: 36px !important;
+.filter__warrper .proForm .linebylineInput .ui.input.inputDev input,
+.filter__warrper .proForm .linebylineInput .ui.input.inputDev textarea {
+  height: 36px !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .filter__warrper .proForm .small__input--width,
-.filter__warrper .proForm .small__input--width .ui.input.inputDev input {
-    width: 104px !important;
+.filter__warrper .proForm .small__input--width .ui.input.inputDev input,
+.filter__warrper .proForm .small__input--width .ui.input.inputDev textarea {
+  width: 104px !important;
 }
 
 .filter__warrper .proForm .medium__input--width,
-.filter__warrper .proForm .medium__input--width .ui.input.inputDev input {
-    width: 216px !important;
+.filter__warrper .proForm .medium__input--width .ui.input.inputDev input,
+.filter__warrper .proForm .medium__input--width .ui.input.inputDev textarea {
+  width: 216px !important;
 }
 
 .filter__warrper .proForm .large__input--width,
-.filter__warrper .proForm .large__input--width .ui.input.inputDev input {
-    width: 240px !important;
+.filter__warrper .proForm .large__input--width .ui.input.inputDev input,
+.filter__warrper .proForm .large__input--width .ui.input.inputDev textarea {
+  width: 240px !important;
 }
+
 
 .filter__more .filter__more--btn {
     font-family: cairo-b;

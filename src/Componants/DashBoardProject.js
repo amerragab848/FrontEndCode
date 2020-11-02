@@ -5,8 +5,7 @@ import dashBoardLogo from "../Styles/images/dashboardDots.png";
 import widgets from "./WidgetsDashBoradProject";
 import Resources from "../resources.json";
 import IndexedDb from '../IndexedDb';
-//import Config from "../Services/Config";
-
+ 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class DashBoardProject extends Component {
@@ -241,9 +240,7 @@ class DashBoardProject extends Component {
   render() {
 
     let widgets = this.state.showWidgets ? this.state.categories.find(category => category.id === this.state.category).widgets.map((widget, index) => {
-
-      // if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
-
+ 
       let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
 
       return (
@@ -259,10 +256,7 @@ class DashBoardProject extends Component {
             </div>
           </div>
         </Pane>
-      );
-      // } else {
-      //   return null;
-      // }
+      ); 
     }) : null;
 
     let categoryPanes = this.state.categories && this.state.categories.length ? this.renderCategories() : [];

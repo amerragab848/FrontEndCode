@@ -83,69 +83,23 @@ class LeftMenu extends Component {
             }
         });
 
-        costControlMenu.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        costControlMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
-        generalMenu.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        generalMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
-        communication.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        communication.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
-        siteMenu.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        siteMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
-        contractMenu.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        contractMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
-        qualityControlMenu.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        qualityControlMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
-        designMenu.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        designMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
-        timeMenu.sort((a, b) =>
-            a.settings.order > b.settings.order
-                ? 1
-                : b.settings.order > a.settings.order
-                    ? -1
-                    : 0,
-        );
+        timeMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+
+        procurementMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
 
         this.state = {
             moduleName: 'General',

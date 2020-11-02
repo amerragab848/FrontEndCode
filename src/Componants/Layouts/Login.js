@@ -147,6 +147,12 @@ class Login extends Component {
                                 primeData.contactName
                             );
                         }
+                        if (primeData.useNormalMR) {
+                            tokenStore.setItem(
+                                "useNormalMR",
+                                primeData.useNormalMR
+                            );
+                        }
                         window.location.reload();
                     }).catch(() => {
                         this.setState({ isLoading: false });

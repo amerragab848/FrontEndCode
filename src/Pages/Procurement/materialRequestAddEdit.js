@@ -383,7 +383,7 @@ class materialRequestAddEdit extends Component {
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
-            showRadioButton:this.props.document ? this.props.document.showRadioButton : false,
+            showRadioButton:localStorage.getItem("useNormalMR") != null ? localStorage.getItem("useNormalMR") : false,
             companies: [],
             contacts: [],
             discplines: [],
@@ -689,7 +689,6 @@ class materialRequestAddEdit extends Component {
                     : moment(doc.requiredDate).format("YYYY-MM-DD");
             this.setState({
                 document: doc,
-                showRadioButton:doc?doc.showRadioButton:false,
                 hasWorkflow: nextProps.hasWorkflow
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -1041,7 +1040,7 @@ class materialRequestAddEdit extends Component {
         this.setState({ isLoading: true })
         Api.get(`GetInventoryListByFilter?projectId=${this.state.projectId}&query=${StringfiedObj}`).then(res => {
             this.setState({
-                inventoryTable: res,
+                inventoryTable: res || [],
                 isLoading: false
             })
         })
@@ -2812,7 +2811,7 @@ class materialRequestAddEdit extends Component {
                 </header>
                 <div>
                     <div className="proForm first-proform letterFullWidth radio__only">
-                    {this.state.showRadioButton==true?
+                    {this.state.showRadioButton==true || "true"?
                         <div className="linebylineInput valid-input">
                             <div className="ui checkbox radio radioBoxBlue">
                                 <input

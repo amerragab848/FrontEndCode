@@ -31,6 +31,7 @@ export const makeKeyContact = 'makeKeyContact';
 export const routeToTabIndex = 'routeToTabIndex';
 export const ViewDocumentAttach = 'ViewDocumentAttach';
 export const GetDocumentCycle = 'GetDocumentCycle';
+export const Set_DocumentCycle = 'Set_DocumentCycle';
 export const ViewDocsAttachment = 'ViewDocsAttachment';
 export const Set_DocId = 'Set_DocId';
 export const add_item = 'add_item';

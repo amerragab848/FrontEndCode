@@ -18,7 +18,7 @@ class requestsTransferItems extends Component {
 
     constructor(props) {
         super(props)
-  const columnsGrid = [
+        const columnsGrid = [
             {
                 field: 'fromProjectName',
                 title: Resources['fromProject'][currentLanguage],
@@ -47,8 +47,8 @@ class requestsTransferItems extends Component {
                 sortable: true,
             },
             {
-                field: 'rejectedQuantity',
-                title: Resources['rejectedQuantity'][currentLanguage],
+                field: 'description',
+                title: Resources['description'][currentLanguage],
                 width: 10,
                 groupable: true,
                 fixed: true,
@@ -56,14 +56,6 @@ class requestsTransferItems extends Component {
                 sortable: true,
             },
             {
-                field: 'pendingQuantity',
-                title: Resources['pendingQuantity'][currentLanguage],
-                width: 10,
-                groupable: true,
-                fixed: true,
-                type: "text",
-                sortable: true,
-            },{
                 field: 'sendDate',
                 title: Resources['sendDate'][currentLanguage],
                 width: 10,
@@ -109,6 +101,7 @@ class requestsTransferItems extends Component {
         this.setState({
             isLoading: true
         })
+        this.props.actions.FillGridLeftMenu();
         dataservice.GetDataGrid('GetAllRequestsTransferItems').then(res => {
             this.setState({
                 rows: res,
@@ -152,23 +145,23 @@ class requestsTransferItems extends Component {
             });
         }
     }
-    
+
     render() {
 
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
-                ref='custom-data-grid'
-                key="RequestTransferItems"
-                data={this.state.rows}
-                pageSize={this.state.rows.length}
-                groups={[]}
-                actions={[]}
-                rowActions={[]}
-                cells={this.state.columns}
-                rowClick={(cell) => { this.GoEdit(cell) }}
-            />
-                ) : <LoadingSection />
+                    ref='custom-data-grid'
+                    key="RequestTransferItems"
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={[]}
+                    rowActions={[]}
+                    cells={this.state.columns}
+                    rowClick={(cell) => { this.GoEdit(cell) }}
+                />
+            ) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'transferToProject'} />
             : null;

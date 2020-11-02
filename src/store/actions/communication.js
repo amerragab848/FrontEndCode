@@ -103,6 +103,18 @@ export function ExportingData(data) {
     }
 }
 
+export function SetCyclesExportingData(data) {
+    return (dispatch, getState) => {
+        console.log('actions Set_DocumentCycle....');
+        dispatch({
+            type: types.Set_DocumentCycle,
+            cycles: data.items,
+            cyclesFields: data.cyclesFields,
+            cyclesfriendlyNames: data.cyclesfriendlyNames
+        });
+    }
+}
+
 export function GetUploadedFiles(urlAction) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
