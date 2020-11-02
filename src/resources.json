@@ -5062,7 +5062,7 @@
         "ar": "التصميم"
     },
     "consultatnt": {
-        "en": " Consultatnt",
+        "en": " Consultant",
         "ar": "الاستشاري"
     },
     "weekNumber": {
@@ -8546,7 +8546,7 @@
         "ar": "Contractor"
     },
     "previousConsultatnt": {
-        "en": "Previous Consultatnt",
+        "en": "Previous Consultant",
         "ar": "السابقة"
     },
     "previousContractor": {
@@ -8554,7 +8554,7 @@
         "ar": "السابقة"
     },
     "currentConsultatnt": {
-        "en": "Current Consultatnt",
+        "en": "Current Consultant",
         "ar": "الحالية"
     },
     "currentContractor": {
@@ -8562,7 +8562,7 @@
         "ar": "الحالية"
     },
     "totalConsultatnt": {
-        "en": "Total Consultatnt",
+        "en": "Total Consultant",
         "ar": "الأجمالى"
     },
     "totalContractor": {

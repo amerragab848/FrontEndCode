@@ -496,7 +496,7 @@ class requestPaymentsAddEdit extends Component {
                 hidden: false,
                 type: "text"
             }, {
-                field: "subject",
+                field: "details",
                 title: Resources["description"][currentLanguage],
                 width: 15,
                 groupable: true,
@@ -621,7 +621,7 @@ class requestPaymentsAddEdit extends Component {
                 title: Resources["status"][currentLanguage],
                 width: 6,
                 groupable: true,
-                sortable: true, hidden: true,
+                sortable: true, hidden: false,
                 type: "text"
             }, {
                 field: "totalExcutedPayment",
@@ -1419,7 +1419,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     showRowEditModal(value) {
-debugger
+
         let original_document = { ...this.state.currentObject };
 
         let updated_document = {};
@@ -1459,7 +1459,7 @@ debugger
     }
 
     onRowClick = (value) => {
-debugger
+
         let userType = Config.getPayload();
 
         let obj = this.state.document;
@@ -1623,7 +1623,7 @@ debugger
     };
 
     editRowsClick() {
-        debugger
+        
         this.setState({ isLoading: true });
         let saveDocument = { ...this.state.document };
 

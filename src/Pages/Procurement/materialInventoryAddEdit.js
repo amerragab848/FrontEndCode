@@ -197,7 +197,15 @@ class MaterialInventoryAddEdit extends Component {
                 accessor: "lastDeliveryDate",
                 width: 200,
                 sortabel: true
+            },
+            {
+                Header: Resources["transactionType"][currentLanguage],
+                accessor: "transactionTypeName",
+                width: 200,
+                sortabel: true
             }
+
+
         ];
 
         this.state = {

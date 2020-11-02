@@ -284,7 +284,7 @@ class RfiAddEdit extends Component {
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
 
             if (isEdit) {
-                debugger
+                
                 let areaId = this.props.document.area;
                 
                 if (areaId) {

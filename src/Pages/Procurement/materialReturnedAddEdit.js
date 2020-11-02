@@ -287,6 +287,7 @@ class materialReturnedAddEdit extends Component {
                     doc.materialReleaseId
                 )
                 .then(res => {
+
                     let Data = res;
                     let ListData = [];
                     Data.map(i => {
@@ -440,9 +441,7 @@ class materialReturnedAddEdit extends Component {
                 "contractId"
             )
             .then(result => {
-                debugger
                 if (isEdit) {
-                    
                     let id = this.props.document.materialReleaseId;
                     let selectedValue = {};
                     if (id) {
@@ -712,12 +711,13 @@ class materialReturnedAddEdit extends Component {
     };
 
     SaveItem = values => {
+        
         let Qty = parseInt(this.state.quantity);
         let ActaulQty = parseInt(this.state.ItemDescriptionInfo.quantity);
         if (Qty <= ActaulQty) {
             this.setState({ isLoading: true });
             let obj = {
-                materialReleaseId: this.state.document.id,
+                materialReleaseId:this.state.docId, //this.state.document.id,
                 itemId: this.state.ItemDescriptionInfo.itemId,
                 areaId:
                     this.state.SelectedArea.value === "0"
@@ -775,7 +775,7 @@ class materialReturnedAddEdit extends Component {
                         costCodingTreeName: "",
                         costCodeTreeId: 0
                     });
-                    dataservice
+                        dataservice
                         .GetNextArrangeMainDocument(
                             "GetNextArrangeItems?docId=" +
                             this.state.docId +
@@ -850,7 +850,10 @@ class materialReturnedAddEdit extends Component {
                 this.setState({
                     descriptionDropData: ListData,
                     descriptionList: res
+                   
                 });
+                
+                
             });
 
         dataservice
