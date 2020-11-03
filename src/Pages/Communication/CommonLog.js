@@ -629,7 +629,7 @@ class CommonLog extends Component {
       showExServerBtn = true;
     }
 
-    if (docTypeId == 19) {
+    if (docTypeId == 19 || docTypeId==64 ) {
       showDocTemplateBtn = true;
     } else {
       showDocTemplateBtn = false;
