@@ -530,7 +530,11 @@ class boqStructure extends Component {
                     "/downloads/excel/tempBoqStructure.xlsx"
                   }
                   header="addManyItems"
-                  afterUpload={() => this.setState({ docTemplateModal: false })} />
+                  afterUpload={() => {
+                   this.setState({ docTemplateModal: false })
+                   this.componentWillMount()
+                  }
+                  } />
 
               </div>
             </SkyLightStateless>
