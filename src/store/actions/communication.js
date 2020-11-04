@@ -1,5 +1,6 @@
 import * as types from './types';
 import Api from '../../api';
+import Config from "../../Services/Config";
 import dataservice from '../../Dataservice';
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -118,9 +119,18 @@ export function SetCyclesExportingData(data) {
 export function GetUploadedFiles(urlAction) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
+            var mapped = resp.map(f => {
+                if (f.isCloud !== true) {
+                    var containerIndex = f.attachFile.indexOf('/' + Config.getPublicConfiguartion().BlobStorageContainerName);
+                    var filePath = f.attachFile.substr(containerIndex);
+                    f.attachFile = Config.getPublicConfiguartion().cdn + filePath;
+                }
+                return f;
+
+            })
             dispatch({
                 type: types.Get_Files,
-                files: resp
+                files: mapped
             });
         }).catch((ex) => {
             dispatch({
@@ -708,10 +718,10 @@ export function getAttachmentsAndWFCycles(DocType, docId, projectId) {
 
 // inventor items
 export function GetItemsInventory(url) {
-    
+
     return (dispatch) => {
         return Api.get(url).then(res => {
-            
+
             dispatch({ type: types.INVENTORY_ITEMS, items: res })
         }).catch((ex) => {
             dispatch({ type: types.INVENTORY_ITEMS })
@@ -719,13 +729,14 @@ export function GetItemsInventory(url) {
     }
 }
 export function emptyList(stateName) {
-    
+
     return (dispatch) => {
-       
-            dispatch({ type: types.EMPTY_LIST,
-                 name: stateName ,
-                })
-        
+
+        dispatch({
+            type: types.EMPTY_LIST,
+            name: stateName,
+        })
+
     }
 }
 

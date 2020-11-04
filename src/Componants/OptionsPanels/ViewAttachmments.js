@@ -88,6 +88,7 @@ class ViewAttachmments extends Component {
             photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
             file: item.parentAttachFile != null ? item.parentAttachFile : item.attachFile,
             fileName: item.parentAttachFile != null ? item.parentAttachFile.split("/")[4] : item.fileName,
+            friendlyName: item.fileName,
             fileId: item.id,
             stamp: stamp,
             editable: Config.IsAllow(4501),
@@ -109,6 +110,7 @@ class ViewAttachmments extends Component {
             photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
             file: item.parentAttachFile != null ? item.parentAttachFile : item.attachFile,
             fileName: item.parentAttachFile != null ? item.parentAttachFile.split("/")[4] : item.fileName,
+            friendlyName: item.fileName,
             fileId: item.id,
             stamp: stamp,
             editable: Config.IsAllow(4501),
@@ -199,6 +201,7 @@ class ViewAttachmments extends Component {
     ext = url => {
         return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).split('#')[0].substr(url.lastIndexOf(".")).split(".")[1]
     }
+
     render() {
         let tabelVersion = this.state.Versionfiles.map((item, Index) => {
             let ext = item["fileName"].split(".")[1] ? item["fileName"].split(".")[1].toLowerCase() : "png";
@@ -245,6 +248,7 @@ class ViewAttachmments extends Component {
                         <div className="contentCell tableCell-2">
                             <a
                                 href={item["attachFile"]}
+                                download={item.fileName}
                                 className="pdfPopup various zero"
                                 data-toggle="tooltip"
                                 title={item["fileName"]}>
@@ -264,8 +268,8 @@ class ViewAttachmments extends Component {
                     </td>
                     <td className="tdHover">
                         <div className="attachmentAction">
-                            <a href={item["attachFile"]} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
-                                {/* <img src={Download} alt="dLoad" width="100%" height="100%" /> */}
+                            <a href={item["attachFile"]} download={item.fileName} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                                
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                     <g fill="none" fillRule="evenodd" transform="translate(1)">
                                         <g fill="#A8B0BF" mask="url(#b)">
@@ -277,7 +281,7 @@ class ViewAttachmments extends Component {
 
                             {Config.IsAllow(4502) && (this.props.isApproveMode === false) ? (
                                 <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
-                                    {/* <img src={Recycle} alt="del" width="100%" height="100%" /> */}
+                                    
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                         <g fill="none" fillRule="evenodd" transform="translate(1)">
                                             <g fill="#A8B0BF" mask="url(#b)">
@@ -383,7 +387,8 @@ class ViewAttachmments extends Component {
                             <td>
                                 <div className="contentCell tableCell-2">
                                     <a
-                                        href={item["attachFile"]}
+                                        href={item["attachFile"]} 
+                                        download={item.fileName} 
                                         className="pdfPopup various zero"
                                         data-toggle="tooltip"
                                         title={item["fileName"]}>
@@ -420,9 +425,9 @@ class ViewAttachmments extends Component {
                                         </a>
                                     ) : null}
 
-                                    <a href={item["attachFile"]}
-                                        download={item.fileNameDisplay}
-                                        target="_" className="pdfPopup various zero attachPdf"
+                                    <a href={item["attachFile"]} 
+                                        download={item.fileName} 
+                                        className="pdfPopup various zero attachPdf"
                                         data-toggle="tooltip"
                                         title={Resources["download"][currentLanguage]}>
 
