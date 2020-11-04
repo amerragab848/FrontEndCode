@@ -21915,7 +21915,9 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     margin-left: 0;
     margin-right: 0;
 }
-
+.mainContainer:not(.main__fulldash) .noTabs__document .add__docName button {
+    margin: 0 5px;
+}
 .mainContainer:not(.main__fulldash) .approveDocument {
     left: 88px;
     right: 0px;
