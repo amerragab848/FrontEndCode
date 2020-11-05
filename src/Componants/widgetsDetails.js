@@ -116,6 +116,19 @@ let widgets = {
             "key": "0-1-9"
         }
     },
+    "levelDurationAlert": {
+        "title": "levelDurationAlert",
+        "props": {
+            "permission": 0,
+            "type": "oneWidget",
+            "api": "GetLevelDurationDelayCount?WFStatus=true",
+            "route": "levelDurationAlertDetails",
+            "value": "total",
+            "listType": "item",
+            "action": "action",
+            "key": "0-1-10"
+        }
+    },
     "alertingQntySummary": {
         "title": "alertingQntySummary",
         "props": {
