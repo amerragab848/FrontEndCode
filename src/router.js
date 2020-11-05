@@ -229,7 +229,7 @@ const ContractsConditions = AsyncComponent(() =>
 const VariationOrderAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationOrderAddEdit'),
 );
- 
+
 const requestPaymentsAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/requestPaymentsAddEdit'),
 );
@@ -320,6 +320,9 @@ const MonitorTasks = AsyncComponent(() =>
 );
 const FollowUpsSummaryDetails = AsyncComponent(() =>
     import('./Componants/DashBoardDetails/FollowUpsSummaryDetails'),
+);
+const levelDurationAlertDetails = AsyncComponent(() =>
+    import('./Componants/DashBoardDetails/levelDurationAlertDetails'),
 );
 const DashBoardCounterLog = AsyncComponent(() =>
     import('./Componants/DashBoardDetails/DashBoardCounterLog'),
@@ -963,7 +966,7 @@ let originalRoutes = [
         component={ProjectIssuesAddEdit}
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
-    
+
     <Route
         key="r-96"
         path="/requestPaymentsAddEdit"
@@ -1308,6 +1311,9 @@ let originalRoutes = [
     />,
     <Route key="r-192" path="ContractsPOReports/RequestPaymentDeductionTypeReport"
         component={RequestPaymentDeductionTypeReport} />,
+    <Route key="r-193" path="/levelDurationAlertDetails"
+        component={levelDurationAlertDetails} />,
+
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

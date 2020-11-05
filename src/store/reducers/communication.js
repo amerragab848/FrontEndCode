@@ -26,7 +26,7 @@ export default function (state = initialState.app.communication, action) {
             let _cycles = state.cycles.length > 0 ? state.cycles : action.cycles.length > 0 ? action.cycles : []
             let _cyclesFields = state.cyclesFields.length > 0 ? state.cyclesFields : action.cyclesFields.length > 0 ? action.cyclesFields : []
             let _cyclesfriendlyNames = state.cyclesfriendlyNames.length > 0 ? state.cyclesfriendlyNames : action.cyclesfriendlyNames.length > 0 ? action.cyclesfriendlyNames : []
-console.log('Reducer Set_DocumentCycle....');
+ 
             return {
                 ...state,
                 cycles: _cycles,

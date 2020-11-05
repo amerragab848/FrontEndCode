@@ -348,6 +348,7 @@ class boqStructure extends Component {
         }
         return data;
     };
+    
     UpdateTree = (SelectedNode, NewNode) => {
         if (SelectedNode.perentId !== null) {
             let data = this.state.trees
