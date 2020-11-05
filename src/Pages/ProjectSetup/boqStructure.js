@@ -17,6 +17,10 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -61,7 +65,8 @@ class boqStructure extends Component {
             ViewCopyMultiple: false,
             newProjectId: { label: Resources.projectRequired[currentLanguage], value: "0" },
             ShowPayment: false,
-            IsFirstParent: false
+            IsFirstParent: false,
+            docTemplateModal: false
         };
 
         if (!Config.IsAllow(3670)) {
@@ -299,6 +304,11 @@ class boqStructure extends Component {
     onCloseModal = () => {
         this.setState({ showDeleteModal: false });
     }
+    btnDocumentTemplateShowModal = () => {
+        this.setState({
+            docTemplateModal: true
+        });
+    }
 
     DeleteNode(id) {
         this.setState({
@@ -373,7 +383,7 @@ class boqStructure extends Component {
     AddEditNode = () => {
 
         this.setState({ isLoading: true })
-  
+
         let EditObj = {
             id: this.state.SelectedNode.id,
             title: this.state.SelectedNode.title,
@@ -496,10 +506,42 @@ class boqStructure extends Component {
                 <div className="documents-stepper noTabs__document">
                     <div className="tree__header">
                         <h2 className="zero">{Resources.boqStructure[currentLanguage]}</h2>
-                        <button className="primaryBtn-1 btn " onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>{Resources["goAdd"][currentLanguage]}</button>
+                        <div className="add__docName">
+                            <button className="primaryBtn-1 btn " onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>{Resources["goAdd"][currentLanguage]}</button>
+                            <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
+                        </div>
                     </div>
+                    {/*upload **********************************************************************/}
 
+                    {(this.state.docTemplateModal == true) ? (
+                        <div className="largePopup largeModal " >
 
+                            <SkyLightStateless
+                                onOverlayClicked={() => this.setState({ docTemplateModal: false })}
+                                title={Resources['DocTemplate'][currentLanguage]}
+                                onCloseClicked={() => this.setState({ docTemplateModal: false })}
+                                isVisible={this.state.docTemplateModal}>
+                                <div>
+                                    <XSLfile key="docTemplate"
+                                        documentTemplate={false}
+                                        docType="BoqStructure"
+                                        docId={this.props.projectId}
+                                        link={
+                                            Config.getPublicConfiguartion().downloads +
+                                            "/downloads/excel/tempBoqStructure.xlsx"
+                                        }
+                                        header="addManyItems"
+                                        afterUpload={() => {
+                                            this.setState({ docTemplateModal: false })
+                                            this.componentWillMount()
+                                        }
+                                        } />
+
+                                </div>
+                            </SkyLightStateless>
+                        </div>
+                    ) : null}
+                    {/*upload **********************************************************************/}
                     {/* ParentNode */}
                     <div className="Eps__list">
                         {this.state.trees.length < 0 ? this.setState({ isLoading: false }) :
