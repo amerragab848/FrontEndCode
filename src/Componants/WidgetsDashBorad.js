@@ -124,7 +124,7 @@ var widgets = [
         order: 7,
         type: "oneWidget",
         props: {
-          api: "GetLevelDurationDelayCount?WFStatus=true",
+          api: "GetLevelDurationDelayCount",
           apiDetails: "",
           route: "levelDurationAlertDetails",
           value: "total",
