@@ -4477,6 +4477,14 @@
         "en": " Delay",
         "ar": "التاخير"
     },
+    "levelDurationAlertDetails": {
+        "en": " Level Duration Delay Alert Details",
+        "ar": "تفاصيل التنبيهات تاخير اعتماد المستوى "
+    },
+    "levelDurationAlert": {
+        "en": " Level Duration Delay Alert",
+        "ar": "تنبيه تاخير اعتماد المستوى"
+    }, 
     "cycleCloseDate": {
         "en": " Cycle Close Date",
         "ar": "تاريخ الاغلاق "

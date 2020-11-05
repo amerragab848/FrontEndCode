@@ -145,6 +145,7 @@ class PermissionsGroupsPermissions extends Component {
     }
  drawItems() {
         if (this.state.selectedValuePermissions.length > 0) {
+            
             return (this.state.selectedValuePermissions.map(item => {
                 return (
                     <div className="project__Permissions--type " key={item.code}>
