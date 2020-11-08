@@ -152,7 +152,7 @@ class levelDurationAlertDetails extends Component {
 
     this.props.actions.RouteToTemplate();
 
-    Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&WFStatus=" + true).then(result => {
+    Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
       result.forEach(row => {
         let obj = {
@@ -185,7 +185,7 @@ class levelDurationAlertDetails extends Component {
       isLoading: true,
       pageNumber: pageNumber
     });
-    let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=50" + "&WFStatus=" + true
+    let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=50"
     Api.get(url).then(result => {
       let oldRows = this.state.rows;
       const newRows = [...oldRows, ...result];
@@ -213,7 +213,7 @@ class levelDurationAlertDetails extends Component {
       pageNumber: pageNumber
     });
 
-    let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&WFStatus=" + true;
+    let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + pageSize;
 
     Api.get(url).then(result => {
       let oldRows = [];
