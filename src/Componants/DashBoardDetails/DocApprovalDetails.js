@@ -10,15 +10,12 @@ import * as communicationActions from '../../store/actions/communication';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+let action = null;
 class DocApprovalDetails extends Component {
 
   constructor(props) {
     super(props);
-
-    const query = new URLSearchParams(this.props.location.search);
-
-    let action = null;
+    const query = new URLSearchParams(props.location.search);
 
     for (let param of query.entries()) {
       action = param[1];
@@ -33,10 +30,10 @@ class DocApprovalDetails extends Component {
         width: 6,
         sortable: true,
         type: "text",
-        hidden: false, 
+        hidden: false,
         conditionalClasses: obj => {
           return obj.readStatusText == "Read" ? ' gridBtns status Read' : ' gridBtns status UnRead';
-      }
+        }
       },
       {
         field: "subject",
@@ -306,8 +303,7 @@ class DocApprovalDetails extends Component {
       apiFilter: "",
       groups: [],
       gridName: gridName
-    };
-
+    }; 
   }
 
   componentDidMount() {
@@ -316,7 +312,13 @@ class DocApprovalDetails extends Component {
 
     var currentGP = [];
 
-    var selectedCols = JSON.parse(localStorage.getItem(this.state.gridName)) || [];
+    let gridName = 'Doc_' + (action == "1" ? "RejectList" : "ApproveList");
+
+    this.setState({
+      gridName: gridName
+    });
+
+    var selectedCols = JSON.parse(localStorage.getItem(gridName)) || [];
     let itemsColumns = this.state.columns;
     if (selectedCols.length === 0) {
       var gridLocalStor = { columnsList: [], groups: [] };
@@ -421,9 +423,7 @@ class DocApprovalDetails extends Component {
         });
 
       });
-
     }
-
   }
 
   hideFilter(value) {
@@ -534,7 +534,7 @@ class DocApprovalDetails extends Component {
             </div>
           </div>
           <div className="rowsPaginations readOnly__disabled">
-            
+
             <div className="linebylineInput valid-input">
               <label className="control-label">
                 {Resources.readedDocs[currentLanguage]}

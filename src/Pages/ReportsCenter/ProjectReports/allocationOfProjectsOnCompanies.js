@@ -134,7 +134,7 @@ class allocationOfProjectsOnCompanies extends Component {
                         this.getGridRows()
                     }}>
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer'>
                             <div className="linebylineInput valid-input">
                                 <Dropdown title='CompanyName' data={this.state.companyList}
                                     name='selectedCompany'
@@ -163,7 +163,7 @@ class allocationOfProjectsOnCompanies extends Component {
                         this.getGridRows()
                     }}>
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer'>
                             <div className="linebylineInput valid-input">
                                 <Dropdown title='projectName' data={this.state.projectList}
                                     name='selectedProject'
@@ -206,7 +206,7 @@ class allocationOfProjectsOnCompanies extends Component {
                     <h2 className="zero">{Resources.projectsAllocationOnCompanies[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm' style={{ marginBottom: '0' }}>
+                <div className='proForm reports__proForm datepickerContainer' style={{ marginBottom: '0' }}>
                     <div className="linebylineInput valid-input">
                         <div className="ui checkbox radio radioBoxBlue">
                             <input type="radio" name="status" defaultChecked="checked" onChange={e => this.setState({ current: 0, rows: [], currentColumns: this.projectColumns, showGrid: false })} />

@@ -222,7 +222,7 @@ class ExpensesReport extends Component {
                             this.getGridRows()
                         }}>
                         {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched }) => (
-                            <Form id="InspectionRequestForm" className="proForm reports__proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                            <Form id="InspectionRequestForm" className='proForm reports__proForm datepickerContainer'noValidate="novalidate" onSubmit={handleSubmit}>
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="Projects" name="projectName" index="projects"
                                         data={this.state.projectsList} selectedValue={this.state.selectedProject}

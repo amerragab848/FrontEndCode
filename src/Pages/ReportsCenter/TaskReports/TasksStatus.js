@@ -369,7 +369,7 @@ class TasksStatus extends Component {
                     <h2 className="zero">{Resources.taskStatus[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="Projects" index="Projects"
                             data={this.state.dropDownList} selectedValue={this.state.selectedProject}

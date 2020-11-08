@@ -22514,3 +22514,7 @@ tbody.grid-body tr  .text.elipsisPadd {
 .gridBtns.UnRead span { 
     background-color: #E74C3C !important; color: #fff !important; 
 }
+.over-time-error {
+    position: absolute;
+    bottom: -22px;
+}

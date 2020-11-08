@@ -297,7 +297,7 @@ class BudgetCashFlowReport extends Component {
                         {btnExport}
                     </div>
                 </div>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput valid-input alternativeDate" >
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}
@@ -312,7 +312,7 @@ class BudgetCashFlowReport extends Component {
                     <button className="primaryBtn-1 btn smallBtn" onClick={this.getGridRows}>{Resources['search'][currentLanguage]}</button>
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
-                    <div className='proForm reports__proForm'>
+                    <div className='proForm reports__proForm datepickerContainer'>
                         <div className="linebylineInput valid-input">
                             <label className="control-label">{Resources.estimatedCashIn[currentLanguage]}</label>
                             <div className="inputDev ui input">

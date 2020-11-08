@@ -92,7 +92,10 @@ class UploadAttachment extends Component {
 
     renderAddAttachments = () => {
         return (
-            <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
+            <Dropzone
+                onClick={evt => evt.preventDefault()}
+                onDrop={e => this.onDrop(e)}
+                onDragLeave={e => this.setState({ _className: " " })}
                 onDragOver={this.dragOverDiv}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
                 onDropRejected={this.onDropRejected} >

@@ -194,7 +194,7 @@ class TasksList extends Component {
                     <h2 className="zero">{Resources.closedTasks[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="projects" index="projects"
                             data={this.state.projectsList} selectedValue={this.state.selectedProjects}

@@ -209,7 +209,7 @@ class TransmittalReport extends Component {
                     {btnExport}
                 </header>
 
-                <div className='proForm reports__proForm' style={{ marginBottom: '0' }}>
+                <div className='proForm reports__proForm datepickerContainer' style={{ marginBottom: '0' }}>
 
                     <div className="linebylineInput valid-input">
                         <div className="ui checkbox radio radioBoxBlue">
@@ -226,7 +226,7 @@ class TransmittalReport extends Component {
 
                 </div>
 
-                <div className='proForm reports__proForm' style={{ marginTop: '0' }}>
+                <div className='proForm reports__proForm datepickerContainer' style={{ marginTop: '0' }}>
 
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'

@@ -100,7 +100,7 @@ class projectInvoicesCollected extends Component {
                     <h2 className="zero">{Resources.projectedInvoicedCollecetd[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="doc-pre-cycle letterFullWidth">
                         {dataGrid}
                     </div>

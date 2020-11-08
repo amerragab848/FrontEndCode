@@ -174,7 +174,7 @@ class ExpensesStatus extends Component {
                     {btnExport}
                 </header>
 
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput valid-input">
                         <label className="control-label">{Resources.resourceCode[currentLanguage]}</label>
                         <div className="inputDev ui input">

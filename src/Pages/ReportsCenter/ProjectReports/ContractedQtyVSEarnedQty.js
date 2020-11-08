@@ -333,7 +333,7 @@ class ContractedQtyVSEarnedQty extends Component {
                                 this.getGridRows()
                             }}>
                             {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
+                                <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer'>
                                     <div className="linebylineInput valid-input" style={{ "width": "250px" }}>
                                         <Dropdown title='projectName'
                                             data={this.state.projectsList}
