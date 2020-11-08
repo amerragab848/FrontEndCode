@@ -327,6 +327,14 @@ class invoicesForPoAddEdit extends Component {
                     this.props.actions.documentForAdding();
                 }
             )
+
+            dataservice.GetDataList('GetPurchaseOrdersList?projectId= ' + this.state.projectId, 'subject', 'id').then(
+                result => {
+                    this.setState({
+                        PurchaseOrdersData: result
+                    });
+                })
+
         }
         dataservice.GetDataList('GetaccountsDefaultListWithAction?listType=estimationitemtype', 'title', 'id').then(res => {
             this.setState({ itemTypes: [...res] })
@@ -383,23 +391,6 @@ class invoicesForPoAddEdit extends Component {
                 CompaniesData: [...result]
             });
         })
-
-        dataservice.GetDataList('GetPurchaseOrdersList?projectId= ' + this.state.projectId, 'subject', 'id').then(
-            result => {
-                if (isEdit) {
-                    let id = this.props.document.purchaseOrderId;
-                    let selectedValue = {};
-                    if (id) {
-                        selectedValue = find(result, function (i) { return i.value == id });
-                        this.setState({
-                            selectedPurchaseOrders: selectedValue
-                        });
-                    }
-                }
-                this.setState({
-                    PurchaseOrdersData: result
-                });
-            })
 
         dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=transactiontype', 'title', 'id', 'defaultLists', "transactiontype", "listType").then(result => {
             if (isEdit) {
@@ -474,7 +465,7 @@ class invoicesForPoAddEdit extends Component {
             });
         }
         if (field === 'purchaseOrderId') {
-            if (docId ===0) {
+            if (docId === 0) {
                 Api.get('GetContractsOrdersItemsExcutionPoByPurchaseId?purchaseId=' + event.value).then(
                     result => {
                         this.setState({
@@ -598,7 +589,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     OnBlurTaxesValue = (e, index) => {
-        
+
         let data = this.state.InvoicesItems
         let element = data[index]
         let quantityComplete = data[index]['minQnty']
@@ -606,23 +597,23 @@ class invoicesForPoAddEdit extends Component {
         let maxQnty = data[index]['maxQnty']
         let value = parseInt(e.target.value)
         if (value > maxQnty) {
-             e.target.value = quantityComplete
+            e.target.value = quantityComplete
             toast.warn("value can not be more than maximum quantity " + maxQnty);
         }
         else if (value < minQnty) {
-             e.target.value = quantityComplete
+            e.target.value = quantityComplete
             toast.warn("value can not be less than minimum quantity " + minQnty);
         } else {
-            if(this.state.docId>0){
-            Api.post("EditContractsInvoicesForPoItems", element).then(res => {
-                toast.success(Resources.operationSuccess[currentLanguage])
-                let data = this.state.InvoicesItems;
-                data.splice(index, 1, res);
-                this.setState({
-                    InvoicesItems: data
+            if (this.state.docId > 0) {
+                Api.post("EditContractsInvoicesForPoItems", element).then(res => {
+                    toast.success(Resources.operationSuccess[currentLanguage])
+                    let data = this.state.InvoicesItems;
+                    data.splice(index, 1, res);
+                    this.setState({
+                        InvoicesItems: data
+                    })
                 })
-            })
-        }
+            }
         }
     }
 
@@ -1264,11 +1255,19 @@ class invoicesForPoAddEdit extends Component {
                                                 </div>
                                             </div>
 
-
-                                            <div className="linebylineInput valid-input">
-                                                <Dropdown isDisabled={this.props.changeStatus} title="purchaseOrder" data={this.state.PurchaseOrdersData} selectedValue={this.state.selectedPurchaseOrders}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'purchaseOrderId', false, '', '', '', 'selectedPurchaseOrders')} />
-                                            </div>
+                                            {this.props.changeStatus ==true  ?
+                                                <div className="linebylineInput valid-input linebylineInput__name">
+                                                    <label className="control-label">{Resources.purchaseOrder[currentLanguage]}</label>
+                                                    <div className="ui input inputDev "  >
+                                                        <input type="text" className="form-control disabled" value={this.state.document.purchaseOrderName}
+                                                            placeholder={Resources.purchaseOrder[currentLanguage]}  />
+                                                    </div>
+                                                </div>
+                                                :
+                                                <div className="linebylineInput valid-input">
+                                                    <Dropdown isDisabled={this.props.changeStatus} title="purchaseOrder" data={this.state.PurchaseOrdersData} selectedValue={this.state.selectedPurchaseOrders}
+                                                        handleChange={event => this.handleChangeDropDown(event, 'purchaseOrderId', false, '', '', '', 'selectedPurchaseOrders')} />
+                                                </div>}
 
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown title="CompanyName" data={this.state.CompaniesData} selectedValue={this.state.selectedCompany}
