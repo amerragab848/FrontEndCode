@@ -2511,6 +2511,12 @@ var routes = [
         nav: false
     },
     {
+        route: "levelDurationAlertDetails",
+        moduleId: "summary/levelDurationAlertDetails",
+        title: "Level Duration Alert Details",
+        nav: false
+    },
+    {
         route: "distributioninboxListSummary/:param1(/:item)",
         moduleId: "projects/distributioninboxListSummary",
         title: "distributioninboxListSummary",

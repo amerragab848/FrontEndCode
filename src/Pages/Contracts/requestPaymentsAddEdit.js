@@ -891,7 +891,7 @@ class requestPaymentsAddEdit extends Component {
         if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("YYYY-MM-DD");
-            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
+            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0; 
             serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
             serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
             serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
@@ -2927,8 +2927,8 @@ class requestPaymentsAddEdit extends Component {
                     <div className="doc-container">
                         <div className="step-content">
                             <div className="rowsPaginations readOnly__disabled " style={{ 'justifyContent': 'spaceBetween' }}>
-                                {this.state.document.previousId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Prevoius Payment" style={{ 'border-radius': '20px' }}><i className="angle left icon" onClick={() => this.getById(this.state.document.previousId)}></i></button> : null}
-                                {this.state.document.nextId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Next Payment" style={{ 'border-radius': '20px' }}><i className="angle right icon" onClick={() => this.getById(this.state.document.nextId)}></i></button> : null}
+                                {this.state.document.previousId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Prevoius Payment" style={{ 'borderRadius': '20px' }}><i className="angle left icon" onClick={() => this.getById(this.state.document.previousId)}></i></button> : null}
+                                {this.state.document.nextId > 0 && this.state.docId > 0 ? <button className="rowunActive" title="Next Payment" style={{ 'borderRadius': '20px' }}><i className="angle right icon" onClick={() => this.getById(this.state.document.nextId)}></i></button> : null}
                             </div>
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
@@ -3094,7 +3094,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control"
-                                                                            value={this.state.document.advancePaymentPercent || ''}
+                                                                            value={this.state.document.advancePaymentPercent || '0'}
                                                                             name="advancePaymentPercent"
                                                                             placeholder={Resources.advancePaymentPercent[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
@@ -3176,9 +3176,20 @@ class requestPaymentsAddEdit extends Component {
                                                                             </label>
                                                                             <div className="ui input inputDev">
                                                                                 <input type="text" className="form-control" name="remainingPayment"
-                                                                                    value={this.state.document.remainingPayment || ''}
+                                                                                    value={this.state.document.remainingPayment || '0'}
                                                                                     placeholder={Resources.remainingPayment[currentLanguage]}
                                                                                     onChange={e => this.handleChange(e, "remainingPayment")} />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <label className="control-label">
+                                                                                {Resources.advancedPaymentAmount[currentLanguage]}
+                                                                            </label>
+                                                                            <div className="ui input inputDev">
+                                                                                <input type="text" className="form-control" name="advancedPaymentAmount"
+                                                                                    value={this.state.document.advancedPaymentAmount || '0'}
+                                                                                    placeholder={Resources.advancedPaymentAmount[currentLanguage]}
+                                                                                    onChange={e => this.handleChange(e, "advancedPaymentAmount")} />
                                                                             </div>
                                                                         </div>
                                                                     </Fragment>
