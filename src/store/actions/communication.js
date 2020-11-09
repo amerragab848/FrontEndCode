@@ -105,8 +105,7 @@ export function ExportingData(data) {
 }
 
 export function SetCyclesExportingData(data) {
-    return (dispatch, getState) => {
-        console.log('actions Set_DocumentCycle....');
+    return (dispatch, getState) => { 
         dispatch({
             type: types.Set_DocumentCycle,
             cycles: data.items,

@@ -527,12 +527,18 @@ class materialReleaseAddEdit extends Component {
             }
 
             dataservice.addObject('AddLogsMaterialReleaseTickets', obj).then(result => {
+                let oldItemList = this.state.descriptionList;  
+                const index = oldItemList.findIndex((el) => el.id === obj.id);
+
+                oldItemList[index].remainingQuantity = ActaulQty - Qty;
+            
                 let Items = this.state.Items
                 Items.push(result)
                 let ItemDescriptionInfo = this.state.ItemDescriptionInfo
                 ItemDescriptionInfo.resourceCode = ''
                 this.setState({
                     Items,
+                    descriptionList : oldItemList,
                     isLoading: false,
                     unitPrice: 0,
                     selectedItemId: { label: Resources.itemDescription[currentLanguage], value: "0" },

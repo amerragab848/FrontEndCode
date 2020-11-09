@@ -154,7 +154,7 @@ class UsersAccountsReport extends Component {
                     {btnExport}
                 </header>
 
-                <div className='proForm reports__proForm' >
+                <div className='proForm reports__proForm datepickerContainer' >
 
                     <div className="linebylineInput valid-input">
                         <label className="control-label">{Resources.totalAccounts[currentLanguage]}</label>

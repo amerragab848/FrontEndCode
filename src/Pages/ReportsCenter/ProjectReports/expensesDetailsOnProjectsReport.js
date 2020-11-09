@@ -210,7 +210,7 @@ class expensesDetailsOnProjectsReport extends Component {
                         this.getGridtData()
                     }}>
                     {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form onSubmit={handleSubmit} className='proForm reports__proForm' >
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer' >
                             <div className="reportsWithMulti">
                                 <div className="reports__multiDrop letterFullWidth">
                                     <div className="linebylineInput multiChoice">

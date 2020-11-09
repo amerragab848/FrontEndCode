@@ -201,7 +201,7 @@ class paymentRequisition extends Component {
                         this.getGridRows()
                     }}>
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer'>
                             <div className="linebylineInput multiChoice">
                                 <Dropdown title='Projects' data={this.state.ProjectsData}
                                     name='selectedProject'

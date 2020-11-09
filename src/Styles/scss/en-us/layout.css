@@ -22410,4 +22410,7 @@ tbody.grid-body tr  .text.elipsisPadd {
 }
 /* Added New After devided*/
 
- 
+.over-time-error {
+    position: absolute;
+    bottom: -22px;
+}

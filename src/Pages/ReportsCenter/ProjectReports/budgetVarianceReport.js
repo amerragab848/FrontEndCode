@@ -175,7 +175,7 @@ class budgetVarianceReport extends Component {
                     <h2 className="zero">{Resources.budgetVarianceReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm' style={{ marginBottom: '0' }}>
+                <div className='proForm reports__proForm datepickerContainer' style={{ marginBottom: '0' }}>
                     <Formik
                         initialValues={{
                             selectedProject: '',
@@ -186,7 +186,7 @@ class budgetVarianceReport extends Component {
                             this.getChartData()
                         }}>
                         {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                            <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
+                            <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer'>
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title='Project' data={this.state.projectList}
                                         name='selectedProject'
@@ -207,7 +207,7 @@ class budgetVarianceReport extends Component {
                     <div className="row">
                         {Chart}
                     </div> : null}
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput valid-input">
                         <label class="control-label">{Resources.actualTotal[currentLanguage]}</label>
                         <div className="inputDev ui input">
