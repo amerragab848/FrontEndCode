@@ -3655,7 +3655,7 @@ h1, h2, h3, h4, h5 {
     margin-left: 8px;
 }
 
-.submittalFilter .filterBTNS .btn:first-child {
+.submittalFilter .filterBTNS .btn {
     margin-right: 6px;
 }
 

@@ -160,8 +160,8 @@ class DocumentActions extends Component {
                 {
                     this.props.isApproveMode === true ?
                         <div >
-                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(importedPaths[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(importedPaths[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                            <button className="primaryBtn-1 btn ui positive basic button" type="button" onClick={(e) => this.handleShowAction(importedPaths[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                            <button className="primaryBtn-2 btn middle__btn ui negative basic button" type="button" onClick={(e) => this.handleShowAction(importedPaths[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                         </div> : null
                 }
                 <Fragment>
