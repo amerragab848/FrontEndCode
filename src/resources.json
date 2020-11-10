@@ -3529,6 +3529,10 @@
         "en": "Actual Executed",
         "ar": "المنفذ غعليا"
     },
+    "Execute": {
+        "en": "Execute",
+        "ar": "تنفيذ"
+    },
     "contracts": {
         "en": "Contracts",
         "ar": " العقود"
@@ -4820,6 +4824,10 @@
     "approvedQuantity": {
         "en": "Approved Qty",
         "ar": "الكمية المعتمدة"
+    },
+    "transferredQuantity": {
+        "en": "Transferred Quantity ",
+        "ar": "الكمية المنقوله"
     },
     "rejectedQuantity": {
         "en": "Rejected Quantity",
@@ -7924,6 +7932,10 @@
     "raisedPrices": {
         "en": "Raised Prices",
         "ar": "إرتفاع الأسعار"
+    },
+    "updatePrices": {
+        "en": "Update Prices",
+        "ar": "تعديل الأسعار"
     },
     "writeDescription": {
         "en": "Write Description",
