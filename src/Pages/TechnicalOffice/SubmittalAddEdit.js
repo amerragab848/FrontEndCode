@@ -12,8 +12,7 @@ import ModernDatepicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js";
-import CryptoJS from "crypto-js";
+import Config from "../../Services/Config.js"; 
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";

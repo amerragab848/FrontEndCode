@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous'
@@ -8,6 +8,10 @@ import SkyLight from "react-skylight";
 import { toast } from "react-toastify";
 import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'; 
+import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let meetingRefToken = localStorage.getItem("refToken");
@@ -85,20 +89,6 @@ class ProcoorMeeting extends Component {
         });
     }
     componentDidMount = () => {
-
-        let meeting = {
-            subject: '',
-            startDate: moment().format("DD/MM/YYYY"),
-            finishDate: moment().format("DD/MM/YYYY"),
-            startTimeInMinutes: '',
-            finishTimeMinutes: '',
-            startTime: '',
-            finishTime: ''
-
-        };
-        this.setState({ document: meeting });
-    }
-    componentWillMount = () => {
         dataservice.GetDataList('GetAllActiveAccounts', "userName", "id").then(
             res => {
                 this.setState({
@@ -128,6 +118,20 @@ class ProcoorMeeting extends Component {
         } else {
             this.generateRefreshToke();
         }
+        let meeting = {
+            subject: '',
+            startDate: moment().format("DD/MM/YYYY"),
+            finishDate: moment().format("DD/MM/YYYY"),
+            startTimeInMinutes: '',
+            finishTimeMinutes: '',
+            startTime: '',
+            finishTime: ''
+
+        };
+        this.setState({ document: meeting });
+    }
+    componentWillMount = () => {
+this.props.actions.RouteToTemplate();
     };
     addMeeting(e, id) {
         this.simpleDialog.show();
@@ -227,9 +231,9 @@ class ProcoorMeeting extends Component {
         let meetingURL = this.state.meetingURL
         return (
             <div className="mainContainer main__withouttabs">
-                <div class="submittalFilter">
-                    <div class="subFilter">
-                        <h3 class="zero">{Resources["meetings"][currentLanguage]}</h3>
+                <div className="submittalFilter">
+                    <div className="subFilter">
+                        <h3 className="zero">{Resources["meetings"][currentLanguage]}</h3>
                     </div>
                     <div>
                         <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addMeeting()}>{Resources["new"][currentLanguage]}</button>
@@ -365,4 +369,16 @@ class ProcoorMeeting extends Component {
     }
 }
 
-export default ProcoorMeeting;
+function mapStateToProps(state, ownProps) {
+    return { 
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProcoorMeeting)
+//export default ProcoorMeeting;

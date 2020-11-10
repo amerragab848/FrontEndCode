@@ -308,57 +308,70 @@ class LeftMenu extends Component {
     };
 
     EpsComponent() {
-        const Eps =
-            this.state.ListEps == null
-                ? null
-                : this.state.ListEps.map((eps, index) => {
-                    return (
-                        <Fragment key={eps.id}>
-                            <ul className="MainProjectsMenuUL zero">
-                                <li className="EastWestProject PM-color">
-                                    <span
-                                        onClick={() =>
-                                            this.EpsHandler(eps.id, index)
-                                        }
-                                        className="EastMainLi">
-                                        {eps.name}
-                                    </span>
-                                    <ul
-                                        className={
-                                            this.state.currentIndex === index
-                                                ? 'zero'
-                                                : 'zero closeAccordion'
-                                        }>
-                                        {eps.projects.map(project => {
-                                            return (
-                                                <li
-                                                    className={
-                                                        this.props
-                                                            .projectId ===
-                                                            project.id
-                                                            ? 'active'
-                                                            : ''
-                                                    }
-                                                    key={project.id}
-                                                    onClick={event =>
-                                                        this.selectProjectHandler(
-                                                            project.id,
-                                                            project.name,
-                                                        )
-                                                    }>
-                                                    <a>{project.name}</a>
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                    {eps.epses.length > 0
-                                        ? this.childEPSCompnent(eps.epses)
-                                        : null}
-                                </li>
-                            </ul>
-                        </Fragment>
-                    );
-                });
+        const Eps = this.state.ListEps == null ? null
+            : this.state.ListEps.map((eps, index) => {
+                return (
+                    <Fragment key={eps.id}>
+                        <ul className="MainProjectsMenuUL zero">
+                            {index == 0 ? <li class="search-box">
+                                <form className="proForm">
+                                    <div className="inputDev ui input input-group"                                                    >
+                                        <input
+                                            type="search"
+                                            className="form-control"
+                                            placeholder="search for project"
+                                        />
+                                        <button className="ui button">
+                                        <svg xmlns="http://www.w3.org/2000/svg"  
+                                        xmlnsXlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20"><g fill="none" fill-rule="evenodd" transform="translate(3 3)"><g fill="#A8B0BF" mask="url(#b)"><path id="a" d="M2.346 8.026a5.683 5.683 0 0 0 5.817 5.672c3.04-.066 5.613-2.588 5.539-5.815-.07-3.057-2.584-5.53-5.674-5.534C4.9 2.345 2.343 4.9 2.346 8.026m12.11 4.806c.054.04.108.071.15.114.99.986 1.978 1.973 2.967 2.96.219.218.39.46.421.78.05.52-.215.985-.688 1.206-.456.214-.959.107-1.37-.302-.997-.994-1.992-1.99-2.985-2.988-.046-.046-.072-.112-.103-.16a8.05 8.05 0 0 1-11.081-1.393c-2.584-3.228-2.29-7.841.59-10.7a8.012 8.012 0 0 1 10.719-.557 8.025 8.025 0 0 1 1.38 11.04"></path></g></g></svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </li> : null}
+                            <li className="EastWestProject PM-color">
+                                <span
+                                    onClick={() =>
+                                        this.EpsHandler(eps.id, index)
+                                    }
+                                    className="EastMainLi">
+                                    {eps.name}
+                                </span>
+                                <ul
+                                    className={
+                                        this.state.currentIndex === index
+                                            ? 'zero'
+                                            : 'zero closeAccordion'
+                                    }>
+                                    {eps.projects.map(project => {
+                                        return (
+                                            <li
+                                                className={
+                                                    this.props
+                                                        .projectId ===
+                                                        project.id
+                                                        ? 'active'
+                                                        : ''
+                                                }
+                                                key={project.id}
+                                                onClick={event =>
+                                                    this.selectProjectHandler(
+                                                        project.id,
+                                                        project.name,
+                                                    )
+                                                }>
+                                                <a>{project.name}</a>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                                {eps.epses.length > 0
+                                    ? this.childEPSCompnent(eps.epses)
+                                    : null}
+                            </li>
+                        </ul>
+                    </Fragment>
+                );
+            });
 
         return Eps;
     }
@@ -540,39 +553,19 @@ class LeftMenu extends Component {
                         <div className="sidebar__inner">
                             <aside className="mainSideNav">
                                 <div
-                                    className={
-                                        this.state.hover
-                                            ? 'mainSidenavContent hover'
-                                            : 'mainSidenavContent'
-                                    }>
+                                    className={this.state.hover ? 'mainSidenavContent hover' : 'mainSidenavContent'}>
                                     <div className="sidenavinner">
-                                        <div
-                                            className={
-                                                viewEps
-                                                    ? 'MainProjectsMenu active '
-                                                    : 'MainProjectsMenu hidden'
-                                            }>
-                                            <div
-                                                className="backToModules"
-                                                onClick={this.ModuleHandler}>
+                                        <div className={viewEps ? 'MainProjectsMenu active ' : 'MainProjectsMenu hidden'}>
+                                            <div className="backToModules" onClick={this.ModuleHandler}>
                                                 {this.state.projectId ? (
                                                     <a>
-                                                        <i
-                                                            className="fa fa-angle-left"
-                                                            aria-hidden="true"
-                                                        />
-                                                        <span>
-                                                            {
-                                                                Resources[
-                                                                'backtoModules'
-                                                                ][
-                                                                currentLanguage
-                                                                ]
-                                                            }
+                                                        <i className="fa fa-angle-left" aria-hidden="true" />
+                                                        <span> {Resources['backtoModules'][currentLanguage]}
                                                         </span>
                                                     </a>
                                                 ) : null}
                                             </div>
+
                                             <div>{this.EpsComponent()}</div>
                                         </div>
                                         <div
@@ -639,28 +632,6 @@ class LeftMenu extends Component {
                                                 </div>
                                             </div>
                                             <ul className="ui accordion MenuUl PM-color zero">
-                                                {/* <li>
-                          <a>
-                            <span className="ULimg">
-                              <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" >
-                                  <g id="Action-icons/Navigation/Workspace/Line/36px/Grey_base">
-                                    <g id="work-space">
-                                      <rect id="bg" fill="#80CBC4" opacity="0" x="0" y="0" width="36" height="36" />
-                                      <path
-                                        d="M10,8 L11.5555556,8 C12.6601251,8 13.5555556,8.8954305 13.5555556,10 L13.5555556,11.5555556 C13.5555556,12.6601251 12.6601251,13.5555556 11.5555556,13.5555556 L10,13.5555556 C8.8954305,13.5555556 8,12.6601251 8,11.5555556 L8,10 C8,8.8954305 8.8954305,8 10,8 Z M17.2222222,8 L18.7777778,8 C19.8823473,8 20.7777778,8.8954305 20.7777778,10 L20.7777778,11.5555556 C20.7777778,12.6601251 19.8823473,13.5555556 18.7777778,13.5555556 L17.2222222,13.5555556 C16.1176527,13.5555556 15.2222222,12.6601251 15.2222222,11.5555556 L15.2222222,10 C15.2222222,8.8954305 16.1176527,8 17.2222222,8 Z M24.4444444,8 L26,8 C27.1045695,8 28,8.8954305 28,10 L28,11.5555556 C28,12.6601251 27.1045695,13.5555556 26,13.5555556 L24.4444444,13.5555556 C23.3398749,13.5555556 22.4444444,12.6601251 22.4444444,11.5555556 L22.4444444,10 C22.4444444,8.8954305 23.3398749,8 24.4444444,8 Z M10,15.2222222 L11.5555556,15.2222222 C12.6601251,15.2222222 13.5555556,16.1176527 13.5555556,17.2222222 L13.5555556,18.7777778 C13.5555556,19.8823473 12.6601251,20.7777778 11.5555556,20.7777778 L10,20.7777778 C8.8954305,20.7777778 8,19.8823473 8,18.7777778 L8,17.2222222 C8,16.1176527 8.8954305,15.2222222 10,15.2222222 Z M17.2222222,15.2222222 L18.7777778,15.2222222 C19.8823473,15.2222222 20.7777778,16.1176527 20.7777778,17.2222222 L20.7777778,18.7777778 C20.7777778,19.8823473 19.8823473,20.7777778 18.7777778,20.7777778 L17.2222222,20.7777778 C16.1176527,20.7777778 15.2222222,19.8823473 15.2222222,18.7777778 L15.2222222,17.2222222 C15.2222222,16.1176527 16.1176527,15.2222222 17.2222222,15.2222222 Z M24.4444444,15.2222222 L26,15.2222222 C27.1045695,15.2222222 28,16.1176527 28,17.2222222 L28,18.7777778 C28,19.8823473 27.1045695,20.7777778 26,20.7777778 L24.4444444,20.7777778 C23.3398749,20.7777778 22.4444444,19.8823473 22.4444444,18.7777778 L22.4444444,17.2222222 C22.4444444,16.1176527 23.3398749,15.2222222 24.4444444,15.2222222 Z M10,22.4444444 L11.5555556,22.4444444 C12.6601251,22.4444444 13.5555556,23.3398749 13.5555556,24.4444444 L13.5555556,26 C13.5555556,27.1045695 12.6601251,28 11.5555556,28 L10,28 C8.8954305,28 8,27.1045695 8,26 L8,24.4444444 C8,23.3398749 8.8954305,22.4444444 10,22.4444444 Z M17.2222222,22.4444444 L18.7777778,22.4444444 C19.8823473,22.4444444 20.7777778,23.3398749 20.7777778,24.4444444 L20.7777778,26 C20.7777778,27.1045695 19.8823473,28 18.7777778,28 L17.2222222,28 C16.1176527,28 15.2222222,27.1045695 15.2222222,26 L15.2222222,24.4444444 C15.2222222,23.3398749 16.1176527,22.4444444 17.2222222,22.4444444 Z M24.4444444,22.4444444 L26,22.4444444 C27.1045695,22.4444444 28,23.3398749 28,24.4444444 L28,26 C28,27.1045695 27.1045695,28 26,28 L24.4444444,28 C23.3398749,28 22.4444444,27.1045695 22.4444444,26 L22.4444444,24.4444444 C22.4444444,23.3398749 23.3398749,22.4444444 24.4444444,22.4444444 Z"
-                                        id="Combined-Shape"
-                                        fill="#A8B0BF"
-                                      />
-                                    </g>
-                                  </g>
-                                </g>
-                              </svg>
-                            </span>
-                            <span className="UlName">{Resources["workplace"][currentLanguage]}</span>
-                          </a>
-                        </li> */}
-
                                                 <li
                                                     className={
                                                         this.state.rowIndex ===
@@ -2070,7 +2041,8 @@ class LeftMenu extends Component {
                             </aside>
                         </div>
                     </div>
-                ) : null}
+                ) : null
+                }
             </div>
         );
     }

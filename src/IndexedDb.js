@@ -2,7 +2,9 @@ import lf from 'lovefield';
 import WidgetStructure from './Componants/WidgetsDashBorad';
 import WidgetsDashBoradProject from './Componants/WidgetsDashBoradProject';
 import keyBy from 'lodash/keyBy';
-import { v1 as uuidv1 } from 'uuid';
+
+//import { v1 as uuidv1 } from 'uuid';
+//import { lab } from 'd3';
 
 const schemaBuilder = lf.schema.create('widgets', 1);
 const schemaBuilderDashBoardProjects = lf.schema.create('widgetsDashBoardProjects', 1);
@@ -13,7 +15,7 @@ let db = null;
 let dbDashBoard = null;
 let widgetsOfflineData = null;
 let api = null;
-let uuid = uuidv1();
+//let uuid = uuidv1();
 
 const tables = {
     'widgetType': null,
@@ -81,13 +83,13 @@ export default class IndexedDb {
             addColumn('label', lf.Type.STRING).
             addColumn('projectId', lf.Type.INTEGER).
             addNullable(['projectId']).
-            addPrimaryKey(['value']);
+            addPrimaryKey(['value']); 
+
 
         cachedData.createTable('projects').
             addColumn('value', lf.Type.INTEGER).
             addColumn('label', lf.Type.STRING).
-            addPrimaryKey(['value']);
-
+            addPrimaryKey(['value']); 
     }
 
     static initializeCounterDB() {
@@ -122,12 +124,12 @@ export default class IndexedDb {
         await OfflineDataSchema.connect().then((res) => {
             widgetsOfflineData = res;
             console.log('fields added');
- 
+
         }, (error) => {
             console.log('error is' + error);
- 
-        }); 
-        tablesOffline.offlineWidgets = OfflineDataSchema.getSchema().table('offlineWidgets'); 
+
+        });
+        tablesOffline.offlineWidgets = OfflineDataSchema.getSchema().table('offlineWidgets');
         // let rows = await widgetsOfflineData.select().from(tablesOffline.offlineWidgets)
         //     .where(tablesOffline.offlineWidgets.key.eq(key))
         //     .exec();
@@ -139,7 +141,7 @@ export default class IndexedDb {
                 'widgetData': JSON.stringify(dataRow)
             })];
         await widgetsOfflineData.insertOrReplace().into(tablesOffline.offlineWidgets).values(offlineData).exec().then(() => {
-       
+
             console.log('fields added');
 
             widgetsOfflineData.close();
@@ -147,13 +149,13 @@ export default class IndexedDb {
             console.log('error is' + error);
 
             widgetsOfflineData.close();
-        }); 
+        });
     }
 
     static async seed() {
         dbDashBoard = await schemaBuilderDashBoardProjects.connect();
         db = await schemaBuilder.connect();
-        api = await cachedData.connect();
+       // api = await cachedData.connect();
 
         tables.widgetType = db.getSchema().table('WidgetType');
         tables.widgetCategory = db.getSchema().table('WidgetCategory');
@@ -161,9 +163,9 @@ export default class IndexedDb {
         tableProjects.widgetCategory = dbDashBoard.getSchema().table('WidgetCategory');
         tableProjects.widget = dbDashBoard.getSchema().table('Widget');
 
-        tables.defaultLists = api.getSchema().table('defaultLists');
-        tables.companies = api.getSchema().table('companies');
-        tables.projects = api.getSchema().table('projects');
+        // tables.defaultLists = api.getSchema().table('defaultLists');
+        // tables.companies = api.getSchema().table('companies');
+        // tables.projects = api.getSchema().table('projects');
 
         let rows = await db.select().from(tables.widgetType).exec();
 
@@ -218,7 +220,7 @@ export default class IndexedDb {
 
     static async setData(mainColumn, value, label, tableName, data, params) {
         let rows = [];
-        if (data !=null) {
+        if (data != null) {
             data.forEach((item) => {
                 let widRow = tables[tableName].createRow({
                     'value': item[value],
@@ -227,11 +229,35 @@ export default class IndexedDb {
                 });
                 rows.push(widRow);
             });
+
             await api.insertOrReplace().into(tables[tableName]).values(rows).exec();
         }
 
     }
 
+    static async setDataIntoDb(mainColumn, value, label, tableName, data, params) {
+
+        if (data.length > 0) { 
+            for (const item of data) {
+                // data.forEach(async item => { 
+                let tbName = tables[tableName];
+                await api.select().from(tbName).where(tbName.value.eq(item[value])).exec().then(async function (rows) {
+
+                    if (rows.length == 0) {
+                        console.log(item); // 'something'
+                        let widRow = tbName.createRow({
+                            'value': item[value],
+                            'label': item[label],
+                            [mainColumn]: params
+                        });
+                        await api.insert().into(tables[tableName]).values([widRow]).exec();
+                    }
+                });
+                // });
+            } 
+        }
+
+    }
     static async DeleteData(tableName) {
 
         await api.delete().from(tables[tableName]).exec();
@@ -248,7 +274,6 @@ export default class IndexedDb {
         req.onblocked = function () {
             console.log("Couldn't delete database due to the operation being blocked");
         };
-
     }
 
     static async GetCachedData(params, tableName, mainColumn) {

@@ -1,117 +1,162 @@
 import React, { Component } from 'react';
+import { Line } from 'react-chartjs-2';
 import Api from '../../api';
-import { Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react';
-import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css';
-const ResponsiveLineChart = withResponsiveness(Line);
+import Loader from '../../../src/Styles/images/ChartLoaders/LineChartLoader.webm';
+import moment from 'moment';
 
-const filter = require('lodash/filter')
-
-const marginObject = {
-    left: 100,
-    right: 40,
-    top: 100,
-    bottom: 50,
-};
-
-const colorSchema = ["#39bd3d", "#dfe2e6"]
+const colorSchema = [
+    '#39bd3d',
+    '#ab50df',
+    '#dfe2e6',
+    '#39bdef',
+    '#afe5ef',
+    '#522e5f',
+    '#39bd3d',
+    '#dfe2e6',
+    '#ab50df',
+    '#39bdef',
+    '#afe5ef',
+    '#522e5f',
+];
 
 class Britecharts extends Component {
-
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
+            chartData: {},
             isLoading: true,
-            data: {
-                dataByTopic: [
-                    {
-                        topic: -1,
-                        topicName: 'Vivid',
-                        dates: [{
-                            date: null,
-                            value: null
-                        }]
-                    }]
-            }
-        }
+            chartDatasets: [],
+            chartLabels: [],
+        };
     }
-
-    renderLine = (props) => (
-        <ResponsiveContainer
-            render={
-                ({ width }) =>
-                    <ResponsiveLineChart
-                        margin={marginObject}
-                        lineCurve="basis"
-                        height={400}
-                        width={width}
-                        colorSchema={colorSchema}
-                        grid='horizontal'
-                        shouldShowLoadingState={this.state.data.dataByTopic.length > 0 ? false : true}
-                        {...props} />
-            }
-        />
-    );
 
     componentDidMount() {
-        let dataByTopic = [];
-
-        this.setState({
-            isLoading: true
-        });
-
-        Api.get(this.props.api).then(res => {
-            if (res.length > 0) {
-                this.props.topicName.forEach((topic, index) => {
-                    let topics = filter(res, function (x) {
-                        if (x.topicName == topic) {
-                            return { date: x.date, value: x.value }
-                        }
-                    });
-                    dataByTopic.push({
-                        topic: index,
-                        topicName: topic,
-                        dates: topics
-                    })
-                });
-            }
-
-            let data = {
-                dataByTopic: dataByTopic
-            }
-
-            this.setState({
-                data: data,
-                isLoading: false
-            });
-
-        }).catch((ex) => {
-            this.setState({
-                isLoading: false
-            });
+        Api.get(this.props.api).then(results => {
+            if (results) this.GenerateDataFromProps(results);
         });
     }
+
+    GenerateDataFromProps = results => {
+        if (results) {
+            let chartDatasets = [];
+            let chartLabels = [];
+            let singleDataset = [];
+            results.map(item => {
+                let labelMarker = this.props.datasets[0];
+                if (item.topicName === labelMarker) chartLabels.push(item.date);
+                return null;
+            });
+            this.props.datasets.map((dataset, index) => {
+                results.map(item => {
+                    if (item.topicName === dataset)
+                        singleDataset.push(item.value);
+                    return null;
+                });
+                chartDatasets.push({
+                    label: dataset,
+                    data: singleDataset,
+                    borderColor:
+                        index / 2 === 0 ? colorSchema[0] : colorSchema[1],
+                    backgroundColor: 'white',
+                    pointRadius: 5,
+                    pointHoverRadius: 6,
+                    fill: false,
+                });
+                singleDataset = [];
+                return null;
+            });
+            this.setState({
+                chartLabels,
+                chartDatasets,
+
+                isLoading: false,
+                chartData: {
+                    labels: chartLabels,
+                    datasets: chartDatasets,
+                },
+            });
+        }
+    };
+
+    options = {
+        tooltips: {
+            xPadding: 12,
+            yPadding: 12,
+            bodySpacing: 12,
+            mode: 'nearest',
+            intersect: false,
+            axis: 'x',
+            titleFontSize: 18,
+            bodyFontSize: 16,
+            callbacks: {
+                title: (tooltipItems, data) => {
+                    return (
+                        this.props.title +
+                        ': ' +
+                        moment.utc(tooltipItems[0].xLabel).format('DD-MM-YYYY')
+                    );
+                },
+            },
+        },
+        legend: {
+            display: false,
+        },
+        animation: {
+            duration: 1500,
+        },
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        min: 0,
+                        precision: 2,
+                    },
+                    stacked: true,
+                },
+            ],
+            xAxes: [
+                {
+                    type: 'time',
+                    time: {
+                        unit: 'month',
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                },
+            ],
+        },
+    };
+
     render() {
-        return (
+        return this.state.isLoading ? (
             <div className="col-md-12 col-lg-6">
-                <div className="panel barChart__container lineCharts">
-                    <div className="panel-body">
-                        <h2>
-                            {this.props.title}
-                        </h2>
-                        {this.state.isLoading === false ?
-                            <Tooltip
-                                data={this.state.data}
-                                render={this.renderLine}
-                                topicLabel="topics"
-                                title={this.props.title} />
-                            :
-                            <Line shouldShowLoadingState={true} />
-                        }
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <video style={{ width: '80%' }} autoPlay loop muted>
+                            <source src={Loader} type="video/webm" />
+                        </video>
                     </div>
                 </div>
             </div>
-        )
+        ) : (
+            <div className="col-md-12 col-lg-6">
+                <div className="panel">
+                    <div className="panel-body">
+                        <h2>{this.props.title}</h2>
+                        <Line
+                            key={this.props.ukey}
+                            data={this.state.chartData}
+                            options={this.options}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
     }
-
 }
-export default Britecharts
+
+export default Britecharts;
