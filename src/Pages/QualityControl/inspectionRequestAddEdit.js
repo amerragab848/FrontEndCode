@@ -271,7 +271,7 @@ class inspectionRequestAddEdit extends Component {
             this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId, 'inspectionRequest');
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
-                console.log("requestCycles...", result);
+                
                 this.setState({
                     IRCycles: [...result]
                 });
@@ -281,7 +281,7 @@ class inspectionRequestAddEdit extends Component {
 
             dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {
                 result.cycleStatus = result.status;
-                console.log("lastCycles...", result);
+              
                 this.setState({
                     documentCycle: { ...result }
                 });
@@ -1252,8 +1252,7 @@ class inspectionRequestAddEdit extends Component {
                                                             </div>
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
-                                                                    <div className="slider-Btns">
-                                                                    {console.log("this.state.isViewMode...",this.state.isViewMode)}
+                                                                    <div className="slider-Btns"> 
                                                                         {this.state.isViewMode === false ?
                                                                             <div className="doc-pre-cycle">
                                                                                 <div className="slider-Btns">

@@ -3652,7 +3652,7 @@ h1, h2, h3, h4, h5 {
     margin-right: 8px;
 }
 
-.submittalFilter .filterBTNS .btn:first-child {
+.submittalFilter .filterBTNS .btn {
     margin-left: 6px;
 }
 
@@ -22513,4 +22513,8 @@ tbody.grid-body tr  .text.elipsisPadd {
 
 .gridBtns.UnRead span { 
     background-color: #E74C3C !important; color: #fff !important; 
+}
+.over-time-error {
+    position: absolute;
+    bottom: -22px;
 }

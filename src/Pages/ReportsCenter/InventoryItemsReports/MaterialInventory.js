@@ -161,7 +161,7 @@ class ExpensesStatus extends Component {
                 </header>
 
 
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput multiChoice">
                         <Dropdown title='projectName' data={this.state.projectsData} name='projectName'
                             isMulti={true} selectedValue={this.state.selectedCompany} handleChange={e => { this.handleChangeDrop('projectIds', 'selectedProject', e); }} />

@@ -231,7 +231,7 @@ class WFDistributionAccountReport extends Component {
                     <h2 className="zero">{Resources.wokFlowDistrbutionAccountsReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput valid-input">
                         <Dropdown title="ContactName" name="ContactName" index="ContactName"
                             data={this.state.dropDownList} selectedValue={this.state.selectedContact}

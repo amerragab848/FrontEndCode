@@ -270,7 +270,7 @@ class BudgetCashFlowAll extends Component {
                     {btnExport}
                 </header>
 
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
 
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
@@ -290,7 +290,7 @@ class BudgetCashFlowAll extends Component {
 
                 <div className="doc-pre-cycle letterFullWidth">
 
-                    <div className='proForm reports__proForm'>
+                    <div className='proForm reports__proForm datepickerContainer'>
 
                         <div className="linebylineInput valid-input">
                             <label className="control-label">{Resources.estimatedCashIn[currentLanguage]}</label>

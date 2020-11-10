@@ -3655,7 +3655,7 @@ h1, h2, h3, h4, h5 {
     margin-left: 8px;
 }
 
-.submittalFilter .filterBTNS .btn:first-child {
+.submittalFilter .filterBTNS .btn {
     margin-right: 6px;
 }
 
@@ -22410,4 +22410,7 @@ tbody.grid-body tr  .text.elipsisPadd {
 }
 /* Added New After devided*/
 
- 
+.over-time-error {
+    position: absolute;
+    bottom: -22px;
+}

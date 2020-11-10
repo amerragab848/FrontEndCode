@@ -12,8 +12,7 @@ import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Config from "../../Services/Config.js";
-import CryptoJS from 'crypto-js';
+import Config from "../../Services/Config.js"; 
 import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
@@ -555,18 +554,7 @@ class TransmittalAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} perviousRoute={this.state.perviousRoute} isViewMode={this.state.isViewMode} docTitle={Resources.transmittal[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-                    <div className="doc-container">
-                        {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header> : null
-                        }
+                    <div className="doc-container"> 
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">

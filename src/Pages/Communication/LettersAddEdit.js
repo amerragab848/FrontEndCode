@@ -23,7 +23,7 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from "lodash/find";
 import Api from "../../api";
-import arrow from '../../Styles/images/right-arrow.png'
+//import arrow from '../../Styles/images/right-arrow.png'
 
 import ConnectionContext from '../../Componants/Layouts/Context'
 
@@ -62,9 +62,7 @@ class LettersAddEdit extends Component {
         super(props);
 
         const query = new URLSearchParams(this.props.location.search);
-
-        //let index = 0;
-
+ 
         let obj = Config.extractDataFromParamas(query);
 
         if (Object.entries(obj).length === 0) {
@@ -517,8 +515,7 @@ class LettersAddEdit extends Component {
                 discplines: [...result]
             });
         });
-        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id")
-            .then(result => {
+        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id").then(result => {
                 if (isEdit) {
                     let replyId = this.props.document.replyId;
                     let replyLetter = {};

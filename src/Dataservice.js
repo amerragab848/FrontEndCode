@@ -18,41 +18,41 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
-    static GetDataListForMaterialReturned(url, label, value,contractId) {
+    static GetDataListForMaterialReturned(url, label, value, contractId) {
         let Data = []
         return Api.get(url).then(result => {
             (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-                obj.contractId=item[contractId];
+                obj.contractId = item[contractId];
                 Data.push(obj);
             });
             return Data;
         }).catch(ex => Data);
     };
-    static GetDataListSiteRequestNewVersion=(url, label, value,contractId,contractName) =>{
+    static GetDataListSiteRequestNewVersion = (url, label, value, contractId, contractName) => {
         let Data = []
         return Api.get(url).then(result => {
             (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-                obj.contractId=item[contractId];
-                obj.contractName=item[contractName];
+                obj.contractId = item[contractId];
+                obj.contractName = item[contractName];
                 Data.push(obj);
             });
             return Data;
         }).catch(ex => Data);
     };
-    static GetDataListForContract(url, label, value,boqId) {
+    static GetDataListForContract(url, label, value, boqId) {
         let Data = []
         return Api.get(url).then(result => {
             (result).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-                obj.boqId=item[boqId];
+                obj.boqId = item[boqId];
                 Data.push(obj);
             });
             return Data;
@@ -73,21 +73,38 @@ export default class Dataservice {
         }).catch(ex => Data);
     };
 
+    // static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
+    //     let rows = await IndexedDb.GetCachedData(params, tableName, mainColumn);
+    //     let Data = [];
+    //     if (rows.length == 0) {
+    //         rows = await this.callAPIGetDataList(url, label, value, params);
+    //         IndexedDb.setData(mainColumn, value, label, tableName, rows, params);
+    //         if (rows !=null) {
+    //             rows.forEach(item => {
+    //                 var obj = {};
+    //                 obj.label = item[label];
+    //                 obj.value = item[value];
+    //                 obj[mainColumn] = item[mainColumn];
+    //                 Data.push(obj);
+    //             });
+    //         }
+    //         rows = Data;
+    //     }
+    //     return rows;
+    // };
+
     static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
-        let rows = await IndexedDb.GetCachedData(params, tableName, mainColumn);
+
+        let rows = await this.callAPIGetDataList(url, label, value, params);
         let Data = [];
-        if (rows.length == 0) {
-            rows = await this.callAPIGetDataList(url, label, value, params);
-            IndexedDb.setData(mainColumn, value, label, tableName, rows, params);
-            if (rows !=null) {
-                rows.forEach(item => {
-                    var obj = {};
-                    obj.label = item[label];
-                    obj.value = item[value];
-                    obj[mainColumn] = item[mainColumn];
-                    Data.push(obj);
-                });
-            }
+        if (rows.length > 0) {
+            rows.forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                obj[mainColumn] = item[mainColumn];
+                Data.push(obj);
+            });
             rows = Data;
         }
         return rows;

@@ -12,8 +12,7 @@ import ModernDatepicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js";
-import CryptoJS from "crypto-js";
+import Config from "../../Services/Config.js"; 
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
@@ -85,29 +84,23 @@ class SubmittalAddEdit extends Component {
 
     const query = new URLSearchParams(this.props.location.search);
 
-    let index = 0;
+    let obj = Config.extractDataFromParamas(query);
 
-    for (let param of query.entries()) {
-      if (index == 0) {
-        try {
+    if (Object.entries(obj).length === 0) {
+      this.props.history.goBack();
+    } else {
+      docId = obj.docId;
+      projectId = obj.projectId;
+      projectName = obj.projectName;
+      isApproveMode = obj.isApproveMode;
+      docApprovalId = obj.docApprovalId;
+      docAlertId = obj.docAlertId;
+      perviousRoute = obj.perviousRoute
+      arrange = obj.arrange;
 
-          let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
-          docId = obj.docId;
-          projectId = obj.projectId;
-          projectName = obj.projectName;
-          isApproveMode = obj.isApproveMode;
-          docApprovalId = obj.docApprovalId;
-          docAlertId = obj.docAlertId;
-          perviousRoute = obj.perviousRoute
-          arrange = obj.arrange;
-
-        } catch {
-          this.props.history.goBack();
-        }
-      }
-      index++;
     }
+
+    let index = 0;
 
     this.state = {
       isCompany: Config.getPayload().uty === "company" ? true : false,
@@ -268,7 +261,7 @@ class SubmittalAddEdit extends Component {
         this.setState({
           itemData: data
         });
-    
+
         this.props.actions.SetCyclesExportingData({
           items: data,
           cyclesFields: ["arrange", "description", "submitalDate", "refDoc", "reviewResultName"],
@@ -2343,7 +2336,8 @@ class SubmittalAddEdit extends Component {
                         {Resources.arrange[currentLanguage]}
                       </label>
                       <div className={"ui input inputDev fillter-item-c " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "")} >
-                        <input type="text" className="form-control" readOnly value={this.state.addCycleSubmital.arrange}
+                        <input type="text" className="form-control" readOnly
+                          value={this.state.addCycleSubmital.arrange || ''}
                           name="arrange" placeholder={Resources.arrange[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
                           onChange={e => this.handleChangeCyclesPopUp(e, "arrange")} />
                         {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}

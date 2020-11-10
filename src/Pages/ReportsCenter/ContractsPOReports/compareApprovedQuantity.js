@@ -190,7 +190,7 @@ class compareApprovedQuantity extends Component {
                         this.getGridtData()
                     }}>
                     {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form onSubmit={handleSubmit} className='proForm reports__proForm' >
+                        <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer' >
                             <div className="linebylineInput valid-input ">
                                 <Dropdown title='Projects' data={this.state.projectList}
                                     name='selectedProject'

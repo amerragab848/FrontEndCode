@@ -52,8 +52,9 @@ export default class CustomGrid extends Component {
         this.props.cells.map((column, index) => {
             if (column.type === "date") {
                 state[index + "-column"] = moment().format("DD/MM/YYYY");
+            } else {
+                state[index + "-column"] = '';
             }
-
         });
         var filters = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
@@ -78,7 +79,6 @@ export default class CustomGrid extends Component {
 
         var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
-        console.log( this.props.gridKey );
         var currentGP = [];
 
         let itemsColumns = this.props.cells;
@@ -212,6 +212,8 @@ export default class CustomGrid extends Component {
         this.props.cells.map((column, index) => {
             if (column.type === "date") {
                 state[index + "-column"] = moment().format("DD/MM/YYYY");
+            } else {
+                state[index + "-column"] = '';
             }
         });
 
@@ -239,6 +241,8 @@ export default class CustomGrid extends Component {
         this.props.cells.map((column, index) => {
             if (column.type === "date") {
                 state[index + "-column"] = moment().format("DD/MM/YYYY");
+            } else {
+                state[index + "-column"] = '';
             }
         });
 
@@ -478,7 +482,6 @@ export default class CustomGrid extends Component {
         let newFilterLst = this.state.localStorFiltersList;
 
         gridLocalStor.Filters = JSON.stringify(newFilterLst);
-        console.log(this.props,this.props.gridKey,'handleGroupEvent');
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         this.setState({ groupsList: groups });
@@ -513,12 +516,12 @@ export default class CustomGrid extends Component {
                                         return column.sortable === true && index <= 5 ? (
                                             <div className={"form-group linebylineInput " + classX} key={index}>
                                                 <label className="control-label" htmlFor={column.field}>
-                                                    {column.title }
+                                                    {column.title}
                                                 </label>
                                                 <div className={"ui input inputDev "} style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
                                                     <input type="text" autoComplete="off" key={index} placeholder={column.title}
                                                         onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)}
-                                                        value={this.state[index + "-column"]}
+                                                        value={this.state[index + "-column"] != null ? this.state[index + "-column"] : ''}
                                                         onClick={() => this.changeDate(index, column.type)} />
 
                                                     {this.state.currentData === index && this.state.currentData != 0 ?
@@ -549,7 +552,7 @@ export default class CustomGrid extends Component {
                                                 <div className={"ui input inputDev test" + (this.state[index + "-column"])}>
                                                     <input autoComplete="off" placeholder={column.title} key={index} type="text" className="form-control"
                                                         id={column.field} name={column.field}
-                                                        value={this.state[index + "-column"]}
+                                                        value={this.state[index + "-column"] != null ? this.state[index + "-column"] : ''}
                                                         onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)} />
                                                 </div>
                                             </div>
@@ -592,7 +595,7 @@ export default class CustomGrid extends Component {
                                                             <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} ref={node => { this.node = node; }}>
                                                                 <input type="text" autoComplete="off" key={index} placeholder={column.title}
                                                                     onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)}
-                                                                    value={this.state[index + "-column"]} onFocus={() => this.changeDate(index, column.type)} />
+                                                                    value={this.state[index + "-column"] != null ? this.state[index + "-column"] : ''} onFocus={() => this.changeDate(index, column.type)} />
                                                                 {this.state.currentData === index &&
                                                                     this.state.currentData != 0 ? (
                                                                         <div className="viewCalender" tabIndex={0} onMouseLeave={this.resetDate} ref={index => { this.index = index; }}>
