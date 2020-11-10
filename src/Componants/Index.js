@@ -73,7 +73,7 @@ class Index extends Component {
           order: categoryOrder[categoryId].order
         }
       });
-    }
+     }
 
     const types = groupBy(mapValues(widgets), widget => widget.typeId);
 
