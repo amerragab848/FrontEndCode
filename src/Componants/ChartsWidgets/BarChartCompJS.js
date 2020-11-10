@@ -49,7 +49,10 @@ class BarChartCompJS extends Component {
                 datasetLabel = this.props.title;
                 return null;
             });
+            if (chartDatasets.length === 1)
+                this.options.scales.xAxes[0].barPercentage = 0.5;
             this.setState({
+                shrinkBar: chartDatasets.length === 1,
                 chartLabels,
                 chartDatasets,
                 datasetLabel: datasetLabel,
