@@ -1,9 +1,6 @@
 import Api from "./api.js";
-import IndexedDb from "./IndexedDb";
-//import { object } from "prop-types";
-//let db = null; 
-//const cachedData = lf.schema.create('cachedAPI', 1);
-
+//import IndexedDb from "./IndexedDb";
+ 
 export default class Dataservice {
 
     static GetDataList(url, label, value) {

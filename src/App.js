@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import "./Styles/css/semantic.min.css"; 
+import "./Styles/css/semantic.min.css";
 import "react-table/react-table.css";
 import Menu from "./Pages/Menu/Menu";
 import Login from "./Componants/Layouts/Login";
@@ -58,8 +58,8 @@ class App extends Component {
 
         IndexedDb.initialize();
         IndexedDb.initializeCounterDB();
-        IndexedDb.initializeCachedAPI();
-        IndexedDb.initializeWidgetsOfflineDB();
+       // IndexedDb.initializeCachedAPI();
+       // IndexedDb.initializeWidgetsOfflineDB();
     }
 
     state = {
@@ -69,12 +69,9 @@ class App extends Component {
 
     async componentDidMount() {
         await IndexedDb.seed();
-        await IndexedDb.seedWidgetCounter(); 
+        await IndexedDb.seedWidgetCounter();
 
-        let currentLanguage =
-            localStorage.getItem("lang") == null
-                ? "en"
-                : localStorage.getItem("lang");
+        let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
         fetch("/assets/IP_Configrations.json")
             .then(r => r.json())

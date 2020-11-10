@@ -2,8 +2,9 @@ import lf from 'lovefield';
 import WidgetStructure from './Componants/WidgetsDashBorad';
 import WidgetsDashBoradProject from './Componants/WidgetsDashBoradProject';
 import keyBy from 'lodash/keyBy';
-import { v1 as uuidv1 } from 'uuid';
-import { lab } from 'd3';
+
+//import { v1 as uuidv1 } from 'uuid';
+//import { lab } from 'd3';
 
 const schemaBuilder = lf.schema.create('widgets', 1);
 const schemaBuilderDashBoardProjects = lf.schema.create('widgetsDashBoardProjects', 1);
@@ -14,7 +15,7 @@ let db = null;
 let dbDashBoard = null;
 let widgetsOfflineData = null;
 let api = null;
-let uuid = uuidv1();
+//let uuid = uuidv1();
 
 const tables = {
     'widgetType': null,
@@ -82,15 +83,13 @@ export default class IndexedDb {
             addColumn('label', lf.Type.STRING).
             addColumn('projectId', lf.Type.INTEGER).
             addNullable(['projectId']).
-            addPrimaryKey(['value']);
-        //persistentIndex(true);
+            addPrimaryKey(['value']); 
 
 
         cachedData.createTable('projects').
             addColumn('value', lf.Type.INTEGER).
             addColumn('label', lf.Type.STRING).
-            addPrimaryKey(['value']);
-        //persistentIndex(true); 
+            addPrimaryKey(['value']); 
     }
 
     static initializeCounterDB() {
@@ -156,16 +155,17 @@ export default class IndexedDb {
     static async seed() {
         dbDashBoard = await schemaBuilderDashBoardProjects.connect();
         db = await schemaBuilder.connect();
+       // api = await cachedData.connect();
+
         tables.widgetType = db.getSchema().table('WidgetType');
         tables.widgetCategory = db.getSchema().table('WidgetCategory');
         tables.widget = db.getSchema().table('Widget');
         tableProjects.widgetCategory = dbDashBoard.getSchema().table('WidgetCategory');
         tableProjects.widget = dbDashBoard.getSchema().table('Widget');
 
-        api = await cachedData.connect();
-        tables.defaultLists = api.getSchema().table('defaultLists');
-        tables.companies = api.getSchema().table('companies');
-        tables.projects = api.getSchema().table('projects');
+        // tables.defaultLists = api.getSchema().table('defaultLists');
+        // tables.companies = api.getSchema().table('companies');
+        // tables.projects = api.getSchema().table('projects');
 
         let rows = await db.select().from(tables.widgetType).exec();
 
@@ -237,8 +237,7 @@ export default class IndexedDb {
 
     static async setDataIntoDb(mainColumn, value, label, tableName, data, params) {
 
-        if (data.length > 0) {
-            ///let arr = [];
+        if (data.length > 0) { 
             for (const item of data) {
                 // data.forEach(async item => { 
                 let tbName = tables[tableName];
@@ -255,10 +254,7 @@ export default class IndexedDb {
                     }
                 });
                 // });
-            }
-
-            ///console.log(arr);
-            //await api.insertOrReplace().into(tables[tableName]).values(arr).exec();
+            } 
         }
 
     }

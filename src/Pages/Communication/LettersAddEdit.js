@@ -25,7 +25,7 @@ import find from "lodash/find";
 import Api from "../../api";
 //import arrow from '../../Styles/images/right-arrow.png'
 
-import ConnectionContext from '../../Componants/Layouts/Context'
+//import ConnectionContext from '../../Componants/Layouts/Context'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
