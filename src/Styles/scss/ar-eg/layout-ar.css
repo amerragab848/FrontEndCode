@@ -4838,6 +4838,7 @@ h1, h2, h3, h4, h5 {
     .gridfillter-container .fillter-status-container {
         justify-content: flex-start;
     }
+    #legenbd__teext .percentage {font-size: 40px}
 }
 
 .gridfillter-container .fillter-status-container .fillter-item-c {
@@ -16602,7 +16603,7 @@ table edition
 
 .panel {
     height: 100%;
-    direction: ltr;
+    /* direction: ltr; */
     margin-bottom: 100px
 }
 
@@ -19728,8 +19729,14 @@ line.horizontal-grid-line {
 
 #legenbd__teext {
     overflow: hidden;
-    padding-right: 25px;
+    padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 35%;
+    margin-right: -15%;
 }
+.canvs-container {width: 65%;}
 
 #legenbd__teext .chartName {
     font-family: cairo-b;
@@ -22469,4 +22476,30 @@ tbody.grid-body tr  .text.elipsisPadd {
 
 .gridBtns.UnRead span { 
     background-color: #E74C3C !important; color: #fff !important; 
+}
+
+/*new styles added by moustafa*/
+
+.chartContainer{
+    height: auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+ 
+.panel-body{
+    display: inline-block;
+    width: 100%
+}
+
+.panel-body-loader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+@media screen and (min-width: 2000px) {
+    #legenbd__teext .percentage {font-size: 70px}
 }

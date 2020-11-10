@@ -5272,6 +5272,7 @@ h1, h2, h3, h4, h5 {
     padding-right: 10px;
 }
 
+
 @media screen and (min-width: 1440px) {
     .mainGridSystem .gridSystemTables .tableCell-2 {
         width: calc(100% - 91px);
@@ -16329,6 +16330,7 @@ em {
 .panel {
     margin-bottom: 100px;
     height: 100%;
+    width: 100%
 }
 
 .donut-container {
@@ -19426,8 +19428,13 @@ line.horizontal-grid-line {
 #legenbd__teext {
     overflow: hidden;
     padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 35%;
+    margin-left: -15%;
 }
-
+.canvas-container {width: 75%;}
 #legenbd__teext .chartName {
     font-family: font-b;
     font-size: 16px;
@@ -19439,7 +19446,7 @@ line.horizontal-grid-line {
 
 #legenbd__teext .percentage {
     font-family: font-b;
-    font-size: 56px;
+    font-size: 50px;
     line-height: 1.14;
     letter-spacing: -1.1px;
     color: #252833;
@@ -20616,6 +20623,7 @@ div#markup-panel {
     .filterModal {
         width: 1000px !important;
     }
+    #legenbd__teext .percentage {font-size: 40px}
 }
 
 .linebylineInput .shareLinks .collapseIcon {
@@ -22369,4 +22377,26 @@ tbody.grid-body tr  .text.elipsisPadd {
 }
 /* Added New After devided*/
 
+.chartContainer{
+    height: auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
  
+.panel-body{
+    display: inline-block;
+    width: 100%
+}
+
+.panel-body-loader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+ 
+@media screen and (min-width: 2000px) {
+    #legenbd__teext .percentage {font-size: 70px}
+}

@@ -361,7 +361,7 @@ var widgets = [
         id: 'wt-Name02',
         permission: 3500,
         // key: "0-3-2",
-        checked: false,
+        checked: true,
         title: 'percentageExpensesTypesOfTotal',
         order: 2,
         props: {
@@ -375,7 +375,7 @@ var widgets = [
       }, {
         id: 'wt-Name03',
         // key: "0-3-3",
-        checked: false,
+        checked: true,
         permission: 3507,
         title: 'expensesAllProject',
         order: 3,
@@ -543,7 +543,7 @@ var widgets = [
     widgets: [
       {
         id: 'wt-riskStatus01',
-        checked: false,
+        checked: true,
         permission: 1377,
         title: 'riskStatus',
         order: 1,
@@ -557,7 +557,7 @@ var widgets = [
       }, {
         id: 'wt-riskPeriority02',
         permission: 3500,
-        checked: false,
+        checked: true,
         title: 'riskPeriority',
         order: 2,
         props: {
@@ -569,7 +569,7 @@ var widgets = [
         seriesName: "riskPeriority"
       }, {
         id: 'wt-riskType03',
-        checked: false,
+        checked: true,
         permission: 3507,
         title: 'riskType',
         order: 3,
@@ -1280,8 +1280,8 @@ var widgets = [
   {
     widgetCategory: "pie",
     refrence: 2,
-    canView: false,
-    checked: false,
+    canView: true,
+    checked: true,
     order: 2,
     widgets: []
   },
