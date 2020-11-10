@@ -8,7 +8,6 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import Export from '../../Componants/OptionsPanels/Export';
 import BarChartComp from '../ReportsCenter/TechnicalOffice/BarChartComp';
 import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
-//import ExportDetails from "../../Pages/ReportsCenter/ExportReportCenterDetails";
 import { SkyLightStateless } from 'react-skylight';
 import moment from 'moment';
 import Api from '../../api.js';
@@ -337,7 +336,7 @@ class BudgetCashFlowReport extends Component {
                     </div>
                     <div className="filterBTNS">{btnExport}</div>
                 </div>
-                <div className="proForm reports__proForm">
+                <div className="proForm reports__proForm datepickerContainer">
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker
                             title="startDate"
@@ -364,7 +363,7 @@ class BudgetCashFlowReport extends Component {
                     </button>
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
-                    <div className="proForm reports__proForm">
+                    <div className="proForm reports__proForm datepickerContainer">
                         <div className="linebylineInput valid-input">
                             <label className="control-label">
                                 {Resources.estimatedCashIn[currentLanguage]}

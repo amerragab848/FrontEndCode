@@ -12,8 +12,7 @@ import ModernDatepicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js";
-import CryptoJS from "crypto-js";
+import Config from "../../Services/Config.js"; 
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
@@ -85,29 +84,23 @@ class SubmittalAddEdit extends Component {
 
     const query = new URLSearchParams(this.props.location.search);
 
-    let index = 0;
+    let obj = Config.extractDataFromParamas(query);
 
-    for (let param of query.entries()) {
-      if (index == 0) {
-        try {
+    if (Object.entries(obj).length === 0) {
+      this.props.history.goBack();
+    } else {
+      docId = obj.docId;
+      projectId = obj.projectId;
+      projectName = obj.projectName;
+      isApproveMode = obj.isApproveMode;
+      docApprovalId = obj.docApprovalId;
+      docAlertId = obj.docAlertId;
+      perviousRoute = obj.perviousRoute
+      arrange = obj.arrange;
 
-          let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
-          docId = obj.docId;
-          projectId = obj.projectId;
-          projectName = obj.projectName;
-          isApproveMode = obj.isApproveMode;
-          docApprovalId = obj.docApprovalId;
-          docAlertId = obj.docAlertId;
-          perviousRoute = obj.perviousRoute
-          arrange = obj.arrange;
-
-        } catch {
-          this.props.history.goBack();
-        }
-      }
-      index++;
     }
+
+    let index = 0;
 
     this.state = {
       isCompany: Config.getPayload().uty === "company" ? true : false,
@@ -265,12 +258,15 @@ class SubmittalAddEdit extends Component {
 
       });
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-    
-     
         this.setState({
           itemData: data
         });
-       // this.props.actions.ExportingData({ items: data });
+
+        this.props.actions.SetCyclesExportingData({
+          items: data,
+          cyclesFields: ["arrange", "description", "submitalDate", "refDoc", "reviewResultName"],
+          cyclesfriendlyNames: ["numberAbb", "subject", "submitalDate", "refDoc", "reviewResult"]
+        });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
     } else {
@@ -988,7 +984,7 @@ class SubmittalAddEdit extends Component {
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.submittalId = this.state.docId;
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    // this.changeCurrentStep(2);
+
     this.setState({ isLoading: true });
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
@@ -1126,7 +1122,7 @@ class SubmittalAddEdit extends Component {
   }
 
   viewAttachments() {
-    return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
+    return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
   }
 
   getLogsSubmittalItems = () => {
@@ -1637,12 +1633,14 @@ class SubmittalAddEdit extends Component {
                                   {Resources.subject[currentLanguage]}
                                 </label>
                                 <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
-                                  <input name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
+                                  <textarea name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
                                     autoComplete="off"
                                     value={this.state.document.subject || ''}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                    onChange={e => this.handleChange(e, "subject")} />
-                                  {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                    onChange={e => this.handleChange(e, "subject")} >
+                                    {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+
+                                  </textarea>
 
                                 </div>
                               </div>
@@ -2338,7 +2336,8 @@ class SubmittalAddEdit extends Component {
                         {Resources.arrange[currentLanguage]}
                       </label>
                       <div className={"ui input inputDev fillter-item-c " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "")} >
-                        <input type="text" className="form-control" readOnly value={this.state.addCycleSubmital.arrange}
+                        <input type="text" className="form-control" readOnly
+                          value={this.state.addCycleSubmital.arrange || ''}
                           name="arrange" placeholder={Resources.arrange[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
                           onChange={e => this.handleChangeCyclesPopUp(e, "arrange")} />
                         {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}

@@ -89,12 +89,6 @@ const ValidtionSchemaForFollowUps = Yup.object().shape({
 });
 
 const ValidtionSchemaContactsForEdit = Yup.object().shape({
-    SelectedCompanyForEditContacts: Yup.string()
-        .required(Resources['toCompanyRequired'][currentLanguage])
-        .nullable(true),
-    SelectedContactForEditContacts: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage])
-        .nullable(false),
     levelNoForEdit: Yup.number()
         .required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -209,6 +203,8 @@ class projectWorkFlowAddEdit extends Component {
             DocumentType: [],
             DocumentTypeDropData: [],
             MultiApprovalData: [],
+            LevelDurationData: [],
+            LevelDurationUpdateList: [],
             ApprovalData: [],
             ContactDataForEdit: {},
             SelectedContactForEditContacts: {},
@@ -367,7 +363,13 @@ class projectWorkFlowAddEdit extends Component {
                     })
                 }
             )
-
+            dataservice.GetDataGrid('GetProjectWorkFlowLevelByWorkFlowId?workFlow=' + this.state.docId).then(
+                res => {
+                    this.setState({
+                        LevelDurationData: res
+                    })
+                }
+            )
             dataservice.GetDataGrid('GetWorkFlowDocumentsByWorkFlowId?workFlow=530').then(
                 res => {
                     this.setState({
@@ -645,6 +647,7 @@ class projectWorkFlowAddEdit extends Component {
                     companyId: values.Company.value,
                     contactId: values.ContactName.value,
                     Description: values.Description,
+                    Duration: values.Duration,
                     workFlowId: this.state.docId,
                     multiApproval: false,
                     approvalId: values.approvalText.value
@@ -727,7 +730,32 @@ class projectWorkFlowAddEdit extends Component {
             })
         });
     }
+    durationHandleChange = (e, level) => {
+        var obj = {};
+        var newList = [];
+        var oldList = this.state.LevelDurationUpdateList;
 
+        newList = oldList.length > 0 ? filter(this.state.LevelDurationUpdateList, function (i) { return i.level != level }) : [];
+
+        obj.level = level;
+        obj.value = e.target.value;
+
+        newList.push(obj);
+
+        this.setState({
+            LevelDurationUpdateList: newList
+        })
+    }
+    UpdateDurationLevel = () => {
+
+        Api.post('UpdateWorkFlowItemsDuration?workFlow=' + this.state.docId,
+            this.state.LevelDurationUpdateList
+        ).then(res => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(ex => {
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        });
+    }
     EditContact = (values, actions) => {
 
         this.setState({
@@ -750,6 +778,7 @@ class projectWorkFlowAddEdit extends Component {
                     Description: values.DescriptionForEdit,
                     workFlowId: this.state.docId,
                     multiApproval: false,
+                    Duration: values.Duration,
                     //approvalId: values.approvalText.value
                     approvalId: this.state.SelectedApproval.value
                 }
@@ -820,22 +849,12 @@ class projectWorkFlowAddEdit extends Component {
             res => {
 
                 this.setState({ showPopUp: true, IsEditWorkFlowItem: true })
-                let Companies = this.state.CompanyData
-                let SelectedCompany = find(Companies, function (i) { return i.value == res.companyId });
-
-                dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + res.companyId + '', 'contactName', 'id').then(
-                    res => {
-                        this.setState({
-                            ContactData: res,
-                            Approval: res.approvalStatusText,
-                        })
-                    }
-                )
-
                 this.setState({
                     ContactDataForEdit: res,
+                    Duration: res.duration,
                     SelectedApproval: { label: res.approvalStatusText, value: res.approvalId },
-                    SelectedCompanyForEditContacts: SelectedCompany,
+                    SelectedCompanyForEditContacts: { 'value': res.companyId, 'label': res.companyName },
+                    Approval: res.approvalStatusText,
                     SelectedContactForEditContacts: { 'value': res.contactId, 'label': res.contactName }
                 })
             }
@@ -1097,6 +1116,32 @@ class projectWorkFlowAddEdit extends Component {
                 </tr>
             )
         });
+        const renderLevelDurationTable = this.state.LevelDurationData.map((item) => {
+            return (
+                <tr key={item.workFlowItemId}>
+                    <td>
+                        <div className="contentCell tableCell-1">
+                            <p>
+                                {item.arrange}
+                            </p>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div className="linebylineInput valid-input fullInputWidth">
+                            <label className="control-label">{Resources['duration'][currentLanguage]}</label>
+                            <div className="inputDev ui input">
+                                <input autoComplete="off" className="form-control"
+                                    value={this.state.multipleDuration}
+                                    name="Duration"
+                                    onChange={(e) => { this.durationHandleChange(e, item.arrange) }}
+                                    placeholder={Resources['duration'][currentLanguage]} />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            )
+        });
 
         let FirstStepWorkFlow = () => {
             return (
@@ -1269,7 +1314,8 @@ class projectWorkFlowAddEdit extends Component {
                             Company: '',
                             ContactName: '',
                             Description: '',
-                            approval: ''
+                            approval: '',
+                            Duration: 0
                         }}
 
                         enableReinitialize={true}
@@ -1320,6 +1366,13 @@ class projectWorkFlowAddEdit extends Component {
                                                 selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
                                                 handleChange={(e) => this.handleChangeDrops(e, "Approval")}
                                                 onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
+                                        </div>
+                                        <div className="linebylineInput valid-input fullInputWidth">
+                                            <label className="control-label">{Resources['duration'][currentLanguage]}</label>
+                                            <div className="inputDev ui input">
+                                                <input autoComplete="off" className="form-control" value={values.Duration} name="Duration"
+                                                    onChange={(e) => { handleChange(e) }} placeholder={Resources['duration'][currentLanguage]} />
+                                            </div>
                                         </div>
                                         <div className="slider-Btns letterFullWidth">
                                             <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['add'][currentLanguage]}</button>
@@ -1565,6 +1618,45 @@ class projectWorkFlowAddEdit extends Component {
                             <button className="primaryBtn-1 btn meduimBtn" onClick={this.SaveMultiApproval} >Save STEP</button>
                         </div>
                     </div>
+
+                    <div className='document-fields'>
+                        {this.state.docId > 0 ?
+                            (
+                                <table className="attachmentTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div className="headCell tableCell-1">
+                                                    <span>No.</span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div className="headCell tableCell-1">
+                                                    <span>Duration</span>
+                                                </div>
+                                            </th>
+
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {renderLevelDurationTable}
+
+                                    </tbody>
+                                </table>
+                            )
+                            : null}
+                    </div>
+                    {this.state.docId > 0 ?
+                        (
+                            <div className="doc-pre-cycle">
+                                <div className="slider-Btns">
+                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.UpdateDurationLevel} >Update Duration</button>
+                                </div>
+                            </div>
+                        )
+                        : null}
                     <div className="doc-pre-cycle">
                         <div className="slider-Btns">
                             <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(5)}>NEXT STEP</button>
@@ -1583,6 +1675,7 @@ class projectWorkFlowAddEdit extends Component {
                         SelectedCompanyForEditContacts: this.state.SelectedCompanyForEditContacts,
                         SelectedContactForEditContacts: this.state.SelectedContactForEditContacts,
                         DescriptionForEdit: this.state.ContactDataForEdit.description,
+                        Duration: this.state.Duration != null ? this.state.Duration : 0,
                         Approval: this.state.Approval
                     }}
 
@@ -1603,8 +1696,8 @@ class projectWorkFlowAddEdit extends Component {
                                     <div className="linebylineInput fullInputWidth disabled">
                                         <label className="control-label">{Resources['company'][currentLanguage]}</label>
                                         <div className="ui input inputDev">
-                                            <input autoComplete="off" value={this.state.SelectedCompanyForEditContacts?this.state.SelectedCompanyForEditContacts.label:null} className="form-control" name="SelectedCompanyForEditContacts"
-                                                 onChange={() => { }}
+                                            <input autoComplete="off" value={this.state.SelectedCompanyForEditContacts ? this.state.SelectedCompanyForEditContacts.label : null} className="form-control" name="SelectedCompanyForEditContacts"
+                                                onChange={() => { }}
                                                 placeholder={Resources['company'][currentLanguage]} />
                                         </div>
                                     </div>
@@ -1612,8 +1705,8 @@ class projectWorkFlowAddEdit extends Component {
                                     <div className="linebylineInput fullInputWidth disabled">
                                         <label className="control-label">{Resources['ContactName'][currentLanguage]}</label>
                                         <div className="ui input inputDev">
-                                            <input autoComplete="off" value={values.SelectedContactForEditContacts?values.SelectedContactForEditContacts.label:null} className="form-control" name="SelectedContactForEditContacts"
-                                                 onChange={() => { }}
+                                            <input autoComplete="off" value={values.SelectedContactForEditContacts ? values.SelectedContactForEditContacts.label : null} className="form-control" name="SelectedContactForEditContacts"
+                                                onChange={() => { }}
                                                 placeholder={Resources['ContactName'][currentLanguage]} />
                                         </div>
                                     </div>
@@ -1632,6 +1725,13 @@ class projectWorkFlowAddEdit extends Component {
                                         <div className="inputDev ui input">
                                             <input autoComplete="off" className="form-control" value={values.DescriptionForEdit} name="DescriptionForEdit"
                                                 onChange={(e) => { handleChange(e) }} placeholder={Resources['description'][currentLanguage]} />
+                                        </div>
+                                    </div>
+                                    <div className="linebylineInput fullInputWidth">
+                                        <label className="control-label">{Resources['duration'][currentLanguage]}</label>
+                                        <div className="inputDev ui input">
+                                            <input autoComplete="off" className="form-control" value={values.Duration} name="Duration"
+                                                onChange={(e) => { handleChange(e) }} placeholder={Resources['duration'][currentLanguage]} />
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">

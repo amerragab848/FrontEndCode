@@ -92,14 +92,17 @@ class UploadAttachment extends Component {
 
     renderAddAttachments = () => {
         return (
-            <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
+            <Dropzone
+                //onClick={evt => evt.preventDefault()}
+                onDrop={e => this.onDrop(e)}
+                onDragLeave={e => this.setState({ _className: " " })}
                 onDragOver={this.dragOverDiv}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
                 onDropRejected={this.onDropRejected} >
                 {({ getRootProps, getInputProps, isDragActive }) => {
                     return (
                         <Fragment>
-                            <div {...getRootProps()} className={classNames("dropzone", { "dropzone--isActive": isDragActive })}>
+                            <div {...getRootProps()}  className={classNames("dropzone", { "dropzone--isActive": isDragActive })}>
                                 <input {...getInputProps()} />
                                 {
                                     <div className={"uploadForm" + " " + this.state._className}>
@@ -131,14 +134,17 @@ class UploadAttachment extends Component {
 
     renderEditAttachments = () => {
         return (
-            <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
+            <Dropzone
+                //onClick={evt => evt.preventDefault()}
+                onDrop={e => this.onDrop(e)}
+                onDragLeave={e => this.setState({ _className: " " })}
                 onDragOver={this.dragOverDiv}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
                 onDropRejected={this.onDropRejected}>
                 {({ getRootProps, getInputProps, isDragActive }) => {
                     return (
                         <Fragment>
-                            <div {...getRootProps()} className={classNames("dropzone", { "dropzone--isActive": isDragActive })}>
+                            <div {...getRootProps()}   className={classNames("dropzone", { "dropzone--isActive": isDragActive })}>
                                 <input {...getInputProps()} />
                                 {
                                     <div className={"uploadForm" + " " + this.state._className}>

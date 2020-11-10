@@ -58,8 +58,8 @@ class App extends Component {
 
         IndexedDb.initialize();
         IndexedDb.initializeCounterDB();
-        IndexedDb.initializeCachedAPI();
-        IndexedDb.initializeWidgetsOfflineDB();
+        // IndexedDb.initializeCachedAPI();
+        // IndexedDb.initializeWidgetsOfflineDB();
     }
 
     state = {

@@ -201,7 +201,7 @@ class RequestPaymentDeductionTypeReport extends Component {
                     <h2 className="zero">{Resources.RequestPaymentDeductionTypeReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                 <div className="linebylineInput ">                     
                         <Dropdown title="projectName"
                             data={this.state.projectsList}

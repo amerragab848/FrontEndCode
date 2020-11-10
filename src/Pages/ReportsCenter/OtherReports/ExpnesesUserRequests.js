@@ -88,7 +88,7 @@ class ExpnesesUserRequests extends Component {
                     <h2 className="zero">{Resources.expnesesUserRequests[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="doc-pre-cycle letterFullWidth">
                         {dataGrid}
                     </div>

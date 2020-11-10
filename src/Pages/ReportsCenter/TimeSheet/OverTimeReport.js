@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
+import Config from '../../../Services/Config'; 
 import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
@@ -136,7 +135,7 @@ class OverTimeReport extends Component {
                             this.getGridRows()
                         }}>
                         {({ errors, touched, handleSubmit, handleChange, handleBlur }) => (
-                            <Form id="InspectionRequestForm" className="proForm reports__proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                            <Form id="InspectionRequestForm" className='proForm reports__proForm datepickerContainer'noValidate="novalidate" onSubmit={handleSubmit}>
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">
                                         {Resources.defaultHours[currentLanguage]}
@@ -145,7 +144,7 @@ class OverTimeReport extends Component {
                                         <input type="text" className="form-control" value={this.state.defaultHour || ''} name="defaultHour" placeholder={Resources.defaultHours[currentLanguage]}
                                             onBlur={e => { handleChange(e); handleBlur(e); }}
                                             onChange={e => { this.handleChange(e); this.fields[0].value = e.target.value }} />
-                                        {errors.defaultHour && touched.defaultHour ? (<em className="pError">{errors.defaultHour}</em>) : null}
+                                        {errors.defaultHour && touched.defaultHour ? (<em className="pError over-time-error">{errors.defaultHour}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">

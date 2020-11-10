@@ -115,6 +115,23 @@ var widgets = [
           action: "action",
           isModal: false
         }
+      },
+      {
+        title: "levelDurationAlert",
+        permission: 0,
+        canView: false,
+        checked: true,
+        order: 7,
+        type: "oneWidget",
+        props: {
+          api: "GetLevelDurationDelayCount",
+          apiDetails: "",
+          route: "levelDurationAlertDetails",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false
+        }
       }
     ]
   },

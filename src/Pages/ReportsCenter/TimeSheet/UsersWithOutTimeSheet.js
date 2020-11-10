@@ -97,7 +97,7 @@ class UserWithOutTimeSheet extends Component {
                     <h2 className="zero">{Resources.usersWithoutTimeSheet[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}

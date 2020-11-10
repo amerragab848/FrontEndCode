@@ -1,8 +1,7 @@
 
 import * as types from '../../store/actions/types';
-
 import initialState from '../initialState';
-import { parse } from 'url';
+//import { parse } from 'url';
 
 
 export default function (state = initialState.app.communication, action) {
@@ -16,13 +15,25 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state, inventoryItems: inventoryItems
             }
-            
-          case types.Export_Document:
+
+        case types.Export_Document:
             let _items = state.items.length > 0 ? state.items : action.items.length > 0 ? action.items : []
             return {
                 ...state, items: _items
             }
-        
+
+        case types.Set_DocumentCycle:
+            let _cycles = state.cycles.length > 0 ? state.cycles : action.cycles.length > 0 ? action.cycles : []
+            let _cyclesFields = state.cyclesFields.length > 0 ? state.cyclesFields : action.cyclesFields.length > 0 ? action.cyclesFields : []
+            let _cyclesfriendlyNames = state.cyclesfriendlyNames.length > 0 ? state.cyclesfriendlyNames : action.cyclesfriendlyNames.length > 0 ? action.cyclesfriendlyNames : []
+ 
+            return {
+                ...state,
+                cycles: _cycles,
+                cyclesFields: _cyclesFields,
+                cyclesfriendlyNames: _cyclesfriendlyNames
+            }
+
         case types.Document_for_Edit:
             return {
                 ...state,
@@ -33,7 +44,6 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 showLeftReportMenu: false,
-                //docsAttachData: [],
                 documentTitle: action.docName
             };
 
@@ -198,8 +208,8 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 showModal: action.showModal,
-                isLoading:false,
-                isLoadingFilesUpload:false
+                isLoading: false,
+                isLoadingFilesUpload: false
             };
 
 

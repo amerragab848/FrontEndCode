@@ -164,7 +164,7 @@ class TimeSheet extends Component {
                             this.getGridRows()
                         }}>
                         {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched }) => (
-                            <Form id="InspectionRequestForm" className="proForm reports__proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                            <Form id="InspectionRequestForm" className='proForm reports__proForm datepickerContainer'noValidate="novalidate" onSubmit={handleSubmit}>
 
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="ContactName" name="contactName" index="contactName"

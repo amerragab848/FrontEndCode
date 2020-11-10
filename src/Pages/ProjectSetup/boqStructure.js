@@ -17,15 +17,15 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
-var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
-var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+ 
+//var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
+//var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
     code: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
-    titleEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
-        return !en.test(value);
-    }).required(Resources["titleEnRequired"][currentLanguage]),
+    titleEn: Yup.string().required(Resources["titleEnRequired"][currentLanguage]),
     titleAr: Yup.string().required(Resources["titleArRequired"][currentLanguage]),
 });
 
@@ -61,7 +61,8 @@ class boqStructure extends Component {
             ViewCopyMultiple: false,
             newProjectId: { label: Resources.projectRequired[currentLanguage], value: "0" },
             ShowPayment: false,
-            IsFirstParent: false
+            IsFirstParent: false,
+            docTemplateModal: false
         };
 
         if (!Config.IsAllow(3670)) {
@@ -156,9 +157,7 @@ class boqStructure extends Component {
             if (item.collapse === undefined) { item.collapse = true }
             if (id == item.id) {
                 item.collapse = !item.collapse;
-            } else {
-                //item.collapse = item.id != parentId ? true : item.collapse; 
-            }
+            } 
             updateTrees.push(item);
             if (item.trees && item.trees.length > 0) {
                 this.search(id, item.trees, updateTrees, parentId);
@@ -299,6 +298,11 @@ class boqStructure extends Component {
     onCloseModal = () => {
         this.setState({ showDeleteModal: false });
     }
+    btnDocumentTemplateShowModal = () => {
+        this.setState({
+            docTemplateModal: true
+        });
+    }
 
     DeleteNode(id) {
         this.setState({
@@ -338,6 +342,7 @@ class boqStructure extends Component {
         }
         return data;
     };
+
     UpdateTree = (SelectedNode, NewNode) => {
         if (SelectedNode.perentId !== null) {
             let data = this.state.trees
@@ -373,7 +378,7 @@ class boqStructure extends Component {
     AddEditNode = () => {
 
         this.setState({ isLoading: true })
-  
+
         let EditObj = {
             id: this.state.SelectedNode.id,
             title: this.state.SelectedNode.title,
@@ -496,11 +501,36 @@ class boqStructure extends Component {
                 <div className="documents-stepper noTabs__document">
                     <div className="tree__header">
                         <h2 className="zero">{Resources.boqStructure[currentLanguage]}</h2>
-                        <button className="primaryBtn-1 btn " onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>{Resources["goAdd"][currentLanguage]}</button>
+                        <div className="add__docName">
+                            <button className="primaryBtn-1 btn " onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>{Resources["goAdd"][currentLanguage]}</button>
+                            <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
+                        </div>
                     </div>
 
+                    {this.state.docTemplateModal == true ? (
+                        <div className="largePopup largeModal " >
 
-                    {/* ParentNode */}
+                            <SkyLightStateless
+                                onOverlayClicked={() => this.setState({ docTemplateModal: false })}
+                                title={Resources['DocTemplate'][currentLanguage]}
+                                onCloseClicked={() => this.setState({ docTemplateModal: false })}
+                                isVisible={this.state.docTemplateModal}>
+                                <div>
+                                    <XSLfile key="docTemplate"
+                                        documentTemplate={false}
+                                        docType="BoqStructure"
+                                        docId={this.props.projectId}
+                                        link={Config.getPublicConfiguartion().downloads + "/downloads/excel/tempBoqStructure.xlsx"}
+                                        header="addManyItems"
+                                        afterUpload={() => {                    
+                                            this.setState({ docTemplateModal: false }) 
+                                        }
+                                        } />
+
+                                </div>
+                            </SkyLightStateless>
+                        </div>
+                    ) : null}
                     <div className="Eps__list">
                         {this.state.trees.length < 0 ? this.setState({ isLoading: false }) :
                             <Fragment>
@@ -565,7 +595,6 @@ class boqStructure extends Component {
                     <LoadingSection /> : null
                 }
 
-                {/* CopyTo */}
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ ViewCopyTo: false })}
                         title={Resources['copyTo'][currentLanguage]}
@@ -574,7 +603,6 @@ class boqStructure extends Component {
                     </SkyLightStateless>
                 </div>
 
-                {/* CopyTo */}
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ ViewCopyMultiple: false })}
                         title={Resources['copyMultiple'][currentLanguage]}
@@ -584,7 +612,6 @@ class boqStructure extends Component {
                 </div>
 
 
-                {/* AddEditNode */}
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ viewPopUp: false, IsEditMode: false })}
                         title={this.state.IsEditMode ? Resources['editTitle'][currentLanguage] : Resources['goAdd'][currentLanguage]}
@@ -658,7 +685,6 @@ class boqStructure extends Component {
                     </SkyLightStateless>
                 </div>
 
-                {/* DeleteModel */}
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessage"][currentLanguage].content}

@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { Formik, Form, Field } from 'formik';
+import React, { Component } from "react";
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -11,36 +11,29 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
+import moment from "moment"; 
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
+let isTransferAdd = false;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
     fromProjectId: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true),
 
     approvedQuantity: Yup.number().required(Resources['approvedQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    rejectedQuantity: Yup.number().required(Resources['rejectedQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    pendingQuantity: Yup.number().required(Resources['pendingQuantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
+        .typeError(Resources['onlyNumbers'][currentLanguage])
 
 })
+
 class TransferInventory extends Component {
 
     constructor(props) {
@@ -60,6 +53,7 @@ class TransferInventory extends Component {
                     docApprovalId = obj.docApprovalId;
                     perviousRoute = obj.perviousRoute;
                     arrange = obj.arrange;
+                    isTransferAdd = obj.isTransferAdd;
                 } catch { this.props.history.goBack(); }
             }
             index++;
@@ -78,10 +72,15 @@ class TransferInventory extends Component {
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             selectedProject: { label: Resources.projectName[currentLanguage], value: "0" },
             ProjectsData: [],
-            permission: [{ name: 'sendByEmail', code: '0' }, { name: 'sendByInbox', code: '0' },
-            { name: 'sendTask', code: '0' }, { name: 'distributionList', code: '0' },
-            { name: 'createTransmittal', code: '0' }, { name: 'sendToWorkFlow', code: '3775' },
-            { name: 'viewAttachments', code: '0' }, { name: 'deleteAttachments', code: '0' }],
+            permission: [
+                { name: 'sendByEmail', code: '0' },
+                { name: 'sendByInbox', code: '0' },
+                { name: 'sendTask', code: '0' },
+                { name: 'distributionList', code: '0' },
+                { name: 'createTransmittal', code: '0' },
+                { name: 'sendToWorkFlow', code: 3775 },
+                { name: 'viewAttachments', code: '0' },
+                { name: 'deleteAttachments', code: '0' }],
             approvedQuantity: 0,
             rejectedQuantity: 0,
             pendingQuantity: 0,
@@ -96,44 +95,55 @@ class TransferInventory extends Component {
     }
 
     componentDidMount() {
+        this.props.actions.FillGridLeftMenu();
+        //to show left menu only
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
             else { links[i].classList.add("odd") }
         }
-        let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId
-        dataservice.GetDataGrid(url).then(result => {
-            debugger
-            this.setState({
-                document: result
+        if (isTransferAdd != true) {
+            let url = "GetRequestTransferItemEdit?id=" + this.state.docId;
+
+            dataservice.GetDataGrid(url).then(result => {
+                this.setState({
+                    document: result
+                });
+                let selectedValue = { value: result.toProjectId, label: result.toProjectName };
+                this.setState({ selectedProject: selectedValue });
             })
-        })
 
+        } else {
+            let url = "GetLogsMaterialInventoriesForEdit?id=" + this.state.docId;
+
+            dataservice.GetDataGrid(url).then(result => {
+                this.setState({
+                    document: result
+                });
+                let selectedValue = { value: result.toProjectId, label: result.toProjectName };
+                this.setState({ selectedProject: selectedValue });
+            })
+        }
         this.fillDropDowns(true);
-
     }
 
     fillDropDowns(isEdit) {
 
         dataservice.GetDataList('ProjectProjectsGetAllExceptprojectId?projectId=' + this.state.projectId, 'projectName', 'projectId').then(result => {
-            if (isEdit) {
-                let id = this.props.document.toProjectId;
-                let selectedValue = {};
-                if (id) {
-                    selectedValue = find(result, function (i) { return i.value === id });
-                    this.setState({ selectedProject: selectedValue })
-                }
-            }
+
             this.setState({ ProjectsData: [...result] })
         })
     }
 
     handleChangeDropDown = (event) => {
         if (event == null) return
+
         let original_document = { ...this.state.document }
         let updated_document = {};
+
         updated_document['fromProjectId'] = event.value;
         updated_document = Object.assign(original_document, updated_document);
+
         this.setState({ document: updated_document, selectedProject: event })
     }
 
@@ -151,28 +161,10 @@ class TransferInventory extends Component {
         this.setState({ docId: 0 })
     }
 
-    showBtnsSaving() {
-        let btn = null;
-
-        if (this.state.docId === 0) {
-            btn = (
-                <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = (
-                <button className="primaryBtn-1 btn mediumBtn" type="submit">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
-        }
-        return btn;
-    }
 
     saveDoc = () => {
         let obj = {
-            id: 0,
+            id: isTransferAdd == true ? 0 : this.state.document.id,
             fromProjectId: this.state.document.projectId,
             toProjectId: this.state.selectedProject.value,
             approvedQuantity: this.state.document.approvedQuantity,
@@ -180,13 +172,13 @@ class TransferInventory extends Component {
             pendingQuantity: this.state.document.pendingQuantity,
             inventoryId: this.state.document.id
         }
-        debugger
+
         dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-
-                this.props.history.push("/materialInventory/" + this.state.projectId);
+                this.props.history.push("/requestsTransferItems/" + this.state.projectId);
             }
+
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
@@ -213,6 +205,7 @@ class TransferInventory extends Component {
                         onSubmit={values => {
                             if (this.props.showModal) { return; }
                             this.saveDoc()
+
                         }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="QsForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -224,7 +217,7 @@ class TransferInventory extends Component {
                                             onBlur={setFieldTouched}
                                             error={errors.fromProjectId}
                                             touched={touched.fromProjectId}
-                                            
+
                                             name="fromProjectId"
                                             id="fromProjectId"
                                             index="fromProjectId"
@@ -232,9 +225,8 @@ class TransferInventory extends Component {
                                             title="Project"
                                             data={this.state.ProjectsData}
                                             selectedValue={this.state.selectedProject}
-                                            handleChange={e => this.handleChangeDropDown(e)} 
-                                            //em={touched.project}
-                                            />
+                                            handleChange={e => this.handleChangeDropDown(e)}
+                                        />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
@@ -251,65 +243,37 @@ class TransferInventory extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['pendingQuantity'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.pendingQuantity ? 'has-error' : !errors.pendingQuantity && touched.pendingQuantity ? (" has-success") : " ")}>
-                                            <input name='pendingQuantity' className="form-control" autoComplete='off' placeholder={Resources['pendingQuantity'][currentLanguage]}
-                                                value={this.state.document.pendingQuantity} onChange={e => this.HandelChangeInputs(e, 'pendingQuantity')}
-                                                onBlur={(e) => {
-                                                    handleBlur(e)
-                                                    handleChange(e)
-                                                }}
-                                            />
-                                            {errors.pendingQuantity ? (<em className="pError">{errors.pendingQuantity}</em>) : null}
-                                        </div>
-                                    </div>
+                                    {isTransferAdd != true ?
+                                        <div className="approveDocument">
+                                            <div className="approveDocumentBTNS">
+                                                {this.state.isLoading ?
+                                                    <button className="primaryBtn-1 btn disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button> :
+                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}
+                                                        type="submit">{Resources.edit[currentLanguage]}</button>
+                                                }
+                                                <DocumentActions
+                                                    isApproveMode={this.state.isApproveMode}
+                                                    docTypeId={this.state.docTypeId}
+                                                    docId={this.state.docId}
+                                                    projectId={this.state.projectId}
+                                                    previousRoute={this.state.previousRoute}
+                                                    docApprovalId={this.state.docApprovalId}
+                                                    currentArrange={this.state.arrange}
+                                                    showModal={this.props.showModal}
+                                                    showOptionPanel={this.showOptionPanel}
+                                                    permission={this.state.permission}
+                                                />
 
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['rejectedQuantity'][currentLanguage]} </label>
-                                        <div className={"inputDev ui input " + (errors.rejectedQuantity ? 'has-error' : !errors.rejectedQuantity && touched.rejectedQuantity ? (" has-success") : " ")}>
-                                            <input name='rejectedQuantity' className="form-control" autoComplete='off' placeholder={Resources['rejectedQuantity'][currentLanguage]}
-                                                value={this.state.document.rejectedQuantity} onChange={e => this.HandelChangeInputs(e, 'rejectedQuantity')}
-                                                onBlur={(e) => {
-                                                    handleBlur(e)
-                                                    handleChange(e)
-                                                }} />
-                                            {errors.rejectedQuantity ? (<em className="pError">{errors.rejectedQuantity}</em>) : null}
+                                            </div>
                                         </div>
-                                    </div>
-
+                                        : null}
                                 </div>
-
-                                {this.props.changeStatus === true ?
-                                    <div className="approveDocument">
-                                        <div className="approveDocumentBTNS">
-                                            {this.state.isLoading ?
-                                                <button className="primaryBtn-1 btn disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
-                                                </button> :
-                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                            }
-                                            <DocumentActions
-                                                isApproveMode={this.state.isApproveMode}
-                                                docTypeId={this.state.docTypeId}
-                                                docId={this.state.docId}
-                                                projectId={this.state.projectId}
-                                                previousRoute={this.state.previousRoute}
-                                                docApprovalId={this.state.docApprovalId}
-                                                currentArrange={this.state.arrange}
-                                                showModal={this.props.showModal}
-                                                showOptionPanel={this.showOptionPanel}
-                                                permission={this.state.permission}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    : null}
-
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
                                         {this.props.changeStatus === true ?
@@ -317,13 +281,14 @@ class TransferInventory extends Component {
                                             : null}
                                     </div>
                                 </div>
-
-                                <div className="slider-Btns">
-                                    {/* {this.showBtnsSaving()} */}
-                                    <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                                        {Resources.save[currentLanguage]}
-                                    </button>
-                                </div>
+                                {isTransferAdd == true ?
+                                    <div className="slider-Btns">
+                                        <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                                            {Resources.save[currentLanguage]}
+                                        </button>
+                                    </div>
+                                    : null
+                                }
                             </Form>
                         )}
                     </Formik>
@@ -339,7 +304,6 @@ class TransferInventory extends Component {
                     <div className="doc-container">
 
                         <div className="step-content">
-
                             {this.props.changeStatus == true ?
                                 <header className="main__header">
                                     <div className="main__header--div">
@@ -348,7 +312,6 @@ class TransferInventory extends Component {
                                     </div>
                                 </header> : null}
                             {StepOne()}
-
                         </div>
 
                     </div>

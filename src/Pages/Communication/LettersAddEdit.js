@@ -23,9 +23,9 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from "lodash/find";
 import Api from "../../api";
-import arrow from '../../Styles/images/right-arrow.png'
+//import arrow from '../../Styles/images/right-arrow.png'
 
-import ConnectionContext from '../../Componants/Layouts/Context'
+//import ConnectionContext from '../../Componants/Layouts/Context'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -62,9 +62,7 @@ class LettersAddEdit extends Component {
         super(props);
 
         const query = new URLSearchParams(this.props.location.search);
-
-        //let index = 0;
-
+ 
         let obj = Config.extractDataFromParamas(query);
 
         if (Object.entries(obj).length === 0) {
@@ -432,7 +430,7 @@ class LettersAddEdit extends Component {
 
         win.focus();
     }
-    
+
     fillDropDowns(isEdit, cb) {
         if (!isEdit) {
             dataservice.GetDataList("ProjectWorkFlowGetList?projectId=" + this.state.projectId, "subject", "id").then(result => {
@@ -517,8 +515,7 @@ class LettersAddEdit extends Component {
                 discplines: [...result]
             });
         });
-        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id")
-            .then(result => {
+        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id").then(result => {
                 if (isEdit) {
                     let replyId = this.props.document.replyId;
                     let replyLetter = {};
@@ -700,7 +697,7 @@ class LettersAddEdit extends Component {
 
         this.setState({
             isLoading: true
-        });  
+        });
 
         let saveDocument = { ...this.state.document };
         saveDocument.projectId = this.props.projectId
@@ -803,13 +800,15 @@ class LettersAddEdit extends Component {
                                                                 {Resources.subject[currentLanguage]}
                                                             </label>
                                                             <div className={"inputDev ui input" + (errors.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                                <input name="subject" id="subject" className="form-control fsadfsadsa"
+                                                                <textarea name="subject" id="subject" className="form-control fsadfsadsa"
                                                                     placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete="off"
                                                                     value={this.state.document.subject}
                                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                                    onChange={e => this.handleChange(e, "subject")} />
-                                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                    onChange={e => this.handleChange(e, "subject")} >
+                                                                        {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                    </textarea>
+                                                                
                                                             </div>
                                                         </div>
 

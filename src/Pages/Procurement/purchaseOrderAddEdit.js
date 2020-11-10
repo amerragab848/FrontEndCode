@@ -278,8 +278,8 @@ class PurchaseOrderAddEdit extends Component {
         ];
 
         this.state = {
-            showMyModal:true,
-            currentStep: 0,
+            showMyModal: true,
+            CurrentStep: 0,
             currentId: 0,
             purchaseOrderDataItems: [],
             termPurchaseOrderData: [],
@@ -467,7 +467,7 @@ class PurchaseOrderAddEdit extends Component {
     }
 
     changeCurrentStep = stepNo => {
-        this.setState({ currentStep: stepNo });
+        this.setState({ CurrentStep: stepNo });
     };
 
     showBtnsSaving() {
@@ -540,7 +540,7 @@ class PurchaseOrderAddEdit extends Component {
                     this.setState({
                         purchaseOrderDataItems: result
                     });
-                    this.props.actions.ExportingData({ items: result});
+                    this.props.actions.ExportingData({ items: result });
                 });
 
             dataservice
@@ -1118,9 +1118,8 @@ class PurchaseOrderAddEdit extends Component {
                             Resources.specsSectionSelection[currentLanguage],
                         value: "0"
                     }
-        });
-
-      //  this.simpleDialog.show();
+        }); 
+        this.simpleDialog.show();
     };
 
     getTabelData() {
@@ -1152,863 +1151,863 @@ class PurchaseOrderAddEdit extends Component {
         return (
             <div className="proForm  letterFullWidth">
                 <div className="proForm datepickerContainer letterFullWidth">
-                {this.state.viewDisription === 0 ? (
-                    <Fragment>
-                        {/* finded */}
-                        <div className="proForm datepickerContainer letterFullWidth">
-                            <div className="linebylineInput valid-input">
-                                <Dropdown
-                                    title="description"
-                                    data={this.state.descriptions}
-                                    selectedValue={
-                                        this.state.selectedDescription
-                                    }
-                                    handleChange={event => {
-                                        this.handleChangeDropDownItems(
-                                            event,
-                                            "details",
-                                            false,
-                                            "",
-                                            "",
-                                            "",
-                                            "selectedDescription",
-                                            ""
-                                        );
-                                        this.changeItemDropDownDetails(event);
-                                    }}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.details}
-                                    touched={touched.details}
-                                    name="details"
-                                    index="details"
-                                />
-                            </div>
-                            <button
-                                className="primaryBtn-1 btn "
-                                type="submit"
-                                onClick={e =>
-                                    this.renderFromInventory(
-                                        this.state.viewDisription
-                                    )
-                                }>
-                                {Resources["addNewItem"][currentLanguage]}
-                            </button>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">
-                                {Resources.arrange[currentLanguage]}
-                            </label>
-                            <div className="ui input inputDev">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="arrange"
-                                    readOnly
-                                    value={
-                                        this.state.purchaseOrderItems.arrange
-                                    }
-                                    placeholder={
-                                        Resources.arrange[currentLanguage]
-                                    }
-                                    onChange={e =>
-                                        this.handleChangeItems(e, "arrange")
-                                    }
-                                    onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                    }}
-                                    name="arrange"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">
-                                {Resources.quantity[currentLanguage]}
-                            </label>
-                            <div
-                                className={
-                                    "inputDev ui input" +
-                                    (errors.quantity && touched.quantity
-                                        ? " has-error"
-                                        : !errors.quantity && touched.quantity
-                                            ? " has-success"
-                                            : " ")
-                                }>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="advancePaymentPercent"
-                                    value={
-                                        this.state.purchaseOrderItems.quantity
-                                    }
-                                    placeholder={
-                                        Resources.quantity[currentLanguage]
-                                    }
-                                    onChange={e =>
-                                        this.handleChangeItems(e, "quantity")
-                                    }
-                                    onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                    }}
-                                    name="quantity"
-                                />
-                                {errors.quantity && touched.quantity ? (
-                                    <em className="pError">
-                                        {errors.quantity}
-                                    </em>
-                                ) : null}
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input fullInputWidth">
-                            <label className="control-label">
-                                {Resources.unitPrice[currentLanguage]}
-                            </label>
-                            <div
-                                className={
-                                    "inputDev ui input" +
-                                    (errors.unitPrice && touched.unitPrice
-                                        ? " has-error"
-                                        : !errors.unitPrice && touched.unitPrice
-                                            ? " has-success"
-                                            : " ")
-                                }>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="unitPrice"
-                                    value={
-                                        this.state.purchaseOrderItems.unitPrice
-                                    }
-                                    placeholder={
-                                        Resources.unitPrice[currentLanguage]
-                                    }
-                                    onChange={e =>
-                                        this.handleChangeItems(e, "unitPrice")
-                                    }
-                                    onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                    }}
-                                    name="unitPrice"
-                                />
-                                {errors.unitPrice && touched.unitPrice ? (
-                                    <em className="pError">
-                                        {errors.unitPrice}
-                                    </em>
-                                ) : null}
-                            </div>
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <Dropdown
-                                title="itemType"
-                                data={this.state.itemType}
-                                selectedValue={this.state.selectedItemType}
-                                handleChange={event => {
-                                    this.handleChangeDropDownItems(
-                                        event,
-                                        "itemType",
-                                        false,
-                                        "",
-                                        "",
-                                        "",
-                                        "selectedItemType",
-                                        ""
-                                    );
-                                    this.changeItemDropDownItemType(event);
-                                }}
-                                onChange={setFieldValue}
-                                onBlur={setFieldTouched}
-                                error={errors.itemType}
-                                touched={touched.itemType}
-                                name="itemType"
-                                index="itemType"
-                            />
-                        </div>
-
-                        {this.state.selectedItemType.value === 3 ? (
-                            <Fragment>
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.days[currentLanguage]}
-                                    </label>
-                                    <div
-                                        className={
-                                            "inputDev ui input" +
-                                            (errors.days && touched.days
-                                                ? " has-error"
-                                                : !errors.days && touched.days
-                                                    ? " has-success"
-                                                    : " ")
-                                        }>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="days"
-                                            value={
-                                                this.state.purchaseOrderItems
-                                                    .days
-                                            }
-                                            placeholder={
-                                                Resources.days[currentLanguage]
-                                            }
-                                            onChange={e =>
-                                                this.handleChangeItems(
-                                                    e,
-                                                    "days"
-                                                )
-                                            }
-                                            onBlur={e => {
-                                                handleChange(e);
-                                                handleBlur(e);
-                                            }}
-                                            name="days"
-                                        />
-                                        {errors.days && touched.days ? (
-                                            <em className="pError">
-                                                {errors.days}
-                                            </em>
-                                        ) : null}
-                                    </div>
-                                </div>
+                    {this.state.viewDisription === 0 ? (
+                        <Fragment>
+                            {/* finded */}
+                            <div className="proForm datepickerContainer letterFullWidth">
                                 <div className="linebylineInput valid-input">
                                     <Dropdown
-                                        title="equipmentType"
-                                        data={this.state.equipmentType}
+                                        title="description"
+                                        data={this.state.descriptions}
                                         selectedValue={
-                                            this.state.selectedEquipmentType
+                                            this.state.selectedDescription
                                         }
                                         handleChange={event => {
                                             this.handleChangeDropDownItems(
                                                 event,
-                                                "equipmenttypeId",
+                                                "details",
                                                 false,
                                                 "",
                                                 "",
                                                 "",
-                                                "selectedEquipmentType",
+                                                "selectedDescription",
                                                 ""
                                             );
+                                            this.changeItemDropDownDetails(event);
                                         }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
-                                        error={errors.equipmentType}
-                                        touched={touched.equipmentType}
-                                        name="equipmentType"
-                                        index="equipmentType"
+                                        error={errors.details}
+                                        touched={touched.details}
+                                        name="details"
+                                        index="details"
                                     />
                                 </div>
-                            </Fragment>
-                        ) : this.state.selectedItemType.value === 2 ? (
-                            <Fragment>
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.days[currentLanguage]}
-                                    </label>
-                                    <div
-                                        className={
-                                            "inputDev ui input" +
-                                            (errors.days && touched.days
-                                                ? " has-error"
-                                                : !errors.days && touched.days
-                                                    ? " has-success"
-                                                    : " ")
-                                        }>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="itemCode"
-                                            value={
-                                                this.state.purchaseOrderItems
-                                                    .days
-                                            }
-                                            placeholder={
-                                                Resources.days[currentLanguage]
-                                            }
-                                            onChange={e =>
-                                                this.handleChangeItems(
-                                                    e,
-                                                    "days"
-                                                )
-                                            }
-                                            onBlur={e => {
-                                                handleChange(e);
-                                                handleBlur(e);
-                                            }}
-                                            name="days"
-                                        />
-                                        {errors.days && touched.days ? (
-                                            <em className="pError">
-                                                {errors.days}
-                                            </em>
-                                        ) : null}
-                                    </div>
-                                </div>
-                            </Fragment>
-                        ) : (
-                                    ""
-                                )}
-
-                        <div className="linebylineInput valid-input">
-                            <Dropdown
-                                title="specsSection"
-                                data={this.state.specssectionType}
-                                selectedValue={this.state.selectedSpecssection}
-                                handleChange={event => {
-                                    this.handleChangeDropDownItems(
-                                        event,
-                                        "specsSectionId",
-                                        false,
-                                        "",
-                                        "",
-                                        "",
-                                        "selectedSpecssection",
-                                        ""
-                                    );
-                                }}
-                                onChange={setFieldValue}
-                                onBlur={setFieldTouched}
-                                error={errors.specsSectionId}
-                                touched={touched.specsSectionId}
-                                name="specsSectionId"
-                                index="specsSectionId"
-                            />
-                        </div>
-
-                        <div className="linebylineInput valid-input">
-                            <label className="control-label">
-                                {Resources.itemCode[currentLanguage]}
-                            </label>
-                            <div
-                                className={
-                                    "inputDev ui input" +
-                                    (errors.itemCode && touched.itemCode
-                                        ? " has-error"
-                                        : !errors.itemCode && touched.itemCode
-                                            ? " has-success"
-                                            : " ")
-                                }>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="itemCode"
-                                    value={
-                                        this.state.purchaseOrderItems.itemCode
-                                    }
-                                    placeholder={
-                                        Resources.itemCode[currentLanguage]
-                                    }
-                                    onChange={e =>
-                                        this.handleChangeItems(e, "itemCode")
-                                    }
-                                    onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                    }}
-                                    name="itemCode"
-                                />
-                                {errors.itemCode && touched.itemCode ? (
-                                    <em className="pError">
-                                        {errors.itemCode}
-                                    </em>
-                                ) : null}
+                                <button
+                                    className="primaryBtn-1 btn "
+                                    type="submit"
+                                    onClick={e =>
+                                        this.renderFromInventory(
+                                            this.state.viewDisription
+                                        )
+                                    }>
+                                    {Resources["addNewItem"][currentLanguage]}
+                                </button>
                             </div>
-                        </div>
-                    </Fragment>
-                ) : (
-                        <Fragment>
-                            <div className="proForm datepickerContainer letterFullWidth">
-                                <div className="proForm datepickerContainer letterFullWidth">
-                                    <div className="linebylineInput fullInputWidth">
+
+                            <div className="linebylineInput valid-input">
+                                <label className="control-label">
+                                    {Resources.arrange[currentLanguage]}
+                                </label>
+                                <div className="ui input inputDev">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="arrange"
+                                        readOnly
+                                        value={
+                                            this.state.purchaseOrderItems.arrange
+                                        }
+                                        placeholder={
+                                            Resources.arrange[currentLanguage]
+                                        }
+                                        onChange={e =>
+                                            this.handleChangeItems(e, "arrange")
+                                        }
+                                        onBlur={e => {
+                                            handleChange(e);
+                                            handleBlur(e);
+                                        }}
+                                        name="arrange"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="linebylineInput valid-input">
+                                <label className="control-label">
+                                    {Resources.quantity[currentLanguage]}
+                                </label>
+                                <div
+                                    className={
+                                        "inputDev ui input" +
+                                        (errors.quantity && touched.quantity
+                                            ? " has-error"
+                                            : !errors.quantity && touched.quantity
+                                                ? " has-success"
+                                                : " ")
+                                    }>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="advancePaymentPercent"
+                                        value={
+                                            this.state.purchaseOrderItems.quantity
+                                        }
+                                        placeholder={
+                                            Resources.quantity[currentLanguage]
+                                        }
+                                        onChange={e =>
+                                            this.handleChangeItems(e, "quantity")
+                                        }
+                                        onBlur={e => {
+                                            handleChange(e);
+                                            handleBlur(e);
+                                        }}
+                                        name="quantity"
+                                    />
+                                    {errors.quantity && touched.quantity ? (
+                                        <em className="pError">
+                                            {errors.quantity}
+                                        </em>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="linebylineInput valid-input fullInputWidth">
+                                <label className="control-label">
+                                    {Resources.unitPrice[currentLanguage]}
+                                </label>
+                                <div
+                                    className={
+                                        "inputDev ui input" +
+                                        (errors.unitPrice && touched.unitPrice
+                                            ? " has-error"
+                                            : !errors.unitPrice && touched.unitPrice
+                                                ? " has-success"
+                                                : " ")
+                                    }>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="unitPrice"
+                                        value={
+                                            this.state.purchaseOrderItems.unitPrice
+                                        }
+                                        placeholder={
+                                            Resources.unitPrice[currentLanguage]
+                                        }
+                                        onChange={e =>
+                                            this.handleChangeItems(e, "unitPrice")
+                                        }
+                                        onBlur={e => {
+                                            handleChange(e);
+                                            handleBlur(e);
+                                        }}
+                                        name="unitPrice"
+                                    />
+                                    {errors.unitPrice && touched.unitPrice ? (
+                                        <em className="pError">
+                                            {errors.unitPrice}
+                                        </em>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="itemType"
+                                    data={this.state.itemType}
+                                    selectedValue={this.state.selectedItemType}
+                                    handleChange={event => {
+                                        this.handleChangeDropDownItems(
+                                            event,
+                                            "itemType",
+                                            false,
+                                            "",
+                                            "",
+                                            "",
+                                            "selectedItemType",
+                                            ""
+                                        );
+                                        this.changeItemDropDownItemType(event);
+                                    }}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.itemType}
+                                    touched={touched.itemType}
+                                    name="itemType"
+                                    index="itemType"
+                                />
+                            </div>
+
+                            {this.state.selectedItemType.value === 3 ? (
+                                <Fragment>
+                                    <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {Resources.details[currentLanguage]}
+                                            {Resources.days[currentLanguage]}
                                         </label>
                                         <div
                                             className={
-                                                "inputDev ui input " +
-                                                (errors.details
-                                                    ? "has-error"
-                                                    : !errors.details &&
-                                                        touched.details
+                                                "inputDev ui input" +
+                                                (errors.days && touched.days
+                                                    ? " has-error"
+                                                    : !errors.days && touched.days
                                                         ? " has-success"
                                                         : " ")
                                             }>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                id="details"
+                                                id="days"
                                                 value={
                                                     this.state.purchaseOrderItems
-                                                        .details
+                                                        .days
                                                 }
                                                 placeholder={
-                                                    Resources.details[
-                                                    currentLanguage
-                                                    ]
+                                                    Resources.days[currentLanguage]
                                                 }
                                                 onChange={e =>
                                                     this.handleChangeItems(
                                                         e,
-                                                        "details"
+                                                        "days"
                                                     )
                                                 }
                                                 onBlur={e => {
                                                     handleChange(e);
                                                     handleBlur(e);
                                                 }}
-                                                name="details"
+                                                name="days"
                                             />
-                                            {errors.details ? (
+                                            {errors.days && touched.days ? (
                                                 <em className="pError">
-                                                    {errors.details}
+                                                    {errors.days}
                                                 </em>
                                             ) : null}
                                         </div>
                                     </div>
-                                    <button
-                                        className="primaryBtn-1 btn "
-                                        type="submit"
-                                        onClick={e =>
-                                            this.renderFromInventory(
-                                                this.state.viewDisription
-                                            )
-                                        }>
-                                        {
-                                            Resources["fromInventory"][
-                                            currentLanguage
-                                            ]
-                                        }
-                                    </button>
-                                </div>
-
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.arrange[currentLanguage]}
-                                    </label>
-                                    <div className="ui input inputDev">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="arrange"
-                                            readOnly
-                                            value={
-                                                this.state.purchaseOrderItems
-                                                    .arrange
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown
+                                            title="equipmentType"
+                                            data={this.state.equipmentType}
+                                            selectedValue={
+                                                this.state.selectedEquipmentType
                                             }
-                                            placeholder={
-                                                Resources.arrange[currentLanguage]
-                                            }
-                                            onChange={e =>
-                                                this.handleChangeItems(e, "arrange")
-                                            }
-                                            onBlur={e => {
-                                                handleChange(e);
-                                                handleBlur(e);
+                                            handleChange={event => {
+                                                this.handleChangeDropDownItems(
+                                                    event,
+                                                    "equipmenttypeId",
+                                                    false,
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "selectedEquipmentType",
+                                                    ""
+                                                );
                                             }}
-                                            name="arrange"
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.equipmentType}
+                                            touched={touched.equipmentType}
+                                            name="equipmentType"
+                                            index="equipmentType"
                                         />
                                     </div>
-                                </div>
-
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.quantity[currentLanguage]}
-                                    </label>
-                                    <div
-                                        className={
-                                            "inputDev ui input" +
-                                            (errors.quantity && touched.quantity
-                                                ? " has-error"
-                                                : !errors.quantity &&
-                                                    touched.quantity
-                                                    ? " has-success"
-                                                    : " ")
-                                        }>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="quantity"
-                                            value={
-                                                this.state.purchaseOrderItems
-                                                    .quantity
-                                            }
-                                            placeholder={
-                                                Resources.quantity[currentLanguage]
-                                            }
-                                            onChange={e =>
-                                                this.handleChangeItems(
-                                                    e,
-                                                    "quantity"
-                                                )
-                                            }
-                                            onBlur={e => {
-                                                handleChange(e);
-                                                handleBlur(e);
-                                            }}
-                                            name="quantity"
-                                        />
-                                        {errors.quantity && touched.quantity ? (
-                                            <em className="pError">
-                                                {errors.quantity}
-                                            </em>
-                                        ) : null}
-                                    </div>
-                                </div>
-
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="unit"
-                                        data={this.state.units}
-                                        selectedValue={this.state.selectedUnit}
-                                        handleChange={event => {
-                                            this.handleChangeDropDownItems(
-                                                event,
-                                                "unit",
-                                                false,
-                                                "",
-                                                "",
-                                                "",
-                                                "selectedUnit",
-                                                ""
-                                            );
-                                        }}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.unit}
-                                        touched={touched.unit}
-                                        name="unit"
-                                        index="unit"
-                                    />
-                                </div>
-
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.unitPrice[currentLanguage]}
-                                    </label>
-                                    <div
-                                        className={
-                                            "inputDev ui input" +
-                                            (errors.unitPrice && touched.unitPrice
-                                                ? " has-error"
-                                                : !errors.unitPrice &&
-                                                    touched.unitPrice
-                                                    ? " has-success"
-                                                    : " ")
-                                        }>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="unitPrice"
-                                            value={
-                                                this.state.purchaseOrderItems
-                                                    .unitPrice
-                                            }
-                                            placeholder={
-                                                Resources.unitPrice[currentLanguage]
-                                            }
-                                            onChange={e =>
-                                                this.handleChangeItems(
-                                                    e,
-                                                    "unitPrice"
-                                                )
-                                            }
-                                            onBlur={e => {
-                                                handleChange(e);
-                                                handleBlur(e);
-                                            }}
-                                            name="unitPrice"
-                                        />
-                                        {errors.unitPrice && touched.unitPrice ? (
-                                            <em className="pError">
-                                                {errors.unitPrice}
-                                            </em>
-                                        ) : null}
-                                    </div>
-                                </div>
-
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.resourceCode[currentLanguage]}
-                                    </label>
-                                    <div
-                                        className={
-                                            "inputDev ui input" +
-                                            (errors.resourceCode &&
-                                                touched.resourceCode
-                                                ? " has-error"
-                                                : !errors.resourceCode &&
-                                                    touched.resourceCode
-                                                    ? " has-success"
-                                                    : " ")
-                                        }>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="resourceCode"
-                                            value={
-                                                this.state.purchaseOrderItems
-                                                    .resourceCode
-                                            }
-                                            placeholder={
-                                                Resources.resourceCode[
-                                                currentLanguage
-                                                ]
-                                            }
-                                            onChange={e =>
-                                                this.handleChangeItems(
-                                                    e,
-                                                    "resourceCode"
-                                                )
-                                            }
-                                            onBlur={e => {
-                                                handleChange(e);
-                                                handleBlur(e);
-                                            }}
-                                            name="resourceCode"
-                                        />
-                                        {errors.resourceCode &&
-                                            touched.resourceCode ? (
-                                                <em className="pError">
-                                                    {errors.resourceCode}
-                                                </em>
-                                            ) : null}
-                                    </div>
-                                </div>
-
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="itemType"
-                                        data={this.state.itemType}
-                                        selectedValue={this.state.selectedItemType}
-                                        handleChange={event => {
-                                            this.handleChangeDropDownItems(
-                                                event,
-                                                "itemType",
-                                                false,
-                                                "",
-                                                "",
-                                                "",
-                                                "selectedItemType",
-                                                ""
-                                            );
-                                            this.changeItemDropDownItemType(event);
-                                        }}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.itemType}
-                                        touched={touched.itemType}
-                                        name="itemType"
-                                        index="itemType"
-                                    />
-                                </div>
-                                {this.state.selectedItemType.value === 3 ? (
-                                    <Fragment>
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {Resources.days[currentLanguage]}
-                                            </label>
-                                            <div
-                                                className={
-                                                    "inputDev ui input" +
-                                                    (errors.days && touched.days
-                                                        ? " has-error"
-                                                        : !errors.days &&
-                                                            touched.days
-                                                            ? " has-success"
-                                                            : " ")
-                                                }>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="days"
-                                                    value={
-                                                        this.state
-                                                            .purchaseOrderItems.days
-                                                    }
-                                                    placeholder={
-                                                        Resources.days[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                    onChange={e =>
-                                                        this.handleChangeItems(
-                                                            e,
-                                                            "days"
-                                                        )
-                                                    }
-                                                    onBlur={e => {
-                                                        handleChange(e);
-                                                        handleBlur(e);
-                                                    }}
-                                                    name="days"
-                                                />
-                                                {errors.days && touched.days ? (
-                                                    <em className="pError">
-                                                        {errors.days}
-                                                    </em>
-                                                ) : null}
-                                            </div>
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                            <Dropdown
-                                                title="equipmentType"
-                                                data={this.state.equipmentType}
-                                                selectedValue={
-                                                    this.state.selectedEquipmentType
+                                </Fragment>
+                            ) : this.state.selectedItemType.value === 2 ? (
+                                <Fragment>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                            {Resources.days[currentLanguage]}
+                                        </label>
+                                        <div
+                                            className={
+                                                "inputDev ui input" +
+                                                (errors.days && touched.days
+                                                    ? " has-error"
+                                                    : !errors.days && touched.days
+                                                        ? " has-success"
+                                                        : " ")
+                                            }>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="itemCode"
+                                                value={
+                                                    this.state.purchaseOrderItems
+                                                        .days
                                                 }
-                                                handleChange={event => {
-                                                    this.handleChangeDropDownItems(
-                                                        event,
-                                                        "equipmenttypeId",
-                                                        false,
-                                                        "",
-                                                        "",
-                                                        "",
-                                                        "selectedEquipmentType",
-                                                        ""
-                                                    );
+                                                placeholder={
+                                                    Resources.days[currentLanguage]
+                                                }
+                                                onChange={e =>
+                                                    this.handleChangeItems(
+                                                        e,
+                                                        "days"
+                                                    )
+                                                }
+                                                onBlur={e => {
+                                                    handleChange(e);
+                                                    handleBlur(e);
                                                 }}
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.equipmentType}
-                                                touched={touched.equipmentType}
-                                                name="equipmentType"
-                                                index="equipmentType"
+                                                name="days"
                                             />
+                                            {errors.days && touched.days ? (
+                                                <em className="pError">
+                                                    {errors.days}
+                                                </em>
+                                            ) : null}
                                         </div>
-                                    </Fragment>
-                                ) : this.state.selectedItemType.value === 2 ? (
-                                    <Fragment>
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {Resources.days[currentLanguage]}
-                                            </label>
-                                            <div
-                                                className={
-                                                    "inputDev ui input" +
-                                                    (errors.days && touched.days
-                                                        ? " has-error"
-                                                        : !errors.days &&
-                                                            touched.days
-                                                            ? " has-success"
-                                                            : " ")
-                                                }>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="itemCode"
-                                                    value={
-                                                        this.state
-                                                            .purchaseOrderItems.days
-                                                    }
-                                                    placeholder={
-                                                        Resources.days[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                    onChange={e =>
-                                                        this.handleChangeItems(
-                                                            e,
-                                                            "days"
-                                                        )
-                                                    }
-                                                    onBlur={e => {
-                                                        handleChange(e);
-                                                        handleBlur(e);
-                                                    }}
-                                                    name="days"
-                                                />
-                                                {errors.days && touched.days ? (
-                                                    <em className="pError">
-                                                        {errors.days}
-                                                    </em>
-                                                ) : null}
-                                            </div>
-                                        </div>
-                                    </Fragment>
-                                ) : (
-                                            ""
-                                        )}
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="specsSection"
-                                        data={this.state.specssectionType}
-                                        selectedValue={
-                                            this.state.selectedSpecssection
-                                        }
-                                        handleChange={event => {
-                                            this.handleChangeDropDownItems(
-                                                event,
-                                                "specsSectionId",
-                                                false,
-                                                "",
-                                                "",
-                                                "",
-                                                "selectedSpecssection",
-                                                ""
-                                            );
-                                        }}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.specsSectionId}
-                                        touched={touched.specsSectionId}
-                                        name="specsSectionId"
-                                        index="specsSectionId"
-                                    />
-                                </div>
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.itemCode[currentLanguage]}
-                                    </label>
-                                    <div
-                                        className={
-                                            "inputDev ui input" +
-                                            (errors.itemCode && touched.itemCode
-                                                ? " has-error"
-                                                : !errors.itemCode &&
-                                                    touched.itemCode
-                                                    ? " has-success"
-                                                    : " ")
-                                        }>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="itemCode"
-                                            value={
-                                                this.state.purchaseOrderItems
-                                                    .itemCode
-                                            }
-                                            placeholder={
-                                                Resources.itemCode[currentLanguage]
-                                            }
-                                            onChange={e =>
-                                                this.handleChangeItems(
-                                                    e,
-                                                    "itemCode"
-                                                )
-                                            }
-                                            onBlur={e => {
-                                                handleChange(e);
-                                                handleBlur(e);
-                                            }}
-                                            name="itemCode"
-                                        />
-                                        {errors.itemCode && touched.itemCode ? (
-                                            <em className="pError">
-                                                {errors.itemCode}
-                                            </em>
-                                        ) : null}
                                     </div>
+                                </Fragment>
+                            ) : (
+                                        ""
+                                    )}
+
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="specsSection"
+                                    data={this.state.specssectionType}
+                                    selectedValue={this.state.selectedSpecssection}
+                                    handleChange={event => {
+                                        this.handleChangeDropDownItems(
+                                            event,
+                                            "specsSectionId",
+                                            false,
+                                            "",
+                                            "",
+                                            "",
+                                            "selectedSpecssection",
+                                            ""
+                                        );
+                                    }}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.specsSectionId}
+                                    touched={touched.specsSectionId}
+                                    name="specsSectionId"
+                                    index="specsSectionId"
+                                />
+                            </div>
+
+                            <div className="linebylineInput valid-input">
+                                <label className="control-label">
+                                    {Resources.itemCode[currentLanguage]}
+                                </label>
+                                <div
+                                    className={
+                                        "inputDev ui input" +
+                                        (errors.itemCode && touched.itemCode
+                                            ? " has-error"
+                                            : !errors.itemCode && touched.itemCode
+                                                ? " has-success"
+                                                : " ")
+                                    }>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="itemCode"
+                                        value={
+                                            this.state.purchaseOrderItems.itemCode
+                                        }
+                                        placeholder={
+                                            Resources.itemCode[currentLanguage]
+                                        }
+                                        onChange={e =>
+                                            this.handleChangeItems(e, "itemCode")
+                                        }
+                                        onBlur={e => {
+                                            handleChange(e);
+                                            handleBlur(e);
+                                        }}
+                                        name="itemCode"
+                                    />
+                                    {errors.itemCode && touched.itemCode ? (
+                                        <em className="pError">
+                                            {errors.itemCode}
+                                        </em>
+                                    ) : null}
                                 </div>
                             </div>
                         </Fragment>
-                    )}
-                 </div>
+                    ) : (
+                            <Fragment>
+                                <div className="proForm datepickerContainer letterFullWidth">
+                                    <div className="proForm datepickerContainer letterFullWidth">
+                                        <div className="linebylineInput fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.details[currentLanguage]}
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.details
+                                                        ? "has-error"
+                                                        : !errors.details &&
+                                                            touched.details
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="details"
+                                                    value={
+                                                        this.state.purchaseOrderItems
+                                                            .details
+                                                    }
+                                                    placeholder={
+                                                        Resources.details[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                    onChange={e =>
+                                                        this.handleChangeItems(
+                                                            e,
+                                                            "details"
+                                                        )
+                                                    }
+                                                    onBlur={e => {
+                                                        handleChange(e);
+                                                        handleBlur(e);
+                                                    }}
+                                                    name="details"
+                                                />
+                                                {errors.details ? (
+                                                    <em className="pError">
+                                                        {errors.details}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <button
+                                            className="primaryBtn-1 btn "
+                                            type="submit"
+                                            onClick={e =>
+                                                this.renderFromInventory(
+                                                    this.state.viewDisription
+                                                )
+                                            }>
+                                            {
+                                                Resources["fromInventory"][
+                                                currentLanguage
+                                                ]
+                                            }
+                                        </button>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                            {Resources.arrange[currentLanguage]}
+                                        </label>
+                                        <div className="ui input inputDev">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="arrange"
+                                                readOnly
+                                                value={
+                                                    this.state.purchaseOrderItems
+                                                        .arrange
+                                                }
+                                                placeholder={
+                                                    Resources.arrange[currentLanguage]
+                                                }
+                                                onChange={e =>
+                                                    this.handleChangeItems(e, "arrange")
+                                                }
+                                                onBlur={e => {
+                                                    handleChange(e);
+                                                    handleBlur(e);
+                                                }}
+                                                name="arrange"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                            {Resources.quantity[currentLanguage]}
+                                        </label>
+                                        <div
+                                            className={
+                                                "inputDev ui input" +
+                                                (errors.quantity && touched.quantity
+                                                    ? " has-error"
+                                                    : !errors.quantity &&
+                                                        touched.quantity
+                                                        ? " has-success"
+                                                        : " ")
+                                            }>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="quantity"
+                                                value={
+                                                    this.state.purchaseOrderItems
+                                                        .quantity
+                                                }
+                                                placeholder={
+                                                    Resources.quantity[currentLanguage]
+                                                }
+                                                onChange={e =>
+                                                    this.handleChangeItems(
+                                                        e,
+                                                        "quantity"
+                                                    )
+                                                }
+                                                onBlur={e => {
+                                                    handleChange(e);
+                                                    handleBlur(e);
+                                                }}
+                                                name="quantity"
+                                            />
+                                            {errors.quantity && touched.quantity ? (
+                                                <em className="pError">
+                                                    {errors.quantity}
+                                                </em>
+                                            ) : null}
+                                        </div>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown
+                                            title="unit"
+                                            data={this.state.units}
+                                            selectedValue={this.state.selectedUnit}
+                                            handleChange={event => {
+                                                this.handleChangeDropDownItems(
+                                                    event,
+                                                    "unit",
+                                                    false,
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "selectedUnit",
+                                                    ""
+                                                );
+                                            }}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.unit}
+                                            touched={touched.unit}
+                                            name="unit"
+                                            index="unit"
+                                        />
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                            {Resources.unitPrice[currentLanguage]}
+                                        </label>
+                                        <div
+                                            className={
+                                                "inputDev ui input" +
+                                                (errors.unitPrice && touched.unitPrice
+                                                    ? " has-error"
+                                                    : !errors.unitPrice &&
+                                                        touched.unitPrice
+                                                        ? " has-success"
+                                                        : " ")
+                                            }>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="unitPrice"
+                                                value={
+                                                    this.state.purchaseOrderItems
+                                                        .unitPrice
+                                                }
+                                                placeholder={
+                                                    Resources.unitPrice[currentLanguage]
+                                                }
+                                                onChange={e =>
+                                                    this.handleChangeItems(
+                                                        e,
+                                                        "unitPrice"
+                                                    )
+                                                }
+                                                onBlur={e => {
+                                                    handleChange(e);
+                                                    handleBlur(e);
+                                                }}
+                                                name="unitPrice"
+                                            />
+                                            {errors.unitPrice && touched.unitPrice ? (
+                                                <em className="pError">
+                                                    {errors.unitPrice}
+                                                </em>
+                                            ) : null}
+                                        </div>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                            {Resources.resourceCode[currentLanguage]}
+                                        </label>
+                                        <div
+                                            className={
+                                                "inputDev ui input" +
+                                                (errors.resourceCode &&
+                                                    touched.resourceCode
+                                                    ? " has-error"
+                                                    : !errors.resourceCode &&
+                                                        touched.resourceCode
+                                                        ? " has-success"
+                                                        : " ")
+                                            }>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="resourceCode"
+                                                value={
+                                                    this.state.purchaseOrderItems
+                                                        .resourceCode
+                                                }
+                                                placeholder={
+                                                    Resources.resourceCode[
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                                onChange={e =>
+                                                    this.handleChangeItems(
+                                                        e,
+                                                        "resourceCode"
+                                                    )
+                                                }
+                                                onBlur={e => {
+                                                    handleChange(e);
+                                                    handleBlur(e);
+                                                }}
+                                                name="resourceCode"
+                                            />
+                                            {errors.resourceCode &&
+                                                touched.resourceCode ? (
+                                                    <em className="pError">
+                                                        {errors.resourceCode}
+                                                    </em>
+                                                ) : null}
+                                        </div>
+                                    </div>
+
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown
+                                            title="itemType"
+                                            data={this.state.itemType}
+                                            selectedValue={this.state.selectedItemType}
+                                            handleChange={event => {
+                                                this.handleChangeDropDownItems(
+                                                    event,
+                                                    "itemType",
+                                                    false,
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "selectedItemType",
+                                                    ""
+                                                );
+                                                this.changeItemDropDownItemType(event);
+                                            }}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.itemType}
+                                            touched={touched.itemType}
+                                            name="itemType"
+                                            index="itemType"
+                                        />
+                                    </div>
+                                    {this.state.selectedItemType.value === 3 ? (
+                                        <Fragment>
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {Resources.days[currentLanguage]}
+                                                </label>
+                                                <div
+                                                    className={
+                                                        "inputDev ui input" +
+                                                        (errors.days && touched.days
+                                                            ? " has-error"
+                                                            : !errors.days &&
+                                                                touched.days
+                                                                ? " has-success"
+                                                                : " ")
+                                                    }>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="days"
+                                                        value={
+                                                            this.state
+                                                                .purchaseOrderItems.days
+                                                        }
+                                                        placeholder={
+                                                            Resources.days[
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                        onChange={e =>
+                                                            this.handleChangeItems(
+                                                                e,
+                                                                "days"
+                                                            )
+                                                        }
+                                                        onBlur={e => {
+                                                            handleChange(e);
+                                                            handleBlur(e);
+                                                        }}
+                                                        name="days"
+                                                    />
+                                                    {errors.days && touched.days ? (
+                                                        <em className="pError">
+                                                            {errors.days}
+                                                        </em>
+                                                    ) : null}
+                                                </div>
+                                            </div>
+                                            <div className="linebylineInput valid-input">
+                                                <Dropdown
+                                                    title="equipmentType"
+                                                    data={this.state.equipmentType}
+                                                    selectedValue={
+                                                        this.state.selectedEquipmentType
+                                                    }
+                                                    handleChange={event => {
+                                                        this.handleChangeDropDownItems(
+                                                            event,
+                                                            "equipmenttypeId",
+                                                            false,
+                                                            "",
+                                                            "",
+                                                            "",
+                                                            "selectedEquipmentType",
+                                                            ""
+                                                        );
+                                                    }}
+                                                    onChange={setFieldValue}
+                                                    onBlur={setFieldTouched}
+                                                    error={errors.equipmentType}
+                                                    touched={touched.equipmentType}
+                                                    name="equipmentType"
+                                                    index="equipmentType"
+                                                />
+                                            </div>
+                                        </Fragment>
+                                    ) : this.state.selectedItemType.value === 2 ? (
+                                        <Fragment>
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {Resources.days[currentLanguage]}
+                                                </label>
+                                                <div
+                                                    className={
+                                                        "inputDev ui input" +
+                                                        (errors.days && touched.days
+                                                            ? " has-error"
+                                                            : !errors.days &&
+                                                                touched.days
+                                                                ? " has-success"
+                                                                : " ")
+                                                    }>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="itemCode"
+                                                        value={
+                                                            this.state
+                                                                .purchaseOrderItems.days
+                                                        }
+                                                        placeholder={
+                                                            Resources.days[
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                        onChange={e =>
+                                                            this.handleChangeItems(
+                                                                e,
+                                                                "days"
+                                                            )
+                                                        }
+                                                        onBlur={e => {
+                                                            handleChange(e);
+                                                            handleBlur(e);
+                                                        }}
+                                                        name="days"
+                                                    />
+                                                    {errors.days && touched.days ? (
+                                                        <em className="pError">
+                                                            {errors.days}
+                                                        </em>
+                                                    ) : null}
+                                                </div>
+                                            </div>
+                                        </Fragment>
+                                    ) : (
+                                                ""
+                                            )}
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown
+                                            title="specsSection"
+                                            data={this.state.specssectionType}
+                                            selectedValue={
+                                                this.state.selectedSpecssection
+                                            }
+                                            handleChange={event => {
+                                                this.handleChangeDropDownItems(
+                                                    event,
+                                                    "specsSectionId",
+                                                    false,
+                                                    "",
+                                                    "",
+                                                    "",
+                                                    "selectedSpecssection",
+                                                    ""
+                                                );
+                                            }}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.specsSectionId}
+                                            touched={touched.specsSectionId}
+                                            name="specsSectionId"
+                                            index="specsSectionId"
+                                        />
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                            {Resources.itemCode[currentLanguage]}
+                                        </label>
+                                        <div
+                                            className={
+                                                "inputDev ui input" +
+                                                (errors.itemCode && touched.itemCode
+                                                    ? " has-error"
+                                                    : !errors.itemCode &&
+                                                        touched.itemCode
+                                                        ? " has-success"
+                                                        : " ")
+                                            }>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="itemCode"
+                                                value={
+                                                    this.state.purchaseOrderItems
+                                                        .itemCode
+                                                }
+                                                placeholder={
+                                                    Resources.itemCode[currentLanguage]
+                                                }
+                                                onChange={e =>
+                                                    this.handleChangeItems(
+                                                        e,
+                                                        "itemCode"
+                                                    )
+                                                }
+                                                onBlur={e => {
+                                                    handleChange(e);
+                                                    handleBlur(e);
+                                                }}
+                                                name="itemCode"
+                                            />
+                                            {errors.itemCode && touched.itemCode ? (
+                                                <em className="pError">
+                                                    {errors.itemCode}
+                                                </em>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                </div>
+                            </Fragment>
+                        )}
+                </div>
                 <div className="step-content">
                     <XSLfile
                         key="POImport"
@@ -3168,7 +3167,7 @@ class PurchaseOrderAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                                            
+
                                         <div className="proForm datepickeCrontainer">
                                             <div className="linebylineInput fullInputWidth">
                                                 <label className="control-label">
@@ -3550,7 +3549,7 @@ class PurchaseOrderAddEdit extends Component {
                                                             />
                                                         </div>
                                                     </div>
-{/* 
+                                                    {/* 
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
@@ -3581,7 +3580,7 @@ class PurchaseOrderAddEdit extends Component {
                                                             />
                                                         </div>
                                                     </div> */}
-{/* 
+                                                    {/* 
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">
                                                             {
@@ -4295,50 +4294,57 @@ class PurchaseOrderAddEdit extends Component {
                     />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.currentStep == 0 ? (
+                            {this.state.CurrentStep == 0 ? (
                                 <Fragment>{FirstStepMainDocument()}</Fragment>
                             ) : (
                                     <Fragment>
-                                        {this.state.currentStep == 1
+                                        {this.state.CurrentStep == 1
                                             ? SecondStepItems()
-                                            : this.state.currentStep == 2
+                                            : this.state.CurrentStep == 2
                                                 ? ThirdStepTerms()
-                                                : this.state.currentStep == 3
+                                                : this.state.CurrentStep == 3
                                                     ? FouthStepSchedule()
-                                                    : this.state.currentStep == 4
+                                                    : this.state.CurrentStep == 4
                                                         ? FivethStepInsurance()
-                                                        : this.state.currentStep == 5
+                                                        : this.state.CurrentStep == 5
                                                             ? SixthStepSubPurchaseOrders()
                                                             : SeventhStepSubContracts()}
                                     </Fragment>
                                 )}
 
-                            {this.state.currentStep != 0 ? (
+                            {this.state.CurrentStep != 0 && this.state.CurrentStep != 6 ?
                                 <div className="doc-pre-cycle">
                                     <div className="slider-Btns">
                                         <button
                                             className="primaryBtn-1 btn meduimBtn"
                                             onClick={e =>
                                                 this.changeCurrentStep(
-                                                    this.state.currentStep + 1
+                                                    this.state.CurrentStep + 1
                                                 )
                                             }>
                                             NEXT STEP
                                         </button>
                                     </div>
-                                </div>
-                            ) : null}
+                                </div> :
+                                this.state.CurrentStep === 6 ?
+                                    <div className="doc-pre-cycle">
+                                        <div className="slider-Btns">
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => { this.props.history.push("/purchaseOrder/" + this.props.projectId) }}>Finish</button>
+                                        </div>
+                                    </div> : null}
                         </div>
-                        {/* Right Menu */}
-                        <Steps
-                            steps_defination={steps_defination}
-                            exist_link="/purchaseOrder/"
-                            docId={this.state.docId}
-                            changeCurrentStep={stepNo =>
-                                this.changeCurrentStep(stepNo)
-                            }
-                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
-                        />
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/purchaseOrder/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrentStep}
+                                changeStatus={docId === 0 ? false : true}
+                            />
+                        </Fragment>
                     </div>
 
                     {this.state.showDeleteModal == true ? (
@@ -4383,7 +4389,7 @@ class PurchaseOrderAddEdit extends Component {
                                         permission={this.state.permission}
                                         documentName="PurchaseOrders"
                                     />
-                                              
+
                                 </div>
                             </div>
                         ) : null}

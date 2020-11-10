@@ -12,8 +12,7 @@ import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Config from "../../Services/Config.js";
-import CryptoJS from 'crypto-js';
+import Config from "../../Services/Config.js"; 
 import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
@@ -29,7 +28,8 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
     refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true),
+    attachedPapersSize: Yup.string().required(Resources['attachedPaperSizeRequired'][currentLanguage]).nullable(true)
 });
 
 let docId = 0;
@@ -110,7 +110,9 @@ class TransmittalAddEdit extends Component {
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
             selectedSubmittedFor: { label: Resources.submittedForSelect[currentLanguage], value: "0" },
             selectedSendingMethod: { label: Resources.sendingMethodRequired[currentLanguage], value: "0" },
-            message: ''
+            message: '',
+            attachedPaperSizeList: [],
+            selectedAttachedPaperSize: []
         }
 
         if (!Config.IsAllow(84) && !Config.IsAllow(85) && !Config.IsAllow(87)) {
@@ -374,6 +376,24 @@ class TransmittalAddEdit extends Component {
                 sendingMethods: [...result]
             });
         });
+
+        // Attached Paper Size
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=attachedPaperSize", "title", "id").then(result => {
+            if (isEdit) {
+                let papersSize = this.props.document.papersSize || [];
+                if (papersSize.length > 0) {
+                    let selectedPapersSize = [];
+                    papersSize.forEach(item => {
+                        let paperSize = result.find(i => i.value === item);
+                        if (paperSize)
+                            selectedPapersSize.push(paperSize);
+                    })
+
+                    this.setState({ selectedAttachedPaperSize: selectedPapersSize });
+                }
+            }
+            this.setState({ attachedPaperSizeList: [...result] });
+        });
     }
 
     onChangeMessage = (value) => {
@@ -466,12 +486,11 @@ class TransmittalAddEdit extends Component {
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-
+        saveDocument.papersSize = this.state.selectedAttachedPaperSize.map(item => item.value);
         dataservice.addObject('EditCommunicationTransmittal', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
-
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
                 this.props.history.push(
@@ -486,14 +505,13 @@ class TransmittalAddEdit extends Component {
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-
+        saveDocument.papersSize = this.state.selectedAttachedPaperSize.map(item => item.value);
         dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
-
             this.setState({
                 docId: result.id
             });
-
             toast.success(Resources["operationSuccess"][currentLanguage]);
+
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
@@ -536,18 +554,7 @@ class TransmittalAddEdit extends Component {
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} perviousRoute={this.state.perviousRoute} isViewMode={this.state.isViewMode} docTitle={Resources.transmittal[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-                    <div className="doc-container">
-                        {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header> : null
-                        }
+                    <div className="doc-container"> 
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -773,6 +780,34 @@ class TransmittalAddEdit extends Component {
                                                                 </div>
                                                                 <span className="btn btn-default" onClick={() => { this.copyLocalPath() }} >{Resources.copy[currentLanguage]}</span>
                                                             </div>
+                                                        </div>
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown
+                                                                title="attachedPaperSize"
+                                                                isMulti={true}
+                                                                data={
+                                                                    this.state.attachedPaperSizeList
+                                                                }
+                                                                selectedValue={
+                                                                    this.state
+                                                                        .selectedAttachedPaperSize
+                                                                }
+                                                                value={
+                                                                    this.state
+                                                                        .selectedAttachedPaperSize
+                                                                }
+                                                                handleChange={event => {
+                                                                    this.setState({
+                                                                        selectedAttachedPaperSize: event
+                                                                    });
+                                                                }}
+                                                                onChange={setFieldValue}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.attachedPaperSize}
+                                                                touched={touched.attachedPaperSize}
+                                                                name="attachedPapersSize"
+                                                                index="attachedPapersSize"
+                                                            />
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
