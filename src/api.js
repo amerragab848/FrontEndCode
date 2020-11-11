@@ -237,7 +237,7 @@ export default class Api {
         return await this.xhrForWidgets(route, params === null ? null : params, "GET");
     }
     static post(route, params) {
-         
+
         return this.xhr(route, params, "POST");
     }
 
@@ -329,7 +329,6 @@ export default class Api {
             headers.parentid = header.parentId;
             headers.docType = header.docType;
         }
-        console.log("params ... ", params, "headers ... ", headers);
         return fetch(url, {
             method: "POST",
             headers: {
@@ -369,7 +368,7 @@ export default class Api {
             });
     }
     static getPassword(route, password) {
-        
+
         const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
 
         const url = `${host}${route}`;
@@ -524,10 +523,7 @@ export default class Api {
         options.headers = {
             Accept: "application/json",
             "Content-Type": "application/json",
-            dataType: "json",
-            //method: "POST",
-            // Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
-            //Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
+            dataType: "json"
         };
 
         return new Promise((resolve, reject) => {
@@ -536,7 +532,7 @@ export default class Api {
             xmlhttp.onload = () => {
                 if (xmlhttp.status >= 200 && xmlhttp.status < 300) {
                     const response = JSON.parse(xmlhttp.responseText);
-                    console.log(response);
+
                     resolve(response.resultFiles);
                 } else {
                     reject(xmlhttp.responseText);
@@ -548,33 +544,5 @@ export default class Api {
             xmlhttp.send(JSON.stringify(req));
         });
 
-        // return fetch(url, options)
-        //     .then(resp => {
-        //         if (resp.status === 200) {
-        //             json = resp.json();
-        //             if (json === undefined) return null;
-        //             return json;
-        //         } else if (resp.status === 401) {
-        //             localStorage.removeItem("userToken");
-        //             json = "";
-        //             window.location.reload();
-        //             return json;
-        //         } else if (resp.status === 500) {
-        //             json = null;
-        //             toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
-
-        //             return json;
-        //         } else if (resp.status === 409) {
-        //             return resp;
-        //         }
-
-        //         return json.then(err => {
-        //             throw err;
-        //         });
-        //     })
-        //     .then(json => (json ? json.results : json))
-        //     .catch(reason => {
-        //         return null;
-        //     });
     }
 }

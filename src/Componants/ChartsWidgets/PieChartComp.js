@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-
-import { Donut, ResponsiveContainer } from 'britecharts-react'
-import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
+import { Doughnut } from 'react-chartjs-2';
 import Api from '../../api';
+import 'chartjs-plugin-style';
+import Loader from '../../../src/Styles/images/ChartLoaders/PieChartLoader.webm';
 
 const colorSchema = [
     '#07bc0c',
@@ -11,120 +11,187 @@ const colorSchema = [
     '#7cdb79',
     '#5fd45f',
     '#119015',
-    '#07bc0cbb',
-]
+    '#07bc0c',
+    '#07bc0c',
+    '#119015',
+    '#47cc4a',
+    '#7cdb79',
+    '#5fd45f',
+    '#119015',
+    '#07bc0c',
+    '#07bc0c',
+    '#119015',
+    '#47cc4a',
+    '#7cdb79',
+    '#5fd45f',
+    '#119015',
+    '#07bc0c',
+    '#119015',
+    '#47cc4a',
+    '#7cdb79',
+];
 
 class PieChartComp extends Component {
-
     constructor(props) {
         super(props);
-
         this.state = {
-            dataChart: [],
+            chartData: {},
+            chartDatasets: [],
+            chartLabels: [],
             isLoading: true,
-            data: {},
-            isAnimated: true,
-            showLegend: false,
-            highlightedSlice: null,
-            customRows: []
-        }
+            chartName: null,
+            sectorPercentage: null,
+            totalAmount: null,
+            pieChartInst: null,
+        };
+    }
 
-    } 
+    options = {
+        onHover: (e, elements) => {
+            let LegendName = this.state.chartName;
+            let legendValue = this.state.totalAmount;
+
+            if (elements.length) {
+                let newlegendValue = this.state.chartData.datasets[0].data[
+                    elements[0]._index
+                ];
+
+                let newLegend = this.state.chartData.labels[elements[0]._index];
+                if (
+                    LegendName !== newLegend ||
+                    legendValue !== newlegendValue
+                ) {
+                    this.setState({
+                        chartName: newLegend,
+                        totalAmount: newlegendValue,
+                        sectorPercentage: this.setSectorPercentage(
+                            this.state.chartData.datasets[0].data,
+                            this.state.chartData.datasets[0].data[
+                                elements[0]._index
+                            ],
+                        ),
+                    });
+                }
+            }
+        },
+        cutoutPercentage: 39,
+        legend: {
+            display: false,
+        },
+        animation: {
+            duration: 1500,
+        },
+        tooltips: {
+            xPadding: 15,
+            yPadding: 15,
+            bodySpacing: 15,
+            mode: 'nearest',
+            intersect: false,
+            axis: 'x',
+            titleFontSize: 18,
+            bodyFontSize: 16,
+        },
+        responsive: true,
+        maintainAspectRatio: true,
+        elements: {
+            arc: {
+                borderWidth: 0,
+            },
+        },
+    };
+
     componentDidMount() {
         if (this.props.reports == undefined) {
-            this.setState({ isLoading: true });
             Api.get(this.props.api).then(results => {
-                if (results)
-                    this.GenerateDataFromProps(results);
-            }).catch((ex) => {
-                this.setState({ isLoading: false });
+                if (results) this.GenerateDataFromProps(results);
             });
-        }
-        else {
-            this.GenerateDataFromProps(this.props.rows)
-        }
+        } else this.GenerateDataFromProps(this.props.rows);
     }
 
-    GenerateDataFromProps = (res) => {
-        let dataChart = [];
-        if (res) {
-            let total = 0;
-            res.map((obj, index) => {
-                dataChart.push({
-                    quantity: obj[this.props.y],
-                    name: obj[this.props.name],
-                    id: index
-                });
-                total = total + obj[this.props.y];
+    GenerateDataFromProps = results => {
+        if (results) {
+            let chartDatasets = [];
+            let chartLabels = [];
+            results.map(item => {
+                chartDatasets.push(item[this.props.y]);
+                chartLabels.push(item[this.props.name]);
                 return null;
-            })
-            let index = 0;//res.length - 1;
-
-            let data = {
-                percentage: ((dataChart[index].quantity / total) * 100).toFixed(0),
-                name: dataChart[index].name,
-                quantity: dataChart[index].quantity,
-                id: dataChart[index].id
-            }
+            });
             this.setState({
-                data: data,
-                highlightedSlice: dataChart[index].id,
-                showLegend: true
+                chartLabels,
+                chartDatasets,
+                chartName: chartLabels[0],
+                totalAmount: chartDatasets[0],
+                sectorPercentage: this.setSectorPercentage(
+                    chartDatasets,
+                    chartDatasets[0],
+                ),
+                isLoading: false,
+                chartData: {
+                    labels: chartLabels,
+                    datasets: [
+                        {
+                            backgroundColor: colorSchema,
+                            data: chartDatasets,
+                            hoverBackgroundColor: 'rgb(55 170 55)',
+                            hoverInnerGlowWidth: 5,
+                            hoverInnerGlowColor: 'rgb(55 170 55)',
+                            hoverOuterGlowWidth: 40,
+                            hoverOuterGlowWidth: 'rgb(55 170 55)',
+                        },
+                    ],
+                },
             });
         }
-        this.setState({ isLoading: false, dataChart: dataChart });
+    };
 
-    }
-
-    logMouseOver = (e) => {
-        this.setState({
-            data: e.data,
-            highlightedSlice: e.data.id,
-            showLegend: true
-        });
+    setSectorPercentage = (data, totalAmount) => {
+        return (totalAmount / data.reduce((a, b) => a + b, 0)) * 100;
     };
 
     render() {
-
-        return (
+        return this.state.isLoading ? (
+            <div className="panel">
+                <div className="panel-body-loader">
+                    <h2>{this.props.title}</h2>
+                    <video
+                        width={this.props.width}
+                        height={this.props.height}
+                        autoPlay
+                        loop
+                        muted>
+                        <source src={Loader} type="video/webm" />
+                    </video>
+                </div>
+            </div>
+        ) : (
             <div className="panel">
                 <div className="panel-body">
-                    <h2>
-                        {this.props.title}
-                    </h2>
-
-                    <ResponsiveContainer
-                        render={
-                            ({ width }) =>
-                                <div className="donut__legend">
-                                    <Donut
-                                        data={this.state.dataChart}
-                                        height={width / 2}
-                                        width={width / 2}
-                                        externalRadius={width / 4}
-                                        internalRadius={width / 10}
-                                        colorSchema={colorSchema}
-                                        customMouseMove={this.logMouseOver}
-                                        highlightSliceById={this.state.highlightedSlice}
-                                        isAnimated={false} />
-
-                                    {this.state.showLegend === true ?
-                                        <p id="legenbd__teext" style={{ width: width / 2 }}>
-                                            <span className="chartName">{this.state.data.name}</span>
-                                            <span className="percentage">{this.state.data.percentage + '%'}</span>
-                                            <span className="totalAmount">{this.state.data.quantity ? this.state.data.quantity.toFixed(0) : 0}</span>
-                                        </p>
-                                        : null}
-                                </div>
-                        }
-
-                    />
-                    {this.state.isLoading === true ?
-                        <Donut
-                            data={[]}
-                            shouldShowLoadingState={true}
-                        /> : null}
-
+                    <h2>{this.props.title}</h2>
+                    <div className="chartContainer">
+                        <div className="canvas-container">
+                            <Doughnut
+                                ref={reference =>
+                                    (this.state.pieChartInst = reference)
+                                }
+                                data={this.state.chartData}
+                                options={this.options}
+                            />
+                        </div>
+                        <p id="legenbd__teext">
+                            <span className="chartName">
+                                {this.state.chartName}
+                            </span>
+                            <span className="percentage">
+                                {parseFloat(
+                                    this.state.sectorPercentage,
+                                ).toFixed(1) + '%'}
+                            </span>
+                            <span className="totalAmount">
+                                {Math.round(this.state.totalAmount).toString()}
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
         );

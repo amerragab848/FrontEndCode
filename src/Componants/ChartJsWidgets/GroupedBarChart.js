@@ -5,8 +5,24 @@ import Loader from '../../../src/Styles/images/ChartLoaders/BarChartLoader.webm'
 
 const colorSchema = [
     '#39bd3d',
-    '#dfe2e6',
     '#ab50df',
+
+    '#39bd3d',
+    '#ab50df',
+
+    '#39bd3d',
+    '#ab50df',
+
+    '#39bd3d',
+    '#ab50df',
+
+    '#39bd3d',
+    '#ab50df',
+
+    '#39bd3d',
+    '#ab50df',
+
+    '#dfe2e6',
     '#39bdef',
     '#afe5ef',
     '#522e5f',
@@ -18,7 +34,7 @@ const colorSchema = [
     '#522e5f',
 ];
 
-class BarChartComp extends Component {
+class GroupedBarCahrtComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,67 +42,21 @@ class BarChartComp extends Component {
             isLoading: true,
             chartDatasets: [],
             chartLabels: [],
-            datasetLabel: '',
         };
     }
 
-    componentDidMount = () => {
-        let barData = [];
-        Api.get(this.props.api)
-            .then(results => {
-                if (this.props.multiSeries === 'no') {
-                    this.GenerateDataFromProps(results);
-                } else {
-                    this.GenerateGroupedDataFromProps(results);
-                }
-            })
-            .catch(ex => {
-                this.setState({
-                    isLoading: false,
-                });
+    componentDidMount() {
+        if (this.props.reports === undefined) {
+            Api.get(this.props.api).then(results => {
+                if (results) this.GenerateDataFromProps(results);
             });
-    };
+        } else
+            this.setState({
+                chartData: this.GenerateDataFromProps(this.props.rows),
+            });
+    }
 
     GenerateDataFromProps = results => {
-        if (results) {
-            let chartDatasets = [];
-            let chartLabels = [];
-            let datasetLabel = '';
-            results.map(item => {
-                chartDatasets.push(item[this.props.y]);
-                chartLabels.push(item[this.props.categoryName]);
-                datasetLabel = this.props.title;
-                return null;
-            });
-            this.setState({
-                chartLabels,
-                chartDatasets,
-                datasetLabel: datasetLabel,
-
-                isLoading: false,
-                chartData: {
-                    labels: chartLabels,
-                    datasets: [
-                        {
-                            label: datasetLabel,
-                            backgroundColor:
-                                chartDatasets.length > 1
-                                    ? colorSchema
-                                    : colorSchema[0],
-                            borderColer:
-                                chartDatasets.length > 1
-                                    ? colorSchema
-                                    : colorSchema[0],
-                            borderWidth: 2,
-                            data: chartDatasets,
-                        },
-                    ],
-                },
-            });
-        }
-    };
-
-    GenerateGroupedDataFromProps = results => {
         if (results) {
             let chartDatasets = [];
             let chartLabels = [];
@@ -115,6 +85,43 @@ class BarChartComp extends Component {
         }
     };
 
+    options = {
+        tooltips: {
+            xPadding: 15,
+            yPadding: 15,
+            bodySpacing: 15,
+            mode: 'nearest',
+            intersect: false,
+            axis: 'x',
+            titleFontSize: 18,
+            bodyFontSize: 16,
+        },
+        legend: {
+            display: false,
+        },
+        animation: {
+            duration: 1500,
+        },
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        min: 0,
+                    },
+                },
+            ],
+            xAxes: [
+                {
+                    barPercentage: 0.9,
+                    gridLines: {
+                        display: false,
+                    },
+                },
+            ],
+        },
+    };
     render() {
         return this.state.isLoading ? (
             <div className="panel">
@@ -140,4 +147,4 @@ class BarChartComp extends Component {
     }
 }
 
-export default BarChartComp;
+export default GroupedBarCahrtComponent;
