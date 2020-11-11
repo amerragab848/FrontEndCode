@@ -2,11 +2,7 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
-<<<<<<< HEAD
-import React, { Component, Fragment, useContext } from "react";
-=======
 import React, { Component, Fragment } from "react";
->>>>>>> 73f1d700bc47284de770b218d1374c9b0c984d44
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
@@ -217,7 +213,8 @@ class requestPaymentsAddEdit extends Component {
                 { label: "Calculate Interim Invoice", value: "6" },
                 { label: "Add Deductions", value: "7" },
                 { label: "Update Advance Payment Amount", value: "8" },
-                { label: "Update VO Prices", value: "9" }
+                { label: "Update VO Prices", value: "9" },
+                { label: "Change Editable Status", value: "10" }
             ],
             selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
             selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
@@ -2154,6 +2151,24 @@ class requestPaymentsAddEdit extends Component {
 
                 this.setState({
                     updateVoPricesModal: true
+                });
+                break;
+            case "10":
+                dataservice.GetDataGrid('ChangeEditableStatus?requestId=' + this.state.docId).then(res => {
+                    let original_document = { ...this.state.document };
+
+                    let updated_document = {};
+
+                    updated_document.editable = ! original_document.editable;
+
+                    updated_document = Object.assign(original_document, updated_document);
+
+                    this.setState({
+                        document: updated_document
+                    });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(res => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
                 });
                 break;
         }
