@@ -120,7 +120,7 @@ class TransferInventory extends Component {
                 this.setState({
                     document: result
                 });
-                let selectedValue = { value: result.toProjectId, label: result.toProjectName };
+                let selectedValue = { value: result.projectId, label: result.projectName };
                 this.setState({ selectedProject: selectedValue });
             })
         }
@@ -230,9 +230,9 @@ class TransferInventory extends Component {
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['approvedQuantity'][currentLanguage]} </label>
+                                        <label className="control-label">{Resources['transferredQuantity'][currentLanguage]} </label>
                                         <div className={"inputDev ui input " + (errors.approvedQuantity ? 'has-error' : !errors.approvedQuantity && touched.approvedQuantity ? (" has-success") : " ")}>
-                                            <input name='approvedQuantity' className="form-control" autoComplete='off' placeholder={Resources['approvedQuantity'][currentLanguage]}
+                                            <input name='approvedQuantity' className="form-control" autoComplete='off' placeholder={Resources['transferredQuantity'][currentLanguage]}
                                                 value={this.state.document.approvedQuantity} onChange={e => this.HandelChangeInputs(e, 'approvedQuantity')}
                                                 onBlur={(e) => {
                                                     handleBlur(e)

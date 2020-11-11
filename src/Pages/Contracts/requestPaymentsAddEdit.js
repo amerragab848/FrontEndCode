@@ -2,7 +2,8 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
-import React, { Component, Fragment ,useContext } from "react";
+import React, { Component, Fragment, useContext } from "react";
+//import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
@@ -28,7 +29,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
-import ConnectionContext from '../../Componants/Layouts/Context';
+//import ConnectionContext from '../../Componants/Layouts/Context';
 
 //import "react-table/react-table.css";
 //#endregion importComponent
@@ -118,9 +119,9 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const find = require("lodash/find"); 
+const find = require("lodash/find");
 let itemsColumns = [];
-let VOItemsColumns = []; 
+let VOItemsColumns = [];
 var steps_defination = [];
 //#endregion globalVariable
 
@@ -212,7 +213,8 @@ class requestPaymentsAddEdit extends Component {
                 { label: "Edit Advanced Payment Amount", value: "5" },
                 { label: "Calculate Interim Invoice", value: "6" },
                 { label: "Add Deductions", value: "7" },
-                { label: "Update Advance Payment Amount", value: "8" }
+                { label: "Update Advance Payment Amount", value: "8" },
+                { label: "Update VO Prices", value: "9" }
             ],
             selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
             selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
@@ -297,8 +299,11 @@ class requestPaymentsAddEdit extends Component {
             currentDocument: "",
             columnsApprovedInvoices: [],
             CalculateRow: true,
-            deductionTypesList:[],
-            selectedDeductionType:{label: Resources.selectDedutionType[currentLanguage], value: "0"}
+            updateVoPricesModal: false,
+            deductionTypesList: [],
+            updateVoListData: [],
+            selected: {},
+            selectedDeductionType: { label: Resources.selectDedutionType[currentLanguage], value: "0" }
         };
 
         //#endregion variableofState
@@ -813,9 +818,17 @@ class requestPaymentsAddEdit extends Component {
         };
         return cellActions[column.key];
     };
+    toggleRow(obj) {
+        const newSelected = {};
+        newSelected[obj.id] = !this.state.selected[obj.id];
+        let setIndex = this.state.updateVoListData.findIndex(x => x.id === obj.id);
 
+        this.setState({
+            selected: newSelected,
+        })
+    }
     componentDidMount() {
-     
+
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -828,13 +841,14 @@ class requestPaymentsAddEdit extends Component {
         let documentDeduction = {
             title: "",
             deductionValue: 0,
-            deductionTypeId:0
+            deductionTypeId: 0
         };
         dataservice.GetDataList('GetaccountsDefaultListForList?listType=deductionType', 'title', 'id').then(res => {
             this.setState({
                 deductionTypesList: res
             })
         })
+
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
             this.props.actions.ExportingData({ items: [] });
@@ -843,6 +857,7 @@ class requestPaymentsAddEdit extends Component {
                     fillDropDownTress: result
                 });
             });
+
             this.setState({
                 isLoading: true,
                 documentDeduction: documentDeduction
@@ -891,7 +906,7 @@ class requestPaymentsAddEdit extends Component {
         if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
             let serverChangeOrder = { ...nextProps.document };
             serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("YYYY-MM-DD");
-            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0; 
+            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
             serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
             serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
             serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
@@ -1439,7 +1454,7 @@ class requestPaymentsAddEdit extends Component {
         this.addCommentModal.show();
     }
     showRowEditConstantModal(value) {
-        
+
         let original_document = { ...this.state.currentObject };
 
         let updated_document = {};
@@ -1623,7 +1638,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     editRowsClick() {
-        
+
         this.setState({ isLoading: true });
         let saveDocument = { ...this.state.document };
 
@@ -1685,26 +1700,26 @@ class requestPaymentsAddEdit extends Component {
         saveDocument.requestId = this.state.docId;
 
         dataservice.addObject("AddContractsRequestPaymentsDeductions", saveDocument).then(result => {
-            if(result){
-             let deductionName=this.state.deductionTypesList.find(x=>x.value==result.deductionTypeId);
-             result.deductionTypeName=deductionName?deductionName.label:null
-            let list = [...this.state.deductionObservableArray];
-            list.push(result);
+            if (result) {
+                let deductionName = this.state.deductionTypesList.find(x => x.value == result.deductionTypeId);
+                result.deductionTypeName = deductionName ? deductionName.label : null
+                let list = [...this.state.deductionObservableArray];
+                list.push(result);
 
-            let documentDeduction = {
-                title: "",
-                deductionValue: 0,
-                deductionObservableArray: list
-            };
+                let documentDeduction = {
+                    title: "",
+                    deductionValue: 0,
+                    deductionObservableArray: list
+                };
 
-            this.setState({
-                isLoading: false,
-                documentDeduction: documentDeduction,
-                deductionObservableArray: list
-            });
+                this.setState({
+                    isLoading: false,
+                    documentDeduction: documentDeduction,
+                    deductionObservableArray: list
+                });
 
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        }
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
         }).catch(res => {
             this.setState({
                 isLoading: false
@@ -2126,6 +2141,18 @@ class requestPaymentsAddEdit extends Component {
                     toast.error(Resources["operationCanceled"][currentLanguage]);
                 });
                 break;
+            case "9":
+                dataservice.GetDataGrid('GetContractsChangeOrderByContractId?contractId=' + this.state.document.contractId).then(res => {
+                    this.setState({
+                        updateVoListData: res
+                    })
+                })
+                this.updateVoPricesModal.show();
+
+                this.setState({
+                    updateVoPricesModal: true
+                });
+                break;
         }
 
         this.setState({
@@ -2517,6 +2544,23 @@ class requestPaymentsAddEdit extends Component {
 
         return ItemsGrid;
     };
+    executeVoChangePrices = () => {
+        let requestId = this.state.docId;
+
+        let changeOrderId = Object.keys(this.state.selected);
+
+        dataservice.GetDataGrid("UpdatePRItemsByByvoPrices?requestId=" + requestId + "&changeOrderId=" + changeOrderId).then(result => {
+            this.setState({ updateVoPricesModal: false });
+
+            this.updateVoPricesModal.hide();
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(res => {
+            this.setState({ updateVoPricesModal: false });
+
+            this.updateVoPricesModal.hide();
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+    };
 
     getById = (id) => {
         if (id > 0) {
@@ -2672,7 +2716,91 @@ class requestPaymentsAddEdit extends Component {
                 width: 200
             }
         ];
+        let voItems = [
+            {
+                Header: "Delete",
+                id: "checkbox",
+                accessor: "id",
+                Cell: ({ row }) => {
+                    return (
+                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} >
+                            <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+                        </div>
+                    );
+                },
+                width: 100
+            },
+            {
+                Header: Resources["costCodingTree"][currentLanguage],
+                accessor: "costCodingTitle",
+                sortabel: true,
+                width: 200
+            },
+            {
+                Header: Resources["value"][currentLanguage],
+                accessor: "value",
+                Cell: this.renderEditableValue,
+                width: 200
+            }
+        ];
+        let updateVoList = [
+            {
+                Header: Resources["checkList"][currentLanguage],
+                id: "checkbox",
+                accessor: 'id',
+                Cell: ({ row }) => {
+                    return (
+                        <div className="ui checked checkbox  checkBoxGray300 ">
+                            <input type="checkbox"
+                                className="checkbox"
+                                checked={this.state.selected[row._original.id] === true}
+                                onChange={() => this.toggleRow(row._original)} />
+                            <label></label>
+                        </div>
+                    );
+                },
+                width: 50
+            },
+            {
+                Header: Resources["subject"][currentLanguage],
+                accessor: "subject",
+                sortabel: true,
+                width: 300
+            },
+            {
+                Header: Resources["contractSubject"][currentLanguage],
+                accessor: "contractSubject",
+                sortabel: true,
+                width: 300
+            },
+            {
+                Header: Resources["total"][currentLanguage],
+                accessor: "total",
+                sortabel: true,
+                width: 200
+            },
+            {
+                Header: Resources["docDate"][currentLanguage],
+                accessor: "docDate",
+                sortabel: true,
+                width: 250
+            }
+        ];
+        const updateVoPrices = (
 
+            <Fragment>
+                <div className="fullWidthWrapper">
+                    <ReactTable data={this.state.updateVoListData} columns={updateVoList} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
+                    <hr />
+                    <button
+                        className="primaryBtn-1 btn "
+                        type="button"
+                        onClick={this.executeVoChangePrices}>
+                        {Resources.Execute[currentLanguage]}
+                    </button>
+                </div>
+            </Fragment>
+        );
 
         const BoqTypeContent = (
             <Fragment>
@@ -3356,22 +3484,22 @@ class requestPaymentsAddEdit extends Component {
                                                             No.Update Rows.
                                                             {this.state.editRows.length}
                                                         </span>
-                                                    
-                                                         {this.state.isLoading === true ?(
-                                                        <button className="primaryBtn-1 btn  disabled" disabled="disabled">
-                                                            <div className="spinner">
-                                                                <div className="bounce1" />
-                                                                <div className="bounce2" />
-                                                                <div className="bounce3" />
-                                                            </div>
-                                                        </button>
-                                                    )
-                                                    :(
-                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.editRowsClick(e)}>
-                                                            {
-                                                                Resources["edit"][currentLanguage]
-                                                            }
-                                                        </button>)}
+
+                                                        {this.state.isLoading === true ? (
+                                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button>
+                                                        )
+                                                            : (
+                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.editRowsClick(e)}>
+                                                                    {
+                                                                        Resources["edit"][currentLanguage]
+                                                                    }
+                                                                </button>)}
                                                     </div>
                                                 </div>
                                             ) : null}
@@ -3587,7 +3715,11 @@ class requestPaymentsAddEdit extends Component {
                         ) : null}
                     </div>
                 </div>
-
+                <div className="largePopup largeModal " style={{ display: this.state.updateVoPricesModal ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.updateVoPricesModal = ref)} title={Resources.updatePrices[currentLanguage]}>
+                        {updateVoPrices}
+                    </SkyLight>
+                </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.boqTypeModal = ref)} title={Resources.boqType[currentLanguage]}>
                         {BoqTypeContent}
@@ -4085,8 +4217,8 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
     };
-} 
-   
+}
+
 function mapStateToProps(state) {
     return {
         document: state.communication.document,

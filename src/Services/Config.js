@@ -80,8 +80,7 @@ export default class Config {
                     params.toCompanyId = obj.replyFromCompId;
                     params.toContactId = obj.replyFromContId;
                 } catch {
-                    return {};
-                    //this.props.history.goBack();
+                    return {}; 
                 }
             }
             index++;
