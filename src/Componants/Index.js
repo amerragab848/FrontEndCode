@@ -211,6 +211,8 @@ class Index extends Component {
                 </Fragment>
             );
         }
+    //   });
+    //  }
     }
 
     renderCategory(category, index) {

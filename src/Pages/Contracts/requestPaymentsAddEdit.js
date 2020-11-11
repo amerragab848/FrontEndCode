@@ -2,7 +2,12 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
+<<<<<<< HEAD
 import React, { Component, Fragment } from "react";
+=======
+import React, { Component, Fragment, useContext } from "react";
+//import React, { Component, Fragment } from "react";
+>>>>>>> 71bfb6322812257df7d12dd66d31ab5db7992393
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
