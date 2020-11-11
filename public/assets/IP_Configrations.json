@@ -1,27 +1,31 @@
+
 {
-  "BlobStorageContainerName": "project-files",
-  "accountCompanyId": "1",
+  "BlobStorageContainerName": "project-files-tatweer",
+  "acApp": "AC",
+  "accountCompanyId": "16",
   "azureStorage": true,
   "canSendAlert": "false",
   "cdn": "https://newgiza.azureedge.net",
-  "chatLocal": "https://demov4.procoor.com",
-  "chatStatic": "https://demov4.procoor.com",
-  "exportLocal": "https://demov4.procoor.com",
-  "exportStatic": "https://demov4.procoor.com",
+  "chatLocal": "https://Tatweermisr.procoor.com",
+  "chatStatic": "https://Tatweermisr.procoor.com",
+  "exportLocal": "https://Tatweermisr.procoor.com",
+  "exportStatic": "https://Tatweermisr.procoor.com",
   "fmApp": "FM",
   "hrApp": "HR",
-  "acApp": "AC",
-  "pmApp": "PM",
-  "local": "https://newgizaServices.procoor.com/",
+  "local": "http://localhost:11480/",
   "loginServer": "https://procoorauthorization.procoor.com",
-  "static": "https://newgizaServices.procoor.com/",
-  "downloads": "https://newgizaServices.procoor.com",
+  "pmApp": "PM",
+  "static": "http://localhost:11480/",
+  "downloads": "https://TatweerServices.procoor.com",
   "dropBoxappKey":"r8iiezlpm1pvlry",
   "dropBoxToken":"H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
   "googleDriveClientId":"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
   "googleDriveKey":"uof5qzvtwpq1dao",
-  "exportCore" : "https://newgizaServices.procoor.com/ExportAPI/api/ExportController/",
+  "refAutomatic": false, 
+  "exportCore" : "https://TatweerServices.procoor.com/ExportAPI/api/ExportController/"	,
  
-  "client_id": "elXUJfeXNiv0ZDxlOB5JrJWn9GksYQq3",
-  "client_secret": "RiaukssWQvBiD32T"
+  "client_id": "2MvAbMOWOAsUbYRjiK5ukyR59rmAhspo",
+  "client_secret": "gtGe2S9GhWeD8NxA" 
+
+
 }
