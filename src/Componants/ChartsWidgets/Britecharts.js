@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 import Api from '../../api';
 import Loader from '../../../src/Styles/images/ChartLoaders/LineChartLoader.webm';
+import NoData from '../../../src/Styles/images/ChartLoaders/LineChartNoData.png';
 import moment from 'moment';
 
 const colorSchema = [
@@ -27,6 +28,7 @@ class Britecharts extends Component {
             isLoading: true,
             chartDatasets: [],
             chartLabels: [],
+            noData: false,
         };
     }
 
@@ -52,16 +54,18 @@ class Britecharts extends Component {
                         singleDataset.push(item.value);
                     return null;
                 });
-                chartDatasets.push({
-                    label: dataset,
-                    data: singleDataset,
-                    borderColor:
-                        index / 2 === 0 ? colorSchema[0] : colorSchema[1],
-                    backgroundColor: 'white',
-                    pointRadius: 5,
-                    pointHoverRadius: 6,
-                    fill: false,
-                });
+                if (singleDataset.length > 0) {
+                    chartDatasets.push({
+                        label: dataset,
+                        data: singleDataset,
+                        borderColor:
+                            index / 2 === 0 ? colorSchema[0] : colorSchema[1],
+                        backgroundColor: 'white',
+                        pointRadius: 5,
+                        pointHoverRadius: 6,
+                        fill: false,
+                    });
+                }
                 singleDataset = [];
                 return null;
             });
@@ -70,6 +74,7 @@ class Britecharts extends Component {
                 chartDatasets,
 
                 isLoading: false,
+                noData: chartDatasets.length > 0 ? false : true,
                 chartData: {
                     labels: chartLabels,
                     datasets: chartDatasets,
@@ -131,8 +136,8 @@ class Britecharts extends Component {
     };
 
     render() {
-        return this.state.isLoading ? (
-            <div className="col-md-12 col-lg-6">
+        if (this.state.isLoading) {
+            return (
                 <div className="panel">
                     <div className="panel-body-loader">
                         <h2>{this.props.title}</h2>
@@ -141,9 +146,18 @@ class Britecharts extends Component {
                         </video>
                     </div>
                 </div>
-            </div>
-        ) : (
-            <div className="col-md-12 col-lg-6">
+            );
+        } else if (this.state.noData) {
+            return (
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <img src={NoData} style={{ width: '80%' }} />
+                    </div>
+                </div>
+            );
+        } else {
+            return (
                 <div className="panel">
                     <div className="panel-body">
                         <h2>{this.props.title}</h2>
@@ -154,8 +168,8 @@ class Britecharts extends Component {
                         />
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
