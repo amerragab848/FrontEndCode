@@ -4,7 +4,7 @@ import Config from "./Services/Config";
 
 let Authorization = localStorage.getItem("userToken");
 
-let modules = [{ api: 'api/Procoor/', key: 1 }, { api: 'ExportAPI/api/ExportController/', key: 2 }, { api: 'ExportAPI/api/ExportController/', key: 3 }]
+let modules = [{ api: 'PM/api/Procoor/', key: 1 }, { api: 'ExportAPI/api/ExportController/', key: 2 }, { api: 'ExportAPI/api/ExportController/', key: 3 }]
 export default class Api {
 
     static headers() {
@@ -319,7 +319,7 @@ export default class Api {
     static postFile(route, params, header) {
 
         let json = "";
-        const host = Config.getPublicConfiguartion().static + "api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
         const url = `${host}${route}`;
         let headers = {};
         headers.Authorization = Authorization;

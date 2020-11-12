@@ -32,8 +32,7 @@ class PermissionsGroupsPermissions extends Component {
                 pathname: "/"
             })
         }
-    }
-
+    } 
     componentDidMount() {
         this.setState({ isLoading: true })
         Api.get('AccountsPermissionsGroupsGetById?id=' + this.state.groupId).then(res => {
@@ -60,8 +59,7 @@ class PermissionsGroupsPermissions extends Component {
         this.setState({ options });
 
 
-    }
-
+    } 
     checkedAll = (e) => {
 
         // this.state[this.state.selectedDocument.value].forEach(item => {
@@ -73,8 +71,7 @@ class PermissionsGroupsPermissions extends Component {
           })
         this.setState({ checkedAll: !this.state.checkedAll,selectedValuePermissions:checkAll })
 
-    }
-
+    } 
     handleCheck = (code) => {
         //Ahmed Yousry
        let permissionsCopy=this.state.selectedValuePermissions;
@@ -143,7 +140,7 @@ class PermissionsGroupsPermissions extends Component {
             this.setState({ isLoading: false, disabled: false, status: 0, checkedAll: false })
         })
     }
- drawItems() {
+    drawItems() {
         if (this.state.selectedValuePermissions.length > 0) {
             
             return (this.state.selectedValuePermissions.map(item => {
@@ -162,8 +159,7 @@ class PermissionsGroupsPermissions extends Component {
         else {
             return null;
         }
-    }
-
+    } 
     render() {
         return (
             <div className="mainContainer">
