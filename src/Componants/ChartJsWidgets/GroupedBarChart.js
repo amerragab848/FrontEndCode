@@ -117,12 +117,14 @@ class GroupedBarCahrtComponent extends Component {
             ],
             xAxes: [
                 {
-                    barPercentage: 0.9,
                     gridLines: {
                         display: false,
                     },
                 },
             ],
+        },
+        dataset: {
+            barPercentage: 0.9,
         },
     };
     render() {

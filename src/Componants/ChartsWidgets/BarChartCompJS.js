@@ -49,7 +49,7 @@ class BarChartCompJS extends Component {
                 return null;
             });
             if (chartDatasets.length === 1)
-                this.options.scales.xAxes[0].barPercentage = 0.5;
+                this.options.dataset.barPercentage = 0.5;
             this.setState({
                 chartLabels,
                 chartDatasets,
@@ -110,12 +110,14 @@ class BarChartCompJS extends Component {
             ],
             xAxes: [
                 {
-                    barPercentage: 0.9,
                     gridLines: {
                         display: false,
                     },
                 },
             ],
+        },
+        dataset: {
+            barPercentage: 0.9,
         },
     };
 

@@ -57,7 +57,7 @@ class BarChartComp extends Component {
                 return null;
             });
             if (chartDatasets.length === 1)
-                this.options.scales.xAxes[0].barPercentage = 0.5;
+                this.options.dataset.barPercentage = 0.5;
             this.setState({
                 chartLabels,
                 chartDatasets,
@@ -114,7 +114,49 @@ class BarChartComp extends Component {
             });
         }
     };
-
+    options = {
+        tooltips: {
+            xPadding: 15,
+            yPadding: 15,
+            bodySpacing: 15,
+            mode: 'nearest',
+            intersect: false,
+            axis: 'x',
+            titleFontSize: 18,
+            bodyFontSize: 16,
+        },
+        title: {
+            display: false,
+            text: this.props.title,
+        },
+        legend: {
+            display: false,
+        },
+        animation: {
+            duration: 1500,
+        },
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        min: 0,
+                    },
+                },
+            ],
+            xAxes: [
+                {
+                    gridLines: {
+                        display: false,
+                    },
+                },
+            ],
+        },
+        dataset: {
+            barPercentage: 0.9,
+        },
+    };
     render() {
         if (this.state.isLoading) {
             return (
