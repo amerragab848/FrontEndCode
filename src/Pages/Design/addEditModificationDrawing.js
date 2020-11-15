@@ -26,7 +26,7 @@ import { toast } from "react-toastify";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 import Steps from "../../Componants/publicComponants/Steps";
-
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -54,7 +54,7 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 let isModification = true;//edited
-let havePermission=true;
+let havePermission = true;
 
 const find = require('lodash/find')
 class addEditModificationDrawing extends Component {
@@ -135,6 +135,7 @@ class addEditModificationDrawing extends Component {
             selectedRow: [],
             selected: [],
             showDeleteModal: false,
+            message:""
         }
         steps_defination = [
             { name: isModification === false ? "drawing" : 'drawingModification', callBackFn: null },
@@ -143,7 +144,7 @@ class addEditModificationDrawing extends Component {
 
         if (isModification === false) {
             if (!Config.IsAllow(3516) && !Config.IsAllow(3517) && !Config.IsAllow(3519)) {
-                havePermission=false;
+                havePermission = false;
                 toast.error(Resources["missingPermissions"][currentLanguage]);
                 this.props.history.push(
                     this.state.perviousRoute
@@ -151,7 +152,7 @@ class addEditModificationDrawing extends Component {
             }
         } else {
             if (!Config.IsAllow(3133) && !Config.IsAllow(3134) && !Config.IsAllow(3136)) {
-                havePermission=false;
+                havePermission = false;
                 toast.error(Resources["missingPermissions"][currentLanguage]);
                 return this.props.history.push(this.state.perviousRoute);
             }
@@ -186,93 +187,94 @@ class addEditModificationDrawing extends Component {
     }
 
     componentDidMount() {
-        if(havePermission==true){
-        let classObj = this;
-        let drawingCycle = {
-            drawingId: null,
-            subject: 'Cycle No. R ',
-            status: 'true',
-            approvalStatusId: '',
-            docDate: moment(),
-            approvedDate: moment(),
-            flowCompanyId: '',
-            flowContactId: '',
-            progressPercent: 0,
-            arrange: 0,
-            serial: 0
-        };
-        this.setState({
-            drawingCycle: drawingCycle
-        });
-        if (this.state.docId > 0) {
-            let url = "GetLogsDrawingsForEdit?id=" + this.state.docId
-            let PageName = isModification === false ? 'drawing' : 'drawingModification'
-            this.props.actions.documentForEdit(url, isModification === true ? 114 : 37, PageName);
-            dataservice.GetDataGrid('GetLogsDrawingsCyclesByDrawingId?drawingId=' + this.state.docId).then(
-                res => {
-                    this.setState({ cyclesData: res });
-                }
-            )
-        } else {
-            let drawing = {
-                subject: '',
-                id: 0,
-                projectId: projectId,
-                arrange: '',
-                bicCompanyId: '',
-                bicContactId: '',
-                specsSectionId: '',
-                reasonForIssueId: '',
-                docDate: moment(),
-                status: true,
-                refNo: '',
-                disciplineId: '',
-                fileNumber: '',
-                area: '',
-                drawingNo: '',
-                isModification: isModification,
-                progressPercent: 0,
+        if (havePermission == true) {
+            let classObj = this;
+            let drawingCycle = {
+                drawingId: null,
+                subject: 'Cycle No. R ',
+                status: 'true',
                 approvalStatusId: '',
-                serial: ''
+                docDate: moment(),
+                approvedDate: moment(),
+                flowCompanyId: '',
+                flowContactId: '',
+                progressPercent: 0,
+                arrange: 0,
+                serial: 0
             };
-
             this.setState({
-                document: drawing,
                 drawingCycle: drawingCycle
-            }, function () {
-                classObj.GetNExtArrange();
             });
+            if (this.state.docId > 0) {
+                let url = "GetLogsDrawingsForEdit?id=" + this.state.docId
+                let PageName = isModification === false ? 'drawing' : 'drawingModification'
+                this.props.actions.documentForEdit(url, isModification === true ? 114 : 37, PageName);
+                dataservice.GetDataGrid('GetLogsDrawingsCyclesByDrawingId?drawingId=' + this.state.docId).then(
+                    res => {
+                        this.setState({ cyclesData: res });
+                    }
+                )
+            } else {
+                let drawing = {
+                    subject: '',
+                    id: 0,
+                    projectId: projectId,
+                    arrange: '',
+                    bicCompanyId: '',
+                    bicContactId: '',
+                    specsSectionId: '',
+                    reasonForIssueId: '',
+                    docDate: moment(),
+                    status: true,
+                    refNo: '',
+                    disciplineId: '',
+                    fileNumber: '',
+                    area: '',
+                    drawingNo: '',
+                    isModification: isModification,
+                    progressPercent: 0,
+                    approvalStatusId: '',
+                    serial: '',
+                    message:''
+                };
 
-            // this.setState({
-            //     document: drawing,
-            //     drawingCycle: drawingCycle
-            // });
-            // let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-            // let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
-            //     dataservice.GetNextArrangeMainDocument(url2).then(
-            //         res => {
-            //             const Document = {
-            //                 projectId: projectId, arrange: res, status: "true", subject: "",
-            //                 docDate: moment(), companyId: '', companyId: '',
-            //             }
-            //             this.setState({ document: Document })
-            //         }
-            //     )
+                this.setState({
+                    document: drawing,
+                    drawingCycle: drawingCycle
+                }, function () {
+                    classObj.GetNExtArrange();
+                });
 
-            this.fillDropDowns(false);
-            this.props.actions.documentForAdding();
-        }
+                // this.setState({
+                //     document: drawing,
+                //     drawingCycle: drawingCycle
+                // });
+                // let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + isModification === true ? 114 : 37 + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
+                // let url2="GetNextArrangeMainDoc?projectId=" + projectId + "&docType=" + this.state.docTypeId + "&companyId=undefined&contactId=undefined";
+                //     dataservice.GetNextArrangeMainDocument(url2).then(
+                //         res => {
+                //             const Document = {
+                //                 projectId: projectId, arrange: res, status: "true", subject: "",
+                //                 docDate: moment(), companyId: '', companyId: '',
+                //             }
+                //             this.setState({ document: Document })
+                //         }
+                //     )
 
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add('even');
+                this.fillDropDowns(false);
+                this.props.actions.documentForAdding();
             }
-            else {
-                links[i].classList.add('odd');
+
+            var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+            for (var i = 0; i < links.length; i++) {
+                if ((i + 1) % 2 == 0) {
+                    links[i].classList.add('even');
+                }
+                else {
+                    links[i].classList.add('odd');
+                }
             }
         }
-    }
     };
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
@@ -285,7 +287,8 @@ class addEditModificationDrawing extends Component {
 
             this.setState({
                 document: doc,
-                hasWorkflow: this.props.hasWorkflow
+                hasWorkflow: this.props.hasWorkflow,
+                message:doc?doc.message:''
             });
 
             dataservice.GetRowById("getLogsDrawingsCyclesForEdit?id=" + this.props.document.id).then(result => {
@@ -484,6 +487,24 @@ class addEditModificationDrawing extends Component {
         });
     }
 
+    onChangeComment = (value, field) => {
+
+        if (value != null) {
+            let original_document = { ...this.state.document };
+
+            let updated_document = {};
+
+            updated_document[field] = value;
+
+            updated_document = Object.assign(original_document, updated_document);
+
+            this.setState({
+                document: updated_document,
+                [field]: value
+            });
+        }
+    };
+
     handleChangeDate(e, field) {
 
         let original_document = { ...this.state.document };
@@ -608,6 +629,7 @@ class addEditModificationDrawing extends Component {
         let canEdit = isModification === false ? 3517 : 3134;
         let saveDocument = { ...this.state.document };
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.message = this.state.message;
         if (Config.IsAllow(canEdit)) {
             dataservice.addObject('EditLogDrawing', saveDocument).then(result => {
                 this.setState({
@@ -630,11 +652,13 @@ class addEditModificationDrawing extends Component {
         let saveDocument = { ...this.state.document };
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.projectId = this.state.projectId;
+        saveDocument.message = this.state.message;
         let canAdd = isModification === false ? 3516 : 3133;
         if (Config.IsAllow(canAdd)) {
             dataservice.addObject('AddLogsDrawings', saveDocument).then(result => {
                 this.setState({
-                    docId: result.id
+                    docId: result.id,
+                    message:''
                 });
 
                 let saveDocumentCycle = { ...this.state.drawingCycle };
@@ -1094,6 +1118,16 @@ class addEditModificationDrawing extends Component {
                                                 name="fileNumber"
                                                 placeholder={Resources.fileNumber[currentLanguage]}
                                                 onChange={(e) => this.handleChange(e, 'fileNumber')} />
+                                        </div>
+                                    </div>
+
+                                    <div className="letterFullWidth fullInputWidth linebylineInput">
+                                        <label className="control-label">{Resources.message[currentLanguage]}</label>
+                                        <div className="inputDev ui input">
+                                            <TextEditor
+                                                value={this.state.message || ''}
+                                                onChange={event => this.onChangeComment(event, "message")}
+                                            />
                                         </div>
                                     </div>
 

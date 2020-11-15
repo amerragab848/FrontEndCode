@@ -28,10 +28,14 @@ import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+<<<<<<< HEAD
 //import GridCustom from 'react-customized-grid';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 // import 'react-customized-grid/main.css';
+=======
+import GridCustom from 'react-customized-grid'; 
+>>>>>>> 253b69d9d4246916b5371273d6c64cf50f28b8ce
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
@@ -101,8 +105,7 @@ const ValidtionSchemaContactsForEdit = Yup.object().shape({
 const validationSchemaForAddEditWorkFlow = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     alertDays: Yup.number().required(Resources['isRequiredField'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
-    rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage]),
-    // distributionId: Yup.string().required(Resources['distributionList'][currentLanguage])
+    rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage])
 })
 
 class projectWorkFlowAddEdit extends Component {
@@ -1123,6 +1126,7 @@ class projectWorkFlowAddEdit extends Component {
                 </tr>
             )
         });
+    
         const renderLevelDurationTable = this.state.LevelDurationData.map((item) => {
             return (
                 <tr key={item.workFlowItemId}>
@@ -1135,8 +1139,7 @@ class projectWorkFlowAddEdit extends Component {
                     </td>
 
                     <td>
-                        <div className="linebylineInput valid-input fullInputWidth">
-                            <label className="control-label">{Resources['duration'][currentLanguage]}</label>
+                        <div className="linebylineInput valid-input fullInputWidth"> 
                             <div className="inputDev ui input">
                                 <input autoComplete="off" className="form-control"
                                     value={this.state.multipleDuration}
@@ -1374,13 +1377,13 @@ class projectWorkFlowAddEdit extends Component {
                                                 handleChange={(e) => this.handleChangeDrops(e, "Approval")}
                                                 onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
                                         </div>
-                                        <div className="linebylineInput valid-input fullInputWidth">
+                                        {/* <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['duration'][currentLanguage]}</label>
                                             <div className="inputDev ui input">
                                                 <input autoComplete="off" className="form-control" value={values.Duration} name="Duration"
                                                     onChange={(e) => { handleChange(e) }} placeholder={Resources['duration'][currentLanguage]} />
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="slider-Btns letterFullWidth">
                                             <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['add'][currentLanguage]}</button>
                                         </div>

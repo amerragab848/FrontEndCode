@@ -183,7 +183,7 @@ class CostControlTreeReport extends Component {
                     <h2 className="zero">Cos Coding Report</h2>
                     {exportBtn}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
                     <div className="linebylineInput multiChoice">
                         <Dropdown title='projectName' data={this.state.projects} name='projectName'
                             selectedValue={this.state.selectedProject} handleChange={e => { this.handleChangeDrop(e); }} />

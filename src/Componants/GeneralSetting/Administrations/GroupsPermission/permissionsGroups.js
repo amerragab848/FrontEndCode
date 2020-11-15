@@ -91,8 +91,7 @@ class permissionsGroups extends Component {
                 pathname: "/"
             })
         }
-    }
-
+    } 
     GetCellActions(column, row) {
         if (column.key === 'BtnActions') {
             return [{
@@ -124,8 +123,7 @@ class permissionsGroups extends Component {
                 ]
             }];
         }
-    }
-
+    } 
     copyTo = (value) => {
         this.setState({ isLoading: true })
         let Group = {
@@ -144,23 +142,19 @@ class permissionsGroups extends Component {
     }
     deleteGroupName = (rowId) => {
         this.setState({ showDeleteModal: true, rowId: rowId })
-    }
-
+    } 
     onCloseModal() {
         this.setState({
             showDeleteModal: false, showResetPasswordModal: false
         });
-    }
-
+    } 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false, showResetPasswordModal: false });
-    };
-
+    }; 
     addRecord = () => {
         this.setState({ showPopUp: true, isLoading: false, selectedgroupName: '', currentTitle: 'add' })
         this.simpleDialog.show()
-    }
-
+    } 
     ConfirmdeleteGroupName = () => {
         let id = '';
         this.setState({ isLoading: true, showDeleteModal: false })
@@ -182,8 +176,7 @@ class permissionsGroups extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ isLoading: false })
         })
-    }
-
+    } 
     componentWillMount = () => {
         Api.get('GetPermissionsGroupsGrid?pageNumber=0&pageSize=200').then(result => {
             if (result != null) {
@@ -203,8 +196,7 @@ class permissionsGroups extends Component {
             this.setState({ isLoading: false })
         })
 
-    }
-
+    } 
     onRowClick(value, index, column) {
         this.setState({
             selectedRow: value,
@@ -215,8 +207,7 @@ class permissionsGroups extends Component {
             this.simpleDialog.show()
         }
 
-    }
-
+    }  
     addEditGroupName = (value) => {
         if (this.state.currentTitle == 'update') {
             let group = { ...this.state.selectedRow }
@@ -253,8 +244,7 @@ class permissionsGroups extends Component {
             })
         }
 
-    }
-
+    } 
     render() {
 
         const dataGrid =

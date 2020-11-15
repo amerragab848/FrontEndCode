@@ -121,7 +121,7 @@ let widgets = {
         "props": {
             "permission": 0,
             "type": "oneWidget",
-            "api": "GetLevelDurationDelayCount?WFStatus=true",
+            "api": "GetLevelDurationDelayCount",
             "route": "levelDurationAlertDetails",
             "value": "total",
             "listType": "item",

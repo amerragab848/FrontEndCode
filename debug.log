@@ -3,3 +3,7 @@
 [0914/083437.236:ERROR:process_info.cc(556)] ReadMemoryInfo failed
 [0914/083437.237:ERROR:process_memory_win.cc(39)] Failed to initialize ProcessInfo.
 [0914/083437.237:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1104/094754.058:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1108/093753.785:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1110/165445.663:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1111/091147.493:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

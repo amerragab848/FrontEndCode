@@ -1,203 +1,161 @@
 import React, { Component } from 'react';
+import { Bar } from 'react-chartjs-2';
 import Api from '../../api';
-import { Bar } from 'britecharts-react'
-const miniTooltip = require('britecharts/src/charts/mini-tooltip');
+import Loader from '../../../src/Styles/images/ChartLoaders/BarChartLoader.webm';
+import NoData from '../../../src/Styles/images/ChartLoaders/BarChartNoData.png';
 
-const d3 = require('d3-selection');
-
-const britecharts = require('britecharts');
-const NUMBER_FORMAT = ',f';
-const marginObject = {
-    left: 0,
-    right: 40,
-    top: 50,
-    bottom: 50,
-};
-
-const colorSchema = ["#39bd3d", "#dfe2e6", "#ab50df"]
+const colorSchema = [
+    '#39bd3d',
+    '#dfe2e6',
+    '#ab50df',
+    '#39bdef',
+    '#afe5ef',
+    '#522e5f',
+    '#39bd3d',
+    '#dfe2e6',
+    '#ab50df',
+    '#39bdef',
+    '#afe5ef',
+    '#522e5f',
+];
 
 class BarChartCompJS extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            barData: [],
-            isLoadingGrouped: true,
-            isLoadingBar: true,
-            groupedBarData: [],
-            xAxis: {}
-        }
-
-        this._isMounted = false;
+            chartData: {},
+            isLoading: true,
+            chartDatasets: [],
+            chartLabels: [],
+            noData: false,
+        };
     }
 
-    componentDidMount = () => {
-
-        this._isMounted = true;
-        if (this.props.multiSeries === 'no') {
-            this._isMounted && this.setState({
-                isLoadingBar: true
-            });
-        } else {
-            this._isMounted && this.setState({
-                isLoadingGrouped: true
-            });
-        }
-
-        if (this.props.reports == undefined) {
+    componentDidMount() {
+        if (this.props.reports === undefined) {
             Api.get(this.props.api).then(results => {
-                if (results)
-                    this.GenerateDataFromProps(results);
+                if (results) this.GenerateDataFromProps(results);
             });
-        }
-        else
-            this.GenerateDataFromProps(this.props.rows)
+        } else this.GenerateDataFromProps(this.props.rows);
     }
 
-    GenerateDataFromProps = (results) => {
-        let barData = [];
-        if (this.props.multiSeries === 'no') {
-            if (results) {
-                results.map((item) => {
-                    barData.push({ 'value': item[this.props.y], 'name': item[this.props.categoryName] })
-                    return null;
-                });
-            }
-
-            let BarData = { data: barData }
-            let contDiv = '.js-bar-chart-container-tooltip-container-' + this.props.ukey;
-            let barChart = britecharts.bar(),
-                chartBarTooltip = miniTooltip(),
-                barContainer = d3.select(contDiv),
-                containerBarWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false;
-
-            if (containerBarWidth) {
-                d3.select('.js-download-button').on('click', function () {
-                    barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
-                });
-            }
-            barChart
-                .width(containerBarWidth)
-                .margin(marginObject)
-                .colorSchema(colorSchema)
-                .isAnimated(true)
-                .height(400)
-                .hasPercentage(true)
-                .on('customMouseOver', function () {
-                    chartBarTooltip.show();
-                })
-                .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
-                    chartBarTooltip.update(dataPoint, topicColorMap, x, y);
-                })
-                .on('customMouseOut', function (e) {
-                    chartBarTooltip.hide();
-                });
-
-            barContainer.datum(BarData.data).call(barChart);
-            barContainer = d3.select('.js-bar-chart-container-tooltip-container-' + this.props.ukey + ' .metadata-group');
-            barContainer.datum([]).call(chartBarTooltip);
-            this._isMounted && this.setState({
-                isLoadingBar: false
+    GenerateDataFromProps = results => {
+        if (results) {
+            let chartDatasets = [];
+            let chartLabels = [];
+            results.map(item => {
+                chartDatasets.push(item[this.props.y]);
+                chartLabels.push(item[this.props.categoryName]);
+                return null;
             });
+            if (chartDatasets.length === 1)
+                this.options.dataset.barPercentage = 0.5;
+            this.setState({
+                chartLabels,
+                chartDatasets,
 
-        }
-        else {
-            let groupedBarData = []
-            this.props.barContent.map((bar) => {
-                if (results) {
-                    results.map((obj) => {
-                        groupedBarData.push({
-                            stack: bar.name,
-                            name: obj[this.props.categoryName],
-                            total: obj[bar.value]
-                        })
-                    })
-                }
-            });
-            let groupedData = { data: groupedBarData }
-            var groupedBarChart = britecharts.groupedBar(),
-                chartTooltip = britecharts.tooltip(),
-                container = d3.select(".js-grouped-bar-chart-tooltip-container--" + this.props.ukey),
-                containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
-                tooltipContainer;
-
-            groupedBarChart
-                .width(containerWidth)
-                .height(400)
-                .groupLabel('stack')
-                .nameLabel('name')
-                .valueLabel('total')
-                .grid('horizontal')
-                .colorSchema(colorSchema)
-                .valueLabelFormat(NUMBER_FORMAT)
-                //.betweenBarsPadding(0.1)
-                .isAnimated(true)
-                .on('customMouseOver', function () {
-                    chartTooltip.show();
-                })
-                .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
-                    chartTooltip.update(dataPoint, topicColorMap, x, y);
-                })
-                .on('customMouseOut', function () {
-                    chartTooltip.hide();
-                });
-
-            container.datum(groupedData.data).call(groupedBarChart);
-
-            chartTooltip
-                .topicLabel('values')
-                .dateLabel('key')
-                .nameLabel('stack')
-                .title('Procoor tooltip');
-            tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container--' + this.props.ukey + ' .metadata-group');
-
-            tooltipContainer.datum([]).call(chartTooltip);
-
-            this._isMounted && this.setState({
-                isLoadingGrouped: results.length > 0 ? false : true,
-                groupedBarData: groupedBarData
+                isLoading: false,
+                noData: chartDatasets.length > 0 ? false : true,
+                chartData: {
+                    labels: chartLabels,
+                    datasets: [
+                        {
+                            backgroundColor:
+                                chartDatasets.length > 1
+                                    ? colorSchema
+                                    : colorSchema[0],
+                            borderColer:
+                                chartDatasets.length > 1
+                                    ? colorSchema
+                                    : colorSchema[0],
+                            borderWidth: 2,
+                            data: chartDatasets,
+                        },
+                    ],
+                },
             });
         }
-    }
+    };
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
+    options = {
+        tooltips: {
+            xPadding: 15,
+            yPadding: 15,
+            bodySpacing: 15,
+            mode: 'nearest',
+            intersect: false,
+            axis: 'x',
+            titleFontSize: 18,
+            bodyFontSize: 16,
+        },
+        title: {
+            display: false,
+            text: this.props.title,
+        },
+        legend: {
+            display: false,
+        },
+        animation: {
+            duration: 1500,
+        },
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        min: 0,
+                    },
+                },
+            ],
+            xAxes: [
+                {
+                    gridLines: {
+                        display: false,
+                    },
+                },
+            ],
+        },
+        dataset: {
+            barPercentage: 0.9,
+        },
+    };
 
     render() {
-        return (
-            this.props.multiSeries == 'yes' ?
-                <div className="col-md-12 col-lg-6">
-                    <div className="panel barChart__container">
-                        <div className="panel-body">
-                            <h2>
-                                {this.props.title}
-                            </h2>
-                            <div id={this.props.ukey} key={this.props.ukey}
-                                className={"britechart js-grouped-bar-chart-tooltip-container--" + this.props.ukey + " card--chart"}></div>
-                            {this.state.isLoadingGrouped === true ?
-                                <Bar shouldShowLoadingState={true} /> : null
-                            }
-                        </div>
+        if (this.state.isLoading) {
+            return (
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <video style={{ width: '80%' }} autoPlay loop muted>
+                            <source src={Loader} type="video/webm" />
+                        </video>
                     </div>
                 </div>
-                :
-                <div className="col-md-12 col-lg-6">
-                    <div className="panel barChart__container">
-                        <div className="panel-body">
-                            <h2>
-                                {this.props.title}
-                            </h2>
-                            <div key={this.props.ukey} className={"js-bar-chart-container-tooltip-container-" + this.props.ukey + ' card--chart '}></div>
-
-                            {this.state.isLoadingBar === true ?
-                                <Bar shouldShowLoadingState={true} /> : null
-                            }
-                        </div>
+            );
+        } else if (this.state.noData) {
+            return (
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <img src={NoData} style={{ width: '80%' }} />
                     </div>
                 </div>
-        );
+            );
+        } else {
+            return (
+                <div className="panel">
+                    <div className="panel-body">
+                        <h2>{this.props.title}</h2>
+                        <Bar
+                            key={this.props.ukey}
+                            data={this.state.chartData}
+                            options={this.options}
+                        />
+                    </div>
+                </div>
+            );
+        }
     }
 }
-
 export default BarChartCompJS;

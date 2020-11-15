@@ -184,7 +184,7 @@ class ProjectBalanceReport extends Component {
                         this.getGridRows()
                     }}>
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
+                        <Form className='proForm reports__proForm datepickerContainer'onSubmit={handleSubmit}>
                             <div className="linebylineInput valid-input">
                                 <Dropdown
                                     title='statusName' data={StatusDropData}

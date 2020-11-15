@@ -3655,7 +3655,7 @@ h1, h2, h3, h4, h5 {
     margin-left: 8px;
 }
 
-.submittalFilter .filterBTNS .btn:first-child {
+.submittalFilter .filterBTNS .btn {
     margin-right: 6px;
 }
 
@@ -4425,375 +4425,7 @@ h1, h2, h3, h4, h5 {
 
 .ui.modal.stepperModal .actions button {
     margin: 0 2px;
-}
-/*
-.ui.modal.subjectModal {
-    max-width: 800px;
-    width: 100%;
-    min-height: 464px;
-}
-
-.ui.modal.subjectModal .close {
-    top: 16px;
-    right: 16px;
-    height: auto;
-    width: auto;
-    opacity: 1;
-}
-
-.ui.modal.subjectModal > .header {
-    padding-bottom: 17px;
-}
-
-.ui.modal.subjectModal .description .header {
-    font-size: 16px;
-    font-family: font-b;
-    margin-bottom: 30px;
-}
-
-.ui.modal.subjectModal .content {
-    margin-bottom: 27px;
-}
-
-.ui.modal.subjectModal .actions {
-    padding-right: 28px;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 64px;
-    left: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: end;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-    background-color: #E9ECF0;
-}
-
-.ui.modal.subjectModal .actions button {
-    margin: 0 2px;
-}
-
-.ui.modal.xLargeModal {
-    width: 60%;
-    min-width: 600px;
-    min-height: 670px;
-    padding: 48px;
-}
-
-.ui.modal.xLargeModal .header {
-    font-size: 28px;
-    padding-bottom: 40px;
-}
-
-.ui.modal.xLargeModal .header h2 {
-    margin-bottom: 15px;
-}
-
-.ui.modal.xLargeModal .header h3 {
-    font-size: 20px;
-    font-family: font-r;
-    line-height: 1.4;
-    letter-spacing: -0.2px;
-}
-
-.ui.modal.xLargeModal .content p {
-    font-family: font-opens;
-    line-height: 1.5;
-    letter-spacing: -0.2px;
-    font-size: 16px;
-}
-
-.ui.modal.xLargeModal .actions {
-    padding-right: 28px;
-}
-
-.ui.modal.submiModalBig.docApproval {
-    position: relative;
-    max-width: 100%;
-    box-shadow: none;
-    background-color: transparent;
-    padding: 56px;
-    overflow: hidden;
-}
-
-.ui.modal.submiModalBig.docApproval .close {
-    right: 6px;
-    left: inherit;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer {
-    position: inherit;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2 {
-    width: 234px;
-    height: 8px;
-    background-color: #ccd2db;
-    margin: 8px 0;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(3) {
-    width: 162px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(4) {
-    width: 306px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(5) {
-    width: 346px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(6) {
-    width: 346px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(7) {
-    width: 266px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(8) {
-    width: 290px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(9) {
-    width: 322px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(10) {
-    width: 314px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2:nth-child(11) {
-    width: 338px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead {
-    padding-right: 32px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead h3 {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    font-size: 24px;
-    flex: 1;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead h3 span {
-    font-size: 12px;
-    line-height: 1.33;
-    letter-spacing: -0.3px;
-    font-family: font-opensb;
-    margin-left: 24px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead {
-    flex: 1;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-flow: column;
-    flex-flow: column;
-    -webkit-box-align: end;
-    -ms-flex-align: end;
-    align-items: flex-end;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead p {
-    font-family: font-opensb;
-    font-size: 12px;
-    letter-spacing: -0.3px;
-    margin-bottom: 8px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead span {
-    letter-spacing: -0.2px;
-    color: #A8B0BF;
-    font-family: font-opens;
-    font-size: 12px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subitTabs {
-    width: 355px;
-    border-top-left-radius: 5px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-progress {
-    margin: 0 auto;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content {
-    position: relative;
-    width: 100%;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument {
-    height: 70px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    position: relative;
-    width: 100%;
-    z-index: 19;
-    background-color: #ffffff;
-    box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
-    padding: 0 24px 0 32px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument h2 {
-    flex: 0.5;
-    line-height: 1.17;
-    letter-spacing: -0.5px;
-    color: #252833;
-    opacity: 0.3;
-    font-family: font-b;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument .approveDocumentBTNS {
-    flex: 1.5;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument .approveDocumentBTNS .firstBtnApprov {
-    margin-right: 16px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument .approveDocumentBTNS .menu {
-    top: inherit;
-    bottom: 40px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument .border {
-    display: block;
-    width: 1px;
-    height: 40px;
-    background-color: #e9ecf0;
-    margin: 0 24px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .subiTabsContent {
-    background-color: #ffffff;
-    padding-bottom: 0;
-    border-top-right-radius: 5px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-progress .step-slider .step-slider-item {
-    position: relative;
-    margin-right: 3px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-progress .step-slider .step-slider-item div {
-    display: block;
-    width: 7px;
-    background-color: #858D9E;
-    height: 7px;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-progress .step-slider .step-slider-item.active {
-    border: solid 1px #ffffff;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-progress .step-slider .step-slider-item.active div {
-    background-color: #fff;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot {
-    -webkit-touch-callout: none;
-
-
-    -webkit-user-select: none;
-
-    -khtml-user-select: none;
-
-
-    -moz-user-select: none;
-
-
-    -ms-user-select: none;
-
-    user-select: none;
-
-  
-    margin: 0 auto;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot span {
-    cursor: pointer;
-    color: #ffffff;
-    letter-spacing: -0.2px;
-    font-size: 12px;
-    font-family: font-sb;
-    margin: 0 15px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot span i {
-    margin: 0 5px;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-btn.disabled,
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-btn-prev.disabled {
-    pointer-events: none;
-    color: #ccc;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-body {
-    transition: 1.3s all;
-    border-radius: 4px;
-    transform: translateX(0%);
-    position: relative;
-    top: 0;
-    width: 100%;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content .step-content-body.out {
-    position: absolute;
-    top: 0;
-    transform: translateX(300%);
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .workflow-sliderSteps {
-    position: inherit;
-    height: 64px;
-    border-radius: 3px;
-    width: 340px;
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .workflow-sliderSteps .step-slider {
-    display: none;
-}
-
-.ui.modal.submiModalBig.docApproval .docApprovalContainer .workflow-sliderSteps .slider-Btns {
-    flex: .4;
-} */
-
+} 
 .ui.modal > .header:not(.ui) {
     letter-spacing: -0.2px;
     font-size: 24px;
@@ -4929,15 +4561,7 @@ h1, h2, h3, h4, h5 {
     border: 1px solid #E9ECF0;
     max-width: 1200px;
     margin: 0 auto;
-    border-top: 0;
-
-    /*    &:hover {
-        .datagrid-scroll {
-            &::-webkit-scrollbar {
-                height: 7px;
-            }
-        }
-    }*/
+    border-top: 0; 
 }
 
 @media screen and (min-width: 1400px) {
@@ -5271,6 +4895,7 @@ h1, h2, h3, h4, h5 {
     width: 230px;
     padding-right: 10px;
 }
+
 
 @media screen and (min-width: 1440px) {
     .mainGridSystem .gridSystemTables .tableCell-2 {
@@ -16368,6 +15993,7 @@ em {
 .panel {
     margin-bottom: 100px;
     height: 100%;
+    width: 100%
 }
 
 .donut-container {
@@ -19465,8 +19091,13 @@ line.horizontal-grid-line {
 #legenbd__teext {
     overflow: hidden;
     padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 35%;
+    margin-left: -15%;
 }
-
+.canvas-container {width: 75%;}
 #legenbd__teext .chartName {
     font-family: font-b;
     font-size: 16px;
@@ -19478,7 +19109,7 @@ line.horizontal-grid-line {
 
 #legenbd__teext .percentage {
     font-family: font-b;
-    font-size: 56px;
+    font-size: 50px;
     line-height: 1.14;
     letter-spacing: -1.1px;
     color: #252833;
@@ -20655,6 +20286,7 @@ div#markup-panel {
     .filterModal {
         width: 1000px !important;
     }
+    #legenbd__teext .percentage {font-size: 40px}
 }
 
 .linebylineInput .shareLinks .collapseIcon {
@@ -22410,4 +22042,50 @@ tbody.grid-body tr  .text.elipsisPadd {
 }
 /* Added New After devided*/
 
+.chartContainer{
+    height: auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
  
+.panel-body{
+    display: inline-block;
+    width: 100%
+}
+
+.panel-body-loader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+ 
+@media screen and (min-width: 2000px) {
+    #legenbd__teext .percentage {font-size: 70px}
+}
+.over-time-error {
+    position: absolute;
+    bottom: -22px;
+}
+.mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .search-box .inputDev {
+  width: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto;
+}
+
+.mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .search-box .inputDev button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  -webkit-transform: translatey(-50%);
+  transform: translatey(-50%);
+  background-color: transparent;
+  z-index: 4;
+  padding: 0;
+}
+
+

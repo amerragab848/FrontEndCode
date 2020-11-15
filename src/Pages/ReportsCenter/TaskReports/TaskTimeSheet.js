@@ -151,7 +151,7 @@ class TaskTimeSheet extends Component {
                     <h2 className="zero">{Resources.taskTimeSheet[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
 
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="Projects" index="Projects"

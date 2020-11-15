@@ -198,7 +198,7 @@ class TaskWorkLoad extends Component {
                     <h2 className="zero">{Resources.taskWorkLoad[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm'>
+                <div className='proForm reports__proForm datepickerContainer'>
 
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="projects" index="projects"

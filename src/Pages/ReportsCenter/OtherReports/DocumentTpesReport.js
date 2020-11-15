@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-//import Export from "../../../Componants/OptionsPanels/Export";
+import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Dataservice from '../../../Dataservice';
@@ -164,10 +164,10 @@ class DocumentTpesReport extends Component {
             }
         ];
         this.fields = [{
-            title:  Resources["docType"][currentLanguage],
+            title: Resources["docType"][currentLanguage],
             value: "",
             type: "text"
-        },{
+        }, {
             title: Resources["startDate"][currentLanguage],
             value: this.state.startDate,
             type: "D"
@@ -176,7 +176,7 @@ class DocumentTpesReport extends Component {
             value: this.state.finishDate,
             type: "D"
         }];
-     
+
     }
 
     componentDidMount() {
@@ -234,14 +234,14 @@ class DocumentTpesReport extends Component {
                 rowActions={[]}
                 rowClick={() => { }}
                 cells={this.columns} />) : <LoadingSection />
- 
+
         const btnExport = this.state.isLoading === false ?
-           // <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources.WorkFlowWithDocumentTypeDetails[currentLanguage]} />
-           <ExportDetails fieldsItems={this.columns}
-           rows={this.state.rows}
-           fields={this.fields} fileName={'WorkFlowWithDocumentTypeDetails'} />  
-           : null
- 
+           <Export rows={this.state.rows} columns={this.columns} fileName={Resources.WorkFlowWithDocumentTypeDetails[currentLanguage]} />
+            //    <ExportDetails fieldsItems={this.columns}
+            //    rows={this.state.rows}
+            //    fields={this.fields} fileName={Resources.WorkFlowWithDocumentTypeDetails[currentLanguage]} />  
+            : null
+
         return (
             <div className="reports__content">
                 <header>
@@ -263,7 +263,7 @@ class DocumentTpesReport extends Component {
                             <div className="linebylineInput valid-input">
                                 <Dropdown title='docType' data={this.state.ProjectsData} name='docTypeSelect'
                                     selectedValue={this.state.docTypeSelect} onChange={setFieldValue}
-                                    handleChange={e => {this.setState({ docTypeSelect: e }); this.fields[0].value = e.label }}
+                                    handleChange={e => { this.setState({ docTypeSelect: e }); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.docTypeSelect}
                                     touched={touched.docTypeSelect}
@@ -272,12 +272,12 @@ class DocumentTpesReport extends Component {
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title="startDate"
                                     startDate={this.state.startDate}
-                                    handleChange={e => {this.handleChangeDate(e, "startDate"); this.fields[1].value = e }} />
+                                    handleChange={e => { this.handleChangeDate(e, "startDate"); this.fields[1].value = e }} />
                             </div>
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title="finishDate"
                                     startDate={this.state.finishDate}
-                                    handleChange={e => {this.handleChangeDate(e, "finishDate"); this.fields[2].value = e }} />
+                                    handleChange={e => { this.handleChangeDate(e, "finishDate"); this.fields[2].value = e }} />
                             </div>
                             <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                         </Form>

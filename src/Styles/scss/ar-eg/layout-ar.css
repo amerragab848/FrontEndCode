@@ -3652,7 +3652,7 @@ h1, h2, h3, h4, h5 {
     margin-right: 8px;
 }
 
-.submittalFilter .filterBTNS .btn:first-child {
+.submittalFilter .filterBTNS .btn {
     margin-left: 6px;
 }
 
@@ -4838,6 +4838,7 @@ h1, h2, h3, h4, h5 {
     .gridfillter-container .fillter-status-container {
         justify-content: flex-start;
     }
+    #legenbd__teext .percentage {font-size: 40px}
 }
 
 .gridfillter-container .fillter-status-container .fillter-item-c {
@@ -16644,7 +16645,7 @@ table edition
 
 .panel {
     height: 100%;
-    direction: ltr;
+    /* direction: ltr; */
     margin-bottom: 100px
 }
 
@@ -19770,8 +19771,14 @@ line.horizontal-grid-line {
 
 #legenbd__teext {
     overflow: hidden;
-    padding-right: 25px;
+    padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 35%;
+    margin-right: -15%;
 }
+.canvs-container {width: 65%;}
 
 #legenbd__teext .chartName {
     font-family: cairo-b;
@@ -22261,7 +22268,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .subEps__list::after {
     content: "\F0D8";
     position: absolute;
-    font-family: FontAwesome;
+    font-family: 'FontAwesome';
     color: #000;
     right: 15px;
     font-size: 16px;
@@ -22477,7 +22484,7 @@ thead.grid-header tr.action-bar .actions {
 }
 
 input {
-    font-family: cairo-r !important;
+    font-family: 'cairo-r' !important;
 }
 
 .doc-container .step-content .readOnly__disabled .btn.disabled {
@@ -22496,7 +22503,7 @@ input {
     color: #858d9e; 
     background-color: #e9ecf0;
     font-size: 11px;
-    font-family: cairo-b;
+    font-family: 'cairo-b';
 }
 
 tbody.grid-body tr div.text.bold {
@@ -22513,4 +22520,52 @@ tbody.grid-body tr  .text.elipsisPadd {
 
 .gridBtns.UnRead span { 
     background-color: #E74C3C !important; color: #fff !important; 
+}
+
+/*new styles added by moustafa*/
+
+.chartContainer{
+    height: auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+ 
+.panel-body{
+    display: inline-block;
+    width: 100%
+}
+
+.panel-body-loader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+@media screen and (min-width: 2000px) {
+    #legenbd__teext .percentage {font-size: 70px}
+}
+.over-time-error {
+    position: absolute;
+    bottom: -22px;
+} 
+.mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .search-box .inputDev {
+  width: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto;
+}
+
+.mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .search-box .inputDev button {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  -webkit-transform: translatey(-50%);
+  transform: translatey(-50%);
+  background-color: transparent;
+  z-index: 4;
+  padding: 0;
 }

@@ -98,7 +98,7 @@ class CashFlowReport extends Component {
                             this.getGridRows()
                         }}>
                         {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                            <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
+                            <Form className='proForm reports__proForm datepickerContainer'onSubmit={handleSubmit}>
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                         selectedValue={this.state.selectedProject} onChange={setFieldValue}
