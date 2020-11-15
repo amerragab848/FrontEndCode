@@ -208,29 +208,29 @@ class GeneralList extends Component {
         }
     };
 
-    clickHandlerDeleteRowsMain = (selectedRows) => {
-        let id = ''
-        selectedRows.map(i => { id = i })
-        let checkEdit = []
-        checkEdit = this.state.rows.filter(s => s.id === id)
-        let editable = '';
-        checkEdit.map(i => {
-            editable = i.editable
-        })
-        if (editable === true) {
-            this.setState({
-                selectedRows,
-                showDeleteModal: true
-            })
-        }
-        else {
-            this.setState({ isLoading: true })
-            toast.error(Resources["adminItemEditable"][currentLanguage]);
-            setTimeout(() => {
-                this.setState({ isLoading: false })
-            }, 100);
-        }
-    };
+    // clickHandlerDeleteRowsMain = (selectedRows) => {
+    //     let id = ''
+    //     selectedRows.map(i => { id = i })
+    //     let checkEdit = []
+    //     checkEdit = this.state.rows.filter(s => s.id === id)
+    //     let editable = '';
+    //     checkEdit.map(i => {
+    //         editable = i.editable
+    //     })
+    //     if (editable === true) {
+    //         this.setState({
+    //             selectedRows,
+    //             showDeleteModal: true
+    //         })
+    //     }
+    //     else {
+    //         this.setState({ isLoading: true })
+    //         toast.error(Resources["adminItemEditable"][currentLanguage]);
+    //         setTimeout(() => {
+    //             this.setState({ isLoading: false })
+    //         }, 100);
+    //     }
+    // };
 
     ConfirmDelete = () => {
         this.setState({
