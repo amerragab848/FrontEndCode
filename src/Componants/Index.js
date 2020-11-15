@@ -65,6 +65,7 @@ class Index extends Component {
 
 
       widgets = map(groupBy(getAllWidgets, widget => widget.categoryId), (widgets, categoryId) => {
+        
         return {
           typeId: Details.categories[categoryId].type,
           categoryId: categoryId,
