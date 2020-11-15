@@ -83,13 +83,13 @@ export default class IndexedDb {
             addColumn('label', lf.Type.STRING).
             addColumn('projectId', lf.Type.INTEGER).
             addNullable(['projectId']).
-            addPrimaryKey(['value']); 
+            addPrimaryKey(['value']);
 
 
         cachedData.createTable('projects').
             addColumn('value', lf.Type.INTEGER).
             addColumn('label', lf.Type.STRING).
-            addPrimaryKey(['value']); 
+            addPrimaryKey(['value']);
     }
 
     static initializeCounterDB() {
@@ -155,7 +155,7 @@ export default class IndexedDb {
     static async seed() {
         dbDashBoard = await schemaBuilderDashBoardProjects.connect();
         db = await schemaBuilder.connect();
-       // api = await cachedData.connect();
+        api = await cachedData.connect();
 
         tables.widgetType = db.getSchema().table('WidgetType');
         tables.widgetCategory = db.getSchema().table('WidgetCategory');
@@ -164,8 +164,8 @@ export default class IndexedDb {
         tableProjects.widget = dbDashBoard.getSchema().table('Widget');
 
         // tables.defaultLists = api.getSchema().table('defaultLists');
-        // tables.companies = api.getSchema().table('companies');
-        // tables.projects = api.getSchema().table('projects');
+        tables.companies = api.getSchema().table('companies');
+        tables.projects = api.getSchema().table('projects');
 
         let rows = await db.select().from(tables.widgetType).exec();
 
@@ -237,7 +237,7 @@ export default class IndexedDb {
 
     static async setDataIntoDb(mainColumn, value, label, tableName, data, params) {
 
-        if (data.length > 0) { 
+        if (data.length > 0) {
             for (const item of data) {
                 // data.forEach(async item => { 
                 let tbName = tables[tableName];
@@ -254,7 +254,7 @@ export default class IndexedDb {
                     }
                 });
                 // });
-            } 
+            }
         }
 
     }

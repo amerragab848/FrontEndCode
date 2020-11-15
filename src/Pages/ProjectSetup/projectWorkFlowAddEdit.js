@@ -22,6 +22,7 @@ import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
+// import ReactTable from "react-table";
 
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
@@ -43,6 +44,7 @@ let arrange = 0;
 
 var steps_defination = [];
 
+let selectedRows = [];
 steps_defination = [
     { name: "workFlow", callBackFn: null },
     { name: "contacts", callBackFn: null },
@@ -169,7 +171,7 @@ class projectWorkFlowAddEdit extends Component {
                 "sortable": true
             }
         ];
-
+       
         this.state = {
             DistributionList: [],
             IsAddModel: false,
@@ -1006,7 +1008,7 @@ class projectWorkFlowAddEdit extends Component {
     };
 
     render() {
-
+    
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -1015,10 +1017,13 @@ class projectWorkFlowAddEdit extends Component {
         ]
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom cells={this.state.columns} data={this.state.rows}
-                groups={[]} pageSize={this.state.rows.length}
+            <GridCustom 
+            cells={this.state.columns} 
+            data={this.state.rows}
+                groups={[]}
+                pageSize={this.state.rows.length}
                 actions={[{
-                    title: 'Delete',
+                   title: 'Delete',
                     handleClick: (values) => {
                         this.clickHandlerDeleteRowsMain(values);
                     },
@@ -1029,7 +1034,7 @@ class projectWorkFlowAddEdit extends Component {
                     this.ShowPopUpForEdit(values);
                 }}
             />
-        ) : <LoadingSection />
+            ) : <LoadingSection />
 
         let FollowUpsData = this.state.FollowUpsData;
 

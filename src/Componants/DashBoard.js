@@ -307,7 +307,7 @@ class DashBoard extends Component {
 
     render() {
 
-        //let widgetCurrentOrder = this.state.showWidgets && this.state.widgetOrders[1] ? this.state.widgetOrders[this.state.type][this.state.category].order : null;
+      let widgetCurrentOrder = this.state.showWidgets && this.state.widgetOrders[1] ? this.state.widgetOrders[this.state.type][this.state.category].order : null;
 
         let orderhavePermission = [];
 
