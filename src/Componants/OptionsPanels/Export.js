@@ -54,7 +54,7 @@ class Export extends Component {
                 }); 
             }
             a.href = URL.createObjectURL(blob);
-            a.download = 'procoor-' + title + ".xls";
+           a.download = 'procoor-' + title + ".xls";
             a.click();
             // lazy cleanup, note that this renders the link invalid
             setTimeout(() => { URL.revokeObjectURL(a.href); }, 500); 
