@@ -363,7 +363,7 @@ class bogAddEdit extends Component {
             selectedFromCompany: {
                 label: Resources.fromCompanyRequired[currentLanguage],
                 value: "0"
-            }, 
+            },
             selectedDiscipline: [],
             rows: [],
             items: {
@@ -762,7 +762,7 @@ class bogAddEdit extends Component {
         let documentObj = {
             project: this.state.projectId,
             documentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-            company: this.state.selectedFromCompany.value, 
+            company: this.state.selectedFromCompany.value,
             discplineIds: this.state.selectedDiscipline.map(x => x.value),
             status: values.status,
             arrange: this.state.document.arrange,
@@ -800,7 +800,7 @@ class bogAddEdit extends Component {
                 id: this.state.docId,
                 arrange: this.state.document.arrange,
                 DocumentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-                Company: this.state.selectedFromCompany.value == "0" ? Config.getPayload().cmi : this.state.selectedFromCompany.value, 
+                Company: this.state.selectedFromCompany.value == "0" ? Config.getPayload().cmi : this.state.selectedFromCompany.value,
                 discplineIds: this.state.selectedDiscipline.map(x => x.value),
                 Status: values.status,
                 Subject: values.subject,
@@ -1178,6 +1178,7 @@ class bogAddEdit extends Component {
 
         let ItemsGrid = this.state.isLoading === false ? (
             <GridCustom
+                gridKey={'KO_boqIems'}
                 cells={this.boqItems}
                 data={this.state._items}
                 groups={this.groups}
@@ -1186,7 +1187,6 @@ class bogAddEdit extends Component {
                 rowActions={this.rowActions}
                 rowClick={cell => {
                     if (cell.field != "select-row" && cell.field != "unitPrice") {
-
                         this.setState({
                             showPopUp: true,
                             btnText: "save",
@@ -1194,7 +1194,6 @@ class bogAddEdit extends Component {
                             isLoadingEdit: true
                         });
                         this.simpleDialog1.show();
-
                     }
                 }}
             />

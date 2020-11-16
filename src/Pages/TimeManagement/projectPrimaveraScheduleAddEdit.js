@@ -80,7 +80,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -383,12 +383,12 @@ class projectPrimaveraScheduleAddEdit extends Component {
     HandlerChangeTableDrop = (key, e, Name) => {
         if (Name === 'Status') {
             let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
-            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=true&status=' + e.value + '').then(
-                res => {
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                })
+            //int id, int action_by_company, bool? isStatus, bool? status, int action_by_contact = 0
+            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=true&status=' + e.value).then(res => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(ex => {
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            })
         }
         // else {
         //     Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=false&status=false+&action_by_contact=' + e.value).then(
@@ -953,7 +953,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             </SkyLight>
                         </div>
 
-                        <div  className="skyLight__form" style={{ display: this.state.showItemEditPopup == true ? 'block' : 'none' }}>
+                        <div className="skyLight__form" style={{ display: this.state.showItemEditPopup == true ? 'block' : 'none' }}>
                             <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogItem = ref} title={Resources["editTitle"][currentLanguage]}>
                                 {EditItemPopup}
                             </SkyLight>

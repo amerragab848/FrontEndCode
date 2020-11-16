@@ -28,7 +28,8 @@ import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-import GridCustom from 'react-customized-grid'; 
+// import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
@@ -124,7 +125,7 @@ class projectWorkFlowAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -171,7 +172,7 @@ class projectWorkFlowAddEdit extends Component {
                 "sortable": true
             }
         ];
-       
+
         this.state = {
             DistributionList: [],
             IsAddModel: false,
@@ -1008,7 +1009,7 @@ class projectWorkFlowAddEdit extends Component {
     };
 
     render() {
-    
+
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -1017,13 +1018,14 @@ class projectWorkFlowAddEdit extends Component {
         ]
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom 
-            cells={this.state.columns} 
-            data={this.state.rows}
+            <GridCustom
+                gridKey={'workFlowItem'}
+                cells={this.state.columns}
+                data={this.state.rows}
                 groups={[]}
                 pageSize={this.state.rows.length}
                 actions={[{
-                   title: 'Delete',
+                    title: 'Delete',
                     handleClick: (values) => {
                         this.clickHandlerDeleteRowsMain(values);
                     },
@@ -1034,7 +1036,7 @@ class projectWorkFlowAddEdit extends Component {
                     this.ShowPopUpForEdit(values);
                 }}
             />
-            ) : <LoadingSection />
+        ) : <LoadingSection />
 
         let FollowUpsData = this.state.FollowUpsData;
 
@@ -1119,7 +1121,7 @@ class projectWorkFlowAddEdit extends Component {
                 </tr>
             )
         });
-    
+
         const renderLevelDurationTable = this.state.LevelDurationData.map((item) => {
             return (
                 <tr key={item.workFlowItemId}>
@@ -1132,7 +1134,7 @@ class projectWorkFlowAddEdit extends Component {
                     </td>
 
                     <td>
-                        <div className="linebylineInput valid-input fullInputWidth"> 
+                        <div className="linebylineInput valid-input fullInputWidth">
                             <div className="inputDev ui input">
                                 <input autoComplete="off" className="form-control"
                                     value={this.state.multipleDuration}
@@ -1822,31 +1824,7 @@ class projectWorkFlowAddEdit extends Component {
                     ) : null}
 
 
-                    <div className="doc-pre-cycle letterFullWidth">
-                        {/* {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
-                                            </div>
-                                            : null
-                                        }
-                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
-                                    </div>
-
-                                </div>
-                                : null
-                        } */}
+                    <div className="doc-pre-cycle letterFullWidth"> 
 
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
@@ -1877,8 +1855,7 @@ class projectWorkFlowAddEdit extends Component {
                                         projectId={this.state.projectId}
                                         previousRoute={this.state.previousRoute}
                                         docApprovalId={this.state.docApprovalId}
-                                        currentArrange={this.state.arrange}
-                                        //showModal={this.props.showModal}
+                                        currentArrange={this.state.arrange} 
                                         showModal={true}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
