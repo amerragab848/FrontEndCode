@@ -4,21 +4,14 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-
-const ValidtionSchema = Yup.object().shape({
-    docTypeSelect: Yup.string().required(Resources['docTypeSelect'][currentLanguage]).nullable(true)
-});
 
 class DocumentTpesReport extends Component {
 
@@ -69,6 +62,15 @@ class DocumentTpesReport extends Component {
                 field: "subject",
                 title: Resources["subject"][currentLanguage],
                 width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true
+            },
+            {
+                field: "docTypeName",
+                title: Resources["docType"][currentLanguage],
+                width: 15,
                 groupable: true,
                 fixed: false,
                 type: "text",
@@ -163,11 +165,8 @@ class DocumentTpesReport extends Component {
                 sortable: true
             }
         ];
-        this.fields = [{
-            title: Resources["docType"][currentLanguage],
-            value: "",
-            type: "text"
-        }, {
+         this.fields = [
+         {
             title: Resources["startDate"][currentLanguage],
             value: this.state.startDate,
             type: "D"
@@ -179,17 +178,6 @@ class DocumentTpesReport extends Component {
 
     }
 
-    componentDidMount() {
-        Dataservice.GetDataList('GetAccountsDocTypeForDrop', 'docType', 'refCode').then(
-            result => {
-                this.setState({
-                    ProjectsData: result
-                })
-            }).catch(() => {
-                toast.error('somthing wrong')
-            })
-    }
-
     getGridRows = () => {
 
         this.setState({ isLoading: true })
@@ -198,13 +186,12 @@ class DocumentTpesReport extends Component {
             docType: this.state.docTypeSelect.value,
             startDate: moment(this.state.startDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             finishDate: moment(this.state.finishDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-            pageNumber: 1,
+            pageNumber: 0,
             pageSize: 20000
         }
 
-        Dataservice.addObject('GetWfForDocTypeReport', obj).then(
+        Dataservice.addObject('GetWfForDocTypeReportV5', obj).then(
             res => {
-
                 this.setState({
                     rows: res,
                     isLoading: false
@@ -236,10 +223,9 @@ class DocumentTpesReport extends Component {
                 cells={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-           <Export rows={this.state.rows} columns={this.columns} fileName={Resources.WorkFlowWithDocumentTypeDetails[currentLanguage]} />
-            //    <ExportDetails fieldsItems={this.columns}
-            //    rows={this.state.rows}
-            //    fields={this.fields} fileName={Resources.WorkFlowWithDocumentTypeDetails[currentLanguage]} />  
+               <ExportDetails fieldsItems={this.columns}
+               rows={this.state.rows}
+               fields={this.fields} fileName={Resources.WorkFlowWithDocumentTypeDetails[currentLanguage]} />  
             : null
 
         return (
@@ -253,31 +239,21 @@ class DocumentTpesReport extends Component {
                         docTypeSelect: '',
                     }}
                     enableReinitialize={true}
-                    validationSchema={ValidtionSchema}
-                    onSubmit={(values, actions) => {
+                    onSubmit={() => {
                         this.getGridRows()
                     }}>
 
-                    {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                    {({ handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className="proForm reports__proForm">
-                            <div className="linebylineInput valid-input">
-                                <Dropdown title='docType' data={this.state.ProjectsData} name='docTypeSelect'
-                                    selectedValue={this.state.docTypeSelect} onChange={setFieldValue}
-                                    handleChange={e => { this.setState({ docTypeSelect: e }); this.fields[0].value = e.label }}
-                                    onBlur={setFieldTouched}
-                                    error={errors.docTypeSelect}
-                                    touched={touched.docTypeSelect}
-                                    value={values.docTypeSelect} />
-                            </div>
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title="startDate"
                                     startDate={this.state.startDate}
-                                    handleChange={e => { this.handleChangeDate(e, "startDate"); this.fields[1].value = e }} />
+                                    handleChange={e => { this.handleChangeDate(e, "startDate"); this.fields[0].value = e }} />
                             </div>
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title="finishDate"
                                     startDate={this.state.finishDate}
-                                    handleChange={e => { this.handleChangeDate(e, "finishDate"); this.fields[2].value = e }} />
+                                    handleChange={e => { this.handleChangeDate(e, "finishDate"); this.fields[1].value = e }} />
                             </div>
                             <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                         </Form>

@@ -294,7 +294,7 @@ class GeneralList extends Component {
 
     onRowClick = (obj) => {
         if (config.IsAllow(1180)) {
-            if (obj.editable) {
+            // if (obj.editable) {
                 Api.get('GetAccountsDefaultListForEdit?id=' + obj.id + '').then(
                     res => {
                         this.setState({
@@ -305,10 +305,10 @@ class GeneralList extends Component {
                         })
                     }
                 )
-            }
-            else {
-                toast.error(Resources["adminItemEditable"][currentLanguage]);
-            }
+            // }
+            // else {
+            //     toast.error(Resources["adminItemEditable"][currentLanguage]);
+            // }
         }
         else {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -361,7 +361,7 @@ class GeneralList extends Component {
                     rowClick={(row, cell) => {
                         let id = row.id;
                         if (config.IsAllow(1180)) {
-                            if (row.editable) {
+                            // if (row.editable) {
                                 Api.get('GetAccountsDefaultListForEdit?id=' + id + '').then(
                                     res => {
                                         this.setState({
@@ -372,10 +372,10 @@ class GeneralList extends Component {
                                         })
                                     }
                                 )
-                            }
-                            else {
-                                toast.error(Resources["adminItemEditable"][currentLanguage]);
-                            }
+                            // }
+                            // else {
+                            //     toast.error(Resources["adminItemEditable"][currentLanguage]);
+                            // }
                         }
                         else {
                             toast.warn(Resources["missingPermissions"][currentLanguage]);
