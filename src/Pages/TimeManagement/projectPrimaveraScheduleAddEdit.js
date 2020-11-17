@@ -18,8 +18,7 @@ import SkyLight from 'react-skylight';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import ReactTable from "react-table"; 
 import Select from 'react-select';
 import Api from "../../api";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
@@ -80,7 +79,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch {
+                catch{
                     this.props.history.goBack();
                 }
             }
@@ -383,21 +382,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
     HandlerChangeTableDrop = (key, e, Name) => {
         if (Name === 'Status') {
             let companyId = key.bic_company_id === null ? 0 : key.bic_company_id
-            //int id, int action_by_company, bool? isStatus, bool? status, int action_by_contact = 0
-            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=true&status=' + e.value).then(res => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            }).catch(ex => {
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-            })
-        }
-        // else {
-        //     Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=false&status=false+&action_by_contact=' + e.value).then(
-        //         res => {
-        //             toast.success(Resources["operationSuccess"][currentLanguage]);
-        //         }).catch(ex => {
-        //             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-        //         })
-        // }
+            Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=true&status=' + e.value + '').then(
+                res => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                })
+        } 
     }
 
     HandlerChangeParentDrop = (e, subDropList) => {
@@ -412,8 +403,13 @@ class projectPrimaveraScheduleAddEdit extends Component {
     assignContact = () => {
         let ids = this.state.selectedRows.map(x => x.id);
         this.setState({ isLoading: true })
-        Api.post('UpdatePrimaveraScheduleItem?ids=' + ids + '&action_by_company=' + this.state.selectedCompany.value + '&action_by_contact=' + this.state.selectedContact.value).then(
-            res => {
+        let serverObj={
+            ids:ids,
+            action_by_company:this.state.selectedCompany.value,
+            action_by_contact:this.state.selectedContact.value
+        }
+         Api.post('UpdatePrimaveraScheduleItem',serverObj).then(
+        res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let rows = this.state.rows;
                 this.state.selectedRows.forEach(i => {
@@ -447,9 +443,11 @@ class projectPrimaveraScheduleAddEdit extends Component {
         });
     }
 
-    onItemRowClick = (obj) => {
+    onItemRowClick = (obj,className) => {
+        if(className != "checkbox"){
         this.simpleDialogItem.show();
         this.setState({ showItemEditPopup: true, itemObj: obj })
+        }
     }
 
     EditItem = () => {
@@ -931,7 +929,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                         noDataText={Resources["noData"][currentLanguage]}
                                         className="-striped -highlight"
                                         getTrProps={(state, rowInfo, column, instance) => {
-                                            return { onClick: e => { this.onItemRowClick(rowInfo.original) } };
+                                            return { onClick: e => { this.onItemRowClick(rowInfo.original,e.target.className) } };
                                         }} />
 
                                 </Fragment>
@@ -953,7 +951,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                             </SkyLight>
                         </div>
 
-                        <div className="skyLight__form" style={{ display: this.state.showItemEditPopup == true ? 'block' : 'none' }}>
+                        <div  className="skyLight__form" style={{ display: this.state.showItemEditPopup == true ? 'block' : 'none' }}>
                             <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogItem = ref} title={Resources["editTitle"][currentLanguage]}>
                                 {EditItemPopup}
                             </SkyLight>

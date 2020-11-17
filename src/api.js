@@ -246,7 +246,7 @@ export default class Api {
         if (moduleId < 1) moduleId = 1;
         let apiPrefix = modules.find(x => x.key == moduleId);
         const host = Config.getPublicConfiguartion().static + apiPrefix.api;
-       //const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
+       // const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
 
@@ -262,7 +262,14 @@ export default class Api {
         );
 
         options.headers = Api.headers();
-
+        options = Object.assign(
+            options
+            ,
+            {
+                responseType: 'blob'
+            }
+        );
+        console.log("options...", options);
         return fetch(url, options)
             .then(resp => {
                 if (resp.status === 200) {
@@ -516,8 +523,8 @@ export default class Api {
             {
                 method: "POST"
             }, {
-            body: JSON.stringify(req)
-        }
+                body: JSON.stringify(req)
+            }
         );
 
         options.headers = {

@@ -13,6 +13,7 @@ import * as dashboardComponantActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let currentProjectId = localStorage.getItem('lastSelectedProject') == null ? 0 : localStorage.getItem('lastSelectedProject');
+let appComponants = localStorage.getItem('appComponants') == null ? [] : localStorage.getItem('appComponants') || [];
 
 var viewModules = true;
 var viewEps = false;
@@ -433,69 +434,6 @@ class LeftMenu extends Component {
             </ul>
         );
     }
-
-    // ComponentName() {
-    //     let ComponentModule = this.props.appComponants.map((app, index) => {
-    //         if (app.compaonantName === 'PM' && app.canView) {
-    //             return (
-    //                 <li className="projectMange-li activeMainPlist" key={index}>
-    //                     <a href="/PM">
-    //                         <span className="mainProjectblock">PM</span>
-    //                         <p className="zero">
-    //                             {Resources['pm'][currentLanguage]}
-    //                         </p>
-    //                     </a>
-    //                 </li>
-    //             );
-    //         } else if (app.compaonantName === 'FM' && app.canView) {
-    //             return (
-    //                 <li className="facilityMange-li" key={index}>
-    //                     <a href="/FM">
-    //                         <span className="mainProjectblock">FM</span>
-    //                         <p className="zero">
-    //                             {Resources['fm'][currentLanguage]}
-    //                         </p>
-    //                     </a>
-    //                 </li>
-    //             );
-    //         } else if (app.compaonantName === 'HR' && app.canView) {
-    //             return (
-    //                 <li className="humanResources-li" key={index}>
-    //                     <a href="">
-    //                         <span className="mainProjectblock">HR</span>
-    //                         <p className="zero">
-    //                             {Resources['humanResource'][currentLanguage]}
-    //                         </p>
-    //                     </a>
-    //                 </li>
-    //             );
-    //         } else if (app.compaonantName === 'AC' && app.canView) {
-    //             return (
-    //                 <li className="accounting-li" key={index}>
-    //                     <a href="">
-    //                         <span className="mainProjectblock">AC</span>
-    //                         <p className="zero">
-    //                             {Resources['accounting'][currentLanguage]}
-    //                         </p>
-    //                     </a>
-    //                 </li>
-    //             );
-    //         } else {
-    //             return (
-    //                 <li className="realEstate-li" key={index}>
-    //                     <a href="">
-    //                         <span className="mainProjectblock">RE</span>
-    //                         <p className="zero">
-    //                             {Resources['realState'][currentLanguage]}
-    //                         </p>
-    //                     </a>
-    //                 </li>
-    //             );
-    //         }
-    //     });
-
-    //     return ComponentModule;
-    // }
 
     activeLi = (index, length, moduleIndex) => {
         let prevStateLi = this.state.li;

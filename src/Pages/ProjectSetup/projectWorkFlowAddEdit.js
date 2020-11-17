@@ -21,14 +21,11 @@ import moment from 'moment';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-// import ReactTable from "react-table";
-
+import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow"; 
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-// import GridCustom from 'react-customized-grid';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'; 
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import find from 'lodash/find';
 import filter from 'lodash/filter';

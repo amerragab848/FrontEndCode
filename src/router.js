@@ -87,6 +87,9 @@ const PaymentReqStatusReport = AsyncComponent(() =>
 const DocumentTpesReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/DocumentTpesReport'),
 );
+const DocumentAllTypesReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/DocumentAllTypesReport'),
+);
 const TechnicalOfficeReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport'),
 );
@@ -1313,6 +1316,12 @@ let originalRoutes = [
         component={RequestPaymentDeductionTypeReport} />,
     <Route key="r-193" path="/levelDurationAlertDetails"
         component={levelDurationAlertDetails} />,
+
+    <Route
+        key="r-194"
+        path="/DocumentAllTypesReport"
+        component={DocumentAllTypesReport}
+    />,
 
 ];
 

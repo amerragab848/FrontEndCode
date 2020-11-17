@@ -2729,11 +2729,18 @@ var routes = [
         settings: { OtherReports: true, permission: 3743, order: 6 }
     },
     {
+        route: "documentAllTypesReport",
+        moduleId: "OtherReports/DocumentAllTypesReport",
+        title: "WorkFlowWithDocumentAllTypesDetails",
+        nav: true,
+        settings: { OtherReports: true, permission: 3743, order: 7 }
+    },
+    {
         route: "TransmittalReport",
         moduleId: "OtherReports/TransmittalReport",
         title: "transmittalReport",
         nav: true,
-        settings: { OtherReports: true, permission: 4018, order: 7 }
+        settings: { OtherReports: true, permission: 4018, order: 8 }
     },
     {
         route: "TechnicalOfficeReport",

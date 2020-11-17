@@ -24,5 +24,7 @@
   "exportCore" : "https://newgizaServices.procoor.com/ExportAPI/api/ExportController/",
  
   "client_id": "elXUJfeXNiv0ZDxlOB5JrJWn9GksYQq3",
-  "client_secret": "RiaukssWQvBiD32T"
+  "client_secret": "RiaukssWQvBiD32T",
+
+  "commonLogApi": 2
 }
