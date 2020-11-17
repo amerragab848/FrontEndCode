@@ -36,6 +36,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import Dataservice from "../../Dataservice";
 
 var steps_defination = [];
 
@@ -67,6 +68,10 @@ const itemSchema = Yup.object().shape({
   arrange: Yup.string().required(Resources["arrange"][currentLanguage]),
   unit: Yup.string().required(Resources["unit"][currentLanguage]),
   unitPrice: Yup.string().required(Resources["unitPrice"][currentLanguage])
+});
+
+const variationLinkSchema = Yup.object().shape({
+  boqId: Yup.string().required(Resources.selectBoq[currentLanguage])
 });
 
 let docId = 0;
@@ -141,12 +146,12 @@ class ContractInfoAddEdit extends Component {
       Contracts: [],
       contacts: [],
       voItems: [],
-      materialItems:[],
-      totalVal:0,
-      totalRturnedVal:0,
-      marPageNumber:0,
+      materialItems: [],
+      totalVal: 0,
+      totalRturnedVal: 0,
+      marPageNumber: 0,
       materialReleaseItems: [],
-      materialReleaseItemsLength:0,
+      materialReleaseItemsLength: 0,
       voItemsLength: 0,
       selectedVO: {},
       variationOrders: [],
@@ -175,7 +180,10 @@ class ContractInfoAddEdit extends Component {
       document: {},
       viewItemPopUp: false,
       objItems: {},
-      showSubPurchaseOrders: false
+      showSubPurchaseOrders: false,
+      showBoqLinkBtn: false,
+      selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "0" },
+      notContractedBoqList: []
     };
 
     this.groups = [];
@@ -529,6 +537,14 @@ class ContractInfoAddEdit extends Component {
       });
 
       DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+        if (result.length == 0) {
+          Dataservice.GetDataList(`getBoqNotContractedForDrop?projectId=${localStorage.getItem("lastSelectedProject")}`, "subject", "id").then(res => {
+            this.setState({
+              notContractedBoqList: res || [],
+              showBoqLinkBtn: true
+            })
+          })
+        }
         this.setState({
           rows: [...result]
         });
@@ -699,6 +715,7 @@ class ContractInfoAddEdit extends Component {
   };
 
   onCloseModal() {
+    this.simpleDialogForLink.hide();
     this.setState({
       showDeleteModal: false,
       viewItemPopUp: false
@@ -741,61 +758,61 @@ class ContractInfoAddEdit extends Component {
 
   changeTab = tabName => {
     this.setState({ activeTab: tabName });
-    if (tabName == 'voi'){
+    if (tabName == 'voi') {
       this.getVoItems()
 
     }
-    
-    if(tabName =='matReleased'){
-          this.getMaterialRelease();
+
+    if (tabName == 'matReleased') {
+      this.getMaterialRelease();
     }
-   
+
   };
-getMaterialRelease(){
-  if (this.state.materialReleaseItems.length == 0) {
-    this.setState({ isLoading: true })
-    Api.get('GetMaterialReleaseTicketsByContractId?contractId=' + this.state.docId + '&pageNumber=' + this.state.maPageNumber + '&pageSize=' + this.state.maPageSize).then(result => {
-      let maItems = [];
-      if (result.length > 0){
-        maItems = result;
-       this.state.marPageNumber= this.state.marPageNumber+1;
-      }
-      const totalList = result.map(item=>{
-        if(item.materialType=="Released")
-        return item.total;
-        else{
-          return 0;
+  getMaterialRelease() {
+    if (this.state.materialReleaseItems.length == 0) {
+      this.setState({ isLoading: true })
+      Api.get('GetMaterialReleaseTicketsByContractId?contractId=' + this.state.docId + '&pageNumber=' + this.state.maPageNumber + '&pageSize=' + this.state.maPageSize).then(result => {
+        let maItems = [];
+        if (result.length > 0) {
+          maItems = result;
+          this.state.marPageNumber = this.state.marPageNumber + 1;
         }
-      });
-
-      const totalRteurnedList = result.map(item=>{
-        if(item.materialType=="Returned")
-        return item.total;
-        else{
-          return 0;
-        }
-      });
-
-      const totalvalues = totalList.reduce(
-      (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
-      0);
-
-      const totalRturnedvalues = totalRteurnedList.reduce(
-        (previousTotal, currentTotal, index)=>previousTotal+currentTotal, 
-        0);
-
-      this.setState({ 
-        materialItems: maItems,
-         materialReleaseItemsLength: result.length, 
-         totalVal:totalvalues,
-         totalRturnedVal:totalRturnedvalues,
-         isLoading: false ,
-       
+        const totalList = result.map(item => {
+          if (item.materialType == "Released")
+            return item.total;
+          else {
+            return 0;
+          }
         });
 
-    }).catch(() => { this.setState({ isLoading: false }) })
+        const totalRteurnedList = result.map(item => {
+          if (item.materialType == "Returned")
+            return item.total;
+          else {
+            return 0;
+          }
+        });
+
+        const totalvalues = totalList.reduce(
+          (previousTotal, currentTotal, index) => previousTotal + currentTotal,
+          0);
+
+        const totalRturnedvalues = totalRteurnedList.reduce(
+          (previousTotal, currentTotal, index) => previousTotal + currentTotal,
+          0);
+
+        this.setState({
+          materialItems: maItems,
+          materialReleaseItemsLength: result.length,
+          totalVal: totalvalues,
+          totalRturnedVal: totalRturnedvalues,
+          isLoading: false,
+
+        });
+
+      }).catch(() => { this.setState({ isLoading: false }) })
+    }
   }
-}
   getVoItems = () => {
     if (this.state.voItems.length == 0) {
       this.setState({ isLoading: true })
@@ -835,6 +852,18 @@ getMaterialRelease(){
   viewModelToEdit = (row, e) => {
     this.setState({ selectedVO: row, showItemEdit: true });
     this.itemDialog.show();
+  }
+
+  LinkBoqWithContract = () => {
+    this.setState({ isLoading: true });
+    Dataservice.addObject(`LinkBoqWithContract?contractId=${docId}&boqId=${this.state.selectedBoq.value}&projectId=${localStorage.getItem("lastSelectedProject")}`).then(res => {
+      this.simpleDialogForLink.hide();
+      this.setState({
+        isLoading: false,
+        selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "0" },
+        showBoqLinkBtn: false
+      })
+    })
   }
 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -1365,6 +1394,7 @@ getMaterialRelease(){
               </button>
             </div>
           </div>
+          <button className={this.state.showBoqLinkBtn == true ? "btn btn-default" : "disNone"} onClick={() => { this.simpleDialogForLink.show(); }}>AddToboq</button>
           {ItemsGrid}
         </div>
       </Fragment>
@@ -1809,7 +1839,7 @@ getMaterialRelease(){
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId=' + this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId=" + docId} type="Contract" docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
-          {this.state.activeTab == "matReleased" ? (<MaterialReleased contractId={this.state.docId} items={this.state.materialItems} totalVals={this.state.totalVal} totalRturnedvals={this.state.totalRturnedVal}  pageNumberinit={this.state.marPageNumber} totalRows={this.state.materialReleaseItemsLength} />) : null}
+          {this.state.activeTab == "matReleased" ? (<MaterialReleased contractId={this.state.docId} items={this.state.materialItems} totalVals={this.state.totalVal} totalRturnedvals={this.state.totalRturnedVal} pageNumberinit={this.state.marPageNumber} totalRows={this.state.materialReleaseItemsLength} />) : null}
           {this.state.activeTab == "voi" ? (<Fragment>{voiContent}</Fragment>) : null}
 
         </Fragment>
@@ -2007,6 +2037,54 @@ getMaterialRelease(){
             </Formik>
           </div>
         </SkyLight>
+
+        {/* link contract With BOQ */}
+        <div className="skyLight__form" >
+          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogForLink = ref} beforeClose={this.onCloseModal.bind(this)}>
+            <div>
+              <Formik initialValues={{ boqId: this.state.selectedBoq.value }}
+                validationSchema={variationLinkSchema} enableReinitialize={true}
+                onSubmit={values => { this.LinkBoqWithContract(); }}>
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                  <Form noValidate="novalidate" onSubmit={handleSubmit}>
+                    <div className='document-fields'>
+                      <div className="proForm datepickerContainer">
+                        <div className="linebylineInput">
+                          <Dropdown title="boq"
+                            data={this.state.notContractedBoqList}
+                            selectedValue={this.state.selectedBoq}
+                            handleChange={event => { this.setState({ selectedBoq: event }); }}
+                            onChange={setFieldValue}
+                            onBlur={setFieldTouched}
+                            error={errors.boqId}
+                            touched={touched.boqId}
+                            name="boqId" index="boqId" />
+                        </div>
+
+
+                        <div className="slider-Btns fullWidthWrapper">
+                          {this.state.isLoading === false ? (
+                            <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                              {Resources["goEdit"][currentLanguage]}
+                            </button>
+                          ) :
+                            (<button className="primaryBtn-1 btn disabled">
+                              <div className="spinner">
+                                <div className="bounce1" />
+                                <div className="bounce2" />
+                                <div className="bounce3" />
+                              </div>
+                            </button>
+                            )}
+                        </div>
+                      </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </SkyLight>
+        </div>
       </Fragment>
     );
   }
