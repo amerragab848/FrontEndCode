@@ -8009,6 +8009,10 @@
         "en": "Link With General List",
         "ar": "الربط من البيانات الاساسيه"
     },
+    "linkwithBoq": {
+        "en": "Link With BOQ",
+        "ar": "الربط مع الكميات"
+    },
     "createVO": {
         "en": "Create VO",
         "ar": "إنشاء تغيير عقد المقترحة"

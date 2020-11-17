@@ -70,8 +70,8 @@ const itemSchema = Yup.object().shape({
   unitPrice: Yup.string().required(Resources["unitPrice"][currentLanguage])
 });
 
-const variationLinkSchema = Yup.object().shape({
-  boqId: Yup.string().required(Resources.selectBoq[currentLanguage])
+const LinkSchema = Yup.object().shape({
+  boqId: Yup.string().required(Resources.selectBoq[currentLanguage]).nullable()
 });
 
 let docId = 0;
@@ -182,7 +182,7 @@ class ContractInfoAddEdit extends Component {
       objItems: {},
       showSubPurchaseOrders: false,
       showBoqLinkBtn: false,
-      selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "0" },
+      selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "" },
       notContractedBoqList: []
     };
 
@@ -855,15 +855,17 @@ class ContractInfoAddEdit extends Component {
   }
 
   LinkBoqWithContract = () => {
-    this.setState({ isLoading: true });
-    Dataservice.addObject(`LinkBoqWithContract?contractId=${docId}&boqId=${this.state.selectedBoq.value}&projectId=${localStorage.getItem("lastSelectedProject")}`).then(res => {
-      this.simpleDialogForLink.hide();
-      this.setState({
-        isLoading: false,
-        selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "0" },
-        showBoqLinkBtn: false
+    if (this.state.selectedBoq.value > 0) {
+      this.setState({ isLoading: true });
+      Dataservice.addObject(`LinkBoqWithContract?contractId=${docId}&boqId=${this.state.selectedBoq.value}&projectId=${localStorage.getItem("lastSelectedProject")}`).then(res => {
+        this.simpleDialogForLink.hide();
+        this.setState({
+          isLoading: false,
+          selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "0" },
+          showBoqLinkBtn: false
+        })
       })
-    })
+    }
   }
 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -1394,7 +1396,6 @@ class ContractInfoAddEdit extends Component {
               </button>
             </div>
           </div>
-          <button className={this.state.showBoqLinkBtn == true ? "btn btn-default" : "disNone"} onClick={() => { this.simpleDialogForLink.show(); }}>AddToboq</button>
           {ItemsGrid}
         </div>
       </Fragment>
@@ -1870,6 +1871,17 @@ class ContractInfoAddEdit extends Component {
                       {this.props.changeStatus === true ? (
                         <div className="approveDocument">
                           <div className="approveDocumentBTNS">
+                            {this.state.isLoading ? (
+                              <button className="primaryBtn-1 btn disabled">
+                                <div className="spinner">
+                                  <div className="bounce1" />
+                                  <div className="bounce2" />
+                                  <div className="bounce3" />
+                                </div>
+                              </button>
+                            ) : (
+                                <button className={this.state.showBoqLinkBtn == true ? "defaultBtn btn" : "disNone"} onClick={() => { this.simpleDialogForLink.show(); }}  >{Resources.linkwithBoq[currentLanguage]}</button>
+                              )}
                             <DocumentActions
                               isApproveMode={this.state.isApproveMode}
                               docTypeId={this.state.docTypeId}
@@ -1886,6 +1898,7 @@ class ContractInfoAddEdit extends Component {
                           </div>
                         </div>
                       ) : null}
+
                     </Fragment>
                   )}
               </div>
@@ -2040,19 +2053,25 @@ class ContractInfoAddEdit extends Component {
 
         {/* link contract With BOQ */}
         <div className="skyLight__form" >
-          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogForLink = ref} beforeClose={this.onCloseModal.bind(this)}>
-            <div>
-              <Formik initialValues={{ boqId: this.state.selectedBoq.value }}
-                validationSchema={variationLinkSchema} enableReinitialize={true}
+          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogForLink = ref} >
+            <div className="ui modal smallModal">
+              <h2 className=" zero">
+                {Resources.linkwithBoq[currentLanguage]}
+              </h2>
+              <Formik
+                initialValues={{ boqId: this.state.selectedBoq.value }}
+                validationSchema={LinkSchema}
+                enableReinitialize={true}
                 onSubmit={values => { this.LinkBoqWithContract(); }}>
                 {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                   <Form noValidate="novalidate" onSubmit={handleSubmit}>
                     <div className='document-fields'>
                       <div className="proForm datepickerContainer">
-                        <div className="linebylineInput">
+                        <div className="linebylineInput letterFullWidth ">
                           <Dropdown title="boq"
                             data={this.state.notContractedBoqList}
                             selectedValue={this.state.selectedBoq}
+                            value={this.state.selectedBoq}
                             handleChange={event => { this.setState({ selectedBoq: event }); }}
                             onChange={setFieldValue}
                             onBlur={setFieldTouched}
@@ -2060,12 +2079,10 @@ class ContractInfoAddEdit extends Component {
                             touched={touched.boqId}
                             name="boqId" index="boqId" />
                         </div>
-
-
                         <div className="slider-Btns fullWidthWrapper">
                           {this.state.isLoading === false ? (
                             <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                              {Resources["goEdit"][currentLanguage]}
+                              {Resources["link"][currentLanguage]}
                             </button>
                           ) :
                             (<button className="primaryBtn-1 btn disabled">
