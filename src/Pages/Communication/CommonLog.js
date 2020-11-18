@@ -28,6 +28,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 let documentObj = {};
 let docTempLink;
 
+  let moduleId =  Config.getPublicConfiguartion().commonLogApi;
 class CommonLog extends Component {
 
   constructor(props) {
@@ -313,7 +314,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 1).then(result => {
+      Api.get(url, undefined, moduleId).then(result => {
 
         let oldRows = []; // this.state.rows;
 
@@ -375,7 +376,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 1).then(result => {
+      Api.get(url, undefined, moduleId).then(result => {
 
         let oldRows = [];
 
@@ -439,7 +440,7 @@ class CommonLog extends Component {
     });
 
     if (stringifiedQuery !== "{}") {
-      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 1).then(result => {
+      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, moduleId).then(result => {
 
         if (result.data.length > 0) {
 
@@ -704,7 +705,7 @@ class CommonLog extends Component {
     this.addRecord()
   }
   GetLogData(url) {
-    Api.get(url, undefined, 1).then(result => {
+    Api.get(url, undefined, moduleId).then(result => {
       result.data.forEach(row => {
         let subject = "";
         if (row) {

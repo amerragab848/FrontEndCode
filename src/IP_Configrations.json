@@ -1,9 +1,6 @@
-
-
 {
-  "BlobStorageContainerName": "project-files-demov4",
-  "acApp": "AC",
-  "accountCompanyId": "2",
+  "BlobStorageContainerName": "project-files",
+  "accountCompanyId": "1",
   "azureStorage": true,
   "canSendAlert": "false",
   "cdn": "https://newgiza.azureedge.net",

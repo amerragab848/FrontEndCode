@@ -45,19 +45,19 @@ class Export extends Component {
             }
 
             var blob = new Blob([format(template, ctx)]);
-            this.setState({ isExpor: false, isExportRequestPayment: false }) 
+            this.setState({ isExpor: false, isExportRequestPayment: false })
             var a = document.createElement('a');
             document.body.appendChild(a);
             if (window.navigator.msSaveBlob) {
                 var blob = new Blob([format(template, ctx)], {
-                    type: "application/vnd.ms-excel" 
-                }); 
+                    type: "application/vnd.ms-excel"
+                });
             }
             a.href = URL.createObjectURL(blob);
             a.download = 'procoor-' + title + ".xls";
             a.click();
             // lazy cleanup, note that this renders the link invalid
-            setTimeout(() => { URL.revokeObjectURL(a.href); }, 500); 
+            setTimeout(() => { URL.revokeObjectURL(a.href); }, 500);
         }
     }
 

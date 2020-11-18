@@ -1,16 +1,13 @@
-
-
 {
-  "BlobStorageContainerName": "project-files-demov4",
-  "acApp": "AC",
-  "accountCompanyId": "2",
+  "BlobStorageContainerName": "project-files",
+  "accountCompanyId": "1",
   "azureStorage": true,
-  "canSendAlert": "false",
+  "canSendAlert": "true",
   "cdn": "https://newgiza.azureedge.net",
-  "chatLocal": "https://demov4.procoor.com",
-  "chatStatic": "https://demov4.procoor.com",
-  "exportLocal": "https://demov4.procoor.com",
-  "exportStatic": "https://demov4.procoor.com",
+  "chatLocal": "https://newgiza5.procoor.com",
+  "chatStatic": "https://newgiza5.procoor.com",
+  "exportLocal": "https://newgiza5.procoor.com",
+  "exportStatic": "https://newgiza5.procoor.com",
   "fmApp": "FM",
   "hrApp": "HR",
   "local": "http://172.30.1.17:8900/",
