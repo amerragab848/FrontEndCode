@@ -128,7 +128,7 @@ class Index extends Component {
                         transferCompany: this.props.Adminstration.companyList[0].value
                     });
                 }
-            },
+            },  
             {
                 title: "Key Contact",
                 handleClick: (values) => {

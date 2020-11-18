@@ -697,8 +697,25 @@ class SubmittalAddEdit extends Component {
     this.setState({
       document: updated_document
     });
-  }
 
+    
+  }
+  handleBlur(e)
+  {  
+    if(e.target.value && e.target.value.trim()) // if the input is contains only spaces or null 
+    {           
+    if(Config.getPublicConfiguartion().refCodeValidation==true)
+    {
+      dataservice.checkSubmittalRefCode(this.state.projectId,e.target.value).then(result => {
+        if(result==true)
+        {
+          toast.error("sorry this code is not valid please try again !");
+          this.setState({document:{...document,refNo:""}})
+        }
+      }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+    }
+  }
+  }
   handleChangeCycles(e, field) {
 
     let original_document = { ...this.state.documentCycle };
@@ -1695,7 +1712,7 @@ class SubmittalAddEdit extends Component {
                                 <div className={"ui input inputDev" + (errors.refNo && touched.refNo ? " has-error" : "ui input inputDev")}>
                                   <input type="text" className="form-control" id="refNo" value={this.state.document.refNo || ''} name="refNo"
                                     placeholder={Resources.refDoc[currentLanguage]}
-                                    onBlur={e => { handleChange(e); handleBlur(e); }}
+                                    onBlur={e => { handleChange(e); this.handleBlur(e); }}
                                     onChange={e => this.handleChange(e, "refNo")} />
                                   {errors.refNo && touched.refNo ? (<em className="pError">{errors.refNo}</em>) : null}
                                 </div>
