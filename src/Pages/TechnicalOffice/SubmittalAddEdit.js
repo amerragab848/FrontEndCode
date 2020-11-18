@@ -1470,7 +1470,6 @@ class SubmittalAddEdit extends Component {
       submittalItem.arrange = maxArrange != undefined ? (maxArrange.arrange != null ? maxArrange.arrange + 1 : 1) : 1;
       this.setState({
         itemsDocumentSubmital: submittalItem
-
       })
     }
   }

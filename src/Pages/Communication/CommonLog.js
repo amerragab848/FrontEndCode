@@ -26,7 +26,7 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
-
+let  docTempLink;
 class CommonLog extends Component {
 
   constructor(props) {
@@ -41,7 +41,6 @@ class CommonLog extends Component {
       viewfilter: false,
       filterMode: false,
       isFilter: false,
-
       projectId: this.props.projectId,
       documentName: props.match.params.document,
       filtersColumns: [],
@@ -226,7 +225,7 @@ class CommonLog extends Component {
       } else {
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
         this.fillDropDowns();
-      }
+             }
     }
   };
 
@@ -312,7 +311,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, 1).then(result => {
 
         let oldRows = []; // this.state.rows;
 
@@ -374,7 +373,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, 1).then(result => {
 
         let oldRows = [];
 
@@ -553,6 +552,16 @@ class CommonLog extends Component {
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
+    if(documentObj.docTyp==42)
+    {
+      docTempLink=Config.getPublicConfiguartion().downloads + "/Downloads/Excel/tempSubmittal.xlsx"
+    }
+    //else if .... for more documents 
+    else
+    {
+      docTempLink=Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"
+    }
+
     //added
     let docTypeId = documentObj.docTyp;
     let showExServerBtn = false;
@@ -629,7 +638,7 @@ class CommonLog extends Component {
       showExServerBtn = true;
     }
 
-    if (docTypeId == 19 || docTypeId==64 ) {
+    if (docTypeId == 19 || docTypeId==64 || docTypeId==42 ) {
       showDocTemplateBtn = true;
     } else {
       showDocTemplateBtn = false;
@@ -695,7 +704,7 @@ class CommonLog extends Component {
     this.addRecord()
   }
   GetLogData(url) {
-    Api.get(url, undefined, 2).then(result => {
+    Api.get(url, undefined, 1).then(result => {
       result.data.forEach(row => {
         let subject = "";
         if (row) {
@@ -1180,6 +1189,7 @@ class CommonLog extends Component {
               onCloseClicked={() => this.setState({ docTemplateModal: false })}
               isVisible={this.state.docTemplateModal}>
               <div>
+              {(documentObj.docTyp !=42)?(
                 <div className="linebylineInput valid-input mix_dropdown">
 
                   <div className="supervisor__company">
@@ -1215,13 +1225,15 @@ class CommonLog extends Component {
                     </div>
                   </div>
                 </div>
+              ):null}
+
                 <XSLfile key="docTemplate"
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
                   docType={this.state.docType}
                   documentTemplate={true}
-                  link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
+                  link={docTempLink}
                   header="addManyItems"
                   afterUpload={() => this.setState({ docTemplateModal: false })} />
 

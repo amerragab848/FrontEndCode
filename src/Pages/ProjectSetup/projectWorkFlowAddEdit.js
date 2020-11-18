@@ -28,14 +28,10 @@ import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-<<<<<<< HEAD
 //import GridCustom from 'react-customized-grid';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 // import 'react-customized-grid/main.css';
-=======
-import GridCustom from 'react-customized-grid'; 
->>>>>>> 253b69d9d4246916b5371273d6c64cf50f28b8ce
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';

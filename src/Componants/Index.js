@@ -93,16 +93,6 @@ class Index extends Component {
         });
     }
 
-<<<<<<< HEAD
-      widgets = map(groupBy(getAllWidgets, widget => widget.categoryId), (widgets, categoryId) => {
-        
-        return {
-          typeId: Details.categories[categoryId].type,
-          categoryId: categoryId,
-          title: Details.categories[categoryId].title,
-          widgets,
-          order: categoryOrder[categoryId].order
-=======
     renderWidget(widget, index) { 
         if (Details.widgets[widget.title].props.type === 'threeWidget') {
             return (
@@ -221,7 +211,6 @@ class Index extends Component {
                     </div>
                 </Fragment>
             );
->>>>>>> 253b69d9d4246916b5371273d6c64cf50f28b8ce
         }
     //   });
     //  }

@@ -122,7 +122,6 @@ class Index extends Component {
             {
                 title: "Change Company",
                 handleClick: (row) => {
-                    debugger;
                     this.setState({
                         showTransferpopUp: true,
                         selectedContact:row.id,
