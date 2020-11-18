@@ -18,8 +18,7 @@ import SkyLight from 'react-skylight';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import ReactTable from "react-table"; 
 import Select from 'react-select';
 import Api from "../../api";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
@@ -389,15 +388,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 })
-        }
-        // else {
-        //     Api.post('UpdatePrimaveraScheduleItems?id=' + key.id + '&action_by_company=' + companyId + '&isStatus=false&status=false+&action_by_contact=' + e.value).then(
-        //         res => {
-        //             toast.success(Resources["operationSuccess"][currentLanguage]);
-        //         }).catch(ex => {
-        //             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-        //         })
-        // }
+        } 
     }
 
     HandlerChangeParentDrop = (e, subDropList) => {
