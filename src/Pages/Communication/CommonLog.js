@@ -222,7 +222,7 @@ class CommonLog extends Component {
     }
 
 
-    if (this.props.projectId !== prevProps.projectId || this.state.ExcelFileUploaded==true ) {
+    if (this.props.projectId !== prevProps.projectId ) {
       if (!this.state.documentObj.documentApi) {
         this.renderComponent(this.props.match.params.document, this.props.projectId, true);
       } else {
@@ -1239,6 +1239,7 @@ class CommonLog extends Component {
                   afterUpload={
                     () =>{
                     this.setState({ docTemplateModal: false  })
+                    this.setState({ isLoading: true });
                     this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
                   }
                   } />
