@@ -2,12 +2,7 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
-<<<<<<< HEAD
-import React, { Component, Fragment } from "react";
-=======
 import React, { Component, Fragment, useContext } from "react";
-//import React, { Component, Fragment } from "react";
->>>>>>> 71bfb6322812257df7d12dd66d31ab5db7992393
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
@@ -2155,7 +2150,8 @@ class requestPaymentsAddEdit extends Component {
                 this.updateVoPricesModal.show();
 
                 this.setState({
-                    updateVoPricesModal: true
+                    updateVoPricesModal: true,
+                    selected : {}
                 });
                 break;
             case "10":
@@ -2164,7 +2160,7 @@ class requestPaymentsAddEdit extends Component {
 
                     let updated_document = {};
 
-                    updated_document.editable = ! original_document.editable;
+                    updated_document.editable = !original_document.editable;
 
                     updated_document = Object.assign(original_document, updated_document);
 
@@ -2568,12 +2564,14 @@ class requestPaymentsAddEdit extends Component {
         return ItemsGrid;
     };
     executeVoChangePrices = () => {
+        this.setState({ isLoading: true , selected : {}});
+
         let requestId = this.state.docId;
 
         let changeOrderId = Object.keys(this.state.selected);
 
         dataservice.GetDataGrid("UpdatePRItemsByByvoPrices?requestId=" + requestId + "&changeOrderId=" + changeOrderId).then(result => {
-            this.setState({ updateVoPricesModal: false });
+            this.setState({ updateVoPricesModal: false, isLoading: false , selected : {}});
 
             this.updateVoPricesModal.hide();
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -2782,19 +2780,13 @@ class requestPaymentsAddEdit extends Component {
                         </div>
                     );
                 },
-                width: 50
+                width: 100
             },
             {
                 Header: Resources["subject"][currentLanguage],
                 accessor: "subject",
                 sortabel: true,
-                width: 300
-            },
-            {
-                Header: Resources["contractSubject"][currentLanguage],
-                accessor: "contractSubject",
-                sortabel: true,
-                width: 300
+                width: 500
             },
             {
                 Header: Resources["total"][currentLanguage],
@@ -2802,12 +2794,6 @@ class requestPaymentsAddEdit extends Component {
                 sortabel: true,
                 width: 200
             },
-            {
-                Header: Resources["docDate"][currentLanguage],
-                accessor: "docDate",
-                sortabel: true,
-                width: 250
-            }
         ];
         const updateVoPrices = (
 
@@ -2815,12 +2801,25 @@ class requestPaymentsAddEdit extends Component {
                 <div className="fullWidthWrapper">
                     <ReactTable data={this.state.updateVoListData} columns={updateVoList} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
                     <hr />
-                    <button
-                        className="primaryBtn-1 btn "
-                        type="button"
-                        onClick={this.executeVoChangePrices}>
-                        {Resources.Execute[currentLanguage]}
-                    </button>
+
+                    {this.state.isLoading === false ? (
+                        <button
+                            className="primaryBtn-1 btn "
+                            type="button"
+                            onClick={this.executeVoChangePrices}>
+                            {Resources.Execute[currentLanguage]}
+                        </button>) : (
+                            <button
+                                className="primaryBtn-1 btn  disabled"
+                                disabled="disabled">
+                                <div className="spinner">
+                                    <div className="bounce1" />
+                                    <div className="bounce2" />
+                                    <div className="bounce3" />
+                                </div>
+                            </button>
+                        )}
+
                 </div>
             </Fragment>
         );
