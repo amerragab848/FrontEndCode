@@ -227,4 +227,11 @@ export default class Dataservice {
         }).catch(ex => { });
     };
 
+
+    static checkSubmittalRefCode = (projectId,code) => {
+
+        return Api.get("checkSubmittalRefCode?projectId="+projectId+"&code="+code).then(result => {
+            return result;
+        }).catch(ex => { });
+    };
 }

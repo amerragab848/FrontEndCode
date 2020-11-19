@@ -262,7 +262,14 @@ export default class Api {
         );
 
         options.headers = Api.headers();
-
+        options = Object.assign(
+            options
+            ,
+            {
+                responseType: 'blob'
+            }
+        );
+        console.log("options...", options);
         return fetch(url, options)
             .then(resp => {
                 if (resp.status === 200) {
@@ -516,8 +523,8 @@ export default class Api {
             {
                 method: "POST"
             }, {
-            body: JSON.stringify(req)
-        }
+                body: JSON.stringify(req)
+            }
         );
 
         options.headers = {

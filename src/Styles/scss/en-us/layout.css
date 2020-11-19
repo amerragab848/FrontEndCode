@@ -22088,4 +22088,16 @@ tbody.grid-body tr  .text.elipsisPadd {
   padding: 0;
 }
 
-
+.smallModal h2.zero{
+    border-bottom: 1px solid #DADEE6;
+    text-align: center;
+    padding-bottom: 11PX;
+    margin-bottom: 24PX;
+}
+.tbl-load .dashboardLoading {
+top: 99px;
+min-height: 100px;
+}
+.tbl-load  .dashboardLoading h3{
+    display: none;
+}

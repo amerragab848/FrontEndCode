@@ -58,7 +58,7 @@ class App extends Component {
 
         IndexedDb.initialize();
         IndexedDb.initializeCounterDB();
-        // IndexedDb.initializeCachedAPI();
+        IndexedDb.initializeCachedAPI();
         // IndexedDb.initializeWidgetsOfflineDB();
     }
 
@@ -84,17 +84,17 @@ class App extends Component {
             .then(e => {
                 currentLanguage === 'ar'
                     ? import('./Styles/scss/ar-eg/layout-ar.css').then(css => {
-                          this.setState({
-                              cssLoaded: true,
-                              isComplete: true,
-                          });
-                      })
+                        this.setState({
+                            cssLoaded: true,
+                            isComplete: true,
+                        });
+                    })
                     : import('./Styles/scss/en-us/layout.css').then(css => {
-                          this.setState({
-                              cssLoaded: true,
-                              isComplete: true,
-                          });
-                      });
+                        this.setState({
+                            cssLoaded: true,
+                            isComplete: true,
+                        });
+                    });
             });
     }
 
@@ -121,10 +121,10 @@ class App extends Component {
                 </ErrorHandler>
             </Provider>
         ) : (
-            <div style={loadingStyle.container}>
-                <span style={loadingStyle.spinner}></span>
-            </div>
-        );
+                <div style={loadingStyle.container}>
+                    <span style={loadingStyle.spinner}></span>
+                </div>
+            );
     }
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Api from '../../api';
 import Loader from '../../../src/Styles/images/ChartLoaders/BarChartLoader.webm';
+import NoData from '../../../src/Styles/images/ChartLoaders/BarChartNoData.png';
 
 const colorSchema = [
     '#39bd3d',
@@ -42,6 +43,7 @@ class GroupedBarCahrtComponent extends Component {
             isLoading: true,
             chartDatasets: [],
             chartLabels: [],
+            noData: false,
         };
     }
 
@@ -77,6 +79,7 @@ class GroupedBarCahrtComponent extends Component {
                 chartDatasets,
 
                 isLoading: false,
+                noData: chartDatasets.length > 0 ? false : true,
                 chartData: {
                     labels: chartLabels,
                     datasets: chartDatasets,
@@ -114,36 +117,51 @@ class GroupedBarCahrtComponent extends Component {
             ],
             xAxes: [
                 {
-                    barPercentage: 0.9,
                     gridLines: {
                         display: false,
                     },
                 },
             ],
         },
+        dataset: {
+            barPercentage: 0.9,
+        },
     };
     render() {
-        return this.state.isLoading ? (
-            <div className="panel">
-                <div className="panel-body-loader">
-                    <h2>{this.props.title}</h2>
-                    <video style={{ width: '80%' }} autoPlay loop muted>
-                        <source src={Loader} type="video/webm" />
-                    </video>
+        if (this.state.isLoading) {
+            return (
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <video style={{ width: '80%' }} autoPlay loop muted>
+                            <source src={Loader} type="video/webm" />
+                        </video>
+                    </div>
                 </div>
-            </div>
-        ) : (
-            <div className="panel">
-                <div className="panel-body">
-                    <h2>{this.props.title}</h2>
-                    <Bar
-                        key={this.props.ukey}
-                        data={this.state.chartData}
-                        options={this.options}
-                    />
+            );
+        } else if (this.state.noData) {
+            return (
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <img src={NoData} style={{ width: '80%' }} />
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className="panel">
+                    <div className="panel-body">
+                        <h2>{this.props.title}</h2>
+                        <Bar
+                            key={this.props.ukey}
+                            data={this.state.chartData}
+                            options={this.options}
+                        />
+                    </div>
+                </div>
+            );
+        }
     }
 }
 

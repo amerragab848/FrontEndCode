@@ -2261,6 +2261,10 @@
         "en": "Work Flow With Document Type Details",
         "ar": "تقرير الدوره المستنديه طبقا لنوع الوثيقة"
     },
+    "WorkFlowWithDocumentAllTypesDetails": {
+        "en": "Work Flow With Document All Types Details",
+        "ar": "تقرير الدوره المستنديه لكل انواع الوثيقة"
+    },
     "docDetails": {
         "en": "Document Details",
         "ar": "تفاصيل الوثيقة"
@@ -8012,6 +8016,10 @@
     "linkwithgenerallist": {
         "en": "Link With General List",
         "ar": "الربط من البيانات الاساسيه"
+    },
+    "linkwithBoq": {
+        "en": "Link With BOQ",
+        "ar": "الربط مع الكميات"
     },
     "createVO": {
         "en": "Create VO",
