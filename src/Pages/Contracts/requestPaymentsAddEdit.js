@@ -3233,6 +3233,8 @@ class requestPaymentsAddEdit extends Component {
         return ItemsGrid;
     }
     executeVoChangePrices = () => {
+        this.setState({ isLoading: true , selected : {}});
+
         let requestId = this.state.docId;
 
         let changeOrderId = Object.keys(this.state.selected);
@@ -3559,12 +3561,25 @@ class requestPaymentsAddEdit extends Component {
                         className="-striped -highlight"
                     />
                     <hr />
-                    <button
-                        className="primaryBtn-1 btn "
-                        type="button"
-                        onClick={this.executeVoChangePrices}>
-                        {Resources.Execute[currentLanguage]}
-                    </button>
+
+                    {this.state.isLoading === false ? (
+                        <button
+                            className="primaryBtn-1 btn "
+                            type="button"
+                            onClick={this.executeVoChangePrices}>
+                            {Resources.Execute[currentLanguage]}
+                        </button>) : (
+                            <button
+                                className="primaryBtn-1 btn  disabled"
+                                disabled="disabled">
+                                <div className="spinner">
+                                    <div className="bounce1" />
+                                    <div className="bounce2" />
+                                    <div className="bounce3" />
+                                </div>
+                            </button>
+                        )}
+
                 </div>
             </Fragment>
         );

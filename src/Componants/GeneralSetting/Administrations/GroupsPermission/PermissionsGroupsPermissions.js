@@ -148,7 +148,7 @@ class PermissionsGroupsPermissions extends Component {
                     <div className="project__Permissions--type " key={item.code}>
                         <div id="allSelected" className="ui checkbox checkBoxGray300 checked " >
 
-                            <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={item.value}
+                            <input name="CheckBox" type="checkbox" style={{height: '100%',alignItems: 'center',display: 'flex'}} checked={item.value}
                                 onChange={(e) => this.handleCheck(item.code)} />
                             <label>{item.title[currentLanguage]}</label>
                         </div>

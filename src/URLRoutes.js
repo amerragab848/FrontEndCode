@@ -2884,6 +2884,17 @@ var routes = [
         nav: true,
         settings: { OtherReports: true, permission: 3719, order: 1 }
     },
+    {
+        route: "UserAlerts",
+        moduleId: "ProjectSetup/UserAlerts",
+        title: "userAlerts",
+        nav: true, 
+        settings: {
+            // General: true,
+            caption: "procoor-icon-project-page-setup",
+            order: 5
+        } 
+    },
 ];
 
 export default routes;
