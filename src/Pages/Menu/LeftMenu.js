@@ -13,7 +13,7 @@ import * as dashboardComponantActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let currentProjectId = localStorage.getItem('lastSelectedProject') == null ? 0 : localStorage.getItem('lastSelectedProject');
-let appComponants = localStorage.getItem('appComponants') == null ? [] : localStorage.getItem('appComponants') || [];
+let appComponants = localStorage.getItem('appComponants') == null ? [] : JSON.parse(localStorage.getItem('appComponants')) || [];
 
 var viewModules = true;
 var viewEps = false;
@@ -84,23 +84,23 @@ class LeftMenu extends Component {
             }
         });
 
-        costControlMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        costControlMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        generalMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        generalMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        communication.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        communication.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        siteMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        siteMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        contractMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        contractMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        qualityControlMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        qualityControlMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        designMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        designMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        timeMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        timeMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
-        procurementMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0,);
+        procurementMenu.sort((a, b) => a.settings.order > b.settings.order ? 1 : b.settings.order > a.settings.order ? -1 : 0);
 
         this.state = {
             moduleName: 'General',
@@ -463,7 +463,7 @@ class LeftMenu extends Component {
         }
     }
     ShowModule(refCode) {
-        let app = this.props.appComponants.find(x => x.compaonantName == "PM");
+        let app = appComponants.find(x => x.compaonantName == "PM");
         if (app) {
             return app.moduleList.filter(x => x.referance == refCode && x.canView === true)
         } else

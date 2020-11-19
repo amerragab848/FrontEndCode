@@ -46,7 +46,7 @@ class DashboardProject extends Component {
 
         let accountImage = localStorage.getItem("profilePath");
 
-        accountImage = accountImage.split("downloads");
+        accountImage =accountImage !=null? accountImage.split("downloads"):"";
 
         let contactName = localStorage.getItem("contactName");
 

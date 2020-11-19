@@ -28,6 +28,7 @@ import dataservice from '../../Dataservice';
 import Resources from '../../resources.json';
 import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
+import { loadavg } from "os";
 
 //import ConnectionContext from '../../Componants/Layouts/Context'; 
 //import "react-table/react-table.css";
@@ -394,6 +395,8 @@ class requestPaymentsAddEdit extends Component {
                 label: Resources.selectDedutionType[currentLanguage],
                 value: '0',
             },
+            interimInvoicesLoading: false,
+            approvedSummaryLoading: false
         };
 
         //#endregion variableofState
@@ -1573,7 +1576,7 @@ class requestPaymentsAddEdit extends Component {
             contractId > 0
         ) {
             this.setState({
-                isLoading: true,
+                interimInvoicesLoading: true,
             });
 
             dataservice.GetDataGrid('GetTotalForReqPay?projectId=' + projectId + '&contractId=' +
@@ -1585,7 +1588,7 @@ class requestPaymentsAddEdit extends Component {
                     this.props.actions.ExportingData({ items: result });
                     this.setState({
                         interimInvoicedTable: result || [],
-                        isLoading: false,
+                        interimInvoicesLoading: false,
                         isItemUpdate: false,
                     });
                 })
@@ -1607,7 +1610,7 @@ class requestPaymentsAddEdit extends Component {
 
         if (approvedInvoicesChilds.length == 0 && contractId > 0) {
             this.setState({
-                isLoading: true,
+                approvedSummaryLoading: true,
             });
             let rowTotal = 0;
 
@@ -1705,7 +1708,7 @@ class requestPaymentsAddEdit extends Component {
                             this.setState({
                                 approvedInvoicesChilds: res,
                                 approvedInvoicesParent: approvedInvoicesParent,
-                                isLoading: false,
+                                approvedSummaryLoading: false,
                                 rowTotal: rowTotal,
                                 columnsApprovedInvoices,
                             });
@@ -3223,7 +3226,7 @@ class requestPaymentsAddEdit extends Component {
                 />
             ) : (
                     <div style={{ position: 'relative' }}>
-                        <LoadingSection isCustomLoader={true} />
+                        <LoadingSection />
                     </div>
                 );
 
@@ -3372,11 +3375,11 @@ class requestPaymentsAddEdit extends Component {
 
         //ExportInterimPayment
         const btnExportInterimPayment =
-            this.state.isLoading === false ? (
+            this.state.interimInvoicesLoading === false ? (
                 <Export
                     key={'Export-4'}
                     rows={
-                        this.state.isLoading === false
+                        this.state.interimInvoicedTable === false
                             ? this.state.interimInvoicedTable
                             : []
                     }
@@ -3389,7 +3392,7 @@ class requestPaymentsAddEdit extends Component {
 
         //ExportApprovedInvoices
         const btnExportApprovedInvoices =
-            this.state.isLoading === false ? (
+            this.state.approvedSummaryLoading === false ? (
                 <Export
                     key={'Export-5'}
                     rows={
@@ -3859,111 +3862,112 @@ class requestPaymentsAddEdit extends Component {
         );
 
         let approvedSummaries =
-            this.state.isLoading === false ? (
-                <Fragment>
-                    <header>
-                        <h2 className="zero">
-                            {
-                                Resources['summaryOfApprovedInvoices'][
-                                currentLanguage
-                                ]
-                            }
-                        </h2>
-                    </header>
-                    {btnExportApprovedInvoices}
-                    <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
-                        <table
-                            className="attachmentTable attachmentTableAuto"
-                            key="summaryOfApprovedInvoices">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div className="headCell">
-                                            {
-                                                Resources['JobBuilding'][
-                                                currentLanguage
-                                                ]
-                                            }
-                                        </div>
-                                    </th>
-                                    {this.state.approvedInvoicesParent.map(
-                                        (i, index) => (
-                                            <th
+            <div style={{ position: "relative" }}>
+                {this.state.approvedSummaryLoading === false ? (
+                    <Fragment>
+                        <header>
+                            <h2 className="zero">
+                                {
+                                    Resources['summaryOfApprovedInvoices'][
+                                    currentLanguage
+                                    ]
+                                }
+                            </h2>
+                        </header>
+                        {btnExportApprovedInvoices}
+                        <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
+                            <table
+                                className="attachmentTable attachmentTableAuto"
+                                key="summaryOfApprovedInvoices">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div className="headCell">
+                                                {
+                                                    Resources['JobBuilding'][
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                            </div>
+                                        </th>
+                                        {this.state.approvedInvoicesParent.map(
+                                            (i, index) => (
+                                                <th
+                                                    key={
+                                                        'th-approvedInvoicesParent' +
+                                                        index
+                                                    }>
+                                                    <div className="headCell">
+                                                        {i.details
+                                                            ? i.details.slice(
+                                                                0,
+                                                                i.details.lastIndexOf(
+                                                                    '-',
+                                                                ),
+                                                            )
+                                                            : ''}
+                                                    </div>
+                                                </th>
+                                            ),
+                                        )}
+                                        <th>
+                                            <div className="headCell">
+                                                {
+                                                    Resources['total'][
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.approvedInvoicesChilds.map(
+                                        (i, idx) => (
+                                            <tr
                                                 key={
-                                                    'th-approvedInvoicesParent' +
-                                                    index
+                                                    'tr-approvedInvoicesChilds-' +
+                                                    idx
                                                 }>
-                                                <div className="headCell">
-                                                    {i.details
-                                                        ? i.details.slice(
-                                                            0,
-                                                            i.details.lastIndexOf(
-                                                                '-',
-                                                            ),
-                                                        )
-                                                        : ''}
-                                                </div>
-                                            </th>
+                                                <td>{i.building}</td>
+
+                                                {this.state.approvedInvoicesParent.map(
+                                                    (data, index) => (
+                                                        <td
+                                                            key={
+                                                                'td-approvedInvoicesParent-' +
+                                                                index
+                                                            }>
+                                                            {parseFloat(
+                                                                i[data.details],
+                                                            )
+                                                                .toFixed(2)
+                                                                .replace(
+                                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                                    ',',
+                                                                )}
+                                                        </td>
+                                                    ),
+                                                )}
+                                                <td>
+                                                    {parseFloat(i.rowTotal)
+                                                        .toFixed(2)
+                                                        .replace(
+                                                            /\B(?=(\d{3})+(?!\d))/g,
+                                                            ' ,',
+                                                        )}
+                                                </td>
+                                            </tr>
                                         ),
                                     )}
-                                    <th>
-                                        <div className="headCell">
-                                            {
-                                                Resources['total'][
-                                                currentLanguage
-                                                ]
-                                            }
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.approvedInvoicesChilds.map(
-                                    (i, idx) => (
-                                        <tr
-                                            key={
-                                                'tr-approvedInvoicesChilds-' +
-                                                idx
-                                            }>
-                                            <td>{i.building}</td>
-
-                                            {this.state.approvedInvoicesParent.map(
-                                                (data, index) => (
-                                                    <td
-                                                        key={
-                                                            'td-approvedInvoicesParent-' +
-                                                            index
-                                                        }>
-                                                        {parseFloat(
-                                                            i[data.details],
-                                                        )
-                                                            .toFixed(2)
-                                                            .replace(
-                                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                                ',',
-                                                            )}
-                                                    </td>
-                                                ),
-                                            )}
-                                            <td>
-                                                {parseFloat(i.rowTotal)
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ' ,',
-                                                    )}
-                                            </td>
-                                        </tr>
-                                    ),
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </Fragment>
-            ) : (
-                    <LoadingSection />
-                );
-
+                                </tbody>
+                            </table>
+                        </div>
+                    </Fragment>
+                ) : (
+                        <LoadingSection isCustomLoader={true} />
+                    )}
+            </div>
         return (
             <div className="mainContainer">
                 <div
@@ -5347,8 +5351,8 @@ class requestPaymentsAddEdit extends Component {
                                             </header>
                                             {btnExportInterimPayment}
                                             <table
-                                                className="attachmentTable attachmentTableAuto specialTable"
-                                                key="interimPaymentCertificate">
+                                                className="attachmentTable attachmentTableAuto specialTable tbl-load"
+                                                key="interimPaymentCertificate" style={{ position: "relative",minHeight:this.state.interimInvoicesLoading==true?"250px":"auto" }} >
                                                 <thead>
                                                     <tr>
                                                         <th colSpan="3">
@@ -5467,9 +5471,114 @@ class requestPaymentsAddEdit extends Component {
                                                         <th colSpan="3"></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>{interimTable}</tbody>
+                                                    {this.state.interimInvoicesLoading == false ?
+                                                        <tbody>
+                                                            {interimTable}
+                                                        </tbody>
+                                                        :  <LoadingSection isCustomLoader={true} />}
                                             </table>
-                                            {approvedSummaries}
+                                            <div>
+                                                <header>
+                                                    <h2 className="zero">
+                                                        {
+                                                            Resources['summaryOfApprovedInvoices'][
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                    </h2>
+                                                </header>
+                                                {btnExportApprovedInvoices}
+                                                <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
+                                                    <table
+                                                        className="attachmentTable attachmentTableAuto tbl-load"
+                                                        key="summaryOfApprovedInvoices" style={{ position: "relative",minHeight:this.state.approvedSummaryLoading==true?"250px":"auto" }}>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <div className="headCell">
+                                                                        {
+                                                                            Resources['JobBuilding'][
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </div>
+                                                                </th>
+                                                                {this.state.approvedInvoicesParent.map(
+                                                                    (i, index) => (
+                                                                        <th
+                                                                            key={
+                                                                                'th-approvedInvoicesParent' +
+                                                                                index
+                                                                            }>
+                                                                            <div className="headCell">
+                                                                                {i.details
+                                                                                    ? i.details.slice(
+                                                                                        0,
+                                                                                        i.details.lastIndexOf(
+                                                                                            '-',
+                                                                                        ),
+                                                                                    )
+                                                                                    : ''}
+                                                                            </div>
+                                                                        </th>
+                                                                    ),
+                                                                )}
+                                                                <th>
+                                                                    <div className="headCell">
+                                                                        {
+                                                                            Resources['total'][
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                            {this.state.approvedSummaryLoading == false ?
+                                                                <tbody>
+                                                                    {this.state.approvedInvoicesChilds.map(
+                                                                        (i, idx) => (
+                                                                            <tr
+                                                                                key={
+                                                                                    'tr-approvedInvoicesChilds-' +
+                                                                                    idx
+                                                                                }>
+                                                                                <td>{i.building}</td>
+
+                                                                                {this.state.approvedInvoicesParent.map(
+                                                                                    (data, index) => (
+                                                                                        <td
+                                                                                            key={
+                                                                                                'td-approvedInvoicesParent-' +
+                                                                                                index
+                                                                                            }>
+                                                                                            {parseFloat(
+                                                                                                i[data.details],
+                                                                                            )
+                                                                                                .toFixed(2)
+                                                                                                .replace(
+                                                                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                                                                    ',',
+                                                                                                )}
+                                                                                        </td>
+                                                                                    ),
+                                                                                )}
+                                                                                <td>
+                                                                                    {parseFloat(i.rowTotal)
+                                                                                        .toFixed(2)
+                                                                                        .replace(
+                                                                                            /\B(?=(\d{3})+(?!\d))/g,
+                                                                                            ' ,',
+                                                                                        )}
+                                                                                </td>
+                                                                            </tr>
+                                                                        ),
+                                                                    )}
+                                                                </tbody>
+                                                                : <LoadingSection isCustomLoader={true} />}
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </Fragment>
