@@ -2,11 +2,7 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
 import moment from "moment";
-<<<<<<< HEAD
-import React, { Component, Fragment, useContext } from "react";
-=======
 import React, { Component, Fragment } from "react";
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SkyLight from "react-skylight";
@@ -2714,10 +2710,6 @@ class requestPaymentsAddEdit extends Component {
 
                 this.setState({
                     updateVoPricesModal: true,
-<<<<<<< HEAD
-                    selected : {}
-=======
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
                 });
                 break;
             case '10':
@@ -2730,11 +2722,7 @@ class requestPaymentsAddEdit extends Component {
 
                         let updated_document = {};
 
-<<<<<<< HEAD
-                    updated_document.editable = !original_document.editable;
-=======
                         updated_document.editable = !original_document.editable;
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
 
                         updated_document = Object.assign(
                             original_document,
@@ -3251,15 +3239,6 @@ class requestPaymentsAddEdit extends Component {
 
         let changeOrderId = Object.keys(this.state.selected);
 
-<<<<<<< HEAD
-        dataservice.GetDataGrid("UpdatePRItemsByByvoPrices?requestId=" + requestId + "&changeOrderId=" + changeOrderId).then(result => {
-            this.setState({ updateVoPricesModal: false, isLoading: false , selected : {}});
-
-            this.updateVoPricesModal.hide();
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        }).catch(res => {
-            this.setState({ updateVoPricesModal: false });
-=======
         dataservice
             .GetDataGrid(
                 'UpdatePRItemsByByvoPrices?requestId=' +
@@ -3275,7 +3254,6 @@ class requestPaymentsAddEdit extends Component {
             })
             .catch(res => {
                 this.setState({ updateVoPricesModal: false });
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
 
                 this.updateVoPricesModal.hide();
                 toast.error(Resources['operationCanceled'][currentLanguage]);
@@ -3545,19 +3523,12 @@ class requestPaymentsAddEdit extends Component {
                         </div>
                     );
                 },
-<<<<<<< HEAD
-                width: 100
-=======
                 width: 50,
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
             },
             {
                 Header: Resources['subject'][currentLanguage],
                 accessor: 'subject',
                 sortabel: true,
-<<<<<<< HEAD
-                width: 500
-=======
                 width: 300,
             },
             {
@@ -3565,7 +3536,6 @@ class requestPaymentsAddEdit extends Component {
                 accessor: 'contractSubject',
                 sortabel: true,
                 width: 300,
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
             },
             {
                 Header: Resources['total'][currentLanguage],
@@ -3573,15 +3543,12 @@ class requestPaymentsAddEdit extends Component {
                 sortabel: true,
                 width: 200,
             },
-<<<<<<< HEAD
-=======
             {
                 Header: Resources['docDate'][currentLanguage],
                 accessor: 'docDate',
                 sortabel: true,
                 width: 250,
             },
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
         ];
         const updateVoPrices = (
             <Fragment>

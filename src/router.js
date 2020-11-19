@@ -1321,23 +1321,18 @@ let originalRoutes = [
     <Route key="r-192" path="ContractsPOReports/RequestPaymentDeductionTypeReport"
         component={RequestPaymentDeductionTypeReport} />,
     <Route key="r-193" path="/levelDurationAlertDetails"
-        component={levelDurationAlertDetails} />,
-<<<<<<< HEAD
+        component={levelDurationAlertDetails} />, 
     <Route key="r-194" path="/UserAlerts" component={UserAlerts} />,
     <Route
         key="r-195"
         path="/usersAlertSummaryDetails"
         component={usersAlertSummaryDetails}
-    />,
-=======
-
+    />, 
     <Route
-        key="r-194"
+        key="r-196"
         path="/DocumentAllTypesReport"
         component={DocumentAllTypesReport}
-    />,
-
->>>>>>> f6dd6eddb5eb6a4e8923973fb83eb3b2eafcce1f
+    />, 
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];
