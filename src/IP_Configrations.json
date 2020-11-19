@@ -3,24 +3,28 @@
   "acApp": "AC",
   "accountCompanyId": "2",
   "azureStorage": true,
-  "canSendAlert": "true",
-  "refAutomatic": false, 
+  "canSendAlert": "false",
   "cdn": "https://newgiza.azureedge.net",
-  "chatLocal": "https://newgiza5.procoor.com",
-  "chatStatic": "https://newgiza5.procoor.com",
-  "exportLocal": "https://newgiza5.procoor.com",
-  "exportStatic": "https://newgiza5.procoor.com",
+  "chatLocal": "https://demov4.procoor.com",
+  "chatStatic": "https://demov4.procoor.com",
+  "exportLocal": "https://demov4.procoor.com",
+  "exportStatic": "https://demov4.procoor.com",
   "fmApp": "FM",
   "hrApp": "HR",
   "local": "http://172.30.1.17:8900/",
   "loginServer": "http://172.30.1.17:8901",
+<<<<<<< HEAD
   "pmApp": "PM", 
+=======
+  "pmApp": "PM",
+>>>>>>> a88f4203bd0d91779b17f0b4136b03d5b7743ebb
   "static": "http://172.30.1.17:8900/",
   "downloads": "http://172.30.1.17:8900",
   "dropBoxappKey": "r8iiezlpm1pvlry",
   "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
   "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
   "googleDriveKey": "uof5qzvtwpq1dao",
+<<<<<<< HEAD
     "exportCore" : "https://newgizaServices.procoor.com/ExportAPI/api/ExportController/",
    
     "client_id": "elXUJfeXNiv0ZDxlOB5JrJWn9GksYQq3",
@@ -29,3 +33,8 @@
     "commonLogApi": 1
   }
   
+=======
+  "refAutomatic": false,
+  "refCodeValidation":true
+}
+>>>>>>> a88f4203bd0d91779b17f0b4136b03d5b7743ebb

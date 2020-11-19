@@ -25,8 +25,11 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'; 
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+//import GridCustom from 'react-customized-grid';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
+// import 'react-customized-grid/main.css';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
