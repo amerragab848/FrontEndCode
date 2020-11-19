@@ -12,7 +12,7 @@ import ModernDatepicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js"; 
+import Config from "../../Services/Config.js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
@@ -175,7 +175,30 @@ class SubmittalAddEdit extends Component {
         { label: "BBS", value: "BBS" },
         { label: "Coordination", value: "Coordination" },
         { label: "Technical Issues", value: "Technical Issues" },
-        { label: "Drawings ", value: "Drawings " }
+        { label: "Drawings ", value: "Drawings " },
+
+        { label: "RSK - Risk Assessment", value: "RSK - Risk Assessment" },
+        { label: "STR - S.T.A.R.T. briefing", value: "STR - S.T.A.R.T. briefing" },
+        { label: "TBT - Tool Box Talk", value: " TBT - Tool Box Talk" },
+        { label: "BCL - Batch Plant Checklis", value: "BCL - Batch Plant Checklis" },
+        { label: " CAS - Calibration Schedule", value: "CAS - Calibration Schedule" },
+        { label: " COR - Concrete Request", value: "COR - Concrete Request" },
+        { label: "CPA - Corrective and Preventive Action", value: "CPA - Corrective and Preventive Action " },
+        { label: "CPR - Concrete Pouring Report", value: "CPR - Concrete Pouring Report " },
+        { label: " CRC - Calibration Record Card ", value: "CRC - Calibration Record Card " },
+        { label: " CRT - Quality Certificate", value: " CRT - Quality Certificate" },
+        { label: " CTM - Concrete Trial Mixes", value: "CTM - Concrete Trial Mixes " },
+        { label: " ITP - Inspection and Test Plan ", value: "ITP - Inspection and Test Plan " },
+        { label: " ORG - Organization Chart", value: " ORG - Organization Chart " },
+        { label: " QAP - Quality Assurance Program", value: "QAP - Quality Assurance Program " },
+        { label: " QAS - Quality Audit Schedule", value: "QAS - Quality Audit Schedule " },
+        { label: " QMP - Quality Management Plan ", value: "QMP - Quality Management Plan " },
+        { label: " QPR - Quality Procedures", value: "QPR - Quality Procedures" },
+        { label: " QRC - Quality Records", value: "QRC - Quality Records " },
+        { label: "QRP - Quality Report ", value: "QRP - Quality Report " },
+        { label: " QSC - Quality Specification", value: " QSC - Quality Specification" },
+        { label: "SOP - Statement of Prequalification ", value: " SOP - Statement of Prequalification" }
+
       ],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -701,23 +724,20 @@ class SubmittalAddEdit extends Component {
       document: updated_document
     });
 
-    
+
   }
-  handleBlur(e)
-  {  
-    if(e.target.value && e.target.value.trim()) // if the input is contains only spaces or null 
-    {           
-    if(Config.getPublicConfiguartion().refCodeValidation==true)
+  handleBlur(e) {
+    if (e.target.value && e.target.value.trim()) // if the input is contains only spaces or null 
     {
-      dataservice.checkSubmittalRefCode(this.state.projectId,e.target.value).then(result => {
-        if(result==true)
-        {
-          toast.error("sorry this code is not valid please try again !");
-          this.setState({document:{...document,refNo:""}})
-        }
-      }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+      if (Config.getPublicConfiguartion().refCodeValidation == true) {
+        dataservice.checkSubmittalRefCode(this.state.projectId, e.target.value).then(result => {
+          if (result == true) {
+            toast.error("sorry this code is not valid please try again !");
+            this.setState({ document: { ...document, refNo: "" } })
+          }
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+      }
     }
-  }
   }
   handleChangeCycles(e, field) {
 

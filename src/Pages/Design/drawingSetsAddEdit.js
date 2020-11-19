@@ -84,6 +84,7 @@ class DrawingSetsAddEdit extends Component {
     }
 
     this.state = {
+      arrange: arrange,
       CurrentStep: 0,
       showDeleteModal: false,
       isLoading: false,
