@@ -945,6 +945,10 @@
         "en": "Task Administrator",
         "ar": "مدير مهمات؟"
     },
+    "isVacation": {
+        "en": "Is Vacation",
+        "ar": "يوم اجازاه"
+    },
     "Vacation": {
         "en": "HR Vacation Days",
         "ar": "ايام الاجازات"
