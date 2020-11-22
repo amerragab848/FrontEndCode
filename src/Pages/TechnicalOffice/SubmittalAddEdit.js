@@ -254,7 +254,7 @@ class SubmittalAddEdit extends Component {
     let submittalDocumentCycles = {
       //field
       id: 0,
-      submittalId: "",
+      submittalId: "", 
       docDate: moment(),
       approvedDate: moment(),
       CycleStatus: "true",
@@ -312,6 +312,7 @@ class SubmittalAddEdit extends Component {
         contractId: "",
         apartment: "",
         specsSectionId: "",
+        submittalTypeId: "",
         companyId: "",
         subject: "",
         submittalType: "",
@@ -1881,7 +1882,7 @@ class SubmittalAddEdit extends Component {
                               </div>
                               <div className="linebylineInput valid-input">
                                 <Dropdown title="submittalType" data={this.state.SubmittalTypes} selectedValue={this.state.selectedSubmittalType}
-                                  handleChange={event => this.handleChangeDropDown(event, "submittalType", false, "", "", "", "selectedSubmittalType")} />
+                                  handleChange={event => this.handleChangeDropDown(event, "submittalTypeId", false, "", "", "", "selectedSubmittalType")} />
                               </div>
                               <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
