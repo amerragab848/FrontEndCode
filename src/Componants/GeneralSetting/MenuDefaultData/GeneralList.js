@@ -88,6 +88,7 @@ const DropGeneralData =
     { label: Resources["companyType"][currentLanguage], value: "companyType" },
     { label: Resources["approvalText"][currentLanguage], value: "WFApprovalstatus" },
     { label: Resources["deductionType"][currentLanguage], value: "deductionType" },
+    { label: Resources["submittalType"][currentLanguage], value: "SubmittalTypes" },
     { label: Resources["attachedPaperSize"][currentLanguage], value: "attachedPaperSize" }
     ]
 

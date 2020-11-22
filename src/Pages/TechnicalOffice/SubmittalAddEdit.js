@@ -159,45 +159,45 @@ class SubmittalAddEdit extends Component {
         { name: "previousVersions", code: 8080800 }
       ],
       SubmittalTypes: [
-        { label: "As Build", value: "As Build" },
-        { label: "Method Statment", value: "Method Statment" },
-        { label: "Quality Plan", value: "Quality Plan" },
-        { label: "IPP", value: "IPP" },
-        { label: "Material", value: "Material" },
-        { label: "Quantity Surevy", value: "Quantity Surevy" },
-        { label: "Schedule", value: "Schedule" },
-        { label: "Shop drawing", value: "Shop drawing" },
-        { label: "IIP", value: "IIP" },
-        { label: "ITP", value: "ITP" },
-        { label: "Safty Plan", value: "Safty Plan" },
-        { label: "Release Submittal", value: "Release Submittal" },
-        { label: "Organization Chart", value: "Organization Chart" },
-        { label: "BBS", value: "BBS" },
-        { label: "Coordination", value: "Coordination" },
-        { label: "Technical Issues", value: "Technical Issues" },
-        { label: "Drawings ", value: "Drawings " },
+        // { label: "As Build", value: "As Build" },
+        // { label: "Method Statment", value: "Method Statment" },
+        // { label: "Quality Plan", value: "Quality Plan" },
+        // { label: "IPP", value: "IPP" },
+        // { label: "Material", value: "Material" },
+        // { label: "Quantity Surevy", value: "Quantity Surevy" },
+        // { label: "Schedule", value: "Schedule" },
+        // { label: "Shop drawing", value: "Shop drawing" },
+        // { label: "IIP", value: "IIP" },
+        // { label: "ITP", value: "ITP" },
+        // { label: "Safty Plan", value: "Safty Plan" },
+        // { label: "Release Submittal", value: "Release Submittal" },
+        // { label: "Organization Chart", value: "Organization Chart" },
+        // { label: "BBS", value: "BBS" },
+        // { label: "Coordination", value: "Coordination" },
+        // { label: "Technical Issues", value: "Technical Issues" },
+        // { label: "Drawings ", value: "Drawings " },
 
-        { label: "RSK - Risk Assessment", value: "RSK - Risk Assessment" },
-        { label: "STR - S.T.A.R.T. briefing", value: "STR - S.T.A.R.T. briefing" },
-        { label: "TBT - Tool Box Talk", value: " TBT - Tool Box Talk" },
-        { label: "BCL - Batch Plant Checklis", value: "BCL - Batch Plant Checklis" },
-        { label: " CAS - Calibration Schedule", value: "CAS - Calibration Schedule" },
-        { label: " COR - Concrete Request", value: "COR - Concrete Request" },
-        { label: "CPA - Corrective and Preventive Action", value: "CPA - Corrective and Preventive Action " },
-        { label: "CPR - Concrete Pouring Report", value: "CPR - Concrete Pouring Report " },
-        { label: " CRC - Calibration Record Card ", value: "CRC - Calibration Record Card " },
-        { label: " CRT - Quality Certificate", value: " CRT - Quality Certificate" },
-        { label: " CTM - Concrete Trial Mixes", value: "CTM - Concrete Trial Mixes " },
-        { label: " ITP - Inspection and Test Plan ", value: "ITP - Inspection and Test Plan " },
-        { label: " ORG - Organization Chart", value: " ORG - Organization Chart " },
-        { label: " QAP - Quality Assurance Program", value: "QAP - Quality Assurance Program " },
-        { label: " QAS - Quality Audit Schedule", value: "QAS - Quality Audit Schedule " },
-        { label: " QMP - Quality Management Plan ", value: "QMP - Quality Management Plan " },
-        { label: " QPR - Quality Procedures", value: "QPR - Quality Procedures" },
-        { label: " QRC - Quality Records", value: "QRC - Quality Records " },
-        { label: "QRP - Quality Report ", value: "QRP - Quality Report " },
-        { label: " QSC - Quality Specification", value: " QSC - Quality Specification" },
-        { label: "SOP - Statement of Prequalification ", value: " SOP - Statement of Prequalification" }
+        // { label: "RSK - Risk Assessment", value: "RSK - Risk Assessment" },
+        // { label: "STR - S.T.A.R.T. briefing", value: "STR - S.T.A.R.T. briefing" },
+        // { label: "TBT - Tool Box Talk", value: " TBT - Tool Box Talk" },
+        // { label: "BCL - Batch Plant Checklis", value: "BCL - Batch Plant Checklis" },
+        // { label: " CAS - Calibration Schedule", value: "CAS - Calibration Schedule" },
+        // { label: " COR - Concrete Request", value: "COR - Concrete Request" },
+        // { label: "CPA - Corrective and Preventive Action", value: "CPA - Corrective and Preventive Action " },
+        // { label: "CPR - Concrete Pouring Report", value: "CPR - Concrete Pouring Report " },
+        // { label: " CRC - Calibration Record Card ", value: "CRC - Calibration Record Card " },
+        // { label: " CRT - Quality Certificate", value: " CRT - Quality Certificate" },
+        // { label: " CTM - Concrete Trial Mixes", value: "CTM - Concrete Trial Mixes " },
+        // { label: " ITP - Inspection and Test Plan ", value: "ITP - Inspection and Test Plan " },
+        // { label: " ORG - Organization Chart", value: " ORG - Organization Chart " },
+        // { label: " QAP - Quality Assurance Program", value: "QAP - Quality Assurance Program " },
+        // { label: " QAS - Quality Audit Schedule", value: "QAS - Quality Audit Schedule " },
+        // { label: " QMP - Quality Management Plan ", value: "QMP - Quality Management Plan " },
+        // { label: " QPR - Quality Procedures", value: "QPR - Quality Procedures" },
+        // { label: " QRC - Quality Records", value: "QRC - Quality Records " },
+        // { label: "QRP - Quality Report ", value: "QRP - Quality Report " },
+        // { label: " QSC - Quality Specification", value: " QSC - Quality Specification" },
+        // { label: "SOP - Statement of Prequalification ", value: " SOP - Statement of Prequalification" }
 
       ],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
@@ -569,6 +569,33 @@ class SubmittalAddEdit extends Component {
       }
       this.setState({
         disciplines: [...result]
+      });
+    });
+
+    //discplines
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
+
+      if (isEdit) {
+
+        let submittalTypeId = this.props.document.submittalTypeId;
+
+        if (submittalTypeId) {
+
+          let disciplineName = result.find(i => i.value === submittalTypeId);
+
+          if (disciplineName) {
+            this.setState({
+              selectedSubmittalType: { label: disciplineName.label, value: submittalTypeId }
+            });
+          } else {
+            this.setState({
+              selectedSubmittalType: { label: Resources.disciplineRequired[currentLanguage], value: "0" }
+            });
+          }
+        }
+      }
+      this.setState({
+        SubmittalTypes: [...result]
       });
     });
 
