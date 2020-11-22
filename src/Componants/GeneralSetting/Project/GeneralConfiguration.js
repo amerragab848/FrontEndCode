@@ -301,6 +301,7 @@ class GeneralConfiguration extends Component {
                         <td>{item.dayName}</td>
                         <td>{item.check_in}</td>
                         <td>{item.check_out}</td>
+                        <td>{item.isVacation == true ? "Yes" : "No"}</td>
                     </tr>
                 )
             })
@@ -357,6 +358,7 @@ class GeneralConfiguration extends Component {
                                 <th>{Resources['dayName'][currentLanguage]}</th>
                                 <th>{Resources['checkIn'][currentLanguage]}</th>
                                 <th>{Resources['checkOut'][currentLanguage]}</th>
+                                <th>{Resources['isVacation'][currentLanguage]}</th>
                             </tr>
                         </thead>
                         <tbody>
