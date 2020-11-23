@@ -3233,7 +3233,7 @@ class requestPaymentsAddEdit extends Component {
         return ItemsGrid;
     }
     executeVoChangePrices = () => {
-        this.setState({ isLoading: true , selected : {}});
+        this.setState({ isLoading: true, selected: {} });
 
         let requestId = this.state.docId;
 
@@ -3380,10 +3380,7 @@ class requestPaymentsAddEdit extends Component {
             this.state.interimInvoicesLoading === false ? (
                 <Export
                     key={'Export-4'}
-                    rows={
-                        this.state.interimInvoicedTable === false
-                            ? this.state.interimInvoicedTable
-                            : []
+                    rows={this.state.interimInvoicedTable
                     }
                     columns={columnOfInterimPayment}
                     fileName={
@@ -3398,7 +3395,7 @@ class requestPaymentsAddEdit extends Component {
                 <Export
                     key={'Export-5'}
                     rows={
-                        this.state.isLoading === false
+                        this.state.approvedSummaryLoading === false
                             ? this.state.approvedInvoicesChilds
                             : []
                     }
@@ -5367,7 +5364,7 @@ class requestPaymentsAddEdit extends Component {
                                             {btnExportInterimPayment}
                                             <table
                                                 className="attachmentTable attachmentTableAuto specialTable tbl-load"
-                                                key="interimPaymentCertificate" style={{ position: "relative",minHeight:this.state.interimInvoicesLoading==true?"250px":"auto" }} >
+                                                key="interimPaymentCertificate" style={{ position: "relative", minHeight: this.state.interimInvoicesLoading == true ? "250px" : "auto" }} >
                                                 <thead>
                                                     <tr>
                                                         <th colSpan="3">
@@ -5486,11 +5483,11 @@ class requestPaymentsAddEdit extends Component {
                                                         <th colSpan="3"></th>
                                                     </tr>
                                                 </thead>
-                                                    {this.state.interimInvoicesLoading == false ?
-                                                        <tbody>
-                                                            {interimTable}
-                                                        </tbody>
-                                                        :  <LoadingSection isCustomLoader={true} />}
+                                                {this.state.interimInvoicesLoading == false ?
+                                                    <tbody>
+                                                        {interimTable}
+                                                    </tbody>
+                                                    : <LoadingSection isCustomLoader={true} />}
                                             </table>
                                             <div>
                                                 <header>
@@ -5506,7 +5503,7 @@ class requestPaymentsAddEdit extends Component {
                                                 <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
                                                     <table
                                                         className="attachmentTable attachmentTableAuto tbl-load"
-                                                        key="summaryOfApprovedInvoices" style={{ position: "relative",minHeight:this.state.approvedSummaryLoading==true?"250px":"auto" }}>
+                                                        key="summaryOfApprovedInvoices" style={{ position: "relative", minHeight: this.state.approvedSummaryLoading == true ? "250px" : "auto" }}>
                                                         <thead>
                                                             <tr>
                                                                 <th>
@@ -5549,48 +5546,48 @@ class requestPaymentsAddEdit extends Component {
                                                                 </th>
                                                             </tr>
                                                         </thead>
-                                                            {this.state.approvedSummaryLoading == false ?
-                                                                <tbody>
-                                                                    {this.state.approvedInvoicesChilds.map(
-                                                                        (i, idx) => (
-                                                                            <tr
-                                                                                key={
-                                                                                    'tr-approvedInvoicesChilds-' +
-                                                                                    idx
-                                                                                }>
-                                                                                <td>{i.building}</td>
+                                                        {this.state.approvedSummaryLoading == false ?
+                                                            <tbody>
+                                                                {this.state.approvedInvoicesChilds.map(
+                                                                    (i, idx) => (
+                                                                        <tr
+                                                                            key={
+                                                                                'tr-approvedInvoicesChilds-' +
+                                                                                idx
+                                                                            }>
+                                                                            <td>{i.building}</td>
 
-                                                                                {this.state.approvedInvoicesParent.map(
-                                                                                    (data, index) => (
-                                                                                        <td
-                                                                                            key={
-                                                                                                'td-approvedInvoicesParent-' +
-                                                                                                index
-                                                                                            }>
-                                                                                            {parseFloat(
-                                                                                                i[data.details],
-                                                                                            )
-                                                                                                .toFixed(2)
-                                                                                                .replace(
-                                                                                                    /\B(?=(\d{3})+(?!\d))/g,
-                                                                                                    ',',
-                                                                                                )}
-                                                                                        </td>
-                                                                                    ),
-                                                                                )}
-                                                                                <td>
-                                                                                    {parseFloat(i.rowTotal)
-                                                                                        .toFixed(2)
-                                                                                        .replace(
-                                                                                            /\B(?=(\d{3})+(?!\d))/g,
-                                                                                            ' ,',
-                                                                                        )}
-                                                                                </td>
-                                                                            </tr>
-                                                                        ),
-                                                                    )}
-                                                                </tbody>
-                                                                : <LoadingSection isCustomLoader={true} />}
+                                                                            {this.state.approvedInvoicesParent.map(
+                                                                                (data, index) => (
+                                                                                    <td
+                                                                                        key={
+                                                                                            'td-approvedInvoicesParent-' +
+                                                                                            index
+                                                                                        }>
+                                                                                        {parseFloat(
+                                                                                            i[data.details],
+                                                                                        )
+                                                                                            .toFixed(2)
+                                                                                            .replace(
+                                                                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                                                                ',',
+                                                                                            )}
+                                                                                    </td>
+                                                                                ),
+                                                                            )}
+                                                                            <td>
+                                                                                {parseFloat(i.rowTotal)
+                                                                                    .toFixed(2)
+                                                                                    .replace(
+                                                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                                                        ' ,',
+                                                                                    )}
+                                                                            </td>
+                                                                        </tr>
+                                                                    ),
+                                                                )}
+                                                            </tbody>
+                                                            : <LoadingSection isCustomLoader={true} />}
                                                     </table>
                                                 </div>
                                             </div>
