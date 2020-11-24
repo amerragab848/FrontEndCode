@@ -22,7 +22,6 @@ const validationSchema = Yup.object().shape({
         Resources["passwordRequired"][currentLanguage]
     )
 });
-//const publicConfiguarion = Config.IP_CONFIG; // Config.getPublicConfiguartion();
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -68,7 +67,7 @@ class Login extends Component {
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(
                         _payLoad
                     );
-                    
+
                     tokenStore.setItem("claims", encodedPaylod);
                     let browserObj = this.createBrowserObject();
                     let cookie = this.getCookie();
@@ -98,60 +97,36 @@ class Login extends Component {
                         );
                     }
                     if (tokenStore.getItem("requestPermission")) {
-                        let deviceToken = tokenStore.getItem(
-                            "requestPermission"
-                        );
-                        Api.post(
-                            "UpdateAccountWebDeviceToken?webDeviceToken=" +
+                        let deviceToken = tokenStore.getItem("requestPermission"); 
+                        Api.post("UpdateAccountWebDeviceToken?webDeviceToken=" +
                             deviceToken,
                             null
                         );
                     }
                     Api.get("GetPrimeData?token=undefined").then(primeData => {
-                        if ( primeData.permissions &&primeData.permissions.length > 0) 
-                        {
+                        if (primeData.permissions && primeData.permissions.length > 0) {
                             let permission = CryptoJS.enc.Utf8.parse(
                                 JSON.stringify(primeData.permissions)
                             );
                             let encodedPermission = CryptoJS.enc.Base64.stringify(
                                 permission
                             );
-                            tokenStore.setItem(
-                                "permissions",
-                                encodedPermission
-                            );
+                            tokenStore.setItem("permissions", encodedPermission);
                         }
                         if (primeData.timeSheetSettings) {
-                            tokenStore.setItem(
-                                "timeSheetSettings",
-                                JSON.stringify(
-                                    primeData.timeSheetSettings
-                                )
-                            );
+                            tokenStore.setItem("timeSheetSettings", JSON.stringify(primeData.timeSheetSettings));
                         }
                         if (primeData.wfSettings) {
-                            tokenStore.setItem(
-                                "wfSettings",
-                                JSON.stringify(primeData.wfSettings)
-                            );
+                            tokenStore.setItem("wfSettings", JSON.stringify(primeData.wfSettings));
                         }
                         if (primeData.appComponants) {
-                            tokenStore.setItem(
-                                "appComponants",
-                                JSON.stringify(primeData.appComponants)
-                            );
+                            tokenStore.setItem("appComponants", JSON.stringify(primeData.appComponants));
                         }
                         if (primeData.contactName) {
-                            tokenStore.setItem(
-                                "contactName",
-                                primeData.contactName
-                            );
+                            tokenStore.setItem("contactName", primeData.contactName);
                         }
                         if (primeData.useNormalMR) {
-                            tokenStore.setItem(
-                                "useNormalMR",
-                                primeData.useNormalMR
-                            );
+                            tokenStore.setItem("useNormalMR", primeData.useNormalMR);
                         }
                         window.location.reload();
                     }).catch(() => {
@@ -352,7 +327,7 @@ class Login extends Component {
                                         </div>
                                     </div>
                                 </div>
-                              
+
                                 <div className="ui input inputDev">
                                     {this.state.isLoading === false ? (
                                         <button

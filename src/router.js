@@ -87,6 +87,9 @@ const PaymentReqStatusReport = AsyncComponent(() =>
 const DocumentTpesReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/DocumentTpesReport'),
 );
+const DocumentAllTypesReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/DocumentAllTypesReport'),
+);
 const TechnicalOfficeReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport'),
 );
@@ -266,6 +269,9 @@ const PaymentCertification = AsyncComponent(() =>
 
 const ActionBySummaryDetails = AsyncComponent(() =>
     import('./Componants/DashBoardDetails/ActionBySummaryDetails'),
+);
+const usersAlertSummaryDetails = AsyncComponent(() =>
+    import('./Componants/DashBoardDetails/usersAlertSummaryDetails'),
 );
 const AlertingQuantitySummaryDetails = AsyncComponent(() =>
     import('./Componants/DashBoardDetails/AlertingQuantitySummaryDetails'),
@@ -502,6 +508,9 @@ const ProjectWorkFlowAddEdit = AsyncComponent(() =>
 );
 const AccountsAlerts = AsyncComponent(() =>
     import('./Pages/ProjectSetup/AccountsAlerts'),
+);
+const UserAlerts = AsyncComponent(() =>
+    import('./Pages/ProjectSetup/UserAlerts'),
 );
 const BoqStructure = AsyncComponent(() =>
     import('./Pages/ProjectSetup/boqStructure'),
@@ -1312,8 +1321,18 @@ let originalRoutes = [
     <Route key="r-192" path="ContractsPOReports/RequestPaymentDeductionTypeReport"
         component={RequestPaymentDeductionTypeReport} />,
     <Route key="r-193" path="/levelDurationAlertDetails"
-        component={levelDurationAlertDetails} />,
-
+        component={levelDurationAlertDetails} />, 
+    <Route key="r-194" path="/UserAlerts" component={UserAlerts} />,
+    <Route
+        key="r-195"
+        path="/usersAlertSummaryDetails"
+        component={usersAlertSummaryDetails}
+    />, 
+    <Route
+        key="r-196"
+        path="/DocumentAllTypesReport"
+        component={DocumentAllTypesReport}
+    />, 
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

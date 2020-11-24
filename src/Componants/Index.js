@@ -93,8 +93,7 @@ class Index extends Component {
         });
     }
 
-    renderWidget(widget, index) {
-        debugger;
+    renderWidget(widget, index) { 
         if (Details.widgets[widget.title].props.type === 'threeWidget') {
             return (
                 <ApprovedWidget
@@ -137,13 +136,15 @@ class Index extends Component {
         } else if (Details.widgets[widget.title].props.type === 'line') {
             return (
                 <Fragment key={index + 'DIVBriteCharts'}>
-                    <Britecharts
-                        api={Details.widgets[widget.title].props.api}
-                        datasets={
-                            Details.widgets[widget.title].props.topicNames
-                        }
-                        title={language[widget.title][currentLanguage]}
-                    />
+                    <div className="col-md-6">
+                        <Britecharts
+                            api={Details.widgets[widget.title].props.api}
+                            datasets={
+                                Details.widgets[widget.title].props.topicNames
+                            }
+                            title={language[widget.title][currentLanguage]}
+                        />
+                    </div>
                 </Fragment>
             );
         } else if (

@@ -130,7 +130,18 @@ let routes = [
             order: 4
         }
     },
-
+    {
+        route: "UserAlerts",
+        moduleId: "UserAlerts",
+        title: "userAlerts",
+        nav: true,
+        settings: {
+            General: true,
+            permission: 3274,
+            caption: "procoor-icon-project-page-setup",
+            order: 12
+        }
+    },
 
 ]
 export default routes

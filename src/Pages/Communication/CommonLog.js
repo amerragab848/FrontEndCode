@@ -26,13 +26,16 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
+let docTempLink;
 
+  let moduleId =  Config.getPublicConfiguartion().commonLogApi;
 class CommonLog extends Component {
 
   constructor(props) {
 
     super(props);
     this.state = {
+      ExcelFileUploaded:false,
       groups: [],
       projectName: localStorage.getItem("lastSelectedprojectName"),
       isLoading: true,
@@ -41,7 +44,6 @@ class CommonLog extends Component {
       viewfilter: false,
       filterMode: false,
       isFilter: false,
-
       projectId: this.props.projectId,
       documentName: props.match.params.document,
       filtersColumns: [],
@@ -220,7 +222,7 @@ class CommonLog extends Component {
     }
 
 
-    if (this.props.projectId !== prevProps.projectId) {
+    if (this.props.projectId !== prevProps.projectId ) {
       if (!this.state.documentObj.documentApi) {
         this.renderComponent(this.props.match.params.document, this.props.projectId, true);
       } else {
@@ -312,7 +314,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, moduleId).then(result => {
 
         let oldRows = []; // this.state.rows;
 
@@ -374,7 +376,7 @@ class CommonLog extends Component {
 
       let url = (this.state.query == "" ? this.state.api : this.state.apiFilter) + "?projectId=" + this.state.projectId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize + (this.state.query == "" ? "" : "&query=" + this.state.query);
 
-      Api.get(url, undefined, 2).then(result => {
+      Api.get(url, undefined, moduleId).then(result => {
 
         let oldRows = [];
 
@@ -438,7 +440,7 @@ class CommonLog extends Component {
     });
 
     if (stringifiedQuery !== "{}") {
-      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, 2).then(result => {
+      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery, undefined, moduleId).then(result => {
 
         if (result.data.length > 0) {
 
@@ -553,6 +555,14 @@ class CommonLog extends Component {
     var projectId = projectId;
     var documents = documentName;
     documentObj = documentDefenition[documentName];
+    if (documentObj.docTyp == 42) {
+      docTempLink = Config.getPublicConfiguartion().downloads + "/Downloads/Excel/tempSubmittal.xlsx"
+    }
+    //else if .... for more documents 
+    else {
+      docTempLink = Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"
+    }
+
     //added
     let docTypeId = documentObj.docTyp;
     let showExServerBtn = false;
@@ -629,7 +639,7 @@ class CommonLog extends Component {
       showExServerBtn = true;
     }
 
-    if (docTypeId == 19 || docTypeId==64 ) {
+    if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
       showDocTemplateBtn = true;
     } else {
       showDocTemplateBtn = false;
@@ -695,7 +705,7 @@ class CommonLog extends Component {
     this.addRecord()
   }
   GetLogData(url) {
-    Api.get(url, undefined, 2).then(result => {
+    Api.get(url, undefined, moduleId).then(result => {
       result.data.forEach(row => {
         let subject = "";
         if (row) {
@@ -1180,51 +1190,59 @@ class CommonLog extends Component {
               onCloseClicked={() => this.setState({ docTemplateModal: false })}
               isVisible={this.state.docTemplateModal}>
               <div>
-                <div className="linebylineInput valid-input mix_dropdown">
+                {(documentObj.docTyp != 42) ? (
+                  <div className="linebylineInput valid-input mix_dropdown">
 
-                  <div className="supervisor__company">
-                    <div className="super_name">
-                      <Dropdown
-                        data={this.state.companies}
-                        isMulti={false}
-                        selectedValue={this.state.selectedFromCompany}
-                        handleChange={event => {
-                          this.handleChangeDropDown(event, "companyId", true, "contacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
-                        }}
-                        index="companyId"
-                        name="companyId"
-                        id=" companyId"
-                        styles={CompanyDropdown}
-                        classDrop="companyName1"
-                      />
-                    </div>
-                    <div className="super_name">
-                      <Dropdown
-                        isMulti={false}
-                        data={this.state.contacts}
-                        selectedValue={this.state.selectedFromContact}
-                        handleChange={event =>
-                          this.handleChangeDropDown(event, "contactId", false, "", "", "", "selectedFromContact")
-                        }
-                        index="contactId"
-                        name="contactId"
-                        id="contactId"
-                        classDrop="contactName1"
-                        styles={ContactDropdown}
-                      />
+                    <div className="supervisor__company">
+                      <div className="super_name">
+                        <Dropdown
+                          data={this.state.companies}
+                          isMulti={false}
+                          selectedValue={this.state.selectedFromCompany}
+                          handleChange={event => {
+                            this.handleChangeDropDown(event, "companyId", true, "contacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                          }}
+                          index="companyId"
+                          name="companyId"
+                          id=" companyId"
+                          styles={CompanyDropdown}
+                          classDrop="companyName1"
+                        />
+                      </div>
+                      <div className="super_name">
+                        <Dropdown
+                          isMulti={false}
+                          data={this.state.contacts}
+                          selectedValue={this.state.selectedFromContact}
+                          handleChange={event =>
+                            this.handleChangeDropDown(event, "contactId", false, "", "", "", "selectedFromContact")
+                          }
+                          index="contactId"
+                          name="contactId"
+                          id="contactId"
+                          classDrop="contactName1"
+                          styles={ContactDropdown}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <XSLfile key="docTemplate"
+                ) : null}
+
+                <XSLfile key="docTemplate" 
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
                   docType={this.state.docType}
                   documentTemplate={true}
-                  link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
+                  link={docTempLink}
                   header="addManyItems"
-                  afterUpload={() => this.setState({ docTemplateModal: false })} />
-
+                  afterUpload={
+                    () =>{
+                    this.setState({ docTemplateModal: false  })
+                    this.setState({ isLoading: true });
+                    this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
+                  }
+                  } />
               </div>
             </SkyLightStateless>
           </div>

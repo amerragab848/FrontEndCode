@@ -121,13 +121,14 @@ class Index extends Component {
         this.rowActions = [
             {
                 title: "Change Company",
-                handleClick: () => {
+                handleClick: (row) => {
                     this.setState({
                         showTransferpopUp: true,
+                        selectedContact:row.id,
                         transferCompany: this.props.Adminstration.companyList[0].value
                     });
                 }
-            },
+            },  
             {
                 title: "Key Contact",
                 handleClick: (values) => {

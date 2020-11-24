@@ -15,6 +15,29 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
+    static GetDataListForUserAlert(url, label, value) {
+        let primaveraList = [];
+        let scheduleList = []; 
+        let Data = []; 
+        return Api.get(url).then(result => {
+            (result.primaveraList).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                primaveraList.push(obj);
+            });
+            (result.scheduleList).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                scheduleList.push(obj);
+            });
+            Data.push(primaveraList);
+            Data.push(scheduleList);
+
+            return Data;
+        }).catch(ex => Data);
+    };
     static GetDataListForMaterialReturned(url, label, value, contractId) {
         let Data = []
         return Api.get(url).then(result => {
@@ -204,4 +227,11 @@ export default class Dataservice {
         }).catch(ex => { });
     };
 
+
+    static checkSubmittalRefCode = (projectId,code) => {
+
+        return Api.get("checkSubmittalRefCode?projectId="+projectId+"&code="+code).then(result => {
+            return result;
+        }).catch(ex => { });
+    };
 }

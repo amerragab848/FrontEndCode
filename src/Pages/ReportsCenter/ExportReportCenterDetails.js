@@ -22,8 +22,9 @@ class ExportReportCenterDetails extends Component {
                 + '<h2>' + documentName + '</h2>'
                 + '</head > '
                 + '<body>'
-                + ' <table>{Fields}</table><table> <h6>Documents </h6></table> '
-                + ' <table>{items}</table> '
+                + '<table>{Fields}</table>'
+                + '<table> <h6>Documents </h6></table> '
+                + '<table>{items}</table> '
                 + '</body></html > '
             , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
             , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
@@ -41,7 +42,6 @@ class ExportReportCenterDetails extends Component {
 
         var blob = new Blob([format(template, ctx)]);
         if (this.ifIE()) {
-            //csvData = table.innerHTML;
             if (window.navigator.msSaveBlob) {
                 var blob = new Blob([format(template, ctx)], {
                     type: "text/html"
@@ -65,7 +65,7 @@ class ExportReportCenterDetails extends Component {
 
         let rows = fields.map((field, index) => {
             let data = field.type == "D" ? moment(field.value).format('DD/MM/YYYY') : field.value
- 
+
             return (<tr key={index}>
                 <Fragment>
                     <td><span>{data}</span></td>

@@ -3,6 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 import Api from '../../api';
 import 'chartjs-plugin-style';
 import Loader from '../../../src/Styles/images/ChartLoaders/PieChartLoader.webm';
+import NoData from '../../../src/Styles/images/ChartLoaders/PieChartNoData.png';
 
 const colorSchema = [
     '#07bc0c',
@@ -43,6 +44,7 @@ class PieChartComp extends Component {
             sectorPercentage: null,
             totalAmount: null,
             pieChartInst: null,
+            noData: false,
         };
     }
 
@@ -127,6 +129,7 @@ class PieChartComp extends Component {
                     chartDatasets[0],
                 ),
                 isLoading: false,
+                noData: chartDatasets.length > 0 ? false : true,
                 chartData: {
                     labels: chartLabels,
                     datasets: [
@@ -150,51 +153,67 @@ class PieChartComp extends Component {
     };
 
     render() {
-        return this.state.isLoading ? (
-            <div className="panel">
-                <div className="panel-body-loader">
-                    <h2>{this.props.title}</h2>
-                    <video
-                        width={this.props.width}
-                        height={this.props.height}
-                        autoPlay
-                        loop
-                        muted>
-                        <source src={Loader} type="video/webm" />
-                    </video>
-                </div>
-            </div>
-        ) : (
-            <div className="panel">
-                <div className="panel-body">
-                    <h2>{this.props.title}</h2>
-                    <div className="chartContainer">
-                        <div className="canvas-container">
-                            <Doughnut
-                                ref={reference =>
-                                    (this.state.pieChartInst = reference)
-                                }
-                                data={this.state.chartData}
-                                options={this.options}
-                            />
-                        </div>
-                        <p id="legenbd__teext">
-                            <span className="chartName">
-                                {this.state.chartName}
-                            </span>
-                            <span className="percentage">
-                                {parseFloat(
-                                    this.state.sectorPercentage,
-                                ).toFixed(1) + '%'}
-                            </span>
-                            <span className="totalAmount">
-                                {Math.round(this.state.totalAmount).toString()}
-                            </span>
-                        </p>
+        if (this.state.isLoading) {
+            return (
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <video style={{ width: '50%' }} autoPlay loop muted>
+                            <source src={Loader} type="video/webm" />
+                        </video>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        } else if (this.state.noData) {
+            return (
+                <div className="panel">
+                    <div className="panel-body-loader">
+                        <h2>{this.props.title}</h2>
+                        <img src={NoData} style={{ width: '50%' }} />
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div className="panel">
+                    <div className="panel-body">
+                        <h2>{this.props.title}</h2>
+                        <div className="chartContainer">
+                            <div className="canvas-container">
+                                <Doughnut
+                                    ref={reference =>
+                                        (this.state.pieChartInst = reference)
+                                    }
+                                    data={this.state.chartData}
+                                    options={this.options}
+                                />
+                            </div>
+                            <p id="legenbd__teext">
+                                <span className="chartName">
+                                    {this.state.chartName}
+                                </span>
+                                <span className="percentage">
+                                    {isNaN(
+                                        parseFloat(
+                                            this.state.sectorPercentage,
+                                        ).toFixed(1),
+                                    )
+                                        ? ''
+                                        : parseFloat(
+                                              this.state.sectorPercentage,
+                                          ).toFixed(1) + '%'}
+                                </span>
+                                <span className="totalAmount">
+                                    {Math.round(
+                                        this.state.totalAmount,
+                                    ).toString()}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
     }
 }
 

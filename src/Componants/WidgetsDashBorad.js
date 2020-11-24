@@ -293,6 +293,7 @@ var widgets = [
           // key: "0-2-8"
         }
       },
+
       {
         title: "openedSummary",
         permission: 0,
@@ -349,7 +350,26 @@ var widgets = [
           isModal: true,
           // key: "0-2-11"
         }
-      }
+      },
+      {
+        title: "usersAlertSummary",
+        permission: 0,
+        // key: "0-2-8",
+        canView: false,
+        checked: false,
+        order: 13,
+        type: "threeWidget",
+        props: {
+          api: "GetusersAlertCount",
+          apiDetails: "GetusersAlertSummaryDetails?action=",
+          route: "usersAlertSummaryDetails?action=",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false,
+          // key: "0-2-8"
+        }
+      },
     ]
   },
   {

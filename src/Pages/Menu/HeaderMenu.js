@@ -1507,7 +1507,7 @@ function mapStateToProps(state, ownProps) {
     projectId: state.communication.projectId,
     projectName: state.communication.projectName,
     moduleName: state.communication.moduleName,
-    showLeftReportMenu: state.communication.showLeftReportMenu
+    showLeftReportMenu:state.communication.showLeftReportMenu
   };
 }
 
