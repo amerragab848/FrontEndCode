@@ -588,7 +588,6 @@ export function deleteCommunicationDocsAttach(id) {
 
 export function getCommunicationDocument(projectId, docType) {
     return (dispatch) => {
-
         return Api.get('GetAccountsDocAlertDocs?projectId=' + projectId + '&docType=' + docType).then(resp => {
             dispatch({ type: types.GET_DOCUMNET_DATA, data: resp });
         }).catch((ex) => {
