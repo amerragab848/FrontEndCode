@@ -72,9 +72,8 @@ class CostCodingTreeAddEdit extends Component {
     };
 
     if (!Config.IsAllow(134) || !Config.IsAllow(135) || !Config.IsAllow(137)) {
-      toast.success(Resources["missingPermissions"][currentLanguage]);
-
-      this.props.history.push("/DashBoard/" + this.state.projectId);
+      toast.warn(Resources["missingPermissions"][currentLanguage]);
+      this.props.history.push("/");
     }
 
     this.printChild = this.printChild.bind(this);

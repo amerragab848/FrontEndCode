@@ -1,4 +1,3 @@
-
 {
   "BlobStorageContainerName": "project-files-monorail",
   "acApp": "AC",
@@ -12,21 +11,21 @@
   "exportStatic": "https://monorail.procoor.com",
   "fmApp": "FM",
   "hrApp": "HR",
-  "local": "http://localhost:11480/",
+  "local": "https://monorailServices.procoor.com/",
   "loginServer": "https://procoorauthorization.procoor.com",
   "pmApp": "PM",
-  "static": "http://localhost:11480/",
+  "static": "https://monorailServices.procoor.com/",
   "downloads": "https://monorailServices.procoor.com",
   "dropBoxappKey":"r8iiezlpm1pvlry",
   "dropBoxToken":"H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
   "googleDriveClientId":"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
   "googleDriveKey":"uof5qzvtwpq1dao",
   "refAutomatic": false, 
-  "exportCore" : "http://localhost:11480/ExportAPI/api/ExportController/",
+  "exportCore" : "https://monorailServices.procoor.com/ExportAPI/api/ExportController/",
 
   "client_id": "DlSeYObvI78EFYfvEzK9GOwcQ4jvERA8",
   "client_secret": "8eVDuCjah3JhAn1O",
 
 "commonLogApi": 1,
-"refCodeValidation":false 
+"refCodeValidation":false
 }
