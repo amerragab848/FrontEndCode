@@ -569,7 +569,7 @@ class QualityControlAddEdit extends Component {
     }
 
     getQualityControlItems = (e) => {
-        let url=docId > 0?`GetLogsQualityControlItemsByQualityControlId?qualityControlId=${e}`:`GetLogsQualityControlItemsByQualityControlId?parentId=${e.value}`
+        let url=docId > 0?`GetLogsQualityControlItemsByQualityControlId?qualityControlId=${e}`:`GetAccountsQualityControlItemsByParentId?parentId=${e.value}`
         dataservice.GetDataGrid(url).then(result => {
             this.setState({ qualityControlItemsList: result || [] })
         })
