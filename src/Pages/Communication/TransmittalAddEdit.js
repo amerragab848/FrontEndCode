@@ -28,8 +28,7 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
     refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true),
-    attachedPapersSize: Yup.string().required(Resources['attachedPaperSizeRequired'][currentLanguage]).nullable(true)
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true) 
 });
 
 let docId = 0;
