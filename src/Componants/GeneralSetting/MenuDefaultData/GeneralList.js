@@ -105,9 +105,10 @@ class GeneralList extends Component {
                 title: Resources["generalListTitle"][currentLanguage],
                 groupable: true,
                 fixed: true,
-                width: 16,
+                width: 25,
                 sortable: true,
-                type: "text"
+                type: "text",
+                showTip: true
             }
         ];
 
@@ -220,30 +221,6 @@ class GeneralList extends Component {
         }
     };
 
-    // clickHandlerDeleteRowsMain = (selectedRows) => {
-    //     let id = ''
-    //     selectedRows.map(i => { id = i })
-    //     let checkEdit = []
-    //     checkEdit = this.state.rows.filter(s => s.id === id)
-    //     let editable = '';
-    //     checkEdit.map(i => {
-    //         editable = i.editable
-    //     })
-    //     if (editable === true) {
-    //         this.setState({
-    //             selectedRows,
-    //             showDeleteModal: true
-    //         })
-    //     }
-    //     else {
-    //         this.setState({ isLoading: true })
-    //         toast.error(Resources["adminItemEditable"][currentLanguage]);
-    //         setTimeout(() => {
-    //             this.setState({ isLoading: false })
-    //         }, 100);
-    //     }
-    // };
-
     ConfirmDelete = () => {
         this.setState({
             isLoading: true
@@ -296,16 +273,16 @@ class GeneralList extends Component {
     onRowClick = (obj) => {
         if (config.IsAllow(1180)) {
             // if (obj.editable) {
-                Api.get('GetAccountsDefaultListForEdit?id=' + obj.id + '').then(
-                    res => {
-                        this.setState({
-                            EditListData: res,
-                            IsEdit: true,
-                            selectedrow: obj.id,
-                            ShowPopup: true,
-                        })
-                    }
-                )
+            Api.get('GetAccountsDefaultListForEdit?id=' + obj.id + '').then(
+                res => {
+                    this.setState({
+                        EditListData: res,
+                        IsEdit: true,
+                        selectedrow: obj.id,
+                        ShowPopup: true,
+                    })
+                }
+            )
             // }
             // else {
             //     toast.error(Resources["adminItemEditable"][currentLanguage]);
@@ -362,21 +339,16 @@ class GeneralList extends Component {
                     rowClick={(row, cell) => {
                         let id = row.id;
                         if (config.IsAllow(1180)) {
-                            // if (row.editable) {
-                                Api.get('GetAccountsDefaultListForEdit?id=' + id + '').then(
-                                    res => {
-                                        this.setState({
-                                            EditListData: res,
-                                            IsEdit: true,
-                                            selectedrow: id,
-                                            ShowPopup: true,
-                                        })
-                                    }
-                                )
-                            // }
-                            // else {
-                            //     toast.error(Resources["adminItemEditable"][currentLanguage]);
-                            // }
+                            Api.get('GetAccountsDefaultListForEdit?id=' + id + '').then(
+                                res => {
+                                    this.setState({
+                                        EditListData: res,
+                                        IsEdit: true,
+                                        selectedrow: id,
+                                        ShowPopup: true,
+                                    })
+                                }
+                            )
                         }
                         else {
                             toast.warn(Resources["missingPermissions"][currentLanguage]);

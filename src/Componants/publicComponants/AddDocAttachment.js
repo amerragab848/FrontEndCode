@@ -15,6 +15,7 @@ import { SkyLightStateless } from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 const filter = require('lodash/filter')
 const indexOf = require('lodash/indexOf')
 
@@ -195,7 +196,9 @@ class AddDocAttachment extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    
     if (nextProps.documentData != prevState.documentData && prevState.isFilter === false) {
+      
       return {
         documentData: nextProps.documentData,
         isFilter: true,

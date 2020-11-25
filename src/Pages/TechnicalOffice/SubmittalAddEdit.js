@@ -158,48 +158,7 @@ class SubmittalAddEdit extends Component {
         { name: "deleteAttachments", code: 884 },
         { name: "previousVersions", code: 8080800 }
       ],
-      SubmittalTypes: [
-        // { label: "As Build", value: "As Build" },
-        // { label: "Method Statment", value: "Method Statment" },
-        // { label: "Quality Plan", value: "Quality Plan" },
-        // { label: "IPP", value: "IPP" },
-        // { label: "Material", value: "Material" },
-        // { label: "Quantity Surevy", value: "Quantity Surevy" },
-        // { label: "Schedule", value: "Schedule" },
-        // { label: "Shop drawing", value: "Shop drawing" },
-        // { label: "IIP", value: "IIP" },
-        // { label: "ITP", value: "ITP" },
-        // { label: "Safty Plan", value: "Safty Plan" },
-        // { label: "Release Submittal", value: "Release Submittal" },
-        // { label: "Organization Chart", value: "Organization Chart" },
-        // { label: "BBS", value: "BBS" },
-        // { label: "Coordination", value: "Coordination" },
-        // { label: "Technical Issues", value: "Technical Issues" },
-        // { label: "Drawings ", value: "Drawings " },
-
-        // { label: "RSK - Risk Assessment", value: "RSK - Risk Assessment" },
-        // { label: "STR - S.T.A.R.T. briefing", value: "STR - S.T.A.R.T. briefing" },
-        // { label: "TBT - Tool Box Talk", value: " TBT - Tool Box Talk" },
-        // { label: "BCL - Batch Plant Checklis", value: "BCL - Batch Plant Checklis" },
-        // { label: " CAS - Calibration Schedule", value: "CAS - Calibration Schedule" },
-        // { label: " COR - Concrete Request", value: "COR - Concrete Request" },
-        // { label: "CPA - Corrective and Preventive Action", value: "CPA - Corrective and Preventive Action " },
-        // { label: "CPR - Concrete Pouring Report", value: "CPR - Concrete Pouring Report " },
-        // { label: " CRC - Calibration Record Card ", value: "CRC - Calibration Record Card " },
-        // { label: " CRT - Quality Certificate", value: " CRT - Quality Certificate" },
-        // { label: " CTM - Concrete Trial Mixes", value: "CTM - Concrete Trial Mixes " },
-        // { label: " ITP - Inspection and Test Plan ", value: "ITP - Inspection and Test Plan " },
-        // { label: " ORG - Organization Chart", value: " ORG - Organization Chart " },
-        // { label: " QAP - Quality Assurance Program", value: "QAP - Quality Assurance Program " },
-        // { label: " QAS - Quality Audit Schedule", value: "QAS - Quality Audit Schedule " },
-        // { label: " QMP - Quality Management Plan ", value: "QMP - Quality Management Plan " },
-        // { label: " QPR - Quality Procedures", value: "QPR - Quality Procedures" },
-        // { label: " QRC - Quality Records", value: "QRC - Quality Records " },
-        // { label: "QRP - Quality Report ", value: "QRP - Quality Report " },
-        // { label: " QSC - Quality Specification", value: " QSC - Quality Specification" },
-        // { label: "SOP - Statement of Prequalification ", value: " SOP - Statement of Prequalification" }
-
-      ],
+      SubmittalTypes: [],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
       selectedFromCompanyCycles: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
@@ -254,7 +213,7 @@ class SubmittalAddEdit extends Component {
     let submittalDocumentCycles = {
       //field
       id: 0,
-      submittalId: "", 
+      submittalId: "",
       docDate: moment(),
       approvedDate: moment(),
       CycleStatus: "true",
@@ -525,7 +484,7 @@ class SubmittalAddEdit extends Component {
     //from Companies
     dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
-      let obj = this.state.SubmittalTypes.find(o => o.label === this.props.document.submittalType);
+      //let obj = this.state.SubmittalTypes.find(o => o.label === this.props.document.submittalType);
 
       if (isEdit) {
 
@@ -541,7 +500,7 @@ class SubmittalAddEdit extends Component {
         }
       }
       this.setState({
-        selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
+        // selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
         companies: [...result]
       });
     });
@@ -582,11 +541,11 @@ class SubmittalAddEdit extends Component {
 
         if (submittalTypeId) {
 
-          let disciplineName = result.find(i => i.value === submittalTypeId);
+          let submittalType = result.find(i => i.value === submittalTypeId);
 
-          if (disciplineName) {
+          if (submittalType) {
             this.setState({
-              selectedSubmittalType: { label: disciplineName.label, value: submittalTypeId }
+              selectedSubmittalType: { label: submittalType.label, value: submittalTypeId }
             });
           } else {
             this.setState({
@@ -1050,9 +1009,9 @@ class SubmittalAddEdit extends Component {
   editSubmittalCycle() {
     let saveDocumentCycle = this.state.documentCycle;
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocumentCycle.submittalId = this.state.docId;
-    saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss");
 
+    saveDocumentCycle.submittalId = this.state.docId;
     this.setState({ isLoading: true });
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {

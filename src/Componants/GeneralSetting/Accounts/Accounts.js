@@ -11,9 +11,8 @@ import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
-import companyId from '../../../IP_Configrations.json'
-import { object } from "prop-types";
+import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker"; 
+//import { object } from "prop-types";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const find = require('lodash/find');
 
@@ -395,10 +394,11 @@ class Accounts extends Component {
         let rowsData = this.state.rows;
         let userName = find(rowsData, { 'id': id })
 
-        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&emailOrPassword=' + this.state.NewPassword + '&companyId=' + companyId.accountCompanyId + '&changePassword=true', null, 'PUT').then(data => {
-            if (data.status == 200) {
-                Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword + '').then(result => {
+        let companyId = config.getPublicConfiguartion().accountCompanyId;
 
+        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&emailOrPassword=' + this.state.NewPassword + '&companyId=' + companyId + '&changePassword=true', null, 'PUT').then(data => {
+            if (data.status == 200) {
+                Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword ).then(result => {
                     this.setState({ showResetPasswordModal: false })
                 })
             } else {
@@ -552,8 +552,10 @@ class Accounts extends Component {
         })
         userName = rowsData.filter(s => s.id === id)
         // let pageNumber = this.state.pageNumber 
+
+        let companyId = config.getPublicConfiguartion().accountCompanyId;
         setTimeout(() => {
-            Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&companyId=2&isActive=' + userName.active + '', null, 'PUT').then(
+            Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&companyId=' + companyId + '&isActive=' + userName.active + '', null, 'PUT').then(
                 Api.get('UpdateAccountActivation?id=' + id)
                     .then(
                         this.setState({ isLoading: false }),
