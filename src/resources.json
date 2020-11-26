@@ -2905,8 +2905,6 @@
         "en": "Document Alerts",
         "ar": " التنبيهات علي الوثائق"
     },
-<<<<<<< HEAD
-=======
     "userAlerts": {
         "en": "User Alerts",
         "ar": " التنبيهات علي الوثائق"
@@ -2915,7 +2913,6 @@
         "en": "User Alerts Summary",
         "ar": "ملخص التنبيهات علي الوثائق"
     },
->>>>>>> abc03da0bb79f0cad197780909c5b0ecc24fb10c
     "alertDate": {
         "en": "Alert Date",
         "ar": "تاريخ التنبيه"
