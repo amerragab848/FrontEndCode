@@ -627,7 +627,7 @@ var routes = [
         hash: "#corrRecievedSent",
         settings: {
             Communication: true,
-            permission: 52,
+            permission: 42,
             caption: "procoor-icon-letters",
             order: 13
         }
