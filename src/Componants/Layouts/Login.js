@@ -67,7 +67,6 @@ class Login extends Component {
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(
                         _payLoad
                     );
-
                     tokenStore.setItem("claims", encodedPaylod);
                     let browserObj = this.createBrowserObject();
                     let cookie = this.getCookie();
@@ -97,11 +96,8 @@ class Login extends Component {
                         );
                     }
                     if (tokenStore.getItem("requestPermission")) {
-                        let deviceToken = tokenStore.getItem("requestPermission"); 
-                        Api.post("UpdateAccountWebDeviceToken?webDeviceToken=" +
-                            deviceToken,
-                            null
-                        );
+                        let deviceToken = tokenStore.getItem("requestPermission");
+                        Api.post("UpdateAccountWebDeviceToken?webDeviceToken=" + deviceToken, null);
                     }
                     Api.get("GetPrimeData?token=undefined").then(primeData => {
                         if (primeData.permissions && primeData.permissions.length > 0) {
