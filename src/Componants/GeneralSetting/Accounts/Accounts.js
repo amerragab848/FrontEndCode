@@ -168,11 +168,21 @@ class Accounts extends Component {
                     console.log(values);
                     this.setState({
                         showDeleteModal: true,
+                        IsActiveShow:true,
                         selectedRow: values
                     });
                 },
                 classes: '',
-            }
+            },
+            // {
+            //     title: 'Refresh',
+            //     handleClick: value => {
+            //         this.setState({ 
+            //             isLoading:true, 
+            //         });
+            //        this.refreshGrid()
+            //     }
+            // },
         ];
 
         this.rowActions = [
@@ -185,6 +195,12 @@ class Accounts extends Component {
                             search: "?id=" + value.id
                         })
                     }
+                }
+            },
+            {
+                title: 'inActive',
+                handleClick: value => {
+                   this.IsActive(value.id)
                 }
             },
             {
@@ -273,6 +289,7 @@ class Accounts extends Component {
 
             this.setState({
                 showDeleteModal: true,
+             
                 rowSelectedId: rowId,
             })
         }
@@ -296,7 +313,9 @@ class Accounts extends Component {
     }
 
     clickHandlerCancelMain = () => {
-        this.setState({ showDeleteModal: false, showResetPasswordModal: false });
+        this.setState({ showDeleteModal: false, showResetPasswordModal: false,
+            IsActiveShow:false
+         });
     };
 
     addRecord = () => {
@@ -312,7 +331,9 @@ class Accounts extends Component {
 
     ConfirmDeleteAccount = () => {
         let id = '';
-        this.setState({ showDeleteModal: true, isLoading: true })
+        this.setState({ showDeleteModal: true, 
+           
+            isLoading: true })
         let rowsData = this.state.rows;
         this.state.rowSelectedId.map(i => {
             id = i
@@ -364,7 +385,51 @@ class Accounts extends Component {
             })
 
     }
+    updateAccountActivation=()=>{
+        let id = this.state.rowSelectedId;
+        let rowsData = this.state.rows;
+        let userName = find(rowsData, { 'id': id })
+        let isActive='';
+        let companyId = config.getPublicConfiguartion().accountCompanyId;
 
+        Api.authorizationApi("ProcoorAuthorization?username=" + userName + "&companyId=" + companyId + "&isActive=" + isActive, null, 'PUT').then(
+            res => {
+                Api.get("/UpdateAccountActivation", { id: id }).then(
+                    result=>{
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                });
+            });
+    }
+    refreshGrid=()=>{
+       
+
+        if (config.IsAllow(794)) {
+            this.setState({ isLoading: true ,  rows:[]});
+            // let pageNumber = this.state.pageNumber + 1
+            Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                this.setState({
+
+                    rows: result,
+                    isLoading: false, 
+                    totalRows: result.length,
+                    search: false,
+                });
+            });
+
+            this.setState({ 
+         
+                rowSelectedId: {}
+            });
+        }
+        else {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.goBack()
+        }
+        if (config.IsAllow(798))
+            this.setState({ showCheckbox: true })
+        else
+            this.setState({ showCheckbox: false })
+    }
     componentDidMount = () => {
         if (config.IsAllow(794)) {
             // let pageNumber = this.state.pageNumber + 1
@@ -547,15 +612,17 @@ class Accounts extends Component {
         let id = 0;
         let userName = ''
         let rowsData = this.state.rows;
-        let s = this.state.rowSelectedId.map(i => {
-            id = i
-        })
+        // let s = this.state.rowSelectedId.map(i => {
+        //     id = i
+        // })
+        id=this.state.rowSelectedId;
         userName = rowsData.filter(s => s.id === id)
         // let pageNumber = this.state.pageNumber 
-
+         let userNameParam=   userName[0].userName;
         let companyId = config.getPublicConfiguartion().accountCompanyId;
+        let active= userName[0].active ;
         setTimeout(() => {
-            Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&companyId=' + companyId + '&isActive=' + userName.active + '', null, 'PUT').then(
+            Api.authorizationApi('ProcoorAuthorization?username=' + userNameParam + '&companyId=' + companyId + '&isActive=' + active + '', null, 'PUT').then(
                 Api.get('UpdateAccountActivation?id=' + id)
                     .then(
                         this.setState({ isLoading: false }),
@@ -749,7 +816,9 @@ class Accounts extends Component {
                         </div>
                     </div>
                     <div className="filterBTNS">
-                        {this.state.IsActiveShow ? <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
+                        { <button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i class="fa fa-refresh"></i></button> }
+                       
+                        {/* {this.state.IsActiveShow ? <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null} */}
                         {btnExport}
                         {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>
@@ -771,6 +840,7 @@ class Accounts extends Component {
                         {ComponantFilter}
                     </div>
                 </div>
+               
                 <div className="grid-container fixed__loading">
                     {dataGrid}
                 </div>
@@ -792,6 +862,15 @@ class Accounts extends Component {
                         showDeleteModal={this.state.showResetPasswordModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
                         buttonName='save' clickHandlerContinue={this.ConfirmResetPassword}
+                    />
+                ) : null}
+                 {this.state.IsActiveShow == true ? (
+                    <ConfirmationModal
+                        title='Are you sure you want to inActive Account?'
+                        closed={this.onCloseModal}
+                        showDeleteModal={this.state.IsActiveShow}
+                        clickHandlerCancel={this.clickHandlerCancelMain}
+                        buttonName='save' clickHandlerContinue={this.IsActiveFun}
                     />
                 ) : null}
             </div>
