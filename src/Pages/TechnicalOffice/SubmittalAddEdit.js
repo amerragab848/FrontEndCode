@@ -1009,9 +1009,9 @@ class SubmittalAddEdit extends Component {
   editSubmittalCycle() {
     let saveDocumentCycle = this.state.documentCycle;
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocumentCycle.submittalId = this.state.docId;
-    saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss");
 
+    saveDocumentCycle.submittalId = this.state.docId;
     this.setState({ isLoading: true });
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {

@@ -15312,6 +15312,294 @@
       }
     ]
   },
+  "qualityControl": {
+    "documentTitle": "qualityControl",
+    "docTyp": 63,
+    "documentAddEditLink": "qualityControlAddEdit",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 283,
+    "documentEditPermission": 284,
+    "documentDeletePermission": 285,
+    "documentViewPermission": 286,
+    "documentPermission": 287,
+    "documentApi": {
+      "get": "GetLogsQualityControl",
+      "getCustom": "GetLogsQualityControlCustom",
+      "delete": "deleteMultipleLogsQualityControl"
+    },
+    "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "statusName",
+        "friendlyName": "status",
+        "minWidth": 155,
+        "width": "8%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "companyName",
+        "friendlyName": "fromCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fileNumberId",
+        "friendlyName": "fileNumber",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "areaName",
+        "friendlyName": "area",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "disciplineName",
+        "friendlyName": "disciplineName",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "oppenedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "closedBy",
+        "friendlyName": "closedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditBy",
+        "friendlyName": "lastEdit",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditDate",
+        "friendlyName": "lastEditDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendDate",
+        "friendlyName": "lastSendDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendTime",
+        "friendlyName": "lastSendTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastApproveDate",
+        "friendlyName": "lastApproveDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastApproveTime",
+        "friendlyName": "lastApprovedTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      }
+    ],
+    "filterApi": "qualityControlFilter",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "isCustom": true
+      },
+      {
+        "name": "status",
+        "field": "status",
+        "isCustom": true,
+        "type": "toggle",
+        "trueLabel": "oppened",
+        "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "fromCompanyName",
+        "field": "companyName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "fileNumber",
+        "field": "fileNumberId",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "area",
+        "field": "areaName",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "disciplineName",
+        "field": "disciplineName",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "docClosedate",
+        "field": "docCloseDate",
+        "type": "date",
+        "isCustom": false
+      },
+      {
+        "name": "openedBy",
+        "field": "oppenedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "closedBy",
+        "field": "closedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEdit",
+        "field": "lastEditBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEditDate",
+        "field": "lastEditDate",
+        "type": "date",
+        "isCustom": false
+      }
+    ]
+  },
   "siteInstructions": {
     "documentTitle": "siteInstructions",
     "docTyp": 90,

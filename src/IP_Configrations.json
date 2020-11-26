@@ -1,5 +1,4 @@
 {
-
   "BlobStorageContainerName": "project-files-demov4",
   "acApp": "AC",
   "accountCompanyId": "2",
@@ -21,9 +20,10 @@
   "dropBoxToken": "H_FU-3QESeAAAAAAAAABXQHST0VO0rFTX4tYhzru1_J9AFywzjAwxrv4wQgTJDbN",
   "googleDriveClientId": "850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com",
   "googleDriveKey": "uof5qzvtwpq1dao",
+  "exportCore": "https://newgizaServices.procoor.com/ExportAPI/api/ExportController/",
+  "client_id": "elXUJfeXNiv0ZDxlOB5JrJWn9GksYQq3",
+  "client_secret": "RiaukssWQvBiD32T",
+  "commonLogApi": 1,
   "refAutomatic": false,
-  "exportCore": "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/",
-  "client_id": "ahfzjNdy6bKklC7jwyhRDrjxRHR66snA",
-  "client_secret": "FZLvWKu1t3gvUYIV",
-   "commonLogApi": 2
+  "refCodeValidation": true
 }

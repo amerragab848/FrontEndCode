@@ -1945,6 +1945,19 @@ var routes = [
         }
     },
     {
+        route: "qualityControl",
+        moduleId: "commonLogs",
+        title: "qualityCheckList",
+        nav: true,
+        hash: "#qualityControl",
+        settings: {
+            QualityControl: true,
+            permission: 287,
+            caption: "procoor-icon-punch-list",
+            order: 8
+        }
+    },
+    {
         route:
             "punchListAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "site/punchListAddEdit",
