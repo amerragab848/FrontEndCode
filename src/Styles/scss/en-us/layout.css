@@ -22102,3 +22102,7 @@ min-height: 100px;
 .tbl-load  .dashboardLoading h3{
     display: none;
 }
+.InActiveref{
+    float: "right";
+    padding-right:"30px"
+}

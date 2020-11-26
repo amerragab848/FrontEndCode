@@ -158,7 +158,7 @@ class ExportDetails extends Component {
   drawFields() {
     let fields = DED[this.props.docTypeId]
     let data = this.props.document
-   
+
     let rows = fields.fields.map((field, index) => {
       let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
       let nextIndex = (index + 1);
