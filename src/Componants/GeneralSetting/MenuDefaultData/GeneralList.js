@@ -340,10 +340,6 @@ class GeneralList extends Component {
                     rowClick={(row, cell) => {
                         let id = row.id;
                         if (config.IsAllow(1180)) {
-<<<<<<< HEAD
-                            // if (row.editable) {
-=======
->>>>>>> e1c627cc51ca9567d2d8b832e2dde6553c990e5c
                             Api.get('GetAccountsDefaultListForEdit?id=' + id + '').then(
                                 res => {
                                     this.setState({
@@ -354,13 +350,6 @@ class GeneralList extends Component {
                                     })
                                 }
                             )
-<<<<<<< HEAD
-                            // }
-                            // else {
-                            //     toast.error(Resources["adminItemEditable"][currentLanguage]);
-                            // }
-=======
->>>>>>> e1c627cc51ca9567d2d8b832e2dde6553c990e5c
                         }
                         else {
                             toast.warn(Resources["missingPermissions"][currentLanguage]);
