@@ -620,6 +620,19 @@ var routes = [
         }
     },
     {
+        route: "corrRecievedSent",
+        moduleId: "cls",
+        title: "correspondence",
+        nav: true,
+        hash: "#corrRecievedSent",
+        settings: {
+            Communication: true,
+            permission: 52,
+            caption: "procoor-icon-letters",
+            order: 13
+        }
+    },
+    {
         route:
             "rfiAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "communication/rfiAddEdit",
