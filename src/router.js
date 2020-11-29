@@ -373,6 +373,9 @@ const UserProjects = AsyncComponent(() =>
 const TaskAdmin = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/TaskAdmin'),
 );
+const corrRecievedSentView=AsyncComponent(()=>
+      import('./Pages/Communication/corrRecievedSentView'),
+);
 const AccountsEPSPermissions = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/AccountsEPSPermissions'),
 );

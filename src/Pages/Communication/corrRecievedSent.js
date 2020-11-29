@@ -11,13 +11,25 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { toast } from "react-toastify";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
-
+import config from "../../Services/Config";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
 class corrRecievedSent extends Component {
     constructor(props) {
         super(props);
+        this.rowActions = [
+            {
+                title: Resources['View'][currentLanguage],
+                handleClick: value => {
+                    if (config.IsAllow(42)) {
+                        this.props.history.push({
+                            pathname: '/corrRecievedSentView',
+                            search: "?id=" + value.id
+                        })
+                    }
+                }
+            }]
         this.recivedColumns = [
             {
                 field: 'arrange',
@@ -562,7 +574,7 @@ class corrRecievedSent extends Component {
                 pageSize={this.state.pageSize}
                 groups={[]}
                 actions={this.actions}
-                rowActions={[]}
+                rowActions={this.rowActions}
                 cells={this.state.columns}
                 rowClick={() => { }}
             />
