@@ -21,7 +21,7 @@ import moment from 'moment';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow"; 
+import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
@@ -197,6 +197,7 @@ class projectWorkFlowAddEdit extends Component {
             RejectionOptionData: [],
             NextWorkFlowData: [],
             IsLoadingCheckCode: false,
+            durationLoading: false,
             selectedRejectionOptions: {},
             selectedNextWorkFlow: {},
             CompanyData: [],
@@ -731,22 +732,42 @@ class projectWorkFlowAddEdit extends Component {
             })
         });
     }
-    durationHandleChange = (e, level) => {
-        var obj = {};
-        var newList = [];
-        var oldList = this.state.LevelDurationUpdateList;
-
-        newList = oldList.length > 0 ? filter(this.state.LevelDurationUpdateList, function (i) { return i.level != level }) : [];
-
-        obj.level = level;
-        obj.value = e.target.value;
-
-        newList.push(obj);
+    toggleRow(e, row) {
 
         this.setState({
-            LevelDurationUpdateList: newList
-        })
+            durationLoading: true
+        });
+
+        const newSelected = {};
+        var obj = {};
+
+        var oldList = this.state.LevelDurationUpdateList;
+        var newList = [];
+        var sendedList = [];
+
+        sendedList = oldList.length > 0 ? filter(this.state.LevelDurationUpdateList, function (i) { return i.level != row.arrange }) : [];
+        obj.level = row.arrange;
+        obj.value = e.target.value;
+
+        sendedList.push(obj);
+
+        this.state.LevelDurationData.forEach(item => {
+            if (row.id == item.id) {
+                item.arrange = item.arrange;
+                item.duration = e.target.value;
+                newList.push(item);
+            } else {
+                newList.push(item);
+            }
+        });
+
+        this.setState({
+            LevelDurationData: newList,
+            LevelDurationUpdateList: sendedList,
+            durationLoading: false
+        });
     }
+
     UpdateDurationLevel = () => {
 
         Api.post('UpdateWorkFlowItemsDuration?workFlow=' + this.state.docId,
@@ -1137,9 +1158,9 @@ class projectWorkFlowAddEdit extends Component {
                         <div className="linebylineInput valid-input fullInputWidth">
                             <div className="inputDev ui input">
                                 <input autoComplete="off" className="form-control"
-                                    value={this.state.multipleDuration}
+                                    value={item.duration}
                                     name="Duration"
-                                    onChange={(e) => { this.durationHandleChange(e, item.arrange) }}
+                                    onChange={(e) => { this.toggleRow(e, item) }}
                                     placeholder={Resources['duration'][currentLanguage]} />
                             </div>
                         </div>
@@ -1625,7 +1646,7 @@ class projectWorkFlowAddEdit extends Component {
                     </div>
 
                     <div className='document-fields'>
-                        {this.state.docId > 0 ?
+                        {this.state.durationLoading == false ?
                             (
                                 <table className="attachmentTable">
                                     <thead>
@@ -1643,11 +1664,9 @@ class projectWorkFlowAddEdit extends Component {
 
                                             <th></th>
                                         </tr>
-                                    </thead>
+                                    </thead> 
                                     <tbody>
-
-                                        {renderLevelDurationTable}
-
+                                        {renderLevelDurationTable} 
                                     </tbody>
                                 </table>
                             )
@@ -1824,7 +1843,7 @@ class projectWorkFlowAddEdit extends Component {
                     ) : null}
 
 
-                    <div className="doc-pre-cycle letterFullWidth"> 
+                    <div className="doc-pre-cycle letterFullWidth">
 
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
@@ -1855,7 +1874,7 @@ class projectWorkFlowAddEdit extends Component {
                                         projectId={this.state.projectId}
                                         previousRoute={this.state.previousRoute}
                                         docApprovalId={this.state.docApprovalId}
-                                        currentArrange={this.state.arrange} 
+                                        currentArrange={this.state.arrange}
                                         showModal={true}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
