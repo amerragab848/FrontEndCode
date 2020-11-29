@@ -15313,7 +15313,8 @@ table edition
     display: block;
 }
 
-.customeError .pError, .reports__content .reports__proForm .customD_Menu.errorClass .dropdown__error {
+.customeError .pError,
+ .reports__content .reports__proForm .customD_Menu.errorClass .dropdown__error {
     position: absolute;
     left: 0;
     top: 100%;
@@ -22100,4 +22101,8 @@ min-height: 100px;
 }
 .tbl-load  .dashboardLoading h3{
     display: none;
+}
+.InActiveref{
+    float: "right";
+    padding-right:"30px"
 }

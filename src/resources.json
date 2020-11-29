@@ -945,10 +945,6 @@
         "en": "Task Administrator",
         "ar": "مدير مهمات؟"
     },
-    "isVacation": {
-        "en": "Is Vacation",
-        "ar": "يوم اجازاه"
-    },
     "Vacation": {
         "en": "HR Vacation Days",
         "ar": "ايام الاجازات"
@@ -2264,10 +2260,6 @@
     "WorkFlowWithDocumentTypeDetails": {
         "en": "Work Flow With Document Type Details",
         "ar": "تقرير الدوره المستنديه طبقا لنوع الوثيقة"
-    },
-    "WorkFlowWithDocumentAllTypesDetails": {
-        "en": "Work Flow With Document All Types Details",
-        "ar": "تقرير الدوره المستنديه لكل انواع الوثيقة"
     },
     "docDetails": {
         "en": "Document Details",
@@ -8028,10 +8020,6 @@
     "linkwithgenerallist": {
         "en": "Link With General List",
         "ar": "الربط من البيانات الاساسيه"
-    },
-    "linkwithBoq": {
-        "en": "Link With BOQ",
-        "ar": "الربط مع الكميات"
     },
     "createVO": {
         "en": "Create VO",

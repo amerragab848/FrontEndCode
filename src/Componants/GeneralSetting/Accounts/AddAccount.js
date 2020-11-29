@@ -231,7 +231,7 @@ class AddAccount extends Component {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     this.setState({ saveLoading: false });
                 });
-            }
+            } 
             else {
                 toast.warn(res.msg );
                 this.setState({ saveLoading: false });

@@ -19,6 +19,7 @@ var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 
 const ValidtionSchema = Yup.object().shape({
+    abbreviation: Yup.string().required(Resources['isRequiredField'][currentLanguage]).max(50, Resources['maxLength'][currentLanguage] + " (50)"),
     titleAr: Yup.string().test('contactNameAr', 'Name cannot be english', value => {
         return ar.test(value)
     }).required(Resources['titleArValid'][currentLanguage]),
@@ -383,27 +384,34 @@ class GeneralList extends Component {
                             <div className="dropWrapper">
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                    <div className={"inputDev ui input" + (errors.title && touched.title ? (" has-error") : !errors.title && touched.title ? (" has-success") : " ")} >
+                                    <div className={"inputDev ui input customeError" + (errors.title && touched.title ? (" has-error") : !errors.title && touched.title ? (" has-success") : " ")} >
                                         <input name='title' autoComplete='off' id='title' placeholder={Resources['titleEn'][currentLanguage]}
                                             value={values.title} className="form-control" onBlur={handleBlur} onChange={handleChange} />
-                                        {errors.title && touched.title ? (<em className="pError">{errors.title}</em>) : null}
+                                        {errors.title && touched.title ? (<em className="pError dropdown__error">{errors.title}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                    <div className={'ui input inputDev ' + (errors.titleAr && touched.titleAr ? 'has-error' : null) + ' '}>
+                                    <div className={'ui input inputDev customeError' + (errors.titleAr && touched.titleAr ? 'has-error' : null) + ' '}>
                                         <input name='titleAr' className="form-control" autoComplete='off'
                                             id='titleAr' value={values.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
                                             onBlur={handleBlur} onChange={handleChange} />
-                                        {errors.titleAr && touched.titleAr ? <em className="pError">{errors.titleAr}</em> : null}
+                                        {errors.titleAr && touched.titleAr ? <em className="pError dropdown__error">{errors.titleAr}</em> : null}
                                     </div>
                                 </div>
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
-                                    <div className="ui input inputDev" >
-                                        <input name='abbreviation' autoComplete='off' className="form-control"
-                                            value={values.abbreviation} placeholder={Resources['abbreviation'][currentLanguage]}
-                                            onBlur={handleBlur} onChange={handleChange} />
+                                    <div className={'ui input inputDev customeError ' + (errors.abbreviation && touched.abbreviation ? 'has-error' : null) + ' '}>
+                                        <input
+                                            name='abbreviation'
+                                            autoComplete='off'
+                                            className="form-control"
+                                            value={values.abbreviation}
+                                            placeholder={Resources['abbreviation'][currentLanguage]}
+                                            onBlur={handleBlur}
+                                            onChange={handleChange} />  
+                                        {errors.abbreviation ? (<em className="pError dropdown__error">{errors.abbreviation}</em>) : null}
+
                                     </div>
                                 </div>
                                 {this.state.showValue ?
