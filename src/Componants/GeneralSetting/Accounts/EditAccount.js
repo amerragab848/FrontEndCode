@@ -197,7 +197,7 @@ class EditAccount extends Component {
         let document = {
             id: this.state.docId,
             userName: value.userName,
-            oldUserName: value.userName,
+            oldUserName: this.state.accountDocument.userName,
             email: value.email,
             userPassword: value.userPassword,
             accountCompanyId: accountCompanyId,
