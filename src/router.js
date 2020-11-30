@@ -473,6 +473,7 @@ const NCRAddEdit = AsyncComponent(() =>
 const PunchListAddEdit = AsyncComponent(() =>
     import('./Pages/QualityControl/punchListAddEdit'),
 );
+
 const QualityControlAddEdit = AsyncComponent(() =>
     import('./Pages/QualityControl/qualityControlAddEdit'),
 );
@@ -820,7 +821,7 @@ let originalRoutes = [
     />,
     <Route
         key="r-46"
-        path="/TemplatesSettings"
+        path="/TemplatesSettings" 
         component={TemplatesSettings}
     />,
     <Route key="r-47" path="/GeneralList" component={GeneralList} />,
@@ -1331,13 +1332,13 @@ let originalRoutes = [
     <Route key="r-192" path="ContractsPOReports/RequestPaymentDeductionTypeReport"
         component={RequestPaymentDeductionTypeReport} />,
     <Route key="r-193" path="/levelDurationAlertDetails"
-        component={levelDurationAlertDetails} />,
+        component={levelDurationAlertDetails} />, 
     <Route key="r-194" path="/UserAlerts" component={UserAlerts} />,
     <Route
         key="r-195"
         path="/usersAlertSummaryDetails"
         component={usersAlertSummaryDetails}
-    />,
+    />, 
     <Route
         key="r-196"
         path="/DocumentAllTypesReport"

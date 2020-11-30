@@ -2261,6 +2261,18 @@
         "en": "Work Flow With Document Type Details",
         "ar": "تقرير الدوره المستنديه طبقا لنوع الوثيقة"
     },
+    "WorkFlowWithDocumentAllTypesDetails": {
+        "en": "Work Flow With Document All Types Details",
+        "ar": "تقرير الدوره المستنديه لكل انواع الوثيقة"
+    },
+    "isVacation": {
+        "en": "Is Vacation",
+        "ar": "يوم اجازاه"
+    },
+    "linkwithBoq": {
+        "en": "Link With BOQ",
+        "ar": "الربط مع الكميات"
+    },
     "docDetails": {
         "en": "Document Details",
         "ar": "تفاصيل الوثيقة"

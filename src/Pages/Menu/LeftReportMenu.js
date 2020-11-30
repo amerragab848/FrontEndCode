@@ -29,6 +29,7 @@ class LeftReportMenu extends Component {
             if (route.settings) {
                 if (route.settings.OtherReports === true) {
                     if (Config.IsAllow(route.settings.permission)) {
+                        console.log(route.title);
                         OtherReports.push({
                             label: Resources[route.title][currentLanguage],
                             value: route.moduleId

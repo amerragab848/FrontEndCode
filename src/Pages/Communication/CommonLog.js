@@ -28,14 +28,14 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 let documentObj = {};
 let docTempLink;
 
-  let moduleId =  Config.getPublicConfiguartion().commonLogApi;
+let moduleId = Config.getPublicConfiguartion().commonLogApi;
 class CommonLog extends Component {
 
   constructor(props) {
 
     super(props);
     this.state = {
-      ExcelFileUploaded:false,
+      ExcelFileUploaded: false,
       groups: [],
       projectName: localStorage.getItem("lastSelectedprojectName"),
       isLoading: true,
@@ -222,7 +222,7 @@ class CommonLog extends Component {
     }
 
 
-    if (this.props.projectId !== prevProps.projectId ) {
+    if (this.props.projectId !== prevProps.projectId) {
       if (!this.state.documentObj.documentApi) {
         this.renderComponent(this.props.match.params.document, this.props.projectId, true);
       } else {
@@ -605,7 +605,8 @@ class CommonLog extends Component {
           exportedColumns.push({
             field: item.field,
             title: Resources[item.friendlyName][currentLanguage],
-            selected: false
+            selected: false,
+            showInExport: item.showInExport
           });
 
         } else {
@@ -614,7 +615,8 @@ class CommonLog extends Component {
             exportedColumns.push({
               field: item.field,
               title: Resources[item.friendlyName][currentLanguage],
-              selected: false
+              selected: false,
+              showInExport: item.showInExport
             });
 
           }
@@ -946,7 +948,7 @@ class CommonLog extends Component {
 
     let RenderPopupShowExportColumns = this.state.exportedColumns.map(item => {
       return (
-        (item.type === 'check-box' || item.field == "id") ? null :
+        (item.type === 'check-box' || item.field == "id") || item.showInExport === false ? null :
           <div className="grid__content" key={item.field}>
             <div className={'ui checkbox checkBoxGray300 count checked'}>
               <input name="CheckBox" type="checkbox" id={"export_" + item.field} checked={item.selected}
@@ -1228,7 +1230,7 @@ class CommonLog extends Component {
                   </div>
                 ) : null}
 
-                <XSLfile key="docTemplate" 
+                <XSLfile key="docTemplate"
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
@@ -1237,11 +1239,11 @@ class CommonLog extends Component {
                   link={docTempLink}
                   header="addManyItems"
                   afterUpload={
-                    () =>{
-                    this.setState({ docTemplateModal: false  })
-                    this.setState({ isLoading: true });
-                    this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
-                  }
+                    () => {
+                      this.setState({ docTemplateModal: false })
+                      this.setState({ isLoading: true });
+                      this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
+                    }
                   } />
               </div>
             </SkyLightStateless>
