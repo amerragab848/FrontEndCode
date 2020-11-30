@@ -803,6 +803,22 @@ var routes = [
         settings: { Communication: false }
     },
     {
+        route:
+            "corrSentView/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        moduleId: "communication/corrSentView",
+        title: "corrSentView View",
+        nav: false,
+        settings: { Communication: false }
+    },
+    {
+        route:
+            "corrReceiveView/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        moduleId: "communication/corrReceiveView",
+        title: "corrReceiveView View",
+        nav: false,
+        settings: { Communication: false }
+    },
+    {
         route: "communicationInternalMemoView/:id",
         moduleId: "communication/internalMemoView",
         title: "Internal Memo",

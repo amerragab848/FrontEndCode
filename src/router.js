@@ -373,6 +373,12 @@ const UserProjects = AsyncComponent(() =>
 const TaskAdmin = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/TaskAdmin'),
 );
+const corrSentView=AsyncComponent(()=>
+      import('./Pages/Communication/corrSentView'),
+);
+const corrReceiveView=AsyncComponent(()=>
+      import('./Pages/Communication/corrReceiveView'),
+);
 const AccountsEPSPermissions = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/AccountsEPSPermissions'),
 );
@@ -1337,7 +1343,15 @@ let originalRoutes = [
         key="r-196"
         path="/DocumentAllTypesReport"
         component={DocumentAllTypesReport}
-    />, 
+    />,
+    <Route
+    key="r-197"
+    path="/corrSentView"
+    component={corrSentView} />,
+    <Route
+    key="r-198"
+    path="/corrReceiveView"
+    component={corrReceiveView} />,
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];
