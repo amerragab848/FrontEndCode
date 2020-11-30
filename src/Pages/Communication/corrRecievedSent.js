@@ -472,7 +472,7 @@ class corrRecievedSent extends Component {
             };
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-            if (config.IsAllow(10070)) {
+            if (config.IsAllow(42)) {
                 this.props.history.push({ pathname: "/corrSentView", search: "?id=" + encodedPaylod });
             }
             
@@ -494,7 +494,7 @@ class corrRecievedSent extends Component {
             };
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-            if (config.IsAllow(10070)) {
+            if (config.IsAllow(42)) {
                 this.props.history.push({ pathname: "/corrReceiveView", search: "?id=" + encodedPaylod });
             }
            
