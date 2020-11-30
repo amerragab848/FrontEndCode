@@ -178,7 +178,7 @@ export default class Dataservice {
 
         return Api.getDataAPIsByCore(url, docObj, verb).then(result => {
             return result;
-        });
+        }).catch(ex => "");
     };
 
     static GetNextArrangeMainDocument = (url) => {
