@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 import config from "../../Services/Config";
+import CryptoJS from 'crypto-js';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
@@ -22,14 +23,28 @@ class corrRecievedSent extends Component {
             {
                 title: Resources['View'][currentLanguage],
                 handleClick: value => {
-                    if (config.IsAllow(42)) {
-                        this.props.history.push({
-                            pathname: '/corrRecievedSentView',
-                            search: "?id=" + value.id
-                        })
+                    if(config.IsAllow(42))
+                    {
+                        this.handleRowClicCorrSentView(value);
                     }
+                 }
+            },
+          
+        ]
+        this.rowActionList = [
+        
+            {
+                title: Resources['View'][currentLanguage],
+                handleClick: value => {
+                    if(config.IsAllow(42))
+                    {
+                        this.handleRowClicCorrReceiveView(value);
+
+                    }
+
                 }
-            }]
+            },
+        ]
         this.recivedColumns = [
             {
                 field: 'arrange',
@@ -259,7 +274,8 @@ class corrRecievedSent extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            }, {
+            },
+            {
                 field: 'lastApproveTime',
                 title: Resources['lastApprovedTime'][currentLanguage],
                 width: 10,
@@ -444,6 +460,50 @@ class corrRecievedSent extends Component {
         if (this.state.projectId != props.projectId)
             this.setState({ projectId: props.projectId })
     }
+    handleRowClicCorrSentView = (row) => {
+        if (row.id > 0) {
+
+            let obj = {
+                docId: row.id,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+            if (config.IsAllow(10070)) {
+                this.props.history.push({ pathname: "/corrSentView", search: "?id=" + encodedPaylod });
+            }
+            
+            else {
+                toast.warn(Resources.missingPermissions[currentLanguage])
+            }
+
+        };
+    }
+    handleRowClicCorrReceiveView = (row) => {
+        if (row.id > 0) {
+
+            let obj = {
+                docId: row.id,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+            };
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+            if (config.IsAllow(10070)) {
+                this.props.history.push({ pathname: "/corrReceiveView", search: "?id=" + encodedPaylod });
+            }
+           
+            else {
+                toast.warn(Resources.missingPermissions[currentLanguage])
+            }
+
+        };
+    }
     componentWillMount() {
         this.setState({ receivedLoading: true })
         Api.get('GetCommunicationCorrespondenceReceived?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=200').then(res => {
@@ -587,7 +647,7 @@ class corrRecievedSent extends Component {
                 pageSize={this.state.pageSize}
                 groups={[]}
                 actions={this.actions}
-                rowActions={[]}
+                rowActions={this.rowActionList}
                 cells={this.state.columns}
                 rowClick={() => { }}
             />
