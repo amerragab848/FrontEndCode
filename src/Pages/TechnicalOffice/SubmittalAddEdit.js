@@ -220,9 +220,9 @@ class SubmittalAddEdit extends Component {
       flowCompanyName: "",
       flowContactName: "",
       status: "true",
-      subject: "Cycle No. R " + 1,
+      subject: "Cycle No. R " + 0,
       approvalStatusId: "",
-      arrange: "1",
+      arrange: "0",
       flowCompanyId: "",
       flowContactId: "",
       fromContactId: "",
@@ -334,9 +334,9 @@ class SubmittalAddEdit extends Component {
           flowCompanyName: "",
           flowContactName: "",
           status: "true",
-          subject: "Cycle No. R " + 1,
+          subject: "Cycle No. R " + 0,
           approvalStatusId: "",
-          arrange: "1",
+          arrange: "0",
           flowCompanyId: "",
           flowContactId: "",
           fromContactId: "",
@@ -1412,13 +1412,13 @@ class SubmittalAddEdit extends Component {
 
   addCycle() {
 
-    let maxArrange = (maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 1;
+    let maxArrange = (maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 0;
 
     let arrangeCycle = this.state.documentCycle.arrange;
 
     let submittalCycle = {};
 
-    submittalCycle.subject = "Cycle No. R " + (this.state.documentCycle.arrange + 1);
+    submittalCycle.subject = "Cycle No. R " + (this.state.documentCycle.arrange );
     submittalCycle.CycleStatus = "true";
     submittalCycle.docDate = moment();
     submittalCycle.approvedDate = moment();
@@ -1426,7 +1426,7 @@ class SubmittalAddEdit extends Component {
     submittalCycle.flowContactId = "";
     submittalCycle.fromCompanyId = "";
     submittalCycle.submittalId = docId;
-    submittalCycle.arrange = arrangeCycle ? arrangeCycle + 1 : maxArrange + 1;
+    submittalCycle.arrange = arrangeCycle ? arrangeCycle  : maxArrange ;
     submittalCycle.id = 0;
 
     this.setState({
@@ -1919,7 +1919,7 @@ class SubmittalAddEdit extends Component {
                                       <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")} >
                                         <input name="subject" className="form-control fsadfsadsa"
                                           placeholder={Resources.subject[currentLanguage]} autoComplete="off"
-                                          value={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.documentCycle.arrange + ')')}
+                                          value={this.state.documentCycle.subject}
                                           onBlur={e => { handleBlur(e); handleChange(e); }}
                                           onChange={e => this.handleChangeCycles(e, "subject")} />
                                         {errors.subject && touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
