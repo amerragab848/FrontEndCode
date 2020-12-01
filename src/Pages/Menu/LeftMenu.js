@@ -803,7 +803,8 @@ class LeftMenu extends Component {
                                                                                                     opacity="0"
                                                                                                     x="0"
                                                                                                     y="0"
-                                                                                                    width="36"
+                                                                                                   
+                                                                                                   
                                                                                                     height="36"
                                                                                                 />
                                                                                                 <path
