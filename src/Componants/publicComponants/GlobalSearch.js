@@ -102,12 +102,13 @@ class GlobalSearch extends Component {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     subject = obj.subject;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
             index++;
         }
+
         this.searchColumns = [
             {
                 field: 'index',
@@ -160,6 +161,7 @@ class GlobalSearch extends Component {
                 sortable: true,
             }
         ];
+
         this.statusData = [
             {
                 label: Resources.oppened[currentLanguage], value: 1
@@ -170,6 +172,7 @@ class GlobalSearch extends Component {
             },
 
         ]
+
         this.state = {
             lastChunk: 0,
             subject: subject,
@@ -214,13 +217,13 @@ class GlobalSearch extends Component {
                         item.index = i + 1;
                         data.push(item)
                     })
-                this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total,isLoading: false })
+                this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total, isLoading: false })
             }
             else
                 this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
 
             dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
-                this.setState({ isLoading: false, docsType: result })
+                this.setState({ isLoading: false, showAttachLoading: false, docsType: result })
             })
         })
     }
@@ -237,7 +240,7 @@ class GlobalSearch extends Component {
         let maxIterate = files.length
 
         for (i = firstOrNext == true ? this.state.lastChunk : 0, j = maxIterate; i < j; i += chunk) {
-            let lastChunk =  i + chunk;
+            let lastChunk = i + chunk;
             temparray = files.slice(i, lastChunk);
 
             this.setState({ showAttachLoading: true })
@@ -249,6 +252,7 @@ class GlobalSearch extends Component {
 
                 this.setState({ showAttachLoading: false, attachementsSearchResult: result ? newLit : attachList, lastChunk })
             });
+
             if (resultLength > 0) { break; }
         }
     }
@@ -489,12 +493,13 @@ class GlobalSearch extends Component {
                     </div>
                 </div>
                 {searchGrid}
-                {this.state.showAttachLoading === false ? (
+                              
+                {this.state.showAttachLoading === false ? ( 
 
-                    <div className="dropWrapper">
-                        {ViewAttachmentsResult()}
-                    </div>
-                ) : <LoadingSection />}
+                <div className="dropWrapper">
+                    {ViewAttachmentsResult()}
+                </div>
+              ) : <LoadingSection />}  
 
                 <div className="rowsPaginations readOnly__disabled" style={{ justifyContent: "center" }}>
                     <button className="rowActive" onClick={() => this.GetNextAttachFiles()}>

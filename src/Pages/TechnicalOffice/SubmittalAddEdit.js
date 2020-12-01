@@ -349,7 +349,8 @@ class SubmittalAddEdit extends Component {
 
             cycle.docDate = result.docDate != null ? moment(result.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             cycle.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
+            cycle.arrange = result.arrange;
+            
             this.fillCycleDropDown(true);
 
             this.setState({
@@ -1418,7 +1419,7 @@ class SubmittalAddEdit extends Component {
 
     let submittalCycle = {};
 
-    submittalCycle.subject = "Cycle No. R " + (this.state.documentCycle.arrange );
+    submittalCycle.subject = "Cycle No. R " + (this.state.documentCycle.arrange + 1);
     submittalCycle.CycleStatus = "true";
     submittalCycle.docDate = moment();
     submittalCycle.approvedDate = moment();
@@ -1426,7 +1427,7 @@ class SubmittalAddEdit extends Component {
     submittalCycle.flowContactId = "";
     submittalCycle.fromCompanyId = "";
     submittalCycle.submittalId = docId;
-    submittalCycle.arrange = arrangeCycle ? arrangeCycle  : maxArrange ;
+    submittalCycle.arrange = arrangeCycle ? arrangeCycle + 1 : maxArrange + 1;
     submittalCycle.id = 0;
 
     this.setState({
