@@ -155,7 +155,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -167,7 +167,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -191,7 +191,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -227,7 +227,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -310,7 +310,7 @@
         "name": "docClosedate",
         "field": "docClosedate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -318,7 +318,7 @@
         "name": "disciplineName",
         "field": "disciplineName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -438,7 +438,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -450,7 +450,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -462,7 +462,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -474,7 +474,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -486,7 +486,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -498,7 +498,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -510,7 +510,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -522,7 +522,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       }
@@ -585,28 +585,28 @@
         "name": "openedBy",
         "field": "openedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "closedBy",
         "field": "closedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       }
     ]
@@ -695,7 +695,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -707,7 +707,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -731,7 +731,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -743,7 +743,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -755,7 +755,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -767,7 +767,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -779,7 +779,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -791,7 +791,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -803,7 +803,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false ,
+        "showInExport": true ,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -815,7 +815,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -827,7 +827,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       }
@@ -876,12 +876,12 @@
         "name": "toCompany",
         "field": "toCompanyName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "ToContact",
-        "field": "toCompanyName",
+        "field": "toContactName",
         "type": "string",
         "showInExport": false,
         "isCustom": false
@@ -918,14 +918,14 @@
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       }
     ]
@@ -1014,7 +1014,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1038,7 +1038,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1050,7 +1050,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1062,7 +1062,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1086,7 +1086,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1098,7 +1098,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1110,7 +1110,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1122,7 +1122,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1134,7 +1134,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1146,7 +1146,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1158,7 +1158,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1170,7 +1170,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       }
@@ -1219,7 +1219,7 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -1233,21 +1233,21 @@
         "name": "calledByCompany",
         "field": "calledByCompanyName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "calledByContact",
         "field": "calledByContactName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "facilitatorCompany",
         "field": "facilitatorCompanyName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -1261,28 +1261,28 @@
         "name": "openedBy",
         "field": "openedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "closedBy",
         "field": "closedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       }
     ]
@@ -1407,7 +1407,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1419,7 +1419,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1467,7 +1467,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1479,7 +1479,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1491,7 +1491,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1503,7 +1503,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1515,7 +1515,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1527,7 +1527,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1539,7 +1539,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1551,7 +1551,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       }
@@ -1628,7 +1628,7 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -1660,28 +1660,28 @@
         "name": "openedBy",
         "field": "openedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "closedBy",
         "field": "closedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -1689,7 +1689,7 @@
         "name": "lastApproveDate",
         "field": "lastApproveDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -1697,7 +1697,7 @@
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       }
@@ -1787,7 +1787,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1799,7 +1799,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1811,7 +1811,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1835,7 +1835,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1859,7 +1859,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1871,7 +1871,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1883,7 +1883,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1895,7 +1895,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -1907,7 +1907,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -1919,7 +1919,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": true,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       }
@@ -1968,21 +1968,21 @@
         "name": "toCompany",
         "field": "toCompanyName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "ToContact",
         "field": "toContactName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -2010,14 +2010,14 @@
         "name": "callTime",
         "field": "callTime",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "refDoc",
         "field": "refDoc",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       }
     ]
@@ -3134,7 +3134,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3218,7 +3218,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3230,7 +3230,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3242,7 +3242,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3254,7 +3254,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3266,7 +3266,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3370,7 +3370,7 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -3423,35 +3423,35 @@
         "name": "cycleNo",
         "field": "cycleNo",
         "type": "number",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "openedBy",
         "field": "openedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "closedBy",
         "field": "closedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -3597,7 +3597,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3645,7 +3645,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3657,7 +3657,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3669,7 +3669,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -3681,7 +3681,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -3808,7 +3808,7 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -3837,21 +3837,21 @@
         "name": "openedBy",
         "field": "oppenedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "closedBy",
         "field": "closedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -12488,7 +12488,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12512,7 +12512,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12524,7 +12524,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12536,7 +12536,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": true,
+        "showInExport": false,
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -12560,7 +12560,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12572,7 +12572,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12584,7 +12584,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12668,7 +12668,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12680,7 +12680,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -12704,7 +12704,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12716,7 +12716,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -12860,7 +12860,7 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -12899,14 +12899,14 @@
         "name": "approvalStatus",
         "field": "approvalStatusName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "Building",
         "field": "buildingNoName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -12920,28 +12920,28 @@
         "name": "openedBy",
         "field": "oppenedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "closedBy",
         "field": "closedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       }
@@ -13299,7 +13299,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13323,7 +13323,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13335,7 +13335,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13347,7 +13347,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": true,
+        "showInExport": false,
         "isCustom": true,
         "exportDataType": "s"
       },
@@ -13371,7 +13371,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13383,7 +13383,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13467,7 +13467,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13479,7 +13479,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -13503,7 +13503,7 @@
         "dataType": "date",
         "isDate": true,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
       },
@@ -13625,7 +13625,7 @@
         "name": "cyclesCount",
         "field": "cyclesCount",
         "type": "number",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -13646,7 +13646,7 @@
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -13699,28 +13699,28 @@
         "name": "openedBy",
         "field": "oppenedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "closedBy",
         "field": "closedBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEdit",
         "field": "lastEditBy",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
         "name": "lastEditDate",
         "field": "lastEditDate",
         "type": "date",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "isRange": true
       },
@@ -13728,7 +13728,7 @@
         "name": "approvalStatus",
         "field": "approvalStatusName",
         "type": "string",
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false
       },
       {
