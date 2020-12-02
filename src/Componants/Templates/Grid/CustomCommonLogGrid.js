@@ -193,7 +193,7 @@ export default class CustomGrid extends Component {
                         rowClick={cell => this.props.rowClick(cell)}
                         groups={this.state.groupsList}
                         handleGroupUpdate={this.handleGroupEvent}
-                        showCheckAll={this.props.showCheckAll}
+                        showCheckAll={this.props.showCheckAll}   
                     />
                     : <LoadingSection />} 
 
