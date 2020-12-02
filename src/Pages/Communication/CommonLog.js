@@ -1194,7 +1194,6 @@ class CommonLog extends Component {
               <div>
                 {(documentObj.docTyp != 42) ? (
                   <div className="linebylineInput valid-input mix_dropdown">
-
                     <div className="supervisor__company">
                       <div className="super_name">
                         <Dropdown

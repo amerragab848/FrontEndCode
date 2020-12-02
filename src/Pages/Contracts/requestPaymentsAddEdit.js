@@ -3722,33 +3722,6 @@ class requestPaymentsAddEdit extends Component {
                             </td>
                             <td colSpan="1">
                                 <div className="contentCell">
-                                    {i.prevoiuse != null
-                                        ? parseFloat(i.prevoiuse)
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
-                                </div>
-                            </td>
-                            <td colSpan="1">
-                                <div className="contentCell">
-                                    {i.currentValue != null
-                                        ? parseFloat(i.currentValue.toString())
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
-                                </div>
-                            </td>
-                            <td colSpan="1">
-                                <div className="contentCell">
-                                    {i.total != null
-                                        ? parseFloat(i.total.toString())
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
-                                </div>
-                            </td>
-                            <td colSpan="1">
-                                <div className="contentCell">
                                     {i.contractorPrevoiuse != null
                                         ? parseFloat(i.contractorPrevoiuse)
                                             .toFixed(2)
@@ -3776,6 +3749,34 @@ class requestPaymentsAddEdit extends Component {
                                         : 0}
                                 </div>
                             </td>
+                            <td colSpan="1">
+                                <div className="contentCell">
+                                    {i.prevoiuse != null
+                                        ? parseFloat(i.prevoiuse)
+                                            .toFixed(2)
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        : 0}
+                                </div>
+                            </td>
+                            <td colSpan="1">
+                                <div className="contentCell">
+                                    {i.currentValue != null
+                                        ? parseFloat(i.currentValue.toString())
+                                            .toFixed(2)
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        : 0}
+                                </div>
+                            </td>
+                            <td colSpan="1">
+                                <div className="contentCell">
+                                    {i.total != null
+                                        ? parseFloat(i.total.toString())
+                                            .toFixed(2)
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        : 0}
+                                </div>
+                            </td>
+                            
                             <td colSpan="3">
                                 <div className="contentCell">{i.comment}</div>
                             </td>
@@ -5382,7 +5383,7 @@ class requestPaymentsAddEdit extends Component {
                                                             <div className="headCell">
                                                                 {
                                                                     Resources[
-                                                                    'consultatnt'
+                                                                    'approved'
                                                                     ][
                                                                     currentLanguage
                                                                     ]
@@ -5393,7 +5394,7 @@ class requestPaymentsAddEdit extends Component {
                                                             <div className="headCell">
                                                                 {
                                                                     Resources[
-                                                                    'contractor'
+                                                                    'submitted'
                                                                     ][
                                                                     currentLanguage
                                                                     ]
