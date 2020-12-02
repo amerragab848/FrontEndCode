@@ -17755,6 +17755,17 @@
         "showInExport": false,
         "isCustom": false,
         "exportDataType": "s"
+      },      {
+        "field": "cycleSubject",
+        "friendlyName": "cycleSubject",
+        "minWidth": 200,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
       },
       {
         "field": "disciplineName",
