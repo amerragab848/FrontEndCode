@@ -74,11 +74,20 @@ class CommonLog extends Component {
       columnsExport: [],
       companies: [],
       contacts: [],
+      ToContacts: [],
       selectedFromCompany: {
         label: Resources.ComapnyNameRequired[currentLanguage],
         value: "0"
       },
       selectedFromContact: {
+        label: Resources.contactNameRequired[currentLanguage],
+        value: "0"
+      },
+      selectedToCompany: {
+        label: Resources.ComapnyNameRequired[currentLanguage],
+        value: "0"
+      },
+      selectedToContact: {
         label: Resources.contactNameRequired[currentLanguage],
         value: "0"
       },
@@ -560,7 +569,7 @@ class CommonLog extends Component {
     }
     //else if .... for more documents 
     else {
-      docTempLink = Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"
+      docTempLink = Config.getPublicConfiguartion().downloads + "/Downloads/Excel/tempLetter.xlsx"
     }
 
     //added
@@ -1191,12 +1200,16 @@ class CommonLog extends Component {
               title={Resources['DocTemplate'][currentLanguage]}
               onCloseClicked={() => this.setState({ docTemplateModal: false })}
               isVisible={this.state.docTemplateModal}>
-              <div>
-                {(documentObj.docTyp != 42) ? (
-                  <div className="linebylineInput valid-input mix_dropdown">
+              <div className="proForm">
+
+                <div className="linebylineInput valid-input mix_dropdown">
+                   <label className="control-label">
+                     { Resources.fromCompany[currentLanguage]}
+                    </label>
                     <div className="supervisor__company">
                       <div className="super_name">
                         <Dropdown
+                          //title={"fromCompany"}
                           data={this.state.companies}
                           isMulti={false}
                           selectedValue={this.state.selectedFromCompany}
@@ -1210,7 +1223,7 @@ class CommonLog extends Component {
                           classDrop="companyName1"
                         />
                       </div>
-                      <div className="super_name">
+                      <div className="super_company">
                         <Dropdown
                           isMulti={false}
                           data={this.state.contacts}
@@ -1227,12 +1240,48 @@ class CommonLog extends Component {
                       </div>
                     </div>
                   </div>
-                ) : null}
+
+                    <div className="linebylineInput valid-input mix_dropdown">
+                        <label className="control-label">
+                        {Resources.toCompany[currentLanguage]}
+                        </label>
+                      <div className="supervisor__company">
+                        <div className="super_name">
+                            <Dropdown isMulti={false}
+                                data={this.state.companies}
+                                selectedValue={this.state.selectedToCompany}
+                                handleChange={event =>
+                                   this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                index="letter-toCompany"
+                                name="toCompanyId"
+                                id="toCompanyId"
+                                styles={CompanyDropdown}
+                                classDrop="companyName1"
+                            />
+                        </div>
+                        <div className="super_company">
+                            <Dropdown isMulti={false}
+                                data={this.state.ToContacts}
+                                selectedValue={this.state.selectedToContact}
+                                handleChange={event =>
+                                    this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
+                                }
+                                index="letter-toContactId"
+                                name="toContactId"
+                                id="toContactId"
+                                classDrop="contactName1"
+                                styles={ContactDropdown} />
+                        </div>
+                      </div>
+                   </div>
+                 
 
                 <XSLfile key="docTemplate"
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
+                  toCompanyId={this.state.document !=null? this.state.document.toCompanyId:null }
+                  toContactId={this.state.document !=null? this.state.document.toContactId:null }
                   docType={this.state.docType}
                   documentTemplate={true}
                   link={docTempLink}

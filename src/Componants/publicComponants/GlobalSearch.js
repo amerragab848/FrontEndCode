@@ -8,7 +8,6 @@ import Dropdown from '../OptionsPanels/DropdownMelcous'
 import dataService from '../../Dataservice'
 import CryptoJS from "crypto-js";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -205,8 +204,8 @@ class GlobalSearch extends Component {
             status: null,
             pageNumber: 0
         }
-
-        this.setState({ isLoading: true })
+      
+       this.setState({ isLoading: true })
 
         dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
             if (searchResult) {
