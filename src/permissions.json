@@ -15028,6 +15028,14 @@
                 "ar": "حالة المصاريف"
               },
               "value": false
+            },
+            {
+              "code": 3770,
+              "title": {
+                "en": "Login History Report",
+                "ar": "تقرير معلومات الدخول"
+              },
+              "value": false
             }
           ]
         },
