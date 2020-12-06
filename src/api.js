@@ -1,20 +1,29 @@
-import CryptoJS from "crypto-js";
-import { toast } from "react-toastify";
-import Config from "./Services/Config";
+import CryptoJS from 'crypto-js';
+import { toast } from 'react-toastify';
+import Config from './Services/Config';
 
-let Authorization = localStorage.getItem("userToken");
+let Authorization = localStorage.getItem('userToken');
 
-let modules = [{ api: 'PM/api/Procoor/', key: 1 }, { api: 'ExportAPI/api/ExportController/', key: 2 }, { api: 'ExportAPI/api/ExportController/', key: 3 }]
+let modules = [
+    { api: 'PM/api/Procoor/', key: 1 },
+    { api: 'ExportAPI/api/ExportController/', key: 2 },
+    { api: 'ExportAPI/api/ExportController/', key: 3 },
+];
 export default class Api {
-
     static headers() {
         return {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            dataType: "json",
-            isNewVersion: "true",
-            Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
-            Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            dataType: 'json',
+            isNewVersion: 'true',
+            Lang:
+                localStorage.getItem('lang') == null
+                    ? 'en'
+                    : localStorage.getItem('lang'),
+            Authorization:
+                Authorization === null
+                    ? localStorage.getItem('userToken')
+                    : Authorization,
         };
     }
 
@@ -23,24 +32,23 @@ export default class Api {
         const url = `${host}${route}`;
         let json = null;
 
-
-        let auth = "Bearer " + localStorage.getItem("accToken");
+        let auth = 'Bearer ' + localStorage.getItem('accToken');
         let data = [];
 
         let options = Object.assign(
             {
-                method: "GET"
+                method: 'GET',
             },
             params
                 ? {
-                    body: JSON.stringify(params)
-                }
-                : null
+                      body: JSON.stringify(params),
+                  }
+                : null,
         );
 
         options.headers = {
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-            Authorization: auth
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            Authorization: auth,
         };
         return fetch(url, options)
             .then(resp => {
@@ -53,13 +61,15 @@ export default class Api {
                     if (json === undefined) return null;
                     return json;
                 } else if (resp.status === 401) {
-                    localStorage.removeItem("refToken");
-                    json = "";
+                    localStorage.removeItem('refToken');
+                    json = '';
                     window.location.reload();
                     return json;
                 } else if (resp.status === 500) {
                     json = null;
-                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+                    toast.error(
+                        'Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!',
+                    );
 
                     return json;
                 } else if (resp.status === 409) {
@@ -83,13 +93,13 @@ export default class Api {
 
         let options = Object.assign(
             {
-                method: verb
+                method: verb,
             },
             params
                 ? {
-                    body: JSON.stringify(params)
-                }
-                : null
+                      body: JSON.stringify(params),
+                  }
+                : null,
         );
         options.headers = Api.headers();
         return fetch(url, options)
@@ -104,7 +114,9 @@ export default class Api {
                     return json;
                 } else if (resp.status === 500) {
                     json = null;
-                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+                    toast.error(
+                        'Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!',
+                    );
 
                     return json;
                 } else if (resp.status === 409) {
@@ -125,23 +137,29 @@ export default class Api {
         const host = Config.getPublicConfiguartion().goMeeting;
         const url = `${host}${route}`;
         let json = null;
-        let auth = "Basic " + btoa('BgeBrkkiK0Bg1YiREsn75ED2z0nZtxZb' + ":" + 'vZI2PG0EhA2if7YF');
+        let auth =
+            'Basic ' +
+            btoa('BgeBrkkiK0Bg1YiREsn75ED2z0nZtxZb' + ':' + 'vZI2PG0EhA2if7YF');
 
         let data = [];
 
         for (var param in params) {
             if (params.hasOwnProperty(param)) {
-                data.push(encodeURIComponent(param) + '=' + encodeURIComponent(params[param]))
+                data.push(
+                    encodeURIComponent(param) +
+                        '=' +
+                        encodeURIComponent(params[param]),
+                );
             }
         }
         let options = {
-            method: "POST",
-            body: data.join('&')
+            method: 'POST',
+            body: data.join('&'),
         };
 
         options.headers = {
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-            Authorization: auth
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            Authorization: auth,
         };
 
         return fetch(url, options)
@@ -151,13 +169,15 @@ export default class Api {
                     if (json === undefined) return null;
                     return json;
                 } else if (resp.status === 401) {
-                    localStorage.removeItem("userToken");
-                    json = "";
+                    localStorage.removeItem('userToken');
+                    json = '';
                     window.location.reload();
                     return json;
                 } else if (resp.status === 500) {
                     json = null;
-                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+                    toast.error(
+                        'Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!',
+                    );
 
                     return json;
                 } else if (resp.status === 409) {
@@ -178,24 +198,23 @@ export default class Api {
         const url = `${host}${route}`;
         let json = null;
 
-
-        let auth = "Bearer " + localStorage.getItem("accToken");
+        let auth = 'Bearer ' + localStorage.getItem('accToken');
         let data = [];
 
         let options = Object.assign(
             {
-                method: "POST"
+                method: 'POST',
             },
             params
                 ? {
-                    body: JSON.stringify(params)
-                }
-                : null
+                      body: JSON.stringify(params),
+                  }
+                : null,
         );
 
         options.headers = {
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-            Authorization: auth
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            Authorization: auth,
         };
         return fetch(url, options)
             .then(resp => {
@@ -208,13 +227,15 @@ export default class Api {
                     if (json === undefined) return null;
                     return json;
                 } else if (resp.status === 401) {
-                    localStorage.removeItem("refToken");
-                    json = "";
+                    localStorage.removeItem('refToken');
+                    json = '';
                     window.location.reload();
                     return json;
                 } else if (resp.status === 500) {
                     json = null;
-                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+                    toast.error(
+                        'Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!',
+                    );
 
                     return json;
                 } else if (resp.status === 409) {
@@ -231,38 +252,48 @@ export default class Api {
             });
     }
     static get(route, params, moduleId) {
-        return this.xhr(route, params === null ? null : params, "GET", moduleId ? moduleId : 1);
+        return this.xhr(
+            route,
+            params === null ? null : params,
+            'GET',
+            moduleId ? moduleId : 1,
+        );
     }
     static async getForWidgets(route, params) {
-        return await this.xhrForWidgets(route, params === null ? null : params, "GET");
+        return await this.xhrForWidgets(
+            route,
+            params === null ? null : params,
+            'GET',
+        );
     }
     static post(route, params) {
-
-        return this.xhr(route, params, "POST");
+        return this.xhr(route, params, 'POST');
     }
 
     static xhr(route, params, verb, moduleId) {
         if (!moduleId) moduleId = 1;
         if (moduleId < 1) moduleId = 1;
         let apiPrefix = modules.find(x => x.key == moduleId);
-        //const host = Config.getPublicConfiguartion().static + apiPrefix.api;
-        const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + apiPrefix.api;
+        //const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
 
         let options = Object.assign(
             {
-                method: verb
+                method: verb,
             },
             params
                 ? {
-                    body: JSON.stringify(params)
-                }
-                : null
+                      body: JSON.stringify(params),
+                  }
+                : null,
         );
 
         options.headers = Api.headers();
-
+        options = Object.assign(options, {
+            responseType: 'blob',
+        });
         return fetch(url, options)
             .then(resp => {
                 if (resp.status === 200) {
@@ -270,13 +301,15 @@ export default class Api {
                     if (json === undefined) return null;
                     return json;
                 } else if (resp.status === 401) {
-                    localStorage.removeItem("userToken");
-                    json = "";
+                    localStorage.removeItem('userToken');
+                    json = '';
                     window.location.reload();
                     return json;
                 } else if (resp.status === 500) {
                     json = null;
-                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+                    toast.error(
+                        'Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!',
+                    );
 
                     return json;
                 } else if (resp.status === 409) {
@@ -300,8 +333,12 @@ export default class Api {
     static IsAllow(code) {
         let userPermissions = [];
         let isCompany = true;
-        if (localStorage.getItem("permissions")) {
-            let perms = JSON.parse(CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
+        if (localStorage.getItem('permissions')) {
+            let perms = JSON.parse(
+                CryptoJS.enc.Base64.parse(
+                    localStorage.getItem('permissions'),
+                ).toString(CryptoJS.enc.Utf8),
+            );
             userPermissions = perms;
         }
 
@@ -317,9 +354,8 @@ export default class Api {
         }
     }
     static postFile(route, params, header) {
-
-        let json = "";
-        const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
+        let json = '';
+        const host = Config.getPublicConfiguartion().static + 'PM/api/Procoor/';
         const url = `${host}${route}`;
         let headers = {};
         headers.Authorization = Authorization;
@@ -330,11 +366,11 @@ export default class Api {
             headers.docType = header.docType;
         }
         return fetch(url, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                ...headers
+                ...headers,
             },
-            body: params
+            body: params,
         })
             .then(resp => {
                 if (resp.status === 200) {
@@ -344,13 +380,13 @@ export default class Api {
                 } else if (resp.status === 500) {
                     json = null;
                     toast.error(
-                        "Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!"
+                        'Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!',
                     );
 
                     return json;
                 } else if (resp.status === 401) {
-                    localStorage.removeItem("userToken");
-                    json = "";
+                    localStorage.removeItem('userToken');
+                    json = '';
                     window.location.reload();
                     return json;
                 } else if (resp.status === 409) {
@@ -368,22 +404,21 @@ export default class Api {
             });
     }
     static getPassword(route, password) {
-
-        const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + 'PM/api/Procoor/';
 
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password;
         return fetch(url, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                ...headers
+                ...headers,
             },
-            body: null
+            body: null,
         }).then(response => response.json());
     }
     static getPublicIP() {
-        const url = "https://ipapi.co/json/?callback=?";
+        const url = 'https://ipapi.co/json/?callback=?';
         let json = null;
         return fetch(url)
             .then(resp => {
@@ -409,29 +444,29 @@ export default class Api {
         let json = null;
         let options = Object.assign(
             {
-                method: "Post"
+                method: 'Post',
             },
             params
                 ? {
-                    body: params
-                }
-                : null
+                      body: params,
+                  }
+                : null,
         );
 
         options.headers = {
-            Accept: "*/*",
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: Authorization
+            Accept: '*/*',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: Authorization,
         };
         return fetch(url, options)
             .then(resp => {
                 if (resp.status === 200) {
-                    json = resp != null ? resp.json() : "";
+                    json = resp != null ? resp.json() : '';
                     return json;
                 } else if (resp.status === 400) {
                     return resp;
                 } else if (resp.status === 401) {
-                    localStorage.removeItem("userToken");
+                    localStorage.removeItem('userToken');
 
                     window.location.reload();
                 }
@@ -442,88 +477,91 @@ export default class Api {
             .then(json => (json.result ? json.result : json));
     }
     static authorizationApi(route, params, method, isCheck) {
-        const host = Config.getPublicConfiguartion().loginServer + "/api/";
+        const host = Config.getPublicConfiguartion().loginServer + '/api/';
         const url = `${host}${route}`;
         let json = null;
 
-        let options = Object.assign({ method: method === null ? "PUT" : method },
-            params ? { body: JSON.stringify(params) } : null
+        let options = Object.assign(
+            { method: method === null ? 'PUT' : method },
+            params ? { body: JSON.stringify(params) } : null,
         );
 
         options.headers = Api.headers();
         var returnObject = {};
-        return fetch(url, options).then(reponse => {
-            if (reponse.status === 200) {
-                returnObject.status = 200;
+        return fetch(url, options)
+            .then(reponse => {
+                if (reponse.status === 200) {
+                    returnObject.status = 200;
 
-                if (isCheck) {
-                    returnObject.msg = "Email already exists.";
-                } else {
+                    if (isCheck) {
+                        returnObject.msg = 'Email already exists.';
+                    } else {
+                        returnObject.msg = 'Successfuly created account.';
+                    }
+                    json = returnObject;
+                    return json;
+                } else if (reponse.status === 500) {
+                    json = null;
+                    return json;
+                } else if (reponse.status === 401) {
+                    returnObject.status = 401;
+                    returnObject.msg = 'Email already exists.';
+                    json = returnObject;
+                    return json;
+                } else if (reponse.status === 400) {
+                    returnObject.status = 400;
+                    returnObject.msg =
+                        'Email already Belonge to Another Company.';
 
-                    returnObject.msg = "Successfuly created account.";
+                    json = returnObject;
+                    return json;
+                } else if (reponse.status === 404) {
+                    returnObject.status = 404;
+                    returnObject.msg = 'This Email Not Belongs to This Company';
+                    json = returnObject;
+                    return json;
                 }
-                json = returnObject;
-                return json;
-            } else if (reponse.status === 500) {
-                json = null;
-                return json;
-            } else if (reponse.status === 401) {
-                returnObject.status = 401;
-                returnObject.msg = "Email already exists.";
-                json = returnObject;
-                return json;
-            } else if (reponse.status === 400) {
-                returnObject.status = 400;
-                returnObject.msg = "Email already Belonge to Another Company.";
-
-                json = returnObject;
-                return json;
-            } else if (reponse.status === 404) {
-                returnObject.status = 404;
-                returnObject.msg = "This Email Not Belongs to This Company";
-                json = returnObject;
-                return json;
-            }
-        }).then(json => {
-            if (json.result) {
-                return json.result
-            } else {
-                return json
-            }
-        }
-        );
+            })
+            .then(json => {
+                if (json.result) {
+                    return json.result;
+                } else {
+                    return json;
+                }
+            });
     }
     static IsAuthorized() {
         let authorize = false;
-        if (localStorage.getItem("userToken")) {
+        if (localStorage.getItem('userToken')) {
             authorize = true;
         }
         return authorize;
     }
     static PostForGetAttaches(params, searchOptions) {
-
-        const host = Config.getPublicConfiguartion().exportStatic + "/api/textractify";
+        const host =
+            Config.getPublicConfiguartion().exportStatic + '/api/textractify';
         const url = `${host}`;
         let json = null;
         let files = params;
 
         let req = {
             searchOptions: searchOptions,
-            files: files
+            files: files,
         };
 
         let options = Object.assign(
             {
-                method: "POST"
-            }, {
-            body: JSON.stringify(req)
-        }
+                method: 'POST',
+            },
+            {
+                body: JSON.stringify(req),
+            },
         );
 
         options.headers = {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            dataType: "json"
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            dataType: 'json',
         };
 
         return new Promise((resolve, reject) => {
@@ -539,10 +577,12 @@ export default class Api {
                 }
             };
 
-            xmlhttp.open("POST", url);
-            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.open('POST', url);
+            xmlhttp.setRequestHeader(
+                'Content-Type',
+                'application/json;charset=UTF-8',
+            );
             xmlhttp.send(JSON.stringify(req));
         });
-
     }
 }

@@ -78,7 +78,7 @@ let ThreeWidgetsData = [
         },
         order: 4,
         permission: 1371
-    },
+    }, 
     {
         id: "wt-NotCodedExpensesSummary-6",
         title: "notCodedExpensesSummary",
@@ -206,6 +206,22 @@ let ThreeWidgetsData = [
         },
         order: 12,
         permission: 1369
+    },
+    {
+        id: "wt-usersAlertSummary-14",
+        title: "usersAlertSummary",
+        key: "0-101-1005",
+        props: {
+            api: "GetusersAlertSummaryCount",
+            apiDetails: "GetusersAlertSummaryDetails?action=",
+            route: ["usersAlertSummaryDetails?action="],
+            value: "total",
+            listType: "item",
+            action: "action",
+            isModal: false
+        },
+        order: 13,
+        permission: 1371
     }
 ];
 

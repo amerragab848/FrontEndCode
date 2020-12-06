@@ -22,12 +22,13 @@ import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-import GridCustom from 'react-customized-grid';
+//import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 // import 'react-customized-grid/main.css';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
@@ -44,6 +45,7 @@ let arrange = 0;
 
 var steps_defination = [];
 
+let selectedRows = [];
 steps_defination = [
     { name: "workFlow", callBackFn: null },
     { name: "contacts", callBackFn: null },
@@ -97,8 +99,7 @@ const ValidtionSchemaContactsForEdit = Yup.object().shape({
 const validationSchemaForAddEditWorkFlow = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     alertDays: Yup.number().required(Resources['isRequiredField'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
-    rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage]),
-    // distributionId: Yup.string().required(Resources['distributionList'][currentLanguage])
+    rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage])
 })
 
 class projectWorkFlowAddEdit extends Component {
@@ -124,7 +125,7 @@ class projectWorkFlowAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -196,6 +197,7 @@ class projectWorkFlowAddEdit extends Component {
             RejectionOptionData: [],
             NextWorkFlowData: [],
             IsLoadingCheckCode: false,
+            durationLoading: false,
             selectedRejectionOptions: {},
             selectedNextWorkFlow: {},
             CompanyData: [],
@@ -730,22 +732,42 @@ class projectWorkFlowAddEdit extends Component {
             })
         });
     }
-    durationHandleChange = (e, level) => {
-        var obj = {};
-        var newList = [];
-        var oldList = this.state.LevelDurationUpdateList;
-
-        newList = oldList.length > 0 ? filter(this.state.LevelDurationUpdateList, function (i) { return i.level != level }) : [];
-
-        obj.level = level;
-        obj.value = e.target.value;
-
-        newList.push(obj);
+    toggleRow(e, row) {
 
         this.setState({
-            LevelDurationUpdateList: newList
-        })
+            durationLoading: true
+        });
+
+        const newSelected = {};
+        var obj = {};
+
+        var oldList = this.state.LevelDurationUpdateList;
+        var newList = [];
+        var sendedList = [];
+
+        sendedList = oldList.length > 0 ? filter(this.state.LevelDurationUpdateList, function (i) { return i.level != row.arrange }) : [];
+        obj.level = row.arrange;
+        obj.value = e.target.value;
+
+        sendedList.push(obj);
+
+        this.state.LevelDurationData.forEach(item => {
+            if (row.id == item.id) {
+                item.arrange = item.arrange;
+                item.duration = e.target.value;
+                newList.push(item);
+            } else {
+                newList.push(item);
+            }
+        });
+
+        this.setState({
+            LevelDurationData: newList,
+            LevelDurationUpdateList: sendedList,
+            durationLoading: false
+        });
     }
+
     UpdateDurationLevel = () => {
 
         Api.post('UpdateWorkFlowItemsDuration?workFlow=' + this.state.docId,
@@ -1017,8 +1039,12 @@ class projectWorkFlowAddEdit extends Component {
         ]
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom cells={this.state.columns} data={this.state.rows}
-                groups={[]} pageSize={this.state.rows.length}
+            <GridCustom
+                gridKey={'workFlowItem'}
+                cells={this.state.columns}
+                data={this.state.rows}
+                groups={[]}
+                pageSize={this.state.rows.length}
                 actions={[{
                     title: 'Delete',
                     handleClick: (values) => {
@@ -1116,6 +1142,7 @@ class projectWorkFlowAddEdit extends Component {
                 </tr>
             )
         });
+
         const renderLevelDurationTable = this.state.LevelDurationData.map((item) => {
             return (
                 <tr key={item.workFlowItemId}>
@@ -1129,12 +1156,11 @@ class projectWorkFlowAddEdit extends Component {
 
                     <td>
                         <div className="linebylineInput valid-input fullInputWidth">
-                            <label className="control-label">{Resources['duration'][currentLanguage]}</label>
                             <div className="inputDev ui input">
                                 <input autoComplete="off" className="form-control"
-                                    value={this.state.multipleDuration}
+                                    value={item.duration}
                                     name="Duration"
-                                    onChange={(e) => { this.durationHandleChange(e, item.arrange) }}
+                                    onChange={(e) => { this.toggleRow(e, item) }}
                                     placeholder={Resources['duration'][currentLanguage]} />
                             </div>
                         </div>
@@ -1367,13 +1393,13 @@ class projectWorkFlowAddEdit extends Component {
                                                 handleChange={(e) => this.handleChangeDrops(e, "Approval")}
                                                 onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
                                         </div>
-                                        <div className="linebylineInput valid-input fullInputWidth">
+                                        {/* <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['duration'][currentLanguage]}</label>
                                             <div className="inputDev ui input">
                                                 <input autoComplete="off" className="form-control" value={values.Duration} name="Duration"
                                                     onChange={(e) => { handleChange(e) }} placeholder={Resources['duration'][currentLanguage]} />
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="slider-Btns letterFullWidth">
                                             <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['add'][currentLanguage]}</button>
                                         </div>
@@ -1620,7 +1646,7 @@ class projectWorkFlowAddEdit extends Component {
                     </div>
 
                     <div className='document-fields'>
-                        {this.state.docId > 0 ?
+                        {this.state.durationLoading == false ?
                             (
                                 <table className="attachmentTable">
                                     <thead>
@@ -1638,11 +1664,9 @@ class projectWorkFlowAddEdit extends Component {
 
                                             <th></th>
                                         </tr>
-                                    </thead>
+                                    </thead> 
                                     <tbody>
-
-                                        {renderLevelDurationTable}
-
+                                        {renderLevelDurationTable} 
                                     </tbody>
                                 </table>
                             )
@@ -1820,30 +1844,6 @@ class projectWorkFlowAddEdit extends Component {
 
 
                     <div className="doc-pre-cycle letterFullWidth">
-                        {/* {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
-                                            </div>
-                                            : null
-                                        }
-                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
-                                    </div>
-
-                                </div>
-                                : null
-                        } */}
 
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
@@ -1875,7 +1875,6 @@ class projectWorkFlowAddEdit extends Component {
                                         previousRoute={this.state.previousRoute}
                                         docApprovalId={this.state.docApprovalId}
                                         currentArrange={this.state.arrange}
-                                        //showModal={this.props.showModal}
                                         showModal={true}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}

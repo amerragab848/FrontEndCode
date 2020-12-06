@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
- 
+
 import Resources from "../../resources.json";
 import Api from '../../api'
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let selectedRows = [];
- 
+
 const ValidtionSchema = Yup.object().shape({
     selectedContract: Yup.string().required(Resources['selectContract'][currentLanguage]).nullable(true)
 })
@@ -229,7 +229,7 @@ class AmendmentList extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     }
- 
+
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
 
@@ -532,57 +532,60 @@ class AmendmentList extends Component {
 
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false })}
-                        title={Resources['assignAmendment'][currentLanguage]}
                         onCloseClicked={() => this.setState({ ShowPopup: false })} isVisible={this.state.ShowPopup}>
+                        <div className="ui modal smallModal">
+                            <h2 className=" zero">
+                                {Resources.assignAmendment[currentLanguage]}
+                            </h2>
+                            <Formik
+                                initialValues={{ selectedContract: '' }}
 
-                        <Formik
-                            initialValues={{ selectedContract: '' }}
+                                enableReinitialize={true}
 
-                            enableReinitialize={true}
+                                validationSchema={ValidtionSchema}
 
-                            validationSchema={ValidtionSchema}
+                                onSubmit={(values, actions) => {
 
-                            onSubmit={(values, actions) => {
+                                    this.AssignAmendment(values, actions)
+                                }}>
 
-                                this.AssignAmendment(values, actions)
-                            }}>
+                                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                                    <Form onSubmit={handleSubmit}>
 
-                            {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                <Form onSubmit={handleSubmit}>
+                                        <div className='document-fields'>
+                                            <div className="proForm datepickerContainer">
+                                                <div className="linebylineInput letterFullWidth ">
+                                                    <DropdownMelcous title='contract' data={this.state.ContractList} name='selectedContract'
+                                                        selectedValue={this.state.selectedContract} onChange={setFieldValue}
+                                                        handleChange={(e) => this.handleChange(e)}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.selectedContract}
+                                                        touched={touched.selectedContract}
+                                                        value={values.selectedContract} />
+                                                </div>
 
+                                                <div className="fullWidthWrapper slider-Btns">
+                                                    {this.state.isLoading === false ? (
+                                                        <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "")} type="submit" disabled={this.props.isViewMode}>
+                                                            {Resources["save"][currentLanguage]}
+                                                        </button>
+                                                    ) : (
+                                                            <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button>
+                                                        )}
+                                                </div>
 
-                                    <div className='dropWrapper'>
-                                        <div className="letterFullWidth multiChoice">
-                                            <DropdownMelcous title='contract' data={this.state.ContractList} name='selectedContract'
-                                                selectedValue={this.state.selectedContract} onChange={setFieldValue}
-                                                handleChange={(e) => this.handleChange(e)}
-                                                onBlur={setFieldTouched}
-                                                error={errors.selectedContract}
-                                                touched={touched.selectedContract}
-                                                value={values.selectedContract} />
+                                            </div>
                                         </div>
-
-                                        <div className="fullWidthWrapper slider-Btns">
-                                            {this.state.isLoading === false ? (
-                                                <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "")} type="submit" disabled={this.props.isViewMode}>
-                                                    {Resources["save"][currentLanguage]}
-                                                </button>
-                                            ) : (
-                                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
-                                                        </div>
-                                                    </button>
-                                                )}
-                                        </div>
-
-                                    </div>
-                                </Form>
-                            )}
-                        </Formik>
-
+                                    </Form>
+                                )}
+                            </Formik>
+                        </div>
                     </SkyLightStateless>
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">

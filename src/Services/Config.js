@@ -16,7 +16,7 @@ export default class Config {
     static setSignature(sign) {
         signautre = sign;
     }
-    static getSignature() {
+    static getSignature() {  
         return signautre;
     }
 

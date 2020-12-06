@@ -172,10 +172,9 @@ export default class IndexedDb {
     }
 
     static async seed() {
-        debugger;
         dbDashBoard = await schemaBuilderDashBoardProjects.connect();
         db = await schemaBuilder.connect();
-        // api = await cachedData.connect();
+        api = await cachedData.connect();
 
         tables.widgetType = db.getSchema().table('WidgetType');
         tables.widgetCategory = db.getSchema().table('WidgetCategory');
@@ -186,8 +185,8 @@ export default class IndexedDb {
         tableProjects.widget = dbDashBoard.getSchema().table('Widget');
 
         // tables.defaultLists = api.getSchema().table('defaultLists');
-        // tables.companies = api.getSchema().table('companies');
-        // tables.projects = api.getSchema().table('projects');
+        tables.companies = api.getSchema().table('companies');
+        tables.projects = api.getSchema().table('projects');
 
         let rows = await db
             .select()

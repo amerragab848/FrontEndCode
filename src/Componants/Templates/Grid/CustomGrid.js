@@ -120,6 +120,7 @@ export default class CustomGrid extends Component {
 
     static getDerivedStateFromProps(nextProps, state) {
 
+       
         if (nextProps.isFilter && isEqual(state.rows, nextProps.data)) {
             return {
                 rows: nextProps.data,

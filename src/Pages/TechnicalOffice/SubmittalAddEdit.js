@@ -12,7 +12,7 @@ import ModernDatepicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Config from "../../Services/Config.js"; 
+import Config from "../../Services/Config.js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
@@ -158,22 +158,7 @@ class SubmittalAddEdit extends Component {
         { name: "deleteAttachments", code: 884 },
         { name: "previousVersions", code: 8080800 }
       ],
-      SubmittalTypes: [
-        { label: "As Build", value: "As Build" },
-        { label: "Method Statment", value: "Method Statment" },
-        { label: "Quality Plan", value: "Quality Plan" },
-        { label: "IPP", value: "IPP" },
-        { label: "Material", value: "Material" },
-        { label: "Quantity Surevy", value: "Quantity Surevy" },
-        { label: "Schedule", value: "Schedule" },
-        { label: "Shop drawing", value: "Shop drawing" },
-        { label: "IIP", value: "IIP" },
-        { label: "ITP", value: "ITP" },
-        { label: "Safty Plan", value: "Safty Plan" },
-        { label: "Release Submittal", value: "Release Submittal" },
-        { label: "Organization Chart", value: "Organization Chart" },
-        { label: "BBS", value: "BBS" }
-      ],
+      SubmittalTypes: [],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
       selectedFromCompanyCycles: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
@@ -235,9 +220,9 @@ class SubmittalAddEdit extends Component {
       flowCompanyName: "",
       flowContactName: "",
       status: "true",
-      subject: "Cycle No. R " + 1,
+      subject: "Cycle No. R " + 0,
       approvalStatusId: "",
-      arrange: "1",
+      arrange: "0",
       flowCompanyId: "",
       flowContactId: "",
       fromContactId: "",
@@ -286,6 +271,7 @@ class SubmittalAddEdit extends Component {
         contractId: "",
         apartment: "",
         specsSectionId: "",
+        submittalTypeId: "",
         companyId: "",
         subject: "",
         submittalType: "",
@@ -348,9 +334,9 @@ class SubmittalAddEdit extends Component {
           flowCompanyName: "",
           flowContactName: "",
           status: "true",
-          subject: "Cycle No. R " + 1,
+          subject: "Cycle No. R " + 0,
           approvalStatusId: "",
-          arrange: "1",
+          arrange: "0",
           flowCompanyId: "",
           flowContactId: "",
           fromContactId: "",
@@ -363,7 +349,8 @@ class SubmittalAddEdit extends Component {
 
             cycle.docDate = result.docDate != null ? moment(result.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             cycle.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
+            cycle.arrange = result.arrange;
+            
             this.fillCycleDropDown(true);
 
             this.setState({
@@ -497,9 +484,6 @@ class SubmittalAddEdit extends Component {
   fillDropDowns(isEdit) {
     //from Companies
     dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
-
-      let obj = this.state.SubmittalTypes.find(o => o.label === this.props.document.submittalType);
-
       if (isEdit) {
 
         let companyId = this.props.document.bicCompanyId;
@@ -514,7 +498,6 @@ class SubmittalAddEdit extends Component {
         }
       }
       this.setState({
-        selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
         companies: [...result]
       });
     });
@@ -543,6 +526,33 @@ class SubmittalAddEdit extends Component {
       }
       this.setState({
         disciplines: [...result]
+      });
+    });
+
+    //discplines
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
+
+      if (isEdit) {
+
+        let submittalTypeId = this.props.document.submittalTypeId;
+
+        if (submittalTypeId) {
+
+          let submittalType = result.find(i => i.value === submittalTypeId);
+
+          if (submittalType) {
+            this.setState({
+              selectedSubmittalType: { label: submittalType.label, value: submittalTypeId }
+            });
+          } else {
+            this.setState({
+              selectedSubmittalType: { label: Resources.disciplineRequired[currentLanguage], value: "0" }
+            });
+          }
+        }
+      }
+      this.setState({
+        SubmittalTypes: [...result]
       });
     });
 
@@ -697,8 +707,22 @@ class SubmittalAddEdit extends Component {
     this.setState({
       document: updated_document
     });
-  }
 
+
+  }
+  handleBlur(e) {
+    if (e.target.value && e.target.value.trim()) // if the input is contains only spaces or null 
+    {
+      if (Config.getPublicConfiguartion().refCodeValidation == true) {
+        dataservice.checkSubmittalRefCode(this.state.projectId, e.target.value).then(result => {
+          if (result == true) {
+            toast.error("sorry this code is not valid please try again !");
+            this.setState({ document: { ...document, refNo: "" } })
+          }
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+      }
+    }
+  }
   handleChangeCycles(e, field) {
 
     let original_document = { ...this.state.documentCycle };
@@ -864,20 +888,20 @@ class SubmittalAddEdit extends Component {
       [selectedValue]: event
     });
 
-    if (field == "flowCompanyId") {
-      let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+    // if (field == "flowCompanyId") {
+    //   let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
 
-      dataservice.GetNextArrangeMainDocument(url).then(res => {
+    //   dataservice.GetNextArrangeMainDocument(url).then(res => {
 
-        updated_document.arrange = res;
+    //     updated_document.arrange = res;
 
-        updated_document = Object.assign(original_document, updated_document);
+    //     updated_document = Object.assign(original_document, updated_document);
 
-        this.setState({
-          documentCycle: updated_document
-        });
-      });
-    }
+    //     this.setState({
+    //       documentCycle: updated_document
+    //     });
+    //   });
+    // }
 
 
     if (isSubscrib) {
@@ -982,9 +1006,9 @@ class SubmittalAddEdit extends Component {
   editSubmittalCycle() {
     let saveDocumentCycle = this.state.documentCycle;
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocumentCycle.submittalId = this.state.docId;
-    saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss");
 
+    saveDocumentCycle.submittalId = this.state.docId;
     this.setState({ isLoading: true });
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
@@ -1385,7 +1409,7 @@ class SubmittalAddEdit extends Component {
 
   addCycle() {
 
-    let maxArrange = (maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 1;
+    let maxArrange = (maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 0;
 
     let arrangeCycle = this.state.documentCycle.arrange;
 
@@ -1470,7 +1494,6 @@ class SubmittalAddEdit extends Component {
       submittalItem.arrange = maxArrange != undefined ? (maxArrange.arrange != null ? maxArrange.arrange + 1 : 1) : 1;
       this.setState({
         itemsDocumentSubmital: submittalItem
-
       })
     }
   }
@@ -1696,7 +1719,7 @@ class SubmittalAddEdit extends Component {
                                 <div className={"ui input inputDev" + (errors.refNo && touched.refNo ? " has-error" : "ui input inputDev")}>
                                   <input type="text" className="form-control" id="refNo" value={this.state.document.refNo || ''} name="refNo"
                                     placeholder={Resources.refDoc[currentLanguage]}
-                                    onBlur={e => { handleChange(e); handleBlur(e); }}
+                                    onBlur={e => { handleChange(e); this.handleBlur(e); }}
                                     onChange={e => this.handleChange(e, "refNo")} />
                                   {errors.refNo && touched.refNo ? (<em className="pError">{errors.refNo}</em>) : null}
                                 </div>
@@ -1815,7 +1838,7 @@ class SubmittalAddEdit extends Component {
                               </div>
                               <div className="linebylineInput valid-input">
                                 <Dropdown title="submittalType" data={this.state.SubmittalTypes} selectedValue={this.state.selectedSubmittalType}
-                                  handleChange={event => this.handleChangeDropDown(event, "submittalType", false, "", "", "", "selectedSubmittalType")} />
+                                  handleChange={event => this.handleChangeDropDown(event, "submittalTypeId", false, "", "", "", "selectedSubmittalType")} />
                               </div>
                               <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
@@ -1893,7 +1916,7 @@ class SubmittalAddEdit extends Component {
                                       <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")} >
                                         <input name="subject" className="form-control fsadfsadsa"
                                           placeholder={Resources.subject[currentLanguage]} autoComplete="off"
-                                          value={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.documentCycle.arrange + ')')}
+                                          value={this.state.documentCycle.subject}
                                           onBlur={e => { handleBlur(e); handleChange(e); }}
                                           onChange={e => this.handleChangeCycles(e, "subject")} />
                                         {errors.subject && touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}

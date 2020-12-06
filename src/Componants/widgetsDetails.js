@@ -241,6 +241,20 @@ let widgets = {
             "key": "0-2-8"
         }
     },
+    "usersAlertSummary": {
+        "title": "usersAlertSummary",
+        "props": {
+            "permission": 0,
+            "type": "threeWidget",
+            "api": "GetusersAlertSummaryCount",
+            "apiDetails": "GetusersAlertSummaryDetails?action=",
+            "route": "usersAlertSummaryDetails?action=",
+            "value": "total",
+            "listType": "item",
+            "action": "action",
+            "key": "0-2-8"
+        }
+    },
     "openedSummary": {
         "title": "openedSummary",
         "props": {

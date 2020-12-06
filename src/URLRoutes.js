@@ -620,6 +620,19 @@ var routes = [
         }
     },
     {
+        route: "corrRecievedSent",
+        moduleId: "cls",
+        title: "correspondence",
+        nav: true,
+        hash: "#corrRecievedSent",
+        settings: {
+            Communication: true,
+            permission: 42,
+            caption: "procoor-icon-letters",
+            order: 13
+        }
+    },
+    {
         route:
             "rfiAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "communication/rfiAddEdit",
@@ -786,6 +799,22 @@ var routes = [
             "internalMemoAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "communication/internalMemoAddEdit",
         title: "Internal Memo",
+        nav: false,
+        settings: { Communication: false }
+    },
+    {
+        route:
+            "corrSentView/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        moduleId: "communication/corrSentView",
+        title: "corrSentView View",
+        nav: false,
+        settings: { Communication: false }
+    },
+    {
+        route:
+            "corrReceiveView/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        moduleId: "communication/corrReceiveView",
+        title: "corrReceiveView View",
         nav: false,
         settings: { Communication: false }
     },
@@ -1945,6 +1974,19 @@ var routes = [
         }
     },
     {
+        route: "qualityControl",
+        moduleId: "commonLogs",
+        title: "qualityCheckList",
+        nav: true,
+        hash: "#qualityControl",
+        settings: {
+            QualityControl: true,
+            permission: 287,
+            caption: "procoor-icon-punch-list",
+            order: 8
+        }
+    },
+    {
         route:
             "punchListAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "site/punchListAddEdit",
@@ -2729,11 +2771,18 @@ var routes = [
         settings: { OtherReports: true, permission: 3743, order: 6 }
     },
     {
+        route: "documentAllTypesReport",
+        moduleId: "OtherReports/DocumentAllTypesReport",
+        title: "WorkFlowWithDocumentAllTypesDetails",
+        nav: true,
+        settings: { OtherReports: true, permission: 3743, order: 7 }
+    },
+    {
         route: "TransmittalReport",
         moduleId: "OtherReports/TransmittalReport",
         title: "transmittalReport",
         nav: true,
-        settings: { OtherReports: true, permission: 4018, order: 7 }
+        settings: { OtherReports: true, permission: 4018, order: 8 }
     },
     {
         route: "TechnicalOfficeReport",
@@ -2876,6 +2925,17 @@ var routes = [
         title: "expnesesUserRequests",
         nav: true,
         settings: { OtherReports: true, permission: 3719, order: 1 }
+    },
+    {
+        route: "UserAlerts",
+        moduleId: "ProjectSetup/UserAlerts",
+        title: "userAlerts",
+        nav: true, 
+        settings: {
+            // General: true,
+            caption: "procoor-icon-project-page-setup",
+            order: 5
+        } 
     },
 ];
 

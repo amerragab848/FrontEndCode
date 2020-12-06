@@ -93,8 +93,7 @@ class Index extends Component {
         });
     }
 
-    renderWidget(widget, index) {
-        debugger;
+    renderWidget(widget, index) { 
         if (Details.widgets[widget.title].props.type === 'threeWidget') {
             return (
                 <ApprovedWidget

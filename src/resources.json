@@ -2261,6 +2261,18 @@
         "en": "Work Flow With Document Type Details",
         "ar": "تقرير الدوره المستنديه طبقا لنوع الوثيقة"
     },
+    "WorkFlowWithDocumentAllTypesDetails": {
+        "en": "Work Flow With Document All Types Details",
+        "ar": "تقرير الدوره المستنديه لكل انواع الوثيقة"
+    },
+    "isVacation": {
+        "en": "Is Vacation",
+        "ar": "يوم اجازاه"
+    },
+    "linkwithBoq": {
+        "en": "Link With BOQ",
+        "ar": "الربط مع الكميات"
+    },
     "docDetails": {
         "en": "Document Details",
         "ar": "تفاصيل الوثيقة"
@@ -2904,6 +2916,14 @@
     "docAlerts": {
         "en": "Document Alerts",
         "ar": " التنبيهات علي الوثائق"
+    },
+    "userAlerts": {
+        "en": "User Alerts",
+        "ar": " التنبيهات علي الوثائق"
+    },
+    "usersAlertSummary": {
+        "en": "User Alerts Summary",
+        "ar": "ملخص التنبيهات علي الوثائق"
     },
     "alertDate": {
         "en": "Alert Date",
@@ -4488,7 +4508,7 @@
     "levelDurationAlert": {
         "en": " Level Duration Delay Alert",
         "ar": "تنبيه تاخير اعتماد المستوى"
-    }, 
+    },
     "cycleCloseDate": {
         "en": " Cycle Close Date",
         "ar": "تاريخ الاغلاق "
@@ -5060,6 +5080,14 @@
     "qualityControl": {
         "en": "Quality Control",
         "ar": " مراقبة الجودة"
+    },
+    "qualityCheckList": {
+        "en": "quality Check List",
+        "ar": "جودة قائمة التحقق"
+    },
+    "qualityCheckListAddEdit": {
+        "en": "quality Check List Add Edit",
+        "ar": "اضافة وتعديل جودة قائمة التحقق"
     },
     "checkIn": {
         "en": "Check In",
@@ -8643,7 +8671,7 @@
     },
     "submitted": {
         "en": "Submitted",
-        "ar": "Submitted"
+        "ar": "تم التسليم"
     },
     "contractorPrevoiuse": {
         "en": "ContractorPrevoiuse",
@@ -8805,8 +8833,8 @@
         "en": "Attached Paper Size",
         "ar": "حجم الورق المرفق"
     },
-    "attachedPaperSizeRequired":{
-        "en":"Please Select Attached Paper Size",
-        "ar":" من فضلك اختر حجم الورق المرفق"
+    "attachedPaperSizeRequired": {
+        "en": "Please Select Attached Paper Size",
+        "ar": " من فضلك اختر حجم الورق المرفق"
     }
 }
