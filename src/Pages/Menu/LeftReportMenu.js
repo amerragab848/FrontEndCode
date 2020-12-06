@@ -29,6 +29,7 @@ class LeftReportMenu extends Component {
             if (route.settings) {
                 if (route.settings.OtherReports === true) {
                     if (Config.IsAllow(route.settings.permission)) {
+                        console.log(route.title);
                         OtherReports.push({
                             label: Resources[route.title][currentLanguage],
                             value: route.moduleId
@@ -139,6 +140,7 @@ class LeftReportMenu extends Component {
 
     getReport = event => {
         this.setState({ selectedReport: event });
+        localStorage.setItem('SelectedReport', JSON.stringify(event));
         if (event.value) {
             import(`../../Pages/ReportsCenter/${event.value}`).then(module =>
                 this.setState({ module: module.default })
@@ -146,8 +148,20 @@ class LeftReportMenu extends Component {
         }
     };
 
+    getExternalLink = (event) => {
+        if (event.value) {
+            this.props.history.push({
+                pathname: "/" + event.value.split("/")[1]
+            });
+        }
+    };
+
     componentWillMount() {
         this.props.actions.ReportCenterMenuClick();
+
+        var selectedReport = localStorage.getItem("SelectedReport") != null ? JSON.parse(localStorage.getItem("SelectedReport")) : this.state.selectedReport;
+        if(selectedReport.value != "0" || selectedReport.value > 0)this.getReport(selectedReport)
+        this.setState({ selectedReport: selectedReport });
     }
 
     render() {
@@ -212,9 +226,30 @@ class LeftReportMenu extends Component {
                                     {this.state.moduleName}
                                 </label>
                                 <div className="reposrts__menu--dropdown">
-                                    <Dropdown data={this.state.subReports} selectedValue={this.state.selectedReport}
+                                    <Dropdown
+                                        data={this.state.subReports}
+                                        //  isHyperLink = {true}
+                                        //  isHyperLink = "true"
+                                        selectedValue={this.state.selectedReport}
                                         handleChange={event => this.getReport(event)} name="drop" id="drop" />
                                 </div>
+                                {this.state.selectedReport.value > 0 || this.state.selectedReport.value != "0" ?
+                                    <div>
+                                        <button
+                                            onClick={() => this.getExternalLink(this.state.selectedReport)} 
+                                            style={{
+                                                cursor: "pointer",
+                                                position: "absolute",
+                                                right: "48%",
+                                                bottom: "82%",
+                                                background: "transparent",
+                                                border: "none",
+                                                fontSize: "25px",
+                                                color: "rgb(94, 100, 117)"
+                                            }}>
+                                            <i className="fa fa-link" />
+                                        </button>
+                                    </div> : null}
                             </div>
                             <ErrorHandler>
                                 {this.state.selectedReport.value == "0" ? null :
@@ -226,6 +261,7 @@ class LeftReportMenu extends Component {
                                     )}
                             </ErrorHandler>
                         </div>
+
                     </React.Fragment>
                 </div>
             </div>

@@ -90,6 +90,9 @@ const DocumentTpesReport = AsyncComponent(() =>
 const DocumentAllTypesReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/DocumentAllTypesReport'),
 );
+const LoginHistoryReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/LoginHistoryReport'),
+);
 const TechnicalOfficeReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport'),
 );
@@ -373,6 +376,12 @@ const UserProjects = AsyncComponent(() =>
 const TaskAdmin = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/TaskAdmin'),
 );
+const corrSentView=AsyncComponent(()=>
+      import('./Pages/Communication/corrSentView'),
+);
+const corrReceiveView=AsyncComponent(()=>
+      import('./Pages/Communication/corrReceiveView'),
+);
 const AccountsEPSPermissions = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/AccountsEPSPermissions'),
 );
@@ -467,6 +476,7 @@ const NCRAddEdit = AsyncComponent(() =>
 const PunchListAddEdit = AsyncComponent(() =>
     import('./Pages/QualityControl/punchListAddEdit'),
 );
+
 const QualityControlAddEdit = AsyncComponent(() =>
     import('./Pages/QualityControl/qualityControlAddEdit'),
 );
@@ -814,7 +824,7 @@ let originalRoutes = [
     />,
     <Route
         key="r-46"
-        path="/TemplatesSettings"
+        path="/TemplatesSettings" 
         component={TemplatesSettings}
     />,
     <Route key="r-47" path="/GeneralList" component={GeneralList} />,
@@ -1325,18 +1335,26 @@ let originalRoutes = [
     <Route key="r-192" path="ContractsPOReports/RequestPaymentDeductionTypeReport"
         component={RequestPaymentDeductionTypeReport} />,
     <Route key="r-193" path="/levelDurationAlertDetails"
-        component={levelDurationAlertDetails} />,
+        component={levelDurationAlertDetails} />, 
     <Route key="r-194" path="/UserAlerts" component={UserAlerts} />,
     <Route
         key="r-195"
         path="/usersAlertSummaryDetails"
         component={usersAlertSummaryDetails}
-    />,
+    />, 
     <Route
         key="r-196"
         path="/DocumentAllTypesReport"
         component={DocumentAllTypesReport}
     />,
+    <Route
+    key="r-197"
+    path="/corrSentView"
+    component={corrSentView} />,
+    <Route
+    key="r-198"
+    path="/corrReceiveView"
+    component={corrReceiveView} />,
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

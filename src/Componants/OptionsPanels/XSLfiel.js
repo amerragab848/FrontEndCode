@@ -55,7 +55,10 @@ class XSLfile extends Component {
             let docType = this.props.docType;
             let header = { 'docType': docType }
             this.setState({ Isloading: true })
-            Api.postFile("UploadExcelFilesTemplate?projectId=" + this.props.projectId+ "&toCompanyId="+ this.props.companyId+ "&toContactId="+ this.props.contactId, formData, header).then(resp => {
+            Api.postFile("UploadExcelFilesTemplate?projectId=" + this.props.projectId 
+            +"&fromCompanyId="+ this.props.companyId+ "&fromContactId="+ this.props.contactId 
+            +"&toCompanyId="+ this.props.toCompanyId+ "&toContactId="+ this.props.toContactId 
+            ,formData, header).then(resp => {
                 if (this.props.afterUpload != undefined) {
                     this.setState({ Isloading: false })
                     this.props.afterUpload()

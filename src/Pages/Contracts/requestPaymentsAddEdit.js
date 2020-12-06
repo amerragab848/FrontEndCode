@@ -1925,9 +1925,11 @@ class requestPaymentsAddEdit extends Component {
     }
 
     rowsUpdated = (cell, type) => {
+     
         if (this.state.isMultipleItems === true) {
             this.setState({
                 gridLoader: true,
+                editItemsLoading:true
             });
 
             var ids = this.state.multiplePayReqItems;
@@ -1976,16 +1978,19 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: false,
                 isFilter: true,
                 isEditItems: true,
-                isLoading: false,
+               // isLoading: false,
                 isEditingPercentage: 'true',
                 ColumnsHideShow: this.state.columns,
                 isMultipleItems: false,
+                editItemsLoading:false
             });
 
-            this.reqPayModal.hide();
+          //  this.reqPayModal.hide();
         } else {
+
             this.setState({
-                isLoading: true,
+                //isLoading: true,
+                editItemsLoading:true
             });
 
             let pItems = this.state.paymentsItems;
@@ -2017,9 +2022,10 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: false,
                 isFilter: true,
                 isEditItems: true,
-                isLoading: false,
+               // isLoading: false,
+                editItemsLoading:false
             });
-            this.addCommentModal.hide();
+          //  this.addCommentModal.hide();
         }
     };
 
@@ -2044,7 +2050,7 @@ class requestPaymentsAddEdit extends Component {
                 if (result.id) {
                     this.setState({
                         docId: result.id,
-                        isLoading: false,
+                       // isLoading: false,
                     });
 
                     let editItems = [...this.state.editRows];
@@ -2447,6 +2453,7 @@ class requestPaymentsAddEdit extends Component {
                 isEditingPercentage: 'true',
                 ColumnsHideShow: this.state.columns,
                 isMultipleItems: false,
+                editItemsLoading:true
             });
 
             dataservice
@@ -2492,6 +2499,7 @@ class requestPaymentsAddEdit extends Component {
                             isEditItems: true,
                             isEditingPercentage: 'true',
                             isMultipleItems: false,
+                            editItemsLoading:false
                         });
                     } else {
                         this.setState({
@@ -2503,6 +2511,7 @@ class requestPaymentsAddEdit extends Component {
                             isEditItems: true,
                             isEditingPercentage: 'true',
                             isMultipleItems: false,
+                            editItemsLoading:false
                         });
                     }
                 })
@@ -2514,6 +2523,7 @@ class requestPaymentsAddEdit extends Component {
                         isLoadingItems: false,
                         gridLoader: false,
                         isEditingPercentage: 'true',
+                        editItemsLoading:false
                     });
                 });
         } else {
@@ -2525,6 +2535,7 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: true,
                 isLoadingItems: true,
                 ColumnsHideShow: this.state.columns,
+                editItemsLoading:true
             });
 
             dataservice
@@ -2565,6 +2576,7 @@ class requestPaymentsAddEdit extends Component {
                         isLoadingItems: false,
                         isFilter: true,
                         isEditItems: true,
+                        editItemsLoading:false
                     });
                 })
                 .catch(res => {
@@ -2573,6 +2585,7 @@ class requestPaymentsAddEdit extends Component {
                     );
                     this.setState({
                         isLoadingItems: false,
+                        editItemsLoading:false
                     });
                 });
         }
@@ -3722,33 +3735,6 @@ class requestPaymentsAddEdit extends Component {
                             </td>
                             <td colSpan="1">
                                 <div className="contentCell">
-                                    {i.prevoiuse != null
-                                        ? parseFloat(i.prevoiuse)
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
-                                </div>
-                            </td>
-                            <td colSpan="1">
-                                <div className="contentCell">
-                                    {i.currentValue != null
-                                        ? parseFloat(i.currentValue.toString())
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
-                                </div>
-                            </td>
-                            <td colSpan="1">
-                                <div className="contentCell">
-                                    {i.total != null
-                                        ? parseFloat(i.total.toString())
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
-                                </div>
-                            </td>
-                            <td colSpan="1">
-                                <div className="contentCell">
                                     {i.contractorPrevoiuse != null
                                         ? parseFloat(i.contractorPrevoiuse)
                                             .toFixed(2)
@@ -3776,6 +3762,34 @@ class requestPaymentsAddEdit extends Component {
                                         : 0}
                                 </div>
                             </td>
+                            <td colSpan="1">
+                                <div className="contentCell">
+                                    {i.prevoiuse != null
+                                        ? parseFloat(i.prevoiuse)
+                                            .toFixed(2)
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        : 0}
+                                </div>
+                            </td>
+                            <td colSpan="1">
+                                <div className="contentCell">
+                                    {i.currentValue != null
+                                        ? parseFloat(i.currentValue.toString())
+                                            .toFixed(2)
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        : 0}
+                                </div>
+                            </td>
+                            <td colSpan="1">
+                                <div className="contentCell">
+                                    {i.total != null
+                                        ? parseFloat(i.total.toString())
+                                            .toFixed(2)
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        : 0}
+                                </div>
+                            </td>
+                            
                             <td colSpan="3">
                                 <div className="contentCell">{i.comment}</div>
                             </td>
@@ -5382,7 +5396,7 @@ class requestPaymentsAddEdit extends Component {
                                                             <div className="headCell">
                                                                 {
                                                                     Resources[
-                                                                    'consultatnt'
+                                                                    'approved'
                                                                     ][
                                                                     currentLanguage
                                                                     ]
@@ -5393,7 +5407,7 @@ class requestPaymentsAddEdit extends Component {
                                                             <div className="headCell">
                                                                 {
                                                                     Resources[
-                                                                    'contractor'
+                                                                    'submitted'
                                                                     ][
                                                                     currentLanguage
                                                                     ]
@@ -5856,9 +5870,7 @@ class requestPaymentsAddEdit extends Component {
                                                 <button
                                                     className="primaryBtn-1 btn meduimBtn"
                                                     onClick={e =>
-                                                        this.changeCurrentStep(
-                                                            4,
-                                                        )
+                                                        this.changeCurrentStep(3,)
                                                     }>
                                                     {
                                                         Resources['next'][
@@ -6056,7 +6068,9 @@ class requestPaymentsAddEdit extends Component {
                     style={{
                         display: this.state.viewPopUpRows ? 'block' : 'none',
                     }}>
-                    <SkyLight
+                 {this.state.editItemsLoading===false?
+
+                 (   <SkyLight
                         hideOnOverlayClicked
                         ref={ref => (this.addCommentModal = ref)}>
                         <Formik
@@ -6479,7 +6493,8 @@ class requestPaymentsAddEdit extends Component {
                                             ) : null}
 
                                             <div className="fullWidthWrapper">
-                                                {this.state.isLoading === true ? (
+                                                {/* edit */}
+                                                {this.state.editItemsLoading === true ? (
                                                     <button
                                                         className="primaryBtn-1 btn  disabled"
                                                         disabled="disabled">
@@ -6506,6 +6521,10 @@ class requestPaymentsAddEdit extends Component {
                                 )}
                         </Formik>
                     </SkyLight>
+               
+                  ) :(
+                    <LoadingSection />
+                  )}
                 </div>
 
                 <div
@@ -6513,7 +6532,9 @@ class requestPaymentsAddEdit extends Component {
                     style={{
                         display: this.state.viewPopUpRows ? 'block' : 'none',
                     }}>
-                    {this.state.editItemsLoading === false ? (
+                    {this.state.editItemsLoading === false ? 
+                    (
+
                         <SkyLight
                             hideOnOverlayClicked
                             ref={ref => (this.reqPayModal = ref)}>
@@ -7106,9 +7127,8 @@ class requestPaymentsAddEdit extends Component {
                                                     </div>
                                                 </Fragment>
 
-                                                <div className="fullWidthWrapper">
-                                                    {this.state.isLoadingItems ===
-                                                        true ? (
+                                                <div className="fullWidthWrapper">  
+                                                    {this.state.editItemsLoading === true ? (
                                                             <button
                                                                 className="primaryBtn-1 btn  disabled"
                                                                 disabled="disabled">

@@ -1114,20 +1114,24 @@ class HeaderMenu extends Component {
   }
 
   searchClick = () => {
-    if (this.state.subjectText) {
-      let obj = {
-        subject: this.state.subjectText
-      };
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-      this.props.history.push({
-        pathname: "/GlobalSearch",
-        search: "?id=" + encodedPaylod
-      });
-    }
+    if(this.state.searchClass==true)
+    {
+      let obj = {subject:''};
+      if (this.state.subjectText) {
+        obj.subject= this.state.subjectText
+      }
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  
+        this.props.history.push({
+          pathname: "/GlobalSearch",
+          search: "?id=" + encodedPaylod
+        });
+      }
+    
     this.setState({ searchClass: true, subjectText: '' });
   }
+  
 
   notfiClick = (e, field) => {
 
