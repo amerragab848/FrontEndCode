@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
@@ -22,6 +22,7 @@ const ValidtionSchema = Yup.object().shape({
         .required(Resources['siteRequestSelection'][currentLanguage])
         .nullable(true),
 });
+
 class paymentRequisition extends Component {
     constructor(props) {
         super(props)
@@ -57,7 +58,7 @@ class paymentRequisition extends Component {
             {
                 field: "contractName",
                 title: Resources["contracts"][currentLanguage],
-                width: 15,
+                width: 10,
                 groupable: true,
                 fixed: false,
                 type: "text",
@@ -71,9 +72,17 @@ class paymentRequisition extends Component {
                 type: "text",
                 sortable: true,
             }, {
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "date",
+                sortable: true,
+            }, {
                 field: "totalExcuted",
                 title: Resources["totalExcuted"][currentLanguage],
-                width: 7,
+                width: 9,
                 groupable: true,
                 fixed: false,
                 type: "text",
@@ -81,7 +90,7 @@ class paymentRequisition extends Component {
             }, {
                 field: "originalContractSum",
                 title: Resources["originalContractSum"][currentLanguage],
-                width: 7,
+                width: 9,
                 groupable: true,
                 fixed: false,
                 type: "text",
@@ -89,18 +98,10 @@ class paymentRequisition extends Component {
             }, {
                 field: "variance",
                 title: Resources["totalVariance"][currentLanguage],
-                width: 7,
+                width: 9,
                 groupable: true,
                 fixed: false,
                 type: "text",
-                sortable: true,
-            }, {
-                field: "docDate",
-                title: Resources["docDate"][currentLanguage],
-                width: 15,
-                groupable: true,
-                fixed: false,
-                type: "date",
                 sortable: true,
             }
         ];
@@ -222,7 +223,7 @@ class paymentRequisition extends Component {
                                     isMulti={true} />
                             </div>
                             <div className="linebylineInput multiChoice" >
-                                <Dropdown title='siteRequest' data={this.state.contractorsData} name='selectContractor'
+                                <Dropdown title='CompanyName' data={this.state.contractorsData} name='selectContractor'
                                     selectedValue={this.state.selectContractor} onChange={setFieldValue}
                                     handleChange={e => {
                                         this.HandleChangeContractor(e); let documentText = '';

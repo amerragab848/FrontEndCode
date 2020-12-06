@@ -105,6 +105,7 @@ class LoginHistoryReport extends Component {
             }
         ];
     }
+    
     componentDidMount() { 
         let accountId = Config.getPayload().aci;
 
@@ -116,9 +117,11 @@ class LoginHistoryReport extends Component {
             toast.error('somthing wrong')
         });
     };
+
     setDate = (name, value) => {
         this.setState({ [name]: value })
     };
+
     getGridRows = () => {
         this.setState({ showChart: false, isLoading: true })
         let obj = {
@@ -144,6 +147,7 @@ class LoginHistoryReport extends Component {
             this.setState({ isLoading: false })
         })
     };
+
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
