@@ -12,7 +12,8 @@ import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker"; 
-//import { object } from "prop-types";
+
+ 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const find = require('lodash/find');
 
@@ -173,16 +174,7 @@ class Accounts extends Component {
                     });
                 },
                 classes: '',
-            },
-            // {
-            //     title: 'Refresh',
-            //     handleClick: value => {
-            //         this.setState({ 
-            //             isLoading:true, 
-            //         });
-            //        this.refreshGrid()
-            //     }
-            // },
+            }
         ];
 
         this.rowActions = [

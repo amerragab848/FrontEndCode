@@ -182,7 +182,7 @@ class GlobalSearch extends Component {
             isLoading: true,
             showAttachLoading: true,
             showDate: false,
-            filterDate: moment().format("DD/MM/YYYY"),
+            filterDate: '',//moment().format("DD/MM/YYYY"),
             selectedStatus: this.statusData[2],
             docsType: [],
             selectedDocs: [],
@@ -197,8 +197,8 @@ class GlobalSearch extends Component {
         this.props.actions.RouteToMainDashboard(e);
         let searchOptions = {
             subject: this.state.subject,
-            fromDate: moment().add(-1, 'Y').format('YYYY/MM/DD'),
-            toDate: moment().format('YYYY/MM/DD'),
+            fromDate: '',//moment().add(-1, 'Y').format('YYYY/MM/DD'),
+            toDate:'',// moment().format('YYYY/MM/DD'),
             docs: [],
             readedAttachFiles: [],
             status: null,
@@ -413,8 +413,7 @@ class GlobalSearch extends Component {
             />
         ) : <LoadingSection />;
 
-        return (
-            <div className="main__withouttabs mainContainer" >
+        return (<div className="main__withouttabs mainContainer" >
                 <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">Search Result</h3>

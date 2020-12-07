@@ -223,10 +223,13 @@ class paymentRequisition extends Component {
                                     isMulti={true} />
                             </div>
                             <div className="linebylineInput multiChoice" >
-                                <Dropdown title='CompanyName' data={this.state.contractorsData} name='selectContractor'
-                                    selectedValue={this.state.selectContractor} onChange={setFieldValue}
+                                <Dropdown title='CompanyName'
+                                    data={this.state.contractorsData} name='selectContractor'
+                                    selectedValue={this.state.selectContractor}
+                                    onChange={setFieldValue}
                                     handleChange={e => {
-                                        this.HandleChangeContractor(e); let documentText = '';
+                                        this.HandleChangeContractor(e);
+                                        let documentText = '';
                                         e.map(lable => {
                                             return documentText = lable.label + " - " + documentText
                                         });
