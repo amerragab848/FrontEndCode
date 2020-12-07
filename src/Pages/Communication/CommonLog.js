@@ -563,6 +563,8 @@ class CommonLog extends Component {
   renderComponent(documentName, projectId, isCustom) {
     var projectId = projectId;
     var documents = documentName;
+    console.log(documentDefenition);
+    console.log(documentDefenition[documentName]);
     documentObj = documentDefenition[documentName];
     if (documentObj.docTyp == 42) {
       docTempLink = Config.getPublicConfiguartion().downloads + "/Downloads/Excel/tempSubmittal.xlsx"
