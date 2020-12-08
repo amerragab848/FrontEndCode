@@ -99,7 +99,7 @@ class CommonLog extends Component {
         title: 'Delete',
         handleClick: values => {
           if(documentObj.docTyp == 64){
-            let contractedBoq=[];
+           let contractedBoq=[];
            values.map(item=>{
              let boq=this.state.rows.find(x=>x.id==item);
              if(boq !=undefined && boq.contractId > 0){

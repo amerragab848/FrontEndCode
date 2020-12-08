@@ -808,7 +808,7 @@ class Accounts extends Component {
                         </div>
                     </div>
                     <div className="filterBTNS">
-                        { <button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i class="fa fa-refresh"></i></button> }
+                        { <button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i className="fa fa-refresh"></i></button> }
                        
                         {/* {this.state.IsActiveShow ? <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null} */}
                         {btnExport}
