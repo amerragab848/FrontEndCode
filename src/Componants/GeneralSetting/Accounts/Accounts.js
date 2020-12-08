@@ -446,8 +446,7 @@ class Accounts extends Component {
     }
 
     ConfirmResetPassword = () => {
-        let id = this.state.rowSelectedId;
-        this.setState({ showDeleteModal: true })
+        let id = this.state.rowSelectedId; 
         let rowsData = this.state.rows;
         let userName = find(rowsData, { 'id': id })
 
@@ -603,13 +602,9 @@ class Accounts extends Component {
     IsActiveFun = () => {
         let id = 0;
         let userName = ''
-        let rowsData = this.state.rows;
-        // let s = this.state.rowSelectedId.map(i => {
-        //     id = i
-        // })
+        let rowsData = this.state.rows; 
         id=this.state.rowSelectedId;
-        userName = rowsData.filter(s => s.id === id)
-        // let pageNumber = this.state.pageNumber 
+        userName = rowsData.filter(s => s.id === id) 
          let userNameParam=   userName[0].userName;
         let companyId = config.getPublicConfiguartion().accountCompanyId;
         let active= userName[0].active ;
@@ -809,8 +804,7 @@ class Accounts extends Component {
                     </div>
                     <div className="filterBTNS">
                         { <button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i className="fa fa-refresh"></i></button> }
-                       
-                        {/* {this.state.IsActiveShow ? <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null} */}
+                        
                         {btnExport}
                         {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>
@@ -853,7 +847,7 @@ class Accounts extends Component {
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showResetPasswordModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
-                        buttonName='save' clickHandlerContinue={this.ConfirmResetPassword}
+                        buttonName='reset' clickHandlerContinue={this.ConfirmResetPassword}
                     />
                 ) : null}
                  {this.state.IsActiveShow == true ? (
