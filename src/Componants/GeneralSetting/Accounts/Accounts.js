@@ -455,7 +455,7 @@ class Accounts extends Component {
 
     ConfirmResetPassword = () => {
         let id = this.state.rowSelectedId;
-        this.setState({ showDeleteModal: true })
+        //this.setState({ showDeleteModal: true })
         let rowsData = this.state.rows;
         let userName = find(rowsData, { 'id': id })
 
@@ -861,7 +861,7 @@ class Accounts extends Component {
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showResetPasswordModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
-                        buttonName='save' clickHandlerContinue={this.ConfirmResetPassword}
+                        buttonName='reset' clickHandlerContinue={this.ConfirmResetPassword}
                     />
                 ) : null}
                  {this.state.IsActiveShow == true ? (
