@@ -22113,3 +22113,14 @@ min-height: 100px;
 .skylight-dialog .dropdownFullWidth .reactSelect >div:first-of-type {
     width: 274px  !important;
 }
+
+
+.customLayout .supervisor__company ,
+.customLayout .dropdownFullWidthContainer {
+    justify-content: space-between;
+    width: 72%;
+}
+.customLayout .doc-pre-cycle {
+    margin: 40px 0;
+}
+.customLayout .linebylineInput {margin-bottom: 10px}
