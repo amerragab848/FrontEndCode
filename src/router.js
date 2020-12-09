@@ -379,6 +379,9 @@ const corrSentView=AsyncComponent(()=>
 const corrReceiveView=AsyncComponent(()=>
       import('./Pages/Communication/corrReceiveView'),
 );
+const ContractROaAddEdit=AsyncComponent(()=>
+      import('./Pages/Contracts/ContractROaAddEdit'),
+);
 const AccountsEPSPermissions = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/AccountsEPSPermissions'),
 );
@@ -1352,6 +1355,10 @@ let originalRoutes = [
     key="r-198"
     path="/corrReceiveView"
     component={corrReceiveView} />,
+    <Route
+    key="r-199"
+    path="/ContractROaAddEdit"
+    component={ContractROaAddEdit} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];
