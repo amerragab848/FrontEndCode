@@ -12,7 +12,8 @@ import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker"; 
-//import { object } from "prop-types";
+
+ 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const find = require('lodash/find');
 
@@ -173,16 +174,7 @@ class Accounts extends Component {
                     });
                 },
                 classes: '',
-            },
-            // {
-            //     title: 'Refresh',
-            //     handleClick: value => {
-            //         this.setState({ 
-            //             isLoading:true, 
-            //         });
-            //        this.refreshGrid()
-            //     }
-            // },
+            }
         ];
 
         this.rowActions = [
@@ -454,8 +446,7 @@ class Accounts extends Component {
     }
 
     ConfirmResetPassword = () => {
-        let id = this.state.rowSelectedId;
-        //this.setState({ showDeleteModal: true })
+        let id = this.state.rowSelectedId; 
         let rowsData = this.state.rows;
         let userName = find(rowsData, { 'id': id })
 
@@ -611,13 +602,9 @@ class Accounts extends Component {
     IsActiveFun = () => {
         let id = 0;
         let userName = ''
-        let rowsData = this.state.rows;
-        // let s = this.state.rowSelectedId.map(i => {
-        //     id = i
-        // })
+        let rowsData = this.state.rows; 
         id=this.state.rowSelectedId;
-        userName = rowsData.filter(s => s.id === id)
-        // let pageNumber = this.state.pageNumber 
+        userName = rowsData.filter(s => s.id === id) 
          let userNameParam=   userName[0].userName;
         let companyId = config.getPublicConfiguartion().accountCompanyId;
         let active= userName[0].active ;
@@ -816,9 +803,8 @@ class Accounts extends Component {
                         </div>
                     </div>
                     <div className="filterBTNS">
-                        { <button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i class="fa fa-refresh"></i></button> }
-                       
-                        {/* {this.state.IsActiveShow ? <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null} */}
+                        { <button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i className="fa fa-refresh"></i></button> }
+                        
                         {btnExport}
                         {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>

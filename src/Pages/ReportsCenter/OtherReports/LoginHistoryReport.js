@@ -113,8 +113,8 @@ class LoginHistoryReport extends Component {
                 "sortable": true
             }
         ];
-    }
-    componentDidMount() {
+    } 
+    componentDidMount() {  
         let accountId = Config.getPayload().aci;
 
         dataservice.GetDataList('SelectAllAccountsActive?id=' + accountId, 'userName', 'id').then(result => {
@@ -124,14 +124,16 @@ class LoginHistoryReport extends Component {
         }).catch(() => {
             toast.error('somthing wrong')
         });
-    };
+    }; 
     handleChange = (fieldValue) => {
 
         this.setState({ checkForGetAll: fieldValue })
     }
+ 
     setDate = (name, value) => {
         this.setState({ [name]: value })
     };
+
     getGridRows = () => {
         this.setState({ showChart: false, isLoading: true })
         let obj = {
@@ -158,6 +160,7 @@ class LoginHistoryReport extends Component {
             this.setState({ isLoading: false })
         })
     };
+
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
