@@ -6033,6 +6033,14 @@
         "en": "Shared Links",
         "ar": "اعدادات الروابط "
     },
+    "sharedSettingsIsRequired": {
+        "en": "Shared Links Is Required",
+        "ar": " اعدادات الروابط مطلوبه "
+    },
+    "URLFormat": {
+        "en": "URL Format Is Required",
+        "ar": "يجب ادخال تنسيق الويب "
+    },
     "download": {
         "en": "Download",
         "ar": "تنزيل  "
