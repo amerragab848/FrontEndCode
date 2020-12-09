@@ -113,10 +113,28 @@ class CommonLog extends Component {
       {
         title: 'Delete',
         handleClick: values => {
-          this.setState({
-            showDeleteModal: true,
-            selectedRows: values
-          });
+          if(documentObj.docTyp == 64){
+           let contractedBoq=[];
+           values.map(item=>{
+             let boq=this.state.rows.find(x=>x.id==item);
+             if(boq !=undefined && boq.contractId > 0){
+              contractedBoq.push(boq)
+             }
+           })
+           if(contractedBoq.length > 0){
+             toast.error(`these Boqs ${contractedBoq.map(item=>item.subject)} Can not Deleted Because they are Contracted`)
+           }else{
+            this.setState({
+              showDeleteModal: true,
+              selectedRows: values
+            });
+           }
+          }else{
+            this.setState({
+              showDeleteModal: true,
+              selectedRows: values
+            });
+          }
         },
         classes: '',
       }
@@ -625,6 +643,8 @@ class CommonLog extends Component {
   renderComponent(documentName, projectId, isCustom) {
     var projectId = projectId;
     var documents = documentName;
+    console.log(documentDefenition);
+    console.log(documentDefenition[documentName]);
     documentObj = documentDefenition[documentName];
     if (documentObj.docTyp == 42) {
       docTempLink = Config.getPublicConfiguartion().downloads + "/Downloads/Excel/tempSubmittal.xlsx"

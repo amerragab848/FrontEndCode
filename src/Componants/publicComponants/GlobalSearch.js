@@ -182,7 +182,7 @@ class GlobalSearch extends Component {
             isLoading: true,
             showAttachLoading: true,
             showDate: false,
-            filterDate: moment().format("DD/MM/YYYY"),
+            filterDate: '',//moment().format("DD/MM/YYYY"),
             selectedStatus: this.statusData[2],
             docsType: [],
             selectedDocs: [],
@@ -192,13 +192,14 @@ class GlobalSearch extends Component {
         }
     }
 
+    
     componentWillMount() {
         var e = { label: this.props.projectName, value: this.props.projectId };
         this.props.actions.RouteToMainDashboard(e);
         let searchOptions = {
             subject: this.state.subject,
-            fromDate: moment().add(-1, 'Y').format('YYYY/MM/DD'),
-            toDate: moment().format('YYYY/MM/DD'),
+            fromDate: '',//moment().add(-1, 'Y').format('YYYY/MM/DD'),
+            toDate: '',// moment().format('YYYY/MM/DD'),
             docs: [],
             readedAttachFiles: [],
             status: null,
@@ -421,99 +422,98 @@ class GlobalSearch extends Component {
             />
         ) : <LoadingSection />;
 
-        return (
-            <div className="main__withouttabs mainContainer" >
-                <div className="submittalFilter readOnly__disabled">
-                    <div className="subFilter">
-                        <h3 className="zero">Search Result</h3>
-                        <span>{this.state.totalRows}</span>
-                    </div>
+        return (<div className="main__withouttabs mainContainer" >
+            <div className="submittalFilter readOnly__disabled">
+                <div className="subFilter">
+                    <h3 className="zero">Search Result</h3>
+                    <span>{this.state.totalRows}</span>
+                </div>
 
-                    <div className="rowsPaginations readOnly__disabled">
-                        <div className="rowsPagiRange">
-                            <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}
-                            <span>
-                                {this.state.pageSize * this.state.pageNumber +
-                                    this.state.pageSize}
-                            </span>{" "}
+                <div className="rowsPaginations readOnly__disabled">
+                    <div className="rowsPagiRange">
+                        <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}
+                        <span>
+                            {this.state.pageSize * this.state.pageNumber +
+                                this.state.pageSize}
+                        </span>{" "}
                             of
                             <span> {this.state.totalRows}</span>
-                        </div>
-                        <button
-                            className={this.state.pageNumber === 0 ? "rowunActive" : ""} onClick={() => this.state.pageNumber != 0 ? this.search(-1) : null} >
-                            <i className="angle left icon" />
-                        </button>
-                        <button className={this.state.totalRows > this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "" : "rowunActive"}
-                            onClick={() => this.state.totalRows > this.state.pageSize * this.state.pageNumber + this.state.pageSize ? this.search(1) : null}>
-                            <i className="angle right icon" />
-                        </button>
                     </div>
-                </div>
-
-                <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
-
-                    <div className="filter__input-wrapper" >
-                        <div id="signupForm1" className="proForm" >
-                            <div className="letterFullWidth multiDrop">
-                                <div className="form-group linebylineInput  multiChoice" style={{ maxWidth: '660px', marginBottom: '16px' }}>
-                                    <label className="control-label"> {Resources.docType[currentLanguage]}   </label>
-                                    <Dropdown
-                                        data={this.state.docsType}
-                                        isMulti={true}
-                                        closeMenuOnSelect={false}
-                                        selectedValue={this.state.selectedDocs}
-                                        handleChange={event => this.setState({ selectedDocs: event })}
-                                        name="docType" styles={filterStyle} />
-                                </div>
-                            </div>
-                            <div className="form-group linebylineInput medium__input--width">
-                                <label className="control-label"> {Resources.subject[currentLanguage]}   </label>
-                                <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
-                                    <input type="text" autoComplete="off" placeholder="Subject" defaultValue={this.state.subject} onChange={(event) => this.setState({ subject: event.target.value })} />
-                                </div>
-                            </div>
-                            <div className={"form-group linebylineInput medium__input--width "}  >
-                                <label className="control-label" >
-                                    {Resources.docDate[currentLanguage]}
-                                </label>
-                                <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} onMouseLeave={this.resetDate} >
-                                    <input type="text" autoComplete="off" placeholder={Resources.docDate[currentLanguage]} value={this.state.filterDate}
-                                        onClick={() => this.changeDate()} />
-                                    {this.state.showDate ?
-                                        <div className="viewCalender"   >
-                                            <Calendar onChange={date => this.onChange(date)} selectRange={true} />
-                                        </div> :
-                                        null}
-                                </div>
-                            </div>
-                            <div className="form-group linebylineInput medium__input--width">
-                                <label className="control-label"> {Resources.status[currentLanguage]}   </label>
-                                <Dropdown
-                                    data={this.statusData}
-                                    isMulti={false}
-                                    selectedValue={this.state.selectedStatus}
-                                    handleChange={event => this.setState({ selectedStatus: event })}
-                                    name="status" styles={filterStyle} />
-                            </div>
-                            <button className="defaultBtn btn" onClick={() => this.search(0)} type="button">Search</button>
-                        </div>
-                    </div>
-                </div>
-                {searchGrid}
-                              
-                {this.state.showAttachLoading === false ? ( 
-
-                <div className="dropWrapper">
-                    {ViewAttachmentsResult()}
-                </div>
-              ) : <LoadingSection />}  
-
-                <div className="rowsPaginations readOnly__disabled" style={{ justifyContent: "center" }}>
-                    <button className="rowActive" onClick={() => this.GetNextAttachFiles()}>
+                    <button
+                        className={this.state.pageNumber === 0 ? "rowunActive" : ""} onClick={() => this.state.pageNumber != 0 ? this.search(-1) : null} >
+                        <i className="angle left icon" />
+                    </button>
+                    <button className={this.state.totalRows > this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "" : "rowunActive"}
+                        onClick={() => this.state.totalRows > this.state.pageSize * this.state.pageNumber + this.state.pageSize ? this.search(1) : null}>
                         <i className="angle right icon" />
                     </button>
                 </div>
             </div>
+
+            <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
+
+                <div className="filter__input-wrapper" >
+                    <div id="signupForm1" className="proForm" >
+                        <div className="letterFullWidth multiDrop">
+                            <div className="form-group linebylineInput  multiChoice" style={{ maxWidth: '660px', marginBottom: '16px' }}>
+                                <label className="control-label"> {Resources.docType[currentLanguage]}   </label>
+                                <Dropdown
+                                    data={this.state.docsType}
+                                    isMulti={true}
+                                    closeMenuOnSelect={false}
+                                    selectedValue={this.state.selectedDocs}
+                                    handleChange={event => this.setState({ selectedDocs: event })}
+                                    name="docType" styles={filterStyle} />
+                            </div>
+                        </div>
+                        <div className="form-group linebylineInput medium__input--width">
+                            <label className="control-label"> {Resources.subject[currentLanguage]}   </label>
+                            <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
+                                <input type="text" autoComplete="off" placeholder="Subject" defaultValue={this.state.subject} onChange={(event) => this.setState({ subject: event.target.value })} />
+                            </div>
+                        </div>
+                        <div className={"form-group linebylineInput medium__input--width "}  >
+                            <label className="control-label" >
+                                {Resources.docDate[currentLanguage]}
+                            </label>
+                            <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} onMouseLeave={this.resetDate} >
+                                <input type="text" autoComplete="off" placeholder={Resources.docDate[currentLanguage]} value={this.state.filterDate}
+                                    onClick={() => this.changeDate()} />
+                                {this.state.showDate ?
+                                    <div className="viewCalender"   >
+                                        <Calendar onChange={date => this.onChange(date)} selectRange={true} />
+                                    </div> :
+                                    null}
+                            </div>
+                        </div>
+                        <div className="form-group linebylineInput medium__input--width">
+                            <label className="control-label"> {Resources.status[currentLanguage]}   </label>
+                            <Dropdown
+                                data={this.statusData}
+                                isMulti={false}
+                                selectedValue={this.state.selectedStatus}
+                                handleChange={event => this.setState({ selectedStatus: event })}
+                                name="status" styles={filterStyle} />
+                        </div>
+                        <button className="defaultBtn btn" onClick={() => this.search(0)} type="button">Search</button>
+                    </div>
+                </div>
+            </div>
+            {searchGrid}
+
+            {this.state.showAttachLoading === false ? (
+
+                <div className="dropWrapper">
+                    {ViewAttachmentsResult()}
+                </div>
+            ) : <LoadingSection />}
+
+            <div className="rowsPaginations readOnly__disabled" style={{ justifyContent: "center" }}>
+                <button className="rowActive" onClick={() => this.GetNextAttachFiles()}>
+                    <i className="angle right icon" />
+                </button>
+            </div>
+        </div>
         );
     }
 }

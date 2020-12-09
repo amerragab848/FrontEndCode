@@ -2940,8 +2940,13 @@ var routes = [
         title: "expnesesUserRequests",
         nav: true,
         settings: { OtherReports: true, permission: 3719, order: 1 }
-    },
-    {
+    },{ //start inventory Items Routes
+        route: "LoginHistoryReport",
+        moduleId: "OtherReports/LoginHistoryReport",
+        title: "loginHistoryReport",
+        nav: true,
+        settings: { OtherReports: true, permission: 3719, order: 12 }
+    }, {
         route: "UserAlerts",
         moduleId: "ProjectSetup/UserAlerts",
         title: "userAlerts",

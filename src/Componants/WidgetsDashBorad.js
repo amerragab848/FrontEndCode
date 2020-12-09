@@ -11,6 +11,7 @@ var widgets = [
         permission: 0,
         // key: "0-1-2",
         canView: false,
+        checked: true,
         order: 2,
         type: "oneWidget",
         props: {

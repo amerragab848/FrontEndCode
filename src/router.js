@@ -90,6 +90,9 @@ const DocumentTpesReport = AsyncComponent(() =>
 const DocumentAllTypesReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/DocumentAllTypesReport'),
 );
+const LoginHistoryReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/LoginHistoryReport'),
+);
 const TechnicalOfficeReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport'),
 );

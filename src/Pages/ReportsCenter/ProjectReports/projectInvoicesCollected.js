@@ -1,18 +1,20 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 
-import moment from "moment";
+// import moment from "moment";
+// import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
 import Api from '../../../api';
-import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
+
 class projectInvoicesCollected extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -70,12 +72,14 @@ class projectInvoicesCollected extends Component {
             },
         ];
     }
+
     componentWillMount = () => {
         this.setState({ isLoading: true })
         Api.get('GetProjectsInvoicedCollectedAndInvoiced').then(res => {
             this.setState({ rows: res, isLoading: false })
         }).catch(() => { this.setState({ isLoading: false }) })
     }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
@@ -95,15 +99,13 @@ class projectInvoicesCollected extends Component {
             : null
 
         return (
-            <div className="reports__content">
+            <div className="reports__content reports__multiDrop">
                 <header>
                     <h2 className="zero">{Resources.projectedInvoicedCollecetd[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className='proForm reports__proForm datepickerContainer'>
-                    <div className="doc-pre-cycle letterFullWidth">
-                        {dataGrid}
-                    </div>
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
                 </div>
             </div>
         )
