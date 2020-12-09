@@ -1272,19 +1272,19 @@ var routes = [
         title: "Send To Distribution List",
         nav: false
     },
-    {
-        route: "contractProcurmentRequestForm",
-        moduleId: "commonLogs",
-        title: "contractProcurmentRequestForm",
-        nav: true,
-        hash: "#contractProcurmentRequestForm",
-        settings: {
-            Contracts: true,
-            caption: "procoor-icon-BOQ",
-            permission: 10123,
-            order: 1
-        }
-    },
+    // {
+    //     route: "contractProcurmentRequestForm",
+    //     moduleId: "commonLogs",
+    //     title: "contractProcurmentRequestForm",
+    //     nav: true,
+    //     hash: "#contractProcurmentRequestForm",
+    //     settings: {
+    //         Contracts: true,
+    //         caption: "procoor-icon-BOQ",
+    //         permission: 10123,
+    //         order: 1
+    //     }
+    // },
     {
         route: "boq",
         moduleId: "commonLogs",
