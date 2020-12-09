@@ -205,34 +205,36 @@ class GlobalSearch extends Component {
             status: null,
             pageNumber: 0
         }
-
-        this.setState({ isLoading: true })
-        if (searchOptions.subject != '') {
-            dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
-                if (searchResult) {
-                    this.readFiles(searchResult.attachFiles, searchOptions, false);
-                    let data = []
-                    if (searchResult.searchResp.searchList.length > 0)
-                        searchResult.searchResp.searchList.forEach((item, i) => {
-                            item.index = i + 1;
-                            data.push(item)
-                        })
-                    this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total, isLoading: false })
-                }
-                else
-                    this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
-                dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
-                    this.setState({ isLoading: false, showAttachLoading: false, docsType: result })
-                })
-            })
-        }
-        else {
-            this.setState({
-                allAttaches: [], searchResult: [], totalRows: 0,
-                isLoading: false, showAttachLoading: false, docsType: []
-            })
-        }
+      
+       this.setState({ isLoading: true })
+      if(searchOptions.subject !='')
+       {
+        dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
+            if (searchResult) {
+                this.readFiles(searchResult.attachFiles, searchOptions, false);
+                let data = []
+                if (searchResult.searchResp.searchList.length > 0)
+                    searchResult.searchResp.searchList.forEach((item, i) => {
+                        item.index = i + 1;
+                        data.push(item)
+                    })
+                this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total, isLoading: false })
+            }
+            else
+              this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
+              
+            dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
+             this.setState({ isLoading: false, showAttachLoading: false, docsType: result })
+             })
+        })
     }
+    else
+    {
+        this.setState({ allAttaches: [], searchResult: [], totalRows: 0,
+            isLoading: false, showAttachLoading: false, docsType: [] })
+    }
+       
+}
 
     async readFiles(files, searchOptions, firstOrNext) {
 

@@ -8603,7 +8603,7 @@
     },
     "contractor": {
         "en": "Contractor",
-        "ar": "Contractor"
+        "ar": "مقاول"
     },
     "previousConsultatnt": {
         "en": "Previous Consultant",
@@ -8848,5 +8848,17 @@
     "attachedPaperSizeRequired": {
         "en": "Please Select Attached Paper Size",
         "ar": " من فضلك اختر حجم الورق المرفق"
+    },
+    "contractROASummary":
+    {
+        "en":"Recommendation of award summary",
+        "ar":"ملخص توصية علي قرار"
     }
+    ,
+"contractProcurmentRequestForm":
+{
+    "en":"Contract Procurment Request Form",
+    "ar":"نموذج طلب شراء عقد"
+}
+
 }
