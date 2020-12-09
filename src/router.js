@@ -220,6 +220,7 @@ const DailyReportsAddEdit = AsyncComponent(() =>
 //Contracts
 
 const BoqAddEdit = AsyncComponent(() => import('./Pages/Contracts/boqAddEdit'));
+
 const SubContract = AsyncComponent(() =>
     import('./Pages/Contracts/SubContract'),
 );
@@ -244,6 +245,9 @@ const RiskAddEdit = AsyncComponent(() =>
 const VariationRequestAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationRequestAddEdit'),
 );
+// const ContractROASummaryAddEdit = AsyncComponent(() =>
+//     import('./Pages/Contracts/ContractROASummaryAddEdit'),
+// );
 const ProjectIssuesAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/projectIssuesAddEdit'),
 );
@@ -980,6 +984,11 @@ let originalRoutes = [
         path="/variationRequestAddEdit"
         component={VariationRequestAddEdit}
     />,
+    // <Route
+    //     key="r-199"
+    //     path="/contractROASummaryAddEdit"
+    //     component={ContractROASummaryAddEdit}
+    // />,
     <Route
         key="r-94"
         path="/projectIssuesAddEdit"

@@ -529,7 +529,7 @@ class SubmittalAddEdit extends Component {
       });
     });
 
-    //discplines
+    //SubmittalTypes
     dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
 
       if (isEdit) {

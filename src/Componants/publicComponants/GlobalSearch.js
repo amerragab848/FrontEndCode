@@ -206,7 +206,8 @@ class GlobalSearch extends Component {
         }
       
        this.setState({ isLoading: true })
-
+      if(searchOptions.subject !='')
+       {
         dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
             if (searchResult) {
                 this.readFiles(searchResult.attachFiles, searchOptions, false);
@@ -219,13 +220,20 @@ class GlobalSearch extends Component {
                 this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total, isLoading: false })
             }
             else
-                this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
-
+              this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
+              
             dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
-                this.setState({ isLoading: false, showAttachLoading: false, docsType: result })
-            })
+             this.setState({ isLoading: false, showAttachLoading: false, docsType: result })
+             })
         })
     }
+    else
+    {
+        this.setState({ allAttaches: [], searchResult: [], totalRows: 0,
+            isLoading: false, showAttachLoading: false, docsType: [] })
+    }
+       
+}
 
     async readFiles(files, searchOptions, firstOrNext) {
 

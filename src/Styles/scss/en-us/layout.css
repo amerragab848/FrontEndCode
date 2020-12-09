@@ -22106,3 +22106,10 @@ min-height: 100px;
     float: "right";
     padding-right:"30px"
 }
+
+.skylight-dialog .dropdownFullWidthContainer {
+    display: flex
+}
+.skylight-dialog .dropdownFullWidth .reactSelect >div:first-of-type {
+    width: 274px  !important;
+}
