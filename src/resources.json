@@ -8936,12 +8936,7 @@
         "ar":"ملخص توصية علي قرار"
     }
     ,
-<<<<<<< HEAD
-"contractProcurmentRequestForm":
-{
-    "en":"Contract Procurment Request Form",
-    "ar":"نموذج طلب شراء عقد"
-},
+
 "budgetCompany":
 {
     "en":"budget Company",
@@ -8951,13 +8946,12 @@
 {
     "en":"department",
     "ar":"القسم"
-=======
+},
     "contractProcurmentRequestForm":
     {
         "en":"Contract Procurment Request Form",
         "ar":"نموذج طلب شراء عقد"
     }
->>>>>>> eac99c628c361c88e513af607e14c8026adbd6a1
 }
   
 
