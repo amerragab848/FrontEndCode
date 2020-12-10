@@ -6042,8 +6042,8 @@
         "ar": " اعدادات الروابط مطلوبه "
     },
     "URLFormat": {
-        "en": "URL Format Is Required",
-        "ar": "يجب ادخال تنسيق الويب "
+        "en": "URL Format Is Required (http://www.example.com)",
+        "ar": "يجب ادخال تنسيق الويب (http://www.example.com)"
     },
     "download": {
         "en": "Download",
@@ -8940,7 +8940,12 @@
     {
         "en":"Contract Procurment Request Form",
         "ar":"نموذج طلب شراء عقد"
-    }
+    },
+    "UrlForm":
+    {
+        "en":"http://www.example.com",
+        "ar":"http://www.example.com"
+    } 
 }
   
 
