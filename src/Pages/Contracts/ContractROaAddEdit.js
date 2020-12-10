@@ -95,6 +95,7 @@ class ContractROaAddEdit extends Component {
         }
 
         this.state = {
+            docApprovalId: docApprovalId,
             btnTxt: "save",
             rankingCompanies: [],
             contractorCompanies: [],
@@ -108,7 +109,7 @@ class ContractROaAddEdit extends Component {
             companies: [],
             contacts: [],
             projectId: projectId,
-            docTypeId: 121,
+            docTypeId: 122,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
 
             permission: [{ name: 'sendByEmail', code: 10102 },
@@ -291,7 +292,9 @@ class ContractROaAddEdit extends Component {
             }
         ]
     }
-
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
     handleChangeDate(e, field) {
 
         let original_document = { ...this.state.document };
@@ -451,6 +454,9 @@ class ContractROaAddEdit extends Component {
             this.setState({ isLoading: true, LoadingPage: true });
 
             this.props.actions.documentForEdit("GetContractROAById?id=" + this.state.docId, this.state.docTypeId, "ContractROA").then(() => {
+               
+                 let  data=  { items: this.props.document }
+                this.props.actions.ExportingData(data);
                 console.log(this.props.document);
                 this.setState({
                     isLoading: false,
@@ -460,6 +466,7 @@ class ContractROaAddEdit extends Component {
                 this.checkDocumentIsView();
             });
 
+          
 
             let url = "GetContractROASummaryByROAId?ROAId=" + this.state.docId;
             dataService.GetDataGrid(url).then(
@@ -1260,13 +1267,13 @@ class ContractROaAddEdit extends Component {
                                             docTypeId={this.state.docTypeId}
                                             docId={this.state.docId}
                                             projectId={this.state.projectId}
-                                            previousRoute={this.state.previousRoute}
+                                            previousRoute={this.state.perviousRoute}
                                             docApprovalId={this.state.docApprovalId}
                                             currentArrange={this.state.arrange}
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
-                                            documentName={Resources.communicationInternalMemo[currentLanguage]}
+                                            documentName={Resources.contractROA[currentLanguage]}
                                         />
                                     </div>
                                 </div> : null
