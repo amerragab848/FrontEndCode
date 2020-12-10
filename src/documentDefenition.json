@@ -17593,7 +17593,7 @@
         "field": "refNo",
         "friendlyName": "refNo",
         "minWidth": 65,
-        "width": "9%",
+        "width": "19%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
