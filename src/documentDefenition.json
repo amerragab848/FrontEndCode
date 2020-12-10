@@ -20866,7 +20866,55 @@
         "showInExport": true,
         "isCustom": true,
         "exportDataType": "d"
-      }
+      },
+      {
+        "field": "contractSubject",
+        "friendlyName": "contract",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      } ,
+      {
+        "field": "description",
+        "friendlyName": "description",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "budgetCompanyName",
+        "friendlyName": "budgetCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom":false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "departmentName",
+        "friendlyName": "department",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom":false,
+        "exportDataType": "s"
+      }  
     ],
     "filterApi": "ContractProcurementRequestFormFilter",
     "filters": [

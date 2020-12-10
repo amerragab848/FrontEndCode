@@ -206,9 +206,9 @@ class CommonLog extends Component {
   };
 
   componentDidMount() {
-
     this.props.actions.FillGridLeftMenu();
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
+    this.fillDropDowns();
 
   };
 
@@ -223,6 +223,7 @@ class CommonLog extends Component {
   };
   fillDropDowns() {
 
+    if(this.state.docType=="submittal"){
     dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.props.projectId, "companyName", "companyId", 'companies', this.props.projectId, "projectId").then(result => {
       this.setState({
         companies: [...result]
@@ -275,6 +276,7 @@ class CommonLog extends Component {
         contracts: [...result]
       });
     });
+  }
 
   }
   static getDerivedStateFromProps(nextProps, state) {

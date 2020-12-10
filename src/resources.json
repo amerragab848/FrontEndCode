@@ -8936,6 +8936,17 @@
         "ar":"ملخص توصية علي قرار"
     }
     ,
+
+"budgetCompany":
+{
+    "en":"budget Company",
+    "ar":"الميزانية"
+},
+"department":
+{
+    "en":"department",
+    "ar":"القسم"
+},
     "contractProcurmentRequestForm":
     {
         "en":"Contract Procurment Request Form",
