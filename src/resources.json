@@ -8851,6 +8851,16 @@
 {
     "en":"Contract Procurment Request Form",
     "ar":"نموذج طلب شراء عقد"
+},
+"budgetCompany":
+{
+    "en":"budget Company",
+    "ar":"الميزانية"
+},
+"department":
+{
+    "en":"department",
+    "ar":"القسم"
 }
 
 }
