@@ -763,7 +763,7 @@ class TransmittalAddEdit extends Component {
                                                                     <input type="text" className="form-control" id="sharedSettings"
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings || ''} name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                                        placeholder={Resources.UrlForm[currentLanguage]} />
                                                                {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
                                                                 </div>
                                                                 {this.state.document.sharedSettings === '' ||

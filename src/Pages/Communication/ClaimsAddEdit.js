@@ -582,7 +582,7 @@ class ClaimsAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings || ''}
                                                                         name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                                        placeholder={Resources.UrlForm[currentLanguage]} />
                                                                     {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
 
                                                                 </div>
