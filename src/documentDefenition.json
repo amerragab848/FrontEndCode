@@ -1,4 +1,5 @@
 ﻿{
+
   "Letters": {
     "documentTitle": "lettertitle",
     "docTyp": 19,
@@ -17755,6 +17756,17 @@
         "showInExport": false,
         "isCustom": false,
         "exportDataType": "s"
+      },      {
+        "field": "cycleSubject",
+        "friendlyName": "cycleSubject",
+        "minWidth": 200,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
       },
       {
         "field": "disciplineName",
@@ -20783,5 +20795,89 @@
         "isCustom": false
       }
     ]
-  }
+  },
+  "contractProcurmentRequestForm":{
+    "documentTitle": "contractProcurmentRequestForm",
+    "docTyp": 123,
+    "documentAddEditLink": "contractProcurmentRequestFormAddEdit",
+    "documentEditPermission": 10120,
+    "documentViewPermission": 10122,
+    "documentPermission": 10123,
+    "documentApi": {
+      "get": "GetContractProcurementRequestFormProjectId",
+      "getCustom": "GetContractProcurementRequestFormProjectIdCustom"
+    },
+    "documentColumns":[
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromCompanyName",
+        "friendlyName": "fromCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromContacName",
+        "friendlyName": "fromContact",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      } ,{
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "d"
+      }
+    ],
+    "filterApi": "ContractProcurementRequestFormFilter",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "showInExport": true,
+        "isCustom": true
+      }
+    ]
+
+  } 
 }

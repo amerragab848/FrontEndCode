@@ -6037,6 +6037,14 @@
         "en": "Shared Links",
         "ar": "اعدادات الروابط "
     },
+    "sharedSettingsIsRequired": {
+        "en": "Shared Links Is Required",
+        "ar": " اعدادات الروابط مطلوبه "
+    },
+    "URLFormat": {
+        "en": "URL Format Is Required",
+        "ar": "يجب ادخال تنسيق الويب "
+    },
     "download": {
         "en": "Download",
         "ar": "تنزيل  "
@@ -6356,6 +6364,10 @@
     "otherReports": {
         "en": "Other Reports",
         "ar": "تقاريراخرى"
+    },
+    "loginHistoryReport": {
+        "en": "Login History Report",
+        "ar": "تقرير معلومات الدخول"
     },
     "usersWithoutTimeSheet": {
         "en": "Users Without TimeSheet",
@@ -8595,7 +8607,7 @@
     },
     "contractor": {
         "en": "Contractor",
-        "ar": "Contractor"
+        "ar": "مقاول"
     },
     "previousConsultatnt": {
         "en": "Previous Consultant",
@@ -8916,7 +8928,20 @@
     "finalPrice":{
         "en": "final Price ",
         "ar": "السعر النهائي "  
+    },
+
+    "contractROASummary":
+    {
+        "en":"Recommendation of award summary",
+        "ar":"ملخص توصية علي قرار"
     }
-
-
+    ,
+    "contractProcurmentRequestForm":
+    {
+        "en":"Contract Procurment Request Form",
+        "ar":"نموذج طلب شراء عقد"
+    }
 }
+  
+
+

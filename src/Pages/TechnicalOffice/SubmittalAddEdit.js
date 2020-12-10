@@ -484,9 +484,6 @@ class SubmittalAddEdit extends Component {
   fillDropDowns(isEdit) {
     //from Companies
     dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
-
-      //let obj = this.state.SubmittalTypes.find(o => o.label === this.props.document.submittalType);
-
       if (isEdit) {
 
         let companyId = this.props.document.bicCompanyId;
@@ -501,7 +498,6 @@ class SubmittalAddEdit extends Component {
         }
       }
       this.setState({
-        // selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
         companies: [...result]
       });
     });
@@ -533,7 +529,7 @@ class SubmittalAddEdit extends Component {
       });
     });
 
-    //discplines
+    //SubmittalTypes
     dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
 
       if (isEdit) {
@@ -892,20 +888,20 @@ class SubmittalAddEdit extends Component {
       [selectedValue]: event
     });
 
-    if (field == "flowCompanyId") {
-      let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+    // if (field == "flowCompanyId") {
+    //   let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
 
-      dataservice.GetNextArrangeMainDocument(url).then(res => {
+    //   dataservice.GetNextArrangeMainDocument(url).then(res => {
 
-        updated_document.arrange = res;
+    //     updated_document.arrange = res;
 
-        updated_document = Object.assign(original_document, updated_document);
+    //     updated_document = Object.assign(original_document, updated_document);
 
-        this.setState({
-          documentCycle: updated_document
-        });
-      });
-    }
+    //     this.setState({
+    //       documentCycle: updated_document
+    //     });
+    //   });
+    // }
 
 
     if (isSubscrib) {

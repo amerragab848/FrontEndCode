@@ -3373,6 +3373,167 @@
         },
         {
           "title": {
+            "en": "Recommendation of award summary",
+            "ar": "ملخص توصية علي عرض"
+          },
+          "id":1245,
+          "permissions":[
+            {
+              "code": 10078,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة ملخص"
+              },
+              "value": false
+            },
+            {
+              "code": 10079,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل  ملخص"
+              },
+              "value": false
+            },
+            {
+              "code": 10080,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف ملخص"
+              },
+              "value": false
+            },
+            {
+              "code": 10081,
+              "title": {
+                "en": "View",
+                "ar": "عرض ملخص"
+              },
+              "value": false
+            },
+            {
+              "code": 10082,
+              "title": {
+                "en": "View All",
+                "ar": "عرض كل الملخصات"
+              },
+              "value": false
+            },
+            {
+              "code": 10083,
+              "title": {
+                "en": "Send By Inbox",
+                "ar": "ارسال الى البريد الداخلى"
+              },
+              "value": false
+            },
+            {
+              "code": 10084,
+              "title": {
+                "en": "Send By Mail",
+                "ar": "ارسال الى البريد الالكترونى"
+              },
+              "value": false
+            },
+            {
+              "code": 10085,
+              "title": {
+                "en": "Send To Correspondence Sent",
+                "ar": "ارسال الى صادر المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10086,
+              "title": {
+                "en": "Send To Correspondence Received",
+                "ar": "ارسال الى وارد المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10087,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            },
+            {
+              "code": 10088,
+              "title": {
+                "en": "Add Attachments",
+                "ar": "اضافة مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10089,
+              "title": {
+                "en": "Edit Attachments",
+                "ar": "تعديل مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10090,
+              "title": {
+                "en": "View Attachments",
+                "ar": "عرض مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10091,
+              "title": {
+                "en": "Delete Attachments",
+                "ar": "حذف مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10092,
+              "title": {
+                "en": "Send To Distribution List",
+                "ar": "ارسال الى قائمةالتوزيع"
+              },
+              "value": false
+            },
+            {
+              "code": 10093,
+              "title": {
+                "en": "Create Transmittal",
+                "ar": "انشاء ارسالية"
+              },
+              "value": false
+            },
+            {
+              "code": 10094,
+              "title": {
+                "en": "View Unit Price",
+                "ar": "عرض الاسعار"
+              },
+              "value": false
+            },
+            {
+              "code": 10095,
+              "title": {
+                "en": "Show Drop Box",
+                "ar": "اظهار الدروب بوكس"
+              },
+              "value": false
+            },
+            {
+              "code": 10097,
+              "title": {
+                "en": "Show Google Drive",
+                "ar": "اظهار جوجل دريف"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
             "en": "Contract Variation Request",
             "ar": "طلبات أوامر التغيير"
           },
@@ -3685,6 +3846,164 @@
             }
           ]
         },
+        {
+          "title":{
+            "en":"contract Procurment Request Form",
+            "ar":"نموذج طلب شراء عقد"
+          },
+          "id":1247,
+          "permissions":[
+            {
+              "code": 10119,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة طلب"
+              },
+              "value": false
+            }
+            ,
+            {
+              "code": 10120,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل طلب"
+              },
+              "value": false
+            },
+            {
+              "code": 10121,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف طلب"
+              },
+              "value": false
+            },
+            {
+              "code": 10122,
+              "title": {
+                "en": "View",
+                "ar": "عرض طلب"
+              },
+              "value": false
+            },
+            {
+              "code": 10123,
+              "title": {
+                "en": "View All",
+                "ar": "عرض جميع الطلبات"
+              },
+              "value": false
+            },
+            {
+              "code": 10124,
+              "title": {
+                "en": "Send By Inbox",
+                "ar": "ارسال الى البريد الداخلى"
+              },
+              "value": false
+            }
+            ,
+            {
+              "code": 10125,
+              "title": {
+                "en": "Send By Mail",
+                "ar": "ارسال الى البريد الالكترونى"
+              },
+              "value": false
+            }
+            ,
+            {
+              "code": 10126,
+              "title": {
+                "en": "Send To Correspondence Sent",
+                "ar": "ارسال الى صادر المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10127,
+              "title": {
+                "en": "Send To Correspondence Received",
+                "ar": "ارسال الى وارد المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10128,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            },
+            {
+              "code": 10129,
+              "title": {
+                "en": "Add Attachments",
+                "ar": "اضافة مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10130,
+              "title": {
+                "en": "Edit Attachments",
+                "ar": "تعديل مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10131,
+              "title": {
+                "en": "View Attachments",
+                "ar": "عرض مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10132,
+              "title": {
+                "en": "Delete Attachments",
+                "ar": "حذف مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10133,
+              "title": {
+                "en": "Send To Distribution List",
+                "ar": "ارسال الى قائمةالتوزيع"
+              },
+              "value": false
+            },
+            {
+              "code": 10134,
+              "title": {
+                "en": "Create Transmittal",
+                "ar": "انشاء ارسالية"
+              },
+              "value": false
+            },
+            {
+              "code": 10135,
+              "title": {
+                "en": "Show Drop Box",
+                "ar": "اظهار الدروب بوكس"
+              },
+              "value": false
+            },
+            {
+              "code": 10136,
+              "title": {
+                "en": "Show Google Drive",
+                "ar": "اظهار جوجل دريف"
+              },
+              "value": false
+            }
+          ]
+        }
+        
+        ,
         {
           "title": {
             "en": "Quantity Survey",
@@ -15221,6 +15540,14 @@
               "title": {
                 "en": "Expenses Status",
                 "ar": "حالة المصاريف"
+              },
+              "value": false
+            },
+            {
+              "code": 3770,
+              "title": {
+                "en": "Login History Report",
+                "ar": "تقرير معلومات الدخول"
               },
               "value": false
             }

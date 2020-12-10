@@ -1273,6 +1273,19 @@ var routes = [
         nav: false
     },
     {
+        route: "contractProcurmentRequestForm",
+        moduleId: "commonLogs",
+        title: "contractProcurmentRequestForm",
+        nav: true,
+        hash: "#contractProcurmentRequestForm",
+        settings: {
+            Contracts: true,
+            caption: "procoor-icon-BOQ",
+            permission: 10123,
+            order: 1
+        }
+    },
+    {
         route: "boq",
         moduleId: "commonLogs",
         title: "boq",
@@ -1282,7 +1295,7 @@ var routes = [
             Contracts: true,
             caption: "procoor-icon-BOQ",
             permission: 620,
-            order: 1
+            order: 2
         }
     },
     {
@@ -1303,7 +1316,7 @@ var routes = [
             Contracts: true,
             caption: "procoor-icon-qauntity-survey",
             permission: 769,
-            order: 4
+            order: 3
         }
     },
     {
@@ -1316,7 +1329,7 @@ var routes = [
             Contracts: true,
             caption: "procoor-icon-contracts",
             permission: 143,
-            order: 2
+            order: 4
         }
     },
     {
@@ -1357,7 +1370,7 @@ var routes = [
             Contracts: true,
             caption: "procoor-icon-PCO",
             permission: 152,
-            order: 8
+            order: 5
         }
     },
     {
@@ -1386,7 +1399,7 @@ var routes = [
             Contracts: true,
             caption: "procoor-icon-tenderAnalysis",
             permission: 573,
-            order: 10
+            order: 6
         }
     },
     {
@@ -1407,7 +1420,8 @@ var routes = [
             Contracts: true,
             caption: "procoor-icon-payment-requisitions",
             permission: 188,
-            order: 5
+            order: 7
+
         }
     },
     {
@@ -1511,8 +1525,9 @@ var routes = [
         title: "variationRequest",
         nav: true,
         hash: "#variationRequest",
-        settings: { Contracts: true, permission: 3166, order: 7 }
+        settings: { Contracts: true, permission: 3166, order: 9 }
     },
+    
     {
         route: "ContractROA",
         moduleId: "commonLogs",
@@ -1588,7 +1603,7 @@ var routes = [
         route: "paymentCertification",
         moduleId: "commonLogs",
         title: "paymentCertificationLog",
-        nav: true,
+        nav: true,  
         hash: "#paymentCertification",
         settings: { Contracts: true, caption: "procoor-icon-Issues", permission: 10070 }
     },
@@ -2933,8 +2948,13 @@ var routes = [
         title: "expnesesUserRequests",
         nav: true,
         settings: { OtherReports: true, permission: 3719, order: 1 }
-    },
-    {
+    },{ //start inventory Items Routes
+        route: "LoginHistoryReport",
+        moduleId: "OtherReports/LoginHistoryReport",
+        title: "loginHistoryReport",
+        nav: true,
+        settings: { OtherReports: true, permission: 3719, order: 12 }
+    }, {
         route: "UserAlerts",
         moduleId: "ProjectSetup/UserAlerts",
         title: "userAlerts",
