@@ -3906,7 +3906,7 @@
         "ar": "طلبات أوامر التغيير"
     },
     "ContractROA":{
-        "en": "ContractROA ",
+        "en": "Contract ROA ",
         "ar": "  منح توصيه العقد "
     },
     "variationRequestAdd": {
@@ -8854,19 +8854,19 @@
         "ar": " من فضلك اختر حجم الورق المرفق"
     },
     "refNumber":{
-        "en": "refNumber",
+        "en": "Ref Number",
         "ar": " الرقم المرجعى"
     },
     "tenderNumber":{
-        "en": "tender Number",
+        "en": "Tender Number",
         "ar": " رقم الناقصه"
     },
     "tenderScope":{
-        "en": "tender Scope ",
+        "en": "Tender Scope ",
         "ar": " نطاق المناقصه "
     },
     "totalValue":{
-        "en": "totalValue ",
+        "en": "Total Value ",
         "ar": "  القيمه الكليه "
     },
     "awardedJustification":{
@@ -8882,15 +8882,15 @@
         "ar": " تعديل بواسطه "
     },
     "rankingCreatedBy": {
-        "en": "rankingCreatedBy  ",
+        "en": "Ranking Created By  ",
         "ar": " الترتيب الذي أنشأته "
     },
     "requestByContact": {
-        "en": "requestByContact  ",
+        "en": "Request By Contact  ",
         "ar": " طلب عن طريق الاتصال "
     },
     "requestByCompany": {
-        "en": "requestByCompany  ",
+        "en": "Request By Company  ",
         "ar": " طلب عن طريق الشركة "
     },
     "contractROA": {
@@ -8936,6 +8936,17 @@
         "ar":"ملخص توصية علي قرار"
     }
     ,
+
+"budgetCompany":
+{
+    "en":"budget Company",
+    "ar":"الميزانية"
+},
+"department":
+{
+    "en":"department",
+    "ar":"القسم"
+},
     "contractProcurmentRequestForm":
     {
         "en":"Contract Procurment Request Form",
