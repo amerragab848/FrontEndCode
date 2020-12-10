@@ -8951,6 +8951,14 @@
     {
         "en":"Contract Procurment Request Form",
         "ar":"نموذج طلب شراء عقد"
+    },
+    "ownerContact":{
+        "en":"Owner Contact",
+        "ar":" جهة اتصال المالك"
+    },
+    "contractorContact":{
+        "en":"Contractor Contact ",
+        "ar":"جهة الاتصال بالمقاول"
     }
 }
   
