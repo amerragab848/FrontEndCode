@@ -20444,7 +20444,7 @@
         "isDate": false,
         "isTime": false,
         "showInExport": true,
-        "isCustom": false,
+        "isCustom": true,
         "exportDataType": "n"
       },
       {
