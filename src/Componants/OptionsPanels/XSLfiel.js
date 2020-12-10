@@ -65,8 +65,6 @@ class XSLfile extends Component {
             {
                 formData.append(item,submittalOptions[item]);
             }     
-            //formData.append("submittalOptions",submittalOptions);
-            
             Api.postFile("UploadExcelFilesTemplate?projectId=" + this.props.projectId 
             +"&fromCompanyId="+ this.props.companyId+ "&fromContactId="+ this.props.contactId 
             +"&toCompanyId="+ this.props.toCompanyId+ "&toContactId="+ this.props.toContactId 

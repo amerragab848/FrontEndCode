@@ -1299,7 +1299,7 @@ class CommonLog extends Component {
               title={Resources['DocTemplate'][currentLanguage]}
               onCloseClicked={() => this.setState({ docTemplateModal: false })}
               isVisible={this.state.docTemplateModal}>
-              <div className="proForm datepickerContainer">
+              <div className="proForm datepickerContainer customLayout">
 
                 <div className="linebylineInput valid-input mix_dropdown">
                    <label className="control-label">
