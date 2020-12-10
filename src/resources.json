@@ -3905,6 +3905,10 @@
         "en": "Variation Request",
         "ar": "طلبات أوامر التغيير"
     },
+    "ContractROA":{
+        "en": "ContractROA ",
+        "ar": "  منح توصيه العقد "
+    },
     "variationRequestAdd": {
         "en": "Add Contract Variation Request",
         "ar": "اضافة طلبات أوامر التغيير"
@@ -6032,6 +6036,14 @@
     "sharedSettings": {
         "en": "Shared Links",
         "ar": "اعدادات الروابط "
+    },
+    "sharedSettingsIsRequired": {
+        "en": "Shared Links Is Required",
+        "ar": " اعدادات الروابط مطلوبه "
+    },
+    "URLFormat": {
+        "en": "URL Format Is Required",
+        "ar": "يجب ادخال تنسيق الويب "
     },
     "download": {
         "en": "Download",
@@ -8841,12 +8853,90 @@
         "en": "Please Select Attached Paper Size",
         "ar": " من فضلك اختر حجم الورق المرفق"
     },
+    "refNumber":{
+        "en": "refNumber",
+        "ar": " الرقم المرجعى"
+    },
+    "tenderNumber":{
+        "en": "tender Number",
+        "ar": " رقم الناقصه"
+    },
+    "tenderScope":{
+        "en": "tender Scope ",
+        "ar": " نطاق المناقصه "
+    },
+    "totalValue":{
+        "en": "totalValue ",
+        "ar": "  القيمه الكليه "
+    },
+    "awardedJustification":{
+        "en": "awarded Justification ",
+        "ar": "منح التبرير "
+    },
+    "deletedBy":{
+        "en": "deleted By  ",
+        "ar": " حذف بواسطه "
+    },
+    "lastEditBy":{
+        "en": "last Edit By  ",
+        "ar": " تعديل بواسطه "
+    },
+    "rankingCreatedBy": {
+        "en": "rankingCreatedBy  ",
+        "ar": " الترتيب الذي أنشأته "
+    },
+    "requestByContact": {
+        "en": "requestByContact  ",
+        "ar": " طلب عن طريق الاتصال "
+    },
+    "requestByCompany": {
+        "en": "requestByCompany  ",
+        "ar": " طلب عن طريق الشركة "
+    },
+    "contractROA": {
+        "en": "Contract ROA  ",
+        "ar": "  توصيه العقود "
+    },
+    "contractSummmary":{
+        "en": "ROA Summmary  ",
+        "ar": "  ملخص العقود " 
+    },
+    "contractRef":{
+        "en": "contract Reference   ",
+        "ar": "  مرجع العقد "   
+    },
+    "contractScope":{
+        "en": "contract Scope",
+        "ar": "  نطاق  العقد "   
+    },
+    "contractorDuration":{
+        "en": "contractor Duration ",
+        "ar": "  مده العقد " 
+    },
+    "specialCases":{
+        "en": "special Cases",
+        "ar": "حالات خاصه " 
+    },
+    "contractPrice":{
+        "en": "contract Price",
+        "ar": " سعر  العقد " 
+    },
+    "firstPrice":{
+        "en": "first Price ",
+        "ar": "السعر الاولى "  
+    },
+    "finalPrice":{
+        "en": "final Price ",
+        "ar": "السعر النهائي "  
+    },
+
     "contractROASummary":
     {
         "en":"Recommendation of award summary",
         "ar":"ملخص توصية علي قرار"
     }
     ,
+<<<<<<< HEAD
 "contractProcurmentRequestForm":
 {
     "en":"Contract Procurment Request Form",
@@ -8861,6 +8951,14 @@
 {
     "en":"department",
     "ar":"القسم"
+=======
+    "contractProcurmentRequestForm":
+    {
+        "en":"Contract Procurment Request Form",
+        "ar":"نموذج طلب شراء عقد"
+    }
+>>>>>>> eac99c628c361c88e513af607e14c8026adbd6a1
 }
+  
 
-}
+

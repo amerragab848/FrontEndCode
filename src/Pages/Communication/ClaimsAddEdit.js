@@ -27,7 +27,8 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).required(Resources['sharedSettingsIsRequired'][currentLanguage])
 })
 
 let docId = 0;
@@ -577,11 +578,13 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
-                                                                    <input type="text" className="form-control" id="sharedSettings"
+                                                                    <input type="url" className="form-control" id="sharedSettings"
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings || ''}
                                                                         name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                                    {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
+
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
                                                             </div>

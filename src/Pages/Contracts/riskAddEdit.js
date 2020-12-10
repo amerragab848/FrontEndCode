@@ -292,8 +292,7 @@ class riskAddEdit extends Component {
                 location: "",
                 priorityId: "",
                 description: "",
-                descriptionMitigation: "",
-                sharedSettings: ""
+                descriptionMitigation: "" 
             };
             this.setState({
 

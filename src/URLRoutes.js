@@ -1529,6 +1529,14 @@ var routes = [
     },
     
     {
+        route: "ContractROA",
+        moduleId: "commonLogs",
+        title: "ContractROA",
+        nav: true,
+        hash: "#ContractROA",
+        settings: { Contracts: true, permission: 10100, order: 11 }
+    },
+    {
         route:
             "variationRequestAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "contracts/variationRequestAddEdit",
