@@ -367,7 +367,7 @@ class ContractROaAddEdit extends Component {
         }
 
     }
-    handleChangeDropDSummary(event, field, selectedValue) {
+    handleChangeDropDSummary(event, field, selectedValue, isSubscrib, targetState,url,param) {
         if (event == null) return;
         let obj = { ...this.state.contractROASummaryObj };
         let updated_document = {};
@@ -378,7 +378,14 @@ class ContractROaAddEdit extends Component {
             contractROASummaryObj: updated_document,
             [selectedValue]: event
         });
-
+        if (isSubscrib) {
+            let action = url + "?" + param + "=" + event.value;
+            dataService.GetDataList(action, "contactName", "id").then(result => {
+                this.setState({
+                    [targetState]: result
+                });
+            });
+        }
     }
     handleChangeSummary(e, field) {
 
@@ -631,7 +638,7 @@ class ContractROaAddEdit extends Component {
                                 selectedownerContactId: { label: this.state.contractROASummaryObj.ownerContactName, value: ownerContactId }
     
                             });
-                            this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyOwnerId, 'ownerContactId', 'selectedownerContactId', 'ownerContacts');
+                            this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyOwnerId, 'ownerContactId', 'selectedownerContactId', 'ownerContacts');
 
                         }
                             let companyContractorId = this.state.contractROASummaryObj.contractorId;
@@ -642,7 +649,7 @@ class ContractROaAddEdit extends Component {
                                     selectedcontractorContactId: { label: this.state.contractROASummaryObj.contractorContactName, value: contractorContactId }
         
                                 });
-                        this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyContractorId, 'contractorContactId', 'selectedcontractorContactId', 'contractorContacts');
+                        this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyContractorId, 'contractorContactId', 'selectedcontractorContactId', 'contractorContacts');
 
                     }
 
@@ -665,6 +672,19 @@ class ContractROaAddEdit extends Component {
         dataService.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
+                this.setState({
+                    [subSelectedValue]: targetFieldSelected,
+                    [subDatasource]: result
+                });
+            }
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+    }
+    fillSubDropDownInEditSummary(url, param, value, subField, subSelectedValue, subDatasource) {
+        let action = url + "?" + param + "=" + value
+        dataService.GetDataList(action, 'contactName', 'id').then(result => {
+            if (this.props.changeStatus === true) {
+                let toSubField = this.state.contractROASummaryObj[subField];
                 let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -1017,7 +1037,7 @@ class ContractROaAddEdit extends Component {
                                                                         <Dropdown isMulti={false} data={this.state.ownerCompanies}
                                                                             selectedValue={this.state.selectedOwnerCompany}
                                                                             handleChange={event => 
-                                                                                this.handleChangeDropDSummary(event, "ownerId", "selectedOwnerCompany")
+                                                                                this.handleChangeDropDSummary(event, "ownerId", "selectedOwnerCompany",true,"ownerContacts","GetContactsByCompanyId","companyId")
                                                                             }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
@@ -1029,7 +1049,7 @@ class ContractROaAddEdit extends Component {
                                                                         <Dropdown isMulti={false} data={this.state.ownerContacts}
                                                                             selectedValue={this.state.selectedownerContactId}
                                                                             handleChange={event =>
-                                                                                this.handleChangeDropDSummary(event, "ownerContactId", "selectedownerContactId")
+                                                                                this.handleChangeDropDSummary(event, "ownerContactId", "selectedownerContactId",false,"","","")
                                                                             }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
@@ -1048,7 +1068,7 @@ class ContractROaAddEdit extends Component {
                                                                         <Dropdown isMulti={false} data={this.state.contractorCompanies}
                                                                             selectedValue={this.state.selectedContractorCompany}
                                                                             handleChange={event => 
-                                                                                this.handleChangeDropDSummary(event, "contractorId", "selectedContractorCompany")
+                                                                                this.handleChangeDropDSummary(event, "contractorId", "selectedContractorCompany",true,"contractorContacts","GetContactsByCompanyId","companyId")
                                                                             }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
