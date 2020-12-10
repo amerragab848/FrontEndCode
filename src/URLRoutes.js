@@ -1272,19 +1272,19 @@ var routes = [
         title: "Send To Distribution List",
         nav: false
     },
-    {
-        route: "contractProcurmentRequestForm",
-        moduleId: "commonLogs",
-        title: "contractProcurmentRequestForm",
-        nav: true,
-        hash: "#contractProcurmentRequestForm",
-        settings: {
-            Contracts: true,
-            caption: "procoor-icon-BOQ",
-            permission: 10123,
-            order: 1
-        }
-    },
+    // {
+    //     route: "contractProcurmentRequestForm",
+    //     moduleId: "commonLogs",
+    //     title: "contractProcurmentRequestForm",
+    //     nav: true,
+    //     hash: "#contractProcurmentRequestForm",
+    //     settings: {
+    //         Contracts: true,
+    //         caption: "procoor-icon-BOQ",
+    //         permission: 10123,
+    //         order: 1
+    //     }
+    // },
     {
         route: "boq",
         moduleId: "commonLogs",
@@ -1528,6 +1528,14 @@ var routes = [
         settings: { Contracts: true, permission: 3166, order: 9 }
     },
     
+    {
+        route: "ContractROA",
+        moduleId: "commonLogs",
+        title: "ContractROA",
+        nav: true,
+        hash: "#ContractROA",
+        settings: { Contracts: true, permission: 10100, order: 11 }
+    },
     {
         route:
             "variationRequestAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",

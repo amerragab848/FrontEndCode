@@ -32,9 +32,8 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
-    // sharedSettings: Yup.string().required(Resources["sharedSettings"][currentLanguage])
-    //                             .min(5, "Please Enter at least Five Character"),
+    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true), 
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).required(Resources['sharedSettingsIsRequired'][currentLanguage])
 });
 
 let docId = 0;
@@ -371,6 +370,8 @@ class LettersAddEdit extends Component {
             }
         });
     }
+   
+
     createReplyLink(docId) {
         let addView = "LettersAddEdit";
 
@@ -874,7 +875,9 @@ class LettersAddEdit extends Component {
                                                                     <input type="text" className="form-control" id="sharedSettings"
                                                                         onChange={e => this.handleChange(e, "sharedSettings")}
                                                                         value={this.state.document.sharedSettings}
-                                                                        name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]}
+ 
+                                                                        name="sharedSettings" placeholder={Resources.UrlForm[currentLanguage]}
+ 
                                                                     />
                                                                     {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
                                                                 </div>

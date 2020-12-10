@@ -5715,6 +5715,201 @@
         },
         {
           "title": {
+            "en": "ContractROA",
+            "ar": "العقود"
+          },
+          "id": 1246,
+          "permissions": [
+            {
+              "code": 10096,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة العقود"
+              },
+              "value": false
+            },
+            {
+              "code": 10097,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل العقود"
+              },
+              "value": false
+            },
+            {
+              "code": 10098,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف العقود"
+              },
+              "value": false
+            },
+            {
+              "code": 10099,
+              "title": {
+                "en": "View",
+                "ar": "عرض العقود"
+              },
+              "value": false
+            },
+            {
+              "code": 10100,
+              "title": {
+                "en": "View All",
+                "ar": "عرض جميع العقود"
+              },
+              "value": false
+            },
+            {
+              "code": 10101,
+              "title": {
+                "en": "Send By Inbox",
+                "ar": "ارسال الى البريد الداخلى"
+              },
+              "value": false
+            },
+            {
+              "code": 10102,
+              "title": {
+                "en": "Send By Mail",
+                "ar": "ارسال الى البريد الالكترونى"
+              },
+              "value": false
+            },
+            {
+              "code": 10103,
+              "title": {
+                "en": "Send To Correspondence Sent",
+                "ar": "ارسال الى صادر المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10104,
+              "title": {
+                "en": "Send To Correspondence Received",
+                "ar": "ارسال الى وارد المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 10105,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            },
+            {
+              "code": 10106,
+              "title": {
+                "en": "Add Attachments",
+                "ar": "اضافة مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10107,
+              "title": {
+                "en": "View Attachments",
+                "ar": "عرض مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10108,
+              "title": {
+                "en": "Edit Attachments",
+                "ar": "تعديل مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10109,
+              "title": {
+                "en": "Delete Attachments",
+                "ar": "حذف مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 10110,
+              "title": {
+                "en": "Send To Distribution List",
+                "ar": "ارسال الى قائمةالتوزيع"
+              },
+              "value": false
+            },
+            {
+              "code": 10111,
+              "title": {
+                "en": "Create Transmittal",
+                "ar": "انشاء ارسالية"
+              },
+              "value": false
+            },
+            {
+              "code": 10112,
+              "title": {
+                "en": "Edit Items",
+                "ar": "تعديل على العناصر"
+              },
+              "value": false
+            },
+            {
+              "code": 10113,
+              "title": {
+                "en": "Delete Items",
+                "ar": "حذف عنصر"
+              },
+              "value": false
+            },
+            {
+              "code": 10114,
+              "title": {
+                "en": "New Cycle",
+                "ar": "دورة جديدة"
+              },
+              "value": false
+            },
+            {
+              "code": 10115,
+              "title": {
+                "en": "Show Drop Box",
+                "ar": "اظهار الدروب بوكس"
+              },
+              "value": false
+            },
+            {
+              "code": 10116,
+              "title": {
+                "en": "Show Google Drive",
+                "ar": "اظهار جوجل دريف"
+              },
+              "value": false
+            },
+            {
+              "code": 10117,
+              "title": {
+                "en": "View Items",
+                "ar": "عرض الأصناف"
+              },
+              "value": false
+            },
+            {
+              "code": 10118,
+              "title": {
+                "en": "Show Export",
+                "ar": "إستخراج الملف"
+            },
+              "value": false
+            }
+          ]
+        },
+      
+
+        {
+          "title": {
             "en": "Submittal Package",
             "ar": "تقديمات مجمعه"
           },
@@ -10453,7 +10648,7 @@
         },
         {
           "title": {
-            "en": "Drawing Set",
+            "en": "Handing Over of Drawing Sets",
             "ar": "رسومات مجمعه"
           },
           "id": 9221,

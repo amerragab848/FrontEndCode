@@ -30,7 +30,8 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true),
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).required(Resources['sharedSettingsIsRequired'][currentLanguage])
 })
 
 let docId = 0;
@@ -248,7 +249,7 @@ class RfiAddEdit extends Component {
                 }
 
                 let toCompanyId = this.props.document.toCompanyId;
-                
+
                 if (toCompanyId) {
                     this.setState({
                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
@@ -284,9 +285,9 @@ class RfiAddEdit extends Component {
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
 
             if (isEdit) {
-                
+
                 let areaId = this.props.document.area;
-                
+
                 if (areaId) {
                     let area = result.find(i => i.label === areaId);
                     if (area) {
@@ -460,7 +461,7 @@ class RfiAddEdit extends Component {
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        
+
         saveDocument.area = this.state.selectedArea.label;
         saveDocument.location = this.state.selectedLocation.label;
         dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
@@ -701,7 +702,9 @@ class RfiAddEdit extends Component {
                                                                     <input type="text" className="form-control" id="sharedSettings"
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings || ''} name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                                        placeholder={Resources.UrlForm[currentLanguage]} />
+                                                                    {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
+
                                                                 </div>
                                                                 {this.state.document.sharedSettings === '' || this.state.document.sharedSettings === null || this.state.document.sharedSettings === undefined ? null :
                                                                     <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
