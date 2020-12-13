@@ -42,6 +42,10 @@ class UploadAttachment extends Component {
 
         this.props.actions.uploadFileLinks("UploadFilesModalLinksByDocId?docId=" + this.props.docId + "&docTypeId=" + this.props.docTypeId, selectedFiles);
     }
+    
+    onCancel() {
+ 
+    }
 
     onDrop = (acceptedFiles, rejectedFiles) => {
         this.props.actions.setLoadingFiles();
@@ -188,7 +192,7 @@ class UploadAttachment extends Component {
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    extensions={[".pdf", ".doc", ".docx", ".png", ".dwg", ".rvt"]}>
+                    extensions={[".pdf", ".doc", ".docx", ".png", ".dwg", ".rvt",".rar",".zip"]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
