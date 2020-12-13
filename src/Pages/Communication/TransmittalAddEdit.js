@@ -28,7 +28,8 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
     refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true) 
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true) ,
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).required(Resources['sharedSettingsIsRequired'][currentLanguage])
 });
 
 let docId = 0;
@@ -763,6 +764,7 @@ class TransmittalAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings || ''} name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                               {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
                                                                 </div>
                                                                 {this.state.document.sharedSettings === '' ||
                                                                     this.state.document.sharedSettings === null ||

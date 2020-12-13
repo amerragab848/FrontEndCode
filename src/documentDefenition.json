@@ -1,4 +1,5 @@
 ﻿{
+
   "Letters": {
     "documentTitle": "lettertitle",
     "docTyp": 19,
@@ -20416,5 +20417,467 @@
         "isCustom": true
       }
     ]
-  }
+  },
+
+  "ContractROA": {
+    "documentTitle": "ContractROA",
+    "docTyp": 1246,
+    "documentAddEditLink": "ContractROaAddEdit",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 10096,
+    "documentEditPermission": 10097,
+    "documentDeletePermission": 10098,
+    "documentViewPermission": 10099,
+    "documentPermission": 10100,
+    "documentApi": {
+      "get": "GetContractROAByProjectId",
+      "getCustom": "GetContractROAByProjectIdCustom",
+      "delete": "DeleteMultipleContractROA"
+    },
+    "documentColumns": [
+      {
+        "field": "refNumber",
+        "friendlyName": "refNumber",
+        "minWidth": 65,
+        "width": "10%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "n"
+      },
+      {
+        "field": "tenderNumber",
+        "friendlyName": "tenderNumber",
+        "minWidth": 65,
+        "width": "10%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "n"
+      },
+      {
+        "field": "statusName",
+        "friendlyName": "status",
+        "minWidth": 155,
+        "width": "7%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "tenderScope",
+        "friendlyName": "tenderScope",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "budget",
+        "friendlyName": "budget",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "totalValue",
+        "friendlyName": "totalValue",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "awardedJustification",
+        "friendlyName": "awardedJustification",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "openedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "createdBy",
+        "friendlyName": "createdBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": false,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "deletedBy",
+        "friendlyName": "deletedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastApproveTime",
+        "friendlyName": "lastApproveTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastApproveDate",
+        "friendlyName": "lastApproveDate",
+        "minWidth": 85,
+        "width": "8%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendTime",
+        "friendlyName": "lastSendTime",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "sendDate",
+        "friendlyName": "sendDate",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "closedBy",
+        "friendlyName": "closedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastEditBy",
+        "friendlyName": "lastEditBy",
+        "minWidth": 85,
+        "width": "8%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditDate",
+        "friendlyName": "lastEditDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastApproveDate",
+        "friendlyName": "lastApproveDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastApproveTime",
+        "friendlyName": "lastApprovedTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "rankingCreatedBy",
+        "friendlyName": "rankingCreatedBy",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "projectName",
+        "friendlyName": "projectName",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "requestByContact",
+        "friendlyName": "requestByContact",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "requestByCompany",
+        "friendlyName": "requestByCompany",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      }
+    ],
+    "forEditApi": "GetContractROAById",
+    "filterApi": "ContractROAFilters",
+    "filters": [
+     
+      {
+        "name": "status",
+        "field": "statusName",
+        "type": "toggle",
+        "showInExport": true,
+        "isCustom": true,
+        "trueLabel": "oppened",
+        "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+      {
+        "name": "projectName",
+        "field": "projectName",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+      {
+        "name": "requestByContact",
+        "field": "requestByContact",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+      {
+        "name": "requestByCompany",
+        "field": "requestByCompany",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+     
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "showInExport": true,
+        "isCustom": true,
+        "isRange": true
+      },
+      
+      {
+        "name": "tenderNumber",
+        "field": "tenderNumber",
+        "type": "number",
+        "showInExport": true,
+        "isCustom": false
+      }
+    ]
+  },
+  "contractProcurmentRequestForm":{
+    "documentTitle": "contractProcurmentRequestForm",
+    "docTyp": 123,
+    "documentAddEditLink": "contractProcurmentRequestFormAddEdit",
+    "documentEditPermission": 10120,
+    "documentViewPermission": 10122,
+    "documentPermission": 10123,
+    "documentApi": {
+      "get": "GetContractProcurementRequestFormProjectId",
+      "getCustom": "GetContractProcurementRequestFormProjectIdCustom"
+    },
+    "documentColumns":[
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromCompanyName",
+        "friendlyName": "fromCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromContacName",
+        "friendlyName": "fromContact",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      } ,{
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "d"
+      }
+    ],
+    "filterApi": "ContractProcurementRequestFormFilter",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "showInExport": true,
+        "isCustom": true
+      }
+    ]
+
+  } 
 }
