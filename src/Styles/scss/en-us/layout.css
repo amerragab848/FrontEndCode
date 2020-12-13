@@ -24435,7 +24435,6 @@ tbody.grid-body tr .text.elipsisPadd {
 .dzu-submitButtonContainer {
     display: none;
 }
-<<<<<<< HEAD
 .action_inner_btn {
     background-color: transparent;
     border-radius: 0;
@@ -24507,21 +24506,19 @@ tbody.grid-body tr .text.elipsisPadd {
     align-items: center;
     justify-content: center;
 }
-=======
-.InActiveref{
-    float: "right";
-    padding-right:"30px"
+.InActiveref {
+    float: 'right';
+    padding-right: '30px';
 }
 
 .skylight-dialog .dropdownFullWidthContainer {
-    display: flex
+    display: flex;
 }
-.skylight-dialog .dropdownFullWidth .reactSelect >div:first-of-type {
-    width: 274px  !important;
+.skylight-dialog .dropdownFullWidth .reactSelect > div:first-of-type {
+    width: 274px !important;
 }
 
-
-.customLayout .supervisor__company ,
+.customLayout .supervisor__company,
 .customLayout .dropdownFullWidthContainer {
     justify-content: space-between;
     width: 72%;
@@ -24529,5 +24526,6 @@ tbody.grid-body tr .text.elipsisPadd {
 .customLayout .doc-pre-cycle {
     margin: 40px 0;
 }
-.customLayout .linebylineInput {margin-bottom: 10px}
->>>>>>> a94591a103b3e12486274accd4276c2735c6d672
+.customLayout .linebylineInput {
+    margin-bottom: 10px;
+}
