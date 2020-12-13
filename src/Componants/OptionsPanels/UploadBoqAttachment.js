@@ -1,9 +1,6 @@
 import React, { Component, createRef } from 'react';
-import Dropzone from 'react-dropzone';
+import Dropzone from 'react-dropzone-uploader';
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
-import classNames from 'classnames';
-import AttachUpload from '../../Styles/images/attacthUpload.png';
-import AttachDrag from '../../Styles/images/attachDraggable.png';
 import Resources from '../../../src/resources';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
@@ -14,7 +11,7 @@ import * as communicationActions from '../../store/actions/communication';
 let currentLanguage =
     localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-class XSLfile extends Component {
+class UploadBoqAttachment extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,10 +45,10 @@ class XSLfile extends Component {
         this.setState({ acceptedFiles });
     };
 
-    documentTemplateUpload = () => {
-        if (this.state.acceptedFiles.length > 0) {
+    documentTemplateUpload = files => {
+        if (files.length > 0) {
             let formData = new FormData();
-            let file = this.state.acceptedFiles[0];
+            let file = files[0].file;
             formData.append('file0', file);
             let docType = this.props.docType;
             let header = { docType: docType };
@@ -90,10 +87,10 @@ class XSLfile extends Component {
         }
     };
 
-    upload = () => {
-        if (this.state.acceptedFiles.length > 0) {
+    upload = files => {
+        if (files.length > 0) {
             let formData = new FormData();
-            let file = this.state.acceptedFiles[0];
+            let file = files[0].file;
             formData.append('file0', file);
             let docType = this.props.docType;
             let header = { docType: docType };
@@ -108,9 +105,6 @@ class XSLfile extends Component {
                         this.setState({ Isloading: false });
                         this.props.afterUpload();
                     }
-                    setTimeout(() => {
-                        this.setState({ _className: 'zeropercent' });
-                    }, 1000);
                 })
                 .catch(ex => {
                     toast.error(
@@ -120,13 +114,13 @@ class XSLfile extends Component {
         }
     };
 
-    CustomUpload = () => {
-        if (this.state.acceptedFiles.length > 0) {
+    CustomUpload = files => {
+        if (files.length > 0) {
             this.setState({
                 Isloading: true,
             });
             let formData = new FormData();
-            let file = this.state.acceptedFiles[0];
+            let file = files[0].file;
             let fileName = file.name;
             let testName = [];
             testName.push(fileName);
@@ -268,129 +262,37 @@ class XSLfile extends Component {
                             </div>
                         )}
 
-                        <Dropzone
-                            multiple={false}
-                            accept={this.props.CustomAccept ? '.xer' : '.xlsx'}
-                            onDrop={e => this.onDrop(e)}
-                            onDragLeave={e =>
-                                this.setState({ _className: ' ' })
-                            }
-                            onDragOver={e =>
-                                this.setState({ _className: 'dragHover' })
-                            }
-                            onDropAccepted={e => this.onDropAcceptedHandler(e)}
-                            onDropRejected={this.onDropRejected}>
-                            {({
-                                getRootProps,
-                                getInputProps,
-                                isDragActive,
-                            }) => {
-                                return (
-                                    <div
-                                        {...getRootProps()}
-                                        className={classNames('dropzone', {
-                                            'dropzone--isActive': isDragActive,
-                                        })}>
-                                        <input {...getInputProps()} />
-                                        {
-                                            <div
-                                                className={
-                                                    'uploadForm ' +
-                                                    this.state._className
-                                                }>
-                                                <div className="uploadFormDiv">
-                                                    <img src={AttachUpload} />
-                                                    <div className="dragUpload">
-                                                        <p>
-                                                            {
-                                                                Resources
-                                                                    .includeFiles[
-                                                                    currentLanguage
-                                                                ]
-                                                            }
-                                                        </p>
-                                                        <form>
-                                                            <input
-                                                                type="file"
-                                                                name="file"
-                                                                id="file"
-                                                                className="inputfile"
-                                                            />
-                                                            <label>
-                                                                {
-                                                                    Resources
-                                                                        .upload[
-                                                                        currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div className="dragHoverDiv">
-                                                    <div id="myBar"></div>
-                                                    <img src={AttachDrag} />
-                                                    <div className="dragUpload">
-                                                        <p>
-                                                            Drop your files
-                                                            here!
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="progressBar">
-                                                    <div className="completeProgress"></div>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                );
-                            }}
-                        </Dropzone>
-                        <div className="removeBtn">
-                            <div className="fileNameUploaded">
-                                {this.state.acceptedFiles.length > 0 ? (
-                                    <p>
-                                        {Resources.fileName[currentLanguage]}
-                                        {this.state.acceptedFiles.length > 0 ? (
-                                            <span>
-                                                {
-                                                    this.state.acceptedFiles[0]
-                                                        .name
-                                                }
-                                            </span>
-                                        ) : null}
-                                    </p>
-                                ) : null}
-                            </div>
-                            {this.state.Isloading ? (
-                                <button
-                                    className="primaryBtn-1 btn smallBtn disabled"
-                                    disabled="disabled">
-                                    <div className="spinner">
-                                        <div className="bounce1" />
-                                        <div className="bounce2" />
-                                        <div className="bounce3" />
-                                    </div>
-                                </button>
-                            ) : (
-                                <button
-                                    className={
-                                        'primaryBtn-1 btn smallBtn ' +
-                                        (this.props.disabled ? 'disabled' : '')
-                                    }
-                                    disabled={
-                                        this.props.disabled ? 'disabled' : ''
-                                    }
-                                    onClick={
-                                        this.props.documentTemplate
-                                            ? this.documentTemplateUpload
-                                            : this.props.CustomUpload
-                                            ? this.CustomUpload
-                                            : this.upload
+                        <div>
+                            <Dropzone
+                                getUploadParams={this.getUploadParams}
+                                accept={
+                                    this.props.CustomAccept ? '.xer' : '.xlsx'
+                                }
+                                maxFiles={1}
+                                multiple={false}
+                                onChangeStatus={this.handleChangeStatus}
+                                onSubmit={this.handleSubmit}
+                                InputComponent={this.InputChooseFile}
+                                submitButtonContent={this.UploadFiles}
+                                getFilesFromEvent={this.getFilesFromEvent}
+                                classNames
+                            />
+
+                            <div className="drives__upload">
+                                <label
+                                    className=" btn__upload--left primaryBtn-1 btn "
+                                    style={{
+                                        pointerEvents:
+                                            this.state.fileStatus == 'done'
+                                                ? 'auto'
+                                                : 'none',
+                                    }}
+                                    onClick={() =>
+                                        this.uploadBtnRef.current.click()
                                     }>
-                                    {Resources['upload'][currentLanguage]}
-                                </button>
-                            )}
+                                    Upload
+                                </label>
+                            </div>
                         </div>
                     </React.Fragment>
                 </div>
@@ -413,4 +315,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(XSLfile);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UploadBoqAttachment);

@@ -8840,5 +8840,9 @@
     "attachedPaperSizeRequired": {
         "en": "Please Select Attached Paper Size",
         "ar": " من فضلك اختر حجم الورق المرفق"
+    },
+    "uploadedSuccessfully": {
+        "en": "Document Uploaded Successfully",
+        "ar": "تم رفع المستند بنجاح"
     }
 }
