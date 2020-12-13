@@ -168,7 +168,6 @@ export default class Dataservice {
     };
 
     static addObject = (url, docObj) => {
-
         return Api.post(url, docObj).then(result => {
             return result;
         });
@@ -231,6 +230,12 @@ export default class Dataservice {
     static checkSubmittalRefCode = (projectId,code) => {
 
         return Api.get("checkSubmittalRefCode?projectId="+projectId+"&code="+code).then(result => {
+            return result;
+        }).catch(ex => { });
+    };
+
+    static checkContractROAId = (ROAId,docId) => {
+        return Api.get("CheckROAIdExist?ROAId="+ROAId+"&docId="+docId).then(result => {
             return result;
         }).catch(ex => { });
     };

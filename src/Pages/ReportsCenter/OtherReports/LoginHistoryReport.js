@@ -17,7 +17,7 @@ import dataservice from "../../../Dataservice";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 const validationSchema = Yup.object().shape({
     contactName: Yup.string().required(Resources['contactNameRequired'][currentLanguage]).nullable(true)
-}) 
+})
 
 class LoginHistoryReport extends Component {
 
@@ -32,6 +32,7 @@ class LoginHistoryReport extends Component {
             showChart: false,
             finishDate: moment(),
             startDate: moment(),
+            checkForGetAll: false
         }
 
         this.fields = [{
@@ -57,6 +58,14 @@ class LoginHistoryReport extends Component {
 
         this.columns = [
             {
+                "field": "contactName",
+                "title": Resources.ContactName[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
                 "field": "publicIP",
                 "title": Resources.publicIP[currentLanguage],
                 "type": "text",
@@ -104,8 +113,8 @@ class LoginHistoryReport extends Component {
                 "sortable": true
             }
         ];
-    }
-    componentDidMount() { 
+    } 
+    componentDidMount() {  
         let accountId = Config.getPayload().aci;
 
         dataservice.GetDataList('SelectAllAccountsActive?id=' + accountId, 'userName', 'id').then(result => {
@@ -115,28 +124,35 @@ class LoginHistoryReport extends Component {
         }).catch(() => {
             toast.error('somthing wrong')
         });
-    };
+    }; 
+    handleChange = (fieldValue) => {
+
+        this.setState({ checkForGetAll: fieldValue })
+    }
+ 
     setDate = (name, value) => {
         this.setState({ [name]: value })
     };
+
     getGridRows = () => {
         this.setState({ showChart: false, isLoading: true })
         let obj = {
-            accountId: this.state.selectedContact.value,
+            accountId: this.state.selectedContact.value == 0 ? null : this.state.selectedContact.value,
             startDate: moment(this.state.startDate),
-            finishDate: moment(this.state.finishDate)
+            finishDate: moment(this.state.finishDate),
+            selectAll : this.state.checkForGetAll
         }
 
         Api.post('GetLoginHistoryReport', obj).then((res) => {
             if (res.length > 0) {
                 this.setState({
-                    rows: res,
+                    rows: res || [],
                     isLoading: false
                 });
             }
             else
                 this.setState({
-                    rows: [], 
+                    rows: [],
                     isLoading: false
                 });
 
@@ -144,6 +160,7 @@ class LoginHistoryReport extends Component {
             this.setState({ isLoading: false })
         })
     };
+
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
@@ -190,7 +207,7 @@ class LoginHistoryReport extends Component {
                                             title="ContactName"
                                             name="contactName"
                                             index="contactName"
-                                            data={this.state.dropDownList} 
+                                            data={this.state.dropDownList}
                                             selectedValue={this.state.selectedContact}
                                             handleChange={event => { this.setState({ selectedContact: event }); this.fields[0].value = event.label }}
                                             onChange={setFieldValue}
@@ -209,6 +226,18 @@ class LoginHistoryReport extends Component {
                                         <DatePicker title='finishDate'
                                             startDate={this.state.finishDate}
                                             handleChange={e => { this.setDate('finishDate', e); this.fields[2].value = e }} />
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                        <div className="ui checkbox checkBoxGray300 checked" >
+                                            <input type="checkbox"
+                                                id="checkForGetAll"
+                                                name="checkForGetAll"
+                                                value={this.state.checkForGetAll}
+                                                checked={this.state.checkForGetAll}
+                                                onChange={(e) => { this.handleChange(e.target.checked) }}
+                                            />
+                                            <label>{Resources.selectAll[currentLanguage]}</label>
+                                        </div>
                                     </div>
                                     <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                                 </Form>

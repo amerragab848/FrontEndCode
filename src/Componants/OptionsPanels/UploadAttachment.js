@@ -52,6 +52,8 @@ class UploadAttachment extends Component {
 
     onCancel() {}
 
+    onCancel() {}
+
     onDrop = (acceptedFiles, rejectedFiles) => {
         this.props.actions.setLoadingFiles();
 

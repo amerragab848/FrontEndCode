@@ -27,7 +27,8 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
 })
 
 let docId = 0;
@@ -416,16 +417,16 @@ class ClaimsAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
         saveDocument.projectId = this.state.projectId;
-        console.log(saveDocument);
-        // dataservice.addObject('AddClaims', saveDocument).then(result => {
-        //     this.setState({
-        //         docId: result
-        //     });
-        //     toast.success(Resources["operationSuccess"][currentLanguage]);
-        // }).catch(error => {
+       
+        dataservice.addObject('AddClaims', saveDocument).then(result => {
+            this.setState({
+                docId: result
+            });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(error => {
 
-        //     toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
-        // });
+            toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+        });
     }
 
     saveAndExit(event) {
@@ -577,11 +578,13 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
-                                                                    <input type="text" className="form-control" id="sharedSettings"
+                                                                    <input type="url" className="form-control" id="sharedSettings"
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
                                                                         value={this.state.document.sharedSettings || ''}
                                                                         name="sharedSettings"
-                                                                        placeholder={Resources.sharedSettings[currentLanguage]} />
+                                                                        placeholder={Resources.UrlForm[currentLanguage]} />
+                                                                    {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
+
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
                                                             </div>

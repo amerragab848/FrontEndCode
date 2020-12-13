@@ -75,6 +75,14 @@ class CommonLog extends Component {
       companies: [],
       contacts: [],
       ToContacts: [],
+      specsSection: [],
+      reasonForIssue: [],
+      disciplines: [],
+      contracts: [],
+      areas: [],
+      locations: [],
+      submittalType: [],
+      approvales: [],
       selectedFromCompany: {
         label: Resources.ComapnyNameRequired[currentLanguage],
         value: "0"
@@ -91,6 +99,13 @@ class CommonLog extends Component {
         label: Resources.contactNameRequired[currentLanguage],
         value: "0"
       },
+      selectedSpecsSection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
+      selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
+      selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
+      selectedArea: { label: Resources.area[currentLanguage], value: "0" },
+      selectedLocation: { label: Resources.locationRequired[currentLanguage], value: "0" },
+      selectedSubmittalType: { label: Resources.submittalType[currentLanguage], value: "0" },
+      selectedApprovalStatus: { label: Resources.approvalStatusSelection[currentLanguage], value: "0" },
       inventoryImportAttachmentModal: false,
       showInventoryImportAttachBtn: false
     };
@@ -99,7 +114,7 @@ class CommonLog extends Component {
         title: 'Delete',
         handleClick: values => {
           if(documentObj.docTyp == 64){
-            let contractedBoq=[];
+           let contractedBoq=[];
            values.map(item=>{
              let boq=this.state.rows.find(x=>x.id==item);
              if(boq !=undefined && boq.contractId > 0){
@@ -191,9 +206,9 @@ class CommonLog extends Component {
   };
 
   componentDidMount() {
-
     this.props.actions.FillGridLeftMenu();
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
+    this.fillDropDowns();
 
   };
 
@@ -208,11 +223,60 @@ class CommonLog extends Component {
   };
   fillDropDowns() {
 
+    if(this.state.docType=="submittal"){
     dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.props.projectId, "companyName", "companyId", 'companies', this.props.projectId, "projectId").then(result => {
       this.setState({
         companies: [...result]
       });
     });
+    //discplines
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+      this.setState({
+        disciplines: [...result]
+      });
+    });
+
+    //SubmittalTypes
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
+      this.setState({
+        SubmittalTypes: [...result]
+      });
+    });
+
+    //location
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
+      this.setState({
+        locations: [...result]
+      });
+    });
+
+    //area
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
+      this.setState({
+        areas: [...result]
+      });
+    });
+
+    //approvalstatus
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id", 'defaultLists', "approvalstatus", "listType").then(result => {
+      this.setState({
+        approvales: [...result]
+      });
+    });
+
+    //specsSection
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id", 'defaultLists', "specssection", "listType").then(result => {
+      this.setState({
+        specsSection: [...result]
+      });
+    });
+   //contractList
+    dataservice.GetDataList("GetPoContractForList?projectId=" + this.props.projectId, "subject", "id").then(result => {
+      this.setState({
+        contracts: [...result]
+      });
+    });
+  }
 
   }
   static getDerivedStateFromProps(nextProps, state) {
@@ -581,6 +645,8 @@ class CommonLog extends Component {
   renderComponent(documentName, projectId, isCustom) {
     var projectId = projectId;
     var documents = documentName;
+    console.log(documentDefenition);
+    console.log(documentDefenition[documentName]);
     documentObj = documentDefenition[documentName];
     if (documentObj.docTyp == 42) {
       docTempLink = Config.getPublicConfiguartion().downloads + "/Downloads/Excel/tempSubmittal.xlsx"
@@ -958,7 +1024,24 @@ class CommonLog extends Component {
       });
     }
   }
+  handleChangeDropDownCycles(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
+    if (event == null) return;
+
+    let original_document = { ...this.state.documentCycle };
+
+    let updated_document = {};
+
+    updated_document[field] = event.value;
+
+    updated_document = Object.assign(original_document, updated_document);
+
+    this.setState({
+      documentCycle: updated_document,
+      [selectedValue]: event
+    });
+    
+  }
   render() {
 
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
@@ -1218,7 +1301,7 @@ class CommonLog extends Component {
               title={Resources['DocTemplate'][currentLanguage]}
               onCloseClicked={() => this.setState({ docTemplateModal: false })}
               isVisible={this.state.docTemplateModal}>
-              <div className="proForm">
+              <div className="proForm datepickerContainer customLayout">
 
                 <div className="linebylineInput valid-input mix_dropdown">
                    <label className="control-label">
@@ -1258,8 +1341,7 @@ class CommonLog extends Component {
                       </div>
                     </div>
                   </div>
-
-                    <div className="linebylineInput valid-input mix_dropdown">
+                <div className="linebylineInput valid-input mix_dropdown">
                         <label className="control-label">
                         {Resources.toCompany[currentLanguage]}
                         </label>
@@ -1292,7 +1374,74 @@ class CommonLog extends Component {
                         </div>
                       </div>
                    </div>
-                 
+                 {Config.getPayload().uty == "company" ?this.state.docType=="submittal" ?
+                 (
+                  <Fragment> 
+                 <div className="dropdownFullWidthContainer">
+                    <div className="linebylineInput valid-input dropdownFullWidth">
+                      <Dropdown title="disciplineTitle"
+                        data={this.state.disciplines} 
+                        isMulti={false}
+                        selectedValue={this.state.selectedDiscpline}
+                        handleChange={event => this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")}
+                        name="disciplineId" id="disciplineId" />
+                  </div>
+                    <div className="linebylineInput valid-input dropdownFullWidth">
+                      <Dropdown title="specsSection"
+                        data={this.state.specsSection} 
+                        isMulti={false}
+                        selectedValue={this.state.selectedSpecsSection}
+                        handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "", "", "", "selectedSpecsSection")} 
+                        name="specsSectionId" id="specsSectionId" />
+                  </ div>
+                 </div>
+                 <div className="dropdownFullWidthContainer">
+                    <div className="linebylineInput valid-input dropdownFullWidth">
+                                <Dropdown title="submittalType" 
+                                  data={this.state.SubmittalTypes} 
+                                  selectedValue={this.state.selectedSubmittalType}
+                                  handleChange={event => this.handleChangeDropDown(event, "submittalTypeId", false, "", "", "", "selectedSubmittalType")} 
+                                  />
+                    </div>
+                    <div className="linebylineInput valid-input  dropdownFullWidth">
+                                <Dropdown title="area" 
+                                 data={this.state.areas} 
+                                 selectedValue={this.state.selectedArea}
+                                  handleChange={event => this.handleChangeDropDown(event, "area", false, "", "", "", "selectedArea")}
+                                   />
+                      </div>
+                 </div>
+                 <div className="dropdownFullWidthContainer">
+                      <div className="linebylineInput valid-input dropdownFullWidth">
+                                <Dropdown title="location"
+                                   data={this.state.locations} 
+                                   selectedValue={this.state.selectedLocation}
+                                    handleChange={event => this.handleChangeDropDown(event, "location", false, "", "", "", "selectedLocation")}
+                                   />
+                        </div>
+                      <div className="linebylineInput valid-input dropdownFullWidth">
+                             <Dropdown title="contractPo" isMulti={false}
+                                       data={this.state.contracts}
+                                       selectedValue={this.state.selectedContract}
+                                       handleChange={event => this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContract")}
+                                      name="contractId" id="contractId" index="contractId" />
+                                 
+                        </div>
+                 </div>
+                 <div className="dropdownFullWidthContainer">
+                        <div className="linebylineInput valid-input dropdownFullWidth">
+                             <Dropdown title="approvalStatus" isMulti={false}
+                                      data={this.state.approvales}
+                                      selectedValue={this.state.selectedApprovalStatus}
+                                      handleChange={event => this.handleChangeDropDownCycles(event, "approvalStatusId", false, "", "", "", "selectedApprovalStatus")}
+                                      name="approvalStatusId" id="approvalStatusId" index="approvalStatusId" />
+                                  
+                        </div>
+                 </div>
+                 </Fragment>
+                 ):null:null
+                     
+                 }
 
                 <XSLfile key="docTemplate"
                   projectId={this.state.projectId}
@@ -1300,6 +1449,13 @@ class CommonLog extends Component {
                   contactId={this.state.document != null ? this.state.document.contactId : null}
                   toCompanyId={this.state.document !=null? this.state.document.toCompanyId:null }
                   toContactId={this.state.document !=null? this.state.document.toContactId:null }
+                  disciplineId={this.state.document != null ? this.state.document.disciplineId : null}
+                  specsSectionId={this.state.document != null ? this.state.document.specsSectionId : null}
+                  submittalTypeId={this.state.document != null ? this.state.document.submittalTypeId : null}
+                  area={this.state.document != null ? this.state.selectedArea.label : null}
+                  location={this.state.document != null ? this.state.selectedLocation.label : null}
+                  contractId={this.state.document != null ? this.state.document.contractId : null}
+                  approvalStatusId={this.state.documentCycle != null ? this.state.documentCycle.approvalStatusId : null}
                   docType={this.state.docType}
                   documentTemplate={true}
                   link={docTempLink}

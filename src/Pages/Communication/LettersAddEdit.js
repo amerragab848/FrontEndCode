@@ -41,8 +41,7 @@ const validationSchema = Yup.object().shape({
     toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
         .nullable(true),
-    // sharedSettings: Yup.string().required(Resources["sharedSettings"][currentLanguage])
-    //                             .min(5, "Please Enter at least Five Character"),
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]),
 });
 
 let docId = 0;
@@ -405,6 +404,7 @@ class LettersAddEdit extends Component {
             }
         });
     }
+
     createReplyLink(docId) {
         let addView = 'LettersAddEdit';
 
@@ -1239,7 +1239,7 @@ class LettersAddEdit extends Component {
                                                                         name="sharedSettings"
                                                                         placeholder={
                                                                             Resources
-                                                                                .sharedSettings[
+                                                                                .UrlForm[
                                                                                 currentLanguage
                                                                             ]
                                                                         }

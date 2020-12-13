@@ -3905,6 +3905,10 @@
         "en": "Variation Request",
         "ar": "طلبات أوامر التغيير"
     },
+    "ContractROA": {
+        "en": "Contract ROA ",
+        "ar": "  منح توصيه العقد "
+    },
     "variationRequestAdd": {
         "en": "Add Contract Variation Request",
         "ar": "اضافة طلبات أوامر التغيير"
@@ -6032,6 +6036,14 @@
     "sharedSettings": {
         "en": "Shared Links",
         "ar": "اعدادات الروابط "
+    },
+    "sharedSettingsIsRequired": {
+        "en": "Shared Links Is Required",
+        "ar": " اعدادات الروابط مطلوبه "
+    },
+    "URLFormat": {
+        "en": "URL Format Is Required (http://www.example.com)",
+        "ar": "يجب ادخال تنسيق الويب (http://www.example.com)"
     },
     "download": {
         "en": "Download",
@@ -8595,7 +8607,7 @@
     },
     "contractor": {
         "en": "Contractor",
-        "ar": "Contractor"
+        "ar": "مقاول"
     },
     "previousConsultatnt": {
         "en": "Previous Consultant",
@@ -8844,5 +8856,109 @@
     "uploadedSuccessfully": {
         "en": "Document Uploaded Successfully",
         "ar": "تم رفع المستند بنجاح"
+    },
+    "contractROASummary": {
+        "en": "Recommendation of award summary",
+        "ar": "ملخص توصية علي قرار"
+    },
+    "contractProcurmentRequestForm": {
+        "en": "Contract Procurment Request Form",
+        "ar": "نموذج طلب شراء عقد"
+    },
+    "refNumber": {
+        "en": "Ref Number",
+        "ar": " الرقم المرجعى"
+    },
+    "tenderNumber": {
+        "en": "Tender Number",
+        "ar": " رقم الناقصه"
+    },
+    "tenderScope": {
+        "en": "Tender Scope ",
+        "ar": " نطاق المناقصه "
+    },
+    "totalValue": {
+        "en": "Total Value ",
+        "ar": "  القيمه الكليه "
+    },
+    "awardedJustification": {
+        "en": "awarded Justification ",
+        "ar": "منح التبرير "
+    },
+    "deletedBy": {
+        "en": "deleted By  ",
+        "ar": " حذف بواسطه "
+    },
+    "lastEditBy": {
+        "en": "last Edit By  ",
+        "ar": " تعديل بواسطه "
+    },
+    "rankingCreatedBy": {
+        "en": "Ranking Created By  ",
+        "ar": " الترتيب الذي أنشأته "
+    },
+    "requestByContact": {
+        "en": "Request By Contact  ",
+        "ar": " طلب عن طريق الاتصال "
+    },
+    "requestByCompany": {
+        "en": "Request By Company  ",
+        "ar": " طلب عن طريق الشركة "
+    },
+    "contractROA": {
+        "en": "Contract ROA  ",
+        "ar": "  توصيه العقود "
+    },
+    "contractSummmary": {
+        "en": "ROA Summmary  ",
+        "ar": "  ملخص العقود "
+    },
+    "contractRef": {
+        "en": "contract Reference   ",
+        "ar": "  مرجع العقد "
+    },
+    "contractScope": {
+        "en": "contract Scope",
+        "ar": "  نطاق  العقد "
+    },
+    "contractorDuration": {
+        "en": "contractor Duration ",
+        "ar": "  مده العقد "
+    },
+    "specialCases": {
+        "en": "special Cases",
+        "ar": "حالات خاصه "
+    },
+    "contractPrice": {
+        "en": "contract Price",
+        "ar": " سعر  العقد "
+    },
+    "firstPrice": {
+        "en": "first Price ",
+        "ar": "السعر الاولى "
+    },
+    "finalPrice": {
+        "en": "final Price ",
+        "ar": "السعر النهائي "
+    },
+    "ownerContact": {
+        "en": "Owner Contact",
+        "ar": " جهة اتصال المالك"
+    },
+    "contractorContact": {
+        "en": "Contractor Contact ",
+        "ar": "جهة الاتصال بالمقاول"
+    },
+    "budgetCompany": {
+        "en": "budget Company",
+        "ar": "الميزانية"
+    },
+    "department": {
+        "en": "department",
+        "ar": "القسم"
+    },
+    "UrlForm": {
+        "en": "http://www.example.com",
+        "ar": "http://www.example.com"
     }
 }

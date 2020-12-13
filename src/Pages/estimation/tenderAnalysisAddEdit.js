@@ -29,7 +29,8 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
+    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
 });
 
 let docId = 0;
@@ -530,8 +531,7 @@ class tenderAnalysisAddEdit extends Component {
                                                                         onChange={e => this.handleChange(e, "location")} value={this.state.document.location}
                                                                         placeholder={Resources.location[currentLanguage]}
                                                                     />
-                                                                    {errors.location ? (<em className="pError">{errors.location}</em>) : null}
-                                                                </div>
+                                                                    {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}                                                                </div>
                                                                 {this.state.document.sharedSettings === '' ||
                                                                     this.state.document.sharedSettings === null ||
                                                                     this.state.document.sharedSettings === undefined ?

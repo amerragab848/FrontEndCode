@@ -223,6 +223,7 @@ const DailyReportsAddEdit = AsyncComponent(() =>
 //Contracts
 
 const BoqAddEdit = AsyncComponent(() => import('./Pages/Contracts/boqAddEdit'));
+
 const SubContract = AsyncComponent(() =>
     import('./Pages/Contracts/SubContract'),
 );
@@ -247,6 +248,9 @@ const RiskAddEdit = AsyncComponent(() =>
 const VariationRequestAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/variationRequestAddEdit'),
 );
+// const ContractROASummaryAddEdit = AsyncComponent(() =>
+//     import('./Pages/Contracts/ContractROASummaryAddEdit'),
+// );
 const ProjectIssuesAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/projectIssuesAddEdit'),
 );
@@ -381,6 +385,9 @@ const corrSentView=AsyncComponent(()=>
 );
 const corrReceiveView=AsyncComponent(()=>
       import('./Pages/Communication/corrReceiveView'),
+);
+const ContractROaAddEdit=AsyncComponent(()=>
+      import('./Pages/Contracts/ContractROaAddEdit'),
 );
 const AccountsEPSPermissions = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/AccountsEPSPermissions'),
@@ -983,6 +990,11 @@ let originalRoutes = [
         path="/variationRequestAddEdit"
         component={VariationRequestAddEdit}
     />,
+    // <Route
+    //     key="r-199"
+    //     path="/contractROASummaryAddEdit"
+    //     component={ContractROASummaryAddEdit}
+    // />,
     <Route
         key="r-94"
         path="/projectIssuesAddEdit"
@@ -1355,6 +1367,10 @@ let originalRoutes = [
     key="r-198"
     path="/corrReceiveView"
     component={corrReceiveView} />,
+    <Route
+    key="r-199"
+    path="/ContractROaAddEdit"
+    component={ContractROaAddEdit} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

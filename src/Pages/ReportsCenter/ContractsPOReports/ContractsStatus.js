@@ -9,7 +9,7 @@ import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import GridCustom from 'react-customized-grid';
-import ExportDetails from "../ExportReportCenterDetails"; 
+import ExportDetails from "../ExportReportCenterDetails";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
@@ -21,6 +21,7 @@ class ContractsStatus extends Component {
 
     constructor(props) {
         super(props)
+
         this.state = {
             isLoading: false,
             ProjectsData: [],
@@ -108,7 +109,7 @@ class ContractsStatus extends Component {
             })
         }).catch(() => {
             toast.error('somthing wrong')
-        })
+        });
 
         Dataservice.GetDataList('SelectAllCompany', 'companyName', 'id').then(result => {
             result.unshift({ 'label': 'All Contractor', 'value': '0' });
@@ -117,12 +118,12 @@ class ContractsStatus extends Component {
             })
         }).catch(() => {
             toast.error('somthing wrong')
-        })
+        });
     }
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('GetContractsStatus?projectId=' + this.state.selectedProject.value + "contractorId=" + this.state.selectedContractor.value).then(res => {
+        Dataservice.GetDataGrid('GetContractsStatus?projectId=' + this.state.selectedProject.value + "&contractorId=" + this.state.selectedContractor.value).then(res => {
             this.setState({
                 rows: res,
                 isLoading: false
@@ -136,9 +137,11 @@ class ContractsStatus extends Component {
 
         const btnExport = this.state.isLoading === false ?
             (
-            <ExportDetails fieldsItems={this.columns}
-                rows={this.state.rows}
-                 fields={this.fields} fileName={Resources.contractStatus[currentLanguage]} />
+                <ExportDetails
+                    fieldsItems={this.columns}
+                    rows={this.state.rows || []}
+                    fields={this.fields}
+                    fileName={Resources.contractStatus[currentLanguage]} />
             ) : null;
 
         return (
@@ -158,7 +161,7 @@ class ContractsStatus extends Component {
                             this.getGridRows()
                         }}>
                         {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                            <Form className='proForm reports__proForm datepickerContainer'onSubmit={handleSubmit}>
+                            <Form className='proForm reports__proForm datepickerContainer' onSubmit={handleSubmit}>
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                         selectedValue={this.state.selectedProject} onChange={setFieldValue}
@@ -185,8 +188,15 @@ class ContractsStatus extends Component {
                 <div className="doc-pre-cycle letterFullWidth">
                     {this.state.rows ?
                         (this.state.isLoading ? <LoadingSection /> :
-                            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
-                                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+                            <GridCustom
+                                ref='custom-data-grid'
+                                groups={[]}
+                                data={this.state.rows || []}
+                                cells={this.columns}
+                                pageSize={this.state.rows.length}
+                                actions={[]}
+                                rowActions={[]}
+                                rowClick={() => { }}
                             />)
                         : null}
                 </div>
