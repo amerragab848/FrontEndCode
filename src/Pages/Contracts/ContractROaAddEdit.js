@@ -110,7 +110,7 @@ class ContractROaAddEdit extends Component {
             docId: docId,
             companies: [],
             contacts: [],
-            projectId: projectId,
+            projectId : projectId,
             docTypeId: 122,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
 
@@ -479,7 +479,7 @@ class ContractROaAddEdit extends Component {
                 console.log(this.props.document);
                 this.setState({
                     isLoading: false,
-                    btnTxt: "next",
+                    btnTxt:steps_defination.length==2? "Finish":"next",
                     LoadingPage: false
                 });
                 this.checkDocumentIsView();
@@ -508,11 +508,12 @@ class ContractROaAddEdit extends Component {
                     });
                 }
             )
-        } else {
+        } 
+        else {
             const contractROADocument = {
 
                 id: 0,
-                projectId: projectId,
+                projectId: this.state.projectId,
                 subject: "",
                 docDate: moment().format('YYYY-MM-DD'),
                 status: "true",
@@ -549,7 +550,7 @@ class ContractROaAddEdit extends Component {
             });
            
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.changeCurrentStep(1);
+           // this.changeCurrentStep(1);
             // if (this.state.isApproveMode === false) {
             //     this.props.history.push(
             //         this.state.perviousRoute
@@ -575,7 +576,7 @@ class ContractROaAddEdit extends Component {
 
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.changeCurrentStep(1);
+           // this.changeCurrentStep(1);
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
@@ -594,6 +595,7 @@ class ContractROaAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
+            this.saveAndExit()
             // if (this.state.isApproveMode === false) {
             //     this.props.history.push(
             //         this.state.perviousRoute
@@ -613,14 +615,14 @@ class ContractROaAddEdit extends Component {
         this.setState({ currentStep: stepNo });
     };
     fillDropDowns(isEdit) {
-        //
+      
         dataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(
             result => {
 
                 if (isEdit) {
 
                     let companyId = this.props.document.requestByCompanyId;
-                    let contactId = this.props.document.requestByCompanyId;
+                    let contactId = this.props.document.requestByContactId;
                     if (companyId) {
                         this.setState({
                             selectedRequestByCompany: { label: this.props.document.requestByCompany, value: companyId },
@@ -630,8 +632,8 @@ class ContractROaAddEdit extends Component {
                         this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'requestByContactId', 'selectedRequestByContact', 'contacts');
 
                     }
-                        let ownerContactId = this.state.contractROASummaryObj.ownerContactId;
-                        let companyOwnerId = this.state.contractROASummaryObj.ownerId;
+                        let ownerContactId = this.state.contractROASummaryObj? this.state.contractROASummaryObj.ownerContactId:"";
+                        let companyOwnerId = this.state.contractROASummaryObj?this.state.contractROASummaryObj.ownerId:"";
                         if (companyOwnerId) {
                             this.setState({
                                 selectedOwnerCompany: { label: this.state.contractROASummaryObj.ownerName, value: companyOwnerId },
@@ -641,8 +643,8 @@ class ContractROaAddEdit extends Component {
                             this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyOwnerId, 'ownerContactId', 'selectedownerContactId', 'ownerContacts');
 
                         }
-                            let companyContractorId = this.state.contractROASummaryObj.contractorId;
-                            let contractorContactId = this.state.contractROASummaryObj.contractorContactId;
+                            let companyContractorId = this.state.contractROASummaryObj?this.state.contractROASummaryObj.contractorId:"";
+                            let contractorContactId = this.state.contractROASummaryObj?this.state.contractROASummaryObj.contractorContactId:"";
                             if (companyContractorId) {
                                 this.setState({
                                     selectedContractorCompany: { label: this.state.contractROASummaryObj.contractorName, value: companyContractorId },
@@ -712,7 +714,7 @@ class ContractROaAddEdit extends Component {
         let btn = null;
 
         //if (this.state.docId === 0) { onClick={() => this.changeCurrentStep(step)}
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.next[currentLanguage]}</button>;
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.finish[currentLanguage]}</button>;
        // }
 
         return btn;
@@ -944,27 +946,15 @@ class ContractROaAddEdit extends Component {
                                                                     </div>
                                                                 </button>
                                                             ) :(
-                                                            <button
-                                                                className={
-                                                                    "primaryBtn-1 btn " +
-                                                                    (this.state
-                                                                        .isViewMode ===
-                                                                        true
-                                                                        ? "disNone"
-                                                                        : "")
-                                                                }
-                                                                type="submit"
-                                                                disabled={
-                                                                    this.state
-                                                                        .isViewMode
-                                                                }>
+                                                                <div>
+                                                            <button className={"primaryBtn-1 btn " +  (this.state.isViewMode ===  true ? "disNone": "")}
+                                                                type="submit" disabled={this.state.isViewMode }>
                                                                 {
-                                                                    Resources[
-                                                                    this.state
-                                                                        .btnTxt
-                                                                    ][currentLanguage]
+                                                                    Resources["save"][currentLanguage]
                                                                 }
                                                             </button>
+                                                            
+                                                           </div>
                                                         ) }
                                                         </div>
 
@@ -1174,7 +1164,8 @@ class ContractROaAddEdit extends Component {
                                                                 </button>
                                                                 :
                                                                 <div className="slider-Btns">
-                                                                    {this.showBtnsSaving(2)}
+                                                              <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.next[currentLanguage]}</button>;
+
                                                                 </div>}
                                                         </div>
                                                     </Form>
