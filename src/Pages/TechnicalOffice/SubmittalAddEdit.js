@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
   bicContactId: Yup.string().required(Resources["actionByContactRequired"][currentLanguage]).nullable(true),
   disciplineId: Yup.string().required(Resources["disciplineRequired"][currentLanguage]).nullable(true),
   contractId: Yup.string().required(Resources["contractPoSelection"][currentLanguage]),
-  sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).required(Resources['sharedSettingsIsRequired'][currentLanguage])
+  sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
 });
 
 const validationCycleSubmital = Yup.object().shape({

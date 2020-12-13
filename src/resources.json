@@ -8853,6 +8853,10 @@
         "en": "Please Select Attached Paper Size",
         "ar": " من فضلك اختر حجم الورق المرفق"
     },
+    "uploadedSuccessfully": {
+        "en": "Document Uploaded Successfully",
+        "ar": "تم رفع المستند بنجاح"
+    },
     "contractROASummary": {
         "en": "Recommendation of award summary",
         "ar": "ملخص توصية علي قرار"
@@ -8936,14 +8940,14 @@
     "finalPrice": {
         "en": "final Price ",
         "ar": "السعر النهائي "
-    },   
-    "ownerContact":{
-        "en":"Owner Contact",
-        "ar":" جهة اتصال المالك"
     },
-    "contractorContact":{
-        "en":"Contractor Contact ",
-        "ar":"جهة الاتصال بالمقاول"
+    "ownerContact": {
+        "en": "Owner Contact",
+        "ar": " جهة اتصال المالك"
+    },
+    "contractorContact": {
+        "en": "Contractor Contact ",
+        "ar": "جهة الاتصال بالمقاول"
     },
     "budgetCompany": {
         "en": "budget Company",
