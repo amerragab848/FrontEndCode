@@ -6,22 +6,14 @@ import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
 import dataService from '../../../Dataservice';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-import BarChartComp from '../TechnicalOffice/BarChartComp';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import ExportDetails from "../ExportReportCenterDetails";
-
-const sumBy = require('lodash/sumBy')
-const _ = require("lodash");
+import CryptoJS from "crypto-js";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
-});
 
 class SubmittalDrawingStatusList extends Component {
 
@@ -37,7 +29,7 @@ class SubmittalDrawingStatusList extends Component {
             columns: [
                 {
                     field: "submittalRefCode",
-                    title: Resources["projectName"][currentLanguage],
+                    title: Resources["submittalRefNo"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: true,
@@ -46,7 +38,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "statusName",
-                    title: Resources["docDate"][currentLanguage],
+                    title: Resources["status"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -54,15 +46,17 @@ class SubmittalDrawingStatusList extends Component {
                     sortable: true,
                 }, {
                     field: "submittalSubject",
-                    title: Resources["expenseValue"][currentLanguage],
+                    title: Resources["submittalSubject"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
                     type: "text",
                     sortable: true,
+                    href:'link',
+                    classes:'bold'
                 }, {
                     field: "submittalApprovalStatus",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["submittalApprovalStatus"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -71,7 +65,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "docDate",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["docDate"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -80,7 +74,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "drawingDescription",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["drawingDescription"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -89,7 +83,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "drawingReviewResult",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["drawingReviewResult"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -98,7 +92,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "drawingNo",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["drawingNo"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -107,7 +101,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "projectName",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["projectName"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -116,7 +110,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "lastApproveDate",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["lastApproveDate"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -125,7 +119,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "lastWorkFlow",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["lastWorkFlow"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -134,7 +128,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "contractSubject",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["contractSubject"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -143,7 +137,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "durationDays",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["durationDays"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -152,7 +146,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "closeDate",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["closeDate"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -161,7 +155,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "cycleDate",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["cycleDate"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -170,7 +164,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "cycleCloseDate",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["cycleCloseDate"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -179,7 +173,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "submittalType",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["submittalType"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -188,7 +182,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "cycles",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["cyclesCount"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -197,7 +191,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "discipline",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["descipline"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -206,7 +200,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "area",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["area"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -215,7 +209,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "location",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["location"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -224,7 +218,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "openedByName",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["openedBy"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -233,7 +227,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "lastSendDate",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["lastSendDate"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -242,7 +236,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "lastSendTime",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["lastSendTime"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -251,7 +245,7 @@ class SubmittalDrawingStatusList extends Component {
                 },
                 {
                     field: "lastApproveTime",
-                    title: Resources["expenseTypeName"][currentLanguage],
+                    title: Resources["lastApproveTime"][currentLanguage],
                     width: 18,
                     groupable: true,
                     fixed: false,
@@ -283,6 +277,7 @@ class SubmittalDrawingStatusList extends Component {
         }];
 
     }
+
     componentDidMount() {
         this.setState({ isLoading: true })
         dataService.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(res => {
@@ -293,12 +288,35 @@ class SubmittalDrawingStatusList extends Component {
     getGridtData = () => {
         this.setState({ currentComponent: null })
         let reportobj = {
-            projectIds: this.state.projectIds,
+            ids: this.state.projectIds,
             start: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finish: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            end: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
         this.setState({ isLoading: true })
         Api.post('GetSubmittalsDrawingStatusListReport', reportobj).then(res => {
+            res.forEach(row => {
+                let subject = "";
+                if (row) {
+                  let obj = {
+                    docId: row.id,
+                    projectId: localStorage.getItem('lastSelectedProject'),
+                    projectName: row.projectName,
+                    arrange: 0,
+                    docApprovalId: 0,
+                    isApproveMode: false,
+                    perviousRoute: window.location.pathname + window.location.search
+                  };
+                 
+                  let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+        
+                  let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+        
+                   subject = "/SubmittalAddEdit?id=" + encodedPaylod;
+                }
+                if (Config.IsAllow(223) || Config.IsAllow(221)) {
+                  row.link = subject;
+                }
+              });
             this.setState({ rows :res|| [], isLoading: false })
         }).catch(() => {
             this.setState({ isLoading: false, rows: [] })
@@ -350,15 +368,13 @@ class SubmittalDrawingStatusList extends Component {
                         selectedProject: ''
                     }}
                     enableReinitialize={true}
-                    validationSchema={ValidtionSchema}
                     onSubmit={() => {
                         this.getGridtData()
                     }}>
                     {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer' >
                             <div className="reportsWithMulti">
-                                {/* <div className="reports__multiDrop letterFullWidth"> */}
-                                    <div className="linebylineInput multiChoice">
+                                    <div className="linebylineInput multiChoice fullWidthWrapper">
                                         <Dropdown title='Projects' data={this.state.projectsList}
                                             name='selectedProject'
                                             onChange={setFieldValue}
@@ -376,7 +392,6 @@ class SubmittalDrawingStatusList extends Component {
                                             touched={touched.selectedProject}
                                         />
                                     </div>
-                                {/* </div> */}
                                 <div className="reports__smallInputs">
                                     <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='startDate'

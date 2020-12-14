@@ -8964,5 +8964,21 @@
     "submittalDrawingStatusListReport":{
         "en":"Submittal Drawing Status List Report",
         "ar":"تقديم تقرير قائمة حالة الرسم"
+    },
+    "submittalRefNo":{
+        "en":"Submittal Reference Number",
+        "ar":"رقم المرجع الخاضع"
+    },
+    "submittalSubject":{
+        "en":"Submittal Subject",
+        "ar":"موضوع التقديم"
+    },
+    "submittalApprovalStatus":{
+        "en":"Submittal Approval Status",
+        "ar":"حالة الموافقة على التقديم"
+    },
+    "drawingReviewResult": {
+        "en": "Drawing Review Result",
+        "ar": "حاله المراجعه"
     }
 }
