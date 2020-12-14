@@ -246,6 +246,13 @@ var routes = [
         settings: { ProjectReports: true, permission: 3682, order: 7 }
     },
     {
+        route: "submittalDrawingStatusListReport",
+        moduleId: "ProjectReports/SubmittalDrawingStatusList",
+        title: "submittalDrawingStatusListReport",
+        nav: true,
+        settings: { ProjectReports: true, permission: 10137, order: 13 }
+    },
+    {
         route: "estimationBoqComparison",
         moduleId: "reports/estimationBoqComparison",
         title: "estimationBoqComparison",
@@ -1271,6 +1278,14 @@ var routes = [
         moduleId: "panels/sendToDistributionList",
         title: "Send To Distribution List",
         nav: false
+    }, 
+    {
+        route: "ContractROA",
+        moduleId: "commonLogs",
+        title: "ContractROA",
+        nav: true,
+        hash: "#ContractROA",
+        settings: { Contracts: true, permission: 10100, order: 2 }
     },
     // {
     //     route: "contractProcurmentRequestForm",
@@ -1526,15 +1541,6 @@ var routes = [
         nav: true,
         hash: "#variationRequest",
         settings: { Contracts: true, permission: 3166, order: 9 }
-    },
-    
-    {
-        route: "ContractROA",
-        moduleId: "commonLogs",
-        title: "ContractROA",
-        nav: true,
-        hash: "#ContractROA",
-        settings: { Contracts: true, permission: 10100, order: 11 }
     },
     {
         route:

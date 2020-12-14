@@ -670,6 +670,9 @@ const DeliveredQuantitieReport = AsyncComponent(() =>
 const CollectedInvoices = AsyncComponent(() =>
     import('../src/Pages/ReportsMenu/collectedInvoices'),
 );
+const SubmittalDrawingStatusListReport= AsyncComponent(() =>
+import('../src/Pages/ReportsCenter/ProjectReports/SubmittalDrawingStatusList'),
+);
 
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
     let path = item.moduleId === 'ProjectSetup' ? '/' + item.route + '/:projectId' : '/:document/:projectId';
@@ -1370,7 +1373,13 @@ let originalRoutes = [
     <Route
     key="r-199"
     path="/ContractROaAddEdit"
-    component={ContractROaAddEdit} />
+    component={ContractROaAddEdit} />,
+    
+    <Route
+        key="r-200"
+        path="/submittalDrawingStatusListReport"
+        component={SubmittalDrawingStatusListReport}
+    />,
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

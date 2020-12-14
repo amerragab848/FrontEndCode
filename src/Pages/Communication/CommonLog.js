@@ -961,6 +961,12 @@ class CommonLog extends Component {
   }
 
   btnExportServerClick = () => {
+
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
+
     let chosenColumns = this.state.columnsExport;
     if (chosenColumns.length < 3) {
       toast.warning("Can't Export With less than 3 Columns Choosen");
@@ -1000,8 +1006,13 @@ class CommonLog extends Component {
   }
 
   btnExportStatisticsClick = () => {
+
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
     let chosenColumns = this.state.columnsExport;
-    if (chosenColumns.length > 3) {
+    if (chosenColumns.length > 2) {
       toast.warning("Can't Draw With more than 2 Columns Choosen");
       // this.setState({ exportColumnsModal: false })
     }

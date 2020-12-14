@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
-
 import Resources from '../../resources.json';
+import Config from '../../Services/Config.js';
+import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class Export extends Component {
@@ -130,15 +131,26 @@ class Export extends Component {
         }
     }
 
+    ShowMsg() { 
+        if (Config.getPublicConfiguartion().activeExport != true) {
+            toast.warn('This feature is disabled. Please call your administrator for assistance');
+            return;
+        }
+    }
     render() {
         return (
             <Fragment>
-                <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => { this.setState({ isExport: true }); this.tableToExcel(this.props.fileName) }}>{this.state.isExportRequestPayment ? (this.props.type === 1 ? Resources["export"][currentLanguage] : "Export As Vo") : Resources["export"][currentLanguage]}</button>
+                {Config.getPublicConfiguartion().activeExport === true ?
+                    <button className="primaryBtn-2 btn mediumBtn"
+                        type="button" onClick={e => { this.setState({ isExport: true }); this.tableToExcel(this.props.fileName) }}>
+                        {this.state.isExportRequestPayment ? (this.props.type === 1 ? Resources["export"][currentLanguage] : "Export As Vo") : Resources["export"][currentLanguage]}</button>
+                    :
+                    <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => this.ShowMsg()} >{Resources["export"][currentLanguage]}</button>
+                }
                 <div style={{ display: 'none' }}>
                     {this.state.isExport === true || this.state.isExportRequestPayment ?
                         this.drawItems()
                         : null}
-                    {/* {this.drawItems()} */}
                 </div>
             </Fragment>
         )
