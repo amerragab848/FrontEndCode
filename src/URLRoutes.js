@@ -246,6 +246,13 @@ var routes = [
         settings: { ProjectReports: true, permission: 3682, order: 7 }
     },
     {
+        route: "submittalDrawingStatusListReport",
+        moduleId: "ProjectReports/SubmittalDrawingStatusList",
+        title: "submittalDrawingStatusListReport",
+        nav: true,
+        settings: { ProjectReports: true, permission: 10137, order: 13 }
+    },
+    {
         route: "estimationBoqComparison",
         moduleId: "reports/estimationBoqComparison",
         title: "estimationBoqComparison",
@@ -1272,19 +1279,19 @@ var routes = [
         title: "Send To Distribution List",
         nav: false
     },
-    {
-        route: "contractProcurmentRequestForm",
-        moduleId: "commonLogs",
-        title: "contractProcurmentRequestForm",
-        nav: true,
-        hash: "#contractProcurmentRequestForm",
-        settings: {
-            Contracts: true,
-            caption: "procoor-icon-BOQ",
-            permission: 10123,
-            order: 1
-        }
-    },
+    // {
+    //     route: "contractProcurmentRequestForm",
+    //     moduleId: "commonLogs",
+    //     title: "contractProcurmentRequestForm",
+    //     nav: true,
+    //     hash: "#contractProcurmentRequestForm",
+    //     settings: {
+    //         Contracts: true,
+    //         caption: "procoor-icon-BOQ",
+    //         permission: 10123,
+    //         order: 1
+    //     }
+    // },
     {
         route: "boq",
         moduleId: "commonLogs",

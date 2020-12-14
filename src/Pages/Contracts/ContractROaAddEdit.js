@@ -95,6 +95,9 @@ class ContractROaAddEdit extends Component {
         }
 
         this.state = {
+            ownerContacts:[],
+            contractorContacts:[],
+            docApprovalId: docApprovalId,
             btnTxt: "save",
             rankingCompanies: [],
             contractorCompanies: [],
@@ -108,7 +111,7 @@ class ContractROaAddEdit extends Component {
             companies: [],
             contacts: [],
             projectId: projectId,
-            docTypeId: 121,
+            docTypeId: 122,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
 
             permission: [{ name: 'sendByEmail', code: 10102 },
@@ -131,7 +134,13 @@ class ContractROaAddEdit extends Component {
                 advPayment: "",
                 specialCases: "",
                 workFlowId: "",
-                contractPrice: ""
+                contractPrice: "",
+                ownerContactId:"",
+                contractorContactId:"",
+                contractorName:"",
+                ownerName:"",
+                contractorContactName:"",
+                ownerContactName:""
             },
             ROArankingObj: {
 
@@ -151,6 +160,10 @@ class ContractROaAddEdit extends Component {
             selectedOwnerCompany: { label: Resources.owner[currentLanguage], value: "0" },
             selectedContractorCompany: { label: Resources.contractor[currentLanguage], value: "0" },
             selectedRankingCompanyId: { label: Resources.company[currentLanguage], value: "0" },
+
+            selectedownerContactId : { label: Resources.ownerContact[currentLanguage], value: "0" },
+            selectedcontractorContactId : { label: Resources.contractorContact[currentLanguage], value: "0" },
+
         };
         steps_defination = [
             {
@@ -291,7 +304,9 @@ class ContractROaAddEdit extends Component {
             }
         ]
     }
-
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
     handleChangeDate(e, field) {
 
         let original_document = { ...this.state.document };
@@ -352,7 +367,7 @@ class ContractROaAddEdit extends Component {
         }
 
     }
-    handleChangeDropDSummary(event, field, selectedValue) {
+    handleChangeDropDSummary(event, field, selectedValue, isSubscrib, targetState,url,param) {
         if (event == null) return;
         let obj = { ...this.state.contractROASummaryObj };
         let updated_document = {};
@@ -363,7 +378,14 @@ class ContractROaAddEdit extends Component {
             contractROASummaryObj: updated_document,
             [selectedValue]: event
         });
-
+        if (isSubscrib) {
+            let action = url + "?" + param + "=" + event.value;
+            dataService.GetDataList(action, "contactName", "id").then(result => {
+                this.setState({
+                    [targetState]: result
+                });
+            });
+        }
     }
     handleChangeSummary(e, field) {
 
@@ -451,6 +473,9 @@ class ContractROaAddEdit extends Component {
             this.setState({ isLoading: true, LoadingPage: true });
 
             this.props.actions.documentForEdit("GetContractROAById?id=" + this.state.docId, this.state.docTypeId, "ContractROA").then(() => {
+               
+                 let  data=  { items: this.props.document }
+                this.props.actions.ExportingData(data);
                 console.log(this.props.document);
                 this.setState({
                     isLoading: false,
@@ -460,6 +485,7 @@ class ContractROaAddEdit extends Component {
                 this.checkDocumentIsView();
             });
 
+          
 
             let url = "GetContractROASummaryByROAId?ROAId=" + this.state.docId;
             dataService.GetDataGrid(url).then(
@@ -602,6 +628,29 @@ class ContractROaAddEdit extends Component {
 
                         });
                         this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'requestByContactId', 'selectedRequestByContact', 'contacts');
+
+                    }
+                        let ownerContactId = this.state.contractROASummaryObj.ownerContactId;
+                        let companyOwnerId = this.state.contractROASummaryObj.ownerId;
+                        if (companyOwnerId) {
+                            this.setState({
+                                selectedOwnerCompany: { label: this.state.contractROASummaryObj.ownerName, value: companyOwnerId },
+                                selectedownerContactId: { label: this.state.contractROASummaryObj.ownerContactName, value: ownerContactId }
+    
+                            });
+                            this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyOwnerId, 'ownerContactId', 'selectedownerContactId', 'ownerContacts');
+
+                        }
+                            let companyContractorId = this.state.contractROASummaryObj.contractorId;
+                            let contractorContactId = this.state.contractROASummaryObj.contractorContactId;
+                            if (companyContractorId) {
+                                this.setState({
+                                    selectedContractorCompany: { label: this.state.contractROASummaryObj.contractorName, value: companyContractorId },
+                                    selectedcontractorContactId: { label: this.state.contractROASummaryObj.contractorContactName, value: contractorContactId }
+        
+                                });
+                        this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyContractorId, 'contractorContactId', 'selectedcontractorContactId', 'contractorContacts');
+
                     }
 
 
@@ -613,6 +662,7 @@ class ContractROaAddEdit extends Component {
                     ownerCompanies: [...result],
                     rankingCompanies: [...result]
                 });
+
             }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
@@ -622,6 +672,19 @@ class ContractROaAddEdit extends Component {
         dataService.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
+                this.setState({
+                    [subSelectedValue]: targetFieldSelected,
+                    [subDatasource]: result
+                });
+            }
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+    }
+    fillSubDropDownInEditSummary(url, param, value, subField, subSelectedValue, subDatasource) {
+        let action = url + "?" + param + "=" + value
+        dataService.GetDataList(action, 'contactName', 'id').then(result => {
+            if (this.props.changeStatus === true) {
+                let toSubField = this.state.contractROASummaryObj[subField];
                 let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -813,14 +876,14 @@ class ContractROaAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
+                                                                <label className="control-label">{Resources.totalValue[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev"} >
-                                                                    <input type="text" className="form-control" id="refDoc"
-                                                                        value={this.state.document.refDoc || ''}
-                                                                        name="refDoc"
-                                                                        placeholder={Resources.refDoc[currentLanguage]}
+                                                                    <input type="text" className="form-control" id="totalValue"
+                                                                        value={this.state.document.totalValue || ''}
+                                                                        name="totalValue"
+                                                                        placeholder={Resources.totalValue[currentLanguage]}
                                                                         onBlur={(e) => { handleChange(e); handleBlur(e) }}
-                                                                        onChange={(e) => this.handleChange(e, 'refDoc')} />
+                                                                        onChange={(e) => this.handleChange(e, 'totalValue')} />
 
                                                                 </div>
                                                             </div>
@@ -966,58 +1029,65 @@ class ContractROaAddEdit extends Component {
 
                                                                 </div>
                                                             </div>
-                                                            <div className="linebylineInput valid-input ">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources.owner[currentLanguage]
-                                                                    }
-                                                                </label>
+                                                            
+                                                            <div className="linebylineInput valid-input mix_dropdown">
+                                                                <label className="control-label">{Resources.owner[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.ownerCompanies}
-                                                                            isMulti={false}
+                                                                        <Dropdown isMulti={false} data={this.state.ownerCompanies}
                                                                             selectedValue={this.state.selectedOwnerCompany}
-                                                                            handleChange={event => {
-                                                                                this.handleChangeDropDSummary(event, "ownerId", "selectedOwnerCompany");
-                                                                            }}
+                                                                            handleChange={event => 
+                                                                                this.handleChangeDropDSummary(event, "ownerId", "selectedOwnerCompany",true,"ownerContacts","GetContactsByCompanyId","companyId")
+                                                                            }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
-                                                                         
-                                                                            index="ownerCompanyId"
-                                                                            name="ownerCompanyId"
-                                                                            id="ownerCompanyId"
-                                                                            styles={CompanyDropdown}
-                                                                            classDrop="companyName1"
-                                                                        />
+                                                                           
+                                                                            name="ownerId"
+                                                                            id="ownerId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                     </div>
-
+                                                                    <div className="super_company">
+                                                                        <Dropdown isMulti={false} data={this.state.ownerContacts}
+                                                                            selectedValue={this.state.selectedownerContactId}
+                                                                            handleChange={event =>
+                                                                                this.handleChangeDropDSummary(event, "ownerContactId", "selectedownerContactId",false,"","","")
+                                                                            }
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                          
+                                                                            name="ownerContactId"
+                                                                            id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown} />
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="linebylineInput valid-input ">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources.contractor[currentLanguage]
-                                                                    }
-                                                                </label>
+                                                            
+                                                            
+                                                            <div className="linebylineInput valid-input mix_dropdown">
+                                                                <label className="control-label">{Resources.contractor[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.contractorCompanies}
-                                                                            isMulti={false}
+                                                                        <Dropdown isMulti={false} data={this.state.contractorCompanies}
                                                                             selectedValue={this.state.selectedContractorCompany}
-                                                                            handleChange={event => {
-                                                                                this.handleChangeDropDSummary(event, "contractorId", "selectedContractorCompany");
-                                                                            }}
+                                                                            handleChange={event => 
+                                                                                this.handleChangeDropDSummary(event, "contractorId", "selectedContractorCompany",true,"contractorContacts","GetContactsByCompanyId","companyId")
+                                                                            }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
-                                                                        
-                                                                            index="contractorCompanyId"
-                                                                            name="contractorCompanyId"
-                                                                            id="contractorCompanyId"
-                                                                            styles={CompanyDropdown}
-                                                                            classDrop="companyName1"
-                                                                        />
+                                                                           
+                                                                            name="contractorId"
+                                                                            id="contractorId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                     </div>
-
+                                                                    <div className="super_company">
+                                                                        <Dropdown isMulti={false} data={this.state.contractorContacts}
+                                                                            selectedValue={this.state.selectedcontractorContactId}
+                                                                            handleChange={event =>
+                                                                                this.handleChangeDropDSummary(event, "contractorContactId", "selectedcontractorContactId")
+                                                                            }
+                                                                            onChange={setFieldValue}
+                                                                            onBlur={setFieldTouched}
+                                                                          
+                                                                            name="contractorContactId"
+                                                                            id="contractorContactId" classDrop=" contactName1" styles={ContactDropdown} />
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput fullInputWidth">
@@ -1260,13 +1330,13 @@ class ContractROaAddEdit extends Component {
                                             docTypeId={this.state.docTypeId}
                                             docId={this.state.docId}
                                             projectId={this.state.projectId}
-                                            previousRoute={this.state.previousRoute}
+                                            previousRoute={this.state.perviousRoute}
                                             docApprovalId={this.state.docApprovalId}
                                             currentArrange={this.state.arrange}
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
-                                            documentName={Resources.communicationInternalMemo[currentLanguage]}
+                                            documentName={Resources.contractROA[currentLanguage]}
                                         />
                                     </div>
                                 </div> : null

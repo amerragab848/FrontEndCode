@@ -10648,7 +10648,7 @@
         },
         {
           "title": {
-            "en": "Drawing Set",
+            "en": "Handing Over of Drawing Sets",
             "ar": "رسومات مجمعه"
           },
           "id": 9221,
@@ -15160,6 +15160,14 @@
               "title": {
                 "en": "Contracts Status",
                 "ar": "حالة العقود"
+              },
+              "value": false
+            },
+            {
+              "code": 10137,
+              "title": {
+                "en": "Submittal Drawing Status List Report",
+                "ar": "تقديم تقرير قائمة حالة الرسم"
               },
               "value": false
             }
