@@ -17633,7 +17633,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17741,7 +17741,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17824,7 +17824,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17836,7 +17836,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18028,7 +18028,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18088,7 +18088,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18160,7 +18160,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -20482,19 +20482,7 @@
         "showInExport": true,
         "isCustom": true,
         "exportDataType": "s"
-      },
-      {
-        "field": "tenderScope",
-        "friendlyName": "tenderScope",
-        "minWidth": 150,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "showInExport": true,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "budget",
         "friendlyName": "budget",
@@ -20518,19 +20506,7 @@
         "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "awardedJustification",
-        "friendlyName": "awardedJustification",
-        "minWidth": 150,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "showInExport": true,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "openedBy",
         "friendlyName": "openedBy",
@@ -20686,19 +20662,7 @@
         "showInExport": false,
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "projectName",
-        "friendlyName": "projectName",
-        "minWidth": 85,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": true,
-        "showInExport": false,
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "docDate",
         "friendlyName": "docDate",

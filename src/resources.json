@@ -8960,5 +8960,9 @@
     "UrlForm": {
         "en": "http://www.example.com",
         "ar": "http://www.example.com"
+    },
+    "exportStatistic": {
+        "en": "Statistics",
+        "ar": "احصائيات"
     }
 }
