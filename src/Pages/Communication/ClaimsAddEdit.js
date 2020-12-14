@@ -28,7 +28,7 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
-    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).required(Resources['sharedSettingsIsRequired'][currentLanguage])
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
 })
 
 let docId = 0;
@@ -417,16 +417,16 @@ class ClaimsAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
         saveDocument.projectId = this.state.projectId;
-        console.log(saveDocument);
-        // dataservice.addObject('AddClaims', saveDocument).then(result => {
-        //     this.setState({
-        //         docId: result
-        //     });
-        //     toast.success(Resources["operationSuccess"][currentLanguage]);
-        // }).catch(error => {
+       
+        dataservice.addObject('AddClaims', saveDocument).then(result => {
+            this.setState({
+                docId: result
+            });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(error => {
 
-        //     toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
-        // });
+            toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+        });
     }
 
     saveAndExit(event) {

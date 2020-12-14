@@ -4,6 +4,8 @@ import './Styles/css/font-awesome.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './Styles/css/semantic.min.css';
 
+import 'react-dropzone-uploader/dist/styles.css';
+
 import 'react-table/react-table.css';
 import Menu from './Pages/Menu/Menu';
 import Login from './Componants/Layouts/Login';
@@ -84,17 +86,17 @@ class App extends Component {
             .then(e => {
                 currentLanguage === 'ar'
                     ? import('./Styles/scss/ar-eg/layout-ar.css').then(css => {
-                        this.setState({
-                            cssLoaded: true,
-                            isComplete: true,
-                        });
-                    })
+                          this.setState({
+                              cssLoaded: true,
+                              isComplete: true,
+                          });
+                      })
                     : import('./Styles/scss/en-us/layout.css').then(css => {
-                        this.setState({
-                            cssLoaded: true,
-                            isComplete: true,
-                        });
-                    });
+                          this.setState({
+                              cssLoaded: true,
+                              isComplete: true,
+                          });
+                      });
             });
     }
 
@@ -121,10 +123,10 @@ class App extends Component {
                 </ErrorHandler>
             </Provider>
         ) : (
-                <div style={loadingStyle.container}>
-                    <span style={loadingStyle.spinner}></span>
-                </div>
-            );
+            <div style={loadingStyle.container}>
+                <span style={loadingStyle.spinner}></span>
+            </div>
+        );
     }
 }
 
