@@ -9012,10 +9012,11 @@
     "UrlForm": {
         "en": "http://www.example.com",
         "ar": "http://www.example.com"
-    }, 
+    },
     "avgPrice": {
         "en": "Average Price",
-        "ar": "متوسط السعر",
+        "ar": "متوسط السعر"
+    },
     "exportStatistic": {
         "en": "Statistics",
         "ar": "احصائيات"
@@ -9066,6 +9067,6 @@
     },
     "lastSentTime": {
         "en": "last Sent Time",
-        "ar": "last Sent Time" 
+        "ar": "last Sent Time"
     }
 }
