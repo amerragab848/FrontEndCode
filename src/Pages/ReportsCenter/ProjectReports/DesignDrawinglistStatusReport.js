@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import Resources from '../../../resources.json';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form } from 'formik'; 
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import dataService from '../../../Dataservice'
 import { toast } from "react-toastify";
-import Config from "../../../Services/Config.js";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../../store/actions/communication';
-import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
-import moment from "moment";
+import Config from "../../../Services/Config.js"; 
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Api from "../../../api";
@@ -203,7 +197,7 @@ class DesignDrawinglistStatusReport extends Component {
             rows: [],
             pageSize: 200,
         }
-        if (!Config.IsAllow(305)) {
+        if (!Config.IsAllow(10138)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push('/');
         }
@@ -276,7 +270,7 @@ class DesignDrawinglistStatusReport extends Component {
                 
                 <GridCustom 
                      ref='custom-data-grid'
-                     key="expensesDetailsOnProjectsReport"
+                     key="DesignDrawinglistStatusReport"
                      cells={this.columnsGrid}
                      data={this.state.rows}
                      groups={[]} 
