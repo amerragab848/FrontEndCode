@@ -24,12 +24,15 @@ class CreateVO extends Component {
         this.state = {
             VO: {
                 projectId: this.props.projectId,
-                docId: this.props.docId,
+                pcoId: this.props.docId,
                 docType: this.props.docTypeId,
                 arrange: "",
                 subject: this.props.document.subject,
-                status: 'true',
+                status: true,
                 docDate: moment(),
+                contractId:this.props.document.contractId,
+                executed:"no",
+                isRaisedPrices:false,
             },
             selectedOption: 'true',
             submitLoading: false
@@ -53,7 +56,7 @@ class CreateVO extends Component {
         })
     }
     inputChangeHandler = (e) => {
-        this.setState({ VO: { ...this.state.VO, Subject: e.target.value } });
+        this.setState({ VO: { ...this.state.VO, subject: e.target.value } });
     }
     handleChange(e, field) {
 
@@ -69,12 +72,26 @@ class CreateVO extends Component {
             VO: updated_document
         });
     } 
+    handleChangeStatus(e, field) {
+
+        let original_document = { ...this.state.VO };
+
+        let updated_document = {};
+
+        updated_document[field] = e;
+
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            VO: updated_document
+        });
+    } 
     render() {
         return (
             <Formik key="create-trans-panel-form"
                 validationSchema={validationSchema_CreateVO}
                 initialValues={{ ...this.state.VO }} >
-                {({ errors, touched, setFieldValue, setFieldTouched, handleBlur, handleChange }) => (
+                {({ errors, touched, setFieldTouched, handleBlur, handleChange }) => (
                     <Form id="create-trans-panel-form" className="proForm " noValidate="novalidate"  >
                         <div className="dropWrapper">
                             <div className="fillter-status fillter-item-c">
@@ -106,13 +123,13 @@ class CreateVO extends Component {
                                 <label className="control-label"> {Resources.executed[currentLanguage]} </label>
                                 <div className="ui checkbox radio radioBoxBlue">
                                     <input type="radio" name="vo-executed" defaultChecked={this.state.VO.executed === "yes" ? "checked" : null}
-                                        value="yes" onChange={e => this.handleChange(e, "executed")}
+                                        value="yes" onChange={e => this.handleChangeStatus("yes", "executed")}
                                     />
                                     <label> {Resources.yes[currentLanguage]} </label>
                                 </div>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="vo-executed" defaultChecked={this.state.VO.executed === "no" ? null : "checked"}
-                                        value="no" onChange={e => this.handleChange(e, "executed")}
+                                    <input type="radio" name="vo-executed" defaultChecked={this.state.VO.executed === "no" ?  "checked":null}
+                                        value="no" onChange={e => this.handleChangeStatus("no", "executed")}
                                     />
                                     <label> {Resources.no[currentLanguage]} </label>
                                 </div>
@@ -120,14 +137,27 @@ class CreateVO extends Component {
                             <div className="fillter-status fillter-item-c linebylineInput__checkbox">
                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="letter-status" defaultChecked={this.state.VO.status === "true" ? "checked" : null}
-                                        value="true" onChange={e => this.handleChange(e, "status")} />
+                                    <input type="radio" name="letter-status" defaultChecked={this.state.VO.status === true ? "checked" : null}
+                                        value="true" onChange={e => this.handleChangeStatus(true, "status")} />
                                     <label>{Resources.oppened[currentLanguage]}</label>
                                 </div>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="letter-status" defaultChecked={this.state.VO.status === "false" ? null :"checked" }
-                                        value="false" onChange={e => this.handleChange(e, "status")} />
+                                    <input type="radio" name="letter-status" defaultChecked={this.state.VO.status === false ? "checked":null }
+                                        value="false" onChange={e => this.handleChangeStatus(false, "status")} />
                                     <label>{Resources.closed[currentLanguage]}</label>
+                                </div>
+                            </div>
+                            <div className="fillter-status fillter-item-c linebylineInput__checkbox">
+                                <label className="control-label">{Resources.raisedPrices[currentLanguage]}</label>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="letter-isRaisedPrices" defaultChecked={this.state.VO.isRaisedPrices === true ? "checked" : null}
+                                        value="true" onChange={e => this.handleChangeStatus(true, "isRaisedPrices")} />
+                                    <label>{Resources.yes[currentLanguage]}</label>
+                                </div>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="letter-isRaisedPrices" defaultChecked={this.state.VO.isRaisedPrices === false ? "checked":null }
+                                        value="false" onChange={e => this.handleChangeStatus(false, "isRaisedPrices")} />
+                                    <label>{Resources.no[currentLanguage]}</label>
                                 </div>
                             </div>
 
