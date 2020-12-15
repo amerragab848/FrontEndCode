@@ -2675,14 +2675,7 @@ var routes = [
         hash: "#contractsBoqQuantities",
         settings: { Reports: true, order: 7 }
     },
-    {
-        route: "DesignDrawinglistStatusReport",
-        moduleId: "reports/DesignDrawinglistStatusReport",
-        title: "DesignDrawinglistStatusReport",
-        nav: true,
-        hash: "#DesignDrawinglistStatusReport",
-        settings: { Reports: true, order: 8 }
-    }
+    
     ,
     {
         route: "budgetVarianceSummaryDetails",
