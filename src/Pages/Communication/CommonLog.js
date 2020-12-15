@@ -1083,7 +1083,8 @@ class CommonLog extends Component {
           rowClick={cell => {
             if (cell.id != 0) {
 
-              if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+              if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) 
+              {
 
                 let addView = this.state.routeAddEdit;
 

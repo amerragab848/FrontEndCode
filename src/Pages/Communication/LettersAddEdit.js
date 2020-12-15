@@ -180,7 +180,6 @@ class LettersAddEdit extends Component {
         let updated_document = {};
         updated_document.toAccountId = item.value;
         updated_document = Object.assign(original_document, updated_document);
-
         this.setState({
             document: updated_document,
             selectedApproveId: item
@@ -370,8 +369,6 @@ class LettersAddEdit extends Component {
             }
         });
     }
-   
-
     createReplyLink(docId) {
         let addView = "LettersAddEdit";
 

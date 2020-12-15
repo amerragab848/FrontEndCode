@@ -3583,5 +3583,91 @@
             "resourceCode",
             "remarks"
         ]
+    },
+    "123":{
+        "fields":[
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContacName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+              "name":"contract",
+              "value":"contractSubject" ,
+              "type": "S" 
+            },
+            {
+                "name":"budgetCompany",
+                "value":"budgetCompanyName",
+                "type":"S"
+            },
+            {
+                "name":"department",
+                "value":"departmentName",
+                "type":"S"
+            },
+            {
+                "name":"bidderCompany",
+                "value":"bidderCompanyName",
+                "type":"S"
+            },
+            {
+                "name":"budgetComments",
+                "value":"budgetComments",
+                "type":"S"
+            },
+            {
+                "name":"budgetContact",
+                "value":"budgetContactName",
+                "type":"S"
+            },
+            {
+                "name":"budgetDate",
+                "value":"budgetDate",
+                "type":"D"
+            },
+            {
+                "name":"criticalFactor",
+                "value":"criticalFactor",
+                "type":"S"
+            },
+            {
+                "name":"justification",
+                "value":"justification",
+                "type":"S"
+            },
+            {
+                "name":"specialInstruction",
+                "value":"specialInstruction",
+                "type":"S"
+            },
+            {
+                "name":"vendorCompany",
+                "value":"vendorCompanyName",
+                "type":"S"
+            },
+            {
+                "name":"refNo",
+                "value":"refNo",
+                "type":"S"
+            }
+        ],
+        "friendlyNames": []
+      
     }
 }

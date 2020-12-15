@@ -1790,8 +1790,8 @@
         "ar": "سجل العقود"
     },
     "contractRequired": {
-        "en": "Please insert contract name",
-        "ar": "من فضلك ادخل اسم العقد"
+        "en": "Please select contract",
+        "ar": "من فضلك اختر العقد"
     },
     "addContract": {
         "en": "Create Contract",
@@ -8951,7 +8951,93 @@
     {
         "en":"Contract Procurment Request Form",
         "ar":"نموذج طلب شراء عقد"
+    },
+    "BidderCompanyRequired":
+    {
+       "en":"Select bidder company",
+       "ar":"اختر الشركة صاحبة العرض"
+    },
+    "BudgetCompanyRequired":{
+        "en":"Select Budget company",
+        "ar":"اختر الميزانية "
+    },
+    "BudgetContactRequired":{
+        "en":"Select Budget Contact",
+        "ar":"اختر المسئول عن الميزانية"
+    },
+    "departmentRequired":{
+        "en":"Select a department",
+        "ar":"اختر القسم"
+    },
+    "vendorCompanyRequired":
+    {
+        "en":"Select vendor Company",
+        "ar":"الشركة البائعة "
+    },
+    "criticalFactor":{
+        "en":"Critical Factor",
+        "ar":"العنصر الهام"
+    },
+    "justification":{
+        "en":"Justification",
+        "ar":"التبرير"
+    },
+    "specialInstruction":{
+        "en":"Secial Instructions",
+        "ar":"تعليمات خاصة"
+    },
+    "budgetComments":{
+        "en":"Budget Comments",
+        "ar":"تعليقات خاصة بالميزامية"
+    },
+    "budgetDate":{
+        "en":"Budget Date",
+        "ar":"تاريخ الميزانية"
+    },
+    "bidderCompany":
+    {
+        "en":"Bidder Company",
+        "ar":"الشركة مقدمة العرض"
+    },
+    "progressToDate":{
+        "en":"Progress To Date",
+        "ar":"التقدم إلى التاريخ"
+    },
+    "vendorCompany":{
+        "en":"Vendor Company",
+        "ar":"Vendor Company"
     }
+   ,"budgetContact":{
+       "en":"Budget Contact",
+       "ar":"الشخص المسئول عن الميزانية"
+   },
+   "DesignDrawinglistStatusReport":{
+       "en":"Design Drawing list Status Report",
+       "ar":"Design Drawing list Status Report"
+   },
+   "drawingSubject":{
+       "en":"drawing Subject",
+       "ar":"drawing Subject"
+   },
+   "drawingScale":
+   {
+    "en":"drawing Scale",
+    "ar":"drawing Scale"
+   },
+   "drawingReference":
+   {
+    "en":"drawing Reference",
+    "ar":"drawing Reference"
+   },
+   "lastSentDate":{
+       "en":"last Sent Date",
+       "ar":"last Sent Date"
+   },
+   "lastSentTime":{
+    "en":"last Sent Time",
+    "ar":"last Sent Time"
+}
+ 
 }
   
 

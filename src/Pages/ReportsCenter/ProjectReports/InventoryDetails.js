@@ -250,8 +250,10 @@ class InventoryDetails extends Component {
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className="proForm reports__proForm">
                             <div className="linebylineInput valid-input">
-                                <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
-                                    selectedValue={this.state.selectedProject} onChange={setFieldValue}
+                                <Dropdown title='Projects'
+                                   data={this.state.ProjectsData} name='selectedProject'
+                                    selectedValue={this.state.selectedProject}
+                                     onChange={setFieldValue}
                                     handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
