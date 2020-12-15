@@ -173,6 +173,9 @@ const BoqTemplateReport = AsyncComponent(() =>
 const InventoryDetails = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/InventoryDetails'),
 );
+const DesignDrawinglistStatusReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/ProjectReports/DesignDrawinglistStatusReport'),
+);
 const BoqStractureCost = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/BoqStractureCost'),
 );
@@ -257,6 +260,11 @@ const ProjectIssuesAddEdit = AsyncComponent(() =>
 const QuestionsAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/qsAddEdit'),
 );
+// aly salah proc requestForm 
+const ProcurmentRequestFormAddEdit = AsyncComponent(() =>
+    import('./Pages/Contracts/ProcurmentRequestFormAddEdit'),
+);
+//
 const ProjectCostCodingTree = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Project/ProjectCostCodingTree'),
 );
@@ -648,7 +656,9 @@ const ExpensesUserAddEdit = AsyncComponent(() =>
 );
 
 //Report Center
-
+// const DesignDrawinglistStatusReport=AsyncComponent(() =>
+// import('../src/Pages/ReportsMenu/DesignDrawinglistStatusReport')
+// );
 const EstimationBoqComparison = AsyncComponent(() =>
     import('../src/Pages/ReportsMenu/estimationBoqComparison'),
 );
@@ -671,7 +681,7 @@ const CollectedInvoices = AsyncComponent(() =>
     import('../src/Pages/ReportsMenu/collectedInvoices'),
 );
 const SubmittalDrawingStatusListReport= AsyncComponent(() =>
-import('../src/Pages/ReportsCenter/ProjectReports/SubmittalDrawingStatusList'),
+import('../src/Pages/ReportsCenter/TechnicalOffice/SubmittalDrawingStatusList'),
 );
 
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
@@ -992,19 +1002,14 @@ let originalRoutes = [
         key="r-93"
         path="/variationRequestAddEdit"
         component={VariationRequestAddEdit}
-    />,
-    // <Route
-    //     key="r-199"
-    //     path="/contractROASummaryAddEdit"
-    //     component={ContractROASummaryAddEdit}
-    // />,
+    />, 
     <Route
         key="r-94"
         path="/projectIssuesAddEdit"
         component={ProjectIssuesAddEdit}
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
-
+    <Route key="r-200" path="/ProcurmentRequestFormAddEdit" component={ProcurmentRequestFormAddEdit}/>,
     <Route
         key="r-96"
         path="/requestPaymentsAddEdit"
@@ -1380,6 +1385,8 @@ let originalRoutes = [
         path="/submittalDrawingStatusListReport"
         component={SubmittalDrawingStatusListReport}
     />,
+
+
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

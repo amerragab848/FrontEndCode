@@ -20763,13 +20763,16 @@
   "contractProcurmentRequestForm":{
     "documentTitle": "contractProcurmentRequestForm",
     "docTyp": 123,
-    "documentAddEditLink": "contractProcurmentRequestFormAddEdit",
+    "documentAddEditLink": "ProcurmentRequestFormAddEdit",
+    "documentAddPermission": 10119,
     "documentEditPermission": 10120,
+    "documentDeletePermission": 10121,
     "documentViewPermission": 10122,
     "documentPermission": 10123,
     "documentApi": {
       "get": "GetContractProcurementRequestFormProjectId",
-      "getCustom": "GetContractProcurementRequestFormProjectIdCustom"
+      "getCustom": "GetContractProcurementRequestFormProjectIdCustom",
+      "delete":"DeleteMultipleContractProcurementRequestForm"
     },
     "documentColumns":[
       {
@@ -20852,7 +20855,7 @@
         "isDate": false,
         "isTime": false,
         "showInExport": true,
-        "isCustom": true,
+        "isCustom": false,
         "exportDataType": "s"
       },
       {
@@ -20878,8 +20881,33 @@
         "showInExport": true,
         "isCustom":false,
         "exportDataType": "s"
-      }  
+      },
+      {
+        "field": "budgetCompanyName",
+        "friendlyName": "budgetCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "budgetContactName",
+        "friendlyName": "budgetContact",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
+      }
     ],
+    "forEditApi":"GetContractRocurmentRequestFormById",
     "filterApi": "ContractProcurementRequestFormFilter",
     "filters": [
       {
@@ -20888,8 +20916,44 @@
         "type": "number",
         "showInExport": true,
         "isCustom": true
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+      {
+        "name": "description",
+        "field": "description",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+      {
+        "name": "fromCompanyName",
+        "field": "fromCompany",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+      {
+        "name": "department",
+        "field": "departmentName",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
+      },
+      {
+        "name": "contract",
+        "field": "contractSubject",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": true
       }
     ]
 
   } 
 }
+    

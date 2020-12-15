@@ -103,6 +103,13 @@ var routes = [
         settings: { ProjectReports: true, permission: 3689, order: 14 }
     }, 
     {
+        route: "DesignDrawinglistStatusReport",
+        moduleId: "ProjectReports/DesignDrawinglistStatusReport",
+        title: "DesignDrawinglistStatusReport",
+        nav: true,
+        settings: { ProjectReports: true, permission: 3689, order: 15 }
+    },
+    {
         route: "CostControlTreeReport",
         moduleId: "ProjectReports/CostControlTreeReport",
         title: "CostControlTreeReport",
@@ -244,13 +251,6 @@ var routes = [
         title: "projectsAllocationOnCompanies",
         nav: true,
         settings: { ProjectReports: true, permission: 3682, order: 7 }
-    },
-    {
-        route: "submittalDrawingStatusListReport",
-        moduleId: "ProjectReports/SubmittalDrawingStatusList",
-        title: "submittalDrawingStatusListReport",
-        nav: true,
-        settings: { ProjectReports: true, permission: 10137, order: 13 }
     },
     {
         route: "estimationBoqComparison",
@@ -669,6 +669,7 @@ var routes = [
         nav: false,
         settings: { Communication: false }
     },
+    
     {
         route: "Phone",
         moduleId: "commonLogs",
@@ -1287,19 +1288,19 @@ var routes = [
         hash: "#ContractROA",
         settings: { Contracts: true, permission: 10100, order: 2 }
     },
-    // {
-    //     route: "contractProcurmentRequestForm",
-    //     moduleId: "commonLogs",
-    //     title: "contractProcurmentRequestForm",
-    //     nav: true,
-    //     hash: "#contractProcurmentRequestForm",
-    //     settings: {
-    //         Contracts: true,
-    //         caption: "procoor-icon-BOQ",
-    //         permission: 10123,
-    //         order: 1
-    //     }
-    // },
+    {
+        route: "contractProcurmentRequestForm",
+        moduleId: "commonLogs",
+        title: "contractProcurmentRequestForm",
+        nav: true,
+        hash: "#contractProcurmentRequestForm",
+        settings: {
+            Contracts: true,
+            caption: "procoor-icon-BOQ",
+            permission: 10123,
+            order: 1
+        }
+    },
     {
         route: "boq",
         moduleId: "commonLogs",
@@ -1318,6 +1319,14 @@ var routes = [
             "boqAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "contracts/boqAddEdit",
         title: "BOQ Addition",
+        nav: false,
+        settings: { Contracts: false }
+    },
+    {
+        route:
+            "ProcurmentRequestFormAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        moduleId: "Contracts/ProcurmentRequestFormAddEdit",
+        title: "Procurment RequestForm  Addition",
         nav: false,
         settings: { Contracts: false }
     },
@@ -2665,6 +2674,8 @@ var routes = [
         hash: "#contractsBoqQuantities",
         settings: { Reports: true, order: 7 }
     },
+    
+    ,
     {
         route: "budgetVarianceSummaryDetails",
         moduleId: "widgetsCharts/budgetVarianceSummaryDetails",
@@ -2839,7 +2850,14 @@ var routes = [
         moduleId: "TechnicalOffice/ContractorsPerformance",
         title: "contractorsPerformance",
         nav: true,
-        settings: { technicalOffice: true, permission: 3764, order: 5 }
+        settings: { technicalOffice: true, permission: 3764, order: 4 }
+    },
+    {
+        route: "submittalDrawingStatusListReport",
+        moduleId: "TechnicalOffice/SubmittalDrawingStatusList",
+        title: "submittalDrawingStatusListReport",
+        nav: true,
+        settings: { technicalOffice: true, permission: 10137, order: 5 }
     },
     {
         route: "Area",

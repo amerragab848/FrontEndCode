@@ -28,7 +28,7 @@
    "client_secret": "8eVDuCjah3JhAn1O",
  
    "commonLogApi": 2,
-   "refCodeValidation":false ,
+   "refCodeValidation":false  ,
    "activeExport":false 
  }
  
