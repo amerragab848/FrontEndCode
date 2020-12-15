@@ -198,7 +198,6 @@ class DesignDrawinglistStatusReport extends Component {
             }
         ];
         this.state = {
-            isLoading: false,
             projects: [],
             selectedProjects: { label: Resources.projectSelection[currentLanguage], value: "0" },
             rows: [],
@@ -223,15 +222,15 @@ class DesignDrawinglistStatusReport extends Component {
     }
 
     componentDidMount() {
+        this.setState({ isLoading: true })
         dataService.GetDataList(`GetAllProjectForDrop`, 'projectName', 'id').then(result => {
             if (result.length > 0) {
                 this.setState({
-                    projects: result
+                    projects: result,
+                    isLoading: false 
                 });
             }
         })
-
-        this.setState({ isLoading: false });
     }
 
     componentWillUnmount() {
@@ -274,13 +273,14 @@ class DesignDrawinglistStatusReport extends Component {
             ) : null;
             const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ?
+                
                 <GridCustom 
+                     ref='custom-data-grid'
+                     key="expensesDetailsOnProjectsReport"
                      cells={this.columnsGrid}
                      data={this.state.rows}
                      groups={[]} 
-                     pageSize={50}  
-                     pageSize={50} 
+                     pageSize={this.state.pageSize}
                      actions={[]} 
                      rowActions={[]} 
                      rowClick={cell => {
@@ -305,7 +305,7 @@ class DesignDrawinglistStatusReport extends Component {
                     }
                 }
                      
-                     />  : null
+                     />  
             ) : (
                 <LoadingSection />
             );
