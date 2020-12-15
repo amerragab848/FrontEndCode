@@ -2851,7 +2851,14 @@ var routes = [
         moduleId: "TechnicalOffice/ContractorsPerformance",
         title: "contractorsPerformance",
         nav: true,
-        settings: { technicalOffice: true, permission: 3764, order: 5 }
+        settings: { technicalOffice: true, permission: 3764, order: 4 }
+    },
+    {
+        route: "submittalDrawingStatusListReport",
+        moduleId: "TechnicalOffice/SubmittalDrawingStatusList",
+        title: "submittalDrawingStatusListReport",
+        nav: true,
+        settings: { technicalOffice: true, permission: 10137, order: 5 }
     },
     {
         route: "Area",

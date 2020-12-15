@@ -9873,11 +9873,11 @@
     "docTyp": 38,
     "documentAddEditLink": "DrawingSetsAddEdit",
     "documentAddEditPopUp": "",
-    "documentAddPermission": 301,
-    "documentEditPermission": 302,
-    "documentDeletePermission": 303,
-    "documentViewPermission": 304,
-    "documentPermission": 305,
+    "documentAddPermission": 211,
+    "documentEditPermission": 212,
+    "documentDeletePermission": 213,
+    "documentViewPermission": 214,
+    "documentPermission": 215,
     "documentApi": {
       "get": "GetLogsDrawingsSetssByProjectId",
       "getCustom": "GetLogsDrawingsSetssByProjectIdCustom",
@@ -17593,7 +17593,7 @@
         "field": "refNo",
         "friendlyName": "refNo",
         "minWidth": 65,
-        "width": "9%",
+        "width": "19%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -20421,7 +20421,7 @@
 
   "ContractROA": {
     "documentTitle": "ContractROA",
-    "docTyp": 1246,
+    "docTyp": 122,
     "documentAddEditLink": "ContractROaAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 10096,
@@ -20444,7 +20444,7 @@
         "isDate": false,
         "isTime": false,
         "showInExport": true,
-        "isCustom": false,
+        "isCustom": true,
         "exportDataType": "n"
       },
       {

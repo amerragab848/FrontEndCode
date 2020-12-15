@@ -3584,8 +3584,83 @@
             "remarks"
         ]
     },
-    "123":{
+    "122":{
         "fields":[
+      {
+                "name": "refNumber",
+                "value": "refNumber",
+                "type": "S"
+            },
+            {
+                "name": "tenderNumber",
+                "value": "tenderNumber",
+                "type": "S"
+            },
+            {
+                "name": "tenderScope",
+                "value": "tenderScope",
+                "type": "S"
+            },
+            {
+                "name": "budget",
+                "value": "budget",
+                "type": "S"
+            },
+            {
+                "name": "totalValue",
+                "value": "totalValue",
+                "type": "S"
+            },
+            {
+                "name": "awardedJustification",
+                "value": "awardedJustification",
+                "type": "S"
+            },
+            {
+                "name": "createdBy",
+                "value": "createdBy",
+                "type": "S"
+            },
+            {
+                "name": "deletedBy",
+                "value": "deletedBy",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "requestByContact",
+                "value": "requestByContact",
+                "type": "S"
+            },
+            {
+                "name": "requestByCompany",
+                "value": "requestByCompany",
+                "type": "S"
+            }
+        ],
+        "columnsItems":[],
+        "friendlyNames":[
+            "subject",
+            "docDate",
+            "refNumber",
+            "tenderNumber",
+            "tenderScope",
+            "budget",
+            "totalValue",
+            "awardedJustification",
+            "createdBy",
+            "deletedBy",
+            "projectName",
+            "requestByContact",
+            "requestByCompany"
+        ]
+    },
+    "123":{
+        "fields": [
             {
                 "name": "subject",
                 "value": "subject",
@@ -3594,6 +3669,11 @@
             {
                 "name": "fromContact",
                 "value": "fromContacName",
+                "type":"S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
                 "type": "S"
             },
             {
@@ -3668,6 +3748,6 @@
             }
         ],
         "friendlyNames": []
-      
     }
+    
 }

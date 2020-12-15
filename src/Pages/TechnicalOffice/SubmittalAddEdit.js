@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
   bicContactId: Yup.string().required(Resources["actionByContactRequired"][currentLanguage]).nullable(true),
   disciplineId: Yup.string().required(Resources["disciplineRequired"][currentLanguage]).nullable(true),
   contractId: Yup.string().required(Resources["contractPoSelection"][currentLanguage]),
-  sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).required(Resources['sharedSettingsIsRequired'][currentLanguage])
+  sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
 });
 
 const validationCycleSubmital = Yup.object().shape({
@@ -1848,7 +1848,7 @@ class SubmittalAddEdit extends Component {
                                 <div className="shareLinks">
                                   <div className="inputDev ui input">
                                     <input type="text" className="form-control" id="sharedSettings" onChange={e => this.handleChange(e, "sharedSettings")}
-                                      value={this.state.document.sharedSettings || ''} name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]} />
+                                      value={this.state.document.sharedSettings || ''} name="sharedSettings" placeholder={Resources.UrlForm[currentLanguage]} />
                                       {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
                                   </div>
                                   {this.state.document.sharedSettings === '' ||
