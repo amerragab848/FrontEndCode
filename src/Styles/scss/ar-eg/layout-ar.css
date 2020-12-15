@@ -25077,3 +25077,11 @@ tbody.grid-body tr .text.elipsisPadd {
     align-items: center;
     justify-content: center;
 }
+
+
+
+
+
+.reports__proForm .linebylineInput.fullWidthWrapper{
+    width: 100%;
+}
