@@ -1011,6 +1011,7 @@ class CommonLog extends Component {
       toast.warn('This feature is disabled. Please call your administrator for assistance');
       return;
     }
+    
     let chosenColumns = this.state.columnsExport;
     if (chosenColumns.length > 2) {
       toast.warning("Can't Draw With more than 2 Columns Choosen");
