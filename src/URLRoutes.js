@@ -246,13 +246,6 @@ var routes = [
         settings: { ProjectReports: true, permission: 3682, order: 7 }
     },
     {
-        route: "submittalDrawingStatusListReport",
-        moduleId: "ProjectReports/SubmittalDrawingStatusList",
-        title: "submittalDrawingStatusListReport",
-        nav: true,
-        settings: { ProjectReports: true, permission: 10137, order: 13 }
-    },
-    {
         route: "estimationBoqComparison",
         moduleId: "reports/estimationBoqComparison",
         title: "estimationBoqComparison",
@@ -2840,7 +2833,14 @@ var routes = [
         moduleId: "TechnicalOffice/ContractorsPerformance",
         title: "contractorsPerformance",
         nav: true,
-        settings: { technicalOffice: true, permission: 3764, order: 5 }
+        settings: { technicalOffice: true, permission: 3764, order: 4 }
+    },
+    {
+        route: "submittalDrawingStatusListReport",
+        moduleId: "TechnicalOffice/SubmittalDrawingStatusList",
+        title: "submittalDrawingStatusListReport",
+        nav: true,
+        settings: { technicalOffice: true, permission: 10137, order: 5 }
     },
     {
         route: "Area",

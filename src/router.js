@@ -671,7 +671,7 @@ const CollectedInvoices = AsyncComponent(() =>
     import('../src/Pages/ReportsMenu/collectedInvoices'),
 );
 const SubmittalDrawingStatusListReport= AsyncComponent(() =>
-import('../src/Pages/ReportsCenter/ProjectReports/SubmittalDrawingStatusList'),
+import('../src/Pages/ReportsCenter/TechnicalOffice/SubmittalDrawingStatusList'),
 );
 
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
