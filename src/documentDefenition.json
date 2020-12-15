@@ -15732,20 +15732,20 @@
         "exportDataType": "s"
       },
       {
-        "field": "approvedQuantity",
-        "friendlyName": "approvedQuantity",
+        "field": "avgUnitPrice",
+        "friendlyName": "avgPrice",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "number",
+        "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": true,
+        "showInExport": false,
         "isCustom": true,
-        "exportDataType": "n"
+        "exportDataType": "s"
       },
       {
-        "field": "unitPrice",
-        "friendlyName": "unitPrice",
+        "field": "approvedQuantity",
+        "friendlyName": "quantity",
         "minWidth": 85,
         "width": "8%",
         "dataType": "number",
@@ -15754,7 +15754,7 @@
         "showInExport": true,
         "isCustom": true,
         "exportDataType": "n"
-      },
+      }, 
       {
         "field": "totalApproved",
         "friendlyName": "totalApproved",
@@ -15778,19 +15778,7 @@
         "showInExport": false,
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "releasePrice",
-        "friendlyName": "releasePrice",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "showInExport": false,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "lastDeliveryDate",
         "friendlyName": "lastDeliveryDate",
