@@ -9069,6 +9069,14 @@
    "lastSentTime":{
     "en":"last Sent Time",
     "ar":"last Sent Time"
+},
+"selectSubmittedFor":{
+    "en":"Select Submitted For",
+    "ar":"مقدم ل"
+},
+"refCode":{
+    "en":"Reference Code",
+    "ar":"الرقم المرجعي"
 }
  
 }
