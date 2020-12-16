@@ -12626,6 +12626,30 @@
         "exportDataType": "s"
       },
       {
+        "field": "areaName",
+        "friendlyName": "areaName",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "locationName",
+        "friendlyName": "locationName",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
         "field": "approvalStatusName",
         "friendlyName": "approvalStatus",
         "minWidth": 85,
@@ -13437,6 +13461,18 @@
         "exportDataType": "s"
       },
       {
+        "field": "locationName",
+        "friendlyName": "locationName",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
         "field": "buildingNoName",
         "friendlyName": "Building",
         "minWidth": 85,
@@ -13681,6 +13717,13 @@
         "type": "string",
         "showInExport": true,
         "isCustom": true
+      },
+      {
+        "name": "locationName",
+        "field": "locationName",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": false
       },
       {
         "name": "Building",
@@ -14489,6 +14532,20 @@
         "field": "disciplineName",
         "type": "string",
         "showInExport": false,
+        "isCustom": false
+      },
+      {
+        "name": "locationName",
+        "field": "locationName",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": false
+      },
+      {
+        "name": "areaName",
+        "field": "areaName",
+        "type": "string",
+        "showInExport": true,
         "isCustom": false
       },
       {
