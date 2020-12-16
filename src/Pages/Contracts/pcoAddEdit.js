@@ -40,6 +40,7 @@ const validationSchema = Yup.object().shape({
 
     overHead: Yup.string().required(Resources['overHead'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+
     approvalStatusId: Yup.string()
         .required(Resources['overHead'][currentLanguage]),
 
@@ -139,7 +140,7 @@ class pcoAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -247,18 +248,6 @@ class pcoAddEdit extends Component {
         ];
     }
 
-    componentDidMount() {
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add('even');
-            }
-            else {
-                links[i].classList.add('odd');
-            }
-        }
-    };
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
@@ -309,6 +298,17 @@ class pcoAddEdit extends Component {
     }
 
     componentDidMount() {
+        
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add('even');
+            }
+            else {
+                links[i].classList.add('odd');
+            }
+        }
+
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsPcoForEdit?id=" + this.state.docId, this.state.docTypeId, 'pco');
 
@@ -328,7 +328,7 @@ class pcoAddEdit extends Component {
                 arrange: '',
                 docDate: moment(),
                 status: true,
-                isLumpSum: 'false',
+                isLumpSum: false,
                 refDoc: '',
                 profit: 0,
                 overHead: 0,
@@ -1026,7 +1026,7 @@ class pcoAddEdit extends Component {
                                                 <Formik
                                                     initialValues={{ ...this.state.document }}
                                                     validationSchema={validationSchema}
-                                                    enableReinitialize={this.props.changeStatus}
+                                                    enableReinitialize={true}
                                                     onSubmit={(values) => {
                                                         if (this.props.showModal) { return; }
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -1072,8 +1072,11 @@ class pcoAddEdit extends Component {
                                                             <div className="proForm datepickerContainer">
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.description[currentLanguage]}</label>
-                                                                    <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                                        <input name='description' className="form-control fsadfsadsa" id="description"
+                                                                    <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
+                                                                        <input
+                                                                            name='description'
+                                                                            id="description"
+                                                                            className="form-control fsadfsadsa"
                                                                             placeholder={Resources.description[currentLanguage]}
                                                                             autoComplete='off'
                                                                             value={this.state.document.description}
@@ -1216,21 +1219,26 @@ class pcoAddEdit extends Component {
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.profit[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev" + (errors.profit && touched.profit ? (" has-error") : "ui input inputDev")} >
-                                                                        <input type="text" className="form-control" id="profit" value={this.state.document.profit} name="profit"
+                                                                        <input type="text"
+                                                                            className="form-control"
+                                                                            id="profit"
+                                                                            value={this.state.document.profit}
+                                                                            name="profit"
                                                                             placeholder={Resources.profit[currentLanguage]}
                                                                             onBlur={(e) => {
                                                                                 handleChange(e)
                                                                                 handleBlur(e)
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'profit')} />
-                                                                        {touched.profit ? (<em className="pError">{errors.profit}</em>) : null}
+                                                                        {touched.profit ? (<em className="pError">{ errors.profit}</em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.overHead[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev" + (errors.overHead && touched.overHead ? (" has-error") : "ui input inputDev")} >
                                                                         <input type="text" className="form-control"
-                                                                            id="overHead" value={this.state.document.overHead}
+                                                                            id="overHead"
+                                                                            value={this.state.document.overHead}
                                                                             name="overHead"
                                                                             placeholder={Resources.overHead[currentLanguage]}
                                                                             onBlur={(e) => {

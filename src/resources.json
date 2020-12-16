@@ -8862,7 +8862,7 @@
         "ar": "ملخص توصية علي قرار"
     },
     "contractProcurmentRequestForm": {
-        "en": "Contract Procurment Request Form",
+        "en": "Procurment Request Form",
         "ar": "نموذج طلب شراء عقد"
     },
     "refNumber": {
@@ -8941,72 +8941,65 @@
         "en": "final Price ",
         "ar": "السعر النهائي "
     },
-
-"budgetCompany":
-{
-    "en":"budget Company",
-    "ar":"الميزانية"
-},
-"department":
-{
-    "en":"department",
-    "ar":"القسم"
-},
-    
-    "BidderCompanyRequired":
-    {
-       "en":"Select bidder company",
-       "ar":"اختر الشركة صاحبة العرض"
+    "budgetCompany": {
+        "en": "budget Company",
+        "ar": "الميزانية"
     },
-    "BudgetCompanyRequired":{
-        "en":"Select Budget company",
-        "ar":"اختر الميزانية "
+    "department": {
+        "en": "department",
+        "ar": "القسم"
     },
-    "BudgetContactRequired":{
-        "en":"Select Budget Contact",
-        "ar":"اختر المسئول عن الميزانية"
+    "BidderCompanyRequired": {
+        "en": "Select bidder company",
+        "ar": "اختر الشركة صاحبة العرض"
     },
-    "departmentRequired":{
-        "en":"Select a department",
-        "ar":"اختر القسم"
+    "BudgetCompanyRequired": {
+        "en": "Select Budget company",
+        "ar": "اختر الميزانية "
     },
-    "vendorCompanyRequired":
-    {
-        "en":"Select vendor Company",
-        "ar":"الشركة البائعة "
+    "BudgetContactRequired": {
+        "en": "Select Budget Contact",
+        "ar": "اختر المسئول عن الميزانية"
     },
-    "criticalFactor":{
-        "en":"Critical Factor",
-        "ar":"العنصر الهام"
+    "departmentRequired": {
+        "en": "Select a department",
+        "ar": "اختر القسم"
     },
-    "justification":{
-        "en":"Justification",
-        "ar":"التبرير"
+    "vendorCompanyRequired": {
+        "en": "Select vendor Company",
+        "ar": "الشركة البائعة "
     },
-    "specialInstruction":{
-        "en":"Secial Instructions",
-        "ar":"تعليمات خاصة"
+    "criticalFactor": {
+        "en": "Critical Factor",
+        "ar": "العنصر الهام"
     },
-    "budgetComments":{
-        "en":"Budget Comments",
-        "ar":"تعليقات خاصة بالميزامية"
+    "justification": {
+        "en": "Justification",
+        "ar": "التبرير"
     },
-    "budgetDate":{
-        "en":"Budget Date",
-        "ar":"تاريخ الميزانية"
+    "specialInstruction": {
+        "en": "Secial Instructions",
+        "ar": "تعليمات خاصة"
     },
-    "bidderCompany":
-    {
-        "en":"Bidder Company",
-        "ar":"الشركة مقدمة العرض"
+    "budgetComments": {
+        "en": "Budget Comments",
+        "ar": "تعليقات خاصة بالميزامية"
     },
-    "progressToDate":{
-        "en":"Progress To Date",
-        "ar":"التقدم إلى التاريخ"
+    "budgetDate": {
+        "en": "Budget Date",
+        "ar": "تاريخ الميزانية"
     },
-    "vendorCompany":{
-        "en":"Vendor Company",
-        "ar":"Vendor Company"
+    "bidderCompany": {
+        "en": "Bidder Company",
+        "ar": "الشركة مقدمة العرض"
+    },
+    "progressToDate": {
+        "en": "Progress To Date",
+        "ar": "التقدم إلى التاريخ"
+    },
+    "vendorCompany": {
+        "en": "Vendor Company",
+        "ar": "Vendor Company"
     },
     "ownerContact": {
         "en": "Owner Contact",
@@ -9020,27 +9013,35 @@
         "en": "http://www.example.com",
         "ar": "http://www.example.com"
     },
-    "submittalDrawingStatusListReport":{
-        "en":"Submittal Drawing Status List Report",
-        "ar":"تقديم تقرير قائمة حالة الرسم"
+    "avgPrice": {
+        "en": "Average Price",
+        "ar": "متوسط السعر"
     },
-    "submittalRefNo":{
-        "en":"Submittal Reference Number",
-        "ar":"رقم المرجع الخاضع"
+    "exportStatistic": {
+        "en": "Statistics",
+        "ar": "احصائيات"
     },
-    "submittalSubject":{
-        "en":"Submittal Subject",
-        "ar":"موضوع التقديم"
+    "submittalDrawingStatusListReport": {
+        "en": "Submittal Drawing Status List Report",
+        "ar": "تقديم تقرير قائمة حالة الرسم"
     },
-    "submittalApprovalStatus":{
-        "en":"Submittal Approval Status",
-        "ar":"حالة الموافقة على التقديم"
+    "submittalRefNo": {
+        "en": "Submittal Reference Number",
+        "ar": "رقم المرجع الخاضع"
+    },
+    "submittalSubject": {
+        "en": "Submittal Subject",
+        "ar": "موضوع التقديم"
+    },
+    "submittalApprovalStatus": {
+        "en": "Submittal Approval Status",
+        "ar": "حالة الموافقة على التقديم"
     },
     "drawingReviewResult": {
         "en": "Drawing Review Result",
         "ar": "حاله المراجعه"
-    }
-   ,"budgetContact":{
+    },
+   "budgetContact":{
        "en":"Budget Contact",
        "ar":"الشخص المسئول عن الميزانية"
    },

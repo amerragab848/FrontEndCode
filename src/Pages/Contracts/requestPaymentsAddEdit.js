@@ -1925,11 +1925,11 @@ class requestPaymentsAddEdit extends Component {
     }
 
     rowsUpdated = (cell, type) => {
-     
+
         if (this.state.isMultipleItems === true) {
             this.setState({
                 gridLoader: true,
-                editItemsLoading:true
+                editItemsLoading: true
             });
 
             var ids = this.state.multiplePayReqItems;
@@ -1978,19 +1978,19 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: false,
                 isFilter: true,
                 isEditItems: true,
-               // isLoading: false,
+                // isLoading: false,
                 isEditingPercentage: 'true',
                 ColumnsHideShow: this.state.columns,
                 isMultipleItems: false,
-                editItemsLoading:false
+                editItemsLoading: false
             });
 
-          //  this.reqPayModal.hide();
+            //  this.reqPayModal.hide();
         } else {
 
             this.setState({
                 //isLoading: true,
-                editItemsLoading:true
+                editItemsLoading: true
             });
 
             let pItems = this.state.paymentsItems;
@@ -2022,10 +2022,10 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: false,
                 isFilter: true,
                 isEditItems: true,
-               // isLoading: false,
-                editItemsLoading:false
+                // isLoading: false,
+                editItemsLoading: false
             });
-          //  this.addCommentModal.hide();
+            //  this.addCommentModal.hide();
         }
     };
 
@@ -2050,7 +2050,7 @@ class requestPaymentsAddEdit extends Component {
                 if (result.id) {
                     this.setState({
                         docId: result.id,
-                       // isLoading: false,
+                        // isLoading: false,
                     });
 
                     let editItems = [...this.state.editRows];
@@ -2453,7 +2453,7 @@ class requestPaymentsAddEdit extends Component {
                 isEditingPercentage: 'true',
                 ColumnsHideShow: this.state.columns,
                 isMultipleItems: false,
-                editItemsLoading:true
+                editItemsLoading: true
             });
 
             dataservice
@@ -2499,7 +2499,7 @@ class requestPaymentsAddEdit extends Component {
                             isEditItems: true,
                             isEditingPercentage: 'true',
                             isMultipleItems: false,
-                            editItemsLoading:false
+                            editItemsLoading: false
                         });
                     } else {
                         this.setState({
@@ -2511,7 +2511,7 @@ class requestPaymentsAddEdit extends Component {
                             isEditItems: true,
                             isEditingPercentage: 'true',
                             isMultipleItems: false,
-                            editItemsLoading:false
+                            editItemsLoading: false
                         });
                     }
                 })
@@ -2523,7 +2523,7 @@ class requestPaymentsAddEdit extends Component {
                         isLoadingItems: false,
                         gridLoader: false,
                         isEditingPercentage: 'true',
-                        editItemsLoading:false
+                        editItemsLoading: false
                     });
                 });
         } else {
@@ -2535,7 +2535,7 @@ class requestPaymentsAddEdit extends Component {
                 gridLoader: true,
                 isLoadingItems: true,
                 ColumnsHideShow: this.state.columns,
-                editItemsLoading:true
+                editItemsLoading: true
             });
 
             dataservice
@@ -2576,7 +2576,7 @@ class requestPaymentsAddEdit extends Component {
                         isLoadingItems: false,
                         isFilter: true,
                         isEditItems: true,
-                        editItemsLoading:false
+                        editItemsLoading: false
                     });
                 })
                 .catch(res => {
@@ -2585,7 +2585,7 @@ class requestPaymentsAddEdit extends Component {
                     );
                     this.setState({
                         isLoadingItems: false,
-                        editItemsLoading:false
+                        editItemsLoading: false
                     });
                 });
         }
@@ -3296,6 +3296,7 @@ class requestPaymentsAddEdit extends Component {
             window.location.reload();
         }
     };
+
     render() {
         let columns = [];
 
@@ -3713,14 +3714,7 @@ class requestPaymentsAddEdit extends Component {
                     <td colSpan="3">
                         <div className="contentCell tableCell-2">
                             <a>
-                                {i.description != null
-                                    ? i.description.slice(
-                                        0,
-                                        i.description.lastIndexOf('-') == -1
-                                            ? i.description.length
-                                            : i.description.lastIndexOf('-'),
-                                    )
-                                    : ''}
+                                {i.description != null ? i.description.slice(0, i.description.lastIndexOf('-') == -1 ? i.description.length : i.description.lastIndexOf('-'),) : ''}
                             </a>
                         </div>
                     </td>
@@ -3733,63 +3727,40 @@ class requestPaymentsAddEdit extends Component {
                                     </a>
                                 </div>
                             </td>
+
                             <td colSpan="1">
                                 <div className="contentCell">
-                                    {i.contractorPrevoiuse != null
-                                        ? parseFloat(i.contractorPrevoiuse)
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
+                                    {i.contractorPrevoiuse != null ? parseFloat(i.contractorPrevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
                                 </div>
                             </td>
                             <td colSpan="1">
                                 <div className="contentCell">
-                                    {i.contractorCurrentValue != null
-                                        ? parseFloat(
-                                            i.contractorCurrentValue.toString(),
-                                        )
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
+                                    {i.contractorCurrentValue != null ? parseFloat(i.contractorCurrentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
                                 </div>
                             </td>
                             <td colSpan="1">
                                 <div className="contentCell">
-                                    {i.contractorTotal != null
-                                        ? parseFloat(i.contractorTotal.toString())
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
+                                    {i.contractorTotal != null ? parseFloat(i.contractorTotal.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
+                                </div>
+                            </td>
+
+
+                            <td colSpan="1">
+                                <div className="contentCell">
+                                    {i.prevoiuse != null ? parseFloat(i.prevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
                                 </div>
                             </td>
                             <td colSpan="1">
                                 <div className="contentCell">
-                                    {i.prevoiuse != null
-                                        ? parseFloat(i.prevoiuse)
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
+                                    {i.currentValue != null ? parseFloat(i.currentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
                                 </div>
                             </td>
                             <td colSpan="1">
                                 <div className="contentCell">
-                                    {i.currentValue != null
-                                        ? parseFloat(i.currentValue.toString())
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
+                                    {i.total != null ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0}
                                 </div>
                             </td>
-                            <td colSpan="1">
-                                <div className="contentCell">
-                                    {i.total != null
-                                        ? parseFloat(i.total.toString())
-                                            .toFixed(2)
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                        : 0}
-                                </div>
-                            </td>
-                            
+
                             <td colSpan="3">
                                 <div className="contentCell">{i.comment}</div>
                             </td>
@@ -5383,46 +5354,22 @@ class requestPaymentsAddEdit extends Component {
                                                     <tr>
                                                         <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'workDescription'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['workDescription'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'approved'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['submitted'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'submitted'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['approved'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'comments'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['comments'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                     </tr>
@@ -5430,68 +5377,32 @@ class requestPaymentsAddEdit extends Component {
                                                         <th colSpan="3"></th>
                                                         <th colSpan="1">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'previous'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['previous'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="1">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'current'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['current'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="1">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'total'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['total'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="1">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'previous'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['previous'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="1">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'current'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['current'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="1">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    'total'
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources['total'][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th colSpan="3"></th>
@@ -5506,11 +5417,7 @@ class requestPaymentsAddEdit extends Component {
                                             <div>
                                                 <header>
                                                     <h2 className="zero">
-                                                        {
-                                                            Resources['summaryOfApprovedInvoices'][
-                                                            currentLanguage
-                                                            ]
-                                                        }
+                                                        {Resources['summaryOfApprovedInvoices'][currentLanguage]}
                                                     </h2>
                                                 </header>
                                                 {btnExportApprovedInvoices}
@@ -6068,479 +5975,14 @@ class requestPaymentsAddEdit extends Component {
                     style={{
                         display: this.state.viewPopUpRows ? 'block' : 'none',
                     }}>
-                 {this.state.editItemsLoading===false?
+                    {this.state.editItemsLoading === false ?
 
-                 (   <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.addCommentModal = ref)}>
-                        <Formik
-                            initialValues={{ ...this.state.currentObject }}
-                            validationSchema={validationItemsSchema}
-                            enableReinitialize={true}
-                            onSubmit={values => {
-                                this.props.changeStatus === true
-                                    ? this.editPaymentRequistionItems()
-                                    : this.rowsUpdated();
-                            }}>
-                            {({
-                                errors,
-                                touched,
-                                handleBlur,
-                                handleChange,
-                                handleSubmit,
-                                setFieldValue,
-                                setFieldTouched,
-                            }) => (
-                                    <Form
-                                        id="RequestPaymentItemEditForm"
-                                        className="customProform proForm"
-                                        noValidate="novalidate"
-                                        onSubmit={handleSubmit}>
-                                        <div className="dropWrapper">
-                                            {Config.IsAllow(3674) &&
-                                                this.props.changeStatus == true ? (
-                                                    <Fragment>
-                                                        <div className="fillter-item-c fullInputWidth">
-                                                            <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .percentComplete[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                            <div
-                                                                className={
-                                                                    'inputDev ui input' +
-                                                                    (errors.percentComplete &&
-                                                                        touched.percentComplete
-                                                                        ? ' has-error'
-                                                                        : !errors.percentComplete &&
-                                                                            touched.percentComplete
-                                                                            ? ' has-success'
-                                                                            : ' ')
-                                                                }>
-                                                                <input
-                                                                    name="percentComplete"
-                                                                    className="form-control fsadfsadsa"
-                                                                    id="percentComplete"
-                                                                    placeholder={
-                                                                        Resources
-                                                                            .percentComplete[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                    autoComplete="off"
-                                                                    onBlur={e => {
-                                                                        handleBlur(e);
-                                                                        handleChange(e);
-                                                                    }}
-                                                                    value={
-                                                                        this.state
-                                                                            .currentObject
-                                                                            .percentComplete
-                                                                    }
-                                                                    onChange={e =>
-                                                                        this.handleChangeForEdit(
-                                                                            e,
-                                                                            'percentComplete',
-                                                                        )
-                                                                    }
-                                                                />
-                                                                {touched.percentComplete ? (
-                                                                    <em className="pError">
-                                                                        {' '}
-                                                                        {
-                                                                            errors.percentComplete
-                                                                        }{' '}
-                                                                    </em>
-                                                                ) : null}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="fillter-item-c fullInputWidth">
-                                                            <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .quantityComplete[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                            <div
-                                                                className={
-                                                                    'inputDev ui input' +
-                                                                    (errors.quantityComplete &&
-                                                                        touched.quantityComplete
-                                                                        ? ' has-error'
-                                                                        : !errors.quantityComplete &&
-                                                                            touched.quantityComplete
-                                                                            ? ' has-success'
-                                                                            : ' ')
-                                                                }>
-                                                                <input
-                                                                    name="quantityComplete"
-                                                                    className="form-control fsadfsadsa"
-                                                                    id="quantityComplete"
-                                                                    placeholder={
-                                                                        Resources
-                                                                            .quantityComplete[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                    autoComplete="off"
-                                                                    onBlur={e => {
-                                                                        handleBlur(e);
-                                                                        handleChange(e);
-                                                                    }}
-                                                                    value={
-                                                                        this.state
-                                                                            .currentObject
-                                                                            .quantityComplete
-                                                                    }
-                                                                    onChange={e =>
-                                                                        this.handleChangeForEdit(
-                                                                            e,
-                                                                            'quantityComplete',
-                                                                        )
-                                                                    }
-                                                                />
-                                                                {touched.quantityComplete ? (
-                                                                    <em className="pError">
-                                                                        {
-                                                                            errors.quantityComplete
-                                                                        }
-                                                                    </em>
-                                                                ) : null}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="fillter-item-c fullInputWidth">
-                                                            <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .paymentPercent[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                            <div
-                                                                className={
-                                                                    'inputDev ui input' +
-                                                                    (errors.paymentPercent &&
-                                                                        touched.paymentPercent
-                                                                        ? ' has-error'
-                                                                        : !errors.paymentPercent &&
-                                                                            touched.paymentPercent
-                                                                            ? ' has-success'
-                                                                            : ' ')
-                                                                }>
-                                                                <input
-                                                                    name="paymentPercent"
-                                                                    className="form-control fsadfsadsa"
-                                                                    id="paymentPercent"
-                                                                    placeholder={
-                                                                        Resources
-                                                                            .paymentPercent[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                    autoComplete="off"
-                                                                    onBlur={e => {
-                                                                        handleBlur(e);
-                                                                        handleChange(e);
-                                                                    }}
-                                                                    value={
-                                                                        this.state
-                                                                            .currentObject
-                                                                            .paymentPercent
-                                                                    }
-                                                                    onChange={e =>
-                                                                        this.handleChangeForEdit(
-                                                                            e,
-                                                                            'paymentPercent',
-                                                                        )
-                                                                    }
-                                                                />
-                                                                {touched.paymentPercent ? (
-                                                                    <em className="pError">
-                                                                        {' '}
-                                                                        {
-                                                                            errors.paymentPercent
-                                                                        }{' '}
-                                                                    </em>
-                                                                ) : null}
-                                                            </div>
-                                                        </div>
-                                                    </Fragment>
-                                                ) : null}
-
-                                            {Config.IsAllow(3673) ? (
-                                                <Fragment>
-                                                    <div className="fillter-item-c fullInputWidth">
-                                                        <label className="control-label">
-                                                            {
-                                                                Resources
-                                                                    .sitePercentComplete[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                        <div
-                                                            className={
-                                                                'inputDev ui input' +
-                                                                (errors.sitePercentComplete &&
-                                                                    touched.sitePercentComplete
-                                                                    ? ' has-error'
-                                                                    : !errors.sitePercentComplete &&
-                                                                        touched.sitePercentComplete
-                                                                        ? ' has-success'
-                                                                        : ' ')
-                                                            }>
-                                                            <input
-                                                                name="sitePercentComplete"
-                                                                className="form-control fsadfsadsa"
-                                                                id="sitePercentComplete"
-                                                                placeholder={
-                                                                    Resources
-                                                                        .percentComplete[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                                autoComplete="off"
-                                                                onBlur={e => {
-                                                                    handleBlur(e);
-                                                                    handleChange(e);
-                                                                }}
-                                                                value={
-                                                                    this.state
-                                                                        .currentObject
-                                                                        .sitePercentComplete
-                                                                }
-                                                                onChange={e =>
-                                                                    this.handleChangeForEdit(
-                                                                        e,
-                                                                        'sitePercentComplete',
-                                                                    )
-                                                                }
-                                                            />
-                                                            {touched.sitePercentComplete ? (
-                                                                <em className="pError">
-                                                                    {' '}
-                                                                    {
-                                                                        errors.sitePercentComplete
-                                                                    }{' '}
-                                                                </em>
-                                                            ) : null}
-                                                        </div>
-                                                    </div>
-                                                    <div className="fillter-item-c fullInputWidth">
-                                                        <label className="control-label">
-                                                            {
-                                                                Resources
-                                                                    .siteQuantityComplete[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                        <div
-                                                            className={
-                                                                'inputDev ui input' +
-                                                                (errors.siteQuantityComplete &&
-                                                                    touched.siteQuantityComplete
-                                                                    ? ' has-error'
-                                                                    : !errors.siteQuantityComplete &&
-                                                                        touched.siteQuantityComplete
-                                                                        ? ' has-success'
-                                                                        : ' ')
-                                                            }>
-                                                            <input
-                                                                name="siteQuantityComplete"
-                                                                className="form-control fsadfsadsa"
-                                                                id="siteQuantityComplete"
-                                                                placeholder={
-                                                                    Resources
-                                                                        .siteQuantityComplete[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                                autoComplete="off"
-                                                                onBlur={e => {
-                                                                    handleBlur(e);
-                                                                    handleChange(e);
-                                                                }}
-                                                                value={
-                                                                    this.state
-                                                                        .currentObject
-                                                                        .siteQuantityComplete
-                                                                }
-                                                                onChange={e =>
-                                                                    this.handleChangeForEdit(
-                                                                        e,
-                                                                        'siteQuantityComplete',
-                                                                    )
-                                                                }
-                                                            />
-                                                            {touched.siteQuantityComplete ? (
-                                                                <em className="pError">
-                                                                    {
-                                                                        errors.siteQuantityComplete
-                                                                    }
-                                                                </em>
-                                                            ) : null}
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="fillter-item-c fullInputWidth">
-                                                        <label className="control-label">
-                                                            {
-                                                                Resources
-                                                                    .contractPaymentPercent[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                        <div
-                                                            className={
-                                                                'inputDev ui input' +
-                                                                (errors.sitePaymentPercent &&
-                                                                    touched.sitePaymentPercent
-                                                                    ? ' has-error'
-                                                                    : !errors.sitePaymentPercent &&
-                                                                        touched.sitePaymentPercent
-                                                                        ? ' has-success'
-                                                                        : ' ')
-                                                            }>
-                                                            <input
-                                                                name="sitePaymentPercent"
-                                                                className="form-control fsadfsadsa"
-                                                                id="sitePaymentPercent"
-                                                                placeholder={
-                                                                    Resources
-                                                                        .contractPaymentPercent[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                                autoComplete="off"
-                                                                onBlur={e => {
-                                                                    handleBlur(e);
-                                                                    handleChange(e);
-                                                                }}
-                                                                value={
-                                                                    this.state
-                                                                        .currentObject
-                                                                        .sitePaymentPercent
-                                                                }
-                                                                onChange={e =>
-                                                                    this.handleChangeForEdit(
-                                                                        e,
-                                                                        'sitePaymentPercent',
-                                                                    )
-                                                                }
-                                                            />
-                                                            {touched.sitePaymentPercent ? (
-                                                                <em className="pError">
-                                                                    {' '}
-                                                                    {
-                                                                        errors.sitePaymentPercent
-                                                                    }{' '}
-                                                                </em>
-                                                            ) : null}
-                                                        </div>
-                                                    </div>
-                                                    <div className="fillter-item-c fullInputWidth">
-                                                        <label className="control-label">
-                                                            {
-                                                                Resources.comments[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                        <div
-                                                            className={
-                                                                'inputDev ui input'
-                                                            }>
-                                                            <input
-                                                                name="comments"
-                                                                className="form-control fsadfsadsa"
-                                                                id="comments"
-                                                                placeholder={
-                                                                    Resources
-                                                                        .comments[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                                autoComplete="off"
-                                                                onBlur={e => {
-                                                                    handleBlur(e);
-                                                                    handleChange(e);
-                                                                }}
-                                                                value={
-                                                                    this.state
-                                                                        .currentObject
-                                                                        .lastComment
-                                                                }
-                                                                onChange={e =>
-                                                                    this.handleChangeForEdit(
-                                                                        e,
-                                                                        'lastComment',
-                                                                    )
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </Fragment>
-                                            ) : null}
-
-                                            <div className="fullWidthWrapper">
-                                                {/* edit */}
-                                                {this.state.editItemsLoading === true ? (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
-                                                        </div>
-                                                    </button>
-                                                ) : (
-                                                        <button
-                                                            className="primaryBtn-1 btn "
-                                                            type="submit">
-                                                            {
-                                                                Resources.save[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </button>
-                                                    )}
-                                            </div>
-                                        </div>
-                                    </Form>
-                                )}
-                        </Formik>
-                    </SkyLight>
-               
-                  ) :(
-                    <LoadingSection />
-                  )}
-                </div>
-
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.viewPopUpRows ? 'block' : 'none',
-                    }}>
-                    {this.state.editItemsLoading === false ? 
-                    (
-
-                        <SkyLight
+                        (<SkyLight
                             hideOnOverlayClicked
-                            ref={ref => (this.reqPayModal = ref)}>
+                            ref={ref => (this.addCommentModal = ref)}>
                             <Formik
                                 initialValues={{ ...this.state.currentObject }}
-                                //validationSchema={validationItemsSchema}
+                                validationSchema={validationItemsSchema}
                                 enableReinitialize={true}
                                 onSubmit={values => {
                                     this.props.changeStatus === true
@@ -6557,234 +5999,128 @@ class requestPaymentsAddEdit extends Component {
                                     setFieldTouched,
                                 }) => (
                                         <Form
-                                            id="RequestPaymentItemMultipleEditForm"
+                                            id="RequestPaymentItemEditForm"
                                             className="customProform proForm"
                                             noValidate="novalidate"
                                             onSubmit={handleSubmit}>
-                                            <div className="proForm first-proform">
-                                                <div className="linebylineInput valid-input">
-                                                    <label
-                                                        className="control-label"
-                                                        style={{
-                                                            marginRight: '15px',
-                                                        }}>
-                                                        {
-                                                            Resources
-                                                                .percentageStatus[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                    </label>
-                                                    <div
-                                                        className="ui checkbox radio radioBoxBlue"
-                                                        style={{
-                                                            marginRight: '15px',
-                                                        }}>
-                                                        <input
-                                                            type="radio"
-                                                            name="items-status"
-                                                            defaultChecked={
-                                                                this.state
-                                                                    .isEditingPercentage ===
-                                                                    'false'
-                                                                    ? null
-                                                                    : 'checked'
-                                                            }
-                                                            value="true"
-                                                            onChange={e =>
-                                                                this.handleChangeMultiple(
-                                                                    e,
-                                                                )
-                                                            }
-                                                        />
-                                                        <label>
-                                                            {
-                                                                Resources
-                                                                    .percentage[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                    </div>
-                                                    <div className="ui checkbox radio radioBoxBlue">
-                                                        <input
-                                                            type="radio"
-                                                            name="items-status"
-                                                            defaultChecked={
-                                                                this.state
-                                                                    .isEditingPercentage ===
-                                                                    'false'
-                                                                    ? 'checked'
-                                                                    : null
-                                                            }
-                                                            value="false"
-                                                            onChange={e =>
-                                                                this.handleChangeMultiple(
-                                                                    e,
-                                                                )
-                                                            }
-                                                        />
-                                                        <label>
-                                                            {
-                                                                Resources.quantity[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div className="dropWrapper">
                                                 {Config.IsAllow(3674) &&
                                                     this.props.changeStatus == true ? (
                                                         <Fragment>
-                                                            {this.state
-                                                                .isEditingPercentage ===
-                                                                true ? (
-                                                                    <div className="fillter-item-c fullInputWidth">
-                                                                        <label className="control-label">
+                                                            <div className="fillter-item-c fullInputWidth">
+                                                                <label className="control-label">
+                                                                    {
+                                                                        Resources
+                                                                            .percentComplete[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                                <div
+                                                                    className={
+                                                                        'inputDev ui input' +
+                                                                        (errors.percentComplete &&
+                                                                            touched.percentComplete
+                                                                            ? ' has-error'
+                                                                            : !errors.percentComplete &&
+                                                                                touched.percentComplete
+                                                                                ? ' has-success'
+                                                                                : ' ')
+                                                                    }>
+                                                                    <input
+                                                                        name="percentComplete"
+                                                                        className="form-control fsadfsadsa"
+                                                                        id="percentComplete"
+                                                                        placeholder={
+                                                                            Resources
+                                                                                .percentComplete[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                        autoComplete="off"
+                                                                        onBlur={e => {
+                                                                            handleBlur(e);
+                                                                            handleChange(e);
+                                                                        }}
+                                                                        value={
+                                                                            this.state
+                                                                                .currentObject
+                                                                                .percentComplete
+                                                                        }
+                                                                        onChange={e =>
+                                                                            this.handleChangeForEdit(
+                                                                                e,
+                                                                                'percentComplete',
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                    {touched.percentComplete ? (
+                                                                        <em className="pError">
+                                                                            {' '}
                                                                             {
-                                                                                Resources
-                                                                                    .percentComplete[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                'inputDev ui input' +
-                                                                                (errors.percentComplete &&
-                                                                                    touched.percentComplete
-                                                                                    ? ' has-error'
-                                                                                    : !errors.percentComplete &&
-                                                                                        touched.percentComplete
-                                                                                        ? ' has-success'
-                                                                                        : ' ')
-                                                                            }>
-                                                                            <input
-                                                                                name="percentComplete"
-                                                                                className="form-control fsadfsadsa"
-                                                                                id="percentComplete"
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .percentComplete[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                autoComplete="off"
-                                                                                onBlur={e => {
-                                                                                    handleBlur(
-                                                                                        e,
-                                                                                    );
-                                                                                    handleChange(
-                                                                                        e,
-                                                                                    );
-                                                                                }}
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .currentObject
-                                                                                        .percentComplete
-                                                                                }
-                                                                                onChange={e =>
-                                                                                    this
-                                                                                        .state
-                                                                                        .isMultipleItems ===
-                                                                                        false
-                                                                                        ? this.handleChangeForEdit(
-                                                                                            e,
-                                                                                            'percentComplete',
-                                                                                        )
-                                                                                        : this.multipleHandleChangeForEdit(
-                                                                                            e,
-                                                                                            'percentComplete',
-                                                                                        )
-                                                                                }
-                                                                            />
-                                                                            {touched.percentComplete ? (
-                                                                                <em className="pError">
-                                                                                    {' '}
-                                                                                    {
-                                                                                        errors.percentComplete
-                                                                                    }{' '}
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
-                                                                    </div>
-                                                                ) : null}
-                                                            {this.state
-                                                                .isEditingPercentage ===
-                                                                false ? (
-                                                                    <div className="fillter-item-c fullInputWidth">
-                                                                        <label className="control-label">
+                                                                                errors.percentComplete
+                                                                            }{' '}
+                                                                        </em>
+                                                                    ) : null}
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="fillter-item-c fullInputWidth">
+                                                                <label className="control-label">
+                                                                    {
+                                                                        Resources
+                                                                            .quantityComplete[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                                <div
+                                                                    className={
+                                                                        'inputDev ui input' +
+                                                                        (errors.quantityComplete &&
+                                                                            touched.quantityComplete
+                                                                            ? ' has-error'
+                                                                            : !errors.quantityComplete &&
+                                                                                touched.quantityComplete
+                                                                                ? ' has-success'
+                                                                                : ' ')
+                                                                    }>
+                                                                    <input
+                                                                        name="quantityComplete"
+                                                                        className="form-control fsadfsadsa"
+                                                                        id="quantityComplete"
+                                                                        placeholder={
+                                                                            Resources
+                                                                                .quantityComplete[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                        autoComplete="off"
+                                                                        onBlur={e => {
+                                                                            handleBlur(e);
+                                                                            handleChange(e);
+                                                                        }}
+                                                                        value={
+                                                                            this.state
+                                                                                .currentObject
+                                                                                .quantityComplete
+                                                                        }
+                                                                        onChange={e =>
+                                                                            this.handleChangeForEdit(
+                                                                                e,
+                                                                                'quantityComplete',
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                    {touched.quantityComplete ? (
+                                                                        <em className="pError">
                                                                             {
-                                                                                Resources
-                                                                                    .quantityComplete[
-                                                                                currentLanguage
-                                                                                ]
+                                                                                errors.quantityComplete
                                                                             }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                'inputDev ui input' +
-                                                                                (errors.quantityComplete &&
-                                                                                    touched.quantityComplete
-                                                                                    ? ' has-error'
-                                                                                    : !errors.quantityComplete &&
-                                                                                        touched.quantityComplete
-                                                                                        ? ' has-success'
-                                                                                        : ' ')
-                                                                            }>
-                                                                            <input
-                                                                                name="quantityComplete"
-                                                                                className="form-control fsadfsadsa"
-                                                                                id="quantityComplete"
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .quantityComplete[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                autoComplete="off"
-                                                                                onBlur={e => {
-                                                                                    handleBlur(
-                                                                                        e,
-                                                                                    );
-                                                                                    handleChange(
-                                                                                        e,
-                                                                                    );
-                                                                                }}
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .currentObject
-                                                                                        .quantityComplete
-                                                                                }
-                                                                                onChange={e =>
-                                                                                    this
-                                                                                        .state
-                                                                                        .isMultipleItems ===
-                                                                                        false
-                                                                                        ? this.handleChangeForEdit(
-                                                                                            e,
-                                                                                            'quantityComplete',
-                                                                                        )
-                                                                                        : this.multipleHandleChangeForEdit(
-                                                                                            e,
-                                                                                            'quantityComplete',
-                                                                                        )
-                                                                                }
-                                                                            />
-                                                                            {touched.quantityComplete ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.quantityComplete
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
-                                                                    </div>
-                                                                ) : null}
+                                                                        </em>
+                                                                    ) : null}
+                                                                </div>
+                                                            </div>
 
                                                             <div className="fillter-item-c fullInputWidth">
                                                                 <label className="control-label">
@@ -6818,12 +6154,8 @@ class requestPaymentsAddEdit extends Component {
                                                                         }
                                                                         autoComplete="off"
                                                                         onBlur={e => {
-                                                                            handleBlur(
-                                                                                e,
-                                                                            );
-                                                                            handleChange(
-                                                                                e,
-                                                                            );
+                                                                            handleBlur(e);
+                                                                            handleChange(e);
                                                                         }}
                                                                         value={
                                                                             this.state
@@ -6831,17 +6163,10 @@ class requestPaymentsAddEdit extends Component {
                                                                                 .paymentPercent
                                                                         }
                                                                         onChange={e =>
-                                                                            this.state
-                                                                                .isMultipleItems ===
-                                                                                false
-                                                                                ? this.handleChangeForEdit(
-                                                                                    e,
-                                                                                    'paymentPercent',
-                                                                                )
-                                                                                : this.multipleHandleChangeForEdit(
-                                                                                    e,
-                                                                                    'paymentPercent',
-                                                                                )
+                                                                            this.handleChangeForEdit(
+                                                                                e,
+                                                                                'paymentPercent',
+                                                                            )
                                                                         }
                                                                     />
                                                                     {touched.paymentPercent ? (
@@ -6859,153 +6184,120 @@ class requestPaymentsAddEdit extends Component {
 
                                                 {Config.IsAllow(3673) ? (
                                                     <Fragment>
-                                                        {this.state
-                                                            .isEditingPercentage ===
-                                                            true ? (
-                                                                <div className="fillter-item-c fullInputWidth">
-                                                                    <label className="control-label">
+                                                        <div className="fillter-item-c fullInputWidth">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .sitePercentComplete[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div
+                                                                className={
+                                                                    'inputDev ui input' +
+                                                                    (errors.sitePercentComplete &&
+                                                                        touched.sitePercentComplete
+                                                                        ? ' has-error'
+                                                                        : !errors.sitePercentComplete &&
+                                                                            touched.sitePercentComplete
+                                                                            ? ' has-success'
+                                                                            : ' ')
+                                                                }>
+                                                                <input
+                                                                    name="sitePercentComplete"
+                                                                    className="form-control fsadfsadsa"
+                                                                    id="sitePercentComplete"
+                                                                    placeholder={
+                                                                        Resources
+                                                                            .percentComplete[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                    autoComplete="off"
+                                                                    onBlur={e => {
+                                                                        handleBlur(e);
+                                                                        handleChange(e);
+                                                                    }}
+                                                                    value={
+                                                                        this.state
+                                                                            .currentObject
+                                                                            .sitePercentComplete
+                                                                    }
+                                                                    onChange={e =>
+                                                                        this.handleChangeForEdit(
+                                                                            e,
+                                                                            'sitePercentComplete',
+                                                                        )
+                                                                    }
+                                                                />
+                                                                {touched.sitePercentComplete ? (
+                                                                    <em className="pError">
+                                                                        {' '}
                                                                         {
-                                                                            Resources
-                                                                                .sitePercentComplete[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
-                                                                    </label>
-                                                                    <div
-                                                                        className={
-                                                                            'inputDev ui input' +
-                                                                            (errors.sitePercentComplete &&
-                                                                                touched.sitePercentComplete
-                                                                                ? ' has-error'
-                                                                                : !errors.sitePercentComplete &&
-                                                                                    touched.sitePercentComplete
-                                                                                    ? ' has-success'
-                                                                                    : ' ')
-                                                                        }>
-                                                                        <input
-                                                                            name="sitePercentComplete"
-                                                                            className="form-control fsadfsadsa"
-                                                                            id="sitePercentComplete"
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .percentComplete[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            autoComplete="off"
-                                                                            onBlur={e => {
-                                                                                handleBlur(
-                                                                                    e,
-                                                                                );
-                                                                                handleChange(
-                                                                                    e,
-                                                                                );
-                                                                            }}
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .currentObject
-                                                                                    .sitePercentComplete
-                                                                            }
-                                                                            onChange={e =>
-                                                                                this
-                                                                                    .state
-                                                                                    .isMultipleItems ===
-                                                                                    false
-                                                                                    ? this.handleChangeForEdit(
-                                                                                        e,
-                                                                                        'sitePercentComplete',
-                                                                                    )
-                                                                                    : this.multipleHandleChangeForEdit(
-                                                                                        e,
-                                                                                        'sitePercentComplete',
-                                                                                    )
-                                                                            }
-                                                                        />
-                                                                        {touched.sitePercentComplete ? (
-                                                                            <em className="pError">
-                                                                                {' '}
-                                                                                {
-                                                                                    errors.sitePercentComplete
-                                                                                }{' '}
-                                                                            </em>
-                                                                        ) : null}
-                                                                    </div>
-                                                                </div>
-                                                            ) : null}
-                                                        {this.state
-                                                            .isEditingPercentage ===
-                                                            false ? (
-                                                                <div className="fillter-item-c fullInputWidth">
-                                                                    <label className="control-label">
+                                                                            errors.sitePercentComplete
+                                                                        }{' '}
+                                                                    </em>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
+                                                        <div className="fillter-item-c fullInputWidth">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .siteQuantityComplete[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div
+                                                                className={
+                                                                    'inputDev ui input' +
+                                                                    (errors.siteQuantityComplete &&
+                                                                        touched.siteQuantityComplete
+                                                                        ? ' has-error'
+                                                                        : !errors.siteQuantityComplete &&
+                                                                            touched.siteQuantityComplete
+                                                                            ? ' has-success'
+                                                                            : ' ')
+                                                                }>
+                                                                <input
+                                                                    name="siteQuantityComplete"
+                                                                    className="form-control fsadfsadsa"
+                                                                    id="siteQuantityComplete"
+                                                                    placeholder={
+                                                                        Resources
+                                                                            .siteQuantityComplete[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                    autoComplete="off"
+                                                                    onBlur={e => {
+                                                                        handleBlur(e);
+                                                                        handleChange(e);
+                                                                    }}
+                                                                    value={
+                                                                        this.state
+                                                                            .currentObject
+                                                                            .siteQuantityComplete
+                                                                    }
+                                                                    onChange={e =>
+                                                                        this.handleChangeForEdit(
+                                                                            e,
+                                                                            'siteQuantityComplete',
+                                                                        )
+                                                                    }
+                                                                />
+                                                                {touched.siteQuantityComplete ? (
+                                                                    <em className="pError">
                                                                         {
-                                                                            Resources
-                                                                                .siteQuantityComplete[
-                                                                            currentLanguage
-                                                                            ]
+                                                                            errors.siteQuantityComplete
                                                                         }
-                                                                    </label>
-                                                                    <div
-                                                                        className={
-                                                                            'inputDev ui input' +
-                                                                            (errors.siteQuantityComplete &&
-                                                                                touched.siteQuantityComplete
-                                                                                ? ' has-error'
-                                                                                : !errors.siteQuantityComplete &&
-                                                                                    touched.siteQuantityComplete
-                                                                                    ? ' has-success'
-                                                                                    : ' ')
-                                                                        }>
-                                                                        <input
-                                                                            name="siteQuantityComplete"
-                                                                            className="form-control fsadfsadsa"
-                                                                            id="siteQuantityComplete"
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .siteQuantityComplete[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            autoComplete="off"
-                                                                            onBlur={e => {
-                                                                                handleBlur(
-                                                                                    e,
-                                                                                );
-                                                                                handleChange(
-                                                                                    e,
-                                                                                );
-                                                                            }}
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .currentObject
-                                                                                    .siteQuantityComplete
-                                                                            }
-                                                                            onChange={e =>
-                                                                                this
-                                                                                    .state
-                                                                                    .isMultipleItems ===
-                                                                                    false
-                                                                                    ? this.handleChangeForEdit(
-                                                                                        e,
-                                                                                        'siteQuantityComplete',
-                                                                                    )
-                                                                                    : this.multipleHandleChangeForEdit(
-                                                                                        e,
-                                                                                        'siteQuantityComplete',
-                                                                                    )
-                                                                            }
-                                                                        />
-                                                                        {touched.siteQuantityComplete ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.siteQuantityComplete
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
-                                                                    </div>
-                                                                </div>
-                                                            ) : null}
+                                                                    </em>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
+
                                                         <div className="fillter-item-c fullInputWidth">
                                                             <label className="control-label">
                                                                 {
@@ -7038,12 +6330,8 @@ class requestPaymentsAddEdit extends Component {
                                                                     }
                                                                     autoComplete="off"
                                                                     onBlur={e => {
-                                                                        handleBlur(
-                                                                            e,
-                                                                        );
-                                                                        handleChange(
-                                                                            e,
-                                                                        );
+                                                                        handleBlur(e);
+                                                                        handleChange(e);
                                                                     }}
                                                                     value={
                                                                         this.state
@@ -7051,17 +6339,10 @@ class requestPaymentsAddEdit extends Component {
                                                                             .sitePaymentPercent
                                                                     }
                                                                     onChange={e =>
-                                                                        this.state
-                                                                            .isMultipleItems ===
-                                                                            false
-                                                                            ? this.handleChangeForEdit(
-                                                                                e,
-                                                                                'sitePaymentPercent',
-                                                                            )
-                                                                            : this.multipleHandleChangeForEdit(
-                                                                                e,
-                                                                                'sitePaymentPercent',
-                                                                            )
+                                                                        this.handleChangeForEdit(
+                                                                            e,
+                                                                            'sitePaymentPercent',
+                                                                        )
                                                                     }
                                                                 />
                                                                 {touched.sitePaymentPercent ? (
@@ -7074,71 +6355,63 @@ class requestPaymentsAddEdit extends Component {
                                                                 ) : null}
                                                             </div>
                                                         </div>
-                                                    </Fragment>
-                                                ) : null}
-                                                <Fragment>
-                                                    <div className="fillter-item-c fullInputWidth">
-                                                        <label className="control-label">
-                                                            {
-                                                                Resources.comments[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                        <div
-                                                            className={
-                                                                'inputDev ui input'
-                                                            }>
-                                                            <input
-                                                                name="comments"
-                                                                className="form-control fsadfsadsa"
-                                                                id="comments"
-                                                                placeholder={
-                                                                    Resources
-                                                                        .comments[
+                                                        <div className="fillter-item-c fullInputWidth">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources.comments[
                                                                     currentLanguage
                                                                     ]
                                                                 }
-                                                                autoComplete="off"
-                                                                onBlur={e => {
-                                                                    handleBlur(e);
-                                                                    handleChange(e);
-                                                                }}
-                                                                value={
-                                                                    this.state
-                                                                        .currentObject
-                                                                        .lastComment
-                                                                }
-                                                                onChange={e =>
-                                                                    this.state
-                                                                        .isMultipleItems ===
-                                                                        false
-                                                                        ? this.handleChangeForEdit(
+                                                            </label>
+                                                            <div
+                                                                className={
+                                                                    'inputDev ui input'
+                                                                }>
+                                                                <input
+                                                                    name="comments"
+                                                                    className="form-control fsadfsadsa"
+                                                                    id="comments"
+                                                                    placeholder={
+                                                                        Resources
+                                                                            .comments[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                    autoComplete="off"
+                                                                    onBlur={e => {
+                                                                        handleBlur(e);
+                                                                        handleChange(e);
+                                                                    }}
+                                                                    value={
+                                                                        this.state
+                                                                            .currentObject
+                                                                            .lastComment
+                                                                    }
+                                                                    onChange={e =>
+                                                                        this.handleChangeForEdit(
                                                                             e,
                                                                             'lastComment',
                                                                         )
-                                                                        : this.multipleHandleChangeForEdit(
-                                                                            e,
-                                                                            'lastComment',
-                                                                        )
-                                                                }
-                                                            />
+                                                                    }
+                                                                />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </Fragment>
+                                                    </Fragment>
+                                                ) : null}
 
-                                                <div className="fullWidthWrapper">  
+                                                <div className="fullWidthWrapper">
+                                                    {/* edit */}
                                                     {this.state.editItemsLoading === true ? (
-                                                            <button
-                                                                className="primaryBtn-1 btn  disabled"
-                                                                disabled="disabled">
-                                                                <div className="spinner">
-                                                                    <div className="bounce1" />
-                                                                    <div className="bounce2" />
-                                                                    <div className="bounce3" />
-                                                                </div>
-                                                            </button>
-                                                        ) : (
+                                                        <button
+                                                            className="primaryBtn-1 btn  disabled"
+                                                            disabled="disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button>
+                                                    ) : (
                                                             <button
                                                                 className="primaryBtn-1 btn "
                                                                 type="submit">
@@ -7155,7 +6428,641 @@ class requestPaymentsAddEdit extends Component {
                                     )}
                             </Formik>
                         </SkyLight>
-                    ) : (
+
+                        ) : (
+                            <LoadingSection />
+                        )}
+                </div>
+
+                <div
+                    className="largePopup largeModal "
+                    style={{
+                        display: this.state.viewPopUpRows ? 'block' : 'none',
+                    }}>
+                    {this.state.editItemsLoading === false ?
+                        (
+
+                            <SkyLight
+                                hideOnOverlayClicked
+                                ref={ref => (this.reqPayModal = ref)}>
+                                <Formik
+                                    initialValues={{ ...this.state.currentObject }}
+                                    //validationSchema={validationItemsSchema}
+                                    enableReinitialize={true}
+                                    onSubmit={values => {
+                                        this.props.changeStatus === true
+                                            ? this.editPaymentRequistionItems()
+                                            : this.rowsUpdated();
+                                    }}>
+                                    {({
+                                        errors,
+                                        touched,
+                                        handleBlur,
+                                        handleChange,
+                                        handleSubmit,
+                                        setFieldValue,
+                                        setFieldTouched,
+                                    }) => (
+                                            <Form
+                                                id="RequestPaymentItemMultipleEditForm"
+                                                className="customProform proForm"
+                                                noValidate="novalidate"
+                                                onSubmit={handleSubmit}>
+                                                <div className="proForm first-proform">
+                                                    <div className="linebylineInput valid-input">
+                                                        <label
+                                                            className="control-label"
+                                                            style={{
+                                                                marginRight: '15px',
+                                                            }}>
+                                                            {
+                                                                Resources
+                                                                    .percentageStatus[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </label>
+                                                        <div
+                                                            className="ui checkbox radio radioBoxBlue"
+                                                            style={{
+                                                                marginRight: '15px',
+                                                            }}>
+                                                            <input
+                                                                type="radio"
+                                                                name="items-status"
+                                                                defaultChecked={
+                                                                    this.state
+                                                                        .isEditingPercentage ===
+                                                                        'false'
+                                                                        ? null
+                                                                        : 'checked'
+                                                                }
+                                                                value="true"
+                                                                onChange={e =>
+                                                                    this.handleChangeMultiple(
+                                                                        e,
+                                                                    )
+                                                                }
+                                                            />
+                                                            <label>
+                                                                {
+                                                                    Resources
+                                                                        .percentage[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                        </div>
+                                                        <div className="ui checkbox radio radioBoxBlue">
+                                                            <input
+                                                                type="radio"
+                                                                name="items-status"
+                                                                defaultChecked={
+                                                                    this.state
+                                                                        .isEditingPercentage ===
+                                                                        'false'
+                                                                        ? 'checked'
+                                                                        : null
+                                                                }
+                                                                value="false"
+                                                                onChange={e =>
+                                                                    this.handleChangeMultiple(
+                                                                        e,
+                                                                    )
+                                                                }
+                                                            />
+                                                            <label>
+                                                                {
+                                                                    Resources.quantity[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="dropWrapper">
+                                                    {Config.IsAllow(3674) &&
+                                                        this.props.changeStatus == true ? (
+                                                            <Fragment>
+                                                                {this.state
+                                                                    .isEditingPercentage ===
+                                                                    true ? (
+                                                                        <div className="fillter-item-c fullInputWidth">
+                                                                            <label className="control-label">
+                                                                                {
+                                                                                    Resources
+                                                                                        .percentComplete[
+                                                                                    currentLanguage
+                                                                                    ]
+                                                                                }
+                                                                            </label>
+                                                                            <div
+                                                                                className={
+                                                                                    'inputDev ui input' +
+                                                                                    (errors.percentComplete &&
+                                                                                        touched.percentComplete
+                                                                                        ? ' has-error'
+                                                                                        : !errors.percentComplete &&
+                                                                                            touched.percentComplete
+                                                                                            ? ' has-success'
+                                                                                            : ' ')
+                                                                                }>
+                                                                                <input
+                                                                                    name="percentComplete"
+                                                                                    className="form-control fsadfsadsa"
+                                                                                    id="percentComplete"
+                                                                                    placeholder={
+                                                                                        Resources
+                                                                                            .percentComplete[
+                                                                                        currentLanguage
+                                                                                        ]
+                                                                                    }
+                                                                                    autoComplete="off"
+                                                                                    onBlur={e => {
+                                                                                        handleBlur(
+                                                                                            e,
+                                                                                        );
+                                                                                        handleChange(
+                                                                                            e,
+                                                                                        );
+                                                                                    }}
+                                                                                    value={
+                                                                                        this
+                                                                                            .state
+                                                                                            .currentObject
+                                                                                            .percentComplete
+                                                                                    }
+                                                                                    onChange={e =>
+                                                                                        this
+                                                                                            .state
+                                                                                            .isMultipleItems ===
+                                                                                            false
+                                                                                            ? this.handleChangeForEdit(
+                                                                                                e,
+                                                                                                'percentComplete',
+                                                                                            )
+                                                                                            : this.multipleHandleChangeForEdit(
+                                                                                                e,
+                                                                                                'percentComplete',
+                                                                                            )
+                                                                                    }
+                                                                                />
+                                                                                {touched.percentComplete ? (
+                                                                                    <em className="pError">
+                                                                                        {' '}
+                                                                                        {
+                                                                                            errors.percentComplete
+                                                                                        }{' '}
+                                                                                    </em>
+                                                                                ) : null}
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : null}
+                                                                {this.state
+                                                                    .isEditingPercentage ===
+                                                                    false ? (
+                                                                        <div className="fillter-item-c fullInputWidth">
+                                                                            <label className="control-label">
+                                                                                {
+                                                                                    Resources
+                                                                                        .quantityComplete[
+                                                                                    currentLanguage
+                                                                                    ]
+                                                                                }
+                                                                            </label>
+                                                                            <div
+                                                                                className={
+                                                                                    'inputDev ui input' +
+                                                                                    (errors.quantityComplete &&
+                                                                                        touched.quantityComplete
+                                                                                        ? ' has-error'
+                                                                                        : !errors.quantityComplete &&
+                                                                                            touched.quantityComplete
+                                                                                            ? ' has-success'
+                                                                                            : ' ')
+                                                                                }>
+                                                                                <input
+                                                                                    name="quantityComplete"
+                                                                                    className="form-control fsadfsadsa"
+                                                                                    id="quantityComplete"
+                                                                                    placeholder={
+                                                                                        Resources
+                                                                                            .quantityComplete[
+                                                                                        currentLanguage
+                                                                                        ]
+                                                                                    }
+                                                                                    autoComplete="off"
+                                                                                    onBlur={e => {
+                                                                                        handleBlur(
+                                                                                            e,
+                                                                                        );
+                                                                                        handleChange(
+                                                                                            e,
+                                                                                        );
+                                                                                    }}
+                                                                                    value={
+                                                                                        this
+                                                                                            .state
+                                                                                            .currentObject
+                                                                                            .quantityComplete
+                                                                                    }
+                                                                                    onChange={e =>
+                                                                                        this
+                                                                                            .state
+                                                                                            .isMultipleItems ===
+                                                                                            false
+                                                                                            ? this.handleChangeForEdit(
+                                                                                                e,
+                                                                                                'quantityComplete',
+                                                                                            )
+                                                                                            : this.multipleHandleChangeForEdit(
+                                                                                                e,
+                                                                                                'quantityComplete',
+                                                                                            )
+                                                                                    }
+                                                                                />
+                                                                                {touched.quantityComplete ? (
+                                                                                    <em className="pError">
+                                                                                        {
+                                                                                            errors.quantityComplete
+                                                                                        }
+                                                                                    </em>
+                                                                                ) : null}
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : null}
+
+                                                                <div className="fillter-item-c fullInputWidth">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .paymentPercent[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div
+                                                                        className={
+                                                                            'inputDev ui input' +
+                                                                            (errors.paymentPercent &&
+                                                                                touched.paymentPercent
+                                                                                ? ' has-error'
+                                                                                : !errors.paymentPercent &&
+                                                                                    touched.paymentPercent
+                                                                                    ? ' has-success'
+                                                                                    : ' ')
+                                                                        }>
+                                                                        <input
+                                                                            name="paymentPercent"
+                                                                            className="form-control fsadfsadsa"
+                                                                            id="paymentPercent"
+                                                                            placeholder={
+                                                                                Resources
+                                                                                    .paymentPercent[
+                                                                                currentLanguage
+                                                                                ]
+                                                                            }
+                                                                            autoComplete="off"
+                                                                            onBlur={e => {
+                                                                                handleBlur(
+                                                                                    e,
+                                                                                );
+                                                                                handleChange(
+                                                                                    e,
+                                                                                );
+                                                                            }}
+                                                                            value={
+                                                                                this.state
+                                                                                    .currentObject
+                                                                                    .paymentPercent
+                                                                            }
+                                                                            onChange={e =>
+                                                                                this.state
+                                                                                    .isMultipleItems ===
+                                                                                    false
+                                                                                    ? this.handleChangeForEdit(
+                                                                                        e,
+                                                                                        'paymentPercent',
+                                                                                    )
+                                                                                    : this.multipleHandleChangeForEdit(
+                                                                                        e,
+                                                                                        'paymentPercent',
+                                                                                    )
+                                                                            }
+                                                                        />
+                                                                        {touched.paymentPercent ? (
+                                                                            <em className="pError">
+                                                                                {' '}
+                                                                                {
+                                                                                    errors.paymentPercent
+                                                                                }{' '}
+                                                                            </em>
+                                                                        ) : null}
+                                                                    </div>
+                                                                </div>
+                                                            </Fragment>
+                                                        ) : null}
+
+                                                    {Config.IsAllow(3673) ? (
+                                                        <Fragment>
+                                                            {this.state
+                                                                .isEditingPercentage ===
+                                                                true ? (
+                                                                    <div className="fillter-item-c fullInputWidth">
+                                                                        <label className="control-label">
+                                                                            {
+                                                                                Resources
+                                                                                    .sitePercentComplete[
+                                                                                currentLanguage
+                                                                                ]
+                                                                            }
+                                                                        </label>
+                                                                        <div
+                                                                            className={
+                                                                                'inputDev ui input' +
+                                                                                (errors.sitePercentComplete &&
+                                                                                    touched.sitePercentComplete
+                                                                                    ? ' has-error'
+                                                                                    : !errors.sitePercentComplete &&
+                                                                                        touched.sitePercentComplete
+                                                                                        ? ' has-success'
+                                                                                        : ' ')
+                                                                            }>
+                                                                            <input
+                                                                                name="sitePercentComplete"
+                                                                                className="form-control fsadfsadsa"
+                                                                                id="sitePercentComplete"
+                                                                                placeholder={
+                                                                                    Resources
+                                                                                        .percentComplete[
+                                                                                    currentLanguage
+                                                                                    ]
+                                                                                }
+                                                                                autoComplete="off"
+                                                                                onBlur={e => {
+                                                                                    handleBlur(
+                                                                                        e,
+                                                                                    );
+                                                                                    handleChange(
+                                                                                        e,
+                                                                                    );
+                                                                                }}
+                                                                                value={
+                                                                                    this
+                                                                                        .state
+                                                                                        .currentObject
+                                                                                        .sitePercentComplete
+                                                                                }
+                                                                                onChange={e =>
+                                                                                    this
+                                                                                        .state
+                                                                                        .isMultipleItems ===
+                                                                                        false
+                                                                                        ? this.handleChangeForEdit(
+                                                                                            e,
+                                                                                            'sitePercentComplete',
+                                                                                        )
+                                                                                        : this.multipleHandleChangeForEdit(
+                                                                                            e,
+                                                                                            'sitePercentComplete',
+                                                                                        )
+                                                                                }
+                                                                            />
+                                                                            {touched.sitePercentComplete ? (
+                                                                                <em className="pError">
+                                                                                    {' '}
+                                                                                    {
+                                                                                        errors.sitePercentComplete
+                                                                                    }{' '}
+                                                                                </em>
+                                                                            ) : null}
+                                                                        </div>
+                                                                    </div>
+                                                                ) : null}
+                                                            {this.state
+                                                                .isEditingPercentage ===
+                                                                false ? (
+                                                                    <div className="fillter-item-c fullInputWidth">
+                                                                        <label className="control-label">
+                                                                            {
+                                                                                Resources
+                                                                                    .siteQuantityComplete[
+                                                                                currentLanguage
+                                                                                ]
+                                                                            }
+                                                                        </label>
+                                                                        <div
+                                                                            className={
+                                                                                'inputDev ui input' +
+                                                                                (errors.siteQuantityComplete &&
+                                                                                    touched.siteQuantityComplete
+                                                                                    ? ' has-error'
+                                                                                    : !errors.siteQuantityComplete &&
+                                                                                        touched.siteQuantityComplete
+                                                                                        ? ' has-success'
+                                                                                        : ' ')
+                                                                            }>
+                                                                            <input
+                                                                                name="siteQuantityComplete"
+                                                                                className="form-control fsadfsadsa"
+                                                                                id="siteQuantityComplete"
+                                                                                placeholder={
+                                                                                    Resources
+                                                                                        .siteQuantityComplete[
+                                                                                    currentLanguage
+                                                                                    ]
+                                                                                }
+                                                                                autoComplete="off"
+                                                                                onBlur={e => {
+                                                                                    handleBlur(
+                                                                                        e,
+                                                                                    );
+                                                                                    handleChange(
+                                                                                        e,
+                                                                                    );
+                                                                                }}
+                                                                                value={
+                                                                                    this
+                                                                                        .state
+                                                                                        .currentObject
+                                                                                        .siteQuantityComplete
+                                                                                }
+                                                                                onChange={e =>
+                                                                                    this
+                                                                                        .state
+                                                                                        .isMultipleItems ===
+                                                                                        false
+                                                                                        ? this.handleChangeForEdit(
+                                                                                            e,
+                                                                                            'siteQuantityComplete',
+                                                                                        )
+                                                                                        : this.multipleHandleChangeForEdit(
+                                                                                            e,
+                                                                                            'siteQuantityComplete',
+                                                                                        )
+                                                                                }
+                                                                            />
+                                                                            {touched.siteQuantityComplete ? (
+                                                                                <em className="pError">
+                                                                                    {
+                                                                                        errors.siteQuantityComplete
+                                                                                    }
+                                                                                </em>
+                                                                            ) : null}
+                                                                        </div>
+                                                                    </div>
+                                                                ) : null}
+                                                            <div className="fillter-item-c fullInputWidth">
+                                                                <label className="control-label">
+                                                                    {
+                                                                        Resources
+                                                                            .contractPaymentPercent[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                                <div
+                                                                    className={
+                                                                        'inputDev ui input' +
+                                                                        (errors.sitePaymentPercent &&
+                                                                            touched.sitePaymentPercent
+                                                                            ? ' has-error'
+                                                                            : !errors.sitePaymentPercent &&
+                                                                                touched.sitePaymentPercent
+                                                                                ? ' has-success'
+                                                                                : ' ')
+                                                                    }>
+                                                                    <input
+                                                                        name="sitePaymentPercent"
+                                                                        className="form-control fsadfsadsa"
+                                                                        id="sitePaymentPercent"
+                                                                        placeholder={
+                                                                            Resources
+                                                                                .contractPaymentPercent[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                        autoComplete="off"
+                                                                        onBlur={e => {
+                                                                            handleBlur(
+                                                                                e,
+                                                                            );
+                                                                            handleChange(
+                                                                                e,
+                                                                            );
+                                                                        }}
+                                                                        value={
+                                                                            this.state
+                                                                                .currentObject
+                                                                                .sitePaymentPercent
+                                                                        }
+                                                                        onChange={e =>
+                                                                            this.state
+                                                                                .isMultipleItems ===
+                                                                                false
+                                                                                ? this.handleChangeForEdit(
+                                                                                    e,
+                                                                                    'sitePaymentPercent',
+                                                                                )
+                                                                                : this.multipleHandleChangeForEdit(
+                                                                                    e,
+                                                                                    'sitePaymentPercent',
+                                                                                )
+                                                                        }
+                                                                    />
+                                                                    {touched.sitePaymentPercent ? (
+                                                                        <em className="pError">
+                                                                            {' '}
+                                                                            {
+                                                                                errors.sitePaymentPercent
+                                                                            }{' '}
+                                                                        </em>
+                                                                    ) : null}
+                                                                </div>
+                                                            </div>
+                                                        </Fragment>
+                                                    ) : null}
+                                                    <Fragment>
+                                                        <div className="fillter-item-c fullInputWidth">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources.comments[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div
+                                                                className={
+                                                                    'inputDev ui input'
+                                                                }>
+                                                                <input
+                                                                    name="comments"
+                                                                    className="form-control fsadfsadsa"
+                                                                    id="comments"
+                                                                    placeholder={
+                                                                        Resources
+                                                                            .comments[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                    autoComplete="off"
+                                                                    onBlur={e => {
+                                                                        handleBlur(e);
+                                                                        handleChange(e);
+                                                                    }}
+                                                                    value={
+                                                                        this.state
+                                                                            .currentObject
+                                                                            .lastComment
+                                                                    }
+                                                                    onChange={e =>
+                                                                        this.state
+                                                                            .isMultipleItems ===
+                                                                            false
+                                                                            ? this.handleChangeForEdit(
+                                                                                e,
+                                                                                'lastComment',
+                                                                            )
+                                                                            : this.multipleHandleChangeForEdit(
+                                                                                e,
+                                                                                'lastComment',
+                                                                            )
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </Fragment>
+
+                                                    <div className="fullWidthWrapper">
+                                                        {this.state.editItemsLoading === true ? (
+                                                            <button
+                                                                className="primaryBtn-1 btn  disabled"
+                                                                disabled="disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button>
+                                                        ) : (
+                                                                <button
+                                                                    className="primaryBtn-1 btn "
+                                                                    type="submit">
+                                                                    {
+                                                                        Resources.save[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </button>
+                                                            )}
+                                                    </div>
+                                                </div>
+                                            </Form>
+                                        )}
+                                </Formik>
+                            </SkyLight>
+                        ) : (
                             <LoadingSection />
                         )}
                 </div>

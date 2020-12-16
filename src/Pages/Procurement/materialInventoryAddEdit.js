@@ -100,7 +100,7 @@ class MaterialInventoryAddEdit extends Component {
                 width: 200,
                 sortabel: true
             }, {
-                Header: Resources["lastDeliveryDate"][currentLanguage],
+                Header: Resources["transactionDate"][currentLanguage],
                 accessor: "lastDeliveryDate",
                 width: 200,
                 sortabel: true
@@ -158,8 +158,18 @@ class MaterialInventoryAddEdit extends Component {
                 width: 200,
                 sortabel: true
             }, {
-                Header: Resources["lastReleasedDate"][currentLanguage],
-                accessor: "lastReleasedDate",
+                Header: Resources["currentCredit"][currentLanguage],
+                accessor: "currentCredit",
+                width: 200,
+                sortabel: true
+            },{
+                Header: Resources["transactionType"][currentLanguage],
+                accessor: "transactionTypeName",
+                width: 200,
+                sortabel: true
+            },{
+                Header: Resources["transactionDate"][currentLanguage],
+                accessor: "lastDeliveryDate",
                 width: 200,
                 sortabel: true
             }
@@ -193,7 +203,7 @@ class MaterialInventoryAddEdit extends Component {
                 width: 200,
                 sortabel: true
             }, {
-                Header: Resources["lastDeliveryDate"][currentLanguage],
+                Header: Resources["transactionDate"][currentLanguage],
                 accessor: "lastDeliveryDate",
                 width: 200,
                 sortabel: true
@@ -331,9 +341,9 @@ class MaterialInventoryAddEdit extends Component {
                     let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
 
                     result.forEach(item => {
-                        setDataChart.push({ stack: stacks[0], name: stacks[0], value: item.approvedQuantity });
-                        setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
-                        setDataChart.push({ stack: stacks[2], name: stacks[2], value: item.pendingQuantity });
+                        setDataChart.push({ stack: stacks[0], name: stacks[0], total: item.approvedQuantity });
+                        setDataChart.push({ stack: stacks[1], name: stacks[1], total: item.rejectedQuantity });
+                        setDataChart.push({ stack: stacks[2], name: stacks[2], total: item.pendingQuantity });
                     });
                     this.setState({
                         purchasedData: result,
@@ -348,9 +358,9 @@ class MaterialInventoryAddEdit extends Component {
                 let stacks = ["Approved Qty", "Rejected Quantity", "Pending Quantity"];
 
                 result.forEach(item => {
-                    setDataChart.push({ stack: stacks[0], name: stacks[0], value: item.approvedQuantity });
-                    setDataChart.push({ stack: stacks[1], name: stacks[1], value: item.rejectedQuantity });
-                    setDataChart.push({ stack: stacks[2], name: stacks[2], value: item.pendingQuantity });
+                    setDataChart.push({ stack: stacks[0], name: stacks[0], total: item.approvedQuantity });
+                    setDataChart.push({ stack: stacks[1], name: stacks[1], total: item.rejectedQuantity });
+                    setDataChart.push({ stack: stacks[2], name: stacks[2], total: item.pendingQuantity });
                 });
                 this.setState({
                     transferedData: result,
@@ -911,7 +921,7 @@ class MaterialInventoryAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.approvedQuantity[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.remainingQuantity[currentLanguage]}</label>
                                                             <div className={"shareLinks" + (this.props.changeStatus === false ? "" : "disabled")}>
                                                                 <div className={"inputDev ui input" + (errors.approvedQuantity && touched.approvedQuantity ? (" has-error") : !errors.approvedQuantity && touched.approvedQuantity ? (" has-success") : " ")} >
                                                                     <input type="text" className="form-control" id="approvedQuantity"

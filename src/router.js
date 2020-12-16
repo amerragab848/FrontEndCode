@@ -1002,12 +1002,7 @@ let originalRoutes = [
         key="r-93"
         path="/variationRequestAddEdit"
         component={VariationRequestAddEdit}
-    />,
-    // <Route
-    //     key="r-199"
-    //     path="/contractROASummaryAddEdit"
-    //     component={ContractROASummaryAddEdit}
-    // />,
+    />, 
     <Route
         key="r-94"
         path="/projectIssuesAddEdit"
@@ -1384,6 +1379,12 @@ let originalRoutes = [
     key="r-199"
     path="/ContractROaAddEdit"
     component={ContractROaAddEdit} />,
+    
+    <Route
+        key="r-200"
+        path="/submittalDrawingStatusListReport"
+        component={SubmittalDrawingStatusListReport}
+    />,
 
 
 ];

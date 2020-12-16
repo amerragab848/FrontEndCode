@@ -15162,14 +15162,6 @@
                 "ar": "حالة العقود"
               },
               "value": false
-            },
-            {
-              "code": 10137,
-              "title": {
-                "en": "Submittal Drawing Status List Report",
-                "ar": "تقديم تقرير قائمة حالة الرسم"
-              },
-              "value": false
             }
           ]
         },
@@ -15605,6 +15597,22 @@
               "title": {
                 "en": "Contractors Performance",
                 "ar": "حالة العقود  "
+              },
+              "value": false
+            },
+            {
+              "code": 10137,
+              "title": {
+                "en": "Submittal Drawing Status List Report",
+                "ar": "تقديم تقرير قائمة حالة الرسم"
+              },
+              "value": false
+            },
+            {
+              "code": 10138,
+              "title": {
+                "en": "Design Drawing List Status Report",
+                "ar": "تقرير تصميم الرسومات"
               },
               "value": false
             }

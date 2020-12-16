@@ -94,20 +94,13 @@ var routes = [
         title: "collectedInvoices",
         nav: true,
         settings: { Reports: true, permission: 686, order: 6 }
-    }, 
+    },
     {
         route: "inventoryDetails",
         moduleId: "ProjectReports/InventoryDetails",
         title: "inventoryDetails",
         nav: true,
         settings: { ProjectReports: true, permission: 3689, order: 14 }
-    }, 
-    {
-        route: "DesignDrawinglistStatusReport",
-        moduleId: "ProjectReports/DesignDrawinglistStatusReport",
-        title: "DesignDrawinglistStatusReport",
-        nav: true,
-        settings: { ProjectReports: true, permission: 3689, order: 15 }
     },
     {
         route: "CostControlTreeReport",
@@ -115,14 +108,14 @@ var routes = [
         title: "CostControlTreeReport",
         nav: true,
         settings: { ProjectReports: true, permission: 10072, order: 15 }
-    }, 
+    },
     {
         route: "CostCodingReport",
         moduleId: "ProjectReports/CostCodingReport",
         title: "CostCodingReport",
         nav: true,
         settings: { ProjectReports: true, permission: 10073, order: 16 }
-    }, 
+    },
     {
         route: "boqTemplateReport",
         moduleId: "ProjectReports/BoqTemplateReport",
@@ -259,21 +252,21 @@ var routes = [
         nav: true,
         settings: { Reports: true, order: 18 }
     },
-    { 
+    {
         route: "timeSheetUserDetails",
         moduleId: "TimeSheet/TimeSheetUserDetails",
         title: "timeSheetUserDetails",
         nav: true,
         settings: { HumanResources: true, permission: 3718, order: 12 }
     },
-    { 
+    {
         route: "boqContractCost",
         moduleId: "reports/boqContractCost",
         title: "boqContractCost",
         nav: true,
         settings: { Reports: true, permission: 3654, order: 13 }
     },
-    { 
+    {
         route: "ContractedQtyVSEarnedQty",
         moduleId: "ProjectReports/ContractedQtyVSEarnedQty",
         title: "contractQtyVsEarnedQty",
@@ -669,7 +662,7 @@ var routes = [
         nav: false,
         settings: { Communication: false }
     },
-    
+
     {
         route: "Phone",
         moduleId: "commonLogs",
@@ -801,7 +794,7 @@ var routes = [
             caption: "procoor-icon-letters",
             order: 1
         }
-    }, 
+    },
     {
         route:
             "internalMemoAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -860,7 +853,7 @@ var routes = [
             caption: "procoor-icon-email-records",
             order: 8
         }
-    }, 
+    },
     {
         route:
             "correspondenceSentAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -1281,6 +1274,14 @@ var routes = [
         nav: false
     },
     {
+        route: "ContractROA",
+        moduleId: "commonLogs",
+        title: "ContractROA",
+        nav: true,
+        hash: "#ContractROA",
+        settings: { Contracts: true, permission: 10100, order: 2 }
+    },
+    {
         route: "contractProcurmentRequestForm",
         moduleId: "commonLogs",
         title: "contractProcurmentRequestForm",
@@ -1318,7 +1319,7 @@ var routes = [
         route:
             "ProcurmentRequestFormAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "Contracts/ProcurmentRequestFormAddEdit",
-        title: "contract Procurment RequestForm  Addition",
+        title: "Procurment RequestForm  Addition",
         nav: false,
         settings: { Contracts: false }
     },
@@ -1543,15 +1544,6 @@ var routes = [
         hash: "#variationRequest",
         settings: { Contracts: true, permission: 3166, order: 9 }
     },
-    
-    {
-        route: "ContractROA",
-        moduleId: "commonLogs",
-        title: "ContractROA",
-        nav: true,
-        hash: "#ContractROA",
-        settings: { Contracts: true, permission: 10100, order: 11 }
-    },
     {
         route:
             "variationRequestAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -1619,7 +1611,7 @@ var routes = [
         route: "paymentCertification",
         moduleId: "commonLogs",
         title: "paymentCertificationLog",
-        nav: true,  
+        nav: true,
         hash: "#paymentCertification",
         settings: { Contracts: true, caption: "procoor-icon-Issues", permission: 10070 }
     },
@@ -1671,7 +1663,7 @@ var routes = [
         title: "Daily Reports",
         nav: false,
         settings: { Site: false }
-    }, 
+    },
     {
         route: "materialInspectionRequest",
         moduleId: "commonLogs",
@@ -1774,7 +1766,7 @@ var routes = [
         title: "Submittal Set Addition",
         nav: false,
         settings: { Site: false }
-    }, 
+    },
     {
         route: "drawingList",
         moduleId: "commonLogs",
@@ -2159,21 +2151,21 @@ var routes = [
         nav: true,
         settings: { CostControl: true, permission: 3186, order: 2 }
     },
-    { 
+    {
         route: "rptCostCodingTree",
         moduleId: "reports/rptCostCodingTree",
         title: "costCodingTreeReport",
         nav: true,
         settings: { CostControl: true, permission: 401, order: 10 }
     },
-    { 
+    {
         route: "projectTimeSheet",
         moduleId: "reports/projectTimeSheet",
         title: "timeSheetReport",
         nav: true,
         settings: { Reports: true, permission: 407, order: 11 }
     },
-    { 
+    {
         route: "taskStatus",
         moduleId: "TaskReports/TasksStatus",
         title: "taskStatus",
@@ -2187,7 +2179,7 @@ var routes = [
         nav: true,
         settings: { Tasks: true, permission: 3699, order: 2 }
     },
-    { 
+    {
         route: "invoiceQuantity",
         moduleId: "reports/invoiceQuantity",
         title: "invoicedQuantities",
@@ -2348,7 +2340,7 @@ var routes = [
         nav: true,
         settings: { Tasks: true, permission: 3702, order: 5 }
     },
-    { 
+    {
         route: "projectTaskTree",
         moduleId: "projects/projectTaskTree",
         title: "taskTree",
@@ -2675,7 +2667,7 @@ var routes = [
         hash: "#contractsBoqQuantities",
         settings: { Reports: true, order: 7 }
     },
-    
+
     ,
     {
         route: "budgetVarianceSummaryDetails",
@@ -2731,7 +2723,7 @@ var routes = [
         title: "paymentRequisition",
         nav: true,
         settings: { ContractsPo: true, permission: 3696, order: 6 }
-    }, 
+    },
     {
         route: "boqStructure",
         moduleId: "projects/boqStructure",
@@ -2742,7 +2734,7 @@ var routes = [
             permission: 3670,
             order: 6
         }
-    }, 
+    },
     {
         route: "RequestPaymentDeductionTypeReport",
         moduleId: "ContractsPOReports/RequestPaymentDeductionTypeReport",
@@ -2753,7 +2745,7 @@ var routes = [
             permission: 10075,
             order: 10
         }
-    }, 
+    },
     { //start inventory Items Routes
         route: "inventoryRpt",
         moduleId: "InventoryItemsReports/InventoryItems",
@@ -2845,7 +2837,7 @@ var routes = [
         title: "onProgressDocuments",
         nav: true,
         settings: { technicalOffice: true, permission: 3762, order: 3 }
-    }, 
+    },
     {
         route: "contractorsPerformance",
         moduleId: "TechnicalOffice/ContractorsPerformance",
@@ -2859,6 +2851,13 @@ var routes = [
         title: "submittalDrawingStatusListReport",
         nav: true,
         settings: { technicalOffice: true, permission: 10137, order: 5 }
+    },
+    {
+        route: "DesignDrawinglistStatusReport",
+        moduleId: "ProjectReports/DesignDrawinglistStatusReport",
+        title: "DesignDrawinglistStatusReport",
+        nav: true,
+        settings: { technicalOffice: true, permission: 10138, order: 15 }
     },
     {
         route: "Area",
@@ -2973,7 +2972,7 @@ var routes = [
         title: "expnesesUserRequests",
         nav: true,
         settings: { OtherReports: true, permission: 3719, order: 1 }
-    },{ //start inventory Items Routes
+    }, { //start inventory Items Routes
         route: "LoginHistoryReport",
         moduleId: "OtherReports/LoginHistoryReport",
         title: "loginHistoryReport",
@@ -2983,12 +2982,12 @@ var routes = [
         route: "UserAlerts",
         moduleId: "ProjectSetup/UserAlerts",
         title: "userAlerts",
-        nav: true, 
+        nav: true,
         settings: {
             // General: true,
             caption: "procoor-icon-project-page-setup",
             order: 5
-        } 
+        }
     },
 ];
 
