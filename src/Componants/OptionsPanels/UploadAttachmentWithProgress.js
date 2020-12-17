@@ -1,7 +1,8 @@
 import React, { Component, createRef, Fragment } from 'react';
-import classNames from 'classnames';
-import AttachUpload from '../../Styles/images/attacthUpload.png';
-import AttachDrag from '../../Styles/images/attachDraggable.png';
+// import classNames from 'classnames';
+// import AttachUpload from '../../Styles/images/attacthUpload.png';
+// import AttachDrag from '../../Styles/images/attachDraggable.png';
+// import Resources from '../../resources.json';
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone-uploader';
@@ -11,12 +12,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
-import Resources from '../../resources.json';
 
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
 
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachmentWithProgress extends Component {
     constructor(props) {
@@ -38,7 +37,7 @@ class UploadAttachmentWithProgress extends Component {
     onSuccess(files) {
         let selectedFiles = [];
 
-        files.forEach(function(doc) {
+        files.forEach(function (doc) {
             var newFile = {
                 url: doc.link,
                 progress: 0,
@@ -47,13 +46,7 @@ class UploadAttachmentWithProgress extends Component {
             selectedFiles.push(newFile);
         });
 
-        this.props.actions.uploadFileLinks(
-            'UploadFilesModalLinksByDocId?docId=' +
-                this.props.docId +
-                '&docTypeId=' +
-                this.props.docTypeId,
-            selectedFiles,
-        );
+        this.props.actions.uploadFileLinks('UploadFilesModalLinksByDocId?docId=' + this.props.docId + '&docTypeId=' + this.props.docTypeId, selectedFiles,);
     }
 
     onDrop = (acceptedFiles, rejectedFiles) => {
@@ -159,7 +152,7 @@ class UploadAttachmentWithProgress extends Component {
                         .setDeveloperKey(
                             Config.getPublicConfiguartion().googleDriveKey,
                         )
-                        .setCallback(() => {});
+                        .setCallback(() => { });
 
                     picker.build().setVisible(true);
                 }}>
@@ -173,9 +166,11 @@ class UploadAttachmentWithProgress extends Component {
         );
     };
 
-    getUploadParams = ({ meta }) => {
-        console.log(meta);
-        return { url: 'https://httpbin.org/post' };
+    getUploadParams = ({ file, meta }) => {
+        let files = [{ file }];
+        this.onDropAcceptedHandler(files);
+        // console.log(meta);
+        // return { url: 'https://httpbin.org/post' };
     };
 
     handleChangeStatus = ({ meta, file }, status, allFiles) => {
@@ -188,7 +183,7 @@ class UploadAttachmentWithProgress extends Component {
     };
 
     handleSubmit = (files, allFiles) => {
-        this.onDropAcceptedHandler(files);
+        //this.onDropAcceptedHandler(files);
         allFiles.forEach(f => f.remove());
     };
 
@@ -246,47 +241,36 @@ class UploadAttachmentWithProgress extends Component {
     render() {
         return Config.IsAllow(this.props.AddAttachments) ||
             Config.IsAllow(this.props.EditAttachments) ? (
-            <div>
-                <Dropzone
-                    getUploadParams={this.getUploadParams}
-                    onChangeStatus={this.handleChangeStatus}
-                    onSubmit={this.handleSubmit}
-                    InputComponent={this.InputChooseFile}
-                    submitButtonContent={this.UploadFiles}
-                    getFilesFromEvent={this.getFilesFromEvent}
-                    classNames
-                />
+                <div>
+                    <Dropzone
+                        getUploadParams={this.getUploadParams}
+                        onChangeStatus={this.handleChangeStatus}
+                        onSubmit={this.handleSubmit}
+                        InputComponent={this.InputChooseFile}
+                        submitButtonContent={this.UploadFiles}
+                        getFilesFromEvent={this.getFilesFromEvent}
+                        classNames
+                    />
 
-                <div className="drives__upload">
-                    <label
-                        className="btn__upload"
-                        onClick={() => this.addBtnRef.current.click()}>
-                        Open my folders
+                    <div className="drives__upload">
+                        <label
+                            className="btn__upload"
+                            onClick={() => this.addBtnRef.current.click()}>
+                            Open my folders
                     </label>
-                    {/* <label
-                        className=" btn__upload--left primaryBtn-1 btn "
-                        style={{
-                            pointerEvents:
-                                this.state.fileStatus == 'done'
-                                    ? 'auto'
-                                    : 'none',
-                        }}
-                        onClick={() => this.uploadBtnRef.current.click()}>
-                        Upload
-                    </label> */}
-                    <span class="upload__border"></span>
-                    <div className="drive__wrapper">
-                        <h2 class="zero">Upload From</h2>
-                        {Config.IsAllow(this.props.ShowGoogleDrive)
-                            ? this.renderGoogleDrive()
-                            : null}
-                        {Config.IsAllow(this.props.ShowDropBox)
-                            ? this.renderDropBox()
-                            : null}
+                        <span class="upload__border"></span>
+                        <div className="drive__wrapper">
+                            <h2 class="zero">Upload From</h2>
+                            {Config.IsAllow(this.props.ShowGoogleDrive)
+                                ? this.renderGoogleDrive()
+                                : null}
+                            {Config.IsAllow(this.props.ShowDropBox)
+                                ? this.renderDropBox()
+                                : null}
+                        </div>
                     </div>
                 </div>
-            </div>
-        ) : null;
+            ) : null;
     }
 }
 
