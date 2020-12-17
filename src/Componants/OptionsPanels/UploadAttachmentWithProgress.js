@@ -1,8 +1,4 @@
 import React, { Component, createRef, Fragment } from 'react';
-// import classNames from 'classnames';
-// import AttachUpload from '../../Styles/images/attacthUpload.png';
-// import AttachDrag from '../../Styles/images/attachDraggable.png';
-// import Resources from '../../resources.json';
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone-uploader';
@@ -11,13 +7,18 @@ import dropbox from '../../Styles/images/dropbox.png';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import Config from '../../Services/Config';
-
+import Config from '../../Services/Config'; 
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
+
+// import classNames from 'classnames';
+// import AttachUpload from '../../Styles/images/attacthUpload.png';
+// import AttachDrag from '../../Styles/images/attachDraggable.png';
+// import Resources from '../../resources.json';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachmentWithProgress extends Component {
+
     constructor(props) {
         super(props);
 
@@ -167,23 +168,28 @@ class UploadAttachmentWithProgress extends Component {
     };
 
     getUploadParams = ({ file, meta }) => {
-        let files = [{ file }];
-        this.onDropAcceptedHandler(files);
-        // console.log(meta);
-        // return { url: 'https://httpbin.org/post' };
+        let header = {
+            Authorization: localStorage.getItem('userToken'),
+            docTypeId: this.props.docTypeId,
+            docId: this.props.docId,
+            parentId: this.state.parentId,
+        };
+        let url = Config.getPublicConfiguartion().static + 'PM/api/Procoor/BlobUpload';
+        return { url: url, headers: header };
     };
 
-    handleChangeStatus = ({ meta, file }, status, allFiles) => {
-        console.log(status);
+    handleChangeStatus = ({ meta, file }, status, allFiles, response) => {
         this.setState({ fileStatus: status });
         if (allFiles.length && this.state.fileStatus == 'done') {
             this.uploadBtnRef.current.click();
             this.setState({ fileStatus: '' });
+            if (response) {
+                this.props.actions.insertFiletoAttachments(JSON.parse(response));
+            }
         }
     };
 
     handleSubmit = (files, allFiles) => {
-        //this.onDropAcceptedHandler(files);
         allFiles.forEach(f => f.remove());
     };
 
@@ -236,13 +242,14 @@ class UploadAttachmentWithProgress extends Component {
                 Upload
             </div>
         );
-    };
+    }; 
 
     render() {
         return Config.IsAllow(this.props.AddAttachments) ||
             Config.IsAllow(this.props.EditAttachments) ? (
                 <div>
                     <Dropzone
+                        autoUpload={true}
                         getUploadParams={this.getUploadParams}
                         onChangeStatus={this.handleChangeStatus}
                         onSubmit={this.handleSubmit}
@@ -272,7 +279,7 @@ class UploadAttachmentWithProgress extends Component {
                 </div>
             ) : null;
     }
-}
+} 
 
 function mapStateToProps(state) {
     return {
