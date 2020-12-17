@@ -1177,7 +1177,7 @@ class requestPaymentsAddEdit extends Component {
         ) {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-            this.fillSummariesTab();
+            //this.fillSummariesTab();
 
             this.buildColumns(true);
         }

@@ -318,7 +318,7 @@ class CommonLog extends Component {
         this.renderComponent(this.props.match.params.document, this.props.projectId, true);
       } else {
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
-        this.fillDropDowns();
+        //this.fillDropDowns();
       }
     }
   };
