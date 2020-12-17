@@ -25,29 +25,21 @@ class BarChartComp extends Component {
     GenerateDataFromProps = props => {
         if (props) {
             let chartDatasets = [];
+            let labels = [];
+            let data = [];
+            let colors = [];
             let chartLabels = [];
-            let singleDataset = [];
-            let stacks = [];
-            props.map(dataset => {
-                if (!chartLabels.includes(dataset.name))
-                    chartLabels.push(dataset.name);
-                if (!stacks.includes(dataset.stack)) stacks.push(dataset.stack);
+            props.map(item => {
+                chartLabels.push(item.name);
                 return null;
             });
-            stacks.forEach((stack, index) => {
-                props.forEach(item => {
-                    if (item.stack === stack) {
-                        singleDataset.push(item.total);
-                    }
-                });
-                chartDatasets.push({
-                    label: stacks[index],
-                    data: singleDataset,
-                    backgroundColor: colorSchemaGroup[index],
-                });
-                singleDataset = [];
+            props.map((dataset, index) => {
+                labels.push(dataset.name);
+                data.push(dataset.total);
+                colors.push(colorSchemaGroup[index]);
             });
 
+            chartDatasets.push({ label: labels, data: data, backgroundColor: colors })
             this.setState({
                 chartLabels,
                 chartDatasets,

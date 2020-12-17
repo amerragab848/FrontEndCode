@@ -46,6 +46,7 @@ const validationSchema = Yup.object().shape({
 const ValidtionSchemaDrawItems = Yup.object().shape({
     details: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
     scale: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
+    refCode: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
     papers: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
     estimateTime: Yup.number()
         .required(Resources['isRequiredField'][currentLanguage])
@@ -99,6 +100,15 @@ class drawingListAddEdit extends Component {
                 sortable: true,
                 type: "text"
             },
+            {
+                field: "refCode",
+                title: Resources["refCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            }
         ]
 
         super(props)
@@ -147,10 +157,12 @@ class drawingListAddEdit extends Component {
             { name: 'viewAttachments', code: 3732 }, { name: 'deleteAttachments', code: 3733 }],
             selectDescipline: { label: Resources.selectDescipline[currentLanguage], value: "0" },
             selectProject: { label: Resources.selectProjects[currentLanguage], value: "0" },
+            selectSubmittedFor:{label:Resources.selectSubmittedFor[currentLanguage],value:"0"},
             IsEditMode: false,
             showPopUp: false,
             IsAddModel: false,
             ProjectDropData: [],
+            submittedForData:[],
             DesciplineDropData: [],
             ShowAddItem: false,
             IsEditModeItem: false,
@@ -300,7 +312,49 @@ class drawingListAddEdit extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
-    componentWillMount() {
+    FillDrowDowns = () => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=project_type', 'title', 'id', 'defaultLists', "project_type", "listType").then(
+            result => {
+                this.setState({
+                    ProjectDropData: result,
+                    isLoading: true
+                })
+                if (docId !== 0) {
+                    let elementID = this.state.document.projectTypeId;
+                    let selectProject = find(result, function (i) { return i.value == elementID });
+                    this.setState({
+                        selectProject,
+                        isLoading: false
+                    })
+                }
+            }
+        )
+
+        //submittedFor
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=submittedFor', 'title', 'id', 'defaultLists', "submittedFor", "listType").then(
+            result => {
+                this.setState({
+                    submittedForData: result,
+                    isLoading: true
+                })
+                if (docId !== 0) {
+                    let elementID = this.state.document.submittedFor;
+                    let selectSubmittedFor = find(result, function (i) { return i.value == elementID });
+                    this.setState({
+                        selectSubmittedFor,
+                        isLoading: false
+                    })
+                }
+            }
+        )
+    }
+
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
+        this.setState({ docId: 0 });
+    }
+
+    componentDidMount = () => {
         if (docId > 0) {
 
             let url = "GetDesignDrawingListForEdit?id=" + this.state.docId
@@ -340,35 +394,6 @@ class drawingListAddEdit extends Component {
             this.FillDrowDowns()
         }
 
-
-    }
-
-    FillDrowDowns = () => {
-        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=project_type', 'title', 'id', 'defaultLists', "project_type", "listType").then(
-            result => {
-                this.setState({
-                    ProjectDropData: result,
-                    isLoading: false
-                })
-                if (docId !== 0) {
-                    let elementID = this.state.document.projectTypeId;
-                    let selectProject = find(result, function (i) { return i.value == elementID });
-                    this.setState({
-                        selectProject,
-                        isLoading: false
-                    })
-                }
-            }
-        )
-    }
-
-    componentWillUnmount() {
-        this.props.actions.clearCashDocument();
-        this.setState({ docId: 0 });
-    }
-
-    componentDidMount = () => {
-
         dataservice.GetDataList('GetDesignDiscipline?accountOwnerId=2&pageNumber=0&pageSize=10000', 'title', 'id').then(
             data => {
                 this.setState({
@@ -378,6 +403,8 @@ class drawingListAddEdit extends Component {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
+       // this.FillDrowDowns()
+
     }
 
     clickHandler = (e) => {
@@ -439,6 +466,11 @@ class drawingListAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
+        if (prevProps.document.id !== this.props.document.id ){
+            this.FillDrowDowns()
+        }
+        
+
     }
 
     handleChangeDate(e, field) {
@@ -755,6 +787,7 @@ class drawingListAddEdit extends Component {
                             papers: this.state.IsEditModeItem ? this.state.ItemForEdit.paper : '',
                             estimateTime: this.state.IsEditModeItem ? this.state.ItemForEdit.estimatedTime : '',
                             arrangeItems: this.state.ItemForEdit.arrange,
+                            refCode:this.state.IsEditModeItem ? this.state.ItemForEdit.refCode : '',
                         }}
 
                         enableReinitialize={true}
@@ -838,6 +871,21 @@ class drawingListAddEdit extends Component {
                                                     onChange={(e) => this.handleChangeItems(e, 'estimatedTime')}
                                                     placeholder={Resources['estimateTime'][currentLanguage]} />
                                                 {errors.estimateTime && touched.estimateTime ? (<em className="pError">{errors.estimateTime}</em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="fillter-status fillter-item-c">
+                                            <label className="control-label">{Resources['refCode'][currentLanguage]}</label>
+                                            <div className={'ui input inputDev ' + (errors.refCode && touched.refCode ? 'has-error' : null) + ' '}>
+                                                <input autoComplete="off"
+                                                 value={this.state.ItemForEdit.refCode} className="form-control" name="refCode"
+                                                    onBlur={(e) => {
+                                                        handleBlur(e)
+                                                        handleChange(e)
+                                                    }}
+                                                    onChange={(e) => this.handleChangeItems(e, 'refCode')}
+                                                    placeholder={Resources['refCode'][currentLanguage]} />
+                                                {errors.refCode && touched.refCode ? (<em className="pError">{errors.refCode}</em>) : null}
                                             </div>
                                         </div>
 
@@ -973,7 +1021,8 @@ class drawingListAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="projectType" data={this.state.ProjectDropData} name="projectTypeId"
+                                                            <Dropdown title="projectType" 
+                                                              data={this.state.ProjectDropData} name="projectTypeId"
                                                                 selectedValue={this.state.selectProject}
                                                                 onChange={setFieldValue}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'projectTypeId', false, '', '', '', 'selectProject')}
@@ -981,6 +1030,19 @@ class drawingListAddEdit extends Component {
                                                                 error={errors.projectTypeId}
                                                                 touched={touched.projectTypeId}
                                                                 value={values.projectTypeId} />
+                                                        </div>
+
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown title="submittedFor" 
+                                                               data={this.state.submittedForData} 
+                                                                name="submittedFor"
+                                                                selectedValue={this.state.selectSubmittedFor}
+                                                                onChange={setFieldValue}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'submittedFor', false, '', '', '', 'selectSubmittedFor')}
+                                                                onBlur={setFieldTouched}
+                                                                error={errors.submittedFor}
+                                                                touched={touched.submittedFor}
+                                                                value={values.submittedFor} />
                                                         </div>
 
                                                     </div>

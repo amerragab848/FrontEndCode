@@ -55,11 +55,14 @@ const documentItemValidationSchema = Yup.object().shape({
         .required(Resources['resourceCode'][currentLanguage]),
     itemCode: Yup.string()
         .required(Resources['itemCode'][currentLanguage]),
+
     unitPrice: Yup.number().required(Resources['unitPrice'][currentLanguage]),
+
     days: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    quantity: Yup.string().required(Resources['quantity'][currentLanguage])
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+
+    quantity: Yup.number().required(Resources['quantity'][currentLanguage])
+      
 })
 
 let columns = [
@@ -1429,6 +1432,18 @@ class pcoAddEdit extends Component {
                                                         onBlur={handleBlur} value={this.state.voItemToEdit.resourceCode}
                                                         onChange={(e) => this.handleChangeItem(e, "resourceCode", true)} />
                                                     {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
+                                                </div>
+                                            </div>
+
+                                            <div className="fillter-status fillter-item-c">
+                                                <label className="control-label">{Resources['description'][currentLanguage]} </label>
+                                                <div className={"inputDev ui input " + (errors.description ? 'has-error' : !errors.description && touched.description ? (" has-success") : " ")}>
+                                                    <input name='description'
+                                                        className="form-control"
+                                                        id="description" placeholder={Resources['description'][currentLanguage]} autoComplete='off'
+                                                        onBlur={handleBlur} value={this.state.voItemToEdit.description}
+                                                        onChange={(e) => this.handleChangeItem(e, "description", true)} />
+                                                    {errors.description ? (<em className="pError">{errors.description}</em>) : null}
                                                 </div>
                                             </div>
 

@@ -2530,6 +2530,7 @@
     },
     "39": {
         "fields": [
+            
             {
                 "name": "subject",
                 "value": "subject",
@@ -2558,6 +2559,11 @@
             {
                 "name": "projectName",
                 "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "submittedFor",
+                "value": "submittedForText",
                 "type": "S"
             }
         ],
