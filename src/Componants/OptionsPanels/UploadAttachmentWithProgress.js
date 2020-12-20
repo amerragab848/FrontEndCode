@@ -19,6 +19,9 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 class UploadAttachmentWithProgress extends Component {
 
+    addBtnRef = createRef();
+    uploadBtnRef = createRef();
+
     constructor(props) {
         super(props);
 
@@ -32,9 +35,7 @@ class UploadAttachmentWithProgress extends Component {
             fileStatus: '',
         };
     }
-    addBtnRef = createRef();
-    uploadBtnRef = createRef();
-
+    
     onSuccess(files) {
         let selectedFiles = [];
 
