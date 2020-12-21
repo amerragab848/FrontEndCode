@@ -5,6 +5,7 @@ import Resources from '../../../src/resources';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Config from '../../Services/Config';
 import Api from '../../api';
 
 import * as communicationActions from '../../store/actions/communication';
@@ -21,29 +22,12 @@ class UploadBoqAttachment extends Component {
             parentId: '',
             _className: '',
             header: this.props.header,
-            acceptedFiles: [],
+            filesExist: false,
             Isloading: false,
             uploaded: false,
         };
     }
     uploadBtnRef = createRef();
-    onDrop = (acceptedFiles, rejectedFiles) => {
-        this.setState({ _className: ' dragHover dropHover fullProgressBar' });
-    };
-
-    onDropRejected = rejectedFiles => {
-        toast.warning(Resources['chooseExcelFormat'][currentLanguage]);
-        setTimeout(() => {
-            this.setState({ _className: 'hundredPercent' });
-        }, 1000);
-    };
-
-    onDropAcceptedHandler = acceptedFiles => {
-        setTimeout(() => {
-            this.setState({ _className: 'hundredPercent' });
-        }, 500);
-        this.setState({ acceptedFiles });
-    };
 
     documentTemplateUpload = files => {
         if (files.length > 0) {
@@ -160,28 +144,32 @@ class UploadBoqAttachment extends Component {
     };
 
     getUploadParams = ({ meta }) => {
-        console.log(meta);
-        return { url: 'https://httpbin.org/post' };
+        let header = {
+            Authorization: localStorage.getItem('userToken'),
+            docTypeId: this.props.docTypeId,
+            docId: this.props.docId,
+            parentId: this.state.parentId,
+        };
+        let url =
+            Config.getPublicConfiguartion().static +
+            'PM/api/Procoor/UploadExcelFiles?docId=' +
+            this.props.docId;
+        return { url: url, headers: header };
     };
 
-    handleChangeStatus = ({ meta, file }, status) => {
-        console.log(status);
+    handleChangeStatus = ({ meta, file }, status, allFiles) => {
         if (status == 'rejected_file_type') {
             toast.warning(Resources['chooseExcelFormat'][currentLanguage]);
         } else if (status == 'removed' && this.state.uploaded) {
             toast.success(Resources['uploadedSuccessfully'][currentLanguage]);
-        } else if (status == 'done') {
-            this.setState({ fileStatus: status });
+        } else if (allFiles.length && status == 'done') {
+            this.setState({ fileStatus: status, filesExist: true });
         }
     };
 
-    handleSubmit = async (files, allFiles) => {
-        this.props.documentTemplate
-            ? await this.documentTemplateUpload(files)
-            : this.props.CustomUpload
-            ? await this.CustomUpload(files)
-            : await this.upload(files);
-        this.setState({ uploaded: true });
+    handleSubmit = (files, allFiles) => {
+        this.setState({ uploaded: true, filesExist: false });
+        console.log(this.state.uploaded);
         allFiles.forEach(f => f.remove());
     };
 
@@ -282,10 +270,9 @@ class UploadBoqAttachment extends Component {
                                 <label
                                     className=" btn__upload--left primaryBtn-1 btn "
                                     style={{
-                                        pointerEvents:
-                                            this.state.fileStatus == 'done'
-                                                ? 'auto'
-                                                : 'none',
+                                        pointerEvents: this.state.filesExist
+                                            ? 'auto'
+                                            : 'none',
                                     }}
                                     onClick={() =>
                                         this.uploadBtnRef.current.click()
