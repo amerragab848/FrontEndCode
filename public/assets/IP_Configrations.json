@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 {
   "BlobStorageContainerName": "project-files-demov4",
   "acApp": "AC",
@@ -57,6 +58,10 @@
 }
 >>>>>>> 8595a434c5485a9d11a7caeea94df59c19091e88
 =======
+=======
+
+{
+>>>>>>> 93c368e035746ed0a784dc9545dc51045dcff024
     "BlobStorageContainerName": "project-files-badya",
      "accountCompanyId": "14",
      "azureStorage": true,
@@ -88,5 +93,9 @@
        "refCodeValidation":false ,
        "activeExport":false 
    }
+<<<<<<< HEAD
+   
+>>>>>>> 93c368e035746ed0a784dc9545dc51045dcff024
+=======
    
 >>>>>>> 93c368e035746ed0a784dc9545dc51045dcff024
