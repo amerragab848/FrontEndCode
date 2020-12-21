@@ -1,7 +1,4 @@
 import React, { Component, createRef, Fragment } from 'react';
-import classNames from 'classnames';
-import AttachUpload from '../../Styles/images/attacthUpload.png';
-import AttachDrag from '../../Styles/images/attachDraggable.png';
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone-uploader';
@@ -11,14 +8,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
-import Resources from '../../resources.json';
-
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
+
+// import classNames from 'classnames';
+// import AttachUpload from '../../Styles/images/attacthUpload.png';
+// import AttachDrag from '../../Styles/images/attachDraggable.png';
+// import Resources from '../../resources.json';
 
 let currentLanguage =
     localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachmentWithProgress extends Component {
+    addBtnRef = createRef();
+    uploadBtnRef = createRef();
+
     constructor(props) {
         super(props);
 
@@ -32,8 +35,6 @@ class UploadAttachmentWithProgress extends Component {
             fileStatus: '',
         };
     }
-    addBtnRef = createRef();
-    uploadBtnRef = createRef();
 
     onSuccess(files) {
         let selectedFiles = [];
@@ -69,10 +70,7 @@ class UploadAttachmentWithProgress extends Component {
     };
 
     onDropAcceptedHandler = acceptedFiles => {
-        this.setState({ _className: 'hundredPercent' });
-
         acceptedFiles.forEach(element => {
-            console.log(element.file);
             let formData = new FormData();
             formData.append('file', element.file);
             let header = {
@@ -80,8 +78,6 @@ class UploadAttachmentWithProgress extends Component {
                 docId: this.props.docId,
                 parentId: this.state.parentId,
             };
-
-            console.log(formData);
             this.props.actions.uploadFile('BlobUpload', formData, header);
         });
         this.setState({ _className: 'zeropercent' });
@@ -173,22 +169,33 @@ class UploadAttachmentWithProgress extends Component {
         );
     };
 
-    getUploadParams = ({ meta }) => {
-        console.log(meta);
-        return { url: 'https://httpbin.org/post' };
+    getUploadParams = ({ file, meta }) => {
+        let header = {
+            Authorization: localStorage.getItem('userToken'),
+            docTypeId: this.props.docTypeId,
+            docId: this.props.docId,
+            parentId: this.state.parentId,
+        };
+        let url =
+            Config.getPublicConfiguartion().static +
+            'PM/api/Procoor/BlobUpload';
+        return { url: url, headers: header };
     };
 
-    handleChangeStatus = ({ meta, file }, status, allFiles) => {
-        console.log(status);
+    handleChangeStatus = ({ meta, file }, status, allFiles, response) => {
         this.setState({ fileStatus: status });
         if (allFiles.length && this.state.fileStatus == 'done') {
             this.uploadBtnRef.current.click();
             this.setState({ fileStatus: '' });
+            if (response) {
+                this.props.actions.insertFiletoAttachments(
+                    JSON.parse(response),
+                );
+            }
         }
     };
 
     handleSubmit = (files, allFiles) => {
-        this.onDropAcceptedHandler(files);
         allFiles.forEach(f => f.remove());
     };
 
@@ -248,6 +255,7 @@ class UploadAttachmentWithProgress extends Component {
             Config.IsAllow(this.props.EditAttachments) ? (
             <div>
                 <Dropzone
+                    autoUpload={true}
                     getUploadParams={this.getUploadParams}
                     onChangeStatus={this.handleChangeStatus}
                     onSubmit={this.handleSubmit}
@@ -263,17 +271,6 @@ class UploadAttachmentWithProgress extends Component {
                         onClick={() => this.addBtnRef.current.click()}>
                         Open my folders
                     </label>
-                    {/* <label
-                        className=" btn__upload--left primaryBtn-1 btn "
-                        style={{
-                            pointerEvents:
-                                this.state.fileStatus == 'done'
-                                    ? 'auto'
-                                    : 'none',
-                        }}
-                        onClick={() => this.uploadBtnRef.current.click()}>
-                        Upload
-                    </label> */}
                     <span class="upload__border"></span>
                     <div className="drive__wrapper">
                         <h2 class="zero">Upload From</h2>

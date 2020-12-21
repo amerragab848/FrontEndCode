@@ -28,7 +28,7 @@ import dataservice from '../../Dataservice';
 import Resources from '../../resources.json';
 import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
-import { loadavg } from "os";
+//import { loadavg } from "os";
 
 //import ConnectionContext from '../../Componants/Layouts/Context'; 
 //import "react-table/react-table.css";
@@ -1177,7 +1177,7 @@ class requestPaymentsAddEdit extends Component {
         ) {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-            this.fillSummariesTab();
+            //this.fillSummariesTab();
 
             this.buildColumns(true);
         }
@@ -2871,7 +2871,6 @@ class requestPaymentsAddEdit extends Component {
 
         if (event.label === 'Export') {
             this.setState({ isView: false, exportFile: '' });
-            let ExportColumnsList = [];
 
             exportFile = (
                 <Export

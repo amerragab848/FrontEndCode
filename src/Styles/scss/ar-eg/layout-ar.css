@@ -23045,7 +23045,7 @@ div#markup-panel {
     transform: translate(-50%, -50%);
     background: #fff;
     border-radius: 5px;
-    width: 550px;
+    width: 750px;
     padding: 5px 0;
     overflow: hidden;
 }
@@ -23092,6 +23092,15 @@ div#markup-panel {
 
 .grid__content .ui.checkbox input {
     height: 100%;
+}
+.grid__content .rangeSlider {
+    width: 50%;
+}
+.grid__content .rangeLabel {
+    font-size: 10px;
+    opacity: 0.6;
+    text-align: center;
+    display: block;
 }
 
 .proForm .control-label::after {
@@ -25078,10 +25087,37 @@ tbody.grid-body tr .text.elipsisPadd {
     justify-content: center;
 }
 
+.resources.submittalFilter {
+    flex-direction: column;
+    align-items: flex-start;
+}
+.resources.submittalFilter .resources__inputs {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+.resources.submittalFilter .resources__inputs .linebylineInput {
+    margin-left: 10px;
+}
+.resources.submittalFilter .filterBTNS {
+    margin-top: 15px;
+}
 
+.setting-page .settings-tabs-items {
+    position: fixed;
+    height: 100%;
+    overflow-y: scroll;
+    padding-bottom: 72px;
+}
+.settings-container.setting-page .settings-tabs-items h3,
+.settings-container.setting-page .settings-tabs-items .react-tabs__tab-list {
+    position: static !important;
+}
+.settings-container.setting-page .setting-tabs-contant {
+    padding-right: 296px;
+    width: 100%;
+}
 
-
-
-.reports__proForm .linebylineInput.fullWidthWrapper{
+.reports__proForm .linebylineInput.fullWidthWrapper {
     width: 100%;
 }

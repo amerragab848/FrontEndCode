@@ -9013,6 +9013,42 @@
         "en": "http://www.example.com",
         "ar": "http://www.example.com"
     },
+    "ResourceKey": {
+        "en": "Resource Key",
+        "ar": "المفتاح"
+    },
+    "Add": {
+        "en": "Add",
+        "ar": "أضف"
+    },
+    "LanguageResources": {
+        "en": "Language Resources",
+        "ar": "المصطلحات المستخدمة"
+    },
+    "Modules": {
+        "en": "Modules",
+        "ar": "الموديولات"
+    },
+    "ModuleTitle": {
+        "en": "Module Title",
+        "ar": "عنوان المديول"
+    },
+    "DocumentRefCode": {
+        "en": "Document Reference Code",
+        "ar": "رقم الوثيقة"
+    },
+    "ModuleName": {
+        "en": "Module Name",
+        "ar": "اسم المديول"
+    },
+    "App": {
+        "en": "App",
+        "ar": "اعدادات التطبيق"
+    },
+    "documentTitle": {
+        "en": "Document Title",
+        "ar": "عنوان الوثيقة"
+    },
     "avgPrice": {
         "en": "Average Price",
         "ar": "متوسط السعر"
@@ -9041,43 +9077,40 @@
         "en": "Drawing Review Result",
         "ar": "حاله المراجعه"
     },
-   "budgetContact":{
-       "en":"Budget Contact",
-       "ar":"الشخص المسئول عن الميزانية"
-   },
-   "DesignDrawinglistStatusReport":{
-       "en":"Design Drawing list Status Report",
-       "ar":"Design Drawing list Status Report"
-   },
-   "drawingSubject":{
-       "en":"drawing Subject",
-       "ar":"drawing Subject"
-   },
-   "drawingScale":
-   {
-    "en":"drawing Scale",
-    "ar":"drawing Scale"
-   },
-   "drawingReference":
-   {
-    "en":"drawing Reference",
-    "ar":"drawing Reference"
-   },
-   "lastSentDate":{
-       "en":"last Sent Date",
-       "ar":"last Sent Date"
-   },
-   "lastSentTime":{
-    "en":"last Sent Time",
-    "ar":"last Sent Time"
-},
-"selectSubmittedFor":{
-    "en":"Select Submitted For",
-    "ar":"مقدم ل"
-},
-"refCode":{
-    "en":"Reference Code",
-    "ar":"الرقم المرجعي"
-}
- 
+    "budgetContact": {
+        "en": "Budget Contact",
+        "ar": "الشخص المسئول عن الميزانية"
+    },
+    "DesignDrawinglistStatusReport": {
+        "en": "Design Drawing list Status Report",
+        "ar": "Design Drawing list Status Report"
+    },
+    "drawingSubject": {
+        "en": "drawing Subject",
+        "ar": "drawing Subject"
+    },
+    "drawingScale": {
+        "en": "drawing Scale",
+        "ar": "drawing Scale"
+    },
+    "drawingReference": {
+        "en": "drawing Reference",
+        "ar": "drawing Reference"
+    },
+    "lastSentDate": {
+        "en": "last Sent Date",
+        "ar": "last Sent Date"
+    },
+    "lastSentTime": {
+        "en": "last Sent Time",
+        "ar": "last Sent Time"
+    },
+    "selectSubmittedFor": {
+        "en": "Select Submitted For",
+        "ar": "مقدم ل"
+    },
+    "refCode": {
+        "en": "Reference Code",
+        "ar": "الرقم المرجعي"
+    }
 }

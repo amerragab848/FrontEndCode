@@ -105,7 +105,7 @@ export function ExportingData(data) {
 }
 
 export function SetCyclesExportingData(data) {
-    return (dispatch, getState) => { 
+    return (dispatch, getState) => {
         dispatch({
             type: types.Set_DocumentCycle,
             cycles: data.items,
@@ -174,6 +174,14 @@ export function uploadFile(BlobUpload, formData, header) {
     }
 }
 
+export function insertFiletoAttachments(resp) {
+    return (dispatch, getState) => { 
+        dispatch({
+            type: types.File_Upload,
+            file: resp[0]
+        }); 
+    }
+}
 export function setLoadingFiles() {
     return (dispatch, getState) => {
         dispatch({
