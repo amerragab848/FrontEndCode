@@ -1,7 +1,4 @@
 import React, { Component, createRef, Fragment } from 'react';
-import classNames from 'classnames';
-import AttachUpload from '../../Styles/images/attacthUpload.png';
-import AttachDrag from '../../Styles/images/attachDraggable.png';
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone-uploader';
@@ -69,10 +66,7 @@ class UploadAttachmentWithProgress extends Component {
     };
 
     onDropAcceptedHandler = acceptedFiles => {
-        this.setState({ _className: 'hundredPercent' });
-
         acceptedFiles.forEach(element => {
-            console.log(element.file);
             let formData = new FormData();
             formData.append('file', element.file);
             let header = {
@@ -80,8 +74,6 @@ class UploadAttachmentWithProgress extends Component {
                 docId: this.props.docId,
                 parentId: this.state.parentId,
             };
-
-            console.log(formData);
             this.props.actions.uploadFile('BlobUpload', formData, header);
         });
         this.setState({ _className: 'zeropercent' });
@@ -189,6 +181,7 @@ class UploadAttachmentWithProgress extends Component {
 
     handleSubmit = (files, allFiles) => {
         this.onDropAcceptedHandler(files);
+        console.log(files);
         allFiles.forEach(f => f.remove());
     };
 
@@ -263,17 +256,6 @@ class UploadAttachmentWithProgress extends Component {
                         onClick={() => this.addBtnRef.current.click()}>
                         Open my folders
                     </label>
-                    {/* <label
-                        className=" btn__upload--left primaryBtn-1 btn "
-                        style={{
-                            pointerEvents:
-                                this.state.fileStatus == 'done'
-                                    ? 'auto'
-                                    : 'none',
-                        }}
-                        onClick={() => this.uploadBtnRef.current.click()}>
-                        Upload
-                    </label> */}
                     <span class="upload__border"></span>
                     <div className="drive__wrapper">
                         <h2 class="zero">Upload From</h2>

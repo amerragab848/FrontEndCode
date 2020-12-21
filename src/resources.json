@@ -8960,5 +8960,41 @@
     "UrlForm": {
         "en": "http://www.example.com",
         "ar": "http://www.example.com"
+    },
+    "ResourceKey": {
+        "en": "Resource Key",
+        "ar": "المفتاح"
+    },
+    "Add": {
+        "en": "Add",
+        "ar": "أضف"
+    },
+    "LanguageResources": {
+        "en": "Language Resources",
+        "ar": "المصطلحات المستخدمة"
+    },
+    "Modules": {
+        "en": "Modules",
+        "ar": "الموديولات"
+    },
+    "ModuleTitle": {
+        "en": "Module Title",
+        "ar": "عنوان المديول"
+    },
+    "DocumentRefCode": {
+        "en": "Document Reference Code",
+        "ar": "رقم الوثيقة"
+    },
+    "ModuleName": {
+        "en": "Module Name",
+        "ar": "اسم المديول"
+    },
+    "App": {
+        "en": "App",
+        "ar": "اعدادات التطبيق"
+    },
+    "documentTitle": {
+        "en": "Document Title",
+        "ar": "عنوان الوثيقة"
     }
 }

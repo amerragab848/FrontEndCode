@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import GridCustom from 'react-customized-grid';
-import moment from "moment";
-import Resources from "../../../resources.json";
+import moment from 'moment';
+import Resources from '../../../resources.json';
 import { isEqual } from 'lodash';
-import LoadingSection from "../../publicComponants/LoadingSection";
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import LoadingSection from '../../publicComponants/LoadingSection';
+let currentLanguage =
+    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 export default class CustomGrid extends Component {
-
     constructor(props) {
         super(props);
 
@@ -30,37 +30,37 @@ export default class CustomGrid extends Component {
             setFilters: {},
             filters: [],
             ShowModelFilter: false,
-            ClearFilter: "",
+            ClearFilter: '',
             isView: false,
             currentData: 0,
             date: new Date(),
-            setDate: moment(new Date()).format("DD/MM/YYYY"),
+            setDate: moment(new Date()).format('DD/MM/YYYY'),
             fieldDate: {},
             isFilter: false,
         };
     }
 
     componentDidMount() {
-
         let state = {};
         this.props.cells.map((column, index) => {
-            if (column.type === "date") {
-                state[index + "-column"] = moment().format("DD/MM/YYYY");
+            if (column.type === 'date') {
+                state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
 
-        let ColumnsHideShow = this.props.cells
+        let ColumnsHideShow = this.props.cells;
         for (var i in ColumnsHideShow) {
             ColumnsHideShow[i].hidden = false;
         }
 
         this.setState({
-            ColumnsHideShow
+            ColumnsHideShow,
         });
 
-        this.setState({ GridLoading: true })
+        this.setState({ GridLoading: true });
 
-        var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+        var selectedCols =
+            JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
         var currentGP = [];
 
@@ -69,19 +69,21 @@ export default class CustomGrid extends Component {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
-            localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
-        }
-        else {
+            localStorage.setItem(
+                this.props.gridKey,
+                JSON.stringify(gridLocalStor),
+            );
+        } else {
             var parsingList = JSON.parse(selectedCols.columnsList);
             for (var item in parsingList) {
                 for (var i in itemsColumns) {
                     if (itemsColumns[i].field === parsingList[item].field) {
-                        let status = parsingList[item].hidden
-                        itemsColumns[i].hidden = status
+                        let status = parsingList[item].hidden;
+                        itemsColumns[i].hidden = status;
                         break;
                     }
                 }
-            };
+            }
             currentGP = JSON.parse(selectedCols.groups);
         }
         this.setState({
@@ -89,29 +91,29 @@ export default class CustomGrid extends Component {
             columns: itemsColumns,
             groups: currentGP,
             groupsList: currentGP,
-            GridLoading: false
+            GridLoading: false,
         });
         setTimeout(() => {
             this.setState(state);
         }, 500);
-    };
+    }
 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.isFilter && isEqual(state.rows, nextProps.data)) {
             return {
                 rows: nextProps.data,
                 filteredRows: nextProps.data,
-                GridLoading: true
-            }
+                GridLoading: true,
+            };
         }
-        return null
-    };
+        return null;
+    }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.isFilter && isEqual(prevState.rows, this.props.data)) {
             this.props.changeValueOfProps();
             this.setState({
-                GridLoading: false
+                GridLoading: false,
             });
         }
     }
@@ -119,39 +121,43 @@ export default class CustomGrid extends Component {
     showFilterMore = () => {
         this.setState({
             ShowModelFilter: true,
-            rows: this.props.data
+            rows: this.props.data,
         });
     };
 
     CloseModeFilter = () => {
-        var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
+        var filterArray = Array.from(
+            document.querySelectorAll('.filterModal input'),
+        );
 
-        filterArray.map(input => (input.value = ""));
+        filterArray.map(input => (input.value = ''));
 
         this.setState({ ShowModelFilter: false });
     };
 
     resetModeFilter = () => {
+        var filterArray = Array.from(
+            document.querySelectorAll('.filterModal input'),
+        );
+        filterArray.map(input => (input.value = ''));
 
-        var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
-        filterArray.map(input => (input.value = ""));
-
-        var filterArrayParent = Array.from(document.querySelectorAll("#resetData input"));
-        filterArrayParent.map(input => (input.value = ""));
+        var filterArrayParent = Array.from(
+            document.querySelectorAll('#resetData input'),
+        );
+        filterArrayParent.map(input => (input.value = ''));
 
         let state = this.state;
 
         this.props.cells.map((column, index) => {
-            if (column.type === "date") {
-                state[index + "-column"] = moment().format("DD/MM/YYYY");
+            if (column.type === 'date') {
+                state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
     };
 
-    handleGroupEvent = (groups) => {
-
+    handleGroupEvent = groups => {
         var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
 
         gridLocalStor.groups = JSON.stringify(groups);
@@ -164,25 +170,20 @@ export default class CustomGrid extends Component {
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         this.setState({ groupsList: groups });
-    }
+    };
     render() {
-        let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
-            return (
-                <div className="grid__content" key={item.field}>
-                    <div className={'ui checkbox checkBoxGray300 count checked'}>
-                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={!this.state[item.field]}
-                            onChange={(e) => this.handleCheck(item.field)} />
-                        <label>{item.name}</label>
-                    </div>
-                </div>
-            )
-        })
-        const btnDocumentTemplate = this.state.showDocTemplateBtn == true ? <button className="primaryBtn-2 btn mediumBtn" onClick={() => this.btnDocumentTemplateShowModal()}>{Resources["DocTemplate"][currentLanguage]}</button>
-      : null;
+        const btnDocumentTemplate =
+            this.state.showDocTemplateBtn == true ? (
+                <button
+                    className="primaryBtn-2 btn mediumBtn"
+                    onClick={() => this.btnDocumentTemplateShowModal()}>
+                    {Resources['DocTemplate'][currentLanguage]}
+                </button>
+            ) : null;
         return (
             <Fragment>
                 {btnDocumentTemplate}
-                {this.state.GridLoading === false ?
+                {this.state.GridLoading === false ? (
                     <GridCustom
                         key={this.props.gridKey}
                         cells={this.props.cells}
@@ -193,28 +194,12 @@ export default class CustomGrid extends Component {
                         rowClick={cell => this.props.rowClick(cell)}
                         groups={this.state.groupsList}
                         handleGroupUpdate={this.handleGroupEvent}
-                        showCheckAll={this.props.showCheckAll}   
+                        showCheckAll={this.props.showCheckAll}
                     />
-                    : <LoadingSection />} 
-
-                <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
-                    <div className="grid__column--container">
-                        <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
-                        <div className="grid__column--title">
-                            <h2>{Resources.gridColumns[currentLanguage]}</h2>
-                        </div>
-                        <div className="grid__column--content">
-                            {RenderPopupShowColumns}
-                        </div>
-                        <div className="grid__column--footer">
-                            <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>{Resources.close[currentLanguage]}</button>
-                            <button className="btn primaryBtn-2" onClick={this.ResetShowHide}>{Resources.reset[currentLanguage]} </button>
-                        </div>
-                    </div>
-                </div>
-
+                ) : (
+                    <LoadingSection />
+                )}
             </Fragment>
         );
     }
-
 }
