@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import Api from '../../api';
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import Export from '../OptionsPanels/Export';
-import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
-import Resources from '../../resources.json';
-import CryptoJS from 'crypto-js';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../store/actions/communication';
+import React, { Component } from 'react'
+import Api from '../../api'
+import LoadingSection from '../../Componants/publicComponants/LoadingSection'
+import Export from '../OptionsPanels/Export'
+import GridCustom from '../../Componants/Templates/Grid/CustomGrid'
+import Resources from '../../resources.json'
+import CryptoJS from 'crypto-js'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as communicationActions from '../../store/actions/communication'
 
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class FollowUpsSummaryDetails extends Component {
+
     constructor(props) {
         super(props);
 
@@ -36,7 +36,7 @@ class FollowUpsSummaryDetails extends Component {
                 sortable: true,
                 type: 'text',
                 href: 'link',
-                onClick: () => {},
+                onClick: () => { },
                 classes: 'bold',
                 showTip: true,
             },
@@ -227,8 +227,7 @@ class FollowUpsSummaryDetails extends Component {
                     arrange: 0,
                     docApprovalId: 0,
                     isApproveMode: false,
-                    perviousRoute:
-                        window.location.pathname + window.location.search,
+                    perviousRoute: window.location.pathname + window.location.search,
                 };
 
                 let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
@@ -249,6 +248,7 @@ class FollowUpsSummaryDetails extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
+                    gridKey="FollowingUpSummary"
                     key="FollowingUpSummary"
                     cells={this.state.columns}
                     data={this.state.rows}
@@ -283,8 +283,8 @@ class FollowUpsSummaryDetails extends Component {
                     }}
                 />
             ) : (
-                <LoadingSection />
-            );
+                    <LoadingSection />
+                );
 
         const btnExport =
             this.state.isLoading === false ? (
@@ -294,8 +294,8 @@ class FollowUpsSummaryDetails extends Component {
                     fileName={this.state.pageTitle}
                 />
             ) : (
-                <LoadingSection />
-            );
+                    <LoadingSection />
+                );
 
         return (
             <div className="mainContainer">
@@ -331,6 +331,7 @@ class FollowUpsSummaryDetails extends Component {
             </div>
         );
     }
+
 }
 
 function mapStateToProps(state, ownProps) {

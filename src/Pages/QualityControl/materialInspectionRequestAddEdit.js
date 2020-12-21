@@ -125,7 +125,7 @@ class materialInspectionRequestAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -169,6 +169,7 @@ class materialInspectionRequestAddEdit extends Component {
             selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
             selectedApprovalStatusId: { label: Resources.approvalStatus[currentLanguage], value: "0" },
             selectedspecsSection: { label: Resources.specsSection[currentLanguage], value: "0" },
+            selectedLocation: { label: Resources.locationRequired[currentLanguage], value: "0" },
             bicContacts: [],
             contractsPos: [],
             reasonForIssues: [],
@@ -259,7 +260,7 @@ class materialInspectionRequestAddEdit extends Component {
                 docDate: moment(),
                 status: 'true',
                 disciplineId: '',
-                refDoc: '', 
+                refDoc: '',
                 // answer: '',
                 rfi: '',
                 orderId: null,
@@ -274,7 +275,8 @@ class materialInspectionRequestAddEdit extends Component {
                 contractId: '',
                 requiredDate: moment(),
                 resultDate: moment(),
-                reasonForIssueId: ''
+                reasonForIssueId: '',
+                locationId: ''
             };
 
             this.setState({ document: materialInspectionRequest }, function () {
@@ -369,7 +371,30 @@ class materialInspectionRequestAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
+        //location
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
 
+            if (isEdit) {
+
+                let locationId = this.props.document.locationId;
+
+                if (locationId) {
+
+                    let locationName = result.find(i => i.value === locationId);
+                    if (locationName) {
+
+                        this.setState({
+                            selectedLocation: { label: locationName.label, value: locationId }
+                        });
+
+                    }
+                }
+            }
+
+            this.setState({
+                locations: [...result]
+            });
+        });
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
@@ -612,6 +637,7 @@ class materialInspectionRequestAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.locationId = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.value;
 
         dataservice.addObject('EditMaterialRequestOnly', saveDocument).then(result => {
             this.setState({
@@ -633,6 +659,8 @@ class materialInspectionRequestAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.locationId = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.value;
+
         if (this.state.selectedContract.value !== "0") {
             let contract = this.state.selectedContract.value.split('-');
             saveDocument.orderId = contract[0];
@@ -740,9 +768,9 @@ class materialInspectionRequestAddEdit extends Component {
                     comment: result.cycleComment,
                 }
                 let IRCycles = this.state.IRCycles;
-                let rowIndex=IRCycles.findIndex(x=>x.id==result.id);
-                if(rowIndex > -1 &&saveDocument.typeAddOrEdit === "editLastCycle" ){
-                    IRCycles.splice(rowIndex,1);
+                let rowIndex = IRCycles.findIndex(x => x.id == result.id);
+                if (rowIndex > -1 && saveDocument.typeAddOrEdit === "editLastCycle") {
+                    IRCycles.splice(rowIndex, 1);
                 }
                 IRCycles.push(newCycle);
                 this.setState({
@@ -1269,6 +1297,10 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         selectedValue={this.state.selectedApartmentNoId}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'apartmentNoId', false, '', '', '', 'selectedApartmentNoId')}
                                                                         index="apartmentNoId" />
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown title="location" data={this.state.locations} selectedValue={this.state.selectedLocation}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "locationId", false, "", "", "", "selectedLocation")} />
                                                                 </div>
 
 

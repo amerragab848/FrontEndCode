@@ -15,6 +15,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Dataservice from '../../Dataservice.js';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import printDocuments from "./printDocuments.json";
+import { toast } from "react-toastify";
 const find = require('lodash/find')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -45,6 +46,10 @@ class ExportDetails extends Component {
   }
 
   ExportDocument(Fields, items, name) {
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
     this.setState({
       isLoading: true
     });
@@ -650,7 +655,7 @@ class ExportDetails extends Component {
   exportPDFFile() {
     if (this.state.isExcel === true) return;
 
-    let formatData = moment(this.props.document.docDate ? this.props.document.docDate : this.props.document.documentDate).format('DD/MM/YYYY'); 
+    let formatData = moment(this.props.document.docDate ? this.props.document.docDate : this.props.document.documentDate).format('DD/MM/YYYY');
     return (
       <div id="invoice" className="invoice">
         <div id="printPdf" className="printWrapper">
@@ -680,7 +685,7 @@ class ExportDetails extends Component {
             </div>
           </div>
 
-          {this.props.items.length > 0 ? 
+          {this.props.items.length > 0 ?
             < div className="table__withItem">{this.drawItems_pdf()}
             </div>
             : null
@@ -766,7 +771,7 @@ class ExportDetails extends Component {
     }
   }
 
-  
+
   drawCycles_pdf() {
     let fieldsItems = this.props.cyclesFields
     let rows = this.props.cycles.length > 0 ?
@@ -1069,6 +1074,10 @@ class ExportDetails extends Component {
 
   PrintDocument() {
 
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
     this.setState({
       isExcel: false
     });
@@ -1094,6 +1103,10 @@ class ExportDetails extends Component {
 
   PrintLetter() {
 
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
     this.setState({ isExcel: false });
 
     var contents = document.getElementById("Letter").innerHTML;
@@ -1119,6 +1132,10 @@ class ExportDetails extends Component {
 
   PrintPaymentCertification() {
 
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
     this.setState({ isExcel: false });
 
     var contents = document.getElementById("PCertified").innerHTML;

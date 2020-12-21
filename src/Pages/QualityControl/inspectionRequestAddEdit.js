@@ -120,7 +120,7 @@ class inspectionRequestAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -134,10 +134,10 @@ class inspectionRequestAddEdit extends Component {
             isView: false,
             docId: docId,
             docTypeId: 25,
-            docAlertId:0,
+            docAlertId: 0,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            docAlertId : docAlertId,
+            docAlertId: docAlertId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             documentCycle: {},
@@ -163,6 +163,7 @@ class inspectionRequestAddEdit extends Component {
             selectedActionByCompanyId: { label: Resources.actionByCompany[currentLanguage], value: "0" },
             selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
             selectedApprovalStatusId: { label: Resources.approvalStatus[currentLanguage], value: "0" },
+            selectedLocation: { label: Resources.locationRequired[currentLanguage], value: "0" },
             bicContacts: [],
             contractsPos: [],
             reasonForIssues: [],
@@ -271,7 +272,7 @@ class inspectionRequestAddEdit extends Component {
             this.props.actions.documentForEdit("GetInspectionRequestForEdit?id=" + this.state.docId, this.state.docTypeId, 'inspectionRequest');
 
             dataservice.GetDataGrid("GetInspectionRequestCycles?inspectionId=" + this.state.docId).then(result => {
-                
+
                 this.setState({
                     IRCycles: [...result]
                 });
@@ -281,7 +282,7 @@ class inspectionRequestAddEdit extends Component {
 
             dataservice.GetDataGrid("GetInspectionRequestLastCycle?id=" + this.state.docId).then(result => {
                 result.cycleStatus = result.status;
-              
+
                 this.setState({
                     documentCycle: { ...result }
                 });
@@ -301,7 +302,7 @@ class inspectionRequestAddEdit extends Component {
                 docDate: moment(),
                 status: 'true ',
                 disciplineId: '',
-                refDoc: '', 
+                refDoc: '',
                 answer: '',
                 rfi: '',
                 orderId: null,
@@ -316,7 +317,8 @@ class inspectionRequestAddEdit extends Component {
                 contractId: '',
                 requiredDate: moment(),
                 resultDate: moment(),
-                reasonForIssueId: ''
+                reasonForIssueId: '',
+                locationId: ''
             };
             this.setState({ document: inspectionRequest }, function () {
                 this.GetNExtArrange();
@@ -356,7 +358,31 @@ class inspectionRequestAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
+        //location
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
 
+            if (isEdit) {
+
+                let locationId = this.props.document.locationId;
+
+                if (locationId) {
+
+                    let locationName = result.find(i => i.value === locationId);
+
+                    if (locationName) {
+
+                        this.setState({
+                            selectedLocation: { label: locationName.label, value: locationId }
+                        });
+
+                    }
+                }
+            }
+
+            this.setState({
+                locations: [...result]
+            });
+        });
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
@@ -614,6 +640,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.locationId = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.value;
 
         dataservice.addObject('EditInspectionRequestOnly', saveDocument).then(result => {
             this.setState({
@@ -635,6 +662,8 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.projectId = this.state.projectId;
+        saveDocument.locationId = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.value;
+
         if (saveDocument.contractId == "")
             saveDocument.contractId = null;
         dataservice.addObject('AddInspectionRequestOnly', saveDocument).then(result => {
@@ -1227,6 +1256,10 @@ class inspectionRequestAddEdit extends Component {
                                                                         handleChange={event => this.handleChangeDropDown(event, 'apartmentNoId', false, '', '', '', 'selectedApartmentNoId')}
                                                                         index="apartmentNoId" />
                                                                 </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown title="location" data={this.state.locations} selectedValue={this.state.selectedLocation}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "locationId", false, "", "", "", "selectedLocation")} />
+                                                                </div>
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
@@ -1251,7 +1284,7 @@ class inspectionRequestAddEdit extends Component {
                                                             </div>
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
-                                                                    <div className="slider-Btns"> 
+                                                                    <div className="slider-Btns">
                                                                         {this.state.isViewMode === false ?
                                                                             <div className="doc-pre-cycle">
                                                                                 <div className="slider-Btns">
@@ -1277,7 +1310,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 projectId={this.state.projectId}
                                                                                 previousRoute={this.state.previousRoute}
                                                                                 docApprovalId={this.state.docApprovalId}
-                                                                              
+
                                                                                 docAlertId={this.state.docAlertId}
 
                                                                                 currentArrange={this.state.arrange}

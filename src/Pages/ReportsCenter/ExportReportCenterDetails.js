@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import moment from "moment";
 
+import Config from '../../Services/Config.js';
+import { toast } from "react-toastify";
 class ExportReportCenterDetails extends Component {
 
     constructor(props) {
@@ -10,6 +12,11 @@ class ExportReportCenterDetails extends Component {
     }
 
     ExportDocument() {
+
+        if (Config.getPublicConfiguartion().activeExport != true) {
+            toast.warn('This feature is disabled. Please call your administrator for assistance');
+            return;
+        }
 
         let documentName = this.props.fileName;
 
@@ -131,8 +138,7 @@ class ExportReportCenterDetails extends Component {
                 </div>
 
                 {/* excel export */}
-                <div style={{ display: 'none' }}>
-
+                <div style={{ display: 'none' }}> 
                     {this.drawFields()}
                     {this.drawItems()}
                 </div>

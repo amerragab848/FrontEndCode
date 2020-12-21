@@ -84,6 +84,16 @@ class levelDurationAlertDetails extends Component {
         fixed: false,
         sortable: true,
         type: "text"
+      },
+      {
+        field: "contactName",
+        title: Resources["contact"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text",
+        hidden: false
       }
     ];
 
@@ -129,7 +139,7 @@ class levelDurationAlertDetails extends Component {
       {
         field: "docDurationDays",
         name: "delay",
-        type: "string",
+        type: "number",
         isCustom: true
       }
     ];
@@ -147,7 +157,7 @@ class levelDurationAlertDetails extends Component {
       api: 'GetLevelDurationDelay?',
     };
   }
-
+  
   componentDidMount() {
 
     this.props.actions.RouteToTemplate();

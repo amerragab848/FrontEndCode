@@ -12626,6 +12626,30 @@
         "exportDataType": "s"
       },
       {
+        "field": "areaName",
+        "friendlyName": "areaName",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "locationName",
+        "friendlyName": "locationName",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
         "field": "approvalStatusName",
         "friendlyName": "approvalStatus",
         "minWidth": 85,
@@ -13437,6 +13461,18 @@
         "exportDataType": "s"
       },
       {
+        "field": "locationName",
+        "friendlyName": "locationName",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
         "field": "buildingNoName",
         "friendlyName": "Building",
         "minWidth": 85,
@@ -13681,6 +13717,13 @@
         "type": "string",
         "showInExport": true,
         "isCustom": true
+      },
+      {
+        "name": "locationName",
+        "field": "locationName",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": false
       },
       {
         "name": "Building",
@@ -14489,6 +14532,20 @@
         "field": "disciplineName",
         "type": "string",
         "showInExport": false,
+        "isCustom": false
+      },
+      {
+        "name": "locationName",
+        "field": "locationName",
+        "type": "string",
+        "showInExport": true,
+        "isCustom": false
+      },
+      {
+        "name": "areaName",
+        "field": "areaName",
+        "type": "string",
+        "showInExport": true,
         "isCustom": false
       },
       {
@@ -15732,20 +15789,20 @@
         "exportDataType": "s"
       },
       {
-        "field": "approvedQuantity",
-        "friendlyName": "approvedQuantity",
+        "field": "avgUnitPrice",
+        "friendlyName": "avgPrice",
         "minWidth": 85,
         "width": "8%",
-        "dataType": "number",
+        "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": true,
+        "showInExport": false,
         "isCustom": true,
-        "exportDataType": "n"
+        "exportDataType": "s"
       },
       {
-        "field": "unitPrice",
-        "friendlyName": "unitPrice",
+        "field": "approvedQuantity",
+        "friendlyName": "quantity",
         "minWidth": 85,
         "width": "8%",
         "dataType": "number",
@@ -15754,7 +15811,7 @@
         "showInExport": true,
         "isCustom": true,
         "exportDataType": "n"
-      },
+      }, 
       {
         "field": "totalApproved",
         "friendlyName": "totalApproved",
@@ -15778,19 +15835,7 @@
         "showInExport": false,
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "releasePrice",
-        "friendlyName": "releasePrice",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "showInExport": false,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "lastDeliveryDate",
         "friendlyName": "lastDeliveryDate",
@@ -17633,7 +17678,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17741,7 +17786,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17824,7 +17869,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -17836,7 +17881,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18028,7 +18073,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18088,7 +18133,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -18160,7 +18205,7 @@
         "dataType": "string",
         "isDate": false,
         "isTime": false,
-        "showInExport": false,
+        "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
       },
@@ -20482,19 +20527,7 @@
         "showInExport": true,
         "isCustom": true,
         "exportDataType": "s"
-      },
-      {
-        "field": "tenderScope",
-        "friendlyName": "tenderScope",
-        "minWidth": 150,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "showInExport": true,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "budget",
         "friendlyName": "budget",
@@ -20518,19 +20551,7 @@
         "showInExport": true,
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "awardedJustification",
-        "friendlyName": "awardedJustification",
-        "minWidth": 150,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "showInExport": true,
-        "isCustom": false,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "openedBy",
         "friendlyName": "openedBy",
@@ -20686,19 +20707,7 @@
         "showInExport": false,
         "isCustom": false,
         "exportDataType": "s"
-      },
-      {
-        "field": "projectName",
-        "friendlyName": "projectName",
-        "minWidth": 85,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": true,
-        "showInExport": false,
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "docDate",
         "friendlyName": "docDate",

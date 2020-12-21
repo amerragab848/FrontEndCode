@@ -113,23 +113,23 @@ class CommonLog extends Component {
       {
         title: 'Delete',
         handleClick: values => {
-          if(documentObj.docTyp == 64){
-           let contractedBoq=[];
-           values.map(item=>{
-             let boq=this.state.rows.find(x=>x.id==item);
-             if(boq !=undefined && boq.contractId > 0){
-              contractedBoq.push(boq)
-             }
-           })
-           if(contractedBoq.length > 0){
-             toast.error(`these Boqs ${contractedBoq.map(item=>item.subject)} Can not Deleted Because they are Contracted`)
-           }else{
-            this.setState({
-              showDeleteModal: true,
-              selectedRows: values
-            });
-           }
-          }else{
+          if (documentObj.docTyp == 64) {
+            let contractedBoq = [];
+            values.map(item => {
+              let boq = this.state.rows.find(x => x.id == item);
+              if (boq != undefined && boq.contractId > 0) {
+                contractedBoq.push(boq)
+              }
+            })
+            if (contractedBoq.length > 0) {
+              toast.error(`these Boqs ${contractedBoq.map(item => item.subject)} Can not Deleted Because they are Contracted`)
+            } else {
+              this.setState({
+                showDeleteModal: true,
+                selectedRows: values
+              });
+            }
+          } else {
             this.setState({
               showDeleteModal: true,
               selectedRows: values
@@ -223,60 +223,60 @@ class CommonLog extends Component {
   };
   fillDropDowns() {
 
-    if(this.state.docType=="submittal"){
-    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.props.projectId, "companyName", "companyId", 'companies', this.props.projectId, "projectId").then(result => {
-      this.setState({
-        companies: [...result]
+    if (this.state.docType == "submittal") {
+      dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.props.projectId, "companyName", "companyId", 'companies', this.props.projectId, "projectId").then(result => {
+        this.setState({
+          companies: [...result]
+        });
       });
-    });
-    //discplines
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
-      this.setState({
-        disciplines: [...result]
+      //discplines
+      dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        this.setState({
+          disciplines: [...result]
+        });
       });
-    });
 
-    //SubmittalTypes
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
-      this.setState({
-        SubmittalTypes: [...result]
+      //SubmittalTypes
+      dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
+        this.setState({
+          SubmittalTypes: [...result]
+        });
       });
-    });
 
-    //location
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
-      this.setState({
-        locations: [...result]
+      //location
+      dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
+        this.setState({
+          locations: [...result]
+        });
       });
-    });
 
-    //area
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
-      this.setState({
-        areas: [...result]
+      //area
+      dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
+        this.setState({
+          areas: [...result]
+        });
       });
-    });
 
-    //approvalstatus
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id", 'defaultLists', "approvalstatus", "listType").then(result => {
-      this.setState({
-        approvales: [...result]
+      //approvalstatus
+      dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id", 'defaultLists', "approvalstatus", "listType").then(result => {
+        this.setState({
+          approvales: [...result]
+        });
       });
-    });
 
-    //specsSection
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id", 'defaultLists', "specssection", "listType").then(result => {
-      this.setState({
-        specsSection: [...result]
+      //specsSection
+      dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id", 'defaultLists', "specssection", "listType").then(result => {
+        this.setState({
+          specsSection: [...result]
+        });
       });
-    });
-   //contractList
-    dataservice.GetDataList("GetPoContractForList?projectId=" + this.props.projectId, "subject", "id").then(result => {
-      this.setState({
-        contracts: [...result]
+      //contractList
+      dataservice.GetDataList("GetPoContractForList?projectId=" + this.props.projectId, "subject", "id").then(result => {
+        this.setState({
+          contracts: [...result]
+        });
       });
-    });
-  }
+    }
 
   }
   static getDerivedStateFromProps(nextProps, state) {
@@ -318,7 +318,7 @@ class CommonLog extends Component {
         this.renderComponent(this.props.match.params.document, this.props.projectId, true);
       } else {
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
-        this.fillDropDowns();
+        //this.fillDropDowns();
       }
     }
   };
@@ -961,6 +961,12 @@ class CommonLog extends Component {
   }
 
   btnExportServerClick = () => {
+
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
+
     let chosenColumns = this.state.columnsExport;
     if (chosenColumns.length < 3) {
       toast.warning("Can't Export With less than 3 Columns Choosen");
@@ -995,6 +1001,52 @@ class CommonLog extends Component {
 
           this.setState({ exportColumnsModal: false, isExporting: false })
         }
+      });
+    }
+  }
+
+  btnExportStatisticsClick = () => {
+
+    if (Config.getPublicConfiguartion().activeExport != true) {
+      toast.warn('This feature is disabled. Please call your administrator for assistance');
+      return;
+    }
+
+    let chosenColumns = this.state.columnsExport;
+    if (chosenColumns.length > 2) {
+      toast.warning("Can't Draw With more than 2 Columns Choosen");
+      // this.setState({ exportColumnsModal: false })
+    }
+    else {
+      this.setState({ isExporting: true }); 
+      let query = this.state.query;
+      var stringifiedQuery = JSON.stringify(query);
+
+      if (stringifiedQuery == '{"isCustom":true}') {
+        stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+      } else {
+        stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
+      }
+
+      let data = {};
+      data.query = stringifiedQuery;
+      data.columns = chosenColumns;
+      data.projectId = this.state.projectId;
+
+      dataservice.addObjectCore("GetStatisticSubmittalForProjectId", data, 'POST').then(data => {
+        if (data) {
+          data = Config.getPublicConfiguartion().downloads + '/' + data;
+          var a = document.createElement('A');
+          a.href = data;
+          a.download = data.substr(data.lastIndexOf('/') + 1);
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          this.setState({ exportColumnsModal: false, isExporting: false })
+        }
+      }).catch(e => {
+        this.setState({ exportColumnsModal: false })
       });
     }
   }
@@ -1040,7 +1092,7 @@ class CommonLog extends Component {
       documentCycle: updated_document,
       [selectedValue]: event
     });
-    
+
   }
   render() {
 
@@ -1286,7 +1338,10 @@ class CommonLog extends Component {
                 <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>{Resources.close[currentLanguage]}</button>
 
                 {this.state.isExporting == true ? <LoadingSection /> :
-                  <button className="btn primaryBtn-2" onClick={this.btnExportServerClick}>{Resources.export[currentLanguage]} </button>
+                  <>
+                    <button className="btn primaryBtn-2" onClick={this.btnExportServerClick}>{Resources.export[currentLanguage]} </button>
+                    <button className="btn primaryBtn-2" onClick={this.btnExportStatisticsClick}>{Resources.exportStatistic[currentLanguage]} </button>
+                  </>
                 }
               </div>
             </div>
@@ -1305,151 +1360,151 @@ class CommonLog extends Component {
               <div className="proForm datepickerContainer customLayout">
 
                 <div className="linebylineInput valid-input mix_dropdown">
-                   <label className="control-label">
-                     { Resources.fromCompany[currentLanguage]}
-                    </label>
-                    <div className="supervisor__company">
-                      <div className="super_name">
-                        <Dropdown
-                          //title={"fromCompany"}
-                          data={this.state.companies}
-                          isMulti={false}
-                          selectedValue={this.state.selectedFromCompany}
-                          handleChange={event => {
-                            this.handleChangeDropDown(event, "companyId", true, "contacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
-                          }}
-                          index="companyId"
-                          name="companyId"
-                          id=" companyId"
-                          styles={CompanyDropdown}
-                          classDrop="companyName1"
-                        />
-                      </div>
-                      <div className="super_company">
-                        <Dropdown
-                          isMulti={false}
-                          data={this.state.contacts}
-                          selectedValue={this.state.selectedFromContact}
-                          handleChange={event =>
-                            this.handleChangeDropDown(event, "contactId", false, "", "", "", "selectedFromContact")
-                          }
-                          index="contactId"
-                          name="contactId"
-                          id="contactId"
-                          classDrop="contactName1"
-                          styles={ContactDropdown}
-                        />
-                      </div>
+                  <label className="control-label">
+                    {Resources.fromCompany[currentLanguage]}
+                  </label>
+                  <div className="supervisor__company">
+                    <div className="super_name">
+                      <Dropdown
+                        //title={"fromCompany"}
+                        data={this.state.companies}
+                        isMulti={false}
+                        selectedValue={this.state.selectedFromCompany}
+                        handleChange={event => {
+                          this.handleChangeDropDown(event, "companyId", true, "contacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                        }}
+                        index="companyId"
+                        name="companyId"
+                        id=" companyId"
+                        styles={CompanyDropdown}
+                        classDrop="companyName1"
+                      />
+                    </div>
+                    <div className="super_company">
+                      <Dropdown
+                        isMulti={false}
+                        data={this.state.contacts}
+                        selectedValue={this.state.selectedFromContact}
+                        handleChange={event =>
+                          this.handleChangeDropDown(event, "contactId", false, "", "", "", "selectedFromContact")
+                        }
+                        index="contactId"
+                        name="contactId"
+                        id="contactId"
+                        classDrop="contactName1"
+                        styles={ContactDropdown}
+                      />
                     </div>
                   </div>
+                </div>
                 <div className="linebylineInput valid-input mix_dropdown">
-                        <label className="control-label">
-                        {Resources.toCompany[currentLanguage]}
-                        </label>
-                      <div className="supervisor__company">
-                        <div className="super_name">
-                            <Dropdown isMulti={false}
-                                data={this.state.companies}
-                                selectedValue={this.state.selectedToCompany}
-                                handleChange={event =>
-                                   this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
-                                index="letter-toCompany"
-                                name="toCompanyId"
-                                id="toCompanyId"
-                                styles={CompanyDropdown}
-                                classDrop="companyName1"
-                            />
-                        </div>
-                        <div className="super_company">
-                            <Dropdown isMulti={false}
-                                data={this.state.ToContacts}
-                                selectedValue={this.state.selectedToContact}
-                                handleChange={event =>
-                                    this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
-                                }
-                                index="letter-toContactId"
-                                name="toContactId"
-                                id="toContactId"
-                                classDrop="contactName1"
-                                styles={ContactDropdown} />
-                        </div>
-                      </div>
-                   </div>
-                 {Config.getPayload().uty == "company" ?this.state.docType=="submittal" ?
-                 (
-                  <Fragment> 
-                 <div className="dropdownFullWidthContainer">
-                    <div className="linebylineInput valid-input dropdownFullWidth">
-                      <Dropdown title="disciplineTitle"
-                        data={this.state.disciplines} 
-                        isMulti={false}
-                        selectedValue={this.state.selectedDiscpline}
-                        handleChange={event => this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")}
-                        name="disciplineId" id="disciplineId" />
-                  </div>
-                    <div className="linebylineInput valid-input dropdownFullWidth">
-                      <Dropdown title="specsSection"
-                        data={this.state.specsSection} 
-                        isMulti={false}
-                        selectedValue={this.state.selectedSpecsSection}
-                        handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "", "", "", "selectedSpecsSection")} 
-                        name="specsSectionId" id="specsSectionId" />
-                  </ div>
-                 </div>
-                 <div className="dropdownFullWidthContainer">
-                    <div className="linebylineInput valid-input dropdownFullWidth">
-                                <Dropdown title="submittalType" 
-                                  data={this.state.SubmittalTypes} 
-                                  selectedValue={this.state.selectedSubmittalType}
-                                  handleChange={event => this.handleChangeDropDown(event, "submittalTypeId", false, "", "", "", "selectedSubmittalType")} 
-                                  />
+                  <label className="control-label">
+                    {Resources.toCompany[currentLanguage]}
+                  </label>
+                  <div className="supervisor__company">
+                    <div className="super_name">
+                      <Dropdown isMulti={false}
+                        data={this.state.companies}
+                        selectedValue={this.state.selectedToCompany}
+                        handleChange={event =>
+                          this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                        index="letter-toCompany"
+                        name="toCompanyId"
+                        id="toCompanyId"
+                        styles={CompanyDropdown}
+                        classDrop="companyName1"
+                      />
                     </div>
-                    <div className="linebylineInput valid-input  dropdownFullWidth">
-                                <Dropdown title="area" 
-                                 data={this.state.areas} 
-                                 selectedValue={this.state.selectedArea}
-                                  handleChange={event => this.handleChangeDropDown(event, "area", false, "", "", "", "selectedArea")}
-                                   />
-                      </div>
-                 </div>
-                 <div className="dropdownFullWidthContainer">
-                      <div className="linebylineInput valid-input dropdownFullWidth">
-                                <Dropdown title="location"
-                                   data={this.state.locations} 
-                                   selectedValue={this.state.selectedLocation}
-                                    handleChange={event => this.handleChangeDropDown(event, "location", false, "", "", "", "selectedLocation")}
-                                   />
-                        </div>
-                      <div className="linebylineInput valid-input dropdownFullWidth">
-                             <Dropdown title="contractPo" isMulti={false}
-                                       data={this.state.contracts}
-                                       selectedValue={this.state.selectedContract}
-                                       handleChange={event => this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContract")}
-                                      name="contractId" id="contractId" index="contractId" />
-                                 
-                        </div>
-                 </div>
-                 <div className="dropdownFullWidthContainer">
+                    <div className="super_company">
+                      <Dropdown isMulti={false}
+                        data={this.state.ToContacts}
+                        selectedValue={this.state.selectedToContact}
+                        handleChange={event =>
+                          this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
+                        }
+                        index="letter-toContactId"
+                        name="toContactId"
+                        id="toContactId"
+                        classDrop="contactName1"
+                        styles={ContactDropdown} />
+                    </div>
+                  </div>
+                </div>
+                {Config.getPayload().uty == "company" ? this.state.docType == "submittal" ?
+                  (
+                    <Fragment>
+                      <div className="dropdownFullWidthContainer">
                         <div className="linebylineInput valid-input dropdownFullWidth">
-                             <Dropdown title="approvalStatus" isMulti={false}
-                                      data={this.state.approvales}
-                                      selectedValue={this.state.selectedApprovalStatus}
-                                      handleChange={event => this.handleChangeDropDownCycles(event, "approvalStatusId", false, "", "", "", "selectedApprovalStatus")}
-                                      name="approvalStatusId" id="approvalStatusId" index="approvalStatusId" />
-                                  
+                          <Dropdown title="disciplineTitle"
+                            data={this.state.disciplines}
+                            isMulti={false}
+                            selectedValue={this.state.selectedDiscpline}
+                            handleChange={event => this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")}
+                            name="disciplineId" id="disciplineId" />
                         </div>
-                 </div>
-                 </Fragment>
-                 ):null:null
-                     
-                 }
+                        <div className="linebylineInput valid-input dropdownFullWidth">
+                          <Dropdown title="specsSection"
+                            data={this.state.specsSection}
+                            isMulti={false}
+                            selectedValue={this.state.selectedSpecsSection}
+                            handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "", "", "", "selectedSpecsSection")}
+                            name="specsSectionId" id="specsSectionId" />
+                        </ div>
+                      </div>
+                      <div className="dropdownFullWidthContainer">
+                        <div className="linebylineInput valid-input dropdownFullWidth">
+                          <Dropdown title="submittalType"
+                            data={this.state.SubmittalTypes}
+                            selectedValue={this.state.selectedSubmittalType}
+                            handleChange={event => this.handleChangeDropDown(event, "submittalTypeId", false, "", "", "", "selectedSubmittalType")}
+                          />
+                        </div>
+                        <div className="linebylineInput valid-input  dropdownFullWidth">
+                          <Dropdown title="area"
+                            data={this.state.areas}
+                            selectedValue={this.state.selectedArea}
+                            handleChange={event => this.handleChangeDropDown(event, "area", false, "", "", "", "selectedArea")}
+                          />
+                        </div>
+                      </div>
+                      <div className="dropdownFullWidthContainer">
+                        <div className="linebylineInput valid-input dropdownFullWidth">
+                          <Dropdown title="location"
+                            data={this.state.locations}
+                            selectedValue={this.state.selectedLocation}
+                            handleChange={event => this.handleChangeDropDown(event, "location", false, "", "", "", "selectedLocation")}
+                          />
+                        </div>
+                        <div className="linebylineInput valid-input dropdownFullWidth">
+                          <Dropdown title="contractPo" isMulti={false}
+                            data={this.state.contracts}
+                            selectedValue={this.state.selectedContract}
+                            handleChange={event => this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContract")}
+                            name="contractId" id="contractId" index="contractId" />
+
+                        </div>
+                      </div>
+                      <div className="dropdownFullWidthContainer">
+                        <div className="linebylineInput valid-input dropdownFullWidth">
+                          <Dropdown title="approvalStatus" isMulti={false}
+                            data={this.state.approvales}
+                            selectedValue={this.state.selectedApprovalStatus}
+                            handleChange={event => this.handleChangeDropDownCycles(event, "approvalStatusId", false, "", "", "", "selectedApprovalStatus")}
+                            name="approvalStatusId" id="approvalStatusId" index="approvalStatusId" />
+
+                        </div>
+                      </div>
+                    </Fragment>
+                  ) : null : null
+
+                }
 
                 <XSLfile key="docTemplate"
                   projectId={this.state.projectId}
                   companyId={this.state.document != null ? this.state.document.companyId : null}
                   contactId={this.state.document != null ? this.state.document.contactId : null}
-                  toCompanyId={this.state.document !=null? this.state.document.toCompanyId:null }
-                  toContactId={this.state.document !=null? this.state.document.toContactId:null }
+                  toCompanyId={this.state.document != null ? this.state.document.toCompanyId : null}
+                  toContactId={this.state.document != null ? this.state.document.toContactId : null}
                   disciplineId={this.state.document != null ? this.state.document.disciplineId : null}
                   specsSectionId={this.state.document != null ? this.state.document.specsSectionId : null}
                   submittalTypeId={this.state.document != null ? this.state.document.submittalTypeId : null}

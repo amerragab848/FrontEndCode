@@ -21,8 +21,10 @@ class SubmittalDrawingStatusList extends Component {
         super(props)
         this.state = {
             projectsList: [],
+            SubmittalTypes: [],
             rows: [],
-            projectIds: [],
+            submittalTypeList: [],
+            projectList: [],
             finishDate: moment(),
             startDate: moment(),
             pageSize: 200,
@@ -52,8 +54,8 @@ class SubmittalDrawingStatusList extends Component {
                     fixed: false,
                     type: "text",
                     sortable: true,
-                    href:'link',
-                    classes:'bold'
+                    href: 'link',
+                    classes: 'bold'
                 }, {
                     field: "submittalApprovalStatus",
                     title: Resources["submittalApprovalStatus"][currentLanguage],
@@ -257,9 +259,7 @@ class SubmittalDrawingStatusList extends Component {
 
         if (!Config.IsAllow(10137)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/"
-            });
+            this.props.history.push({ pathname: "/" });
         }
 
         this.fields = [{
@@ -282,56 +282,71 @@ class SubmittalDrawingStatusList extends Component {
         this.setState({ isLoading: true })
         dataService.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(res => {
             this.setState({ projectsList: res, isLoading: false })
-        })
+        });
+        //SubmittalTypes
+        dataService.GetDataListCached("GetaccountsDefaultListForList?listType=SubmittalTypes", "title", "id", 'defaultLists', "SubmittalTypes", "listType").then(result => {
+            this.setState({
+                SubmittalTypes: [...result]
+            });
+        });
+
     }
 
     getGridtData = () => {
         this.setState({ currentComponent: null })
+
         let reportobj = {
-            ids: this.state.projectIds,
+            projectList: this.state.projectList,
+            submittalTypeList: this.state.submittalTypeList,
             start: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             end: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
+
         this.setState({ isLoading: true })
+
         Api.post('GetSubmittalsDrawingStatusListReport', reportobj).then(res => {
             res.forEach(row => {
                 let subject = "";
                 if (row) {
-                  let obj = {
-                    docId: row.id,
-                    projectId: localStorage.getItem('lastSelectedProject'),
-                    projectName: row.projectName,
-                    arrange: 0,
-                    docApprovalId: 0,
-                    isApproveMode: false,
-                    perviousRoute: window.location.pathname + window.location.search
-                  };
-                 
-                  let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-        
-                  let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-        
-                   subject = "/SubmittalAddEdit?id=" + encodedPaylod;
+                    let obj = {
+                        docId: row.id,
+                        projectId: row.projectId,
+                        projectName: row.projectName,
+                        arrange: 0,
+                        docApprovalId: 0,
+                        isApproveMode: false,
+                        perviousRoute: window.location.pathname + window.location.search
+                    };
+
+                    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj)); 
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms); 
+                    subject = "/SubmittalAddEdit?id=" + encodedPaylod;
                 }
                 if (Config.IsAllow(223) || Config.IsAllow(221)) {
-                  row.link = subject;
+                    row.link = subject;
                 }
-              });
-            this.setState({ rows :res|| [], isLoading: false })
+            });
+            this.setState({ rows: res || [], isLoading: false })
         }).catch(() => {
             this.setState({ isLoading: false, rows: [] })
             toast.error(Resources.operationCanceled[currentLanguage])
-        })
-
-
+        }) 
     }
 
     HandleChangeProject = (e) => {
-        let projectIds = []
+        let projectList = []
         e.forEach(project => {
-            projectIds.push(project.value)
+            projectList.push(project.value)
         })
-        this.setState({ projectIds })
+        this.setState({ projectList })
+    }
+
+    HandleChangeSubmittalType = (e) => {
+        let submittalTypeList = []
+        e.forEach(project => {
+            submittalTypeList.push(project.value)
+        })
+        this.setState({ submittalTypeList })
     }
 
     handleChange = (name, value) => {
@@ -343,7 +358,7 @@ class SubmittalDrawingStatusList extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="expensesDetailsOnProjectsReport"
+                key="submittalDrawingStatusOnProjectsReport"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -353,8 +368,11 @@ class SubmittalDrawingStatusList extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = <ExportDetails fieldsItems={this.state.columns}
-            rows={this.state.rows} fields={this.fields} fileName={Resources.submittalDrawingStatusListReport[currentLanguage]} />
+        const btnExport = <ExportDetails
+            fieldsItems={this.state.columns}
+            rows={this.state.rows}
+            fields={this.fields}
+            fileName={Resources.submittalDrawingStatusListReport[currentLanguage]} />
 
         return (
 
@@ -374,24 +392,41 @@ class SubmittalDrawingStatusList extends Component {
                     {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer' >
                             <div className="reportsWithMulti">
-                                    <div className="linebylineInput multiChoice fullWidthWrapper">
-                                        <Dropdown title='Projects' data={this.state.projectsList}
-                                            name='selectedProject'
-                                            onChange={setFieldValue}
-                                            isMulti={true}
-                                            handleChange={e => {
-                                                this.HandleChangeProject(e);
-                                                let documentText = '';
-                                                e.map(lable => {
-                                                    return documentText = lable.label + " - " + documentText
-                                                });
-                                                this.fields[0].value = documentText
-                                            }}
-                                            onBlur={setFieldTouched}
-                                            error={errors.selectedProject}
-                                            touched={touched.selectedProject}
-                                        />
-                                    </div>
+                                <div className="linebylineInput multiChoice fullWidthWrapper">
+                                    <Dropdown title='Projects' data={this.state.projectsList}
+                                        name='selectedProject'
+                                        onChange={setFieldValue}
+                                        isMulti={true}
+                                        handleChange={e => {
+                                            this.HandleChangeProject(e);
+                                            let documentText = '';
+                                            e.map(lable => {
+                                                return documentText = lable.label + " - " + documentText
+                                            });
+                                            this.fields[0].value = documentText
+                                        }}
+                                        onBlur={setFieldTouched}
+                                        error={errors.selectedProject}
+                                        touched={touched.selectedProject}
+                                    />
+                                </div>
+
+                                <div className="linebylineInput multiChoice fullWidthWrapper">
+                                    <Dropdown title="submittalType"
+                                        onChange={setFieldValue}
+                                        isMulti={true}
+                                        data={this.state.SubmittalTypes} 
+                                        handleChange={e => {
+                                            this.HandleChangeSubmittalType(e);
+                                            let documentText = '';
+                                            e.map(lable => {
+                                                return documentText = lable.label + " - " + documentText
+                                            });
+                                            this.fields[0].value = documentText
+                                        }}
+                                        onBlur={setFieldTouched} />
+                                </div>
+
                                 <div className="reports__smallInputs">
                                     <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='startDate'
@@ -405,7 +440,7 @@ class SubmittalDrawingStatusList extends Component {
                                     </div>
                                 </div>
                             </div>
-                             <div className="button__reports">
+                            <div className="button__reports">
                                 <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                             </div>
                         </Form>

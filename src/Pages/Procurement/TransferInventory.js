@@ -164,7 +164,7 @@ class TransferInventory extends Component {
 
     saveDoc = () => {
         let obj = {
-            id: isTransferAdd == true ? 0 : this.state.document.id,
+            id: this.state.document.id,
             fromProjectId: this.state.document.projectId,
             toProjectId: this.state.selectedProject.value,
             approvedQuantity: this.state.document.approvedQuantity,
@@ -173,7 +173,7 @@ class TransferInventory extends Component {
             inventoryId: this.state.document.id
         }
 
-        dataservice.addObject('saveTransferMaterialInventory', obj).then(
+        dataservice.addObject('TransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 this.props.history.push("/requestsTransferItems/" + this.state.projectId);
