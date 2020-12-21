@@ -902,7 +902,7 @@ let widgets = {
         "props": {
             "permission": 0,
             "type": "oneWidget",
-            "api": "selectAllMaterialInventoryCount",
+            "api": "SelectAllMaterialInventoryCount",
             "apiDetails": "",
             "route": "",
             "value": "total",
