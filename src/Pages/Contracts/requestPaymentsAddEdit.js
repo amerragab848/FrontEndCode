@@ -2867,6 +2867,11 @@ class requestPaymentsAddEdit extends Component {
     };
 
     handleDropActionForExportFile = event => {
+        
+    if (Config.getPublicConfiguartion().activeExport != true) {
+        toast.warn('This feature is disabled. Please call your administrator for assistance');
+        return;
+      }
         let exportFile = '';
 
         if (event.label === 'Export') {

@@ -31,7 +31,9 @@ let documentObj = {};
 let docTempLink;
 
 let moduleId = Config.getPublicConfiguartion().commonLogApi;
+
 class CommonLog extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
