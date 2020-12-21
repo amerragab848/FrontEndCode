@@ -472,6 +472,8 @@ class materialDeliveryAddEdit extends Component {
             doc.docDate = moment(doc.docDate, "YYYY-MM-DD").format(
                 "YYYY-MM-DD[T]HH:mm:ss.SSS"
             );
+            doc.status =  doc.applyInventory == "true" ? false : doc.status;
+
             dataservice.addObject("EditMaterialDelivery", doc).then(result => {
                 this.setState({ isLoading: false });
                 toast.success(
@@ -835,7 +837,7 @@ class materialDeliveryAddEdit extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="linebylineInput valid-input">
+                                        <div className={this.state.document.status == false ? "linebylineInput valid-input disabled" : "linebylineInput valid-input"}>
                                             <label className="control-label">
                                                 {Resources.status[currentLanguage]}
                                             </label>
@@ -971,7 +973,7 @@ class materialDeliveryAddEdit extends Component {
                                             />
                                         </div>
                                         {this.props.changeStatus === true ?
-                                            <div className="linebylineInput valid-input">
+                                            <div className={(this.state.document.applyInventory == true || this.state.document.applyInventory =="true") ? "linebylineInput valid-input disabled" : "linebylineInput valid-input"}>
                                                 <label className="control-label">
                                                     {Resources.applyInventory[currentLanguage]}
                                                 </label>

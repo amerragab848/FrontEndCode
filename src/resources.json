@@ -1790,8 +1790,8 @@
         "ar": "سجل العقود"
     },
     "contractRequired": {
-        "en": "Please insert contract name",
-        "ar": "من فضلك ادخل اسم العقد"
+        "en": "Please select contract",
+        "ar": "من فضلك اختر العقد"
     },
     "addContract": {
         "en": "Create Contract",
@@ -8862,7 +8862,7 @@
         "ar": "ملخص توصية علي قرار"
     },
     "contractProcurmentRequestForm": {
-        "en": "Contract Procurment Request Form",
+        "en": "Procurment Request Form",
         "ar": "نموذج طلب شراء عقد"
     },
     "refNumber": {
@@ -8941,14 +8941,6 @@
         "en": "final Price ",
         "ar": "السعر النهائي "
     },
-    "ownerContact": {
-        "en": "Owner Contact",
-        "ar": " جهة اتصال المالك"
-    },
-    "contractorContact": {
-        "en": "Contractor Contact ",
-        "ar": "جهة الاتصال بالمقاول"
-    },
     "budgetCompany": {
         "en": "budget Company",
         "ar": "الميزانية"
@@ -8956,6 +8948,66 @@
     "department": {
         "en": "department",
         "ar": "القسم"
+    },
+    "BidderCompanyRequired": {
+        "en": "Select bidder company",
+        "ar": "اختر الشركة صاحبة العرض"
+    },
+    "BudgetCompanyRequired": {
+        "en": "Select Budget company",
+        "ar": "اختر الميزانية "
+    },
+    "BudgetContactRequired": {
+        "en": "Select Budget Contact",
+        "ar": "اختر المسئول عن الميزانية"
+    },
+    "departmentRequired": {
+        "en": "Select a department",
+        "ar": "اختر القسم"
+    },
+    "vendorCompanyRequired": {
+        "en": "Select vendor Company",
+        "ar": "الشركة البائعة "
+    },
+    "criticalFactor": {
+        "en": "Critical Factor",
+        "ar": "العنصر الهام"
+    },
+    "justification": {
+        "en": "Justification",
+        "ar": "التبرير"
+    },
+    "specialInstruction": {
+        "en": "Secial Instructions",
+        "ar": "تعليمات خاصة"
+    },
+    "budgetComments": {
+        "en": "Budget Comments",
+        "ar": "تعليقات خاصة بالميزامية"
+    },
+    "budgetDate": {
+        "en": "Budget Date",
+        "ar": "تاريخ الميزانية"
+    },
+    "bidderCompany": {
+        "en": "Bidder Company",
+        "ar": "الشركة مقدمة العرض"
+    },
+    "progressToDate": {
+        "en": "Progress To Date",
+        "ar": "التقدم إلى التاريخ"
+    },
+    "vendorCompany": {
+        "en": "Vendor Company",
+        "ar": "Vendor Company"
+    },
+    "ownerContact": {
+        "en": "Owner Contact",
+        "ar": " جهة اتصال المالك"
+    },
+    "contractorContact": {
+        "en": "Contractor Contact ",
+        "ar": "جهة الاتصال بالمقاول"
     },
     "UrlForm": {
         "en": "http://www.example.com",
@@ -8996,5 +9048,69 @@
     "documentTitle": {
         "en": "Document Title",
         "ar": "عنوان الوثيقة"
+    },
+    "avgPrice": {
+        "en": "Average Price",
+        "ar": "متوسط السعر"
+    },
+    "exportStatistic": {
+        "en": "Statistics",
+        "ar": "احصائيات"
+    },
+    "submittalDrawingStatusListReport": {
+        "en": "Submittal Drawing Status List Report",
+        "ar": "تقديم تقرير قائمة حالة الرسم"
+    },
+    "submittalRefNo": {
+        "en": "Submittal Reference Number",
+        "ar": "رقم المرجع الخاضع"
+    },
+    "submittalSubject": {
+        "en": "Submittal Subject",
+        "ar": "موضوع التقديم"
+    },
+    "submittalApprovalStatus": {
+        "en": "Submittal Approval Status",
+        "ar": "حالة الموافقة على التقديم"
+    },
+    "drawingReviewResult": {
+        "en": "Drawing Review Result",
+        "ar": "حاله المراجعه"
+    },
+    "budgetContact": {
+        "en": "Budget Contact",
+        "ar": "الشخص المسئول عن الميزانية"
+    },
+    "DesignDrawinglistStatusReport": {
+        "en": "Design Drawing list Status Report",
+        "ar": "Design Drawing list Status Report"
+    },
+    "drawingSubject": {
+        "en": "drawing Subject",
+        "ar": "drawing Subject"
+    },
+    "drawingScale": {
+        "en": "drawing Scale",
+        "ar": "drawing Scale"
+    },
+    "drawingReference": {
+        "en": "drawing Reference",
+        "ar": "drawing Reference"
+    },
+    "lastSentDate": {
+        "en": "last Sent Date",
+        "ar": "last Sent Date"
+    },
+    "lastSentTime": {
+        "en": "last Sent Time",
+        "ar": "last Sent Time"
+    },
+    "selectSubmittedFor": {
+        "en": "Select Submitted For",
+        "ar": "مقدم ل"
+    },
+    "refCode": {
+        "en": "Reference Code",
+        "ar": "الرقم المرجعي"
     }
 }

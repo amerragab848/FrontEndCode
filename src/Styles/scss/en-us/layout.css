@@ -24568,3 +24568,7 @@ tbody.grid-body tr .text.elipsisPadd {
     padding-left: 296px;
     width: 100%;
 }
+
+.reports__proForm .linebylineInput.fullWidthWrapper {
+    width: 100%;
+}

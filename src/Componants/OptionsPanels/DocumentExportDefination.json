@@ -2530,6 +2530,7 @@
     },
     "39": {
         "fields": [
+            
             {
                 "name": "subject",
                 "value": "subject",
@@ -2558,6 +2559,11 @@
             {
                 "name": "projectName",
                 "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "submittedFor",
+                "value": "submittedForText",
                 "type": "S"
             }
         ],
@@ -3585,23 +3591,8 @@
         ]
     },
     "122":{
-        "fields": [
-            {
-                "name": "subject",
-                "value": "subject",
-                "type": "S"
-            },
-            {
-                "name": "status",
-                "value": "statusName",
-                "type": "S"
-            },
-            {
-                "name": "docDate",
-                "value": "docDate",
-                "type": "D"
-            },
-            {
+        "fields":[
+      {
                 "name": "refNumber",
                 "value": "refNumber",
                 "type": "S"
@@ -3673,5 +3664,96 @@
             "requestByContact",
             "requestByCompany"
         ]
+    },
+    "123":{
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContacName",
+                "type":"S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+              "name":"contract",
+              "value":"contractSubject" ,
+              "type": "S" 
+            },
+            {
+                "name":"budgetCompany",
+                "value":"budgetCompanyName",
+                "type":"S"
+            },
+            {
+                "name":"department",
+                "value":"departmentName",
+                "type":"S"
+            },
+            {
+                "name":"bidderCompany",
+                "value":"bidderCompanyName",
+                "type":"S"
+            },
+            {
+                "name":"budgetComments",
+                "value":"budgetComments",
+                "type":"S"
+            },
+            {
+                "name":"budgetContact",
+                "value":"budgetContactName",
+                "type":"S"
+            },
+            {
+                "name":"budgetDate",
+                "value":"budgetDate",
+                "type":"D"
+            },
+            {
+                "name":"criticalFactor",
+                "value":"criticalFactor",
+                "type":"S"
+            },
+            {
+                "name":"justification",
+                "value":"justification",
+                "type":"S"
+            },
+            {
+                "name":"specialInstruction",
+                "value":"specialInstruction",
+                "type":"S"
+            },
+            {
+                "name":"vendorCompany",
+                "value":"vendorCompanyName",
+                "type":"S"
+            },
+            {
+                "name":"refNo",
+                "value":"refNo",
+                "type":"S"
+            }
+        ],
+        "friendlyNames": []
     }
+    
 }

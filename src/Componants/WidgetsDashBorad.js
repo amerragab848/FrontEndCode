@@ -1176,7 +1176,7 @@ var widgets = [
         order: 2,
         type: "oneWidget",
         props: {
-          api: "selectAllMaterialInventoryCount",
+          api: "SelectAllMaterialInventoryCount",
           apiDetails: "",
           route: "",
           value: "total",

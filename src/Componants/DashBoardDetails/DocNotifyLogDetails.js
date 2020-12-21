@@ -35,7 +35,9 @@ class DocNotifyLogDetails extends Component {
         sortable: true,
         showTip: true,
         classes: ' bold elipsisPadd',
-        onRightClick: cell => { this.cellClick(cell) },
+        onRightClick: (e, cell) => { 
+            Api.post(`UpdateReadStutas?id=${e.id}`); 
+        },
         href: 'link'
       }, {
         field: 'creationDate',
@@ -165,7 +167,7 @@ class DocNotifyLogDetails extends Component {
         if (row) {
 
           let obj = {
-            docId: row.id,
+            docId: row.docId,
             projectId: row.projectId,
             projectName: row.projectName,
             arrange: row.arrange,

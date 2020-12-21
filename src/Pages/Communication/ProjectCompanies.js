@@ -90,7 +90,7 @@ class ProjectCompanies extends Component {
             }
         ];
 
-      
+
 
         const columnsGrid = [
             {
@@ -100,7 +100,7 @@ class ProjectCompanies extends Component {
                 field: "id",
                 showTip: true
             },
-            
+
             {
                 field: 'companyName',
                 title: Resources['CompanyName'][currentLanguage],
@@ -255,12 +255,12 @@ class ProjectCompanies extends Component {
         }
     }
     clickRow = (id) => {
-         if (Config.IsAllow(1)) {
-                this.props.history.push({
-                    pathname: "/AddEditCompany/" + id,
-                });
-            }
-     
+        if (Config.IsAllow(1)) {
+            this.props.history.push({
+                pathname: "/AddEditCompany/" + id,
+            });
+        }
+
     }
 
     addRecord = () => {
@@ -370,8 +370,9 @@ class ProjectCompanies extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                
+
                 <GridCustom
+                    gridKey="ProjectCompanies"
                     ref='custom-data-grid'
                     key="ProjectCompanies"
                     data={this.state.rows}
@@ -388,8 +389,8 @@ class ProjectCompanies extends Component {
                         classes: ''
                     }]}
                     rowActions={[{
-                        title:'Contact',
-                        handleClick : (rowSelected) => {
+                        title: 'Contact',
+                        handleClick: (rowSelected) => {
                             if (Config.IsAllow(1)) {
                                 this.props.history.push({
                                     pathname: "/Contacts/" + rowSelected.companyId,
@@ -405,8 +406,8 @@ class ProjectCompanies extends Component {
                 />) : <LoadingSection />;
 
         const btnExport = this.state.isLoading === false ?
-         <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} /> 
-         : null;
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+            : null;
 
         return (
             <div className='mainContainer'>
