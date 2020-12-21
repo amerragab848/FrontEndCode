@@ -2853,6 +2853,10 @@
         "en": "Work Flow Alerts",
         "ar": "تنبيهات الدورة المستندية"
     },
+    "SendToWFToday": {
+        "en": "Send To Work Flow Today",
+        "ar": "مرسل للدورة المستندية اليوم"
+    }, 
     "sendToExpensesWorkFlow": {
         "en": "Send To Expenses Work Flow",
         "ar": "ارسال للدوره المستنديه لاذن الصرف"

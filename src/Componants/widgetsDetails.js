@@ -129,6 +129,19 @@ let widgets = {
             "key": "0-1-10"
         }
     },
+    "SendToWFToday": {
+        "title": "SendToWFToday",
+        "props": {
+            "permission": 0,
+            "type": "oneWidget",
+            "api": "GetSendToWFTodayCount",
+            "route": "SendToWFToday",
+            "value": "total",
+            "listType": "item",
+            "action": "action",
+            "key": "0-1-12"
+        }
+    },
     "alertingQntySummary": {
         "title": "alertingQntySummary",
         "props": {
