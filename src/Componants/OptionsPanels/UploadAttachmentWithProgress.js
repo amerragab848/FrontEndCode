@@ -7,7 +7,7 @@ import dropbox from '../../Styles/images/dropbox.png';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import Config from '../../Services/Config'; 
+import Config from '../../Services/Config';
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
 
 // import classNames from 'classnames';
@@ -15,10 +15,10 @@ import { getDroppedOrSelectedFiles } from 'html5-file-selector';
 // import AttachDrag from '../../Styles/images/attachDraggable.png';
 // import Resources from '../../resources.json';
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =
+    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachmentWithProgress extends Component {
-
     addBtnRef = createRef();
     uploadBtnRef = createRef();
 
@@ -35,11 +35,11 @@ class UploadAttachmentWithProgress extends Component {
             fileStatus: '',
         };
     }
-    
+
     onSuccess(files) {
         let selectedFiles = [];
 
-        files.forEach(function (doc) {
+        files.forEach(function(doc) {
             var newFile = {
                 url: doc.link,
                 progress: 0,
@@ -48,7 +48,13 @@ class UploadAttachmentWithProgress extends Component {
             selectedFiles.push(newFile);
         });
 
-        this.props.actions.uploadFileLinks('UploadFilesModalLinksByDocId?docId=' + this.props.docId + '&docTypeId=' + this.props.docTypeId, selectedFiles,);
+        this.props.actions.uploadFileLinks(
+            'UploadFilesModalLinksByDocId?docId=' +
+                this.props.docId +
+                '&docTypeId=' +
+                this.props.docTypeId,
+            selectedFiles,
+        );
     }
 
     onDrop = (acceptedFiles, rejectedFiles) => {
@@ -64,10 +70,7 @@ class UploadAttachmentWithProgress extends Component {
     };
 
     onDropAcceptedHandler = acceptedFiles => {
-        this.setState({ _className: 'hundredPercent' });
-
         acceptedFiles.forEach(element => {
-            console.log(element.file);
             let formData = new FormData();
             formData.append('file', element.file);
             let header = {
@@ -75,8 +78,6 @@ class UploadAttachmentWithProgress extends Component {
                 docId: this.props.docId,
                 parentId: this.state.parentId,
             };
-
-            console.log(formData);
             this.props.actions.uploadFile('BlobUpload', formData, header);
         });
         this.setState({ _className: 'zeropercent' });
@@ -154,7 +155,7 @@ class UploadAttachmentWithProgress extends Component {
                         .setDeveloperKey(
                             Config.getPublicConfiguartion().googleDriveKey,
                         )
-                        .setCallback(() => { });
+                        .setCallback(() => {});
 
                     picker.build().setVisible(true);
                 }}>
@@ -175,7 +176,9 @@ class UploadAttachmentWithProgress extends Component {
             docId: this.props.docId,
             parentId: this.state.parentId,
         };
-        let url = Config.getPublicConfiguartion().static + 'PM/api/Procoor/BlobUpload';
+        let url =
+            Config.getPublicConfiguartion().static +
+            'PM/api/Procoor/BlobUpload';
         return { url: url, headers: header };
     };
 
@@ -185,7 +188,9 @@ class UploadAttachmentWithProgress extends Component {
             this.uploadBtnRef.current.click();
             this.setState({ fileStatus: '' });
             if (response) {
-                this.props.actions.insertFiletoAttachments(JSON.parse(response));
+                this.props.actions.insertFiletoAttachments(
+                    JSON.parse(response),
+                );
             }
         }
     };
@@ -243,44 +248,44 @@ class UploadAttachmentWithProgress extends Component {
                 Upload
             </div>
         );
-    }; 
+    };
 
     render() {
         return Config.IsAllow(this.props.AddAttachments) ||
             Config.IsAllow(this.props.EditAttachments) ? (
-                <div>
-                    <Dropzone
-                        autoUpload={true}
-                        getUploadParams={this.getUploadParams}
-                        onChangeStatus={this.handleChangeStatus}
-                        onSubmit={this.handleSubmit}
-                        InputComponent={this.InputChooseFile}
-                        submitButtonContent={this.UploadFiles}
-                        getFilesFromEvent={this.getFilesFromEvent}
-                        classNames
-                    />
+            <div>
+                <Dropzone
+                    autoUpload={true}
+                    getUploadParams={this.getUploadParams}
+                    onChangeStatus={this.handleChangeStatus}
+                    onSubmit={this.handleSubmit}
+                    InputComponent={this.InputChooseFile}
+                    submitButtonContent={this.UploadFiles}
+                    getFilesFromEvent={this.getFilesFromEvent}
+                    classNames
+                />
 
-                    <div className="drives__upload">
-                        <label
-                            className="btn__upload"
-                            onClick={() => this.addBtnRef.current.click()}>
-                            Open my folders
+                <div className="drives__upload">
+                    <label
+                        className="btn__upload"
+                        onClick={() => this.addBtnRef.current.click()}>
+                        Open my folders
                     </label>
-                        <span class="upload__border"></span>
-                        <div className="drive__wrapper">
-                            <h2 class="zero">Upload From</h2>
-                            {Config.IsAllow(this.props.ShowGoogleDrive)
-                                ? this.renderGoogleDrive()
-                                : null}
-                            {Config.IsAllow(this.props.ShowDropBox)
-                                ? this.renderDropBox()
-                                : null}
-                        </div>
+                    <span class="upload__border"></span>
+                    <div className="drive__wrapper">
+                        <h2 class="zero">Upload From</h2>
+                        {Config.IsAllow(this.props.ShowGoogleDrive)
+                            ? this.renderGoogleDrive()
+                            : null}
+                        {Config.IsAllow(this.props.ShowDropBox)
+                            ? this.renderDropBox()
+                            : null}
                     </div>
                 </div>
-            ) : null;
+            </div>
+        ) : null;
     }
-} 
+}
 
 function mapStateToProps(state) {
     return {
