@@ -324,6 +324,9 @@ const TimeSheetDetails = AsyncComponent(() =>
 const WorkFlowAlerts = AsyncComponent(() =>
     import('./Componants/DashBoardDetails/workFlowAlerts'),
 );
+const SendToWFToday = AsyncComponent(() =>
+    import('./Componants/DashBoardDetails/SendToWFToday'),
+);
 const DocApprovalDetails = AsyncComponent(() =>
     import('./Componants/DashBoardDetails/DocApprovalDetails'),
 );
@@ -388,14 +391,14 @@ const UserProjects = AsyncComponent(() =>
 const TaskAdmin = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/TaskAdmin'),
 );
-const corrSentView=AsyncComponent(()=>
-      import('./Pages/Communication/corrSentView'),
+const corrSentView = AsyncComponent(() =>
+    import('./Pages/Communication/corrSentView'),
 );
-const corrReceiveView=AsyncComponent(()=>
-      import('./Pages/Communication/corrReceiveView'),
+const corrReceiveView = AsyncComponent(() =>
+    import('./Pages/Communication/corrReceiveView'),
 );
-const ContractROaAddEdit=AsyncComponent(()=>
-      import('./Pages/Contracts/ContractROaAddEdit'),
+const ContractROaAddEdit = AsyncComponent(() =>
+    import('./Pages/Contracts/ContractROaAddEdit'),
 );
 const AccountsEPSPermissions = AsyncComponent(() =>
     import('./Componants/GeneralSetting/Accounts/AccountsEPSPermissions'),
@@ -680,8 +683,8 @@ const DeliveredQuantitieReport = AsyncComponent(() =>
 const CollectedInvoices = AsyncComponent(() =>
     import('../src/Pages/ReportsMenu/collectedInvoices'),
 );
-const SubmittalDrawingStatusListReport= AsyncComponent(() =>
-import('../src/Pages/ReportsCenter/TechnicalOffice/SubmittalDrawingStatusList'),
+const SubmittalDrawingStatusListReport = AsyncComponent(() =>
+    import('../src/Pages/ReportsCenter/TechnicalOffice/SubmittalDrawingStatusList'),
 );
 
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
@@ -844,7 +847,7 @@ let originalRoutes = [
     />,
     <Route
         key="r-46"
-        path="/TemplatesSettings" 
+        path="/TemplatesSettings"
         component={TemplatesSettings}
     />,
     <Route key="r-47" path="/GeneralList" component={GeneralList} />,
@@ -1002,14 +1005,14 @@ let originalRoutes = [
         key="r-93"
         path="/variationRequestAddEdit"
         component={VariationRequestAddEdit}
-    />, 
+    />,
     <Route
         key="r-94"
         path="/projectIssuesAddEdit"
         component={ProjectIssuesAddEdit}
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
-    <Route key="r-200" path="/ProcurmentRequestFormAddEdit" component={ProcurmentRequestFormAddEdit}/>,
+    <Route key="r-200" path="/ProcurmentRequestFormAddEdit" component={ProcurmentRequestFormAddEdit} />,
     <Route
         key="r-96"
         path="/requestPaymentsAddEdit"
@@ -1355,35 +1358,40 @@ let originalRoutes = [
     <Route key="r-192" path="ContractsPOReports/RequestPaymentDeductionTypeReport"
         component={RequestPaymentDeductionTypeReport} />,
     <Route key="r-193" path="/levelDurationAlertDetails"
-        component={levelDurationAlertDetails} />, 
+        component={levelDurationAlertDetails} />,
     <Route key="r-194" path="/UserAlerts" component={UserAlerts} />,
     <Route
         key="r-195"
         path="/usersAlertSummaryDetails"
         component={usersAlertSummaryDetails}
-    />, 
+    />,
     <Route
         key="r-196"
         path="/DocumentAllTypesReport"
         component={DocumentAllTypesReport}
     />,
     <Route
-    key="r-197"
-    path="/corrSentView"
-    component={corrSentView} />,
+        key="r-197"
+        path="/corrSentView"
+        component={corrSentView} />,
     <Route
-    key="r-198"
-    path="/corrReceiveView"
-    component={corrReceiveView} />,
+        key="r-198"
+        path="/corrReceiveView"
+        component={corrReceiveView} />,
     <Route
-    key="r-199"
-    path="/ContractROaAddEdit"
-    component={ContractROaAddEdit} />,
-    
+        key="r-199"
+        path="/ContractROaAddEdit"
+        component={ContractROaAddEdit} />,
+
     <Route
         key="r-200"
         path="/submittalDrawingStatusListReport"
         component={SubmittalDrawingStatusListReport}
+    />,
+    <Route
+        key="r-201"
+        path="/SendToWFToday"
+        component={SendToWFToday}
     />,
 
 
