@@ -8,11 +8,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from "../Templates/Grid/CustomGrid";
+import moment from "moment";
+import DatePicker from '../../Componants/OptionsPanels/DatePicker'
+import { Formik, Form } from 'formik';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class SendToWFToday extends Component {
 
-  constructor(props) { 
+  constructor(props) {
     super(props);
     const columnGrid = [
       {
@@ -60,7 +63,7 @@ class SendToWFToday extends Component {
         fixed: false,
         type: "text",
         sortable: true
-      }, 
+      },
       {
         field: 'sendDate',
         title: Resources['sendDate'][currentLanguage],
@@ -87,6 +90,8 @@ class SendToWFToday extends Component {
       columns: columnGrid,
       isLoading: true,
       rows: [],
+      finishDate: moment(),
+      startDate: moment(),
       isCustom: true
     };
   }
@@ -118,8 +123,7 @@ class SendToWFToday extends Component {
         isLoading: false
       });
     });
-  }
-
+  };
   cellClick = (rowId, colID) => {
 
     if (colID != 0 && colID != 1) {
@@ -146,8 +150,7 @@ class SendToWFToday extends Component {
         this.props.history.push({ pathname: "/" + rowData.docLink, search: "?id=" + encodedPaylod });
       }
     }
-  };
-
+  }; 
   onRowClick = (obj) => {
     if (this.state.RouteEdit !== '') {
       let objRout = {
@@ -166,8 +169,20 @@ class SendToWFToday extends Component {
         search: "?id=" + encodedPaylod
       });
     }
-  }
+  };
+  handleChange = (name, value) => {
+    this.setState({ [name]: value })
+  };
+  getSearchData = () => {
+    this.setState({ isLoading: true })
 
+    let fromDate = moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+    let toDate = moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+    Api.get("GetSendToWFTodayDetails?fromDate=" + fromDate + "&toDate=" + toDate).then(res => {
+      this.setState({rows: res != null ? res : [], isLoading: false })
+    })
+  };
   render() {
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom
@@ -196,12 +211,35 @@ class SendToWFToday extends Component {
             {btnExport}
           </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
-          <div className="gridfillter-container">
-          </div>
+        <Formik
+          initialValues={{
+            selectedProject: '',
+            selectContractor: ''
+          }}
+          enableReinitialize={true}
+        >
+          {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+            <Form onSubmit={handleSubmit} className='proForm reports__proForm datepickerContainer'>
+              <div className="linebylineInput valid-input alternativeDate">
+                <DatePicker title='startDate'
+                  startDate={this.state.startDate}
+                  handleChange={e => this.handleChange('startDate', e)} />
+              </div>
+              <div className="linebylineInput valid-input alternativeDate">
+                <DatePicker title='finishDate'
+                  startDate={this.state.finishDate}
+                  handleChange={e => this.handleChange('finishDate', e)} />
+              </div>
+              <div className="btn__multi">
+                <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getSearchData()}>{Resources['search'][currentLanguage]}</button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+        <div className="doc-pre-cycle letterFullWidth">
+          {dataGrid}
         </div>
 
-        <div>{dataGrid}</div>
       </div>
     );
   }

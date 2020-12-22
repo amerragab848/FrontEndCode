@@ -16457,6 +16457,23 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Send To Work Flow Today",
+            "ar": "مرسل للدورة المستندية اليوم"
+          },
+          "id": 1247,
+          "permissions": [
+            {
+              "code": 10139,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     }

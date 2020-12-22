@@ -136,7 +136,7 @@ var widgets = [
       },
       {
         title: "SendToWFToday",
-        permission: 0,
+        permission: 10139,
         // key: "0-1-6",
         canView: false,
         checked: true,
