@@ -26,6 +26,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Api from "../../api";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -44,7 +45,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-//const _ = require('lodash')
 class variationOrderAddEdit extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +63,7 @@ class variationOrderAddEdit extends Component {
           arrange = obj.arrange;
           perviousRoute = obj.perviousRoute;
         }
-        catch{
+        catch {
           this.props.history.goBack();
         }
       }
@@ -329,39 +329,6 @@ class variationOrderAddEdit extends Component {
       });
     });
   }
-
-  // componentWillMount() {
-  //   if (this.state.docId > 0) {
-  //     this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId, this.state.docTypeId, "changeOrder");
-
-  //     this.fillVoItems();
-
-  //   } else {
-  //     let changeOrder = {
-  //       subject: "",
-  //       id: 0,
-  //       projectId: this.state.projectId,
-  //       arrange: "",
-  //       docDate: moment(),
-  //       status: "true",
-  //       isRaisedPrices: "false",
-  //       executed: "no",
-  //       pcoId: "",
-  //       refDoc: "",
-  //       total: 0,
-  //       timeExtensionRequired: 0,
-  //       contractId: "",
-  //       pcoId: "",
-  //       dateApproved: moment()
-  //     };
-
-  //     this.setState({ document: changeOrder }, function () {
-  //       this.GetNExtArrange();
-  //     });
-  //     this.fillDropDowns(false);
-  //     this.props.actions.documentForAdding();
-  //   }
-  // }
 
   GetNExtArrange() {
     let original_document = { ...this.state.document };
@@ -718,8 +685,6 @@ class variationOrderAddEdit extends Component {
     this.simpleDialog1.show();
 
   }
-  // DeleteVoItemById?id=
-
 
   disablePopUp = () => {
     this.setState({ showPopUp: false, });
@@ -757,18 +722,6 @@ class variationOrderAddEdit extends Component {
                                   <label className="control-label">
                                     {Resources.subject[currentLanguage]}
                                   </label>
-                                  {/* <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
-                                    <input name="subject" className="form-control fsadfsadsa" id="subject"
-                                      placeholder={Resources.subject[currentLanguage]}
-                                      autoComplete="off" value={this.state.document.subject}
-                                      onBlur={e => {
-                                        handleBlur(e);
-                                        handleChange(e);
-                                      }}
-                                      onChange={e => this.handleChange(e, "subject")}
-                                    />
-                                    {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
-                                  </div> */}
                                   <div className={"inputDev ui input" + (errors.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                     <input name="subject" id="subject" className="form-control fsadfsadsa"
                                       placeholder={Resources.subject[currentLanguage]}
@@ -960,6 +913,14 @@ class variationOrderAddEdit extends Component {
                                 projectId={this.state.projectId}
                               />
                             ) : null}
+
+                          {this.state.docId > 0 ? (
+                            <Fragment>
+                              <div className="document-fields tableBTnabs">
+                                <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                              </div>
+                            </Fragment>
+                          ) : null}
                           {this.viewAttachments()}
                           {this.props.changeStatus === true ? (
                             <ViewWorkFlow
@@ -977,15 +938,16 @@ class variationOrderAddEdit extends Component {
                 <Fragment>
                   <div className="subiTabsContent feilds__top">
                     <AddItemDescription
-                      docLink="/Downloads/Excel/BOQ.xlsx"
+                      docLink={this.state.document.isRaisedPrices ? "" : "/Downloads/Excel/VoItems.xlsx"}
                       showImportExcel={this.state.document.isRaisedPrices}
-                      docType="vo"
+                      docType={this.state.document.isRaisedPrices ? "VoItemPrices" : "VoItems"}
                       isViewMode={this.state.isViewMode}
                       docId={this.state.docId}
                       mainColumn="changeOrderId"
                       addItemApi="AddVOItems"
                       projectId={this.state.projectId}
-                      showItemType={false} showBoqType={true}
+                      showItemType={false}
+                      showBoqType={true}
                     />
                     <div className="doc-pre-cycle">
 
