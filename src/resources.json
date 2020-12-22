@@ -6270,11 +6270,11 @@
         "ar": "الردود السابقة"
     },
     "replyLetterSubject": {
-        "en": "Reply Letter Subject",
+        "en": "Reply On Letter Subject",
         "ar": "خطاب الرد"
     },
     "replyLetterDate": {
-        "en": "Reply Letter Date",
+        "en": "Reply On Letter Date",
         "ar": "تاريخ خطاب الرد"
     },
     "selectReply": {
