@@ -26,6 +26,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Api from "../../api";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -960,6 +961,14 @@ class variationOrderAddEdit extends Component {
                                 projectId={this.state.projectId}
                               />
                             ) : null}
+
+                         {this.state.docId > 0  ? (
+                           <Fragment>
+                            <div className="document-fields tableBTnabs">
+                             <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                              </div>
+                             </Fragment>
+                          ) : null}
                           {this.viewAttachments()}
                           {this.props.changeStatus === true ? (
                             <ViewWorkFlow

@@ -9081,6 +9081,11 @@
         "en": "Drawing Review Result",
         "ar": "حاله المراجعه"
     },
+"downloadAll":{
+    "en":"Download All",
+    "ar":"تحميل الكل "
+},
+ 
     "budgetContact": {
         "en": "Budget Contact",
         "ar": "الشخص المسئول عن الميزانية"
