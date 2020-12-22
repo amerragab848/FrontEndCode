@@ -198,6 +198,24 @@ class ViewAttachmments extends Component {
             this.props.actions.GetUploadedFiles(url);
         }
     }
+    downloadAll=()=>{
+      let  urls=   this.props.files.map((item, Index) => {
+                 return   item.attachFile
+        })
+        var link = document.createElement('a');
+
+        link.setAttribute('download', null);
+        link.style.display = 'none';
+      
+        document.body.appendChild(link);
+      
+        for (var i = 0; i < urls.length; i++) {
+          link.setAttribute('href', urls[i]);
+          link.click();
+        }
+      
+       // document.body.removeChild(link);
+    }
     ext = url => {
         return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).split('#')[0].substr(url.lastIndexOf(".")).split(".")[1]
     }
@@ -209,6 +227,7 @@ class ViewAttachmments extends Component {
                 : ext == "png" ? png : ext == "jpg" ? jpg : doc;
 
             let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
+
             if (item.isCloud !== true) {
                 var containerIndex = item.attachFile.indexOf(
                     "/" + Config.getPublicConfiguartion().BlobStorageContainerName
@@ -296,7 +315,7 @@ class ViewAttachmments extends Component {
                 </tr >
             );
         });
-
+       
         let ViewVersionDetails = () => {
             return (
                 <Fragment>
@@ -372,6 +391,7 @@ class ViewAttachmments extends Component {
                     }
 
                     return (
+                    
                         <tr key={Index}>
                             <td>
                                 <div className="contentCell tableCell-1">
@@ -466,6 +486,8 @@ class ViewAttachmments extends Component {
                                 </div>
                             </td>
                         </tr>
+                   
+                    
                     );
                 })
                 : null;
@@ -508,7 +530,12 @@ class ViewAttachmments extends Component {
                     </thead>
                     <tbody>{tabel}</tbody>
                 </table>
+                <div>
 
+                <button  className="primaryBtn-1 btn meduimBtn"  onClick={this.downloadAll}>
+                {Resources["downloadAll"][currentLanguage]}
+                </button>
+                </div>
                 {this.state.view ? (
                     <div
                         className="largePopup largeModal pdf__popup"

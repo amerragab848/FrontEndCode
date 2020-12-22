@@ -122,6 +122,7 @@ class DocumentActions extends Component {
     }
 
     componentDidMount = () => {
+       
         ///fillter importedPath array to fill dropdowns (actions) with coorect panels bassed on permmsion given from props  (without reject,approved,workFlow anddistribution panels)
         let dropActions = importedPaths.slice(4, 12);
         let allowActions = [];

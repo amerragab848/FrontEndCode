@@ -9078,6 +9078,10 @@
 "refCode":{
     "en":"Reference Code",
     "ar":"الرقم المرجعي"
+},
+"downloadAll":{
+    "en":"Download All",
+    "ar":"تحميل الكل "
 }
  
 }
