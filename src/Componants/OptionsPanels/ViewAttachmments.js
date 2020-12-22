@@ -198,23 +198,27 @@ class ViewAttachmments extends Component {
             this.props.actions.GetUploadedFiles(url);
         }
     }
-    downloadAll=()=>{
-      let  urls=   this.props.files.map((item, Index) => {
-                 return   item.attachFile
+    downloadAll = () => {
+        let urls = this.props.files.map((item, Index) => {
+            return item.attachFile
         })
-        var link = document.createElement('a');
 
-        link.setAttribute('download', null);
-        link.style.display = 'none';
-      
-        document.body.appendChild(link);
-      
         for (var i = 0; i < urls.length; i++) {
-          link.setAttribute('href', urls[i]);
-          link.click();
+
+            var link = document.createElement('a'); 
+            
+            link.style.display = 'none'; 
+            link.target = '_blank'; 
+            link.setAttribute('href', urls[i]); 
+            link.setAttribute('download', null);
+
+            document.body.appendChild(link); 
+
+            link.click();
+            link.remove(); 
         }
-      
-       // document.body.removeChild(link);
+
+        // document.body.removeChild(link);
     }
     ext = url => {
         return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).split('#')[0].substr(url.lastIndexOf(".")).split(".")[1]
@@ -288,7 +292,7 @@ class ViewAttachmments extends Component {
                     <td className="tdHover">
                         <div className="attachmentAction">
                             <a href={item["attachFile"]} download={item.fileName} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
-                                
+
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                     <g fill="none" fillRule="evenodd" transform="translate(1)">
                                         <g fill="#A8B0BF" mask="url(#b)">
@@ -300,7 +304,7 @@ class ViewAttachmments extends Component {
 
                             {Config.IsAllow(4502) && (this.props.isApproveMode === false) ? (
                                 <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
-                                    
+
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                         <g fill="none" fillRule="evenodd" transform="translate(1)">
                                             <g fill="#A8B0BF" mask="url(#b)">
@@ -315,7 +319,7 @@ class ViewAttachmments extends Component {
                 </tr >
             );
         });
-       
+
         let ViewVersionDetails = () => {
             return (
                 <Fragment>
@@ -391,7 +395,7 @@ class ViewAttachmments extends Component {
                     }
 
                     return (
-                    
+
                         <tr key={Index}>
                             <td>
                                 <div className="contentCell tableCell-1">
@@ -407,8 +411,8 @@ class ViewAttachmments extends Component {
                             <td>
                                 <div className="contentCell tableCell-2">
                                     <a
-                                        href={item["attachFile"]} 
-                                        download={item.fileName} 
+                                        href={item["attachFile"]}
+                                        download={item.fileName}
                                         className="pdfPopup various zero"
                                         data-toggle="tooltip"
                                         title={item["fileName"]}>
@@ -445,8 +449,8 @@ class ViewAttachmments extends Component {
                                         </a>
                                     ) : null}
 
-                                    <a href={item["attachFile"]} 
-                                        download={item.fileName} 
+                                    <a href={item["attachFile"]}
+                                        download={item.fileName}
                                         className="pdfPopup various zero attachPdf"
                                         data-toggle="tooltip"
                                         title={Resources["download"][currentLanguage]}>
@@ -486,8 +490,8 @@ class ViewAttachmments extends Component {
                                 </div>
                             </td>
                         </tr>
-                   
-                    
+
+
                     );
                 })
                 : null;
@@ -531,10 +535,10 @@ class ViewAttachmments extends Component {
                     <tbody>{tabel}</tbody>
                 </table>
                 <div>
-
-                <button  className="primaryBtn-1 btn meduimBtn"  onClick={this.downloadAll}>
-                {Resources["downloadAll"][currentLanguage]}
-                </button>
+                    {this.props.files.length > 0 ?
+                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.downloadAll}>
+                            {Resources["downloadAll"][currentLanguage]}
+                        </button> : null}
                 </div>
                 {this.state.view ? (
                     <div
