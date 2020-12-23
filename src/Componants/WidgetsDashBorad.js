@@ -105,7 +105,7 @@ var widgets = [
         permission: 0,
         canView: false,
         checked: true,
-        order: 6,
+        order: 8,
         type: "oneWidget",
         props: {
           api: "SelectByAccountIdCount",
@@ -122,7 +122,7 @@ var widgets = [
         permission: 0,
         canView: false,
         checked: true,
-        order: 7,
+        order: 9,
         type: "oneWidget",
         props: {
           api: "GetLevelDurationDelayCount",
@@ -133,7 +133,26 @@ var widgets = [
           action: "action",
           isModal: false
         }
-      }
+      },
+      {
+        title: "SendToWFToday",
+        permission: 10139,
+        // key: "0-1-6",
+        canView: false,
+        checked: true,
+        order: 10,
+        type: "oneWidget",
+        props: {
+          api: "GetSendToWFTodayCount",
+          apiDetails: "",
+          route: "SendToWFToday",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false,
+          // key: "0-1-6"
+        }
+      },
     ]
   },
   {
@@ -1176,7 +1195,7 @@ var widgets = [
         order: 2,
         type: "oneWidget",
         props: {
-          api: "selectAllMaterialInventoryCount",
+          api: "SelectAllMaterialInventoryCount",
           apiDetails: "",
           route: "",
           value: "total",

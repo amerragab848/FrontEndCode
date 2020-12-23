@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 //import SkyLight from "react-skylight";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 var steps_defination = [];
 
@@ -268,6 +269,7 @@ class pcoAddEdit extends Component {
     };
 
     componentDidUpdate(prevProps) {
+
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
@@ -301,7 +303,6 @@ class pcoAddEdit extends Component {
     }
 
     componentDidMount() {
-        
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -1288,11 +1289,20 @@ class pcoAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3019} EditAttachments={3257} ShowDropBox={3571} ShowGoogleDrive={3572} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (
+                                                    <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3019} EditAttachments={3257} ShowDropBox={3571} ShowGoogleDrive={3572} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                       {this.state.docId > 0  ? (
+                                                        <Fragment>
+                                                        <div className="document-fields tableBTnabs">
+                                                            <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                        </div>
+                                                        </Fragment>
+                                                    ) : null}
                                                     {this.viewAttachments()}
                                                     {this.props.changeStatus === true ?
                                                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                         : null}
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -1364,6 +1374,7 @@ class pcoAddEdit extends Component {
                                 </div>
                                 : null
                         }
+                         
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? "block" : "none" }}>
@@ -1504,7 +1515,8 @@ function mapStateToProps(state) {
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId,
-        showModal: state.communication.showModal
+        showModal: state.communication.showModal,
+        relatedLinkData: state.communication.relatedLinkData,
     }
 }
 

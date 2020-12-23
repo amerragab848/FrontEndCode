@@ -2590,6 +2590,12 @@ var routes = [
         nav: false
     },
     {
+        route: "SendToWFToday",
+        moduleId: "summary/SendToWFToday",
+        title: "Send To WorkFlow Today Details",
+        nav: false
+    },
+    {
         route: "distributioninboxListSummary/:param1(/:item)",
         moduleId: "projects/distributioninboxListSummary",
         title: "distributioninboxListSummary",

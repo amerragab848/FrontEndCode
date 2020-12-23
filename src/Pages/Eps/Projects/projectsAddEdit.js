@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../../Services/Config";
 import CryptoJS from 'crypto-js';
-//import moment from "moment";
 import * as communicationActions from '../../../store/actions/communication';
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
@@ -19,16 +18,12 @@ import ContactDropdown from '../../../Componants/publicComponants/ContactDropdow
 import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-//var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 const validationSchema = Yup.object().shape({
     projectNameEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
     projectNameAr: Yup.string()
-        // .test('projectNameAr', 'Name cannot be english', value => {
-        //     return ar.test(value)
-        // })
         .required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
     job: Yup.string().required(Resources['referenceCode'][currentLanguage]),
     projectType: Yup.string().required(Resources['pleaseSelectProjectType'][currentLanguage]),
@@ -50,7 +45,7 @@ class projectsAddEdit extends Component {
                     docId = obj.docId;
                     epsId = obj.epsId;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
             }
@@ -97,26 +92,27 @@ class projectsAddEdit extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
-            this.setState({
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id !== state.document.id) {
+            return {
                 document: { ...nextProps.document }
-            });
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            }
         }
-    };
+        return null;
+    }
 
-    componentWillMount() {
+    componentDidUpdate(prevProps, prevState) {
+        if ( prevState.document.id !== this.props.document.id ) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+        }
+    }  
+    componentDidMount() {
         if (this.state.docId > 0) {
             let url = "ProjectProjectsById?id=" + this.state.docId
             this.props.actions.documentForEdit(url).then(() => {
                 this.setState({ isLoading: false })
                 this.props.actions.RouteToMainDashboard();
             })
-
-            if (!Config.IsAllow(423) || !Config.IsAllow(424) || !Config.IsAllow(426)) {
-
-            }
         } else {
             let document = {
                 projectNameEn: '',
@@ -162,6 +158,12 @@ class projectsAddEdit extends Component {
         }
     };
 
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
+        this.setState({
+            docId: 0,
+        });
+    }
     fillDropDowns(isEdit) {
         this.setState({ isLoading: true })
         dataservice.GetDataList("GetCompanies?accountOwnerId=" + this.state.ownerId, 'companyName', 'id').then(result => {
