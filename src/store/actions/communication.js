@@ -808,3 +808,13 @@ export function emptyList(stateName) {
         });
     };
 }
+
+export function storeCommonLogColumns(columns) {
+    return dispatch => {
+        dispatch({
+            type: types.STORE_COMMON_LOG_CoLUMNS,
+            columns: columns,
+        });
+    };
+}
+

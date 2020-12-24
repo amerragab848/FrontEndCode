@@ -126,6 +126,7 @@ class LeftMenu extends Component {
             costControlMenu: costControlMenu,
             reportsMenu: reportsMenu,
             communication: communication,
+            tempEpsList: []
         };
     }
 
@@ -271,16 +272,15 @@ class LeftMenu extends Component {
 
     componentWillMount = () => {
         Api.get('GetProjectsForMenue?id=2').then(result => {
-            this.setState(state => {
-                return { ListEps: result };
-            });
+            this.setState({ ListEps: result || [], tempEpsList: result || [] });
         });
     };
+
 
     filterProject = (e, epsList) => {
         let value = e.target.value;
         epsList.map((eps, index) => {
-            eps.visible = false;
+            //eps.visible = false;
             eps.projects.map((project, i) => {
                 if (project.name.toLocaleLowerCase().includes(`${value.toLocaleLowerCase()}`)) {
                     eps.visible = true;
@@ -293,16 +293,39 @@ class LeftMenu extends Component {
             let subEpses = this.filterProject(e, eps.epses);
             eps.epses = subEpses;
         });
+
         return epsList;
     };
 
-    filterProjectHandler = (e) => {
-        let epsList = this.state.ListEps;
-        epsList = this.filterProject(e, epsList)
-        this.setState(state => {
-            return { ListEps: epsList };
+    finalFilter = (tempList) => {
+        let templ = [];
+        tempList.map((eps, i) => {
+            eps.projects = eps.projects.filter(x => x.visible != false);
+            let subEpses = this.finalFilter(eps.epses);
+            eps.epses = subEpses;
+            if (eps.projects.length > 0 || eps.epses.length > 0) {
+                templ.push({
+                    projects: eps.projects,
+                    epses: eps.epses,
+                    id: eps.id,
+                    name: eps.name,
+                    parentId: eps.parentId,
+                    visible: eps.visible
+                })
+            }
         });
+        return templ;
+    }
+
+    filterProjectHandler = (e) => {
+        let epsList = JSON.parse(JSON.stringify(this.state.ListEps));
+        epsList = this.filterProject(e, epsList);
+        let tempList = [...epsList];
+        let result = this.finalFilter(tempList);
+        result = e.target.value != "" ? result : [...this.state.ListEps];
+        this.setState({ tempEpsList: result });
     };
+
     selectProjectHandler = (projectId, titleProject) => {
         this.setState(state => {
             return {
@@ -335,28 +358,31 @@ class LeftMenu extends Component {
     };
 
     EpsComponent() {
-        const Eps = this.state.ListEps == null ? null
-            : this.state.ListEps.map((eps, index) => {
-                return (
-
-                    <Fragment key={eps.id}>
+        let templateList = this.state.tempEpsList == null ? [] : this.state.tempEpsList
+        const Eps = (
+            <Fragment >
+                <ul className="MainProjectsMenuUL zero">
+                    {<li className="search-box">
+                        <form className="proForm">
+                            <div className="inputDev ui input input-group"                                                    >
+                                <input
+                                    type="search"
+                                    className="form-control"
+                                    placeholder="search for project"
+                                    onChange={e => this.filterProjectHandler(e)}
+                                />
+                                <button className="ui button">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlnsXlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20"><g fill="none" fillRule="evenodd" transform="translate(3 3)"><g fill="#A8B0BF" mask="url(#b)"><path id="a" d="M2.346 8.026a5.683 5.683 0 0 0 5.817 5.672c3.04-.066 5.613-2.588 5.539-5.815-.07-3.057-2.584-5.53-5.674-5.534C4.9 2.345 2.343 4.9 2.346 8.026m12.11 4.806c.054.04.108.071.15.114.99.986 1.978 1.973 2.967 2.96.219.218.39.46.421.78.05.52-.215.985-.688 1.206-.456.214-.959.107-1.37-.302-.997-.994-1.992-1.99-2.985-2.988-.046-.046-.072-.112-.103-.16a8.05 8.05 0 0 1-11.081-1.393c-2.584-3.228-2.29-7.841.59-10.7a8.012 8.012 0 0 1 10.719-.557 8.025 8.025 0 0 1 1.38 11.04"></path></g></g></svg>
+                                </button>
+                            </div>
+                        </form>
+                    </li>}
+                </ul>
+                {templateList.map((eps, index) => {
+                    return (
+                        <Fragment key={eps.id}>
                         <ul className="MainProjectsMenuUL zero">
-                            {index == 0 ? <li className="search-box">
-                                <form className="proForm">
-                                    <div className="inputDev ui input input-group"                                                    >
-                                        <input
-                                            type="search"
-                                            className="form-control"
-                                            placeholder="search for project"
-                                            onChange={e => this.filterProjectHandler(e)}
-                                        />
-                                        <button className="ui button">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlnsXlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20"><g fill="none" fillRule="evenodd" transform="translate(3 3)"><g fill="#A8B0BF" mask="url(#b)"><path id="a" d="M2.346 8.026a5.683 5.683 0 0 0 5.817 5.672c3.04-.066 5.613-2.588 5.539-5.815-.07-3.057-2.584-5.53-5.674-5.534C4.9 2.345 2.343 4.9 2.346 8.026m12.11 4.806c.054.04.108.071.15.114.99.986 1.978 1.973 2.967 2.96.219.218.39.46.421.78.05.52-.215.985-.688 1.206-.456.214-.959.107-1.37-.302-.997-.994-1.992-1.99-2.985-2.988-.046-.046-.072-.112-.103-.16a8.05 8.05 0 0 1-11.081-1.393c-2.584-3.228-2.29-7.841.59-10.7a8.012 8.012 0 0 1 10.719-.557 8.025 8.025 0 0 1 1.38 11.04"></path></g></g></svg>
-                                        </button>
-                                    </div>
-                                </form>
-                            </li> : null}
                             {eps.visible != false ?
                                 <li className="EastWestProject PM-color">
                                     <span onClick={() => this.EpsHandler(eps.id, index)} className="EastMainLi">{eps.name}</span>
@@ -381,14 +407,14 @@ class LeftMenu extends Component {
                                     </ul>
                                     {eps.epses.length > 0 ? this.childEPSCompnent(eps.epses) : null}
                                 </li>
-
                                 : null}
                         </ul>
-                    </Fragment>
+                         </Fragment>
 
-                );
-            });
-
+                    );
+                })}
+            </Fragment>
+        );
         return Eps;
     }
 
@@ -397,38 +423,43 @@ class LeftMenu extends Component {
             <ul className="">
                 {childEPS.map((eps, index) => {
                     return (
-                        <Fragment key={`SUB-${index}`}>
-                            <li className="subEps__list">
-                                <a onClick={() => this.EpsHandler(eps.id, index)}> {eps.name}                                </a>
-                                <ul className={this.state.currentIndex === index ? 'zero' : 'zero closeAccordion'}>
-                                    {eps.projects.map(project => {
-                                        return (
-                                            <li
-                                                className={
-                                                    this.props.projectId ===
-                                                        project.id
-                                                        ? 'active'
-                                                        : ''
-                                                }
-                                                key={project.id}
-                                                onClick={event =>
-                                                    this.selectProjectHandler(
-                                                        project.id,
-                                                        project.name,
-                                                    )
-                                                }>
-                                                <a>{project.name}</a>
-                                                {eps.epses.length > 0
-                                                    ? this.childEPSCompnent(
-                                                        eps.epses,
-                                                    )
-                                                    : null}
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            </li>
-                        </Fragment>
+                        eps.visible != false ?
+                            <Fragment key={`SUB-${index}`}>
+                                <li className="subEps__list">
+                                    <a onClick={() => this.EpsHandler(eps.id, index)}> {eps.name}                                </a>
+                                    <ul className={this.state.currentIndex === index ? 'zero' : 'zero closeAccordion'}>
+                                        {eps.projects.map(project => {
+                                            if (project.visible == true) {
+                                                return (
+                                                    <li
+                                                        className={
+                                                            this.props.projectId ===
+                                                                project.id
+                                                                ? 'active'
+                                                                : ''
+                                                        }
+                                                        key={project.id}
+                                                        onClick={event =>
+                                                            this.selectProjectHandler(
+                                                                project.id,
+                                                                project.name,
+                                                            )
+                                                        }>
+                                                        <a>{project.name}</a>
+
+                                                    </li>
+                                                );
+                                            }
+                                        })}
+                                        {eps.epses.length > 0
+                                            ? this.childEPSCompnent(
+                                                eps.epses,
+                                            )
+                                            : null}
+                                    </ul>
+                                </li>
+                            </Fragment>
+                            : null
                     );
                 })}
             </ul>
@@ -803,8 +834,8 @@ class LeftMenu extends Component {
                                                                                                     opacity="0"
                                                                                                     x="0"
                                                                                                     y="0"
-                                                                                                   
-                                                                                                   
+
+
                                                                                                     height="36"
                                                                                                 />
                                                                                                 <path

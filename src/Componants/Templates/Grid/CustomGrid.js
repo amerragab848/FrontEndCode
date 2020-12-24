@@ -5,7 +5,10 @@ import moment from "moment";
 import Resources from "../../../resources.json";
 import { isEqual } from 'lodash';
 import LoadingSection from "../../publicComponants/LoadingSection";
-
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as communicationActions from '../../../store/actions/communication';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 let arrColumn = ["arrange", "quantity", "unitPrice"];
@@ -14,7 +17,6 @@ export default class CustomGrid extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             columns: this.props.cells,
             rows: this.props.data,
@@ -77,7 +79,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ GridLoading: true })
 
-        var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+        var selectedCols =JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
         var currentGP = [];
 
@@ -171,6 +173,7 @@ export default class CustomGrid extends Component {
     };
 
     handleCheck = (key) => {
+        debugger
         this.setState({ [key]: !this.state[key], Loading: true });
         let data = this.state.ColumnsHideShow
         for (var i in data) {
@@ -699,3 +702,5 @@ export default class CustomGrid extends Component {
         );
     }
 }
+
+
