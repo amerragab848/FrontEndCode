@@ -24,6 +24,9 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import { SkyLightStateless } from 'react-skylight';
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
+
 
 const find = require("lodash/find");
 const maxBy = require("lodash/maxBy");
@@ -177,7 +180,11 @@ class SubmittalAddEdit extends Component {
       selectedNewFromContactCycles: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
       selectedNewFromCompanyCycles: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       type: "",
-      viewCycle: false
+      viewCycle: false,
+      docTemplateModal:false,
+      reviewResultInPop:null,
+      selectedReviewResultInPop: { label: Resources.selectResult[currentLanguage], value: "0" },
+
     };
 
     if ((!Config.IsAllow(220)) && (!Config.IsAllow(221)) && !Config.IsAllow(223)) {
@@ -979,6 +986,30 @@ class SubmittalAddEdit extends Component {
     });
   }
 
+  handleDropDownInPopUpTtem(event)
+  {
+    
+    if (event == null) return;
+    this.setState({
+      reviewResultInPop:event.value,
+      selectedReviewResultInPop:event
+    })
+  }
+
+  rerenderSubmittalItems()
+  {
+    dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
+      this.setState({
+        itemData: data
+      });
+
+      this.props.actions.SetCyclesExportingData({
+        items: data,
+        cyclesFields: ["arrange", "description", "submitalDate", "refDoc", "reviewResultName"],
+        cyclesfriendlyNames: ["numberAbb", "subject", "submitalDate", "refDoc", "reviewResult"]
+      });
+    }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+  }
   editSubmittal(event) {
 
     this.setState({
@@ -1502,8 +1533,20 @@ class SubmittalAddEdit extends Component {
   showOptionPanel = () => {
     this.props.actions.showOptionPanel(true);
   }
+  btnDocumentTemplateShowModal = () => {
+    this.setState({
+        docTemplateModal: true,
+    });
+  };
 
   render() {
+    const btnDocumentTemplate =(
+        <button
+            className="primaryBtn-2 btn mediumBtn"
+            onClick={() => this.btnDocumentTemplateShowModal()}>
+            {Resources['DocTemplate'][currentLanguage]}
+        </button>
+    ) 
 
     const columnsCycles = [
       {
@@ -1624,7 +1667,7 @@ class SubmittalAddEdit extends Component {
         )
       }
     ];
-
+   
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one_step one__tab readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
@@ -2133,6 +2176,7 @@ class SubmittalAddEdit extends Component {
                                                     </div>
                                                   </button>
                                                 )) : null}
+                                                {btnDocumentTemplate}
                                         </div>
                                       </Form>
                                     )}
@@ -2426,6 +2470,62 @@ class SubmittalAddEdit extends Component {
               </Formik>
             </div>
           </SkyLight>
+        
+        {/**************************Upload submittal items *********************/}
+        {this.state.docTemplateModal == true ? (
+                    <div className="largePopup largeModal ">
+                        <SkyLightStateless
+                            onOverlayClicked={() =>
+                                this.setState({ docTemplateModal: false })
+                            }
+                            title={Resources['DocTemplate'][currentLanguage]}
+                            onCloseClicked={() =>
+                                this.setState({ docTemplateModal: false })
+                            }
+                            isVisible={this.state.docTemplateModal}>
+                            <div className="proForm datepickerContainer customLayout">
+                           
+                                <div className="dropdownFullWidthContainer">
+                                  <div className="linebylineInput valid-input dropdownFullWidth">
+                                            <Dropdown isMulti={false} 
+                                             title="reviewResult" 
+                                              data={this.state.reviewResult}
+                                              selectedValue={this.state.selectedReviewResultInPop}
+                                              name="reviewResultInPop" 
+                                              id="reviewResultInPop"
+                                              handleChange={event => this.handleDropDownInPopUpTtem(event)} />
+                                  </div>
+                                </div>
+                           
+                            <XSLfile
+                                    key="docTemplate"
+                                    projectId={this.state.projectId}
+                                    docType={this.state.docType}
+                                    submittalId={docId}
+                                    reviewResultId={this.state.reviewResultInPop != null? this.state.reviewResultInPop: null}
+                                    submittalItemdocumentTemplate={true}
+                                    link={Config.getPublicConfiguartion().downloads +'/Downloads/Excel/tempSubmittalItems.xlsx'}
+                                    header="addManySubmittalItems"
+                                    afterUpload={() => {
+                                        this.setState({
+                                            docTemplateModal: false,
+                                        });
+                                        this.setState({ 
+                                          selectedReviewResultInPop:{ label: Resources.selectResult[currentLanguage], value:null } ,
+                                          reviewResultInPop:null
+                                        });
+                                      this.rerenderSubmittalItems()
+                                      toast.success(
+                                        Resources['operationSuccess'][currentLanguage],
+                                    );
+                                    }}
+                                />
+                            </div>  
+                        </SkyLightStateless>
+                    </div>
+                ) : null}
+        {/**********************************************************************/}
+        
         </div>
       </div>
     );
