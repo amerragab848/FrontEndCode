@@ -19,7 +19,7 @@ class Widgets extends Component {
 
   componentDidMount() {
 
-    Api.get(this.props.props.api).then(result => {
+    Api.get(this.props.props.api, undefined, 3).then(result => {
       if (result) {
         this.setState({
           value: result != null ? result : 0

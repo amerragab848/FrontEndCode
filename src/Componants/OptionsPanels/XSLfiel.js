@@ -75,15 +75,15 @@ class XSLfile extends Component {
             }
             Api.postFile(
                 'UploadExcelFilesTemplate?projectId=' +
-                    this.props.projectId +
-                    '&fromCompanyId=' +
-                    this.props.companyId +
-                    '&fromContactId=' +
-                    this.props.contactId +
-                    '&toCompanyId=' +
-                    this.props.toCompanyId +
-                    '&toContactId=' +
-                    this.props.toContactId,
+                this.props.projectId +
+                '&fromCompanyId=' +
+                this.props.companyId +
+                '&fromContactId=' +
+                this.props.contactId +
+                '&toCompanyId=' +
+                this.props.toCompanyId +
+                '&toContactId=' +
+                this.props.toContactId,
                 formData,
                 header,
             )
@@ -115,20 +115,15 @@ class XSLfile extends Component {
             let docType = this.props.docType;
             let header = { docType: docType };
             this.setState({ Isloading: true });
-            Api.postFile(
-                'UploadExcelFiles?docId=' + this.props.docId,
-                formData,
-                header,
-            )
-                .then(resp => {
-                    if (this.props.afterUpload != undefined) {
-                        this.setState({ Isloading: false });
-                        this.props.afterUpload();
-                    }
-                    setTimeout(() => {
-                        this.setState({ _className: 'zeropercent' });
-                    }, 1000);
-                })
+            Api.postFile('UploadExcelFiles?docId=' + this.props.docId, formData, header).then(resp => {
+                if (this.props.afterUpload != undefined) {
+                    this.setState({ Isloading: false });
+                    this.props.afterUpload();
+                }
+                setTimeout(() => {
+                    this.setState({ _className: 'zeropercent' });
+                }, 1000);
+            })
                 .catch(ex => {
                     toast.error(
                         Resources['operationCanceled'][currentLanguage],
@@ -154,12 +149,12 @@ class XSLfile extends Component {
             let projectId = this.props.projectId;
             Api.postFile(
                 'UploadSingleFile?scheduleId=' +
-                    id +
-                    '&projectId=' +
-                    projectId +
-                    '&fileName=' +
-                    testName +
-                    '&isEdit=true',
+                id +
+                '&projectId=' +
+                projectId +
+                '&fileName=' +
+                testName +
+                '&isEdit=true',
                 formData,
                 header,
             )
@@ -182,11 +177,6 @@ class XSLfile extends Component {
         }
     };
 
-    getUploadParams = ({ meta }) => {
-        console.log(meta);
-        return { url: 'https://httpbin.org/post' };
-    };
-
     handleChangeStatus = ({ meta, file }, status) => {
         console.log(status);
         if (status == 'rejected_file_type') {
@@ -202,8 +192,8 @@ class XSLfile extends Component {
         this.props.documentTemplate
             ? await this.documentTemplateUpload(files)
             : this.props.CustomUpload
-            ? await this.CustomUpload(files)
-            : await this.upload(files);
+                ? await this.CustomUpload(files)
+                : await this.upload(files);
         this.setState({ uploaded: true });
         allFiles.forEach(f => f.remove());
     };
@@ -278,7 +268,7 @@ class XSLfile extends Component {
                                         aria-hidden="true"></i>
                                     {
                                         Resources.downloadExcelFormatFile[
-                                            currentLanguage
+                                        currentLanguage
                                         ]
                                     }
                                 </a>
@@ -322,7 +312,7 @@ class XSLfile extends Component {
                                                             {
                                                                 Resources
                                                                     .includeFiles[
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </p>
@@ -337,7 +327,7 @@ class XSLfile extends Component {
                                                                 {
                                                                     Resources
                                                                         .upload[
-                                                                        currentLanguage
+                                                                    currentLanguage
                                                                     ]
                                                                 }
                                                             </label>
@@ -390,24 +380,24 @@ class XSLfile extends Component {
                                     </div>
                                 </button>
                             ) : (
-                                <button
-                                    className={
-                                        'primaryBtn-1 btn smallBtn ' +
-                                        (this.props.disabled ? 'disabled' : '')
-                                    }
-                                    disabled={
-                                        this.props.disabled ? 'disabled' : ''
-                                    }
-                                    onClick={
-                                        this.props.documentTemplate
-                                            ? this.documentTemplateUpload
-                                            : this.props.CustomUpload
-                                            ? this.CustomUpload
-                                            : this.upload
-                                    }>
-                                    {Resources['upload'][currentLanguage]}
-                                </button>
-                            )}
+                                    <button
+                                        className={
+                                            'primaryBtn-1 btn smallBtn ' +
+                                            (this.props.disabled ? 'disabled' : '')
+                                        }
+                                        disabled={
+                                            this.props.disabled ? 'disabled' : ''
+                                        }
+                                        onClick={
+                                            this.props.documentTemplate
+                                                ? this.documentTemplateUpload
+                                                : this.props.CustomUpload
+                                                    ? this.CustomUpload
+                                                    : this.upload
+                                        }>
+                                        {Resources['upload'][currentLanguage]}
+                                    </button>
+                                )}
                         </div>
                     </React.Fragment>
                 </div>

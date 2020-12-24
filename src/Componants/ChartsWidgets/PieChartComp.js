@@ -104,7 +104,7 @@ class PieChartComp extends Component {
 
     componentDidMount() {
         if (this.props.reports == undefined) {
-            Api.get(this.props.api).then(results => {
+            Api.get(this.props.api, undefined, 3).then(results => {
                 if (results) this.GenerateDataFromProps(results);
             });
         } else this.GenerateDataFromProps(this.props.rows);

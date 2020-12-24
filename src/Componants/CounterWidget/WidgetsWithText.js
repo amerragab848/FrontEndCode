@@ -17,7 +17,7 @@ class WidgetsWithText extends Component {
   }
 
   componentDidMount() {
-    Api.get(this.props.props.api).then(data => {
+    Api.get(this.props.props.api, undefined, 3).then(data => {
       if (data) {
         let _value = this.props.props.value.split("-");
         let _total = this.props.props.total.split("-");

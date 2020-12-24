@@ -32,14 +32,13 @@ class BarChartComp extends Component {
     }
 
     componentDidMount = () => {
-        Api.get(this.props.api)
-            .then(results => {
-                if (this.props.multiSeries === 'no') {
-                    this.GenerateDataFromProps(results);
-                } else {
-                    this.GenerateGroupedDataFromProps(results);
-                }
-            })
+        Api.get(this.props.api, undefined, 3).then(results => {
+            if (this.props.multiSeries === 'no') {
+                this.GenerateDataFromProps(results);
+            } else {
+                this.GenerateGroupedDataFromProps(results);
+            }
+        })
             .catch(ex => {
                 this.setState({
                     isLoading: false,

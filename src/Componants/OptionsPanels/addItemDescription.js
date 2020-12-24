@@ -227,7 +227,10 @@ class addItemDescription extends Component {
         return (
             <div className="step-content">
                 {this.props.showImportExcel !== false ? (
-                    <XSLfile key="boqImport" docId={this.props.docId} docType={this.props.docType} link={Config.getPublicConfiguartion().downloads + this.props.docLink}
+                    <XSLfile key="boqImport"
+                        docId={this.props.docId}
+                        docType={this.props.docType}
+                        link={Config.getPublicConfiguartion().downloads + this.props.docLink}
                         header="addManyItems" disabled={this.props.changeStatus ? this.props.docId > 0 ? false : true : false} afterUpload={() => this.fillTable()} />
                 ) : null}
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
