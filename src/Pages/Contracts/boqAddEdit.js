@@ -19,7 +19,6 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from '../../Componants/OptionsPanels/ViewWorkFlow';
-// import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import Steps from '../../Componants/publicComponants/Steps';
@@ -31,7 +30,8 @@ import Resources from '../../resources.json';
 import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
-import UploadBoqAttachment from '../../Componants/OptionsPanels/UploadBoqAttachment';
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
+//import UploadBoqAttachment from '../../Componants/OptionsPanels/UploadBoqAttachment';
 
 let currentLanguage =
     localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -2851,7 +2851,7 @@ class bogAddEdit extends Component {
         let Step_2 = (
             <Fragment>
                 {addItemContent}
-                <Fragment>
+                {/* <Fragment>
                     <UploadBoqAttachment
                         key="boqStructure"
                         docId={this.state.docId}
@@ -2861,6 +2861,15 @@ class bogAddEdit extends Component {
                         disabled={this.props.changeStats ? this.props.document.contractId > 0 ? true : false : false}
                         afterUpload={() => this.getTabelData()}
                     />
+                </Fragment> */}
+                <Fragment>
+                    <XSLfile key="boqStructure"
+                        docId={this.state.docId}
+                        docType="boq2"
+                        link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQStructure.xlsx"}
+                        header="addManyItems"
+                        disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
+                        afterUpload={() => this.getTabelData()} />
                 </Fragment>
 
                 <div className="doc-pre-cycle letterFullWidth">

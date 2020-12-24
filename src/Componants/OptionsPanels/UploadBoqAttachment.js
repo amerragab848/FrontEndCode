@@ -5,7 +5,6 @@ import Resources from '../../../src/resources';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import Config from '../../Services/Config';
 import Api from '../../api';
 
 import * as communicationActions from '../../store/actions/communication';
@@ -32,25 +31,12 @@ class UploadBoqAttachment extends Component {
     documentTemplateUpload = files => {
         if (files.length > 0) {
             let formData = new FormData();
-            let file = files[0].file;
+            let file = files[0];
             formData.append('file0', file);
             let docType = this.props.docType;
             let header = { docType: docType };
             this.setState({ Isloading: true });
-            Api.postFile(
-                'UploadExcelFilesTemplate?projectId=' +
-                this.props.projectId +
-                '&fromCompanyId=' +
-                this.props.companyId +
-                '&fromContactId=' +
-                this.props.contactId +
-                '&toCompanyId=' +
-                this.props.toCompanyId +
-                '&toContactId=' +
-                this.props.toContactId,
-                formData,
-                header,
-            )
+            Api.postFile('UploadExcelFilesTemplate?projectId=' + this.props.projectId + '&fromCompanyId=' + this.props.companyId + '&fromContactId=' + this.props.contactId + '&toCompanyId=' + this.props.toCompanyId + '&toContactId=' + this.props.toContactId, formData, header)
                 .then(resp => {
                     if (this.props.afterUpload != undefined) {
                         this.setState({ Isloading: false });
@@ -70,7 +56,7 @@ class UploadBoqAttachment extends Component {
                 });
         }
     };
-  
+
     CustomUpload = files => {
         if (files.length > 0) {
             this.setState({

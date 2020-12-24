@@ -1,6 +1,5 @@
 import React, { Component, createRef } from 'react';
-import Dropzone from 'react-dropzone';
-import { getDroppedOrSelectedFiles } from 'html5-file-selector';
+import Dropzone from 'react-dropzone'; 
 import classNames from 'classnames';
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
@@ -11,8 +10,7 @@ import { bindActionCreators } from 'redux';
 import Api from '../../api';
 
 import * as communicationActions from '../../store/actions/communication';
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class XSLfile extends Component {
     constructor(props) {
@@ -29,7 +27,9 @@ class XSLfile extends Component {
             uploaded: false,
         };
     }
+
     uploadBtnRef = createRef();
+
     onDrop = (acceptedFiles, rejectedFiles) => {
         this.setState({ _className: ' dragHover dropHover fullProgressBar' });
     };
@@ -177,77 +177,51 @@ class XSLfile extends Component {
         }
     };
 
-    handleChangeStatus = ({ meta, file }, status) => {
-        console.log(status);
-        if (status == 'rejected_file_type') {
-            toast.warning(Resources['chooseExcelFormat'][currentLanguage]);
-        } else if (status == 'removed' && this.state.uploaded) {
-            toast.success(Resources['uploadedSuccessfully'][currentLanguage]);
-        } else if (status == 'done') {
-            this.setState({ fileStatus: status });
-        }
-    };
-
-    handleSubmit = async (files, allFiles) => {
-        this.props.documentTemplate
-            ? await this.documentTemplateUpload(files)
-            : this.props.CustomUpload
-                ? await this.CustomUpload(files)
-                : await this.upload(files);
-        this.setState({ uploaded: true });
-        allFiles.forEach(f => f.remove());
-    };
-
-    getFilesFromEvent = e => {
-        return new Promise(resolve => {
-            getDroppedOrSelectedFiles(e).then(chosenFiles => {
-                resolve(chosenFiles.map(f => f.fileObject));
+    submittalItemsTemplateUpload = () => {
+        if (this.state.acceptedFiles.length > 0) {
+            this.setState({
+                Isloading: true,
             });
-        });
-    };
-
-    InputChooseFile = ({ accept, onFiles, files, getFilesFromEvent }) => {
-        const text =
-            files.length > 0 ? 'Add more files' : 'Choose files to upload';
-
-        const buttonStyle = {
-            backgroundColor: '#67b0ff',
-            color: '#fff',
-            cursor: 'pointer',
-            padding: 15,
-            borderRadius: 30,
-        };
-
-        return (
-            <div className="dzu_actionbtns">
-                <label
-                    className="action_inner_btn dzu-inputLabel"
-                    ref={this.addBtnRef}>
-                    <input
-                        style={{ display: 'none' }}
-                        type="file"
-                        accept={accept}
-                        onChange={e => {
-                            getFilesFromEvent(e).then(chosenFiles => {
-                                onFiles(chosenFiles);
-                            });
-                        }}
-                    />
-                </label>
-            </div>
-        );
-    };
-
-    UploadFiles = ({ files }) => {
-        return (
-            <div
-                className="dzu_actionbtns submitButton"
-                ref={this.uploadBtnRef}>
-                Upload
-            </div>
-        );
-    };
-
+            let formData = new FormData();
+            let file = this.state.acceptedFiles[0];
+            let fileName = file.name;
+            let testName = [];
+            testName.push(fileName);
+            formData.append('file0', file);
+            let docType = this.props.docType;
+            let header = { docType: docType };
+            let submittalId = this.props.submittalId;
+            let projectId = this.props.projectId;
+            let reviewResultId = this.props.reviewResultId;
+            Api.postFile(
+                'UploadSubmittalItems?projectId=' +
+                projectId +
+                '&submittalId=' +
+                submittalId +
+                "&reviewResultId=" +
+                reviewResultId,
+                formData,
+                header,
+            )
+                .then(resp => {
+                    if (this.props.afterUpload != undefined) {
+                        this.props.afterUpload();
+                    }
+                    setTimeout(() => {
+                        this.setState({ _className: 'zeropercent' });
+                    }, 1000);
+                    this.setState({
+                        Isloading: false,
+                    });
+                })
+                .catch(ex => {
+                    toast.error(
+                        Resources['operationCanceled'][currentLanguage],
+                    );
+                });
+        }
+    }
+  
     render() {
         return (
             <div className="doc-pre-cycle">
@@ -393,7 +367,9 @@ class XSLfile extends Component {
                                                 ? this.documentTemplateUpload
                                                 : this.props.CustomUpload
                                                     ? this.CustomUpload
-                                                    : this.upload
+                                                    : this.props.submittalItemdocumentTemplate
+                                                        ? this.submittalItemsTemplateUpload
+                                                        : this.upload
                                         }>
                                         {Resources['upload'][currentLanguage]}
                                     </button>
