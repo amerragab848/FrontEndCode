@@ -13394,6 +13394,40 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Modules",
+            "ar": " النماذج"
+          },
+          "id": 1248,
+          "permissions": [
+            {
+              "code": 10140,
+              "title": {
+                "en": "View ",
+                "ar": "عرض "
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
+            "en": "Documents",
+            "ar": " الوثائق"
+          },
+          "id": 1249,
+          "permissions": [
+            {
+              "code": 10141,
+              "title": {
+                "en": "View ",
+                "ar": "عرض "
+              },
+              "value": false
+            }
+          ]
         }
       ]
     },
