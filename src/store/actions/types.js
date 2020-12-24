@@ -87,3 +87,5 @@ export const REPORT_FILTERS='REPORT_FILTERS';
 // inventory items
 export const INVENTORY_ITEMS='INVENTORY_ITEMS';
 export const EMPTY_LIST='EMPTY_LIST';
+
+export const STORE_COMMON_LOG_CoLUMNS='STORE_COMMON_LOG_CoLUMNS';

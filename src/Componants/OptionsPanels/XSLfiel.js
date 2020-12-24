@@ -181,7 +181,50 @@ class XSLfile extends Component {
                 });
         }
     };
-
+    submittalItemsTemplateUpload=()=>{
+        if (this.state.acceptedFiles.length > 0) {
+            this.setState({
+                Isloading: true,
+            });
+            let formData = new FormData();
+            let file = this.state.acceptedFiles[0];
+            let fileName = file.name;
+            let testName = [];
+            testName.push(fileName);
+            formData.append('file0', file);
+            let docType = this.props.docType;
+            let header = { docType: docType };
+            let submittalId = this.props.submittalId;
+            let projectId = this.props.projectId;
+            let reviewResultId=this.props.reviewResultId;
+            Api.postFile(
+                'UploadSubmittalItems?projectId=' +
+                projectId +
+                    '&submittalId=' +
+                    submittalId +
+                    "&reviewResultId="+
+                    reviewResultId,
+                formData,
+                header,
+            )
+                .then(resp => {
+                    if (this.props.afterUpload != undefined) {
+                        this.props.afterUpload();
+                    }
+                    setTimeout(() => {
+                        this.setState({ _className: 'zeropercent' });
+                    }, 1000);
+                    this.setState({
+                        Isloading: false,
+                    });
+                })
+                .catch(ex => {
+                    toast.error(
+                        Resources['operationCanceled'][currentLanguage],
+                    );
+                });
+        }
+    }
     getUploadParams = ({ meta }) => {
         console.log(meta);
         return { url: 'https://httpbin.org/post' };
@@ -203,7 +246,9 @@ class XSLfile extends Component {
             ? await this.documentTemplateUpload(files)
             : this.props.CustomUpload
             ? await this.CustomUpload(files)
-            : await this.upload(files);
+            : this.props.submittalItemdocumentTemplate ? await this.submittalItemsTemplateUpload(files): 
+            await this.upload(files);
+           
         this.setState({ uploaded: true });
         allFiles.forEach(f => f.remove());
     };
@@ -403,6 +448,8 @@ class XSLfile extends Component {
                                             ? this.documentTemplateUpload
                                             : this.props.CustomUpload
                                             ? this.CustomUpload
+                                            : this.props.submittalItemdocumentTemplate
+                                            ? this.submittalItemsTemplateUpload
                                             : this.upload
                                     }>
                                     {Resources['upload'][currentLanguage]}

@@ -9121,5 +9121,9 @@
     "refCode": {
         "en": "Reference Code",
         "ar": "الرقم المرجعي"
+    },
+    "addManySubmittalItems":{
+        "en":"Add Many Submittal Items",
+        "ar":"اضف مجموعة عناصر"
     }
 }

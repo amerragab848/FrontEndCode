@@ -1002,7 +1002,9 @@ class CommonLog extends Component {
             for (var i in ColumnsHideShow) {
                 ColumnsHideShow[i].hidden = false;
             }
+/*
 
+*/
             this.setState({
                 ColumnsHideShow: ColumnsHideShow,
                 exportedColumns: exportedColumns,
@@ -1053,6 +1055,7 @@ class CommonLog extends Component {
                     if (cNames[i].field === parsingList[item].field) {
                         let status = parsingList[item].hidden;
                         cNames[i].hidden = status;
+                        cNames[i].width=parsingList[item].width;
                         break;
                     }
                 }
@@ -1225,11 +1228,19 @@ class CommonLog extends Component {
             }
         }
         setTimeout(() => {
-            this.setState({
-                columns: data.filter(i => i.hidden === false),
-                isLoading: false,
-            });
+        this.setState({
+        columns: data.filter(i => i.hidden === false),
+        isLoading: false,
+         });
         }, 300);
+        
+
+         /**************************update localStorege************************ */
+         var selectedCols ={columnsList:[],groups:[]}
+        selectedCols.columnsList=JSON.stringify(data)
+        selectedCols.groups="[]"
+       localStorage.setItem('CommonLog-' + this.state.documentName,JSON.stringify(selectedCols))
+         /*********************************************************** */
     };
 
     handleChangeWidth = (key, newWidth) => {
@@ -1249,6 +1260,13 @@ class CommonLog extends Component {
                 isLoading: false,
             });
         }, 300);
+
+         /**************************update localStorege************************ */
+         var selectedCols ={columnsList:[],groups:[]}
+         selectedCols.columnsList=JSON.stringify(data)
+         selectedCols.groups="[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName,JSON.stringify(selectedCols))
+          /*********************************************************** */
     };
 
     handleCheckForExport = key => {
@@ -1449,7 +1467,7 @@ class CommonLog extends Component {
                                 name="CheckBox"
                                 type="checkbox"
                                 id="allPermissionInput"
-                                checked={!this.state[item.field]}
+                                 checked={!item.hidden}
                                 onChange={e => this.handleCheck(item.field)}
                             />
                             <label>{item.title}</label>

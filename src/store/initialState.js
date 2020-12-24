@@ -2,6 +2,7 @@ export default {
     app: {
         grid: {
             data: [],
+            CommonLogColumns:[]
         },
         communication: {
             document: {},
