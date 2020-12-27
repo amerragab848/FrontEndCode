@@ -237,17 +237,9 @@ class LeftReportMenu extends Component {
                                     <div>
                                         <button
                                             onClick={() => this.getExternalLink(this.state.selectedReport)} 
-                                            style={{
-                                                cursor: "pointer",
-                                                position: "absolute",
-                                                right: "48%",
-                                                bottom: "82%",
-                                                background: "transparent",
-                                                border: "none",
-                                                fontSize: "25px",
-                                                color: "rgb(94, 100, 117)"
-                                            }}>
-                                            <i className="fa fa-link" />
+                                            className="reports__menu_btn" >
+                                            <i className="fa fa-external-link" aria-hidden="true"></i>
+
                                         </button>
                                     </div> : null}
                             </div>
