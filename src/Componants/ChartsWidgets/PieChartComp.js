@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import Api from '../../api';
+import Config from '../../Services/Config.js';
 import 'chartjs-plugin-style';
 import Loader from '../../../src/Styles/images/ChartLoaders/PieChartLoader.webm';
 import NoData from '../../../src/Styles/images/ChartLoaders/PieChartNoData.png';
@@ -32,6 +33,7 @@ const colorSchema = [
     '#7cdb79',
 ];
 
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class PieChartComp extends Component {
     constructor(props) {
         super(props);
@@ -104,7 +106,7 @@ class PieChartComp extends Component {
 
     componentDidMount() {
         if (this.props.reports == undefined) {
-            Api.get(this.props.api, undefined, 3).then(results => {
+            Api.get(this.props.api, undefined, moduleId).then(results => {
                 if (results) this.GenerateDataFromProps(results);
             });
         } else this.GenerateDataFromProps(this.props.rows);

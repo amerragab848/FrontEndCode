@@ -28,6 +28,7 @@
   "client_secret": "5o3uxSKrj4KxQT4Q" ,
 
 "commonLogApi": 2,
+"dashboardApi": 1,
 "refCodeValidation":false	 ,
 "activeExport":true 
 }
