@@ -26,6 +26,8 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
@@ -1090,6 +1092,13 @@ class drawingListAddEdit extends Component {
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3730} EditAttachments={3731} ShowDropBox={3734} ShowGoogleDrive={3735} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
+                                            <Fragment>
+                                                 <div className="document-fields tableBTnabs">
+                                                   <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                 </div>
+                                            </Fragment>
+                                            ) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true && docId !== 0 ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
