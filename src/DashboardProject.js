@@ -9,9 +9,6 @@ import { bindActionCreators } from "redux";
 import Details from "./Componants/widgetsDashBoardDetails";
 import * as dashboardComponantActions from "./store/actions/communication";
 import IndexedDb from "./IndexedDb";
-import orderBy from "lodash/orderBy";
-import map from "lodash/map";
-import groupBy from "lodash/groupBy";
 import SkyLight from "react-skylight";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -19,12 +16,18 @@ import ConfirmationModal from "./Componants/publicComponants/ConfirmationModal";
 import Dropdown from "./Componants/OptionsPanels/DropdownMelcous";
 import dataService from "./Dataservice";
 import LoadingSection from "./Componants/publicComponants/LoadingSection";
+
 import Edit from "./Styles/images/epsActions/edit.png";
 import Plus from "./Styles/images/epsActions/plus.png";
 import Delete from "./Styles/images/epsActions/delete.png";
+
 import { toast } from "react-toastify";
 import moment from "moment";
-import Config from "./Services/Config";
+
+import orderBy from "lodash/orderBy";
+import map from "lodash/map";
+import groupBy from "lodash/groupBy";
+// import Config from "./Services/Config";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 

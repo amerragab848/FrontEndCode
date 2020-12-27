@@ -7,7 +7,7 @@ let Authorization = localStorage.getItem('userToken');
 let modules = [
     { api: 'PM/api/Procoor/', key: 1 },
     { api: 'ExportAPI/api/ExportController/', key: 2 },
-    { api: 'ExportAPI/api/ExportController/', key: 3 },
+    { api: 'ExportAPI/api/DashboardController/', key: 3 },
     { api: 'ExportAPI/api/ReportsController/', key: 4 }
 ];
 export default class Api {

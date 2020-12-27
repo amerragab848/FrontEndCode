@@ -305,10 +305,7 @@ class DashBoard extends Component {
         return categoryPanes;
     }
 
-    render() {
-
-      let widgetCurrentOrder = this.state.showWidgets && this.state.widgetOrders[1] ? this.state.widgetOrders[this.state.type][this.state.category].order : null;
-
+    render() { 
         let orderhavePermission = [];
 
         let widgets = this.state.showWidgets ?

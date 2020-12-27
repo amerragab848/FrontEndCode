@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Api from '../../api';
+import Config from '../../Services/Config.js';
 import Loader from '../../../src/Styles/images/ChartLoaders/BarChartLoader.webm';
 import NoData from '../../../src/Styles/images/ChartLoaders/BarChartNoData.png';
 
@@ -19,6 +20,7 @@ const colorSchema = [
     '#522e5f',
 ];
 
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class BarChartComp extends Component {
     constructor(props) {
         super(props);
@@ -32,14 +34,13 @@ class BarChartComp extends Component {
     }
 
     componentDidMount = () => {
-        Api.get(this.props.api)
-            .then(results => {
-                if (this.props.multiSeries === 'no') {
-                    this.GenerateDataFromProps(results);
-                } else {
-                    this.GenerateGroupedDataFromProps(results);
-                }
-            })
+        Api.get(this.props.api, undefined, moduleId).then(results => {
+            if (this.props.multiSeries === 'no') {
+                this.GenerateDataFromProps(results);
+            } else {
+                this.GenerateGroupedDataFromProps(results);
+            }
+        })
             .catch(ex => {
                 this.setState({
                     isLoading: false,

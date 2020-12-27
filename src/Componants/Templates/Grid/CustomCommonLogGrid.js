@@ -4,8 +4,7 @@ import moment from 'moment';
 import Resources from '../../../resources.json';
 import { isEqual } from 'lodash';
 import LoadingSection from '../../publicComponants/LoadingSection';
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 export default class CustomGrid extends Component {
     constructor(props) {
@@ -59,9 +58,7 @@ export default class CustomGrid extends Component {
                 }
             }
         }
-      
-        
-
+       
         let ColumnsHideShow = this.props.cells;
         for (var i in ColumnsHideShow) {
             ColumnsHideShow[i].hidden = false;
