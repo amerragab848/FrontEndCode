@@ -28,6 +28,8 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 import Steps from "../../Componants/publicComponants/Steps";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let permissions = localStorage.getItem('permissions');
@@ -1175,6 +1177,13 @@ class addEditModificationDrawing extends Component {
                                                 docId={this.state.docId}
                                                 projectId={this.state.projectId} />) : null}
 
+                                        {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
+                                            <Fragment>
+                                                 <div className="document-fields tableBTnabs">
+                                                   <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                 </div>
+                                            </Fragment>
+                                            ) : null}
                                         {this.viewAttachments()}
 
                                         {this.props.changeStatus === true ?
