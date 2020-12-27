@@ -271,9 +271,7 @@ class ModulesEdit extends Component {
                                 </g>
                             </svg>
                         </span>
-                        <div className="filterBTNS">
-
-                        </div>
+                        
                         <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
                                 <span>
