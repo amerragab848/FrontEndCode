@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import Api from "../../api";
+import Config from '../../Services/Config.js';
 
 import numeral from 'numeral'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -14,12 +15,12 @@ class Widgets extends Component {
       open: false,
       detailsData: []
     };
-    
+
   }
 
   componentDidMount() {
 
-    Api.get(this.props.props.api, undefined, 3).then(result => {
+    Api.get(this.props.props.api, undefined, Config.getPublicConfiguartion().dashboardApi).then(result => {
       if (result) {
         this.setState({
           value: result != null ? result : 0
@@ -65,5 +66,5 @@ class Widgets extends Component {
     );
   }
 }
- 
+
 export default withRouter(Widgets);
