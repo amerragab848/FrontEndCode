@@ -1821,8 +1821,7 @@ class procurementAddEdit extends Component {
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={
-                            Resources["smartDeleteMessage"][currentLanguage]
-                                .content
+                            Resources['smartDeleteMessageContent'][currentLanguage]
                         }
                         closed={e => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}

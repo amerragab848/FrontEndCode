@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 import classNames from 'classnames';
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
-import Resources from '../../../src/resources';
+import Resources from '../../resources.json';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

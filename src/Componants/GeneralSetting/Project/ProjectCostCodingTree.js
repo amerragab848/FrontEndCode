@@ -391,7 +391,7 @@ class ProjectCostCodingTree extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources["smartDeleteMessage"][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         buttonName="delete"
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}

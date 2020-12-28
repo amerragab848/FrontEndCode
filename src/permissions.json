@@ -15584,6 +15584,14 @@
                 "ar": "تقرير معلومات الدخول"
               },
               "value": false
+            },
+            {
+              "code": 4022,
+              "title": {
+                "en": "View Employees in Work Flow Activity",
+                "ar": "عرض الموظفين فى انشطة الموظف "
+              },
+              "value": false
             }
           ]
         },
@@ -15725,7 +15733,7 @@
           "id": 1234,
           "permissions": [
             {
-              "code": 4022,
+              "code": 10142,
               "title": {
                 "en": "Risk Status",
                 "ar": "حالة الخطورة"

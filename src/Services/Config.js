@@ -1,8 +1,11 @@
 import CryptoJS from "crypto-js";
+import Dataservice from "../Dataservice";
 
 let userPermissions = window.localStorage.getItem("permissions") ? JSON.parse(CryptoJS.enc.Base64.parse(window.localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8)) : [];
 let IP_CONFIG = null;
 let signautre = null;
+let accountsResource = null;
+
 export default class Config {
 
     static getPublicConfiguartion() {
@@ -12,11 +15,25 @@ export default class Config {
     static SetConfigObject(info) {
         IP_CONFIG = info;
     }
+    static SetResources(resource) {
+        accountsResource = resource;
+    }
 
+    static getResources() {
+        var resources = accountsResource;
+        accountsResource = resources;
+        var jsonObj = {};
+        for (var i = 0 ; i < accountsResource.length; i++) {
+            jsonObj[accountsResource[i].resourceKey] = accountsResource[i];
+        }
+        
+        return jsonObj;
+    }
+    
     static setSignature(sign) {
         signautre = sign;
     }
-    static getSignature() {  
+    static getSignature() {
         return signautre;
     }
 
@@ -24,8 +41,7 @@ export default class Config {
         var permissions = userPermissions;
         userPermissions = permissions;
         return permissions;
-    }
-
+    } 
     static IsAllow(code) {
         let isCompany = this.getPayload().uty == "company" ? true : false;
 
@@ -40,7 +56,6 @@ export default class Config {
             return true;
         }
     }
-
     static getPayload() {
         var payload = window.localStorage.getItem("claims") ? CryptoJS.enc.Base64.parse(window.localStorage.getItem("claims")).toString(CryptoJS.enc.Utf8) : "";
         return payload ? JSON.parse(payload) : {};
@@ -49,7 +64,6 @@ export default class Config {
         var payload = window.localStorage.getItem("claims") ? CryptoJS.enc.Base64.parse(window.localStorage.getItem("claims")).toString(CryptoJS.enc.Utf8) : "";
         return payload ? JSON.parse(payload).uty == 'company' ? true : false : false;
     }
-
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem("userToken")) {
@@ -57,7 +71,6 @@ export default class Config {
         }
         return authorize;
     }
-
     static extractDataFromParamas(query) {
         let params = {};
         let index = 0;
@@ -80,7 +93,7 @@ export default class Config {
                     params.toCompanyId = obj.replyFromCompId;
                     params.toContactId = obj.replyFromContId;
                 } catch {
-                    return {}; 
+                    return {};
                 }
             }
             index++;

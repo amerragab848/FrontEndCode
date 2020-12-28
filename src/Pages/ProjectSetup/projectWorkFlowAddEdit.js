@@ -496,7 +496,7 @@ class projectWorkFlowAddEdit extends Component {
                 res => {
                     let Reuslt = res
                     if (Reuslt === true) {
-                        toast.error(Resources['projectAddErrorMessages'][currentLanguage].ReferenceCodeExists)
+                        toast.error(Resources['projectAddErrorMessagesReferenceCodeExists'][currentLanguage])
                         this.setState({ IsLoadingCheckCode: false })
                         let original_document = { ...this.state.document };
 
@@ -663,7 +663,7 @@ class projectWorkFlowAddEdit extends Component {
                     })
                     let data = { items: res };
                     this.props.actions.ExportingData(data);
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                     values.Company = ''
                     values.ContactName = ''
                     values.Description = ''
@@ -724,7 +724,7 @@ class projectWorkFlowAddEdit extends Component {
                     MaxArrange: Math.max.apply(Math, originalRows.map(function (o) { return o.arrange + 1 }))
                 })
             },
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         ).catch(ex => {
             this.setState({
                 isLoading: false,
@@ -815,7 +815,7 @@ class projectWorkFlowAddEdit extends Component {
                     })
                     let Data = { items: data };
                     this.props.actions.ExportingData(Data);
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }
             )
         }
@@ -858,7 +858,7 @@ class projectWorkFlowAddEdit extends Component {
                         FollowUpsData: FollowUpsDataCopy,
                         IsLoadingCheckCode: false
                     })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                     values.ContactNameFollowUp = ''
                 }
             }
@@ -906,7 +906,7 @@ class projectWorkFlowAddEdit extends Component {
                     isLoading: false,
                     DeleteFromLog: false
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -945,7 +945,7 @@ class projectWorkFlowAddEdit extends Component {
                     IsLoadingCheckCode: false
                 })
 
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -992,7 +992,7 @@ class projectWorkFlowAddEdit extends Component {
 
     SaveMultiApproval = () => {
         Api.post('UpdateMultiApproval', this.state.NewMultiApprovalData).then(
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         )
 
         this.props.history.push({
@@ -1013,7 +1013,7 @@ class projectWorkFlowAddEdit extends Component {
                     isLoading: false,
 
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -1814,7 +1814,7 @@ class projectWorkFlowAddEdit extends Component {
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModalContact}
                             clickHandlerCancel={this.clickHandlerCancelMain}
@@ -1824,7 +1824,7 @@ class projectWorkFlowAddEdit extends Component {
 
                     {this.state.showDeleteModalFollowUp == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModalFollowUp}
                             clickHandlerCancel={this.clickHandlerCancelMain}
@@ -1834,7 +1834,7 @@ class projectWorkFlowAddEdit extends Component {
 
                     {this.state.showDeleteModalDocType == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModalDocType}
                             clickHandlerCancel={this.clickHandlerCancelMain}

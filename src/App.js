@@ -16,6 +16,7 @@ import configureStore from './store/configureStore';
 import { ToastContainer } from 'react-toastify';
 import Config from './Services/Config';
 import IndexedDb from './IndexedDb';
+import Dataservice from './Dataservice';
 
 import 'react-customized-grid/main.css';
 // import ConnectionProvider from "./Componants/Layouts/Layout";
@@ -73,6 +74,9 @@ class App extends Component {
         await IndexedDb.seed();
         await IndexedDb.seedWidgetCounter();
 
+        Dataservice.GetCachedFromIndexedDb('GetAllResources').then(data => {
+            if (data) { IndexedDb.seedResourcesIntoDB(data); Config.SetResources(data);}
+        }); 
         let currentLanguage =
             localStorage.getItem('lang') == null
                 ? 'en'
@@ -86,17 +90,17 @@ class App extends Component {
             .then(e => {
                 currentLanguage === 'ar'
                     ? import('./Styles/scss/ar-eg/layout-ar.css').then(css => {
-                          this.setState({
-                              cssLoaded: true,
-                              isComplete: true,
-                          });
-                      })
+                        this.setState({
+                            cssLoaded: true,
+                            isComplete: true,
+                        });
+                    })
                     : import('./Styles/scss/en-us/layout.css').then(css => {
-                          this.setState({
-                              cssLoaded: true,
-                              isComplete: true,
-                          });
-                      });
+                        this.setState({
+                            cssLoaded: true,
+                            isComplete: true,
+                        });
+                    });
             });
     }
 
@@ -123,10 +127,10 @@ class App extends Component {
                 </ErrorHandler>
             </Provider>
         ) : (
-            <div style={loadingStyle.container}>
-                <span style={loadingStyle.spinner}></span>
-            </div>
-        );
+                <div style={loadingStyle.container}>
+                    <span style={loadingStyle.spinner}></span>
+                </div>
+            );
     }
 }
 

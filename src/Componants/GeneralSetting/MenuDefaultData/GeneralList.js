@@ -493,7 +493,7 @@ class GeneralList extends Component {
                 </SkyLightStateless>
 
                 {this.state.showDeleteModal == true ? (
-                    <ConfirmationModal title={Resources['smartDeleteMessage'][currentLanguage].content}
+                    <ConfirmationModal title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}

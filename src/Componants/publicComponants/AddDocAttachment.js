@@ -447,7 +447,7 @@ class AddDocAttachment extends Component {
 
         {this.state.showDeleteModal == true ? (
           <ConfirmationModal
-            title={Resources["smartDeleteMessage"][currentLanguage].content}
+            title={Resources["smartDeleteMessageContent"][currentLanguage]}
             buttonName="delete"
             closed={e => this.setState({ showDeleteModal: false })}
             showDeleteModal={this.state.showDeleteModal}

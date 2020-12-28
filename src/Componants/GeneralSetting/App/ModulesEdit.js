@@ -6,7 +6,6 @@ import Resources from '../../../resources.json';
 import Api from '../../../api';
 import { toast } from 'react-toastify';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import ReactTable from 'react-table';
 
 let currentLanguage =
@@ -45,22 +44,21 @@ class ModulesEdit extends Component {
             },
             selectedRow: {},
             pageNumber: 0,
-            pageSize: 500,
+            pageSize: 50,
             filterPageNumber: 0,
-            filterPageSize: 500,
             isFilter: false,
-            query:{},
-            totalRows:0
+            query: {},
+            totalRows: 0
         };
 
     }
 
     componentDidMount = () => {
         this.setState({ isLoading: true });
-        Api.get('GetDocModulesByPagination').then(result => {
+        Api.get(`GetDocModulesByPagination?pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then(result => {
             this.setState({
                 rows: result.data || [],
-                totalRows:result.totalRows || 0,
+                totalRows: result.totalRows || 0,
                 isLoading: false
             });
         });
@@ -83,7 +81,14 @@ class ModulesEdit extends Component {
                     toast.success(Resources.operationSuccess[currentLanguage]);
                     let rows = this.state.rows;
                     rows.unshift(result);
-                    this.setState({ rows: rows, isLoading: false })
+                    this.setState({ 
+                        rows: rows,
+                        moduleObj: {
+                            id: "",
+                            moduleEn: "",
+                            moduleAr: ""
+                        },
+                         isLoading: false })
                 }
             })
         } else {
@@ -121,7 +126,7 @@ class ModulesEdit extends Component {
             isFilter: true,
             isLoading: true,
             filterPageNumber: 0,
-            filterPageSize: 50
+            pageSize: 50
         })
 
         let moduleObj = this.state.moduleObj;
@@ -132,8 +137,8 @@ class ModulesEdit extends Component {
             query["moduleAr"] = moduleObj.moduleAr;
 
         if (query != {}) {
-            this.setState({query:query})
-            Api.get(`FilterDocModules?pageNumber=${this.state.filterPageNumber}&pageSize=${this.state.filterPageSize}&query=${JSON.stringify(query)}`).then(result => {
+            this.setState({ query: query })
+            Api.get(`FilterDocModules?pageNumber=${this.state.filterPageNumber}&pageSize=${this.state.pageSize}&query=${JSON.stringify(query)}`).then(result => {
                 this.setState({
                     rows: result || [],
                     isLoading: false
@@ -143,16 +148,16 @@ class ModulesEdit extends Component {
             Api.get('GetDocModulesByPagination').then(result => {
                 this.setState({
                     rows: result.data || [],
-                    totalRows:result.totalRows || 0,
+                    totalRows: result.totalRows || 0,
                     isLoading: false
                 });
             });
         }
     };
 
-    handleReset=()=>{
+    handleReset = () => {
 
-        this.setState({ 
+        this.setState({
             isLoading: true,
             rows: [],
             moduleObj: {
@@ -164,101 +169,83 @@ class ModulesEdit extends Component {
             pageNumber: 0,
             pageSize: 50,
             filterPageNumber: 0,
-            filterPageSize: 50,
             isFilter: false,
-            totalRows:0,
-            query:{}
-         });
+            totalRows: 0,
+            query: {}
+        });
         Api.get('GetDocModulesByPagination').then(result => {
             this.setState({
                 rows: result.data || [],
-                totalRows:result.totalRows || 0,
+                totalRows: result.totalRows || 0,
                 isLoading: false
             });
         });
     }
 
     GetPrevoiusData() {
-        let isfilter=this.state.isFilter;
-        let pageName=isfilter !=true?"pageNumber":"filterPageNumber";
-        let pageNumber = (isfilter !=true? this.state.pageNumber:this.state.filterPageNumber) - 1;
+        let isFilter = this.state.isFilter;
+        let PaginatioName = isFilter != true ? "pageNumber" : "filterPageNumber";
+        let pageNumber = this.state[PaginatioName] - 1;
 
         if (pageNumber >= 0) {
+
             this.setState({
                 isLoading: true,
-                [pageName]: pageNumber,
+                [PaginatioName]: pageNumber
             });
-
-            let url=isfilter !=true?`GetDocModulesByPagination?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
-            :`FilterDocModules?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}&query=${this.state.query}`
-      
-            Api.get(url)
-                .then(result => {
-                    let oldRows = []; // this.state.rows;
-
-                    const newRows = [...oldRows, ...result.data];
-
-
-                    this.setState({
-                        rows: newRows,
-                        totalRows: result.total,
-                        isLoading: false,
-                    });
-                })
-                .catch(ex => {
-                    let oldRows = this.state.rows;
-                    this.setState({
-                        rows: oldRows,
-                        isLoading: false,
-                    });
+            let url = this.state.query == "{}" || isFilter != true ?
+                `GetDocModulesByPagination?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
+                : `FilterDocModules?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}&query=${JSON.stringify(this.state.query)}`
+            Api.get(url).then(result => {
+                this.setState({
+                    rows: isFilter != true ? result.data : result,
+                    isLoading: false
                 });
+            }).catch(ex => {
+                let oldRows = this.state.rows;
+                this.setState({
+                    rows: oldRows,
+                    isLoading: false
+                });
+            });
         }
-    }
+    };
 
     GetNextData() {
-
-        let isfilter=this.state.isFilter;
-        let pageName=isfilter !=true?"pageNumber":"filterPageNumber";
-        let pageNumber = (isfilter !=true? this.state.pageNumber:this.state.filterPageNumber) + 1;
-
+        let isFilter = this.state.isFilter;
+        let PaginatioName = isFilter != true ? "pageNumber" : "filterPageNumber";
+        let pageNumber = this.state[PaginatioName] + 1;
         let maxRows = this.state.totalRows;
 
-        if (this.state.pageSize * this.state[pageName] <= maxRows) {
+        if (this.state.pageSize * pageNumber <= maxRows) {
+        this.setState({
+            isLoading: true,
+            [PaginatioName]: pageNumber
+        });
+        let url = this.state.query == "{}" || isFilter != true ?
+            `GetDocModulesByPagination?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
+            : `FilterDocModules?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}&query=${JSON.stringify(this.state.query)}`
+        Api.get(url).then(result => {
             this.setState({
-                isLoading: true,
-                [pageName]: pageNumber,
+                rows:isFilter !=true? result.data:result,
+                isLoading: false
             });
 
-            let url=isfilter !=true?`GetDocModulesByPagination?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
-            :`FilterDocModules?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}&query=${this.state.query}`
-
-            Api.get(url)
-                .then(result => {
-                    let oldRows = [];
-
-                    const newRows = [...oldRows, ...result.data];
-
-                    this.setState({
-                        rows: newRows,
-                        totalRows: result.total,
-                        isLoading: false,
-                    });
-                })
-                .catch(ex => {
-                    let oldRows = this.state.rows;
-                    this.setState({
-                        rows: oldRows,
-                        isLoading: false,
-                    });
-                });
-        }
+        }).catch(ex => {
+            let oldRows = this.state.rows;
+            this.setState({
+                rows: oldRows,
+                isLoading: false
+            });
+        });
     }
+    };
 
     render() {
         return (
             <Fragment>
                 <div className="submittalFilter readOnly__disabled">
-                    <div className="subFilter">
+                    <div className="subFilter pagination">
                         <h3 className="zero">
                             {CurrProject +
                                 ' - ' +
@@ -284,9 +271,7 @@ class ModulesEdit extends Component {
                                 </g>
                             </svg>
                         </span>
-                        {/* <div className="filterBTNS">
-                         
-                        </div>
+                        
                         <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
                                 <span>
@@ -299,8 +284,8 @@ class ModulesEdit extends Component {
                                     {this.state.filterMode
                                         ? this.state.totalRows
                                         : this.state.pageSize *
-                                              this.state.pageNumber +
-                                          this.state.pageSize}
+                                        this.state.pageNumber +
+                                        this.state.pageSize}
                                 </span>
                                 {
                                     Resources['jqxGridLanguage'][
@@ -321,7 +306,7 @@ class ModulesEdit extends Component {
                             <button
                                 className={
                                     this.state.totalRows !==
-                                    this.state.pageSize *
+                                        this.state.pageSize *
                                         this.state.pageNumber +
                                         this.state.pageSize
                                         ? 'rowunActive'
@@ -331,7 +316,7 @@ class ModulesEdit extends Component {
                                 <i className="angle right icon" />
                             </button>
                         </div>
-                */}
+
                     </div>
 
                 </div>
@@ -340,7 +325,6 @@ class ModulesEdit extends Component {
                     <Formik
                         enableReinitialize={true}
                         initialValues={{ ...this.state.moduleObj }}
-                        //validationSchema={this.validationSchema || ''}
                         onSubmit={() => { }}
                     >
                         {({ values, errors, handleBlur, handleSubmit }) => (
@@ -380,10 +364,10 @@ class ModulesEdit extends Component {
                                             onClick={e => this.handleAdd(e)}>
                                             {Resources['add'][currentLanguage]} {' '}</button>
 
-                                        <button className="primaryBtn-1 btn largeBtn " type="submit" onClick={e => this.handleSearch(e)}>
+                                        <button className={(this.state.moduleObj.moduleEn != "" || this.state.moduleObj.moduleAr !="") ? 'primaryBtn-1 btn largeBtn' : 'primaryBtn-1 btn largeBtn disabled'} type="submit" onClick={e => this.handleSearch(e)}>
                                             {Resources['search'][currentLanguage]} {' '}</button>
 
-                                        <button className="primaryBtn-1 btn largeBtn " type="submit" onClick={e => this.handleReset(e)}>
+                                        <button className={(this.state.moduleObj.moduleEn != "" || this.state.moduleObj.moduleAr !="") ? 'primaryBtn-1 btn largeBtn' : 'primaryBtn-1 btn largeBtn disabled'} type="submit" onClick={e => this.handleReset(e)}>
                                             {Resources['reset'][currentLanguage]} {' '}</button>
 
                                     </div>
@@ -392,11 +376,11 @@ class ModulesEdit extends Component {
                         )}
                     </Formik>
 
-                    {this.state.isLoading ==true?null:<ReactTable
+                    {this.state.isLoading == true ? null : <ReactTable
                         data={this.state.rows || []}
                         columns={this.columns}
                         defaultPageSize={50}
-                        minRows={10}
+                        minRows={20}
                         noDataText={Resources['noData'][currentLanguage]}
                         getTrProps={(state, rowInfo) => {
                             if (rowInfo && rowInfo.row) {

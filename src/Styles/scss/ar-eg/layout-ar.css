@@ -25121,3 +25121,14 @@ tbody.grid-body tr .text.elipsisPadd {
 .reports__proForm .linebylineInput.fullWidthWrapper {
     width: 100%;
 }
+
+
+.submittalFilter .subFilter.pagination,
+.reports__content header.pagination {justify-content: space-between}
+.reports__menu_btn {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-size: 25px;
+    color: rgb(94, 100, 117);
+}

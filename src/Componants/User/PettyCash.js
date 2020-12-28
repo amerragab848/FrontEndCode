@@ -199,7 +199,7 @@ class PettyCash extends Component {
             let originalRows = this.state.rows
             originalRows = originalRows.filter(r => r.id !== this.state.selectedRow);
             this.setState({ isLoading: false, rows: originalRows });
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         }).catch(ex => {
             this.setState({ isLoading: false, showDeleteModal: false });
         });
@@ -256,7 +256,7 @@ class PettyCash extends Component {
                 </div>
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources["smartDeleteMessage"][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         buttonName="delete"
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}

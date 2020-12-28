@@ -59,19 +59,18 @@ class DocumentEdit extends Component {
             pageNumber: 0,
             pageSize: 50,
             filterPageNumber: 0,
-            filterPageSize: 50,
             isFilter: false,
-            totalRows:0,
-            query:{}
+            totalRows: 0,
+            query: {}
         };
     }
 
     componentDidMount = () => {
         this.setState({ isLoading: true });
-        Api.get('GetDocTypesByPagination').then(result => {
+        Api.get(`GetDocTypesByPagination?pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`).then(result => {
             this.setState({
                 rows: result.data || [],
-                totalRows:result.totalRows || 0,
+                totalRows: result.totalRows || 0,
                 isLoading: false
             });
         });
@@ -89,12 +88,16 @@ class DocumentEdit extends Component {
         let serverObj = { ...this.state.documentObj };
         if (serverObj.docTypeEn != "" && serverObj.docTypeAr != "") {
             this.setState({ isLoading: true });
+            let emptyObj = { id: "", docTypeEn: "", docTypeAr: "" }
             Api.post("AddDocType", serverObj).then(result => {
                 if (result) {
                     toast.success(Resources.operationSuccess[currentLanguage]);
                     let rows = this.state.rows;
                     rows.unshift(result);
-                    this.setState({ rows: rows, isLoading: false })
+                    this.setState({
+                         rows: rows,
+                         documentObj:emptyObj,
+                          isLoading: false })
                 }
             })
         } else {
@@ -132,7 +135,7 @@ class DocumentEdit extends Component {
             isFilter: true,
             isLoading: true,
             filterPageNumber: 0,
-            filterPageSize: 500
+            pageSize: 50
         })
 
         let documentObj = this.state.documentObj;
@@ -143,8 +146,8 @@ class DocumentEdit extends Component {
             query["docTypeAr"] = documentObj.docTypeAr;
 
         if (query != {}) {
-            this.setState({query:query})
-            Api.get(`FilterDocTypes?pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}&query=${JSON.stringify(query)}`).then(result => {
+            this.setState({ query: query })
+            Api.get(`FilterDocTypes?pageNumber=${this.state.filterPageNumber}&pageSize=${this.state.pageSize}&query=${JSON.stringify(query)}`).then(result => {
                 this.setState({
                     rows: result || [],
                     isLoading: false
@@ -154,16 +157,16 @@ class DocumentEdit extends Component {
             Api.get('GetDocTypesByPagination').then(result => {
                 this.setState({
                     rows: result.data || [],
-                    totalRows:result.totalRows || 0,
+                    totalRows: result.totalRows || 0,
                     isLoading: false
                 });
             });
         }
     };
 
-    handleReset=()=>{
+    handleReset = () => {
 
-        this.setState({ 
+        this.setState({
             isLoading: true,
             rows: [],
             documentObj: {
@@ -175,165 +178,82 @@ class DocumentEdit extends Component {
             pageNumber: 0,
             pageSize: 50,
             filterPageNumber: 0,
-            filterPageSize: 50,
             isFilter: false
-         });
+        });
         Api.get('GetDocTypesByPagination').then(result => {
             this.setState({
                 rows: result.data || [],
-                totalRows:result.totalRows || 0,
+                totalRows: result.totalRows || 0,
                 isLoading: false
             });
         });
     }
 
     GetPrevoiusData() {
-        // let pageNumber = this.state.pageNumber - 1;
+        let isFilter = this.state.isFilter;
+        let PaginatioName = isFilter != true ? "pageNumber" : "filterPageNumber";
+        let pageNumber = this.state[PaginatioName] - 1;
 
-        // if (pageNumber >= 0) {
-        //     this.setState({
-        //         isLoading: true,
-        //         pageNumber: pageNumber,
-        //     });
+        if (pageNumber >= 0) {
 
-        //     let url =
-        //         (this.state.query == ''
-        //             ? this.state.api
-        //             : this.state.apiFilter) +
-        //         '?projectId=' +
-        //         this.state.projectId +
-        //         '&pageNumber=' +
-        //         pageNumber +
-        //         '&pageSize=' +
-        //         this.state.pageSize +
-        //         (this.state.query == '' ? '' : '&query=' + this.state.query);
-
-        //     Api.get(url, undefined, moduleId)
-        //         .then(result => {
-        //             let oldRows = []; // this.state.rows;
-
-        //             const newRows = [...oldRows, ...result.data];
-
-
-        //             this.setState({
-        //                 rows: newRows,
-        //                 totalRows: result.total,
-        //                 isLoading: false,
-        //             });
-        //         })
-        //         .catch(ex => {
-        //             let oldRows = this.state.rows;
-        //             this.setState({
-        //                 rows: oldRows,
-        //                 isLoading: false,
-        //             });
-        //         });
-        // }
-    }
+            this.setState({
+                isLoading: true,
+                [PaginatioName]: pageNumber
+            });
+            let url = this.state.query == "{}" || isFilter != true ?
+                `GetDocTypesByPagination?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
+                : `FilterDocTypes?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}&query=${JSON.stringify(this.state.query)}`
+            Api.get(url).then(result => {
+                this.setState({
+                    rows: isFilter != true ? result.data : result,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                let oldRows = this.state.rows;
+                this.setState({
+                    rows: oldRows,
+                    isLoading: false
+                });
+            });
+        }
+    };
 
     GetNextData() {
-        // let pageNumber = this.state.pageNumber + 1;
+        let isFilter = this.state.isFilter;
+        let PaginatioName = isFilter != true ? "pageNumber" : "filterPageNumber";
+        let pageNumber = this.state[PaginatioName] + 1;
+        let maxRows = this.state.totalRows;
 
-        // let maxRows = this.state.totalRows;
+        if (this.state.pageSize * pageNumber <= maxRows) {
+            this.setState({
+                isLoading: true,
+                [PaginatioName]: pageNumber
+            });
+            let url = this.state.query == "{}" || isFilter != true ?
+                `GetDocTypesByPagination?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`
+                : `FilterDocTypes?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}&query=${JSON.stringify(this.state.query)}`
+            Api.get(url).then(result => {
+                this.setState({
+                    rows: isFilter != true ? result.data : result,
+                    isLoading: false
+                });
 
-        // if (this.state.pageSize * this.state.pageNumber <= maxRows) {
-        //     this.setState({
-        //         isLoading: true,
-        //         pageNumber: pageNumber,
-        //     });
+            }).catch(ex => {
+                let oldRows = this.state.rows;
+                this.setState({
+                    rows: oldRows,
+                    isLoading: false
+                });
+            });
+        }
+    };
 
-        //     let url =
-        //         (this.state.query == ''
-        //             ? this.state.api
-        //             : this.state.apiFilter) +
-        //         '?projectId=' +
-        //         this.state.projectId +
-        //         '&pageNumber=' +
-        //         pageNumber +
-        //         '&pageSize=' +
-        //         this.state.pageSize +
-        //         (this.state.query == '' ? '' : '&query=' + this.state.query);
-
-        //     Api.get(url, undefined, moduleId)
-        //         .then(result => {
-        //             let oldRows = [];
-
-        //             const newRows = [...oldRows, ...result.data];
-
-        //             newRows.forEach(row => {
-        //                 let subject = '';
-        //                 if (row) {
-        //                     let obj = {
-        //                         docId: row.id,
-        //                         projectId: row.projectId,
-        //                         projectName: row.projectName,
-        //                         arrange: 0,
-        //                         docApprovalId: 0,
-        //                         isApproveMode: false,
-        //                         perviousRoute:
-        //                             window.location.pathname +
-        //                             window.location.search,
-        //                     };
-        //                     if (
-        //                         documentObj.documentAddEditLink.replace(
-        //                             '/',
-        //                             '',
-        //                         ) == 'addEditModificationDrawing'
-        //                     ) {
-        //                         obj.isModification = true;
-        //                     }
-        //                     let parms = CryptoJS.enc.Utf8.parse(
-        //                         JSON.stringify(obj),
-        //                     );
-
-        //                     let encodedPaylod = CryptoJS.enc.Base64.stringify(
-        //                         parms,
-        //                     );
-
-        //                     let doc_view =
-        //                         '/' +
-        //                         documentObj.documentAddEditLink.replace(
-        //                             '/',
-        //                             '',
-        //                         ) +
-        //                         '?id=' +
-        //                         encodedPaylod;
-
-        //                     subject = doc_view;
-        //                 }
-        //                 if (
-        //                     Config.IsAllow(
-        //                         this.state.documentObj.documentViewPermission,
-        //                     ) ||
-        //                     Config.IsAllow(
-        //                         this.state.documentObj.documentEditPermission,
-        //                     )
-        //                 ) {
-        //                     row.link = subject;
-        //                 }
-        //             });
-
-        //             this.setState({
-        //                 rows: newRows,
-        //                 totalRows: result.total,
-        //                 isLoading: false,
-        //             });
-        //         })
-        //         .catch(ex => {
-        //             let oldRows = this.state.rows;
-        //             this.setState({
-        //                 rows: oldRows,
-        //                 isLoading: false,
-        //             });
-        //         });
-        // }
-    }
 
     render() {
         return (
             <Fragment>
                 <div className="submittalFilter readOnly__disabled">
-                    <div className="subFilter">
+                    <div className="subFilter pagination">
                         <h3 className="zero">
                             {CurrProject +
                                 ' - ' +
@@ -359,6 +279,54 @@ class DocumentEdit extends Component {
                                 </g>
                             </svg>
                         </span>
+                        <div className="filterBTNS">
+
+                        </div>
+                        <div className="rowsPaginations readOnly__disabled">
+                            <div className="rowsPagiRange">
+                                <span>
+                                    {this.state.pageSize *
+                                        this.state.pageNumber +
+                                        1}
+                                </span>{' '}
+                                -
+        <span>
+                                    {this.state.filterMode
+                                        ? this.state.totalRows
+                                        : this.state.pageSize *
+                                        this.state.pageNumber +
+                                        this.state.pageSize}
+                                </span>
+                                {
+                                    Resources['jqxGridLanguage'][
+                                        currentLanguage
+                                    ].localizationobj.pagerrangestring
+                                }
+                                <span> {this.state.totalRows}</span>
+                            </div>
+                            <button
+                                className={
+                                    this.state.pageNumber == 0
+                                        ? 'rowunActive'
+                                        : ''
+                                }
+                                onClick={() => this.GetPrevoiusData()}>
+                                <i className="angle left icon" />
+                            </button>
+                            <button
+                                className={
+                                    this.state.totalRows !==
+                                        this.state.pageSize *
+                                        this.state.pageNumber +
+                                        this.state.pageSize
+                                        ? 'rowunActive'
+                                        : ''
+                                }
+                                onClick={() => this.GetNextData()}>
+                                <i className="angle right icon" />
+                            </button>
+                        </div>
+
                     </div>
 
                 </div>
@@ -367,10 +335,9 @@ class DocumentEdit extends Component {
                     <Formik
                         enableReinitialize={true}
                         initialValues={{ ...this.state.documentObj }}
-                        //validationSchema={this.validationSchema || ''}
                         onSubmit={() => { }}
                     >
-                        {({ values, errors, handleBlur, handleSubmit }) => (
+                        {({handleBlur, handleSubmit }) => (
                             <Form
                                 id="resourceForm"
                                 className="proForm datepickerContainer"
@@ -407,10 +374,10 @@ class DocumentEdit extends Component {
                                             onClick={e => this.handleAdd(e)}>
                                             {Resources['add'][currentLanguage]} {' '}</button>
 
-                                        <button className="primaryBtn-1 btn largeBtn " type="submit" onClick={e => this.handleSearch(e)}>
+                                        <button className={(this.state.documentObj.docTypeEn != "" || this.state.documentObj.docTypeAr !="") ? 'primaryBtn-1 btn largeBtn' : 'primaryBtn-1 btn largeBtn disabled'} type="submit" onClick={e => this.handleSearch(e)}>
                                             {Resources['search'][currentLanguage]} {' '}</button>
 
-                                        <button className="primaryBtn-1 btn largeBtn " type="submit" onClick={e => this.handleReset(e)}>
+                                        <button className={(this.state.documentObj.docTypeEn != "" || this.state.documentObj.docTypeAr !="") ? 'primaryBtn-1 btn largeBtn' : 'primaryBtn-1 btn largeBtn disabled'} type="submit" onClick={e => this.handleReset(e)}>
                                             {Resources['reset'][currentLanguage]} {' '}</button>
 
                                     </div>
@@ -419,11 +386,11 @@ class DocumentEdit extends Component {
                         )}
                     </Formik>
 
-                  {this.state.isLoading ==true?null:  <ReactTable
+                    {this.state.isLoading == true ? null : <ReactTable
                         data={this.state.rows || []}
                         columns={this.columns}
                         defaultPageSize={50}
-                        minRows={10}
+                        minRows={20}
                         noDataText={Resources['noData'][currentLanguage]}
                         getTrProps={(state, rowInfo) => {
                             if (rowInfo && rowInfo.row) {

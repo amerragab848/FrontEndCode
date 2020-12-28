@@ -7,7 +7,8 @@ import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 //import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
-import GridCustom from 'react-customized-grid';
+//import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import dataservice from "../../../Dataservice";
 import CryptoJS from 'crypto-js';
 import SkyLight from 'react-skylight';

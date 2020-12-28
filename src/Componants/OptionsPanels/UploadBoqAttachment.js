@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 import Dropzone from 'react-dropzone-uploader';
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
-import Resources from '../../../src/resources';
+import Resources from '../../resources.json';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
