@@ -227,9 +227,7 @@ class LeftReportMenu extends Component {
                                 </label>
                                 <div className="reposrts__menu--dropdown">
                                     <Dropdown
-                                        data={this.state.subReports}
-                                        //  isHyperLink = {true}
-                                        //  isHyperLink = "true"
+                                        data={this.state.subReports} 
                                         selectedValue={this.state.selectedReport}
                                         handleChange={event => this.getReport(event)} name="drop" id="drop" />
                                 </div>
