@@ -7074,8 +7074,7 @@ class requestPaymentsAddEdit extends Component {
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={
-                            Resources['smartDeleteMessage'][currentLanguage]
-                                .content
+                            Resources["smartDeleteMessageContent"][currentLanguage]
                         }
                         buttonName="delete"
                         closed={this.onCloseModal}

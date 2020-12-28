@@ -2228,7 +2228,7 @@ class riskAddEdit extends Component {
                                     </div>
                                 </SkyLight> : null}
                             {this.state.showDeleteModal == true ? (
-                                <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} closed={this.onCloseModal}
+                                <ConfirmationModal title={Resources["smartDeleteMessageContent"][currentLanguage]} closed={this.onCloseModal}
                                     showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={() => this.setState({ showDeleteModal: false })}
                                     buttonName="delete" clickHandlerContinue={this.confirmDelete.bind(this)} />
                             ) : null}

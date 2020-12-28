@@ -269,7 +269,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                     MaxArrange: Math.max.apply(Math, originalRows.map(function (o) { return o.arrange + 1 }))
                 })
             },
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         ).catch(ex => {
             this.setState({
                 isLoading: false,
@@ -399,7 +399,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                 dataservice.addObject('AddExpensesWorkFlowItem', obj).then(res => {
                     values.ArrangeContact = Math.max.apply(Math, res.map(function (o) { return o.arrange + 1 }))
                     this.setState({ rows: res, isLoading: false, })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }).catch(ex => {
                     this.setState({ isLoading: false })
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -442,7 +442,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                 }
                 dataservice.addObject('EditExpensesWorkFlowItems', obj).then(res => {
                     this.setState({ rows: res, isLoading: false, showPopUp: false, })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }).catch(ex => {
                     this.setState({ isLoading: false })
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -529,7 +529,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             }
             dataservice.addObject('EditExpensesWorkFlow', doc).then(result => {
                 this.setState({ isLoading: false, MoveSteps: true, btnLoading: false })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 this.NextStep()
             }).catch(ex => {
                 this.setState({ isLoading: false, btnLoading: false })
@@ -546,7 +546,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             }
             dataservice.addObject('AddExpensesWorkFlow', doc).then(result => {
                 this.setState({ isLoading: false, ExpensesWorkFlowDataForEdit: result, MoveSteps: true, btnLoading: false })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 this.NextStep()
             }).catch(ex => {
                 this.setState({ isLoading: false, btnLoading: false })
@@ -620,7 +620,7 @@ class ExpensesWorkFlowAddEdit extends Component {
 
     SaveMultiApproval = () => {
         dataservice.addObject('UpdateMultiApproval', this.state.NewMultiApprovalData).then(
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
 
         )
         this.props.actions.routeToTabIndex(4)
@@ -1180,7 +1180,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}

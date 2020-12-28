@@ -1017,7 +1017,7 @@ class DrawingSetsAddEdit extends Component {
         <div>
 
           {this.state.showDeleteModal == true ? (
-            <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
+            <ConfirmationModal title={Resources["smartDeleteMessageContent"][currentLanguage]} buttonName="delete" closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
               clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
         </div>

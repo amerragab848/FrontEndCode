@@ -512,7 +512,7 @@ class dailyReportsAddEdit extends Component {
                 let WorkActivityRows = this.state.WorkActivityRows.filter(i => i.id !== this.state.workActivityId);
                 WorkActivityRows.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                 this.setState({ WorkActivityRows, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -558,7 +558,7 @@ class dailyReportsAddEdit extends Component {
                 let fieldForceRows = this.state.fieldForceRows.filter(i => i.id !== this.state.fieldForceId);
                 fieldForceRows.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                 this.setState({ fieldForceRows, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -576,7 +576,7 @@ class dailyReportsAddEdit extends Component {
                 let materialRows = this.state.materialRows.filter(i => i.id !== this.state.materialId);
                 materialRows.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                 this.setState({ materialRows, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -659,7 +659,7 @@ class dailyReportsAddEdit extends Component {
                 let equipmentRows = this.state.equipmentRows.filter(i => i.id !== this.state.equipmentId);
                 equipmentRows.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                 this.setState({ equipmentRows, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -717,7 +717,7 @@ class dailyReportsAddEdit extends Component {
                 let visitorsRows = this.state.visitorsRows.filter(i => i.id !== this.state.visitorsId);
                 visitorsRows.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                 this.setState({ visitorsRows, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -735,7 +735,7 @@ class dailyReportsAddEdit extends Component {
                 let weatherRows = this.state.weatherRows.filter(i => i.id !== this.state.weatherId);
                 weatherRows.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                 this.setState({ weatherRows, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -1889,7 +1889,7 @@ class dailyReportsAddEdit extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources["smartDeleteMessage"][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={e => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={e => this.setState({ showDeleteModal: false })}

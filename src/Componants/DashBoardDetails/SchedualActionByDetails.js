@@ -245,7 +245,7 @@ class SchedualActionByDetails extends Component {
                   {/* {this.state.filterMode ? this.state.totalRows : this.state.pageSize * this.state.pageNumber + this.state.pageSize} */}
                   {this.state.filterMode ? this.state.totalRows : this.state.rows.length+(this.state.pageSize * this.state.pageNumber)}
                 </span>
-                {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
+                {Resources['jqxGridLanguagePagerrangestring'][currentLanguage]}
                 <span> {this.state.totalRows}</span>
               </div>
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>

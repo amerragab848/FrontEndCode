@@ -1455,8 +1455,7 @@ class DashboardProject extends Component {
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={
-                            language["smartDeleteMessage"][currentLanguage]
-                                .content
+                            language["smartDeleteMessageContent"][currentLanguage] 
                         }
                         buttonName="delete"
                         closed={this.onCloseModal}

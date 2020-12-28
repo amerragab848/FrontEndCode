@@ -212,7 +212,7 @@ class UserAlerts extends Component {
                     showDeleteModal: false,
                     isLoading: false
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -331,7 +331,7 @@ class UserAlerts extends Component {
                 }
             )
         }
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
 
     }
 
@@ -581,7 +581,7 @@ class UserAlerts extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}

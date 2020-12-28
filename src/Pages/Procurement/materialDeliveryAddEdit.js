@@ -560,7 +560,7 @@ class materialDeliveryAddEdit extends Component {
                             showDeleteModal: false,
                             isLoading: false
                         });
-                        toast.success(Resources["smartSentAccountingMessage"][currentLanguage].successTitle)
+                        toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                     }
                 })
                 .catch(ex => {

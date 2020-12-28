@@ -360,7 +360,7 @@ class IMApEmails extends Component {
                             <div className="rowsPagiRange">
                                 <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -
                             <span> {this.state.pageSize * this.state.pageNumber + this.state.pageSize}</span>
-                                {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
+                                {Resources['jqxGridLanguagePagerrangestring'][currentLanguage]}
                                 <span>{this.state.totalRows}</span>
                             </div>
                             <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>

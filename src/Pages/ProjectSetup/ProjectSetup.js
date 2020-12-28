@@ -227,7 +227,7 @@ class ProjectSetup extends Component {
                     isLoading: false,
                     MaxArrange: Math.max.apply(Math, originalRows.map(function (o) { return o.arrange + 1 }))
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -377,7 +377,7 @@ class ProjectSetup extends Component {
         values.EnglishTitle = ''
         values.ArabicTitle = ''
         values.DropName = ''
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
     }
 
     render() {
@@ -537,7 +537,7 @@ class ProjectSetup extends Component {
 
                         {this.state.showDeleteModal === true ? (
                             <ConfirmationModal
-                                title={Resources['smartDeleteMessage'][currentLanguage].content}
+                                title={Resources['smartDeleteMessageContent'][currentLanguage]}
                                 closed={this.onCloseModal}
                                 showDeleteModal={this.state.showDeleteModal}
                                 clickHandlerCancel={this.clickHandlerCancelMain}

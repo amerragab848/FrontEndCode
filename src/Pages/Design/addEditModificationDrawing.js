@@ -1629,7 +1629,7 @@ class addEditModificationDrawing extends Component {
                 </div>
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal showDeleteModal={this.state.showDeleteModal}
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={() => this.setState({ showDeleteModal: false })}
                         clickHandlerCancel={() => this.setState({ showDeleteModal: false })}
                         buttonName='delete' clickHandlerContinue={this.ConfirmDeletetion} />
