@@ -176,6 +176,7 @@ class Index extends Component {
             Isallow: Config.IsAllow(14),
             isLoading: true,
             rows: this.props.Adminstration.companyContact,
+
             ProjectCompanies: [],
             AccountsDefaultList: [],
             titleData: [],
@@ -199,6 +200,7 @@ class Index extends Component {
             transferCompany: '',
             showTransferpopUp: false,
             selectedRows: []
+          
         }
     }
 
@@ -210,7 +212,7 @@ class Index extends Component {
     }
 
     componentWillUnmount() {
-        this.props.Adminstration.companyContact = [];
+        this.props.actions.clearCashDocument(); 
     }
 
     componentDidMount() {
@@ -222,7 +224,7 @@ class Index extends Component {
 
         this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2');
     }
-
+   
     changeCompany = () => {
         this.setState({ showTransferpopUp: false })
         let url = 'TransferCompanyContact?contactId=' + this.state.selectedContact + '&newCompanyId=' + this.state.transferCompany

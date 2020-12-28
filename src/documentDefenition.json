@@ -17703,7 +17703,7 @@
         "isDate": true,
         "isTime": false,
         "showInExport": false,
-        "isCustom": false,
+        "isCustom": true,
         "exportDataType": "d"
       },
       {
@@ -17933,6 +17933,19 @@
         "isCustom": false,
         "exportDataType": "s"
       }
+      ,
+      {
+        "field": "fileNumber",
+        "friendlyName": "fileNumber",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      }
     ],
     "forEditApi": "GetLogsSubmittalForEdit",
     "filterApi": "SubmittalsFilter",
@@ -17982,6 +17995,24 @@
         "showInExport": false,
         "isCustom": false,
         "isRange": true
+      },
+      
+      { 
+      
+      
+        "name": "lastApproveDate",
+        "field": "lastApprovalDate",
+        "type": "date",
+        "showInExport": false,
+        "isCustom": true,
+        "isRange": true
+      },
+      {
+        "field": "fileNumber",
+        "name": "fileNumber",
+        "type": "string",
+        "showInExport": false,
+        "isCustom": true
       },
       {
         "name": "submittalType",

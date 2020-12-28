@@ -205,3 +205,10 @@ export function expenseWorkFlow() {
 
     }
 }
+export function clearCashDocument() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Clear_Cash_CompanyContact,
+        });
+    };
+}
