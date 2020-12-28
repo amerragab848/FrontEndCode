@@ -141,6 +141,7 @@ class LeftReportMenu extends Component {
     getReport = event => {
         this.setState({ selectedReport: event });
         localStorage.setItem('SelectedReport', JSON.stringify(event));
+        console.log(event.value)
         if (event.value) {
             import(`../../Pages/ReportsCenter/${event.value}`).then(module =>
                 this.setState({ module: module.default })
