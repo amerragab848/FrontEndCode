@@ -331,7 +331,7 @@ class ExpensesUserAddEdit extends Component {
                 parentData.id = result.id
                 parentData.parentId = result.parentId
                 this.setState({ Loading: false, parent: obj.description, parentData, id: obj.id });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
@@ -371,7 +371,7 @@ class ExpensesUserAddEdit extends Component {
                 values.unitRate = 0;
                 this.setState({ Loading: false, itemData: data, selectedExpensesTypeItem: { label: Resources.expensesTypeRequired[currentLanguage], value: "0" } });
 
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
 
                 resetForm();
             }).catch(ex => {
@@ -404,7 +404,7 @@ class ExpensesUserAddEdit extends Component {
                 });
                 selectedRows = [];
                 this.setState({ Loading: false, itemData, showDeleteModal: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
@@ -421,7 +421,7 @@ class ExpensesUserAddEdit extends Component {
                 data[index] = result;
                 this.setState({ Loading: false, itemData: data, showEditModal: false });
                 resetForm();
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
@@ -930,7 +930,7 @@ class ExpensesUserAddEdit extends Component {
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources["smartDeleteMessage"][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             closed={e => this.setState({ showDeleteModal: false })}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={e => this.setState({ showDeleteModal: false })}

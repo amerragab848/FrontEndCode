@@ -416,6 +416,8 @@ export default function (state = initialState.app.communication, action) {
         case types.EMPTY_LIST:
             return { ...state, [action.name]: [] }
 
+        case types.STORE_COMMON_LOG_CoLUMNS:
+            return{...state,CommonLogColumns:action.columns}
         default:
             return {
                 ...state

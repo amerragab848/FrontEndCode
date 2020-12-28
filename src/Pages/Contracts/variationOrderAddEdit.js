@@ -45,7 +45,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-//const _ = require('lodash')
 class variationOrderAddEdit extends Component {
   constructor(props) {
     super(props);
@@ -64,7 +63,7 @@ class variationOrderAddEdit extends Component {
           arrange = obj.arrange;
           perviousRoute = obj.perviousRoute;
         }
-        catch{
+        catch {
           this.props.history.goBack();
         }
       }
@@ -330,39 +329,6 @@ class variationOrderAddEdit extends Component {
       });
     });
   }
-
-  // componentWillMount() {
-  //   if (this.state.docId > 0) {
-  //     this.props.actions.documentForEdit("GetContractsChangeOrderForEdit?id=" + this.state.docId, this.state.docTypeId, "changeOrder");
-
-  //     this.fillVoItems();
-
-  //   } else {
-  //     let changeOrder = {
-  //       subject: "",
-  //       id: 0,
-  //       projectId: this.state.projectId,
-  //       arrange: "",
-  //       docDate: moment(),
-  //       status: "true",
-  //       isRaisedPrices: "false",
-  //       executed: "no",
-  //       pcoId: "",
-  //       refDoc: "",
-  //       total: 0,
-  //       timeExtensionRequired: 0,
-  //       contractId: "",
-  //       pcoId: "",
-  //       dateApproved: moment()
-  //     };
-
-  //     this.setState({ document: changeOrder }, function () {
-  //       this.GetNExtArrange();
-  //     });
-  //     this.fillDropDowns(false);
-  //     this.props.actions.documentForAdding();
-  //   }
-  // }
 
   GetNExtArrange() {
     let original_document = { ...this.state.document };
@@ -719,8 +685,6 @@ class variationOrderAddEdit extends Component {
     this.simpleDialog1.show();
 
   }
-  // DeleteVoItemById?id=
-
 
   disablePopUp = () => {
     this.setState({ showPopUp: false, });
@@ -758,18 +722,6 @@ class variationOrderAddEdit extends Component {
                                   <label className="control-label">
                                     {Resources.subject[currentLanguage]}
                                   </label>
-                                  {/* <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
-                                    <input name="subject" className="form-control fsadfsadsa" id="subject"
-                                      placeholder={Resources.subject[currentLanguage]}
-                                      autoComplete="off" value={this.state.document.subject}
-                                      onBlur={e => {
-                                        handleBlur(e);
-                                        handleChange(e);
-                                      }}
-                                      onChange={e => this.handleChange(e, "subject")}
-                                    />
-                                    {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
-                                  </div> */}
                                   <div className={"inputDev ui input" + (errors.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                     <input name="subject" id="subject" className="form-control fsadfsadsa"
                                       placeholder={Resources.subject[currentLanguage]}
@@ -962,12 +914,12 @@ class variationOrderAddEdit extends Component {
                               />
                             ) : null}
 
-                         {this.state.docId > 0  ? (
-                           <Fragment>
-                            <div className="document-fields tableBTnabs">
-                             <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                          {this.state.docId > 0 ? (
+                            <Fragment>
+                              <div className="document-fields tableBTnabs">
+                                <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
                               </div>
-                             </Fragment>
+                            </Fragment>
                           ) : null}
                           {this.viewAttachments()}
                           {this.props.changeStatus === true ? (
@@ -986,15 +938,16 @@ class variationOrderAddEdit extends Component {
                 <Fragment>
                   <div className="subiTabsContent feilds__top">
                     <AddItemDescription
-                      docLink="/Downloads/Excel/BOQ.xlsx"
+                      docLink={this.state.document.isRaisedPrices =="true" ? "" : "/Downloads/Excel/VoItems.xlsx"}
                       showImportExcel={this.state.document.isRaisedPrices}
-                      docType="vo"
+                      docType={this.state.document.isRaisedPrices =="true" ? "VoItemPrices" : "voItems"}
                       isViewMode={this.state.isViewMode}
                       docId={this.state.docId}
                       mainColumn="changeOrderId"
                       addItemApi="AddVOItems"
                       projectId={this.state.projectId}
-                      showItemType={false} showBoqType={true}
+                      showItemType={false}
+                      showBoqType={true}
                     />
                     <div className="doc-pre-cycle">
 
@@ -1011,7 +964,7 @@ class variationOrderAddEdit extends Component {
                       <div>
                         {this.state.showDeleteModal == true ? (
                           <ConfirmationModal
-                            title={Resources["smartDeleteMessage"][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             buttonName="delete"
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}

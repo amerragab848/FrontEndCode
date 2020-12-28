@@ -286,7 +286,7 @@ class Accounts extends Component {
             })
         }
         else {
-            toast.error(Resources['smartDeleteMessage'][currentLanguage].cannotDelete)
+            toast.error(Resources['smartDeleteMessageCannotDelete'][currentLanguage])
             setTimeout(() => {
                 this.setState({
                     isLoading: false
@@ -833,7 +833,7 @@ class Accounts extends Component {
                 {this.state.showPopupTaskAdmin ? <TaskAdmin /> : null}
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources['smartDeleteMessageContent'][currentLanguage]}
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}

@@ -13394,6 +13394,40 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Modules",
+            "ar": " النماذج"
+          },
+          "id": 1248,
+          "permissions": [
+            {
+              "code": 10140,
+              "title": {
+                "en": "View ",
+                "ar": "عرض "
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
+            "en": "Documents",
+            "ar": " الوثائق"
+          },
+          "id": 1249,
+          "permissions": [
+            {
+              "code": 10141,
+              "title": {
+                "en": "View ",
+                "ar": "عرض "
+              },
+              "value": false
+            }
+          ]
         }
       ]
     },
@@ -15550,6 +15584,14 @@
                 "ar": "تقرير معلومات الدخول"
               },
               "value": false
+            },
+            {
+              "code": 4022,
+              "title": {
+                "en": "View Employees in Work Flow Activity",
+                "ar": "عرض الموظفين فى انشطة الموظف "
+              },
+              "value": false
             }
           ]
         },
@@ -15691,7 +15733,7 @@
           "id": 1234,
           "permissions": [
             {
-              "code": 4022,
+              "code": 10142,
               "title": {
                 "en": "Risk Status",
                 "ar": "حالة الخطورة"
@@ -16450,6 +16492,23 @@
           "permissions": [
             {
               "code": 10075,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
+            "en": "Send To Work Flow Today",
+            "ar": "مرسل للدورة المستندية اليوم"
+          },
+          "id": 1247,
+          "permissions": [
+            {
+              "code": 10139,
               "title": {
                 "en": "View All ",
                 "ar": "عرض"

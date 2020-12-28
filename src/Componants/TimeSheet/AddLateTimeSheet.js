@@ -265,17 +265,17 @@ class AddLateTimeSheet extends Component {
                 {this.state.isNewMode ?
                 <div className="mainContainer">
                     {this.state.maxError ?
-                        <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['smartAddMessage'][currentLanguage].failureContent + (defaultHours * 2)} />
-                        : <NotifiMsg statusClass={this.state.statusClass} IsSuccess="true" Msg={Resources['smartAddMessage'][currentLanguage].successTitle} />}
+                        <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['smartAddMessageFailureContent'][currentLanguage] + (defaultHours * 2)} />
+                        : <NotifiMsg statusClass={this.state.statusClass} IsSuccess="true" Msg={Resources['smartAddMessageSuccessTitle'][currentLanguage]} />}
 
                     {this.state.DeleteDone ?
-                        <NotifiMsg statusClass={this.state.statusClass} IsSuccess="true" Msg={Resources['smartDeleteMessage'][currentLanguage].successTitle} />
+                        <NotifiMsg statusClass={this.state.statusClass} IsSuccess="true" Msg={Resources["smartDeleteMessageSuccessTitle"][currentLanguage]} />
                         : null}
                          {this.state.dataError ?
                         <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['messageLateTimeSheet'][currentLanguage]} />
                         : null}
                     {this.state.VacationDayMSG ?
-                        <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['smartVacationMessage'][currentLanguage].content} />
+                        <NotifiMsg statusClass={this.state.statusClass} IsSuccess="false" Msg={Resources['smartVacationMessageContent'][currentLanguage]} />
                         : null}
 
                     <div className="table__inputs">
@@ -569,7 +569,7 @@ class AddLateTimeSheet extends Component {
                             showDeleteModal={this.state.ConfirmDelete}
                             clickHandlerCancel={this.onCloseModal}
                             clickHandlerContinue={() => this.ConfirmDeleteTask()}
-                            title={Resources["smartDeleteMessage"][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             buttonName="delete"
                         />
                     ) : null}

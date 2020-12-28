@@ -331,7 +331,7 @@ class TaskGroupsAddEdit extends Component {
                 })
                 let data = { items: originalRows };
                 this.props.actions.ExportingData(data);
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }
 
         ).catch(ex => {
@@ -378,7 +378,7 @@ class TaskGroupsAddEdit extends Component {
                     SelectedContact: '',
                     SelectedAction: { label: "Select Action", value: "0" }
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -400,7 +400,7 @@ class TaskGroupsAddEdit extends Component {
             };
             dataservice.addObject('EditProjectDistributionList', saveDoc).then(
                 res => {
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
                     this.changeCurrentStep(1);
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -417,7 +417,7 @@ class TaskGroupsAddEdit extends Component {
                 res => {
                     docId = res.id;
                     this.setState({ Dis_ListData: res, docId: res.id });
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
                     this.changeCurrentStep(1);
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -804,7 +804,7 @@ class TaskGroupsAddEdit extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}

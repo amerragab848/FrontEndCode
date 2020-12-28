@@ -1,11 +1,10 @@
 import React, { Component, createRef } from 'react';
 import Dropzone from 'react-dropzone-uploader';
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
-import Resources from '../../../src/resources';
+import Resources from '../../resources.json';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Config from '../../Services/Config';
 import Api from '../../api';
 
 import * as communicationActions from '../../store/actions/communication';
@@ -32,25 +31,12 @@ class UploadBoqAttachment extends Component {
     documentTemplateUpload = files => {
         if (files.length > 0) {
             let formData = new FormData();
-            let file = files[0].file;
+            let file = files[0];
             formData.append('file0', file);
             let docType = this.props.docType;
             let header = { docType: docType };
             this.setState({ Isloading: true });
-            Api.postFile(
-                'UploadExcelFilesTemplate?projectId=' +
-                    this.props.projectId +
-                    '&fromCompanyId=' +
-                    this.props.companyId +
-                    '&fromContactId=' +
-                    this.props.contactId +
-                    '&toCompanyId=' +
-                    this.props.toCompanyId +
-                    '&toContactId=' +
-                    this.props.toContactId,
-                formData,
-                header,
-            )
+            Api.postFile('UploadExcelFilesTemplate?projectId=' + this.props.projectId + '&fromCompanyId=' + this.props.companyId + '&fromContactId=' + this.props.contactId + '&toCompanyId=' + this.props.toCompanyId + '&toContactId=' + this.props.toContactId, formData, header)
                 .then(resp => {
                     if (this.props.afterUpload != undefined) {
                         this.setState({ Isloading: false });
@@ -62,33 +48,6 @@ class UploadBoqAttachment extends Component {
                             Isloading: false,
                         });
                     }, 1000);
-                })
-                .catch(ex => {
-                    toast.error(
-                        Resources['operationCanceled'][currentLanguage],
-                    );
-                });
-        }
-    };
-
-    upload = files => {
-        if (files.length > 0) {
-            let formData = new FormData();
-            let file = files[0].file;
-            formData.append('file0', file);
-            let docType = this.props.docType;
-            let header = { docType: docType };
-            this.setState({ Isloading: true });
-            Api.postFile(
-                'UploadExcelFiles?docId=' + this.props.docId,
-                formData,
-                header,
-            )
-                .then(resp => {
-                    if (this.props.afterUpload != undefined) {
-                        this.setState({ Isloading: false });
-                        this.props.afterUpload();
-                    }
                 })
                 .catch(ex => {
                     toast.error(
@@ -115,12 +74,12 @@ class UploadBoqAttachment extends Component {
             let projectId = this.props.projectId;
             Api.postFile(
                 'UploadSingleFile?scheduleId=' +
-                    id +
-                    '&projectId=' +
-                    projectId +
-                    '&fileName=' +
-                    testName +
-                    '&isEdit=true',
+                id +
+                '&projectId=' +
+                projectId +
+                '&fileName=' +
+                testName +
+                '&isEdit=true',
                 formData,
                 header,
             )
@@ -143,20 +102,6 @@ class UploadBoqAttachment extends Component {
         }
     };
 
-    getUploadParams = ({ meta }) => {
-        let header = {
-            Authorization: localStorage.getItem('userToken'),
-            docTypeId: this.props.docTypeId,
-            docId: this.props.docId,
-            parentId: this.state.parentId,
-        };
-        let url =
-            Config.getPublicConfiguartion().static +
-            'PM/api/Procoor/UploadExcelFiles?docId=' +
-            this.props.docId;
-        return { url: url, headers: header };
-    };
-
     handleChangeStatus = ({ meta, file }, status, allFiles) => {
         if (status == 'rejected_file_type') {
             toast.warning(Resources['chooseExcelFormat'][currentLanguage]);
@@ -168,9 +113,29 @@ class UploadBoqAttachment extends Component {
     };
 
     handleSubmit = (files, allFiles) => {
-        this.setState({ uploaded: true, filesExist: false });
-        console.log(this.state.uploaded);
-        allFiles.forEach(f => f.remove());
+        if (files.length > 0) {
+            let formData = new FormData();
+            let file = files[0];
+            formData.append('file0', file);
+            let docType = this.props.docType;
+            let header = { docType: docType };
+            this.setState({ Isloading: true });
+            Api.postFile('UploadExcelFiles?docId=' + this.props.docId, formData, header).then(resp => {
+                if (this.props.afterUpload != undefined) {
+                    this.setState({ uploaded: true, filesExist: false, Isloading: true });
+                    allFiles.forEach(f => f.remove());
+                    this.setState({ Isloading: false });
+                    this.props.afterUpload();
+                }
+                setTimeout(() => {
+                    this.setState({ _className: 'zeropercent' });
+                }, 1000);
+            }).catch(ex => {
+                toast.error(
+                    Resources['operationCanceled'][currentLanguage],
+                );
+            });
+        }
     };
 
     getFilesFromEvent = e => {
@@ -243,7 +208,7 @@ class UploadBoqAttachment extends Component {
                                         aria-hidden="true"></i>
                                     {
                                         Resources.downloadExcelFormatFile[
-                                            currentLanguage
+                                        currentLanguage
                                         ]
                                     }
                                 </a>
@@ -252,7 +217,6 @@ class UploadBoqAttachment extends Component {
 
                         <div>
                             <Dropzone
-                                getUploadParams={this.getUploadParams}
                                 accept={
                                     this.props.CustomAccept ? '.xer' : '.xlsx'
                                 }

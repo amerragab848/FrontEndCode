@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Resources from "../../resources.json";
 import Api from "../../api";
+import Config from '../../Services/Config.js';
 import { withRouter } from "react-router-dom";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -17,7 +18,7 @@ class WidgetsWithText extends Component {
   }
 
   componentDidMount() {
-    Api.get(this.props.props.api).then(data => {
+    Api.get(this.props.props.api, undefined, Config.getPublicConfiguartion().dashboardApi).then(data => {
       if (data) {
         let _value = this.props.props.value.split("-");
         let _total = this.props.props.total.split("-");

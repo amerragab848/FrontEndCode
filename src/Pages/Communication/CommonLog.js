@@ -9,7 +9,7 @@ import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
 import documentDefenition from '../../documentDefenition.json';
-import Resources from '../../resources.json';
+//import Resources from '../../resources.json';
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -24,14 +24,17 @@ import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Slider } from 'react-semantic-ui-range';
+import {Resources} from '../../Resources';
 
 let currentLanguage =
     localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
 let docTempLink;
 
-let moduleId = Config.getPublicConfiguartion().commonLogApi;
+let moduleId = Config.getPublicConfiguartion().commonLogApi; 
+ 
 class CommonLog extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -1000,7 +1003,9 @@ class CommonLog extends Component {
             for (var i in ColumnsHideShow) {
                 ColumnsHideShow[i].hidden = false;
             }
+/*
 
+*/
             this.setState({
                 ColumnsHideShow: ColumnsHideShow,
                 exportedColumns: exportedColumns,
@@ -1051,6 +1056,7 @@ class CommonLog extends Component {
                     if (cNames[i].field === parsingList[item].field) {
                         let status = parsingList[item].hidden;
                         cNames[i].hidden = status;
+                        cNames[i].width=parsingList[item].width;
                         break;
                     }
                 }
@@ -1223,11 +1229,19 @@ class CommonLog extends Component {
             }
         }
         setTimeout(() => {
-            this.setState({
-                columns: data.filter(i => i.hidden === false),
-                isLoading: false,
-            });
+        this.setState({
+        columns: data.filter(i => i.hidden === false),
+        isLoading: false,
+         });
         }, 300);
+        
+
+         /**************************update localStorege************************ */
+         var selectedCols ={columnsList:[],groups:[]}
+        selectedCols.columnsList=JSON.stringify(data)
+        selectedCols.groups="[]"
+       localStorage.setItem('CommonLog-' + this.state.documentName,JSON.stringify(selectedCols))
+         /*********************************************************** */
     };
 
     handleChangeWidth = (key, newWidth) => {
@@ -1247,6 +1261,13 @@ class CommonLog extends Component {
                 isLoading: false,
             });
         }, 300);
+
+         /**************************update localStorege************************ */
+         var selectedCols ={columnsList:[],groups:[]}
+         selectedCols.columnsList=JSON.stringify(data)
+         selectedCols.groups="[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName,JSON.stringify(selectedCols))
+          /*********************************************************** */
     };
 
     handleCheckForExport = key => {
@@ -1447,7 +1468,7 @@ class CommonLog extends Component {
                                 name="CheckBox"
                                 type="checkbox"
                                 id="allPermissionInput"
-                                checked={!this.state[item.field]}
+                                 checked={!item.hidden}
                                 onChange={e => this.handleCheck(item.field)}
                             />
                             <label>{item.title}</label>
@@ -1762,9 +1783,7 @@ class CommonLog extends Component {
                                           this.state.pageSize}
                                 </span>
                                 {
-                                    Resources['jqxGridLanguage'][
-                                        currentLanguage
-                                    ].localizationobj.pagerrangestring
+                                   Resources['jqxGridLanguagePagerrangestring'][currentLanguage]
                                 }
                                 <span> {this.state.totalRows}</span>
                             </div>
@@ -1873,9 +1892,7 @@ class CommonLog extends Component {
                         {this.state.showDeleteModal == true ? (
                             <ConfirmationModal
                                 title={
-                                    Resources['smartDeleteMessage'][
-                                        currentLanguage
-                                    ].content
+                                    Resources["smartDeleteMessageContent"][currentLanguage]
                                 }
                                 buttonName="delete"
                                 closed={this.onCloseModal}

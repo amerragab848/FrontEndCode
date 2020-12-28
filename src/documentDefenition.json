@@ -27,12 +27,24 @@
         "showInExport": true,
         "isCustom": true,
         "exportDataType": "n"
+      }, 
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "showInExport": true,
+        "isCustom": true,
+        "exportDataType": "s"
       },
       {
         "field": "statusName",
         "friendlyName": "status",
         "minWidth": 155,
-        "width": "7%",
+        "width": "9%",
         "dataType": "status",
         "isDate": false,
         "isTime": false,
@@ -41,10 +53,10 @@
         "exportDataType": "s"
       },
       {
-        "field": "subject",
-        "friendlyName": "subject",
-        "minWidth": 200,
-        "width": "20%",
+        "field": "refDoc",
+        "friendlyName": "refDoc",
+        "minWidth": 85,
+        "width": "8%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
@@ -195,19 +207,7 @@
         "showInExport": true,
         "isCustom": false,
         "exportDataType": "d"
-      },
-      {
-        "field": "refDoc",
-        "friendlyName": "refDoc",
-        "minWidth": 85,
-        "width": "8%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "showInExport": true,
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "lastSendTime",
         "friendlyName": "lastSendTime",

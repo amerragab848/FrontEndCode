@@ -7,7 +7,8 @@ let Authorization = localStorage.getItem('userToken');
 let modules = [
     { api: 'PM/api/Procoor/', key: 1 },
     { api: 'ExportAPI/api/ExportController/', key: 2 },
-    { api: 'ExportAPI/api/ExportController/', key: 3 },
+    { api: 'ExportAPI/api/DashboardController/', key: 3 },
+    { api: 'ExportAPI/api/ReportsController/', key: 4 }
 ];
 export default class Api {
     static headers() {
@@ -275,7 +276,6 @@ export default class Api {
         if (moduleId < 1) moduleId = 1;
         let apiPrefix = modules.find(x => x.key == moduleId);
         const host = Config.getPublicConfiguartion().static + apiPrefix.api;
-        //const host = Config.getPublicConfiguartion().static + "PM/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
 

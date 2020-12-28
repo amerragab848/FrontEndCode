@@ -4,12 +4,13 @@ import moment from 'moment';
 import Resources from '../../../resources.json';
 import { isEqual } from 'lodash';
 import LoadingSection from '../../publicComponants/LoadingSection';
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 export default class CustomGrid extends Component {
     constructor(props) {
         super(props);
+
+
 
         this.state = {
             columns: this.props.cells,
@@ -47,7 +48,17 @@ export default class CustomGrid extends Component {
                 state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
-
+        
+        if(this.props.data[0].docDate !=undefined )
+        {
+            for( var i in this.props.data)
+            {
+                if(this.props.data[i].docDate !=null){
+                    this.props.data[i].docDate= this.props.data[i].docDate.split('T')[0]
+                }
+            }
+        }
+       
         let ColumnsHideShow = this.props.cells;
         for (var i in ColumnsHideShow) {
             ColumnsHideShow[i].hidden = false;
@@ -186,7 +197,7 @@ export default class CustomGrid extends Component {
                 {this.state.GridLoading === false ? (
                     <GridCustom
                         key={this.props.gridKey}
-                        cells={this.props.cells}
+                        cells={ this.state.columns.filter(i => i.hidden != true)}
                         data={this.state.rows}
                         pageSize={this.props.pageSize}
                         actions={this.props.actions}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 import Api from '../../api';
+import Config from '../../Services/Config.js';
 import Loader from '../../../src/Styles/images/ChartLoaders/LineChartLoader.webm';
 import NoData from '../../../src/Styles/images/ChartLoaders/LineChartNoData.png';
 import moment from 'moment';
@@ -18,8 +19,8 @@ const colorSchema = [
     '#39bdef',
     '#afe5ef',
     '#522e5f',
-];
-
+]; 
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class Britecharts extends Component {
     constructor(props) {
         super(props);
@@ -33,7 +34,7 @@ class Britecharts extends Component {
     }
 
     componentDidMount() {
-        Api.get(this.props.api).then(results => {
+        Api.get(this.props.api, undefined, moduleId).then(results => {
             if (results) this.GenerateDataFromProps(results);
         });
     }

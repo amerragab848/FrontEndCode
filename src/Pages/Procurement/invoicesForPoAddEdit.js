@@ -672,7 +672,7 @@ class invoicesForPoAddEdit extends Component {
                     showDeleteModal: false,
                     Loading: false,
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -706,7 +706,7 @@ class invoicesForPoAddEdit extends Component {
                     Loading: false,
                 })
             },
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         ).catch(ex => {
             this.setState({
                 showDeleteModal: false,
@@ -740,7 +740,7 @@ class invoicesForPoAddEdit extends Component {
                         data.push(obj)
                     })
                     this.setState({ InvoicesDeductions: data, Loading: false })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }
             ).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -776,7 +776,7 @@ class invoicesForPoAddEdit extends Component {
                         selectedDeductionsTypeAdd: { label: Resources.typeSelect[currentLanguage], value: "" }
                     })
 
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }
             ).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -908,7 +908,7 @@ class invoicesForPoAddEdit extends Component {
                     InvoicesItems: data,
                     isLoading: false, BtnLoading: false
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -944,7 +944,7 @@ class invoicesForPoAddEdit extends Component {
                     InvoicesItems: NewData,
                     isLoading: false, BtnLoadingEdit: false, showEdititem: false
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -2032,7 +2032,7 @@ class invoicesForPoAddEdit extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources['smartDeleteMessageContent'][currentLanguage]}
                         closed={e => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={e => this.setState({ showDeleteModal: false })}
@@ -2041,7 +2041,7 @@ class invoicesForPoAddEdit extends Component {
 
                 {this.state.showDeleteModalItem == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources['smartDeleteMessageContent'][currentLanguage]}
                         closed={e => this.setState({ showDeleteModalItem: false })}
                         showDeleteModal={this.state.showDeleteModalItem}
                         clickHandlerCancel={e => this.setState({ showDeleteModalItem: false })}

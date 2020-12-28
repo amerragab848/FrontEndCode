@@ -244,7 +244,7 @@ class AmendmentList extends Component {
                 showDeleteModal: false,
                 isLoading: false,
             })
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
 
         }).catch(ex => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -605,7 +605,7 @@ class AmendmentList extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal closed={this.onCloseModal}
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
