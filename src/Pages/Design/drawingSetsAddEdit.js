@@ -19,6 +19,7 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import * as communicationActions from "../../store/actions/communication";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -966,6 +967,13 @@ class DrawingSetsAddEdit extends Component {
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={895} EditAttachments={3237} ShowDropBox={3637} ShowGoogleDrive={3638} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
+                              <Fragment>
+                                   <div className="document-fields tableBTnabs">
+                                         <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                     </div>
+                              </Fragment>
+                      ) : null}
                       {this.state.CurrentStep === 0 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>

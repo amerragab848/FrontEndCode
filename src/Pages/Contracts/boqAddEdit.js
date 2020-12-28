@@ -10,11 +10,11 @@ import { toast } from 'react-toastify';
 import { bindActionCreators } from 'redux';
 import * as Yup from 'yup';
 import Api from '../../api';
-import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription';
+//import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
-import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription';
+//import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
@@ -31,6 +31,7 @@ import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
+import { nullLiteral } from '@babel/types';
 //import UploadBoqAttachment from '../../Componants/OptionsPanels/UploadBoqAttachment';
 
 let currentLanguage =
@@ -96,6 +97,8 @@ let perviousRoute = 0;
 let arrange = 0;
 var steps_defination = [];
 let itm = [];
+//let AddItemDescription='';
+// let EditItemDescription='';
 class bogAddEdit extends Component {
     constructor(props) {
         super(props);
@@ -349,6 +352,8 @@ class bogAddEdit extends Component {
         ];
 
         this.state = {
+             AddItemDescription:null,
+             EditItemDescription:null,
             value: '',
             isCompany: Config.getPayload().uty === 'company' ? true : false,
             showForm: false,
@@ -486,12 +491,7 @@ class bogAddEdit extends Component {
             },
         ];
     }
-    // reloadGrid = (boqItems) => {
-    //     this.setState({
-    //         _items: boqItems ,
-    //         isLoading : false
-    //     });
-    // };
+   
     customButton = () => {
         return (
             <button className="companies_icon" style={{ cursor: 'pointer' }}>
@@ -969,6 +969,15 @@ class bogAddEdit extends Component {
             });
         }
         this.setState({ CurrStep: stepNo });
+       if(stepNo==1)
+       {
+           this.setState({
+            AddItemDescription: require('../../Componants/OptionsPanels/addItemDescription').default,
+            EditItemDescription :require('../../Componants/OptionsPanels/editItemDescription').default
+           }) 
+          
+       }
+      
     };
 
     showOptionPanel = () => {
@@ -983,13 +992,22 @@ class bogAddEdit extends Component {
         } else if (column.key != 'select-row' && column.key != 'unitPrice') {
             if (this.state.CurrStep == 1) {
                 this.setState({
+                    module: require('../../Componants/OptionsPanels/editItemDescription').default
+                  
+                   }) 
+                this.setState({
                     showPopUp: true,
                     btnText: 'save',
                     selectedRow: value,
                 });
+
                 this.simpleDialog1.show();
             }
         }
+        
+       
+        
+        
     };
     resetLoading = () => {
         this.setState({
@@ -1273,6 +1291,9 @@ class bogAddEdit extends Component {
     }
 
     render() {
+        let AddItemDescription=this.state.CurrStep==1?this.state.AddItemDescription:null;
+        let EditItemDescription=this.state.CurrStep==1?this.state.EditItemDescription:null;
+
         let ItemsGrid =
             this.state.isLoading === false ? (
                 <GridCustom
@@ -1288,6 +1309,7 @@ class bogAddEdit extends Component {
                             cell.field != 'select-row' &&
                             cell.field != 'unitPrice'
                         ) {
+                            
                             this.setState({
                                 showPopUp: true,
                                 btnText: 'save',
@@ -2190,7 +2212,7 @@ class bogAddEdit extends Component {
             </Fragment>
         );
 
-        const addItemContent = (
+        const addItemContent  = this.state.CurrStep==1? (
             <Fragment>
                 <div className="document-fields">
                     {this.state.isLoading ? <LoadingSection /> : null}
@@ -2208,10 +2230,10 @@ class bogAddEdit extends Component {
                     />
                 </div>
             </Fragment>
-        );
+        ):null;
 
         let itemsContent =
-            this.state.isLoadingEdit === false ? (
+            this.state.isLoadingEdit === false &&this.state.CurrStep==1 ? (
                 <Fragment>
                     <div
                         className=" proForm datepickerContainer customProform document-fields"

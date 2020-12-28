@@ -107,9 +107,11 @@ class addItemDescription extends Component {
             this.setState({ Units: [...res] });
         });
 
+        if(this.props.showBoqType===true){
         DataService.GetDataList("GetAllBoqParentNull?projectId=" + this.props.projectId, "title", "id").then(res => {
             this.setState({ boqTypes: [...res] });
         });
+    }
 
         if (this.props.showItemType === true) {
             DataService.GetDataGrid("GetaccountsDefaultListForList?listType=estimationitemtype").then(result => {
@@ -127,10 +129,10 @@ class addItemDescription extends Component {
                     poolItemTypes: result
                 });
             });
-
-            DataService.GetDataList("GetaccountsDefaultListForList?listType=equipmentType", "title", "id").then(res => {
+                DataService.GetDataList("GetaccountsDefaultListForList?listType=equipmentType", "title", "id").then(res => {
                 this.setState({ equipmentTypes: [...res] });
             });
+        
         }
     }
 

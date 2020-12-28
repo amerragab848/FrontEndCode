@@ -7851,6 +7851,10 @@
         "en": "Employees",
         "ar": "الموظفين"
     },
+    "allEmployees": {
+        "en": "All Employees",
+        "ar": "كل الموظفين"
+    },
     "docDurationDays": {
         "en": "Doc Duration Days",
         "ar": "Doc Duration Days"
