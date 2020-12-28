@@ -767,7 +767,7 @@ class projectScheduleAddEdit extends Component {
                     isLoading: false,
                 })
             },
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         ).catch(ex => {
             this.setState({
                 isLoading: false,

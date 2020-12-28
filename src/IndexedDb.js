@@ -1,16 +1,14 @@
 import lf from 'lovefield';
 import WidgetStructure from './Componants/WidgetsDashBorad';
+//import Config from "../src/Services/Config";
+//import { v1 as uuidv1 } from 'uuid';
+//import { lab } from 'd3';
 import WidgetsDashBoradProject from './Componants/WidgetsDashBoradProject';
 import keyBy from 'lodash/keyBy';
 
-//import { v1 as uuidv1 } from 'uuid';
-//import { lab } from 'd3';
 
 const schemaBuilder = lf.schema.create('widgets', 1);
-const schemaBuilderDashBoardProjects = lf.schema.create(
-    'widgetsDashBoardProjects',
-    1,
-);
+const schemaBuilderDashBoardProjects = lf.schema.create('widgetsDashBoardProjects', 1);
 const cachedData = lf.schema.create('cachedAPI', 1);
 const OfflineDataSchema = lf.schema.create('widgetsOffline', 1);
 
@@ -25,9 +23,10 @@ const tables = {
     widgetCategory: null,
     widget: null,
     offlineWidgets: null,
-    projects: null,
-    companies: null,
-    defaultLists: null,
+    //projects: null,
+    //companies: null,
+    //defaultLists: null,
+    resources: null
 };
 
 const tableProjects = {
@@ -40,6 +39,7 @@ const tablesOffline = {
 };
 
 export default class IndexedDb {
+
     static initialize() {
         schemaBuilder
             .createTable('WidgetType')
@@ -73,29 +73,45 @@ export default class IndexedDb {
             .addColumn('checked', lf.Type.BOOLEAN)
             .addColumn('type', lf.Type.STRING)
             .addPrimaryKey(['id']);
+
+        schemaBuilder
+            .createTable('resources')
+            .addColumn('id', lf.Type.INTEGER)
+            .addColumn('en', lf.Type.STRING)
+            .addColumn('ar', lf.Type.STRING)
+            .addColumn('resourceKey', lf.Type.STRING)
+            .addPrimaryKey(['id']);
     }
 
     static initializeCachedAPI() {
-        cachedData
-            .createTable('defaultLists')
-            .addColumn('value', lf.Type.INTEGER)
-            .addColumn('label', lf.Type.STRING)
-            .addColumn('listType', lf.Type.STRING)
-            .addPrimaryKey(['value']);
+        // cachedData
+        //     .createTable('defaultLists')
+        //     .addColumn('value', lf.Type.INTEGER)
+        //     .addColumn('label', lf.Type.STRING)
+        //     .addColumn('listType', lf.Type.STRING)
+        //     .addPrimaryKey(['value']);
 
-        cachedData
-            .createTable('companies')
-            .addColumn('value', lf.Type.INTEGER)
-            .addColumn('label', lf.Type.STRING)
-            .addColumn('projectId', lf.Type.INTEGER)
-            .addNullable(['projectId'])
-            .addPrimaryKey(['value']);
+        // cachedData
+        //     .createTable('companies')
+        //     .addColumn('value', lf.Type.INTEGER)
+        //     .addColumn('label', lf.Type.STRING)
+        //     .addColumn('projectId', lf.Type.INTEGER)
+        //     .addNullable(['projectId'])
+        //     .addPrimaryKey(['value']);
 
-        cachedData
-            .createTable('projects')
-            .addColumn('value', lf.Type.INTEGER)
-            .addColumn('label', lf.Type.STRING)
-            .addPrimaryKey(['value']);
+        // cachedData
+        //     .createTable('projects')
+        //     .addColumn('value', lf.Type.INTEGER)
+        //     .addColumn('label', lf.Type.STRING)
+        //     .addPrimaryKey(['value']);
+
+        // cachedData
+        //     .createTable('resources')
+        //     .addColumn('titleEn', lf.Type.STRING)
+        //     .addColumn('titleAr', lf.Type.STRING)
+        //     .addColumn('resourceKey', lf.Type.STRING);
+        //     //.addPrimaryKey(['resourceKey']);
+
     }
 
     static initializeCounterDB() {
@@ -179,14 +195,13 @@ export default class IndexedDb {
         tables.widgetType = db.getSchema().table('WidgetType');
         tables.widgetCategory = db.getSchema().table('WidgetCategory');
         tables.widget = db.getSchema().table('Widget');
-        tableProjects.widgetCategory = dbDashBoard
-            .getSchema()
-            .table('WidgetCategory');
+        tableProjects.widgetCategory = dbDashBoard.getSchema().table('WidgetCategory');
         tableProjects.widget = dbDashBoard.getSchema().table('Widget');
 
         // tables.defaultLists = api.getSchema().table('defaultLists');
-        tables.companies = api.getSchema().table('companies');
-        tables.projects = api.getSchema().table('projects');
+        //tables.companies = api.getSchema().table('companies');
+        //tables.projects = api.getSchema().table('projects');
+        tables.resources = db.getSchema().table('resources');
 
         let rows = await db
             .select()
@@ -214,9 +229,8 @@ export default class IndexedDb {
             let widgetCategoryRows = WidgetStructure.map((category, index) => {
                 let id = index + 1;
 
-                let category_order = +`${category.refrence + 1}${
-                    category.order
-                }`;
+                let category_order = +`${category.refrence + 1}${category.order
+                    }`;
 
                 category.widgets.forEach((wid, widIndex) => {
                     let widRow = tables.widget.createRow({
@@ -256,6 +270,32 @@ export default class IndexedDb {
                 .values(widgetRows)
                 .exec();
         }
+
+    }
+
+    static async getAccountsResources() {
+        let data = await db.select().from(tables.resources).exec();
+        return data;
+    }
+
+    static async seedResourcesIntoDB(ResourcesTableRows) {
+        let rows = [];
+        if (ResourcesTableRows.data != null) {
+            ResourcesTableRows.data.forEach(item => {
+                let widRow = tables['resources'].createRow({
+                    id: item.id,
+                    en: item.titleEn,
+                    ar: item.titleAr,
+                    resourceKey: item.resourceKey 
+                });
+                rows.push(widRow);
+            });
+            await db
+                .insertOrReplace()
+                .into(tables.resources)
+                .values(rows)
+                .exec();
+        }
     }
 
     static async setData(mainColumn, value, label, tableName, data, params) {
@@ -277,7 +317,6 @@ export default class IndexedDb {
                 .exec();
         }
     }
-
     static async setDataIntoDb(
         mainColumn,
         value,
@@ -295,7 +334,7 @@ export default class IndexedDb {
                     .from(tbName)
                     .where(tbName.value.eq(item[value]))
                     .exec()
-                    .then(async function(rows) {
+                    .then(async function (rows) {
                         if (rows.length == 0) {
                             console.log(item); // 'something'
                             let widRow = tbName.createRow({
@@ -320,22 +359,20 @@ export default class IndexedDb {
             .from(tables[tableName])
             .exec();
     }
-
     static deleteCacheData() {
         var req = indexedDB.deleteDatabase('cachedAPI');
-        req.onsuccess = function() {
+        req.onsuccess = function () {
             console.log('Deleted database successfully');
         };
-        req.onerror = function() {
+        req.onerror = function () {
             console.log("Couldn't delete database");
         };
-        req.onblocked = function() {
+        req.onblocked = function () {
             console.log(
                 "Couldn't delete database due to the operation being blocked",
             );
         };
     }
-
     static async GetCachedData(params, tableName, mainColumn) {
         if (tables[tableName] === null) {
             return [];
@@ -348,7 +385,6 @@ export default class IndexedDb {
 
         return rows;
     }
-
     static async seedWidgetCounter() {
         let rows = await dbDashBoard
             .select()
@@ -362,9 +398,8 @@ export default class IndexedDb {
                 (category, index) => {
                     let id = index + 1;
 
-                    let category_order = +`${category.refrence + 1}${
-                        category.order
-                    }`;
+                    let category_order = +`${category.refrence + 1}${category.order
+                        }`;
 
                     category.widgets.forEach((wid, widIndex) => {
                         let widRow = tableProjects.widget.createRow({
@@ -399,7 +434,6 @@ export default class IndexedDb {
                 .exec();
         }
     }
-
     static async getTypes() {
         let types = await db
             .select()
@@ -432,7 +466,6 @@ export default class IndexedDb {
 
         return types;
     }
-
     static async getById(table, id) {
         let data = await db
             .select()
@@ -442,7 +475,6 @@ export default class IndexedDb {
 
         return data;
     }
-
     static async getByTypeId(table, id) {
         let data = await db
             .select()
@@ -452,7 +484,6 @@ export default class IndexedDb {
 
         return data;
     }
-
     static async getSelectedWidgets() {
         let data = await db
             .select()
@@ -462,7 +493,6 @@ export default class IndexedDb {
 
         return data;
     }
-
     static async getSelectedDashBoardWidgets() {
         let data = await dbDashBoard
             .select()
@@ -472,7 +502,6 @@ export default class IndexedDb {
 
         return data;
     }
-
     static async getCategoryOrder() {
         let data = await db
             .select()
@@ -486,7 +515,6 @@ export default class IndexedDb {
 
         return keyBy(data, category => category.id);
     }
-
     static async getDashBoardCategoryOrder() {
         let data = await dbDashBoard
             .select()
@@ -500,7 +528,6 @@ export default class IndexedDb {
 
         return keyBy(data, category => category.id);
     }
-
     static async getAll(table) {
         let data = await db
             .select()
@@ -509,7 +536,6 @@ export default class IndexedDb {
 
         return data;
     }
-
     static async getAllDashBoradProject(table) {
         let data = await dbDashBoard
             .select()
@@ -518,7 +544,6 @@ export default class IndexedDb {
 
         return data;
     }
-
     static async getDashBoardProjectCategoryOrder() {
         let data = await dbDashBoard
             .select()
@@ -532,7 +557,6 @@ export default class IndexedDb {
 
         return keyBy(data, category => category.id);
     }
-
     static async getCategory() {
         let Category = await dbDashBoard
             .select()
@@ -554,7 +578,6 @@ export default class IndexedDb {
 
         return Category;
     }
-
     static async update(table, id, params) {
         let query = db.update(tables[table]);
 
@@ -564,7 +587,6 @@ export default class IndexedDb {
 
         return await query.where(tables[table].id.eq(id)).exec();
     }
-
     static async updateDashBoardProject(table, id, params) {
         let query = dbDashBoard.update(tableProjects[table]);
 

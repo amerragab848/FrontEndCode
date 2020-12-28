@@ -1,6 +1,6 @@
 import Api from "./api.js";
-//import IndexedDb from "./IndexedDb";
- 
+import IndexedDb from "./IndexedDb";
+
 export default class Dataservice {
 
     static GetDataList(url, label, value) {
@@ -17,8 +17,8 @@ export default class Dataservice {
     };
     static GetDataListForUserAlert(url, label, value) {
         let primaveraList = [];
-        let scheduleList = []; 
-        let Data = []; 
+        let scheduleList = [];
+        let Data = [];
         return Api.get(url).then(result => {
             (result.primaveraList).forEach(item => {
                 var obj = {};
@@ -113,6 +113,14 @@ export default class Dataservice {
     //     return rows;
     // };
 
+    static async GetCachedFromIndexedDb(url) {
+        let rows = await IndexedDb.getAccountsResources();
+
+        if (rows.length == 0) {
+            rows = await this.callAPIGetDataList(url);
+        }
+        return rows;
+    };
     static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
 
         let rows = await this.callAPIGetDataList(url, label, value, params);
@@ -227,15 +235,15 @@ export default class Dataservice {
     };
 
 
-    static checkSubmittalRefCode = (projectId,code) => {
+    static checkSubmittalRefCode = (projectId, code) => {
 
-        return Api.get("checkSubmittalRefCode?projectId="+projectId+"&code="+code).then(result => {
+        return Api.get("checkSubmittalRefCode?projectId=" + projectId + "&code=" + code).then(result => {
             return result;
         }).catch(ex => { });
     };
 
-    static checkContractROAId = (ROAId,docId) => {
-        return Api.get("CheckROAIdExist?ROAId="+ROAId+"&docId="+docId).then(result => {
+    static checkContractROAId = (ROAId, docId) => {
+        return Api.get("CheckROAIdExist?ROAId=" + ROAId + "&docId=" + docId).then(result => {
             return result;
         }).catch(ex => { });
     };

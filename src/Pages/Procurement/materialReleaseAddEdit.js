@@ -494,7 +494,7 @@ class materialReleaseAddEdit extends Component {
                     isLoading: false,
                 })
             },
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         ).catch(ex => {
             this.setState({
                 showDeleteModal: false,
@@ -1300,7 +1300,7 @@ class materialReleaseAddEdit extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources['smartDeleteMessageContent'][currentLanguage]}
                         closed={e => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={e => this.setState({ showDeleteModal: false })}

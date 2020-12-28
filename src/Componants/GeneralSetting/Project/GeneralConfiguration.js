@@ -177,7 +177,7 @@ class GeneralConfiguration extends Component {
                 isLoading: false,
 
             })
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         }).catch(ex => {
             this.setState({
                 showDeleteModal: false,
@@ -643,7 +643,7 @@ class GeneralConfiguration extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}

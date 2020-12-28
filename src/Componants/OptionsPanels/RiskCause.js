@@ -73,7 +73,7 @@ class RiskCause extends Component {
                 isLoading: false,
                 rows: Data
             })
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         }
         ).catch(ex => {
             this.setState({
@@ -100,7 +100,7 @@ class RiskCause extends Component {
                     isLoading: false,
                     description: ''
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -188,7 +188,7 @@ class RiskCause extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             closed={e => this.setState({ showDeleteModal: true })}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={e => this.setState({ showDeleteModal: false })}

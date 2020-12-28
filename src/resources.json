@@ -463,23 +463,21 @@
         "en": "Show/Hide",
         "ar": "اظهار / اخفاء"
     },
-    "jqxGridLanguage": {
-        "en": {
-            "localizationobj": {
-                "pagergotopagestring": "Go to page",
-                "pagershowrowsstring": "Show rows",
-                "pagerrangestring": " of ",
-                "groupsheaderstring": "Drag a column and drop it here to group by that column "
-            }
-        },
-        "ar": {
-            "localizationobj": {
-                "pagergotopagestring": "اذهب الي صفة",
-                "pagershowrowsstring": "اظهار صفوف",
-                "pagerrangestring": " من ",
-                "groupsheaderstring": "اسحب عمود وأسقطه هنا للترتيب حسب ذلك العمود"
-            }
-        }
+    "jqxGridLanguagePagergotopagestring": {
+        "en": "Go to page",
+        "ar": "اذهب الي صفة"
+    },
+    "jqxGridLanguagePagershowrowsstring": {
+        "en": "Show rows",
+        "ar": "اظهار صفوف"
+    },
+    "jqxGridLanguagePagerrangestring": {
+        "en": "of",
+        "ar": "من"
+    },
+    "jqxGridLanguageGroupsheaderstring": {
+        "en": "Drag a column and drop it here to group by that column",
+        "ar": "اسحب عمود وأسقطه هنا للترتيب حسب ذلك العمود"
     },
     "search": {
         "en": "Search",
@@ -1933,125 +1931,161 @@
         "en": "Operation was canceled",
         "ar": "تم الغاء العملية"
     },
-    "smartDeleteMessage": {
-        "en": {
-            "title": "Caution !!! This operation cannot be undone!",
-            "content": "Are you sure you want to delete this?",
-            "buttons": "[No][Yes]",
-            "successTitle": "Operation completed successfuly",
-            "successContent": "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
-            "failureTitle": "Operation was canceled",
-            "failureContent": "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
-            "refCodeExist": "Referance Code Already Exist...",
-            "notAssignedTothisProject": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
-            "userNameExist": "<i class='fa fa-clock-o'></i> <i>User Name Already Exist ...</i>",
-            "yes": "Yes",
-            "no": "No",
-            "cannotDelete": "Cannot Delete This User ..."
-        },
-        "ar": {
-            "title": "!احذر عملية خطيرة",
-            "content": "هل انت متاكدة انك تريد حذف هذا؟",
-            "buttons": "[لا][نعم]",
-            "successTitle": "تمت العملية بنجاح",
-            "successContent": "<i class='fa fa-clock-o'></i> <i>...تم حذف السجل</i>",
-            "failureTitle": "تم الغاء العملية",
-            "failureContent": "<i class='fa fa-clock-o'></i> <i>...تم الغاء الحذف</i>",
-            "refCodeExist": "<i class='fa fa-clock-o'></i> <i>...رقم الموظف موجود قبل ذلك</i>",
-            "notAssignedTothisProject": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
-            "userNameExist": "<i class='fa fa-clock-o'></i> <i>...إسم المستخدم موجود قبل ذلك</i>",
-            "yes": "نعم",
-            "no": "لا",
-            "cannotDelete": "لا يمكن مسح هذا العنصر .."
-        }
+    "smartDeleteMessageTitle": {
+        "en": "Caution !!! This operation cannot be undone!",
+        "ar": "!احذر عملية خطيرة"
     },
-    "smartSentAccountingMessage": {
-        "en": {
-            "title": "Caution !!! Sent To Accounting!",
-            "content": "Are you sure you want to Transfare this Record to Accounting?",
-            "buttons": "[No][Yes]",
-            "successTitle": "Operation completed successfuly",
-            "successContent": "<i class='fa fa-clock-o'></i> <i>Record Sent successfuly...</i>",
-            "failureTitle": "Operation was canceled",
-            "failureContent": "<i class='fa fa-clock-o'></i> <i>Canceled Sent...</i>",
-            "yes": "Yes",
-            "no": "No"
-        },
-        "ar": {
-            "title": "!احذر عملية خطيرة",
-            "content": "هل انت متاكدة انك تريد نقل الملف إلى الحسابات؟",
-            "buttons": "[لا][نعم]",
-            "successTitle": "تمت العملية بنجاح",
-            "successContent": "<i class='fa fa-clock-o'></i> <i>...تم النقل السجل</i>",
-            "failureTitle": "تم الغاء العملية",
-            "failureContent": "<i class='fa fa-clock-o'></i> <i>...تم الغاء النقل</i>",
-            "yes": "نعم",
-            "no": "لا"
-        }
+    "smartDeleteMessageContent": {
+        "en": "Are you sure you want to delete this?",
+        "ar": "هل انت متاكدة انك تريد حذف هذا؟"
     },
-    "smartConfirmMessage": {
-        "en": {
-            "title": "Caution !!!",
-            "content": "Are you sure you want to Change Key Contact ?",
-            "buttons": "[No][Yes]",
-            "successTitle": "Operation completed successfuly",
-            "yes": "Yes",
-            "no": "No"
-        },
-        "ar": {
-            "title": "!احذر عملية خطيرة",
-            "content": "هل انت متاكدة انك تريد نقل مسئول الشركة؟",
-            "buttons": "[لا][نعم]",
-            "successTitle": "تمت العملية بنجاح",
-            "yes": "نعم",
-            "no": "لا"
-        }
+    "smartDeleteMessageButtons": {
+        "en": "[No][Yes]",
+        "ar": "[لا][نعم]"
     },
-    "smartAddMessage": {
-        "en": {
-            "successTitle": "Operation completed successfuly",
-            "successContent": "<i>Record Added Successfuly...</i>",
-            "failureTitle": "Operation was canceled",
-            "failureContent": "Your Maximum Allowed Value for Working Hours is"
-        },
-        "ar": {
-            "successTitle": "تمت العملية بنجاح",
-            "successContent": "<i>...تم اضافة السجل</i>",
-            "failureTitle": "تم الغاء العملية",
-            "failureContent": "<i>عدد ساعات العمل المتاحة لك اضافتها اصبح</i>"
-        }
+    "smartDeleteMessageSuccessTitle": {
+        "en": "Operation completed successfuly",
+        "ar": "تمت العملية بنجاح"
     },
-    "smartVacationMessage": {
-        "en": {
-            "title": "Operation was canceled",
-            "content": "Cannot add Time Sheet on a Vacation Date..."
-        },
-        "ar": {
-            "title": "تم الغاء العملية",
-            "content": "<i>...لا يمكن اضافة جدول زمني في يوم عطلة</i>"
-        }
+    "smartDeleteMessageSuccessContent": {
+        "en": "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
+        "ar": "<i class='fa fa-clock-o'></i> <i>...تم حذف السجل</i>"
     },
-    "smartExpensesWorkFlowMessage": {
-        "en": {
-            "title": "Operation was canceled",
-            "content": "<i>Cannot add Expenses WorkFlow for The Same Project & Expense Type...</i>"
-        },
-        "ar": {
-            "title": "تم الغاء العملية",
-            "content": "<i>...لا يمكن اضافة دوره مستنديه لنفس المشروع او لنفس نوع المصروف</i>"
-        }
+    "smartDeleteMessageFailureTitle": {
+        "en": "Operation was canceled",
+        "ar": "تم الغاء العملية"
     },
-    "projectAddErrorMessages": {
-        "en": {
-            "EnglishNameExists": "Project english name already exsists",
-            "ArabicNameExists": "Project arabic name already exsists",
-            "ReferenceCodeExists": "Reference code already exsists"
-        },
-        "ar": {
-            "EnglishNameExists": "اسم المشروع بالأنجليزي موجود بالفعل",
-            "ArabicNameExists": "اسم المشروع بالعربي موجود بالفعل",
-            "ReferenceCodeExists": "كود المشروع موجود بالفعل"
-        }
+    "smartDeleteMessageFailureContent": {
+        "en": "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
+        "ar": "<i class='fa fa-clock-o'></i> <i>...تم الغاء الحذف</i>"
+    },
+    "smartDeleteMessageRefCodeExist": {
+        "en": "Referance Code Already Exist...",
+        "ar": "<i class='fa fa-clock-o'></i> <i>...رقم الموظف موجود قبل ذلك</i>"
+    },
+    "smartDeleteMessageNotAssignedTothisProject": {
+        "en": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>",
+        "ar": "<i class='fa fa-clock-o'></i> <i>You Not Assigned to This Project...</i>"
+    },
+    "smartDeleteMessageUserNameExist": {
+        "en": "<i class='fa fa-clock-o'></i> <i>User Name Already Exist ...</i>",
+        "ar": "<i class='fa fa-clock-o'></i> <i>...إسم المستخدم موجود قبل ذلك</i>"
+    },
+    "smartDeleteMessageYes": {
+        "en": "Yes",
+        "ar": "نعم"
+    },
+    "smartDeleteMessageNo": {
+        "en": "No",
+        "ar": "لا"
+    },
+    "smartDeleteMessageCannotDelete": {
+        "en": "Cannot Delete This User ...",
+        "ar": "لا يمكن مسح هذا العنصر .."
+    },
+    "smartSentAccountingMessageTitle": {
+        "en": "Caution !!! Sent To Accounting!",
+        "ar": "!احذر عملية خطيرة"
+    },
+    "smartSentAccountingMessageContent": {
+        "en": "Are you sure you want to Transfare this Record to Accounting?",
+        "ar": "هل انت متاكدة انك تريد نقل الملف إلى الحسابات؟"
+    },
+    "smartSentAccountingMessageButtons": {
+        "en": "[No][Yes]",
+        "ar": "[لا][نعم]"
+    },
+    "smartSentAccountingMessageSuccessTitle": {
+        "en": "Operation completed successfuly",
+        "ar": "تمت العملية بنجاح"
+    },
+    "smartSentAccountingMessageSuccessContent": {
+        "en": "<i class='fa fa-clock-o'></i> <i>Record Sent successfuly...</i>",
+        "ar": "<i class='fa fa-clock-o'></i> <i>...تم النقل السجل</i>"
+    },
+    "smartSentAccountingMessageFailureTitle": {
+        "en": "Operation was canceled",
+        "ar": "تم الغاء العملية"
+    },
+    "smartSentAccountingMessageFailureContent": {
+        "en": "<i class='fa fa-clock-o'></i> <i>Canceled Sent...</i>",
+        "ar": "<i class='fa fa-clock-o'></i> <i>...تم الغاء النقل</i>"
+    },
+    "smartSentAccountingMessageYes": {
+        "en": "Yes",
+        "ar": "نعم"
+    },
+    "smartSentAccountingMessageNo": {
+        "en": "No",
+        "ar": "لا"
+    },
+    "smartConfirmMessageTitle": {
+        "en": "Caution !!!",
+        "ar": "!احذر عملية خطيرة"
+    },
+    "smartConfirmMessageContent": {
+        "en": "Are you sure you want to Change Key Contact ?",
+        "ar": "هل انت متاكدة انك تريد نقل مسئول الشركة؟"
+    },
+    "smartConfirmMessageButtons": {
+        "en": "[No][Yes]",
+        "ar": "[لا][نعم]"
+    },
+    "smartConfirmMessageSuccessTitle": {
+        "en": "Operation completed successfuly",
+        "ar": "تمت العملية بنجاح"
+    },
+    "smartConfirmMessageYes": {
+        "en": "Yes",
+        "ar": "نعم"
+    },
+    "smartConfirmMessageNo": {
+        "en": "No",
+        "ar": "لا"
+    },
+    "smartAddMessageSuccessTitle": {
+        "en": "Operation completed successfuly",
+        "ar": "تمت العملية بنجاح"
+    },
+    "smartAddMessageSuccessContent": {
+        "en": "<i>Record Added Successfuly...</i>",
+        "ar": "<i>...تم اضافة السجل</i>"
+    },
+    "smartAddMessageFailureTitle": {
+        "en": "Operation was canceled",
+        "ar": "تم الغاء العملية"
+    },
+    "smartAddMessageFailureContent": {
+        "en": "Your Maximum Allowed Value for Working Hours is",
+        "ar": "<i>عدد ساعات العمل المتاحة لك اضافتها اصبح</i>"
+    },
+    "smartVacationMessageTitle": {
+        "en": "Operation was canceled",
+        "ar": "تم الغاء العملية"
+    },
+    "smartVacationMessageContent": {
+        "en": "Cannot add Time Sheet on a Vacation Date...",
+        "ar": "<i>...لا يمكن اضافة جدول زمني في يوم عطلة</i>"
+    },
+    "smartExpensesWorkFlowMessageTitle": {
+        "en": "Operation was canceled",
+        "ar": "تم الغاء العملية"
+    },
+    "smartExpensesWorkFlowMessageContent": {
+        "en": "<i>Cannot add Expenses WorkFlow for The Same Project & Expense Type...</i>",
+        "ar": "<i>...لا يمكن اضافة دوره مستنديه لنفس المشروع او لنفس نوع المصروف</i>"
+    },
+    "projectAddErrorMessagesEnglishNameExists": {
+        "en": "Project english name already exsists",
+        "ar": "اسم المشروع بالأنجليزي موجود بالفعل"
+    },
+    "projectAddErrorMessagesArabicNameExists": {
+        "en": "Project arabic name already exsists",
+        "ar": "اسم المشروع بالعربي موجود بالفعل"
+    },
+    "projectAddErrorMessagesReferenceCodeExists": {
+        "en": "Reference code already exsists",
+        "ar": "كود المشروع موجود بالفعل"
     },
     "projectsAdd": {
         "en": "Projects Add",
@@ -2856,7 +2890,7 @@
     "SendToWFToday": {
         "en": "Send To Work Flow Today",
         "ar": "مرسل للدورة المستندية اليوم"
-    }, 
+    },
     "sendToExpensesWorkFlow": {
         "en": "Send To Expenses Work Flow",
         "ar": "ارسال للدوره المستنديه لاذن الصرف"
@@ -9085,11 +9119,10 @@
         "en": "Drawing Review Result",
         "ar": "حاله المراجعه"
     },
-"downloadAll":{
-    "en":"Download All",
-    "ar":"تحميل الكل "
-},
- 
+    "downloadAll": {
+        "en": "Download All",
+        "ar": "تحميل الكل "
+    },
     "budgetContact": {
         "en": "Budget Contact",
         "ar": "الشخص المسئول عن الميزانية"
@@ -9126,8 +9159,8 @@
         "en": "Reference Code",
         "ar": "الرقم المرجعي"
     },
-    "addManySubmittalItems":{
-        "en":"Add Many Submittal Items",
-        "ar":"اضف مجموعة عناصر"
+    "addManySubmittalItems": {
+        "en": "Add Many Submittal Items",
+        "ar": "اضف مجموعة عناصر"
     }
 }

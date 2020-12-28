@@ -64,7 +64,7 @@ class sendToExpensesWorkFlow extends Component {
                 this.props.actions.expenseWorkFlow();
                 resetForm();
                 //return ViewWork
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });

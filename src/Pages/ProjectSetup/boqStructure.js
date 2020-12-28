@@ -186,7 +186,7 @@ class boqStructure extends Component {
                 this.setState({
                     ViewCopyTo: false
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -208,7 +208,7 @@ class boqStructure extends Component {
             this.setState({
                 ViewCopyMultiple: false
             })
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -687,7 +687,7 @@ class boqStructure extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources["smartDeleteMessage"][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         buttonName="delete"
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}

@@ -517,7 +517,7 @@ class Index extends Component {
                     {dataGrid}
                 </div>
                 {this.state.showDeleteModal == true ? (
-                    <ConfirmationModal title={Resources['smartDeleteMessage'][currentLanguage].content} closed={this.onCloseModal} showDeleteModal={this.state.showDeleteModal}
+                    <ConfirmationModal title={Resources["smartDeleteMessageContent"][currentLanguage]} closed={this.onCloseModal} showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain} buttonName='delete' clickHandlerContinue={this.ConfirmDeleteComanies} />
                 ) : null}
             </div>

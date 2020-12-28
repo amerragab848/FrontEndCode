@@ -175,7 +175,7 @@ class PettyCashAddEdit extends Component {
                         showDeleteModal={this.state.ConfirmDelete}
                         clickHandlerCancel={this.onCloseModal}
                         clickHandlerContinue={() => this.ConfirmDeleteTask()}
-                        title={Resources["smartDeleteMessage"][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         buttonName="delete"
                     />
                 ) : null}
