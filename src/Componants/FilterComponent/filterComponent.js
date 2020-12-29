@@ -224,7 +224,7 @@ class FilterComponent extends Component {
 
               {this.state.filtersColumns.map((column, index) => {
                 let classX = column.type === "number" ? "small__input--width " : "medium__input--width";
-                if (this.state.isCustom && count < 6) {
+                if (this.state.isCustom && count < 8) {
                   count++
                   if (column.type === "string" || column.type === "number") {
                     return (
