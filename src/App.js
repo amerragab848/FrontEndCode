@@ -61,8 +61,7 @@ class App extends Component {
 
         IndexedDb.initialize();
         IndexedDb.initializeCounterDB();
-        IndexedDb.initializeCachedAPI();
-        // IndexedDb.initializeWidgetsOfflineDB();
+        IndexedDb.initializeCachedAPI(); 
     }
 
     state = {
@@ -79,12 +78,11 @@ class App extends Component {
             .then(r => r.json())
             .then(data => {
                 Config.SetConfigObject(data);
-                Dataservice.GetCachedFromIndexedDb('GetAllResources').then(data => {
-                    if (data) {
-                        IndexedDb.seedResourcesIntoDB(data);
-                        Config.SetResources(data);
-                    }
-                });
+                if (data.useBackResources === true) {
+                    Dataservice.GetCachedFromIndexedDb('GetAllResources').then(data => {
+                        if (data) { IndexedDb.seedResourcesIntoDB(data); Config.SetResources(data); }
+                    });
+                }
             })
             .then(e => {
                 currentLanguage === 'ar'
