@@ -79,6 +79,7 @@ class App extends Component {
                 ? 'en'
                 : localStorage.getItem('lang');
 
+        let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
         fetch('/assets/IP_Configrations.json')
             .then(r => r.json())
             .then(data => {

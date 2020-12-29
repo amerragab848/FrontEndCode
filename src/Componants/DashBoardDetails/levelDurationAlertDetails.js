@@ -241,7 +241,7 @@ class levelDurationAlertDetails extends Component {
         rows: oldRows,
         isLoading: false
       });
-    });;
+    });
   }
 
   render() {
