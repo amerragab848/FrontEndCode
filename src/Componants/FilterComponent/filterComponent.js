@@ -82,11 +82,7 @@ class FilterComponent extends Component {
       state
     })
   }
-//added
 
-
-
-//
   getValueHandler(event, type, field, indexx, isSubmittals) {
     var obj = {};
 
