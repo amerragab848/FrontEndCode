@@ -5,10 +5,10 @@ import moment from "moment";
 import Resources from "../../../resources.json";
 import { isEqual } from 'lodash';
 import LoadingSection from "../../publicComponants/LoadingSection";
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../../store/actions/communication';
+// import { withRouter } from 'react-router-dom';
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import * as communicationActions from '../../../store/actions/communication';
 import { Slider } from 'react-semantic-ui-range';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -81,11 +81,11 @@ export default class CustomGrid extends Component {
 
         this.setState({ GridLoading: true })
 
-        var selectedCols =JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+        var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
-        var currentGP = [];
+        var currentGP = this.props.groups;
 
-        let itemsColumns = this.props.cells.map(item=>({...item,hidden:false}));
+        let itemsColumns = this.props.cells.map(item => ({ ...item, hidden: false }));
         if (selectedCols.length === 0) {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
@@ -99,12 +99,12 @@ export default class CustomGrid extends Component {
                     if (itemsColumns[i].field === parsingList[item].field) {
                         let status = parsingList[item].hidden
                         itemsColumns[i].hidden = status;
-                        itemsColumns[i].width=parsingList[item].width;
+                        itemsColumns[i].width = parsingList[item].width;
                         break;
                     }
                 }
             };
-            currentGP =selectedCols.groups.length >0? JSON.parse(selectedCols.groups):[];
+            currentGP = selectedCols.groups.length > 0 ? JSON.parse(selectedCols.groups) : [];
         }
 
         this.setState({
@@ -125,7 +125,7 @@ export default class CustomGrid extends Component {
 
     static getDerivedStateFromProps(nextProps, state) {
 
-       
+
         if (nextProps.isFilter && isEqual(state.rows, nextProps.data)) {
             return {
                 rows: nextProps.data,
@@ -520,9 +520,9 @@ export default class CustomGrid extends Component {
         }, 300);
 
         var selectedCols = { columnsList: [], groups: [] };
-         selectedCols.columnsList=JSON.stringify(data)
-         selectedCols.groups=JSON.stringify(this.props.groups);
-        localStorage.setItem(this.props.gridKey,JSON.stringify(selectedCols))
+        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.groups = JSON.stringify(this.props.groups);
+        localStorage.setItem(this.props.gridKey, JSON.stringify(selectedCols))
     };
 
     render() {
@@ -537,26 +537,20 @@ export default class CustomGrid extends Component {
                         <label>{item.title}</label>
                     </div>
                     <p className="rangeSlider">
-                            <Slider
-                                key={item.field}
-                                discrete
-                                color="blue"
-                                inverted={false}
-                                settings={{
-                                    start: parseInt(item.width),
-                                    min: 5,
-                                    max: 50,
-                                    step: 1,
-                                    onChange: e => {
-                                        this.handleChangeWidth(item.field, e);
-                                    },
-                                }}
-                            />
-                            <label className="rangeLabel" color="red">
-                                Width: {item.width} px
+                        <Slider
+                            key={item.field} discrete color="blue" inverted={false}
+                            settings={{
+                                start: parseInt(item.width ? item.width : 2), min: 5, max: 50, step: 5,
+                                onChange: e => {
+                                    this.handleChangeWidth(item.field, e);
+                                },
+                            }}
+                        />
+                        <label className="rangeLabel" color="red">
+                            Width: {item.width} px
                             </label>
-                        </p>
-                    
+                    </p>
+
                 </div>
             )
         })
@@ -732,6 +726,7 @@ export default class CustomGrid extends Component {
                             groups={this.state.groupsList}
                             handleGroupUpdate={this.handleGroupEvent}
                             showPicker={this.props.showPicker}
+                            shouldCheck={this.props.shouldCheck}
                         />)
                         : <LoadingSection />}
 

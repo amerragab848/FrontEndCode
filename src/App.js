@@ -61,8 +61,7 @@ class App extends Component {
 
         IndexedDb.initialize();
         IndexedDb.initializeCounterDB();
-        IndexedDb.initializeCachedAPI();
-        // IndexedDb.initializeWidgetsOfflineDB();
+        IndexedDb.initializeCachedAPI(); 
     }
 
     state = {
@@ -79,13 +78,16 @@ class App extends Component {
                 ? 'en'
                 : localStorage.getItem('lang');
 
+        // let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
         fetch('/assets/IP_Configrations.json')
             .then(r => r.json())
             .then(data => {
                 Config.SetConfigObject(data);
-        Dataservice.GetCachedFromIndexedDb('GetAllResources').then(data => {
-            if (data) { IndexedDb.seedResourcesIntoDB(data); Config.SetResources(data);}
-        }); 
+                if (data.useBackResources === true) {
+                    Dataservice.GetCachedFromIndexedDb('GetAllResources').then(data => {
+                        if (data) { IndexedDb.seedResourcesIntoDB(data); Config.SetResources(data); }
+                    });
+                }
             })
             .then(e => {
                 currentLanguage === 'ar'

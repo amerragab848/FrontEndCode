@@ -5,9 +5,7 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-//import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
-//import GridCustom from 'react-customized-grid';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import dataservice from "../../../Dataservice";
 import CryptoJS from 'crypto-js';
@@ -37,7 +35,7 @@ class WFDistributionAccountReport extends Component {
         }
 
         this.columns = [
-            { title: '', type: 'check-box', fixed: true, field: 'id' },
+            { title: '', type: 'check-box', fixed: true, field: 'id', width: 10 },
             {
                 "field": "subject",
                 "title": Resources.subject[currentLanguage],
@@ -104,37 +102,38 @@ class WFDistributionAccountReport extends Component {
         if (this.state.selectedContact.value != '0') {
             this.setState({ isLoading: true })
             Api.get('GetContactsWorkFlowDist?contactId=' + this.state.selectedContact.value).then((result) => {
+                if (result) {
+                    result.forEach(row => {
 
-                result.forEach(row => {
+                        let link = "";
 
-                    let link = "";
+                        let docId = row.url.split("/");
 
-                    let docId = row.url.split("/");
+                        let obj = {
+                            docId: docId[1],
+                            projectId: row.projectId,
+                            projectName: row.projectName,
+                            arrange: 0,
+                            docApprovalId: 0,
+                            isApproveMode: false,
+                            perviousRoute: window.location.pathname + window.location.search
+                        };
 
-                    let obj = {
-                        docId: docId[1],
-                        projectId: row.projectId,
-                        projectName: row.projectName,
-                        arrange: 0,
-                        docApprovalId: 0,
-                        isApproveMode: false,
-                        perviousRoute: window.location.pathname + window.location.search
-                    };
+                        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
-                    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+                        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
-                    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+                        if (row.type === "Distribution List") {
+                            link = '/projectDistributionListAddEdit?id=' + encodedPaylod;
+                        } else {
+                            link = '/projectWorkFlowAddEdit?id=' + encodedPaylod;
+                        }
 
-                    if (row.type === "Distribution List") {
-                        link = '/projectDistributionListAddEdit?id=' + encodedPaylod;
-                    } else {
-                        link = '/projectWorkFlowAddEdit?id=' + encodedPaylod;
-                    }
+                        row.link = link;
+                    });
 
-                    row.link = link;
-                });
-
-                this.setState({ rows: result, isLoading: false })
+                    this.setState({ rows: result, isLoading: false })
+                }
             }).catch(() => {
                 this.setState({ isLoading: false })
             })
@@ -185,8 +184,15 @@ class WFDistributionAccountReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom
+                ref='custom-data-grid'
+                gridKey="WfDistributionAccountReport"
+                groups={[]}
+                data={this.state.rows || []}
+                cells={this.columns}
                 pageSize={this.state.rows.length}
+                rowActions={[]}
+                rowClick={() => { }}
                 actions={[{
                     title: 'Send To The Same Level',
                     handleClick: (value) => {
@@ -201,7 +207,7 @@ class WFDistributionAccountReport extends Component {
             />
         ) : <LoadingSection />
 
-        const btnExport = 
+        const btnExport =
             <ExportDetails fieldsItems={this.columns}
                 rows={this.state.rows}
                 fields={this.fields} fileName={'wokFlowDistrbutionAccountsReport'} />
@@ -214,7 +220,7 @@ class WFDistributionAccountReport extends Component {
                             title="ContactName"
                             data={this.state.dropDownList}
                             selectedValue={this.state.selectedContact_level}
-                            handleChange={event =>  this.setState({ selectedContact_level: event })}
+                            handleChange={event => this.setState({ selectedContact_level: event })}
                             name="ContactName"
                             index="ContactName"
                         />
@@ -236,7 +242,7 @@ class WFDistributionAccountReport extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="ContactName" name="ContactName" index="ContactName"
                             data={this.state.dropDownList} selectedValue={this.state.selectedContact}
-                            handleChange={event =>{ this.setState({ selectedContact: event });this.fields[0].value = event.label }} />
+                            handleChange={event => { this.setState({ selectedContact: event }); this.fields[0].value = event.label }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
 
