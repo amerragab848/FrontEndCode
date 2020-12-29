@@ -126,7 +126,7 @@ class InvoicesLogReport extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="InvoicesLogReport"
+                gridKey="InvoicesLogReport"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

@@ -152,7 +152,7 @@ class requestsTransferItems extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key="RequestTransferItems"
+                    gridKey="RequestTransferItems"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

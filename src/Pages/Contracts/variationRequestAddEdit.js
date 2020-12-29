@@ -845,9 +845,13 @@ class VariationRequestAdd extends Component {
                                         />
                                         <div className="doc-pre-cycle">
                                             <GridCustom
-                                                cells={this.cells} data={this.state.items}
-                                                groups={[]} pageSize={50} actions={this.actions}
-                                                rowActions={this.rowActions} rowClick={cells => this.onRowClick(cells)}
+                                                gridKey="VariationRequestAddEdit"
+                                                cells={this.cells}
+                                                data={this.state.items}
+                                                groups={[]} pageSize={50}
+                                                actions={this.actions}
+                                                rowActions={this.rowActions}
+                                                rowClick={cells => this.onRowClick(cells)}
                                             />
                                         </div>
                                         <div className="doc-pre-cycle">

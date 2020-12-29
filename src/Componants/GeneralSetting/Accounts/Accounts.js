@@ -716,7 +716,7 @@ class Accounts extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
-                    key="Accounts"
+                    gridKey="Accounts"
                     cells={this.columnsGrid}
                     data={this.state.rows}
                     pageSize={this.state.pageSize}

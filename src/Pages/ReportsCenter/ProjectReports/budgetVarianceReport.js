@@ -156,7 +156,7 @@ class budgetVarianceReport extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="budgetVarianceReport"
+                gridKey="budgetVarianceReport"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

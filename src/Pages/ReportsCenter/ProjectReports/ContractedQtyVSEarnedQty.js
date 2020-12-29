@@ -304,7 +304,7 @@ class ContractedQtyVSEarnedQty extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="ContractedQtyVsEarnedQty"
+                gridKey="ContractedQtyVsEarnedQty"
                 data={this.state.rows}
                 groups={[]}
                 actions={[]}

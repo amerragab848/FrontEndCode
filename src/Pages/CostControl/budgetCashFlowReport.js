@@ -305,7 +305,7 @@ class BudgetCashFlowReport extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref="custom-data-grid"
-                    key="BudgetCashFlowReport"
+                    gridKey="BudgetCashFlowReport"
                     data={this.state.rows}
                     pageSize={this.state.pageSize}
                     groups={[]}

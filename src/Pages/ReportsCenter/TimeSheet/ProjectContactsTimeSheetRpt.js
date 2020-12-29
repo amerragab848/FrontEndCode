@@ -6,7 +6,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import moment from "moment";
@@ -138,7 +138,7 @@ class projectContactsTimeSheetRpt extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="ProjectContactsTimeSheetRpt" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 

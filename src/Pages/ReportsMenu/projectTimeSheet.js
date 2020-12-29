@@ -57,8 +57,8 @@ class ProjectTimeSheet extends Component {
                 sortable: true,
                 type: "text"
             }
-           
-           
+
+
         ];
 
         this.state = {
@@ -108,11 +108,16 @@ class ProjectTimeSheet extends Component {
     render() {
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridCustom  cells={this.columnsGrid} data={this.state.rows}  groups={[]}  pageSize={this.state.rows.length}  actions={[]}   rowActions={[]}  rowClick={() => { }}      /> : null
-               
-                
-               
-               
+                this.state.rows.length > 0 ?
+                    <GridCustom
+                        gridKey="ProjectTimeSheet"
+                        cells={this.columnsGrid}
+                        data={this.state.rows}
+                        groups={[]}
+                        pageSize={this.state.rows.length}
+                        actions={[]}
+                        rowActions={[]}
+                        rowClick={() => { }} /> : null
             ) : (
                 <LoadingSection />
             );

@@ -629,7 +629,7 @@ class corrRecievedSent extends Component {
         const sendGrid = this.state.sendLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="CorrRecievedSent"
+                gridKey="CorrRecievedSent"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -642,7 +642,7 @@ class corrRecievedSent extends Component {
         const receivedGrid = this.state.receivedLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="CorrRecievedSent"
+                gridKey="CorrRecievedSent"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

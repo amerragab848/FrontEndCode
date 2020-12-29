@@ -35,7 +35,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "recourceCode",
@@ -44,7 +44,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "materialDeliverySubject",
@@ -53,7 +53,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "quantity",
@@ -62,7 +62,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "unitPrice",
@@ -71,7 +71,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "remaining",
@@ -80,7 +80,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "projectName",
@@ -89,7 +89,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "fromContact",
@@ -98,7 +98,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"text"
+                type: "text"
             },
             {
                 field: "purchaseOrderDate",
@@ -107,7 +107,7 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"date"
+                type: "date"
             },
             {
                 field: "conditionDate",
@@ -116,9 +116,9 @@ class DeliveredQuantitieReport extends Component {
                 groupable: true,
                 fixed: true,
                 sortable: true,
-                type:"date"
+                type: "date"
             },
-         
+
         ];
 
         this.state = {
@@ -183,7 +183,15 @@ class DeliveredQuantitieReport extends Component {
     render() {
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ?<GridCustom  cells={this.columnsGrid}  data={this.state.rows}  groups={[]} pageSize={50}   pageSize={50} actions={[]} rowActions={[]} rowClick={()=>{}}  />  : null
+                this.state.rows.length > 0 ?
+                    <GridCustom
+                        gridKey="DeliveredQuantityReport"
+                        cells={this.columnsGrid}
+                        data={this.state.rows}
+                        groups={[]} pageSize={50}
+                        pageSize={50} actions={[]}
+                        rowActions={[]}
+                        rowClick={() => { }} /> : null
             ) : (
                 <LoadingSection />
             );

@@ -36,7 +36,7 @@ class InvoiceQuantity extends Component {
                 fixed: true,
                 sortable: true,
                 type: "text"
-            },  {
+            }, {
                 field: "specsSectionTitle",
                 title: Resources["specification"][currentLanguage],
                 width: 10,
@@ -44,7 +44,7 @@ class InvoiceQuantity extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-            },   {
+            }, {
                 field: "details",
                 title: Resources["description"][currentLanguage],
                 width: 15,
@@ -52,7 +52,7 @@ class InvoiceQuantity extends Component {
                 fixed: false,
                 sortable: true,
                 type: "text"
-            },  {
+            }, {
                 field: "quantity",
                 title: Resources["quantity"][currentLanguage],
                 width: 5,
@@ -213,10 +213,11 @@ class InvoiceQuantity extends Component {
             (
                 this.state.rows.length > 0 ?
                     <GridCustom
+                        gridKey="InvoiceQuantity"
                         cells={this.columnsGrid}
                         data={this.state.rows}
                         groups={[]}
-                        pageSize={50} 
+                        pageSize={50}
                         actions={[]}
                         rowActions={[]}
                         rowClick={() => { }} /> : null

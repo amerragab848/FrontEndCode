@@ -159,12 +159,12 @@ class drawingListAddEdit extends Component {
             { name: 'viewAttachments', code: 3732 }, { name: 'deleteAttachments', code: 3733 }],
             selectDescipline: { label: Resources.selectDescipline[currentLanguage], value: "0" },
             selectProject: { label: Resources.selectProjects[currentLanguage], value: "0" },
-            selectSubmittedFor:{label:Resources.selectSubmittedFor[currentLanguage],value:"0"},
+            selectSubmittedFor: { label: Resources.selectSubmittedFor[currentLanguage], value: "0" },
             IsEditMode: false,
             showPopUp: false,
             IsAddModel: false,
             ProjectDropData: [],
-            submittedForData:[],
+            submittedForData: [],
             DesciplineDropData: [],
             ShowAddItem: false,
             IsEditModeItem: false,
@@ -405,7 +405,7 @@ class drawingListAddEdit extends Component {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
-       // this.FillDrowDowns()
+        // this.FillDrowDowns()
 
     }
 
@@ -468,10 +468,10 @@ class drawingListAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
-        if (prevProps.document.id !== this.props.document.id ){
+        if (prevProps.document.id !== this.props.document.id) {
             this.FillDrowDowns()
         }
-        
+
 
     }
 
@@ -731,6 +731,7 @@ class drawingListAddEdit extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
+                    gridKey="DrawingListAddEdit"
                     cells={this.state.columns}
                     data={this.state.rows}
                     groups={[]}
@@ -789,7 +790,7 @@ class drawingListAddEdit extends Component {
                             papers: this.state.IsEditModeItem ? this.state.ItemForEdit.paper : '',
                             estimateTime: this.state.IsEditModeItem ? this.state.ItemForEdit.estimatedTime : '',
                             arrangeItems: this.state.ItemForEdit.arrange,
-                            refCode:this.state.IsEditModeItem ? this.state.ItemForEdit.refCode : '',
+                            refCode: this.state.IsEditModeItem ? this.state.ItemForEdit.refCode : '',
                         }}
 
                         enableReinitialize={true}
@@ -880,7 +881,7 @@ class drawingListAddEdit extends Component {
                                             <label className="control-label">{Resources['refCode'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.refCode && touched.refCode ? 'has-error' : null) + ' '}>
                                                 <input autoComplete="off"
-                                                 value={this.state.ItemForEdit.refCode} className="form-control" name="refCode"
+                                                    value={this.state.ItemForEdit.refCode} className="form-control" name="refCode"
                                                     onBlur={(e) => {
                                                         handleBlur(e)
                                                         handleChange(e)
@@ -1023,8 +1024,8 @@ class drawingListAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="projectType" 
-                                                              data={this.state.ProjectDropData} name="projectTypeId"
+                                                            <Dropdown title="projectType"
+                                                                data={this.state.ProjectDropData} name="projectTypeId"
                                                                 selectedValue={this.state.selectProject}
                                                                 onChange={setFieldValue}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'projectTypeId', false, '', '', '', 'selectProject')}
@@ -1035,8 +1036,8 @@ class drawingListAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="submittedFor" 
-                                                               data={this.state.submittedForData} 
+                                                            <Dropdown title="submittedFor"
+                                                                data={this.state.submittedForData}
                                                                 name="submittedFor"
                                                                 selectedValue={this.state.selectSubmittedFor}
                                                                 onChange={setFieldValue}
@@ -1093,11 +1094,11 @@ class drawingListAddEdit extends Component {
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3730} EditAttachments={3731} ShowDropBox={3734} ShowGoogleDrive={3735} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
-                                            <Fragment>
-                                                 <div className="document-fields tableBTnabs">
-                                                   <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
-                                                 </div>
-                                            </Fragment>
+                                                <Fragment>
+                                                    <div className="document-fields tableBTnabs">
+                                                        <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                    </div>
+                                                </Fragment>
                                             ) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true && docId !== 0 ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}

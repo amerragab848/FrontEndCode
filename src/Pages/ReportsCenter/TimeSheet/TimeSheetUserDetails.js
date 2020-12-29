@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
 import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp';
@@ -131,7 +131,7 @@ class TimeSheet extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="TimeSheetUserDetails" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 

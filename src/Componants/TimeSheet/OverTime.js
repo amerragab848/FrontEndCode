@@ -292,7 +292,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
                             ? 
                             <GridCustom
                             ref='custom-data-grid'
-                            key="OverTime"
+                            gridKey="OverTime"
                             data={this.state.rows}
                             pageSize={this.state.rows.length}
                             groups={[]}
@@ -304,7 +304,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
                             : <div className={this.state.isLoading == false ? "disNone" : ""}> 
                             <GridCustom
                             ref='custom-data-grid'
-                            key="OverTime"
+                            gridKey="OverTime"
                             data={[]}
                             pageSize={0}
                             groups={[]}

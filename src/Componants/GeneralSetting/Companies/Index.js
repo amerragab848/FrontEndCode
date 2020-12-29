@@ -418,7 +418,7 @@ class Index extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key="CompaniesIndex"
+                    gridKey="CompaniesIndex"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

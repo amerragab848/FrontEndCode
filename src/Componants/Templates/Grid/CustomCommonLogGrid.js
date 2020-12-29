@@ -195,7 +195,7 @@ export default class CustomGrid extends Component {
                 {btnDocumentTemplate}
                 {this.state.GridLoading === false ? (
                     <GridCustom
-                        key={this.props.gridKey}
+                        gridKey={this.props.gridKey}
                         cells={this.state.columns.filter(i => i.hidden != true)}
                         data={this.state.rows}
                         pageSize={this.props.pageSize}

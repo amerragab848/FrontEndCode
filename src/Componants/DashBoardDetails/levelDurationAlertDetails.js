@@ -248,7 +248,7 @@ class levelDurationAlertDetails extends Component {
 
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom
-        key='levelDurationAlert'
+        gridKey='levelDurationAlert'
         cells={this.state.columns}
         data={this.state.rows}
         groups={this.state.groups}

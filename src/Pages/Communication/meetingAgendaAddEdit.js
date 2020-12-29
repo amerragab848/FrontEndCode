@@ -913,7 +913,7 @@ class meetingAgendaAddEdit extends Component {
         const dataGridTopic =
             this.state.isLoading === false ? (
                 <GridCustom
-                    key="Topic"
+                gridKey="Topic"
                     data={this.state.topics}
                     pageSize={this.state.pageSize}
                     groups={this.groups}
@@ -966,7 +966,7 @@ class meetingAgendaAddEdit extends Component {
         const dataGridAttendees =
             this.state.isLoading === false ? (
                 <GridCustom
-                    key="Attendes"
+                gridKey="Attendes"
                     data={this.state.attendees}
                     pageSize={this.state.pageSize}
                     groups={this.groups}

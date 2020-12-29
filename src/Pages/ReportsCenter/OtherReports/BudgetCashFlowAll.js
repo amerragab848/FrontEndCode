@@ -5,10 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-//import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
 import BarChartComp from '../TechnicalOffice/BarChartComp'
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import { SkyLightStateless } from 'react-skylight';
 import moment from 'moment';
 import Api from '../../../api.js';
@@ -250,7 +249,7 @@ class BudgetCashFlowAll extends Component {
         ]
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="BudgetCashFlowAll" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />
         ) : <LoadingSection />

@@ -541,7 +541,7 @@ class TaskGroupsAddEdit extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key='TaskGroupAddEdit'
+                    gridKey='TaskGroupAddEdit'
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

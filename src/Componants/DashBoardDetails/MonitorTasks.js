@@ -226,7 +226,7 @@ class MonitorTasks extends Component {
   render() {
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom
-        key="MonitorTask"
+        gridKey="MonitorTask"
         data={this.state.rows}
         pageSize={this.state.rows.length}
         groups={[]}

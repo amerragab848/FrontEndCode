@@ -6,7 +6,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import ExportDetails from "../ExportReportCenterDetails";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Dataservice from '../../../Dataservice';
 import Api from '../../../api.js';
 import moment from 'moment';
@@ -231,7 +231,7 @@ class ExpensesStatus extends Component {
    
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="MaterialInventoryByInterval" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />
         ) : <LoadingSection />

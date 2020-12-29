@@ -4,9 +4,8 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-//import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import PieChartComp from '../PieChartComp'
 const sum = require('lodash/sum')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -133,7 +132,7 @@ class UsersAccountsReport extends Component {
                 series={this.state.series} title='usersAccountsReport' />) : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="UserAccountsReport" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />
         ) : <LoadingSection />

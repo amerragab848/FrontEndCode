@@ -1360,8 +1360,14 @@ class ContractInfoAddEdit extends Component {
       this.state.isLoading === false ? (
         <Fragment>
           <GridCustom
-            cells={this.cells} data={this.state.rows} groups={this.groups} pageSize={this.state.pageSize} actions={this.actions}
-            rowActions={this.rowActions} rowClick={cells => this.onRowClick(cells)}
+            gridKey="ContractInfoAddEdit"
+            cells={this.cells}
+            data={this.state.rows}
+            groups={this.groups}
+            pageSize={this.state.pageSize}
+            actions={this.actions}
+            rowActions={this.rowActions}
+            rowClick={cells => this.onRowClick(cells)}
           />
         </Fragment>
       ) : (<LoadingSection />);

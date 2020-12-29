@@ -340,7 +340,7 @@ class Timesheet extends Component {
                             ? 
                             <GridCustom
                             ref='custom-data-grid'
-                            key="UserTimeSheet"
+                            gridKey="UserTimeSheet"
                             data={this.state.rows}
                             pageSize={this.state.rows.length}
                             groups={[]}
@@ -352,7 +352,7 @@ class Timesheet extends Component {
                             : <div className={this.state.isLoading == false ? "disNone" : ""}> 
                             <GridCustom
                             ref='custom-data-grid'
-                            key="UserTimeSheet"
+                            gridKey="UserTimeSheet"
                             data={[]}
                             pageSize={0}
                             groups={[]}
