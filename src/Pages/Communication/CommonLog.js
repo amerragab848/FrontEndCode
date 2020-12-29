@@ -26,8 +26,7 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Slider } from 'react-semantic-ui-range';
 import {Resources} from '../../Resources';
 
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
 let docTempLink;
 
@@ -1446,16 +1445,7 @@ class CommonLog extends Component {
         });
     }
 
-    render() {
-        const settings = {
-            start: 2,
-            min: 0,
-            max: 10,
-            step: 1,
-            onChange: e => {
-                console.log(e);
-            },
-        };
+    render() { 
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
             (item, index) => {
                 return item.field == 'id' ? null : (
@@ -1483,7 +1473,7 @@ class CommonLog extends Component {
                                     start: parseInt(item.width),
                                     min: 5,
                                     max: 50,
-                                    step: 1,
+                                    step: 5,
                                     onChange: e => {
                                         this.handleChangeWidth(item.field, e);
                                     },

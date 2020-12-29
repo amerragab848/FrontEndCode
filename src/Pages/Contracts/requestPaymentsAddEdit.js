@@ -610,6 +610,7 @@ class requestPaymentsAddEdit extends Component {
                 fixed: true,
                 field: 'id',
                 hidden: false,
+                width: 4
             },
             {
                 field: 'arrange',
@@ -638,8 +639,7 @@ class requestPaymentsAddEdit extends Component {
                 groupable: true,
                 sortable: true,
                 hidden: false,
-                type: 'text',
-                //showTip: true
+                type: 'text'
             },
             {
                 field: 'boqType',
@@ -895,41 +895,16 @@ class requestPaymentsAddEdit extends Component {
             },
         ];
 
-        var selectedCols =
-            JSON.parse(localStorage.getItem('ReqPaymentsItems')) || [];
-
         var currentGP = [
             { field: 'wasAdded', title: 'status', type: 'text' },
             { field: 'boqType', title: 'boqType', type: 'text' },
             { field: 'secondLevel', title: 'boqTypeChild', type: 'text' },
         ];
-
-        if (selectedCols.length === 0) {
-            var gridLocalStor = { columnsList: [], groups: [] };
-            gridLocalStor.columnsList = JSON.stringify(itemsColumns);
-            gridLocalStor.groups = JSON.stringify(currentGP);
-            localStorage.setItem(
-                'ReqPaymentsItems',
-                JSON.stringify(gridLocalStor),
-            );
-        } else {
-            var parsingList = JSON.parse(selectedCols.columnsList);
-            for (var item in parsingList) {
-                for (var i in itemsColumns) {
-                    if (itemsColumns[i].field === parsingList[item].field) {
-                        let status = parsingList[item].hidden;
-                        itemsColumns[i].hidden = status;
-                        break;
-                    }
-                }
-            }
-            currentGP = JSON.parse(selectedCols.groups);
-        }
-
+ 
         this.setState({
             ColumnsHideShow: itemsColumns,
             columns: itemsColumns,
-            groups: currentGP,
+            groups: currentGP
         });
     }
 
@@ -1030,9 +1005,7 @@ class requestPaymentsAddEdit extends Component {
         });
     }
     componentDidMount() {
-        var links = document.querySelectorAll(
-            '.noTabs__document .doc-container .linebylineInput',
-        );
+        var links = document.querySelectorAll('.noTabs__document .doc-container .linebylineInput',);
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add('even');
@@ -1046,30 +1019,16 @@ class requestPaymentsAddEdit extends Component {
             deductionValue: 0,
             deductionTypeId: 0,
         };
-        dataservice
-            .GetDataList(
-                'GetaccountsDefaultListForList?listType=deductionType',
-                'title',
-                'id',
-            )
-            .then(res => {
-                this.setState({
-                    deductionTypesList: res,
-                });
+        dataservice.GetDataList('GetaccountsDefaultListForList?listType=deductionType', 'title', 'id',).then(res => {
+            this.setState({
+                deductionTypesList: res,
             });
+        });
 
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit(
-                'GetContractsRequestPaymentsForEdit?id=' + this.state.docId,
-            );
+            this.props.actions.documentForEdit('GetContractsRequestPaymentsForEdit?id=' + this.state.docId,);
             this.props.actions.ExportingData({ items: [] });
-            dataservice
-                .GetDataList(
-                    'GetCostCodingTreeNewByProjectIdForList?projectId=' +
-                    this.state.projectId,
-                    'codeTreeTitle',
-                    'id',
-                )
+            dataservice.GetDataList('GetCostCodingTreeNewByProjectIdForList?projectId=' + this.state.projectId, 'codeTreeTitle', 'id',)
                 .then(result => {
                     this.setState({
                         fillDropDownTress: result,
@@ -1541,19 +1500,7 @@ class requestPaymentsAddEdit extends Component {
 
             if (paymentsItems.length === 0) {
                 this.setState({ gridLoader: true });
-                dataservice
-                    .GetDataGrid(
-                        'GetRequestItemsOrderByContractId?contractId=' +
-                        contractId +
-                        '&isAdd=' +
-                        !this.props.changeStatus +
-                        '&requestId=' +
-                        this.state.docId +
-                        '&pageNumber=' +
-                        this.state.pageNumber +
-                        '&pageSize=' +
-                        this.state.pageSize,
-                    )
+                dataservice.GetDataGrid('GetRequestItemsOrderByContractId?contractId=' + contractId + '&isAdd=' + !this.props.changeStatus + '&requestId=' + this.state.docId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize)
                     .then(result => {
                         let items = result != null ? result : [];
 
@@ -2104,10 +2051,12 @@ class requestPaymentsAddEdit extends Component {
                 toast.error(Resources['operationCanceled'][currentLanguage]);
             });
     }
+
     assign = () => {
         this.setState({ showBoqModal: true });
         this.boqTypeModal.show();
     };
+
     addDeduction() {
         this.setState({
             isLoading: true,
@@ -2193,6 +2142,7 @@ class requestPaymentsAddEdit extends Component {
                 this.setState({ showBoqModal: false, isLoadingItems: false });
             });
     };
+
     addCommentClick = () => {
         let comment = { ...this.state.comment };
 
@@ -2201,9 +2151,11 @@ class requestPaymentsAddEdit extends Component {
             this.setState({ showCommentModal: false, isLoading: false });
         }
     };
+
     openModalColumn = () => {
         this.setState({ columnsModal: true });
     };
+
     closeModalColumn = () => {
         this.setState({ columnsModal: false });
     };
@@ -2300,6 +2252,7 @@ class requestPaymentsAddEdit extends Component {
             isLoading: false,
         });
     };
+
     multipleHandleChangeForEdit = (e, updated) => {
         let updateRow = this.state.currentObject;
 
@@ -2365,6 +2318,7 @@ class requestPaymentsAddEdit extends Component {
             isLoading: false,
         });
     };
+
     editPaymentRequistionItems = () => {
         if (this.state.isMultipleItems === true) {
             var ids = this.state.multiplePayReqItems;
@@ -2867,11 +2821,11 @@ class requestPaymentsAddEdit extends Component {
     };
 
     handleDropActionForExportFile = event => {
-        
-    if (Config.getPublicConfiguartion().activeExport != true) {
-        toast.warn('This feature is disabled. Please call your administrator for assistance');
-        return;
-      }
+
+        if (Config.getPublicConfiguartion().activeExport != true) {
+            toast.warn('This feature is disabled. Please call your administrator for assistance');
+            return;
+        }
         let exportFile = '';
 
         if (event.label === 'Export') {

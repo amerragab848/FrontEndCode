@@ -97,6 +97,14 @@ export default function (state = initialState.app.adminstration, action) {
             return {
                 ...state
             };
+            case types.Clear_Cash_CompanyContact:
+
+                return {
+                    ...state,
+                    companyContact:[],
+                    getingData: false,
+                };
+    
         default:
             return {
                 ...state

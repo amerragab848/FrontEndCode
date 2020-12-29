@@ -46,7 +46,7 @@ const ValidtionSchemaForContact = Yup.object().shape({
         .nullable(true),
     ContactName: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
-        .nullable(false),
+        .nullable(true),
     actionId: Yup.string()
         .required(Resources['action'][currentLanguage])
         .nullable(false),

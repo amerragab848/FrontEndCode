@@ -72,7 +72,7 @@ export default class CustomGrid extends Component {
         var selectedCols =
             JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
-        var currentGP = [];
+        var currentGP = this.props.groups;
 
         let itemsColumns = this.props.cells;
         if (selectedCols.length === 0) {
