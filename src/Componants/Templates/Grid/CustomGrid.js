@@ -732,6 +732,7 @@ export default class CustomGrid extends Component {
                             groups={this.state.groupsList}
                             handleGroupUpdate={this.handleGroupEvent}
                             showPicker={this.props.showPicker}
+                            shouldCheck={this.props.shouldCheck}
                         />)
                         : <LoadingSection />}
 

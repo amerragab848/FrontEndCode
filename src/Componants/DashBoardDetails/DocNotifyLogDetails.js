@@ -262,7 +262,7 @@ class DocNotifyLogDetails extends Component {
     const dataGrid =
       this.state.isLoading === false ? (
         <GridCustom
-          key="DocNotifyLogDetails"
+          gridKey="DocNotifyLogDetails"
           data={this.state.rows}
           pageSize={this.state.rows.length}
           groups={[]}

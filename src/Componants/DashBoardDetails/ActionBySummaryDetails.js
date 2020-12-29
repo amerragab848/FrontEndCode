@@ -3,7 +3,8 @@ import Api from "../../api";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Resources from "../../resources.json";
-import GridCustom from 'react-customized-grid';
+//import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -165,7 +166,7 @@ class ActionBySummaryDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+        <GridCustom ref='custom-data-grid' gridKey="ActionBySummaryDetails" groups={[]} data={this.state.rows || []} cells={this.state.columns}
           pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
         />
       ) : <LoadingSection />;

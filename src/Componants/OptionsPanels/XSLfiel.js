@@ -234,7 +234,7 @@ class XSLfile extends Component {
                 </header>
                 <div style={{ position: 'relative' }}>
                     <React.Fragment>
-                        {this.props.CantDownload ? null : (
+                        {this.props.CantDownload ? null : this.state.link !=""?(
                             <div className="fileDownUp">
                                 <a href={this.state.link}>
                                     <i
@@ -247,7 +247,7 @@ class XSLfile extends Component {
                                     }
                                 </a>
                             </div>
-                        )}
+                        ):null}
 
                         <Dropzone
                             multiple={false}
