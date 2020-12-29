@@ -5,10 +5,10 @@ import moment from "moment";
 import Resources from "../../../resources.json";
 import { isEqual } from 'lodash';
 import LoadingSection from "../../publicComponants/LoadingSection";
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../../store/actions/communication';
+// import { withRouter } from 'react-router-dom';
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import * as communicationActions from '../../../store/actions/communication';
 import { Slider } from 'react-semantic-ui-range';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
