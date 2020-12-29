@@ -138,7 +138,7 @@ class ProjectInvoices extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="ProjectInvoices"
+                gridKey="ProjectInvoices"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

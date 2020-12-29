@@ -27,7 +27,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
@@ -232,7 +232,8 @@ class materialRequestAddEdit extends Component {
                 width: 10,
                 groupable: true,
                 fixed: true,
-                type: "check-box"
+                type: "check-box",
+                width:10
             },
             {
                 field: 'arrange',
@@ -2311,7 +2312,7 @@ class materialRequestAddEdit extends Component {
                 );
         const ItemsGrid =
             this.state.isLoading == false ? (
-                <GridCustom ref='custom-data-grid' groups={[]} data={this.state._items || []}
+                <GridCustom ref='custom-data-grid' gridKey="MaterialRequestAddEdit" groups={[]} data={this.state._items || []}
                     cells={this.itemsColumns}
                     pageSize={this.state.pageSize} actions={this.actions} rowActions={[]}
                     rowClick={(cell) => { this.onRowClick(cell) }}

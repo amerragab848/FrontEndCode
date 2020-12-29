@@ -162,7 +162,7 @@ class SiteRequestReleasedQnt extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="SiteReqReleasedQnt"
+                gridKey="SiteReqReleasedQnt"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

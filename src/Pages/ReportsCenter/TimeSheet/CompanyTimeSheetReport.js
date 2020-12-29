@@ -9,7 +9,7 @@ import DatePicker from '../../../Componants/OptionsPanels/DatePicker';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import BarChartComp from '../../../Componants/ChartsWidgets/BarChartCompJS';
 import ExportDetails from "../ExportReportCenterDetails";
@@ -153,7 +153,7 @@ class companyTimeSheet extends Component {
                 yTitle={Resources['total'][currentLanguage]} /> : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="CompanyTimesheetReport" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 

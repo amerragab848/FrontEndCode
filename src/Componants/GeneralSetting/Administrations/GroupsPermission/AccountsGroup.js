@@ -160,7 +160,7 @@ class permissionsGroups extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                 ref='custom-data-grid'
-                key="AccountsGroup"
+                gridKey="AccountsGroup"
                 data={this.state.rows}
                 pageSize={this.state.rows.length}
                 groups={[]}

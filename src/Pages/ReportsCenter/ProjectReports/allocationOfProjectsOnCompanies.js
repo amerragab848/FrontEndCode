@@ -186,7 +186,7 @@ class allocationOfProjectsOnCompanies extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="allocationOfProjectsOnComp"
+                gridKey="allocationOfProjectsOnComp"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

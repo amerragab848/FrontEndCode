@@ -147,7 +147,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       this.state.isLoading === false ? (
         <GridCustom
         ref='custom-data-grid'
-        key="NotCodedExpensesSummaryDetails"
+        gridKey="NotCodedExpensesSummaryDetails"
         data={this.state.rows}
         pageSize={this.state.rows.length}
         groups={[]}

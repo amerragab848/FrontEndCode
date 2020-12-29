@@ -183,7 +183,7 @@ class RequestPaymentDeductionTypeReport extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="requestPaymentDeductionTypeReport"
+                gridKey="requestPaymentDeductionTypeReport"
                 data={this.state.rows}
                 pageSize={1000}
                 groups={[]}

@@ -12,8 +12,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Export from "../../Componants/OptionsPanels/Export";
-// import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import 'react-customized-grid/main.css';
 
 
@@ -196,7 +195,7 @@ class BoqContractCost extends Component {
                 // <GridCustom ref='custom-data-grid' cells={this.columnsGrid}
                 //     data={this.state.rows} groups={[]} pageSize={50}
                 //     pageSize={50} actions={[]} rowActions={[]} rowClick={() => { }} />
-                    <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} 
+                    <GridCustom ref='custom-data-grid' gridKey="BoqContractCost" groups={[]} data={this.state.rows || []} 
                     cells={this.columnsGrid}
                         pageSize={this.state.rows.length} actions={[]} rowActions={[]}
                         rowClick={() => { }}

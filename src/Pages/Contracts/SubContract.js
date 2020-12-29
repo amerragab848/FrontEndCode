@@ -10,13 +10,11 @@ import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import DataService from '../../Dataservice'
-///import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
-//import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import 'react-table/react-table.css'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -69,7 +67,8 @@ class SubContract extends Component {
                 width: 10,
                 groupable: true,
                 fixed: true,
-                type: "check-box"
+                type: "check-box",
+                width:10
             },
             {
                 field: 'details',
@@ -376,7 +375,7 @@ class SubContract extends Component {
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <>
-                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []}
+                <GridCustom ref='custom-data-grid' gridKey="SubContracts" groups={[]} data={this.state.rows || []}
                     cells={this.itemsColumns}
                     pageSize={this.state.rows.length} actions={[]} rowActions={[]}
                     rowClick={() => { }}

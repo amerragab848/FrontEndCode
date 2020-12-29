@@ -130,7 +130,7 @@ class projectsAchievements extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="projectAchievements"
+                gridKey="projectAchievements"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

@@ -374,7 +374,7 @@ class ProjectCompanies extends Component {
                 <GridCustom
                     gridKey="ProjectCompanies"
                     ref='custom-data-grid'
-                    key="ProjectCompanies"
+                    gridKey="ProjectCompanies"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

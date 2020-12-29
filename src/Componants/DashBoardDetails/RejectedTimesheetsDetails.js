@@ -272,7 +272,7 @@ class RejectedTimesheetsDetails extends Component {
             this.state.isLoading === false ?
                 <GridCustom
                     ref='custom-data-grid'
-                    key="RejectedTimeSheet"
+                    gridKey="RejectedTimeSheet"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

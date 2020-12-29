@@ -106,7 +106,7 @@ class BoqStractureCost extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="BoqStractureCost1"
+                gridKey="BoqStractureCost1"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

@@ -185,7 +185,7 @@ class ScheduleAlertsSummaryDetails extends Component {
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
-          key="ScheduleAlertSummaryDetails"
+          gridKey="ScheduleAlertSummaryDetails"
           data={this.state.rows}
           pageSize={this.state.rows.length}
           groups={[]}

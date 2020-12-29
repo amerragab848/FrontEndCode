@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Api from '../../../api';
 import { Formik, Form } from "formik";
 import moment from "moment";
@@ -166,6 +166,7 @@ class LoginHistoryReport extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
+                gridKey="LoginHistoryReport"
                 groups={[]}
                 data={this.state.rows || []}
                 cells={this.columns}

@@ -3,7 +3,7 @@ import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import { toast } from "react-toastify";
 import dataservice from "../../../Dataservice";
 import Config from "../../../Services/Config.js";
@@ -198,7 +198,7 @@ class CostControlTreeReport extends Component {
                         <LoadingSection />
                     </div> :
                     <>
-                        <GridCustom ref='custom-data-grid' groups={[]} data={this.state.gridRows} cells={this.columns}
+                        <GridCustom ref='custom-data-grid' gridKey="CostCodingReport" groups={[]} data={this.state.gridRows} cells={this.columns}
                             pageSize={this.state.gridRows.length} actions={[]} rowActions={[]} rowClick={() => { }}
                         />
                     </>

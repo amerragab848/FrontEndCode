@@ -288,7 +288,7 @@ class TimeSheetWorkFlow extends Component {
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
-          key="TimeSheetWorkFlow"
+          gridKey="TimeSheetWorkFlow"
           data={this.state.rows}
           pageSize={this.state.rows.length}
           groups={[]}

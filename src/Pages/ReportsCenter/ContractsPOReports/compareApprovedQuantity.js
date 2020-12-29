@@ -159,7 +159,7 @@ class compareApprovedQuantity extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="compareApprovedQuantity"
+                gridKey="compareApprovedQuantity"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

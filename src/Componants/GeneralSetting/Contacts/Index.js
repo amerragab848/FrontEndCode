@@ -367,7 +367,7 @@ class Index extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key='contactGrid'
+                gridKey='contactGrid'
                 data={this.props.Adminstration.companyContact}
                 pageSize={this.state.pageSize}
                 groups={[]}

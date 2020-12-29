@@ -14,7 +14,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Export from "../../Componants/OptionsPanels/Export";
 import sumBy from 'lodash/sumBy';
 import BarChartComp from '../../Componants/ChartsWidgets/BarChartCompJS';
-import GridCustom from 'react-customized-grid'; 
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -165,7 +165,7 @@ class CollectedInvoices extends Component {
                 this.state.rows.length > 0 ? 
                 <GridCustom 
                 ref='custom-data-grid'
-                key="collectedInvoices"
+                gridKey="collectedInvoices"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

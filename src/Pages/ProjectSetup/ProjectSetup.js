@@ -385,7 +385,7 @@ class ProjectSetup extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key="ProjectSetup"
+                    gridKey="ProjectSetup"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

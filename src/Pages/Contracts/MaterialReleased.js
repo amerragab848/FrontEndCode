@@ -8,7 +8,7 @@ import Export from "../../Componants/OptionsPanels/Export";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from '../../api';
-import config from "../../Services/Config"; 
+import config from "../../Services/Config";
 import { Formik, Form } from "formik";
 
 
@@ -21,74 +21,74 @@ class MaterialReleased extends Component {
     constructor(props) {
         super(props)
         this.columnsGrid = [
-            { 
+            {
                 field: "id",
                 title: Resources["select"][currentLanguage],
                 groupable: true,
                 fixed: true,
                 width: 16,
                 sortable: true,
-                type: "text" 
+                type: "text"
             },
-            { 
+            {
                 field: "arrange",
                 title: Resources["arrange"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "text"
-            }, { 
+            }, {
                 field: "description",
                 title: Resources["description"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            { 
+            {
                 field: "quantity",
                 title: Resources["quantity"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            { 
+            {
                 field: "unitPrice",
                 title: Resources["unitPrice"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "number"
             },
-            { 
+            {
                 field: "resourceCode",
                 title: Resources["resourceCode"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "number"
             },
-            { 
+            {
                 field: "materialReleaseName",
                 title: Resources["materialReleasedsubject"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            { 
+            {
                 field: "materialReleaseArrange",
                 title: Resources["materialReleasedarrange"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "text"
             },
-            { 
+            {
                 field: "materialReleaseDate",
                 title: Resources["materialReleasedDate"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "date"
@@ -104,32 +104,32 @@ class MaterialReleased extends Component {
             {
                 field: "locationName",
                 title: Resources["location"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "text"
 
             },
-            { 
+            {
                 field: "remarks",
                 title: Resources["remarks"][currentLanguage],
-                groupable: true, 
-                width: 16,
-                sortable: true,
-                type: "number"
-            }, 
-            { 
-                field: "total",
-                title: Resources["total"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "number"
             },
-            { 
+            {
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                groupable: true,
+                width: 16,
+                sortable: true,
+                type: "number"
+            },
+            {
                 field: "materialType",
                 title: Resources["materialType"][currentLanguage],
-                groupable: true, 
+                groupable: true,
                 width: 16,
                 sortable: true,
                 type: "text"
@@ -438,7 +438,7 @@ class MaterialReleased extends Component {
             this.state.gridLoading === false ? (
 
                 <GridCustom
-                    key="items"
+                    gridKey="items"
                     data={this.state.rows}
                     pageSize={this.state.pageSize}
                     groups={[]}
@@ -450,8 +450,8 @@ class MaterialReleased extends Component {
                     rowClick={this.formSubmitHandler}
                 />
             ) : <LoadingSection />
-        return ( 
-            <Fragment > 
+        return (
+            <Fragment >
                 <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['contractsItems'][currentLanguage]}</h3>
@@ -465,7 +465,7 @@ class MaterialReleased extends Component {
                                 </g>
                             </svg>
                         </span>
-                    </div> 
+                    </div>
                     <div className="filterBTNS">
                         {btnExport}
 

@@ -3,7 +3,6 @@ import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Resources from "../../resources.json";
-//import GridCustom from 'react-customized-grid';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage =

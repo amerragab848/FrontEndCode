@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import 'react-customized-grid/main.css';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
@@ -86,7 +86,8 @@ class punchListAddEdit extends Component {
                 "type": "check-box",
                 "fixed": true,
                 "field": "id",
-                "showTip": true
+                "showTip": true,
+                "width":10
             }, {
                 "field": "arrange",
                 "title": Resources.arrange[currentLanguage],
@@ -1156,7 +1157,7 @@ class punchListAddEdit extends Component {
         //Render Grid In Second Step
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+                <GridCustom ref='custom-data-grid' gridKey="PunchListAddEdit" groups={[]} data={this.state.rows || []} cells={this.state.columns}
                     pageSize={50} actions={[{
                         title: 'Delete',
                         handleClick: values => {

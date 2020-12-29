@@ -348,7 +348,7 @@ class TasksStatus extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="taskStatus"
+                gridKey="taskStatus"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

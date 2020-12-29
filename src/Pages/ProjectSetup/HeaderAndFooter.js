@@ -305,7 +305,7 @@ class HeaderAndFooter extends Component {
         const dataGrid = this.state.isLoading === false ?
             <GridCustom
             ref='custom-data-grid'
-            key='HeaderAndFooter'
+            gridKey='HeaderAndFooter'
             data={this.state.rows}
             pageSize={this.state.rows.length}
             groups={[]}
