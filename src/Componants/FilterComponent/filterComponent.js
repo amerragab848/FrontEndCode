@@ -82,8 +82,12 @@ class FilterComponent extends Component {
       state
     })
   }
+//added
 
-  getValueHandler(event, type, field, indexx) {
+
+
+//
+  getValueHandler(event, type, field, indexx, isSubmittals) {
     var obj = {};
 
     if (type === "toggle") {
@@ -101,6 +105,7 @@ class FilterComponent extends Component {
       obj.field = field;
       obj.value = typeof (event) === "object" ? "" : event;
       obj.type = type;
+      obj.isSubmittals = isSubmittals;
 
       let state = {};
       this.state[indexx + "-column"] = obj.value;
@@ -137,7 +142,7 @@ class FilterComponent extends Component {
       });
     }
   }
-
+  
   filterMethod = (e) => {
 
     this.setState({
@@ -148,15 +153,34 @@ class FilterComponent extends Component {
     this.state.valueColumns.map(column => {
       if (column.type === "date") {
         if (column.value != "") {
-          let spliteDate = column.value.split("|");
-          if (spliteDate.length > 1) {
-            query[column.field] = column.value;
+          if (column.isSubmittals === true) {
+
+            let spliteDate = column.value.split("|");
+            if (spliteDate.length > 1) {
+              let p1=spliteDate[0];
+              let p2=spliteDate[1];
+              let fPart = moment(p1).format("YYYY-MM-DD");
+              let sPart = moment(p2).format("YYYY-MM-DD");
+              query[column.field] = fPart+"|"+sPart;//column.value
+            }
+            else {
+              query[column.field] = moment(column.value).format("YYYY-MM-DD");
+            }
           }
           else {
-            query[column.field] = column.value;
+
+            let spliteDate = column.value.split("|");
+            if (spliteDate.length > 1) {
+
+              query[column.field] = column.value
+            }
+            else {
+              query[column.field] = column.value;
+            }
           }
         }
-      } else if (column.type === "number") {
+      }
+      else if (column.type === "number") {
         if (column.value != "") {
           query[column.field] = parseFloat(column.value);
         }
@@ -188,15 +212,22 @@ class FilterComponent extends Component {
     }
   }
 
-  onChange = (date, index, columnName) => {
+  onChange = (date, index, columnName,type,key,isSubmittals) => {
+    let margeDate;
+   if(isSubmittals){
+     margeDate = date != null ? moment(date[0]).format("YYYY-MM-DD") + "|" + moment(date[1]).format("YYYY-MM-DD") : "";
 
-    let margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
+   }
+   else{
+    margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
+
+   }
 
     let lastState = this.state;
 
     lastState[index + "-column"] = margeDate
 
-    this.getValueHandler(margeDate, "date", columnName);
+    this.getValueHandler(margeDate, "date", columnName,index,isSubmittals);
 
     this.setState({ lastState, currentData: 0 });
   };
@@ -258,12 +289,12 @@ class FilterComponent extends Component {
                           <label className="control-label" htmlFor={column.key}>{column.name}</label>
                           <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}>
                             <input type="text" autoComplete="off" key={index} placeholder={column.name}
-                              onChange={date => this.getValueHandler(date, column.type, column.field, index)}
+                              onChange={date => this.getValueHandler(date, column.type, column.field, index, column.isSubmittals)}
                               value={this.state[index + "-column"]}
                               onClick={() => this.changeDate(index, column.type)} />
                             {this.state.currentData === index && this.state.currentData != 0 ? (
                               <div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
-                                <Calendar onChange={(date) => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
+                                <Calendar onChange={(date) => this.onChange(date, index, column.name, column.type, column.key,column.isSubmittals)} selectRange={true} />
                               </div>) : ("")}
                           </div>
                         </div>
@@ -372,7 +403,7 @@ class FilterComponent extends Component {
                               <label className="control-label" htmlFor={column.key}>{column.name}</label>
                               <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}>
                                 <input type="text" autoComplete="off" key={index} placeholder={column.name}
-                                  onChange={date => this.getValueHandler(date, column.type, column.field, index)}
+                                  onChange={date => this.getValueHandler(date, column.type, column.field, index,column.isSubmittals)}
                                   value={this.state[index + "-column"]}
                                   onClick={() => this.changeDate(index, column.type)} />
                                 {this.state.currentData === index && this.state.currentData != 0 ? (
