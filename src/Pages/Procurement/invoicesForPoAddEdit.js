@@ -533,8 +533,45 @@ class invoicesForPoAddEdit extends Component {
                 saveDocument.items = itemsList
                 dataservice.addObject('AddContractsInvoicesForPoItemsList', saveDocument).then(
                     res => {
+                      /******************************* to update doc details in add invoice mode********************** */
+                      let url = "GetContractsInvoicesForPoForEdit?id=" +result.id
+                      this.props.actions.documentForEdit(url, this.state.docTypeId, 'lettertitle');
+          
+                      Api.get('GetContractsInvoicesForPoItemsByInvoiceId?invoiceId=' +result.id).then(
+                          r => {
+                              this.setState({
+                                  InvoicesItems: r
+                              })
+                          }
+                      )
+          
+                      Api.get('GetContractsInvoicesForPoDeductionssByInvoiceId?invoiceId=' + result.id).then(
+                          result => {
+                              let items = []
+                              let data = []
+                              items = result
+                              items.map(i => {
+                                  let obj = {}
+                                  obj.id = i.id
+                                  obj.invoiceId = i.invoiceId
+                                  obj.deduction = i.deduction
+                                  obj.description = i.description
+                                  obj.factor = i.factor
+                                  obj.factorName = i.factor === 1 ? Resources.addition[currentLanguage] : Resources.deductions[currentLanguage]
+                                  data.push(obj)
+                              })
+          
+                              this.setState({
+                                  InvoicesDeductions: data
+                              })
+                          }
+                      )
+          
+                  });
+            
+                      /***************************************************** */
 
-                    })
+                   
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             })
         }

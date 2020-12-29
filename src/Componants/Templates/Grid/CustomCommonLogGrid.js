@@ -9,16 +9,12 @@ let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStor
 export default class CustomGrid extends Component {
     constructor(props) {
         super(props);
-
-
-
         this.state = {
             columns: this.props.cells,
             rows: this.props.data != null ? this.props.data : [],
             filteredRows: this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             groupsList: this.props.groups || [],
-
             selectedIndexes: [],
             selectedRows: [],
             selectedRow: [],
@@ -49,15 +45,15 @@ export default class CustomGrid extends Component {
             }
         });
         
-        if(this.props.data[0].docDate !=undefined )
-        {
-            for( var i in this.props.data)
-            {
-                if(this.props.data[i].docDate !=null){
-                    this.props.data[i].docDate= this.props.data[i].docDate.split('T')[0]
-                }
-            }
-        }
+        // if(this.props.data !=undefined && this.props.data[0].docDate !=undefined )
+        // {
+        //     for( var i in this.props.data)
+        //     {
+        //         if(this.props.data[i].docDate !=null){
+        //             this.props.data[i].docDate= this.props.data[i].docDate.split('T')[0]
+        //         }
+        //     }
+        // }
        
         let ColumnsHideShow = this.props.cells;
         for (var i in ColumnsHideShow) {

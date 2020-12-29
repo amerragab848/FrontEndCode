@@ -173,7 +173,7 @@ class TransferInventory extends Component {
             inventoryId: this.state.document.id
         }
 
-        dataservice.addObject('TransferMaterialInventory', obj).then(
+        dataservice.addObject('saveTransferMaterialInventory', obj).then(
             res => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 this.props.history.push("/requestsTransferItems/" + this.state.projectId);
