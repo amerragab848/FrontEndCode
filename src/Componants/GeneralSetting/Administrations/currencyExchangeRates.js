@@ -142,7 +142,7 @@ class currencyExchangeRates extends Component {
             this.state.isLoading === false ?
                 <GridCustom
                     ref='custom-data-grid'
-                    key="CurrencyExchangeRates"
+                    gridKey="CurrencyExchangeRates"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}
@@ -250,7 +250,7 @@ class currencyExchangeRates extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={() => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={() => this.setState({ showDeleteModal: false })}

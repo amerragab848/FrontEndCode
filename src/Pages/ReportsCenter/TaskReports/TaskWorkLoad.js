@@ -179,7 +179,7 @@ class TaskWorkLoad extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="TaskWorkLoad"
+                gridKey="TaskWorkLoad"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

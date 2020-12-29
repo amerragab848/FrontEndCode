@@ -4,7 +4,7 @@ import moment from 'moment';
 import Resources from '../../../resources.json';
 import { isEqual } from 'lodash';
 import LoadingSection from '../../publicComponants/LoadingSection';
-let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 export default class CustomGrid extends Component {
     constructor(props) {
@@ -44,6 +44,7 @@ export default class CustomGrid extends Component {
                 state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
+<<<<<<< HEAD
         
         // if(this.props.data !=undefined && this.props.data[0].docDate !=undefined )
         // {
@@ -55,6 +56,18 @@ export default class CustomGrid extends Component {
         //     }
         // }
        
+=======
+        if (this.props.data.length > 0) {
+            if (this.props.data[0].docDate != undefined) {
+                for (var i in this.props.data) {
+                    if (this.props.data[i].docDate != null) {
+                        this.props.data[i].docDate = this.props.data[i].docDate.split('T')[0]
+                    }
+                }
+            }
+        }
+
+>>>>>>> 16fcd8177ca37f58e28c4d008037f7a10d7132be
         let ColumnsHideShow = this.props.cells;
         for (var i in ColumnsHideShow) {
             ColumnsHideShow[i].hidden = false;
@@ -69,7 +82,7 @@ export default class CustomGrid extends Component {
         var selectedCols =
             JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
-        var currentGP = [];
+        var currentGP = this.props.groups;
 
         let itemsColumns = this.props.cells;
         if (selectedCols.length === 0) {
@@ -192,8 +205,8 @@ export default class CustomGrid extends Component {
                 {btnDocumentTemplate}
                 {this.state.GridLoading === false ? (
                     <GridCustom
-                        key={this.props.gridKey}
-                        cells={ this.state.columns.filter(i => i.hidden != true)}
+                        gridKey={this.props.gridKey}
+                        cells={this.state.columns.filter(i => i.hidden != true)}
                         data={this.state.rows}
                         pageSize={this.props.pageSize}
                         actions={this.props.actions}
@@ -204,8 +217,8 @@ export default class CustomGrid extends Component {
                         showCheckAll={this.props.showCheckAll}
                     />
                 ) : (
-                    <LoadingSection />
-                )}
+                        <LoadingSection />
+                    )}
             </Fragment>
         );
     }

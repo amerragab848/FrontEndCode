@@ -96,7 +96,7 @@ class MaterialStatusReport extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="materialStatusReport"
+                gridKey="materialStatusReport"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

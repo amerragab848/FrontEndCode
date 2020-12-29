@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import 'react-customized-grid/main.css';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
@@ -66,7 +66,8 @@ class projectScheduleAddEdit extends Component {
                 "type": "check-box",
                 "fixed": true,
                 "field": "id",
-                "showTip": true
+                "showTip": true,
+                "width":10
             },
             {
                 "field": "arrange",
@@ -767,7 +768,7 @@ class projectScheduleAddEdit extends Component {
                     isLoading: false,
                 })
             },
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         ).catch(ex => {
             this.setState({
                 isLoading: false,
@@ -875,7 +876,7 @@ class projectScheduleAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+                <GridCustom ref='custom-data-grid' gridKey="ProjectScheduleAddEdit" groups={[]} data={this.state.rows || []} cells={this.state.columns}
                     pageSize={50} actions={[{
                         title: 'Delete',
                         handleClick: values => {

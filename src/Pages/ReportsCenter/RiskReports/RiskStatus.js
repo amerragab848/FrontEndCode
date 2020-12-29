@@ -8,7 +8,7 @@ import ExportDetails from "../ExportReportCenterDetails";
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
 import dataService from "../../../../src/Dataservice";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import 'react-customized-grid/main.css';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -188,7 +188,7 @@ class RiskStatus extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                <GridCustom ref='custom-data-grid' gridKey="RiskReport" groups={[]} data={this.state.rows || []} cells={this.columns}
                     pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
                 />
             ) : (

@@ -139,7 +139,7 @@ class projectBackLog extends Component {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
-                ref='custom-data-grid' key="projectBackLog"
+                ref='custom-data-grid' gridKey="projectBackLog"
                 data={this.state.rows} pageSize={this.state.pageSize}
                 groups={[]} actions={[]} rowActions={[]} cells={this.columns}
                 rowClick={() => { }} />

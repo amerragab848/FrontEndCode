@@ -135,7 +135,7 @@ class ExpensesWorkFlowLog extends Component {
                     isLoading: false,
                     MaxArrange: Math.max.apply(Math, originalRows.map(function (o) { return o.arrange + 1 }))
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -171,7 +171,7 @@ class ExpensesWorkFlowLog extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key="ExpensesWorkFlowLog"
+                    gridKey="ExpensesWorkFlowLog"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}
@@ -219,7 +219,7 @@ class ExpensesWorkFlowLog extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}

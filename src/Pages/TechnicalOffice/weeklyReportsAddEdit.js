@@ -561,7 +561,7 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsConstraintsDelete?id=' + this.state.ConstraintId).then(
             result => {
                 this.setState({ constraintsRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -602,7 +602,7 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsDeliveryDelete?id=' + this.state.deliveryId).then(
             result => {
                 this.setState({ deliveryRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -677,7 +677,7 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsNeedsDelete?id=' + this.state.needsId).then(
             result => {
                 this.setState({ needsRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -732,7 +732,7 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsWorkDelete?id=' + this.state.ImplementationId).then(
             result => {
                 this.setState({ ImplementationRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
@@ -786,7 +786,7 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsNextWeekDelete?id=' + this.state.NextId).then(
             result => {
                 this.setState({ NextRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -862,7 +862,7 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsMeetingsDelete?id=' + this.state.meetingId).then(
             result => {
                 this.setState({ meetingRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -888,7 +888,7 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsModificationsDelete?id=' + this.state.modificationId).then(
             result => {
                 this.setState({ ModificationRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -2582,7 +2582,7 @@ class weeklyReportsAddEdit extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources["smartDeleteMessage"][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={e => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={e => this.setState({ showDeleteModal: false })}

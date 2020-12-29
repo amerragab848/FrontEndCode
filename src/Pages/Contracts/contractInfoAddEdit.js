@@ -1360,8 +1360,14 @@ class ContractInfoAddEdit extends Component {
       this.state.isLoading === false ? (
         <Fragment>
           <GridCustom
-            cells={this.cells} data={this.state.rows} groups={this.groups} pageSize={this.state.pageSize} actions={this.actions}
-            rowActions={this.rowActions} rowClick={cells => this.onRowClick(cells)}
+            gridKey="ContractInfoAddEdit"
+            cells={this.cells}
+            data={this.state.rows}
+            groups={this.groups}
+            pageSize={this.state.pageSize}
+            actions={this.actions}
+            rowActions={this.rowActions}
+            rowClick={cells => this.onRowClick(cells)}
           />
         </Fragment>
       ) : (<LoadingSection />);
@@ -1940,7 +1946,7 @@ class ContractInfoAddEdit extends Component {
             </SkyLight>
           </div>
           {this.state.showDeleteModal == true ? (
-            <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} closed={this.onCloseModal}
+            <ConfirmationModal title={Resources["smartDeleteMessageContent"][currentLanguage]} closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
               buttonName="delete" clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />
           ) : null}

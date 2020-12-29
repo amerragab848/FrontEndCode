@@ -133,7 +133,7 @@ class NewprojectList extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="NewProjectList"
+                gridKey="NewProjectList"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

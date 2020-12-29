@@ -160,7 +160,7 @@ class permissionsGroups extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                 ref='custom-data-grid'
-                key="AccountsGroup"
+                gridKey="AccountsGroup"
                 data={this.state.rows}
                 pageSize={this.state.rows.length}
                 groups={[]}
@@ -191,7 +191,7 @@ class permissionsGroups extends Component {
                 </div>
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}

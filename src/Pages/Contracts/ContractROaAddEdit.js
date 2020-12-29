@@ -1,43 +1,26 @@
 import React, { Component, Fragment } from "react";
-import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
-import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Resources from "../../resources.json";
 import find from "lodash/find";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import dataService from "../../Dataservice";
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
-import AmendmentList from "./AmendmentList";
-import PaymentRequisitionList from "./PaymentRequisitionList";
-import ContractsDeductions from "./ContractsDeductions";
-import ContractsConditions from "./ContractsConditions";
-import ContractInsurance from "./ContractInsurance";
-import Schedule from "./Schedule";
-import SubContract from "./SubContractLog";
-import SubPurchaseOrderLog from "./subPurchaseOrderLog";
-import MaterialReleased from "./MaterialReleased";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
-import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-import Dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -51,9 +34,6 @@ const validationSchema = Yup.object().shape({
     requestByCompanyId: Yup.string().required(Resources['CompanyName'][currentLanguage]).nullable(true),
     requestByContactId: Yup.string().required(Resources['contact'][currentLanguage]).nullable(true)
 });
-
-
-
 
 let docId = 0;
 let projectId = 0;
@@ -95,8 +75,8 @@ class ContractROaAddEdit extends Component {
         }
 
         this.state = {
-            ownerContacts:[],
-            contractorContacts:[],
+            ownerContacts: [],
+            contractorContacts: [],
             docApprovalId: docApprovalId,
             btnTxt: "save",
             rankingCompanies: [],
@@ -110,7 +90,7 @@ class ContractROaAddEdit extends Component {
             docId: docId,
             companies: [],
             contacts: [],
-            projectId : projectId,
+            projectId: projectId,
             docTypeId: 122,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
 
@@ -135,15 +115,14 @@ class ContractROaAddEdit extends Component {
                 specialCases: "",
                 workFlowId: "",
                 contractPrice: "",
-                ownerContactId:"",
-                contractorContactId:"",
-                contractorName:"",
-                ownerName:"",
-                contractorContactName:"",
-                ownerContactName:""
+                ownerContactId: "",
+                contractorContactId: "",
+                contractorName: "",
+                ownerName: "",
+                contractorContactName: "",
+                ownerContactName: ""
             },
             ROArankingObj: {
-
                 ROAId: "",
                 qty: "",
                 advPayment: "",
@@ -153,16 +132,14 @@ class ContractROaAddEdit extends Component {
                 duration: "",
                 notes: "",
                 docDate: moment().format('YYYY-MM-DD')
-
             },
             selectedRequestByCompany: { label: Resources.requestByCompany[currentLanguage], value: "0" },
             selectedRequestByContact: { label: Resources.requestByContact[currentLanguage], value: "0" },
             selectedOwnerCompany: { label: Resources.owner[currentLanguage], value: "0" },
             selectedContractorCompany: { label: Resources.contractor[currentLanguage], value: "0" },
             selectedRankingCompanyId: { label: Resources.company[currentLanguage], value: "0" },
-
-            selectedownerContactId : { label: Resources.ownerContact[currentLanguage], value: "0" },
-            selectedcontractorContactId : { label: Resources.contractorContact[currentLanguage], value: "0" },
+            selectedownerContactId: { label: Resources.ownerContact[currentLanguage], value: "0" },
+            selectedcontractorContactId: { label: Resources.contractorContact[currentLanguage], value: "0" },
 
         };
         steps_defination = [
@@ -174,19 +151,15 @@ class ContractROaAddEdit extends Component {
                 name: 'contractSummmary',
                 callBackFn: null,
             },
-
             {
                 name: 'items',
                 callBackFn: null,
-            },
-
-
+            }
         ];
         this.groups = [];
 
-        this.actions = [
+        this.actions = [];
 
-        ];
         this.documentColumns = [
             {
                 "field": "refNumber",
@@ -367,7 +340,7 @@ class ContractROaAddEdit extends Component {
         }
 
     }
-    handleChangeDropDSummary(event, field, selectedValue, isSubscrib, targetState,url,param) {
+    handleChangeDropDSummary(event, field, selectedValue, isSubscrib, targetState, url, param) {
         if (event == null) return;
         let obj = { ...this.state.contractROASummaryObj };
         let updated_document = {};
@@ -473,19 +446,19 @@ class ContractROaAddEdit extends Component {
             this.setState({ isLoading: true, LoadingPage: true });
 
             this.props.actions.documentForEdit("GetContractROAById?id=" + this.state.docId, this.state.docTypeId, "ContractROA").then(() => {
-               
-                 let  data=  { items: this.props.document }
+
+                let data = { items: this.props.document }
                 this.props.actions.ExportingData(data);
                 console.log(this.props.document);
                 this.setState({
                     isLoading: false,
-                    btnTxt:steps_defination.length==2? "Finish":"next",
+                    btnTxt: steps_defination.length == 2 ? "Finish" : "next",
                     LoadingPage: false
                 });
                 this.checkDocumentIsView();
             });
 
-          
+
 
             let url = "GetContractROASummaryByROAId?ROAId=" + this.state.docId;
             dataService.GetDataGrid(url).then(
@@ -504,11 +477,11 @@ class ContractROaAddEdit extends Component {
                     this.setState({
                         ROArankingObj: result,
                         selectedRankingCompanyId: { label: result ? result.companyName : Resources.company[currentLanguage], value: result ? result.companyId : "0" }
-                      
+
                     });
                 }
             )
-        } 
+        }
         else {
             const contractROADocument = {
 
@@ -548,14 +521,9 @@ class ContractROaAddEdit extends Component {
             this.setState({
                 isLoading: false
             });
-           
+
             toast.success(Resources["operationSuccess"][currentLanguage]);
-           // this.changeCurrentStep(1);
-            // if (this.state.isApproveMode === false) {
-            //     this.props.history.push(
-            //         this.state.perviousRoute
-            //     );
-            // }
+            this.changeCurrentStep(1);
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
@@ -564,19 +532,19 @@ class ContractROaAddEdit extends Component {
         let saveDocument = this.state.document;
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-            this.setState({
-                  isLoading:true
-            });
+        this.setState({
+            isLoading: true
+        });
 
         dataService.addObject('AddContractROA', saveDocument).then(result => {
             this.setState({
                 docId: result,
                 btnTxt: "next",
-                isLoading:false
+                isLoading: false
 
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
-           // this.changeCurrentStep(1);
+            this.changeCurrentStep(1);
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
@@ -603,8 +571,6 @@ class ContractROaAddEdit extends Component {
             // }
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
-
-  
     saveAndExit(event) {
         this.props.history.push("/ContractROA/" + this.state.projectId);
     }
@@ -615,7 +581,7 @@ class ContractROaAddEdit extends Component {
         this.setState({ currentStep: stepNo });
     };
     fillDropDowns(isEdit) {
-      
+
         dataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(
             result => {
 
@@ -632,25 +598,25 @@ class ContractROaAddEdit extends Component {
                         this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'requestByContactId', 'selectedRequestByContact', 'contacts');
 
                     }
-                        let ownerContactId = this.state.contractROASummaryObj? this.state.contractROASummaryObj.ownerContactId:"";
-                        let companyOwnerId = this.state.contractROASummaryObj?this.state.contractROASummaryObj.ownerId:"";
-                        if (companyOwnerId) {
-                            this.setState({
-                                selectedOwnerCompany: { label: this.state.contractROASummaryObj.ownerName, value: companyOwnerId },
-                                selectedownerContactId: { label: this.state.contractROASummaryObj.ownerContactName, value: ownerContactId }
-    
-                            });
-                            this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyOwnerId, 'ownerContactId', 'selectedownerContactId', 'ownerContacts');
+                    let ownerContactId = this.state.contractROASummaryObj ? this.state.contractROASummaryObj.ownerContactId : "";
+                    let companyOwnerId = this.state.contractROASummaryObj ? this.state.contractROASummaryObj.ownerId : "";
+                    if (companyOwnerId) {
+                        this.setState({
+                            selectedOwnerCompany: { label: this.state.contractROASummaryObj.ownerName, value: companyOwnerId },
+                            selectedownerContactId: { label: this.state.contractROASummaryObj.ownerContactName, value: ownerContactId }
 
-                        }
-                            let companyContractorId = this.state.contractROASummaryObj?this.state.contractROASummaryObj.contractorId:"";
-                            let contractorContactId = this.state.contractROASummaryObj?this.state.contractROASummaryObj.contractorContactId:"";
-                            if (companyContractorId) {
-                                this.setState({
-                                    selectedContractorCompany: { label: this.state.contractROASummaryObj.contractorName, value: companyContractorId },
-                                    selectedcontractorContactId: { label: this.state.contractROASummaryObj.contractorContactName, value: contractorContactId }
-        
-                                });
+                        });
+                        this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyOwnerId, 'ownerContactId', 'selectedownerContactId', 'ownerContacts');
+
+                    }
+                    let companyContractorId = this.state.contractROASummaryObj ? this.state.contractROASummaryObj.contractorId : "";
+                    let contractorContactId = this.state.contractROASummaryObj ? this.state.contractROASummaryObj.contractorContactId : "";
+                    if (companyContractorId) {
+                        this.setState({
+                            selectedContractorCompany: { label: this.state.contractROASummaryObj.contractorName, value: companyContractorId },
+                            selectedcontractorContactId: { label: this.state.contractROASummaryObj.contractorContactName, value: contractorContactId }
+
+                        });
                         this.fillSubDropDownInEditSummary('GetContactsByCompanyId', 'companyId', companyContractorId, 'contractorContactId', 'selectedcontractorContactId', 'contractorContacts');
 
                     }
@@ -667,8 +633,6 @@ class ContractROaAddEdit extends Component {
 
             }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
-
-
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataService.GetDataList(action, 'contactName', 'id').then(result => {
@@ -703,47 +667,47 @@ class ContractROaAddEdit extends Component {
 
             return {
                 document: contractROA,
-                hasWorkflow: nextProps.hasWorkflow 
+                hasWorkflow: nextProps.hasWorkflow
             };
         }
 
         return null;
     };
-    showBtnsSaving=(step)=> {
+    showBtnsSaving = (step) => {
 
         let btn = null;
 
         //if (this.state.docId === 0) { onClick={() => this.changeCurrentStep(step)}
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.finish[currentLanguage]}</button>;
-       // }
+        btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.finish[currentLanguage]}</button>;
+        // }
 
         return btn;
     }
-   
-    addEditROASummary(values){
+
+    addEditROASummary(values) {
         this.setState({
             isLoading: true
         });
 
         let saveDocument = { ...values };
         saveDocument.projectId = this.state.projectId
-        saveDocument.ROAId =this.state.docId;
+        saveDocument.ROAId = this.state.docId;
         dataService.addObject("AddEditContractROASummary", saveDocument).then(
             result => {
-            if (result !== "invalid recommendation of award") {
-                this.setState({
-                  //  docId: result,
-                    isLoading: false
-                });
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.changeCurrentStep(2);
-            }
-            else {
-                toast.error(result);
-            }
-        });
+                if (result !== "invalid recommendation of award") {
+                    this.setState({
+                        //  docId: result,
+                        isLoading: false
+                    });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.changeCurrentStep(2);
+                }
+                else {
+                    toast.error(result);
+                }
+            });
     }
-  
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
 
@@ -772,7 +736,7 @@ class ContractROaAddEdit extends Component {
                             changeStatus={docId === 0 ? false : true}
                         />
                         <div className="step-content">
-                            {this.state.currentStep == 0? (
+                            {this.state.currentStep == 0 ? (
                                 <div id="step1" className="step-content-body">
                                     <div className="subiTabsContent">
                                         <div className="document-fields">
@@ -785,8 +749,8 @@ class ContractROaAddEdit extends Component {
                                                         this.editContractROA();
                                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                         this.saveContractROA();
-                                                    } 
-                                                   
+                                                    }
+
                                                 }}>
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                                     <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -934,28 +898,22 @@ class ContractROaAddEdit extends Component {
                                                                     </button> :
                                                                     this.showBtnsSaving(1)
                                                             } */}
-                                                            {this.state.isLoading  && this.props.changeStatus === false?
-                                                            ( 
-                                                                <button
-                                                                    className="primaryBtn-1 btn  disabled"
-                                                                    disabled="disabled">
-                                                                    <div className="spinner">
-                                                                        <div className="bounce1" />
-                                                                        <div className="bounce2" />
-                                                                        <div className="bounce3" />
+                                                            {this.state.isLoading && this.props.changeStatus === false ?
+                                                                (
+                                                                    <button
+                                                                        className="primaryBtn-1 btn  disabled"
+                                                                        disabled="disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                ) : (
+                                                                    <div>
+                                                                        <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? "disNone" : "")} type="submit" disabled={this.state.isViewMode}>{Resources.next[currentLanguage]}</button>;
                                                                     </div>
-                                                                </button>
-                                                            ) :(
-                                                                <div>
-                                                            <button className={"primaryBtn-1 btn " +  (this.state.isViewMode ===  true ? "disNone": "")}
-                                                                type="submit" disabled={this.state.isViewMode }>
-                                                                {
-                                                                    Resources["save"][currentLanguage]
-                                                                }
-                                                            </button>
-                                                            
-                                                           </div>
-                                                        ) }
+                                                                )}
                                                         </div>
 
                                                     </Form>
@@ -982,14 +940,14 @@ class ContractROaAddEdit extends Component {
                                                 //validationSchema={validationSchema}
                                                 enableReinitialize={true}
                                                 onSubmit={values => {
-                                                    
-                                                        this.addEditROASummary(values);
-                                                   
+
+                                                    this.addEditROASummary(values);
+
                                                 }}
                                             >
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                                     <Form id="summaryForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                                   
+
                                                         <div className="proForm datepickerContainer">
                                                             <div className="linebylineInput fullInputWidth">
                                                                 <label className="control-label">
@@ -1019,19 +977,19 @@ class ContractROaAddEdit extends Component {
 
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">{Resources.owner[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
                                                                         <Dropdown isMulti={false} data={this.state.ownerCompanies}
                                                                             selectedValue={this.state.selectedOwnerCompany}
-                                                                            handleChange={event => 
-                                                                                this.handleChangeDropDSummary(event, "ownerId", "selectedOwnerCompany",true,"ownerContacts","GetContactsByCompanyId","companyId")
+                                                                            handleChange={event =>
+                                                                                this.handleChangeDropDSummary(event, "ownerId", "selectedOwnerCompany", true, "ownerContacts", "GetContactsByCompanyId", "companyId")
                                                                             }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
-                                                                           
+
                                                                             name="ownerId"
                                                                             id="ownerId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                     </div>
@@ -1039,30 +997,30 @@ class ContractROaAddEdit extends Component {
                                                                         <Dropdown isMulti={false} data={this.state.ownerContacts}
                                                                             selectedValue={this.state.selectedownerContactId}
                                                                             handleChange={event =>
-                                                                                this.handleChangeDropDSummary(event, "ownerContactId", "selectedownerContactId",false,"","","")
+                                                                                this.handleChangeDropDSummary(event, "ownerContactId", "selectedownerContactId", false, "", "", "")
                                                                             }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
-                                                                          
+
                                                                             name="ownerContactId"
                                                                             id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
+
+
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">{Resources.contractor[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
                                                                         <Dropdown isMulti={false} data={this.state.contractorCompanies}
                                                                             selectedValue={this.state.selectedContractorCompany}
-                                                                            handleChange={event => 
-                                                                                this.handleChangeDropDSummary(event, "contractorId", "selectedContractorCompany",true,"contractorContacts","GetContactsByCompanyId","companyId")
+                                                                            handleChange={event =>
+                                                                                this.handleChangeDropDSummary(event, "contractorId", "selectedContractorCompany", true, "contractorContacts", "GetContactsByCompanyId", "companyId")
                                                                             }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
-                                                                           
+
                                                                             name="contractorId"
                                                                             id="contractorId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                     </div>
@@ -1074,7 +1032,7 @@ class ContractROaAddEdit extends Component {
                                                                             }
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
-                                                                          
+
                                                                             name="contractorContactId"
                                                                             id="contractorContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                                     </div>
@@ -1154,7 +1112,7 @@ class ContractROaAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">
-                                                            {this.state.isLoading && this.props.changeStatus === false?
+                                                            {this.state.isLoading && this.props.changeStatus === false ?
                                                                 <button className="primaryBtn-1 btn disabled">
                                                                     <div className="spinner">
                                                                         <div className="bounce1" />
@@ -1164,7 +1122,7 @@ class ContractROaAddEdit extends Component {
                                                                 </button>
                                                                 :
                                                                 <div className="slider-Btns">
-                                                              <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.next[currentLanguage]}</button>;
+                                                                    <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.next[currentLanguage]}</button>;
 
                                                                 </div>}
                                                         </div>
@@ -1181,10 +1139,10 @@ class ContractROaAddEdit extends Component {
                                     <div className="subiTabsContent">
                                         <div className="document-fields">
                                             <Formik initialValues={{ ...this.state.ROArankingObj }}
-                                               // validationSchema={validationSchema}
+                                                // validationSchema={validationSchema}
                                                 enableReinitialize={true}
                                                 onSubmit={(values) => {
-                                                  this.addEditContractROARanking(values)
+                                                    this.addEditContractROARanking(values)
                                                 }}>
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                                     <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -1315,7 +1273,7 @@ class ContractROaAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                     
+
                                         <DocumentActions
                                             isApproveMode={this.state.isApproveMode}
                                             docTypeId={this.state.docTypeId}

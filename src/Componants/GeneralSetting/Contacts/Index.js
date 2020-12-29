@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export"; 
 import GridCustom from "../../Templates/Grid/CustomGrid";
-
+//import GridCustom from "../../../Componants/Templates/Grid/CustomCommonLogGrid";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
@@ -38,13 +38,21 @@ class Index extends Component {
         }
 
         this.columnsGrid = [
-            { title: '', type: 'check-box', fixed: true, field: 'id' },
+           
+           {
+                title: "",
+                type: "check-box",
+                fixed: true,
+                field: "id",
+                showTip: true,
+                width: 15,
+            },
             {
                 field: "address",
                 title: Resources["title"][currentLanguage],
                 width: 15,
                 groupable: true,
-                fixed: false,
+                fixed: true,
                 sortable: true,
                 type: "text"
 
@@ -176,6 +184,7 @@ class Index extends Component {
             Isallow: Config.IsAllow(14),
             isLoading: true,
             rows: this.props.Adminstration.companyContact,
+
             ProjectCompanies: [],
             AccountsDefaultList: [],
             titleData: [],
@@ -192,13 +201,14 @@ class Index extends Component {
             showChangeKeyContactModal: false,
             showComponent: false,
             modelNameBtn: '',
-            modelMessage: Resources['smartDeleteMessage'][currentLanguage].content,
-            modelMessageChangeKeyContact: Resources['smartConfirmMessage'][currentLanguage].content, 
+            modelMessage: Resources["smartDeleteMessageContent"][currentLanguage],
+            modelMessageChangeKeyContact: Resources['smartConfirmMessageContent'][currentLanguage], 
             modelType: '',
             selectedContact: '',
             transferCompany: '',
             showTransferpopUp: false,
             selectedRows: []
+          
         }
     }
 
@@ -210,7 +220,7 @@ class Index extends Component {
     }
 
     componentWillUnmount() {
-        this.props.Adminstration.companyContact = [];
+        this.props.actions.clearCashDocument(); 
     }
 
     componentDidMount() {
@@ -222,7 +232,7 @@ class Index extends Component {
 
         this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2');
     }
-
+   
     changeCompany = () => {
         this.setState({ showTransferpopUp: false })
         let url = 'TransferCompanyContact?contactId=' + this.state.selectedContact + '&newCompanyId=' + this.state.transferCompany
@@ -357,7 +367,7 @@ class Index extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key='contactGrid'
+                gridKey='contactGrid'
                 data={this.props.Adminstration.companyContact}
                 pageSize={this.state.pageSize}
                 groups={[]}

@@ -232,7 +232,7 @@ class allocationOfUsersOnProjects extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="allocationOfUsersOnProjects"
+                gridKey="allocationOfUsersOnProjects"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

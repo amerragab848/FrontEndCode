@@ -61,7 +61,7 @@ class Schedule extends Component {
                 isLoading: false,
             });
 
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
 
         }).catch(ex => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -137,7 +137,7 @@ class Schedule extends Component {
                         isLoading: false,
                         BtnLoading: false,
                     })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }).catch(ex => {
                     toast.error(Resources["operationCanceled"][currentLanguage]);
                     this.setState({
@@ -168,7 +168,7 @@ class Schedule extends Component {
                         BtnLoading: false,
                         selectedProjectSchedule: { label: Resources.selectProjectSchedule[currentLanguage], value: "0" },
                     })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }).catch(ex => {
                     toast.error(Resources["operationCanceled"][currentLanguage]);
                     this.setState({
@@ -364,7 +364,7 @@ class Schedule extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}

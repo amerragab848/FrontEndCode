@@ -309,7 +309,7 @@ class TaskGroupsAddEdit extends Component {
                     isLoading: false,
                     DeleteFromLog: false
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -353,7 +353,7 @@ class TaskGroupsAddEdit extends Component {
                 })
                 let data = { items: NewRows };
                 this.props.actions.ExportingData(data);
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -386,7 +386,7 @@ class TaskGroupsAddEdit extends Component {
                     this.setState({
                         DocTaskGroupsData: res
                     })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 });
@@ -405,7 +405,7 @@ class TaskGroupsAddEdit extends Component {
                     this.setState({
                         DocTaskGroupsData: res
                     })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 });
@@ -541,7 +541,7 @@ class TaskGroupsAddEdit extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key='TaskGroupAddEdit'
+                    gridKey='TaskGroupAddEdit'
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}
@@ -820,7 +820,7 @@ class TaskGroupsAddEdit extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}

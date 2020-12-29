@@ -233,7 +233,7 @@ class ClosedSummaryDetails extends Component {
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
-          key="ClosedSummaryDetails"
+          gridKey="ClosedSummaryDetails"
           data={this.state.rows}
           pageSize={this.state.rows.length}
           groups={[]}

@@ -244,7 +244,7 @@ class AmendmentList extends Component {
                 showDeleteModal: false,
                 isLoading: false,
             })
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
 
         }).catch(ex => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -479,8 +479,13 @@ class AmendmentList extends Component {
 
         const dataGrid = this.state.isLoading === false ?
             <GridCustom
-                cells={this.state.columns} data={this.state.AmendmentList} groups={this.groups} actions={this.actions}
-                rowActions={this.rowActions} rowClick={() => { }}
+                gridKey="AmendmentList"
+                cells={this.state.columns}
+                data={this.state.AmendmentList}
+                groups={this.groups}
+                actions={this.actions}
+                rowActions={this.rowActions}
+                rowClick={() => { }}
             /> : <LoadingSection />
 
         return (
@@ -605,7 +610,7 @@ class AmendmentList extends Component {
 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal closed={this.onCloseModal}
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}

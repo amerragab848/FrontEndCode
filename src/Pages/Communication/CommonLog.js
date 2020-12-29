@@ -9,7 +9,7 @@ import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
 import documentDefenition from '../../documentDefenition.json';
-import Resources from '../../resources.json';
+//import Resources from '../../resources.json';
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -24,14 +24,14 @@ import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Slider } from 'react-semantic-ui-range';
+import {Resources} from '../../Resources';
 
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
 let docTempLink;
 
-let moduleId = Config.getPublicConfiguartion().commonLogApi;
-
+let moduleId = Config.getPublicConfiguartion().commonLogApi; 
+ 
 class CommonLog extends Component {
 
     constructor(props) {
@@ -1452,16 +1452,7 @@ class CommonLog extends Component {
         });
     }
 
-    render() {
-        const settings = {
-            start: 2,
-            min: 0,
-            max: 10,
-            step: 1,
-            onChange: e => {
-                console.log(e);
-            },
-        };
+    render() { 
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
             (item, index) => {
                 return item.field == 'id' ? null : (
@@ -1489,7 +1480,7 @@ class CommonLog extends Component {
                                     start: parseInt(item.width),
                                     min: 5,
                                     max: 50,
-                                    step: 1,
+                                    step: 5,
                                     onChange: e => {
                                         this.handleChangeWidth(item.field, e);
                                     },
@@ -1789,9 +1780,7 @@ class CommonLog extends Component {
                                           this.state.pageSize}
                                 </span>
                                 {
-                                    Resources['jqxGridLanguage'][
-                                        currentLanguage
-                                    ].localizationobj.pagerrangestring
+                                   Resources['jqxGridLanguagePagerrangestring'][currentLanguage]
                                 }
                                 <span> {this.state.totalRows}</span>
                             </div>
@@ -1900,9 +1889,7 @@ class CommonLog extends Component {
                         {this.state.showDeleteModal == true ? (
                             <ConfirmationModal
                                 title={
-                                    Resources['smartDeleteMessage'][
-                                        currentLanguage
-                                    ].content
+                                    Resources["smartDeleteMessageContent"][currentLanguage]
                                 }
                                 buttonName="delete"
                                 closed={this.onCloseModal}

@@ -938,7 +938,7 @@ class variationOrderAddEdit extends Component {
                 <Fragment>
                   <div className="subiTabsContent feilds__top">
                     <AddItemDescription
-                      docLink={this.state.document.isRaisedPrices =="true" ? "" : "/Downloads/Excel/VoItems.xlsx"}
+                      docLink={this.state.document.isRaisedPrices =="true"||this.state.document.isRaisedPrices ==true ? "" : "/Downloads/Excel/VoItems.xlsx"}
                       showImportExcel={this.state.document.isRaisedPrices}
                       docType={this.state.document.isRaisedPrices =="true" ? "VoItemPrices" : "voItems"}
                       isViewMode={this.state.isViewMode}
@@ -964,7 +964,7 @@ class variationOrderAddEdit extends Component {
                       <div>
                         {this.state.showDeleteModal == true ? (
                           <ConfirmationModal
-                            title={Resources["smartDeleteMessage"][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             buttonName="delete"
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}

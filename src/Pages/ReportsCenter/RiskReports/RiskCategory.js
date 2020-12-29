@@ -4,9 +4,8 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-//import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
 import dataService from "../../../../src/Dataservice";
@@ -132,10 +131,10 @@ class RiskCategory extends Component {
             }
         ];
         this.fields = [{
-            title:  Resources["categorisation"][currentLanguage],
+            title: Resources["categorisation"][currentLanguage],
             value: "",
             type: "text"
-        },{
+        }, {
             title: Resources["startDate"][currentLanguage],
             value: this.state.startDate,
             type: "D"
@@ -148,8 +147,8 @@ class RiskCategory extends Component {
 
     componentDidMount() {
         dataService.GetDataList("GetRiskCategoriesForDrop", "categoryName", "id").then(res => {
-                this.setState({ Categorisation: [...res], isLoading: false });
-            });
+            this.setState({ Categorisation: [...res], isLoading: false });
+        });
     }
 
     handleChange = (name, value) => {
@@ -191,6 +190,7 @@ class RiskCategory extends Component {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
+                    gridKey="RiskCategory"
                     cells={this.columns}
                     data={this.state.rows}
                     groups={[]}
@@ -211,8 +211,8 @@ class RiskCategory extends Component {
                 //     fileName={"activeProjectsReport"}
                 // />
                 <ExportDetails fieldsItems={this.columns}
-                rows={this.state.rows}
-                fields={this.fields} fileName={'Risk Caategory"'} />
+                    rows={this.state.rows}
+                    fields={this.fields} fileName={'Risk Caategory"'} />
             ) : null;
 
         return (
@@ -229,8 +229,9 @@ class RiskCategory extends Component {
                             title="categorisation"
                             data={this.state.Categorisation}
                             selectedValue={this.state.selectedCategory}
-                            handleChange={e =>{
-                                this.setState({ selectedCategory: e });this.fields[0].value = e.label}
+                            handleChange={e => {
+                                this.setState({ selectedCategory: e }); this.fields[0].value = e.label
+                            }
                             }
                         />
                     </div>
@@ -238,8 +239,9 @@ class RiskCategory extends Component {
                         <DatePicker
                             title="startDate"
                             startDate={this.state.startDate}
-                            handleChange={e =>{
-                                this.handleChange("startDate", e); this.fields[1].value = e }
+                            handleChange={e => {
+                                this.handleChange("startDate", e); this.fields[1].value = e
+                            }
                             }
                         />
                     </div>
@@ -247,8 +249,9 @@ class RiskCategory extends Component {
                         <DatePicker
                             title="finishDate"
                             startDate={this.state.finishDate}
-                            handleChange={e =>{
-                                this.handleChange("finishDate", e); this.fields[2].value = e }
+                            handleChange={e => {
+                                this.handleChange("finishDate", e); this.fields[2].value = e
+                            }
                             }
                         />
                     </div>

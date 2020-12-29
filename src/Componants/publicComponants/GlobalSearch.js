@@ -411,7 +411,7 @@ class GlobalSearch extends Component {
         const searchGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="searchGrid"
+                gridKey="searchGrid"
                 data={this.state.searchResult}
                 pageSize={this.state.pageSize}
                 groups={[]}

@@ -408,7 +408,7 @@ class Itemize extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key='sub-items'
+                    gridKey='sub-items'
                     data={this.state.items}
                     pageSize={this.state.pageSize}
                     groups={[]}
@@ -610,8 +610,7 @@ class Itemize extends Component {
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
                             title={
-                                Resources["smartDeleteMessage"][currentLanguage]
-                                    .content
+                                Resources["smartDeleteMessageContent"][currentLanguage]
                             }
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}

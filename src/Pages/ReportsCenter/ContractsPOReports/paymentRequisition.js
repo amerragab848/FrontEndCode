@@ -173,7 +173,7 @@ class paymentRequisition extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="paymentRequisition"
+                gridKey="paymentRequisition"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

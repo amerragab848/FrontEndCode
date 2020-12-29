@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import { toast } from "react-toastify";
 import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -230,7 +230,7 @@ class IMAPConfigurationSettings extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ?
-                <GridCustom key={"IMAPConfigurationGrid"}
+                <GridCustom gridKey={"IMAPConfigurationGrid"}
                     cells={this.state.columns}
                     data={this.state.rows}
                     pageSize={20000}
@@ -395,7 +395,7 @@ class IMAPConfigurationSettings extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources["smartDeleteMessageContent"][currentLanguage]}
                             closed={() => this.setState({ showDeleteModal: false })}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={() => this.setState({ showDeleteModal: false })}

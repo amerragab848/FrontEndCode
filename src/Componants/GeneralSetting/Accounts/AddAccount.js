@@ -147,7 +147,7 @@ class AddAccount extends Component {
                 res => {
                     if (res === true) {
                         this.setState({ LoadingVaildation: false, UserName: '' });
-                        toast.error(Resources['smartDeleteMessage'][currentLanguage].refCodeExist);
+                        toast.error(Resources['smartDeleteMessageRefCodeExist'][currentLanguage]);
                     }
                     else {
                         this.setState({ LoadingVaildation: false, UserName: username });

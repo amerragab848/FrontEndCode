@@ -132,7 +132,7 @@ class TaskTimeSheet extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="TaskTimeSheet"
+                gridKey="TaskTimeSheet"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

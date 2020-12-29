@@ -17696,14 +17696,14 @@
       },
       {
         "field": "lastApprovalDate",
-        "friendlyName": "lastApproveDate",
+        "friendlyName": "lastApprovalDate",
         "minWidth": 85,
         "width": "15%",
         "dataType": "date",
         "isDate": true,
         "isTime": false,
         "showInExport": false,
-        "isCustom": false,
+        "isCustom": true,
         "exportDataType": "d"
       },
       {
@@ -17933,6 +17933,19 @@
         "isCustom": false,
         "exportDataType": "s"
       }
+      ,
+      {
+        "field": "fileNumber",
+        "friendlyName": "fileNumber",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "showInExport": false,
+        "isCustom": true,
+        "exportDataType": "s"
+      }
     ],
     "forEditApi": "GetLogsSubmittalForEdit",
     "filterApi": "SubmittalsFilter",
@@ -17973,7 +17986,8 @@
         "type": "date",
         "showInExport": true,
         "isCustom": true,
-        "isRange": true
+        "isRange": true,
+        "isSubmittals":true
       },
       {
         "name": "docClosedate",
@@ -17981,7 +17995,27 @@
         "type": "date",
         "showInExport": false,
         "isCustom": false,
-        "isRange": true
+        "isRange": true,
+        "isSubmittals":true
+      },
+      
+      { 
+      
+      
+        "name": "lastApprovalDate",
+        "field": "lastApprovalDate",
+        "type": "date",
+        "showInExport": false,
+        "isCustom": true,
+        "isRange": true,
+        "isSubmittals":true
+      },
+      {
+        "field": "fileNumber",
+        "name": "fileNumber",
+        "type": "string",
+        "showInExport": false,
+        "isCustom": true
       },
       {
         "name": "submittalType",

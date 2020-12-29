@@ -4,11 +4,10 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-//import Export from "../../../Componants/OptionsPanels/Export"; 
 import ExportDetails from "../ExportReportCenterDetails";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import CryptoJS from 'crypto-js';
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import moment from "moment";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -191,7 +190,7 @@ class TransmittalReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="TransmittalReport" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 

@@ -629,7 +629,7 @@ class corrRecievedSent extends Component {
         const sendGrid = this.state.sendLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="CorrRecievedSent"
+                gridKey="CorrRecievedSent"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -642,7 +642,7 @@ class corrRecievedSent extends Component {
         const receivedGrid = this.state.receivedLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="CorrRecievedSent"
+                gridKey="CorrRecievedSent"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -790,7 +790,7 @@ class corrRecievedSent extends Component {
                 </div>
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}

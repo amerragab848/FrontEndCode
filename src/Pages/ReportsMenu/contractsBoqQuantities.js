@@ -198,7 +198,7 @@ class ContractsBoqQuantities extends Component {
                 
                  <GridCustom
                     ref='custom-data-grid'
-                    key="ContractBoqQuantities"
+                    gridKey="ContractBoqQuantities"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

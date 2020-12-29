@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridCustom from 'react-customized-grid';
-
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -46,7 +45,7 @@ const ValidtionSchemaForContact = Yup.object().shape({
         .nullable(true),
     ContactName: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
-        .nullable(false),
+        .nullable(true),
     actionId: Yup.string()
         .required(Resources['action'][currentLanguage])
         .nullable(false),
@@ -94,7 +93,7 @@ class TaskGroupsAddEdit extends Component {
         }
 
         const columnsGrid = [
-            { title: '', type: 'check-box', fixed: true, field: 'id' },
+            { title: '', type: 'check-box', fixed: true, field: 'id',width:10 },
             {
                 field: "arrange",
                 title: Resources["numberAbb"][currentLanguage],
@@ -331,7 +330,7 @@ class TaskGroupsAddEdit extends Component {
                 })
                 let data = { items: originalRows };
                 this.props.actions.ExportingData(data);
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }
 
         ).catch(ex => {
@@ -378,7 +377,7 @@ class TaskGroupsAddEdit extends Component {
                     SelectedContact: '',
                     SelectedAction: { label: "Select Action", value: "0" }
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
             }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -400,7 +399,7 @@ class TaskGroupsAddEdit extends Component {
             };
             dataservice.addObject('EditProjectDistributionList', saveDoc).then(
                 res => {
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
                     this.changeCurrentStep(1);
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -417,7 +416,7 @@ class TaskGroupsAddEdit extends Component {
                 res => {
                     docId = res.id;
                     this.setState({ Dis_ListData: res, docId: res.id });
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                    toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage]);
                     this.changeCurrentStep(1);
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -534,7 +533,7 @@ class TaskGroupsAddEdit extends Component {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
-                key={"DistributionContact"}
+                gridKey={"DistributionContact"}
                 cells={this.state.columns}
                 data={this.state.rows}
                 pageSize={2000}
@@ -804,7 +803,7 @@ class TaskGroupsAddEdit extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}

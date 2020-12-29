@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import { toast } from "react-toastify";
 import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import moment from 'moment';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -168,7 +168,7 @@ class filesSettings extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ?
-                <GridCustom key={"GridFillesSettings"}
+                <GridCustom gridKey={"GridFillesSettings"}
                     cells={this.state.columns}
                     data={this.state.rows}
                     pageSize={20000}
@@ -268,7 +268,7 @@ class filesSettings extends Component {
                 </div>
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                        title={Resources["smartDeleteMessageContent"][currentLanguage]}
                         closed={() => this.setState({ showDeleteModal: false })}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={() => this.setState({ showDeleteModal: false })}

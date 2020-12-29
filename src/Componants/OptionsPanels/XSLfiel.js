@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 import classNames from 'classnames';
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
-import Resources from '../../../src/resources';
+import Resources from '../../resources.json';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -234,7 +234,7 @@ class XSLfile extends Component {
                 </header>
                 <div style={{ position: 'relative' }}>
                     <React.Fragment>
-                        {this.props.CantDownload ? null : (
+                        {this.props.CantDownload ? null : this.state.link !=""?(
                             <div className="fileDownUp">
                                 <a href={this.state.link}>
                                     <i
@@ -247,7 +247,7 @@ class XSLfile extends Component {
                                     }
                                 </a>
                             </div>
-                        )}
+                        ):null}
 
                         <Dropzone
                             multiple={false}

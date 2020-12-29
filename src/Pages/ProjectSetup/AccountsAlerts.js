@@ -209,7 +209,7 @@ class AccountsAlerts extends Component {
                     showDeleteModal: false,
                     isLoading: false,
                 })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
             }
         ).catch(ex => {
             this.setState({
@@ -334,7 +334,7 @@ class AccountsAlerts extends Component {
         values.HighAlert = ''
         values.ModuleDrop = ''
         values.DocumentTypeDrop = ''
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
 
     }
 
@@ -343,7 +343,7 @@ class AccountsAlerts extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                 ref='custom-data-grid'
-                key='AccountsAlert'
+                gridKey='AccountsAlert'
                 data={this.state.rows}
                 pageSize={this.state.rows.length}
                 groups={[]}
@@ -576,7 +576,7 @@ class AccountsAlerts extends Component {
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}

@@ -107,7 +107,7 @@ class DashBoardProjectCounterLog extends Component {
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
-          key={"DashBoardProjectCounterLog-" + this.state.gridKey}
+          gridKey={"DashBoardProjectCounterLog-" + this.state.gridKey}
           data={this.state.rows}
           groups={[]}
           actions={[]}

@@ -197,7 +197,7 @@ class InventoryDetails extends Component {
         const DataGridChilds = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="BudgetCashFlowReport"
+                gridKey="BudgetCashFlowReport"
                 data={this.state.RowsChilds}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -210,7 +210,7 @@ class InventoryDetails extends Component {
         const DataGridParent = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="BudgetCashFlowReport"
+                gridKey="BudgetCashFlowReport"
                 data={this.state.RowsParent}
                 pageSize={this.state.pageSize}
                 groups={[]}

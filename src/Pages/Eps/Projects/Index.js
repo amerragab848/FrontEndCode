@@ -423,7 +423,7 @@ class Index extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                 ref='custom-data-grid'
-                key="ProjectsIndex"
+                gridKey="ProjectsIndex"
                 data={this.state.rows}
                 pageSize={this.state.rows.length}
                 groups={[]}
@@ -544,7 +544,7 @@ class Index extends Component {
                     this.state.showDeleteModal == true ? (
                         <div style={{ position: 'relative', zIndex: '99999999' }}>
                             <ConfirmationModal
-                                title={Resources['smartDeleteMessage'][currentLanguage].content}
+                                title={Resources['smartDeleteMessageContent'][currentLanguage]}
                                 closed={this.onCloseModal}
                                 showDeleteModal={this.state.showDeleteModal}
                                 clickHandlerCancel={this.clickHandlerCancelMain}

@@ -184,7 +184,7 @@ class HeaderAndFooter extends Component {
                 showDeleteModal: false,
                 isLoading: false,
             })
-            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+            toast.success(Resources['smartSentAccountingMessageSuccessTitle'][currentLanguage])
         }
         ).catch(ex => {
             this.setState({
@@ -305,7 +305,7 @@ class HeaderAndFooter extends Component {
         const dataGrid = this.state.isLoading === false ?
             <GridCustom
             ref='custom-data-grid'
-            key='HeaderAndFooter'
+            gridKey='HeaderAndFooter'
             data={this.state.rows}
             pageSize={this.state.rows.length}
             groups={[]}
@@ -369,7 +369,7 @@ class HeaderAndFooter extends Component {
                                   <span>
                                     {(this.state.PageSize * this.state.PageNumber + this.state.PageSize) >= this.state.totalRows ? this.state.totalRows : (this.state.PageSize * this.state.PageNumber + this.state.PageSize)}
                                 </span>
-                                {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
+                                {Resources['jqxGridLanguagePagerrangestring'][currentLanguage]}
                                 <span> {this.state.totalRows}</span>
                             </div>
                             <button className={this.state.PageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetMoreData(-1)}><i className="angle left icon" /></button>
@@ -492,7 +492,7 @@ class HeaderAndFooter extends Component {
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={Resources['smartDeleteMessage'][currentLanguage].content}
+                            title={Resources['smartDeleteMessageContent'][currentLanguage]}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}
