@@ -17696,7 +17696,7 @@
       },
       {
         "field": "lastApprovalDate",
-        "friendlyName": "lastApproveDate",
+        "friendlyName": "lastApprovalDate",
         "minWidth": 85,
         "width": "15%",
         "dataType": "date",
@@ -17986,7 +17986,8 @@
         "type": "date",
         "showInExport": true,
         "isCustom": true,
-        "isRange": true
+        "isRange": true,
+        "isSubmittals":true
       },
       {
         "name": "docClosedate",
@@ -17994,18 +17995,20 @@
         "type": "date",
         "showInExport": false,
         "isCustom": false,
-        "isRange": true
+        "isRange": true,
+        "isSubmittals":true
       },
       
       { 
       
       
-        "name": "lastApproveDate",
+        "name": "lastApprovalDate",
         "field": "lastApprovalDate",
         "type": "date",
         "showInExport": false,
         "isCustom": true,
-        "isRange": true
+        "isRange": true,
+        "isSubmittals":true
       },
       {
         "field": "fileNumber",
