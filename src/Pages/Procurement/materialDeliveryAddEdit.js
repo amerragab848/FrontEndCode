@@ -613,9 +613,22 @@ class materialDeliveryAddEdit extends Component {
                 maxQuantity: this.state.ItemDescriptionInfo.quantity,
                 remarks: this.state.remarks
             };
+
             dataservice
                 .addObject("AddLogsMaterialDeliveryTickets", obj)
                 .then(result => {
+                    ////////////////////////////
+                    let itemDocument=this.state.ItemDescriptionInfo;
+                    itemDocument.quantity= obj.approvedQuantity
+                    Api.post("EditContractsOriginalPurchaseOrderSum?id="+itemDocument.id+"&deliveredQuantity="+itemDocument.quantity)
+                    .then(res=>{
+                        itemDocument.quantity=res.quantity
+                        this.setState({
+                            ItemDescriptionInfo:itemDocument
+                           })
+                         }
+                        )
+                    ////////////////////////////
                     let Items = this.state.Items;
                     Items.push(result);
                     this.setState({
@@ -1500,7 +1513,7 @@ class materialDeliveryAddEdit extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
+                                                {/* <div className="linebylineInput valid-input">
                                                     <label className="control-label">
                                                         {
                                                             Resources[
@@ -1552,7 +1565,7 @@ class materialDeliveryAddEdit extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input">
+                                                <div className="linebylineInput valid-input"> 
                                                     <label className="control-label">
                                                         {
                                                             Resources[
@@ -1602,7 +1615,7 @@ class materialDeliveryAddEdit extends Component {
                                                             </em>
                                                         ) : null}
                                                     </div>
-                                                </div>
+                                                </div>*/}
 
                                                 <div className="linebylineInput valid-input fullInputWidth">
                                                     <label className="control-label">

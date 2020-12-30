@@ -966,6 +966,13 @@ class CommonLog extends Component {
                     obj.showTip = true;
                 }
 
+                if (item.field === 'description'&&documentObj.docTyp==50) {
+                    obj.href = 'link';
+                    obj.onClick = () => {};
+                    obj.classes = 'bold';
+                    obj.showTip = true;
+                }
+
                 if (
                     item.field === 'statusName' ||
                     item.field === 'statusText'
@@ -2404,11 +2411,20 @@ class CommonLog extends Component {
                                         '/downloads/excel/inventory.xlsx'
                                     }
                                     header="addManyItems"
-                                    afterUpload={() =>
+                                    afterUpload={() =>{
                                         this.setState({
                                             inventoryImportAttachmentModal: false,
+                                            isLoading:true
                                         })
-                                    }
+                                        this.GetRecordOfLog(
+                                            this.state.isCustom === true
+                                                ? this.state.documentObj
+                                                      .documentApi.getCustom
+                                                : this.state.documentObj
+                                                      .documentApi.get,
+                                            this.props.projectId,
+                                        );
+                                    }}
                                 />
                             </div>
                         </SkyLightStateless>

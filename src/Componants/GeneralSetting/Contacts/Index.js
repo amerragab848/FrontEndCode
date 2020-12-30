@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export"; 
 import GridCustom from "../../Templates/Grid/CustomGrid";
-
+//import GridCustom from "../../../Componants/Templates/Grid/CustomCommonLogGrid";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
@@ -38,13 +38,21 @@ class Index extends Component {
         }
 
         this.columnsGrid = [
-            { title: '', type: 'check-box', fixed: true, field: 'id' },
+           
+           {
+                title: "",
+                type: "check-box",
+                fixed: true,
+                field: "id",
+                showTip: true,
+                width: 15,
+            },
             {
                 field: "address",
                 title: Resources["title"][currentLanguage],
                 width: 15,
                 groupable: true,
-                fixed: false,
+                fixed: true,
                 sortable: true,
                 type: "text"
 
