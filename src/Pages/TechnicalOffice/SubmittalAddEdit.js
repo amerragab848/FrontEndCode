@@ -234,7 +234,8 @@ class SubmittalAddEdit extends Component {
       flowCompanyId: "",
       flowContactId: "",
       fromContactId: "",
-      approvalAction: "1"
+      approvalAction: "1",
+      fileNumber:""
     };
 
     if (this.state.docId > 0) {
@@ -348,7 +349,8 @@ class SubmittalAddEdit extends Component {
           flowCompanyId: "",
           flowContactId: "",
           fromContactId: "",
-          approvalAction: "1"
+          approvalAction: "1",
+          fileNumber:""
         };
 
         dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + this.props.document.id).then(result => {
@@ -1997,7 +1999,8 @@ class SubmittalAddEdit extends Component {
                                         {Resources.arrange[currentLanguage]}
                                       </label>
                                       <div className={"ui input inputDev fillter-item-c " + (errors.arrangeCycle && touched.arrangeCycle ? "has-error" : !errors.arrangeCycle && touched.arrangeCycle ? "has-success" : "")}>
-                                        <input type="text" className="form-control" readOnly value={this.state.documentCycle.arrange} name="arrangeCycle"
+                                        <input type="text" className="form-control" readOnly
+                                         value={this.state.documentCycle.arrange} name="arrangeCycle"
                                           placeholder={Resources.arrange[currentLanguage]}
                                           onBlur={e => { handleChange(e); handleBlur(e); }}
                                           onChange={e => this.handleChangeCycles(e, "arrange")} />
@@ -2016,6 +2019,22 @@ class SubmittalAddEdit extends Component {
                                         name="approvalStatusId"
                                         id="approvalStatusId" />
                                     </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                          {Resources.fileNumber[currentLanguage]}
+                                        </label>
+                                        <div className="inputDev ui input">
+                                          <input name="fileNumber" 
+                                           className="form-control fsadfsadsa"
+                                            id="fileNumber"
+                                            placeholder={Resources.fileNumber[currentLanguage]}
+                                            autoComplete="off" 
+                                            value={this.state.documentCycle.arrange}
+                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                            onChange={e => this.handleChangeCycles(e, "fileNumber")} />
+                                        </div>
+                                     </div>
+                                    
                                     <div className="linebylineInput valid-input mix_dropdown">
                                       <label className="control-label">
                                         {Resources.toCompany[currentLanguage]}

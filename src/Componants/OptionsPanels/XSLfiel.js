@@ -221,7 +221,47 @@ class XSLfile extends Component {
                 });
         }
     }
-  
+    drawinListItemsTemplateUpload=()=>{
+        if (this.state.acceptedFiles.length > 0) {
+            this.setState({
+                Isloading: true,
+            });
+            let formData = new FormData();
+            let file = this.state.acceptedFiles[0];
+            let fileName = file.name;
+            let testName = [];
+            let header="";
+            testName.push(fileName);
+            formData.append('file0', file);
+            let docId = this.props.docId;
+            let projectId = this.props.projectId;
+            let disciplineId = this.props.disciplineId;
+            Api.postFile(
+                'UploadDrawingListItems?docId=' +
+                docId +
+                "&disciplineId=" +
+                disciplineId,
+                formData,
+                header,
+            )
+                .then(resp => {
+                    if (this.props.afterUpload != undefined) {
+                        this.props.afterUpload();
+                    }
+                    setTimeout(() => {
+                        this.setState({ _className: 'zeropercent' });
+                    }, 1000);
+                    this.setState({
+                        Isloading: false,
+                    });
+                })
+                .catch(ex => {
+                    toast.error(
+                        Resources['operationCanceled'][currentLanguage],
+                    );
+                });
+        }
+    }
     render() {
         return (
             <div className="doc-pre-cycle">
@@ -369,7 +409,9 @@ class XSLfile extends Component {
                                                     ? this.CustomUpload
                                                     : this.props.submittalItemdocumentTemplate
                                                         ? this.submittalItemsTemplateUpload
-                                                        : this.upload
+                                                        :this.props.drawinListItemdocumentTemplate?
+                                                        this.drawinListItemsTemplateUpload
+                                                        :this.upload
                                         }>
                                         {Resources['upload'][currentLanguage]}
                                     </button>
