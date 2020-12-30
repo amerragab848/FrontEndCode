@@ -45,7 +45,6 @@ export default class CustomGrid extends Component {
             }
         });
         
-<<<<<<< HEAD
         // if(this.props.data !=undefined && this.props.data[0].docDate !=undefined )
         // {
         //     for( var i in this.props.data)
@@ -56,8 +55,6 @@ export default class CustomGrid extends Component {
         //     }
         // }
        
-=======
->>>>>>> 4f078e6d9425edff19c05cdf544d1777a52bfee7
         if (this.props.data.length > 0) {
             if (this.props.data[0].docDate != undefined) {
                 for (var i in this.props.data) {
