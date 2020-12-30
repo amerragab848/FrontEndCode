@@ -9,16 +9,12 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 export default class CustomGrid extends Component {
     constructor(props) {
         super(props);
-
-
-
         this.state = {
             columns: this.props.cells,
             rows: this.props.data != null ? this.props.data : [],
             filteredRows: this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             groupsList: this.props.groups || [],
-
             selectedIndexes: [],
             selectedRows: [],
             selectedRow: [],
@@ -48,6 +44,17 @@ export default class CustomGrid extends Component {
                 state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
+        
+        // if(this.props.data !=undefined && this.props.data[0].docDate !=undefined )
+        // {
+        //     for( var i in this.props.data)
+        //     {
+        //         if(this.props.data[i].docDate !=null){
+        //             this.props.data[i].docDate= this.props.data[i].docDate.split('T')[0]
+        //         }
+        //     }
+        // }
+       
         if (this.props.data.length > 0) {
             if (this.props.data[0].docDate != undefined) {
                 for (var i in this.props.data) {
@@ -195,7 +202,7 @@ export default class CustomGrid extends Component {
                 {btnDocumentTemplate}
                 {this.state.GridLoading === false ? (
                     <GridCustom
-                        key={this.props.gridKey}
+                        gridKey={this.props.gridKey}
                         cells={this.state.columns.filter(i => i.hidden != true)}
                         data={this.state.rows}
                         pageSize={this.props.pageSize}

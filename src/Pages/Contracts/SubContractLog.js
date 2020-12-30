@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import Api from '../../api' 
-import Resources from '../../resources.json'; 
+import Api from '../../api'
+import Resources from '../../resources.json';
 import { withRouter } from "react-router-dom";
-import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import SubContract from '../Contracts/SubContract';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
- 
+
 class SubContractLog extends Component {
 
     constructor(props) {
@@ -141,8 +141,13 @@ class SubContractLog extends Component {
     render() {
         const dataGrid = this.state.isLoading === false ?
             (<GridCustom
-                cells={this.itemsColumns} data={this.state.rows} groups={[]} pageSize={50} actions={this.actions}
-                rowActions={this.rowActions} rowClick={() => { }}
+                gridKey="SubContractLog"
+                cells={this.itemsColumns}
+                data={this.state.rows}
+                groups={[]} pageSize={50}
+                actions={this.actions}
+                rowActions={this.rowActions}
+                rowClick={() => { }}
             />
             ) : <LoadingSection />;
         return (

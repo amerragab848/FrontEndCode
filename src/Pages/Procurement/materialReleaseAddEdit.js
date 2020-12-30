@@ -176,6 +176,7 @@ class materialReleaseAddEdit extends Component {
             IsAddMood: false,
             MaterialReleaseType: [],
             SelectedMaterialReleaseType: { label: Resources.itemDescription[currentLanguage], value: "0" },
+            QuantityInStock:0
         }
 
         if (!Config.IsAllow(247) && !Config.IsAllow(248) && !Config.IsAllow(250)) {
@@ -507,7 +508,7 @@ class materialReleaseAddEdit extends Component {
     SaveItem = (values) => {
         let Qty = parseInt(this.state.quantity)
         let ActaulQty = parseInt(this.state.ItemDescriptionInfo.remainingQuantity)
-        if (Qty <= ActaulQty) {
+        if (Qty <= ActaulQty && Qty<=this.state.QuantityInStock ) {
             this.setState({ isLoading: true })
             let obj = {
                 materialReleaseId: this.state.docId,
@@ -574,7 +575,8 @@ class materialReleaseAddEdit extends Component {
             selectedItemId: e,
             unitPrice: obj.unitPrice,
             ItemDescriptionInfo: obj,
-            quantity: obj.remainingQuantity 
+            quantity: obj.remainingQuantity, 
+            QuantityInStock:obj.quantity,
         })
     }
 
@@ -780,6 +782,7 @@ class materialReleaseAddEdit extends Component {
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.materialReleaseId}
                                             touched={touched.materialReleaseId} name="materialReleaseId" id="materialReleaseId" />
                                     </div>
+                                    
                                     {/* added */}
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.contract[currentLanguage]}</label>
@@ -987,7 +990,43 @@ class materialReleaseAddEdit extends Component {
                                                     {errors.returnedQuantity ? (<em className="pError">{errors.returnedQuantity}</em>) : null}
                                                 </div>
                                             </div>
-
+{/*****************************stock********************************/}
+                                    <div className="linebylineInput fullInputWidth">
+                            <label className="control-label">
+                                {Resources["stock"][currentLanguage]}{" "}
+                            </label>
+                            <div
+                                className={
+                                    "inputDev ui input " +
+                                    (errors.stock
+                                        ? "has-error"
+                                        : !errors.stock &&
+                                            touched.stock
+                                            ? " has-success"
+                                            : " ")
+                                }>
+                                <input
+                                    name="stock"
+                                    className="form-control"
+                                    id="stock"
+                                    placeholder={
+                                        Resources["stock"][
+                                        currentLanguage
+                                        ]
+                                    }
+                                    autoComplete="off"
+                                    onBlur={handleBlur}
+                                    defaultValue={this.state.QuantityInStock}
+                                    value={this.state.QuantityInStock}
+                                />
+                                {errors.stock ? (
+                                    <em className="pError">
+                                        {errors.stock}
+                                    </em>
+                                ) : null}
+                            </div>
+                        </div>
+                                    {/******************************************************************/}
 
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources.costCoding[currentLanguage]}</label>

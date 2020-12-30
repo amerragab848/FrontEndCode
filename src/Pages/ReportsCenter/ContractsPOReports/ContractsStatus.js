@@ -8,7 +8,7 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import ExportDetails from "../ExportReportCenterDetails";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -44,7 +44,8 @@ class ContractsStatus extends Component {
                 "width": 20,
                 "groupable": true,
                 "fixed": true,
-                "sortable": true
+                "sortable": true,
+                "width":10
             }, {
                 "field": "originalContractSum",
                 "title": Resources.originalContractSum[currentLanguage],
@@ -190,6 +191,7 @@ class ContractsStatus extends Component {
                         (this.state.isLoading ? <LoadingSection /> :
                             <GridCustom
                                 ref='custom-data-grid'
+                                gridKey="ContractsStatus"
                                 groups={[]}
                                 data={this.state.rows || []}
                                 cells={this.columns}

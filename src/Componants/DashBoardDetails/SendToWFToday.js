@@ -39,6 +39,50 @@ class SendToWFToday extends Component {
         href: 'link'
       },
       {
+        field: 'statusName',
+        title: Resources['statusName'][currentLanguage],
+        width: 25,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+        classes: 'bold',
+        href: 'link'
+      },
+      {
+        field: 'approvalStatusName',
+        title: Resources['approvalStatus'][currentLanguage],
+        width: 25,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true,
+        classes: 'bold',
+        href: 'link'
+      },
+      {
+        field: 'durationDays',
+        title: Resources['durationDays'][currentLanguage],
+        width: 25,
+        groupable: true,
+        fixed: false,
+        type: "number",
+        sortable: true,
+        classes: 'bold',
+        href: 'link'
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 25,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true,
+        classes: 'bold',
+        href: 'link'
+      },
+      {
         field: 'projectName',
         title: Resources['projectName'][currentLanguage],
         width: 15,
@@ -71,6 +115,24 @@ class SendToWFToday extends Component {
         groupable: true,
         fixed: false,
         type: "date",
+        sortable: true
+      },
+      {
+        field: 'discipline',
+        title: Resources['discipline'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'createdBy',
+        title: Resources['createdBy'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
         sortable: true
       },
       {

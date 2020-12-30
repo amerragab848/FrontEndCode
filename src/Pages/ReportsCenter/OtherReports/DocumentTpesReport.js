@@ -226,7 +226,7 @@ class DocumentTpesReport extends Component {
         const DataGridParent = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="BudgetCashFlowReport"
+                gridKey="BudgetCashFlowReport"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

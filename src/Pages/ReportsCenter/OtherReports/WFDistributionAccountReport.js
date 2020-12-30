@@ -5,9 +5,7 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-//import Export from "../../../Componants/OptionsPanels/Export";
 import ExportDetails from "../ExportReportCenterDetails";
-//import GridCustom from 'react-customized-grid';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import dataservice from "../../../Dataservice";
 import CryptoJS from 'crypto-js';
@@ -37,7 +35,7 @@ class WFDistributionAccountReport extends Component {
         }
 
         this.columns = [
-            { title: '', type: 'check-box', fixed: true, field: 'id' },
+            { title: '', type: 'check-box', fixed: true, field: 'id', width: 10 },
             {
                 "field": "subject",
                 "title": Resources.subject[currentLanguage],
@@ -186,8 +184,15 @@ class WFDistributionAccountReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom
+                ref='custom-data-grid'
+                gridKey="WfDistributionAccountReport"
+                groups={[]}
+                data={this.state.rows || []}
+                cells={this.columns}
                 pageSize={this.state.rows.length}
+                rowActions={[]}
+                rowClick={() => { }}
                 actions={[{
                     title: 'Send To The Same Level',
                     handleClick: (value) => {

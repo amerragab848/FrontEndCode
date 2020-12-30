@@ -175,7 +175,7 @@ class TasksList extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="ClosedTask"
+                gridKey="ClosedTask"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

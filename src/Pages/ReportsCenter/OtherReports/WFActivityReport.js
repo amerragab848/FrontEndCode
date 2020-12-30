@@ -8,7 +8,7 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import moment from "moment";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import ExportDetails from "../ExportReportCenterDetails";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -281,7 +281,7 @@ class WFActivityReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+            <GridCustom ref='custom-data-grid' gridKey="WFActivityReport" groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows ? this.state.rows.length : 0} actions={[]} rowActions={[]} rowClick={() => { }}
             />
         ) : <LoadingSection />;
@@ -314,8 +314,8 @@ class WFActivityReport extends Component {
                                     this.state.pageNumber +
                                     this.state.pageSize}
                             </span>
-                            {
-                                Resources['jqxGridLanguagePagerrangestring'][currentLanguage]
+                            { 
+                                Resources['jqxGridLanguagePagergotopagestring'][currentLanguage]
                             }
                             <span> {this.state.totalRows}</span>
                         </div>

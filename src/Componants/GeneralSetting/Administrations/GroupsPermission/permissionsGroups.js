@@ -252,7 +252,7 @@ class permissionsGroups extends Component {
 
                 <GridCustom
                     ref='custom-data-grid'
-                    key='permissionGroup'
+                    gridKey='permissionGroup'
                     data={this.state.rows}
                     pageSize={this.state.pageSize}
                     groups={[]}

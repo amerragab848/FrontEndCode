@@ -479,8 +479,13 @@ class AmendmentList extends Component {
 
         const dataGrid = this.state.isLoading === false ?
             <GridCustom
-                cells={this.state.columns} data={this.state.AmendmentList} groups={this.groups} actions={this.actions}
-                rowActions={this.rowActions} rowClick={() => { }}
+                gridKey="AmendmentList"
+                cells={this.state.columns}
+                data={this.state.AmendmentList}
+                groups={this.groups}
+                actions={this.actions}
+                rowActions={this.rowActions}
+                rowClick={() => { }}
             /> : <LoadingSection />
 
         return (

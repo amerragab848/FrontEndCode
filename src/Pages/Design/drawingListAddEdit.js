@@ -27,6 +27,7 @@ import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -159,12 +160,12 @@ class drawingListAddEdit extends Component {
             { name: 'viewAttachments', code: 3732 }, { name: 'deleteAttachments', code: 3733 }],
             selectDescipline: { label: Resources.selectDescipline[currentLanguage], value: "0" },
             selectProject: { label: Resources.selectProjects[currentLanguage], value: "0" },
-            selectSubmittedFor:{label:Resources.selectSubmittedFor[currentLanguage],value:"0"},
+            selectSubmittedFor: { label: Resources.selectSubmittedFor[currentLanguage], value: "0" },
             IsEditMode: false,
             showPopUp: false,
             IsAddModel: false,
             ProjectDropData: [],
-            submittedForData:[],
+            submittedForData: [],
             DesciplineDropData: [],
             ShowAddItem: false,
             IsEditModeItem: false,
@@ -190,7 +191,8 @@ class drawingListAddEdit extends Component {
 
             PriorityData: [],
             ToCompany: [],
-            contactData: []
+            contactData: [],
+            docTemplateModal:false
         }
 
 
@@ -271,7 +273,12 @@ class drawingListAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
-
+    btnDocumentTemplateShowModal = () => {
+        this.setState({
+            docTemplateModal: true,
+        });
+      };
+    
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let doc = nextProps.document
@@ -405,7 +412,7 @@ class drawingListAddEdit extends Component {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
-       // this.FillDrowDowns()
+        // this.FillDrowDowns()
 
     }
 
@@ -468,10 +475,10 @@ class drawingListAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
-        if (prevProps.document.id !== this.props.document.id ){
+        if (prevProps.document.id !== this.props.document.id) {
             this.FillDrowDowns()
         }
-        
+
 
     }
 
@@ -728,9 +735,18 @@ class drawingListAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
     render() {
+        const btnDocumentTemplate =(
+            <button
+                className="primaryBtn-2 btn mediumBtn"
+                onClick={() => this.btnDocumentTemplateShowModal()}>
+                {Resources['DocTemplate'][currentLanguage]}
+            </button>
+        ) 
+
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
+                    gridKey="DrawingListAddEdit"
                     cells={this.state.columns}
                     data={this.state.rows}
                     groups={[]}
@@ -757,11 +773,14 @@ class drawingListAddEdit extends Component {
                                 <div className='ui input inputDev linebylineInput '>
                                     <Dropdown title='descipline' data={this.state.DesciplineDropData}
                                         selectedValue={this.state.selectDescipline}
-                                        handleChange={(e) => this.handleChangeDisciplineDrop(e)} />
+                                        handleChange={(e) => this.handleChangeDisciplineDrop(e)} 
+                                        />
                                 </div>
                                 <div className='ui input inputDev linebylineInput '>
+                                    {btnDocumentTemplate}
                                     {this.state.ShowAddItem ? <button className="primaryBtn-1 btn meduimBtn" onClick={this.ShowPopUpForAdd}>Add</button> : null}
                                 </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -789,7 +808,7 @@ class drawingListAddEdit extends Component {
                             papers: this.state.IsEditModeItem ? this.state.ItemForEdit.paper : '',
                             estimateTime: this.state.IsEditModeItem ? this.state.ItemForEdit.estimatedTime : '',
                             arrangeItems: this.state.ItemForEdit.arrange,
-                            refCode:this.state.IsEditModeItem ? this.state.ItemForEdit.refCode : '',
+                            refCode: this.state.IsEditModeItem ? this.state.ItemForEdit.refCode : '',
                         }}
 
                         enableReinitialize={true}
@@ -880,7 +899,7 @@ class drawingListAddEdit extends Component {
                                             <label className="control-label">{Resources['refCode'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.refCode && touched.refCode ? 'has-error' : null) + ' '}>
                                                 <input autoComplete="off"
-                                                 value={this.state.ItemForEdit.refCode} className="form-control" name="refCode"
+                                                    value={this.state.ItemForEdit.refCode} className="form-control" name="refCode"
                                                     onBlur={(e) => {
                                                         handleBlur(e)
                                                         handleChange(e)
@@ -1023,8 +1042,8 @@ class drawingListAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="projectType" 
-                                                              data={this.state.ProjectDropData} name="projectTypeId"
+                                                            <Dropdown title="projectType"
+                                                                data={this.state.ProjectDropData} name="projectTypeId"
                                                                 selectedValue={this.state.selectProject}
                                                                 onChange={setFieldValue}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'projectTypeId', false, '', '', '', 'selectProject')}
@@ -1035,8 +1054,8 @@ class drawingListAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="submittedFor" 
-                                                               data={this.state.submittedForData} 
+                                                            <Dropdown title="submittedFor"
+                                                                data={this.state.submittedForData}
                                                                 name="submittedFor"
                                                                 selectedValue={this.state.selectSubmittedFor}
                                                                 onChange={setFieldValue}
@@ -1093,11 +1112,11 @@ class drawingListAddEdit extends Component {
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3730} EditAttachments={3731} ShowDropBox={3734} ShowGoogleDrive={3735} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
-                                            <Fragment>
-                                                 <div className="document-fields tableBTnabs">
-                                                   <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
-                                                 </div>
-                                            </Fragment>
+                                                <Fragment>
+                                                    <div className="document-fields tableBTnabs">
+                                                        <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                    </div>
+                                                </Fragment>
                                             ) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true && docId !== 0 ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
@@ -1122,7 +1141,6 @@ class drawingListAddEdit extends Component {
                     </div>
 
                 </div>
-
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessageContent"][currentLanguage]}
@@ -1132,6 +1150,59 @@ class drawingListAddEdit extends Component {
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                     />
                 ) : null}
+
+                 {/**************************drawing list items *********************/}
+        {this.state.docTemplateModal == true ? (
+                    <div className="largePopup largeModal ">
+                        <SkyLightStateless
+                            onOverlayClicked={() =>
+                                this.setState({ docTemplateModal: false })
+                            }
+                            title={Resources['DocTemplate'][currentLanguage]}
+                            onCloseClicked={() =>
+                                this.setState({ docTemplateModal: false })
+                            }
+                            isVisible={this.state.docTemplateModal}>
+                            <div className="proForm datepickerContainer customLayout">
+                           
+                                <div className="dropdownFullWidthContainer">
+                                  <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown title="disciplineTitle"
+                                        isMulti={false}
+                                        data={this.state.DesciplineDropData}
+                                        selectedValue={this.state.selectDescipline}
+                                        handleChange={(e) => this.handleChangeDisciplineDrop(e)}
+                                        name="disciplineId" 
+                                        id="disciplineId" />
+                                   </div>
+                                </div>
+                           
+                            <XSLfile
+                                    key="docTemplate"
+                                    projectId={this.state.projectId}
+                                    docId={docId}
+                                    disciplineId={this.state.selectDescipline.value != "0"? this.state.selectDescipline.value: null}
+                                    drawinListItemdocumentTemplate={true}
+                                    link={Config.getPublicConfiguartion().downloads +'/Downloads/Excel/tempDrawingListItems.xlsx'}
+                                    header="addManyItems"
+                                    afterUpload={() => {
+                                        this.setState({
+                                            docTemplateModal: false,
+                                        });
+                                        this.setState({ 
+                                            selectDescipline: { label: Resources.selectDescipline[currentLanguage], value: this.state.selectDescipline.value}
+                                        });
+                                    this.handleChangeDisciplineDrop(this.state.selectDescipline)
+                                      toast.success(
+                                        Resources['operationSuccess'][currentLanguage],
+                                    );
+                                    }}
+                                />
+                            </div>  
+                        </SkyLightStateless>
+                    </div>
+                ) : null}
+        {/**********************************************************************/}
             </div>
         )
     }

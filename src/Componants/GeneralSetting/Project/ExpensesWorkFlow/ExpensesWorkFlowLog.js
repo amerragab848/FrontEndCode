@@ -171,7 +171,7 @@ class ExpensesWorkFlowLog extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     ref='custom-data-grid'
-                    key="ExpensesWorkFlowLog"
+                    gridKey="ExpensesWorkFlowLog"
                     data={this.state.rows}
                     pageSize={this.state.rows.length}
                     groups={[]}

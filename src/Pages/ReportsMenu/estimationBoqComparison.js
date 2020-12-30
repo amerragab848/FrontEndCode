@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Export from "../../Componants/OptionsPanels/Export";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import 'react-customized-grid/main.css';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -177,7 +177,7 @@ class EstimationBoqComparison extends Component {
         const dataGrid = this.state.isLoading === false ?
             (
                 this.state.rows.length > 0 ?
-                    <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columnsGrid}
+                    <GridCustom ref='custom-data-grid' gridKey="EstimationBoqComparison" groups={[]} data={this.state.rows || []} cells={this.columnsGrid}
                         pageSize={this.state.rows.length} actions={[]} rowActions={[]}rowClick={() => { }}
                     />
                     : null

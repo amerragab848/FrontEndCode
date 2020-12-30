@@ -117,7 +117,7 @@ class projectBackLog extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="projectBackLog"
+                gridKey="projectBackLog"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

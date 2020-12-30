@@ -3,7 +3,7 @@ import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Resources from "../../resources.json";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -165,7 +165,8 @@ class usersAlertSummaryDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+        <GridCustom ref='custom-data-grid'
+        gridKey="usersAlertSummaryDetails" groups={[]} data={this.state.rows || []} cells={this.state.columns}
           pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
         />
       ) : <LoadingSection />;

@@ -482,7 +482,7 @@ class Expenses extends Component {
                         ?
                         <GridCustom
                             ref='custom-data-grid'
-                            key="UserExpenses"
+                            gridKey="UserExpenses"
                             data={this.state.rows}
                             pageSize={this.state.pageSize}
                             groups={[]}
@@ -495,7 +495,7 @@ class Expenses extends Component {
                         <div className={this.state.isLoading == false ? "disNone" : ""}>
                             <GridCustom
                                 ref='custom-data-grid'
-                                key="UserExpenses"
+                                gridKey="UserExpenses"
                                 data={[]}
                                 pageSize={0}
                                 groups={[]}

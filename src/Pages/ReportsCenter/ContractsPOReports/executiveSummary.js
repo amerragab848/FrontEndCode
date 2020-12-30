@@ -272,7 +272,7 @@ class executiveSummary extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="executiveSummary"
+                gridKey="executiveSummary"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

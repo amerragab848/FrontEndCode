@@ -133,7 +133,7 @@ class TaskEstimatedHours extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="TaskEstimatedHours"
+                gridKey="TaskEstimatedHours"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

@@ -84,7 +84,7 @@ class projectInvoicesCollected extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
-                key="projectInvoicesColleced"
+                gridKey="projectInvoicesColleced"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

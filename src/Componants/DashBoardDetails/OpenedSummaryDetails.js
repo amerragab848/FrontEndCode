@@ -137,7 +137,7 @@ class OpenedSummaryDetails extends Component {
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
-          key="OpenedSummaryDetails"
+          gridKey="OpenedSummaryDetails"
           data={this.state.rows}
           pageSize={this.state.rows.length}
           groups={[]}

@@ -27,7 +27,7 @@ import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
-import GridCustom from 'react-customized-grid';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
@@ -232,7 +232,8 @@ class materialRequestAddEdit extends Component {
                 width: 10,
                 groupable: true,
                 fixed: true,
-                type: "check-box"
+                type: "check-box",
+                width:10
             },
             {
                 field: 'arrange',
@@ -475,7 +476,8 @@ class materialRequestAddEdit extends Component {
                 days: null,
                 revQuantity: null,
                 itemCode: null,
-                unitPrice: null
+                unitPrice: null,
+                projectId:projectId
             },
             itemTypesList: [],
             contractBoqLogs: [],
@@ -1311,48 +1313,51 @@ class materialRequestAddEdit extends Component {
     addOneItem = () => {
         let length = this.state.updatedItems.length;
         let item = this.state.normalItems;
+         
         if (item.quantity > 0) {
-            this.setState({ isLoading: true });
-            item.requestId = this.state.docId;
-            item.originalQuantity = item.quantity;
-            Api.post("AddContractsSiteRequestItems", item).then(() => {
-                const _items = this.state._items;
-                _items.push(item);
-                let maxArrange = Math.max.apply(Math, _items.map(function (o) { return o.arrange; }))
-                let resetNormal = {
-                    details: null,
-                    arrange: maxArrange + 1,
-                    unit: null,
-                    quantity: null,
-                    originalQuantity: null,
-                    stock: null,
-                    resourceCode: null,
-                    itemType: null,
-                    action: null,
-                    days: null,
-                    revQuantity: null,
-                    itemCode: null,
-                    unitPrice: null
+                    this.setState({ isLoading: true });
+                    item.requestId = this.state.docId;
+                    item.originalQuantity = item.quantity;
+                    item.projectId=this.state.projectId;
+                    Api.post("AddContractsSiteRequestItems", item).then((result) => {
+                        const _items = result
+                        let maxArrange = Math.max.apply(Math, _items.map(function (o) { return o.arrange; }))
+                        let resetNormal = {
+                            details: null,
+                            arrange: maxArrange + 1,
+                            unit: null,
+                            quantity: null,
+                            originalQuantity: null,
+                            stock: null,
+                            resourceCode: null,
+                            itemType: null,
+                            action: null,
+                            days: null,
+                            revQuantity: null,
+                            itemCode: null,
+                            unitPrice: null
+                        }
+                        this.setState({
+                            _items,
+                            normalItems: resetNormal,
+                            isLoading: false,
+                            updatedItems: [],
+                            showChildren: false
+        
+                        });
+                        this.props.actions.resetItems(_items);
+        
+                        let items = [];
+                        this.state.items.forEach(element => {
+                            items.push({ ...element, quantity: 0, stock: 0 });
+                        });
+                        this.setState({ items });
+        
+                    });
                 }
-                this.setState({
-                    _items,
-                    normalItems: resetNormal,
-                    isLoading: false,
-                    updatedItems: [],
-                    showChildren: false
+        
 
-                });
-                this.props.actions.resetItems(_items);
-
-                let items = [];
-                this.state.items.forEach(element => {
-                    items.push({ ...element, quantity: 0, stock: 0 });
-                });
-                this.setState({ items });
-
-            });
-        }
-
+ 
     };
     addManyItem = () => {
         let length = this.state.updatedItemsInventoryTable.length;
@@ -2311,7 +2316,7 @@ class materialRequestAddEdit extends Component {
                 );
         const ItemsGrid =
             this.state.isLoading == false ? (
-                <GridCustom ref='custom-data-grid' groups={[]} data={this.state._items || []}
+                <GridCustom ref='custom-data-grid' gridKey="MaterialRequestAddEdit" groups={[]} data={this.state._items || []}
                     cells={this.itemsColumns}
                     pageSize={this.state.pageSize} actions={this.actions} rowActions={[]}
                     rowClick={(cell) => { this.onRowClick(cell) }}

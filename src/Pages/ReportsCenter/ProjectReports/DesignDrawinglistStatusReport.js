@@ -270,7 +270,7 @@ class DesignDrawinglistStatusReport extends Component {
                 
                 <GridCustom 
                      ref='custom-data-grid'
-                     key="DesignDrawinglistStatusReport"
+                     gridKey="DesignDrawinglistStatusReport"
                      cells={this.columnsGrid}
                      data={this.state.rows}
                      groups={[]} 

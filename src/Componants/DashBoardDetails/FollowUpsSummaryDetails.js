@@ -249,7 +249,7 @@ class FollowUpsSummaryDetails extends Component {
             this.state.isLoading === false ? (
                 <GridCustom
                     gridKey="FollowingUpSummary"
-                    key="FollowingUpSummary"
+                    gridKey="FollowingUpSummary"
                     cells={this.state.columns}
                     data={this.state.rows}
                     groups={this.state.groups}

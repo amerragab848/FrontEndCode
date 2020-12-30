@@ -72,8 +72,13 @@ class App extends Component {
     async componentDidMount() {
         await IndexedDb.seed();
         await IndexedDb.seedWidgetCounter();
- 
-        let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
+        let currentLanguage =
+            localStorage.getItem('lang') == null
+                ? 'en'
+                : localStorage.getItem('lang');
+
+        // let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
         fetch('/assets/IP_Configrations.json')
             .then(r => r.json())
             .then(data => {

@@ -214,7 +214,7 @@ class SchedualActionByDetails extends Component {
       this.state.isLoading === false ? (
         <GridCustom
           ref='custom-data-grid'
-          key="SchedualActionByDetails"
+          gridKey="SchedualActionByDetails"
           data={this.state.rows}
           pageSize={this.state.rows.length}
           groups={[]}

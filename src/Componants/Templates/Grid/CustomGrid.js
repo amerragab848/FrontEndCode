@@ -717,7 +717,7 @@ export default class CustomGrid extends Component {
 
                     {this.state.GridLoading === false ?
                         (<GridCustom
-                            key={this.props.gridKey}
+                            gridKey={this.props.gridKey}
                             cells={(this.state.columns).filter(i => i.hidden != true)}
                             data={this.state.rows}
                             actions={this.props.actions}
@@ -726,6 +726,7 @@ export default class CustomGrid extends Component {
                             groups={this.state.groupsList}
                             handleGroupUpdate={this.handleGroupEvent}
                             showPicker={this.props.showPicker}
+                            shouldCheck={this.props.shouldCheck}
                         />)
                         : <LoadingSection />}
 

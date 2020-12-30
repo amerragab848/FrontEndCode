@@ -153,7 +153,7 @@ class ProjectBalanceReport extends Component {
 
             <GridCustom
                 ref='custom-data-grid'
-                key="projectBalanceReport"
+                gridKey="projectBalanceReport"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}

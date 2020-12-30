@@ -215,7 +215,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
       this.state.isLoading === false ? (
         <GridCustom
         ref='custom-data-grid'
-        key="NotCodedInvoicesSummaryDetails"
+        gridKey="NotCodedInvoicesSummaryDetails"
         data={this.state.rows}
         pageSize={this.state.rows.length}
         groups={[]}

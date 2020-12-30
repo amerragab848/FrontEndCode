@@ -166,7 +166,7 @@ class MonthlyTasksDetails extends Component {
 
     const gridCustom = this.state.isLoading ? <LoadingSection /> : (
       <GridCustom
-        key="MonthlyTaskDetails"
+        gridKey="MonthlyTaskDetails"
         data={this.state.rows}
         pageSize={this.state.rows.length}
         groups={[]}

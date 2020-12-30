@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridCustom from 'react-customized-grid';
-
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -94,7 +93,7 @@ class TaskGroupsAddEdit extends Component {
         }
 
         const columnsGrid = [
-            { title: '', type: 'check-box', fixed: true, field: 'id' },
+            { title: '', type: 'check-box', fixed: true, field: 'id',width:10 },
             {
                 field: "arrange",
                 title: Resources["numberAbb"][currentLanguage],
@@ -534,7 +533,7 @@ class TaskGroupsAddEdit extends Component {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
-                key={"DistributionContact"}
+                gridKey={"DistributionContact"}
                 cells={this.state.columns}
                 data={this.state.rows}
                 pageSize={2000}

@@ -356,7 +356,7 @@ class GeneralList extends Component {
             this.state.isLoading === false ? (
 
                 <GridCustom
-                    key="items"
+                    gridKey="items"
                     data={this.state.rows}
                     pageSize={this.state.pageSize}
                     groups={[]}

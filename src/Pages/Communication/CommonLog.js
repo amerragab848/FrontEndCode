@@ -24,14 +24,14 @@ import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Slider } from 'react-semantic-ui-range';
-import {Resources} from '../../Resources';
+import { Resources } from '../../Resources';
 
-let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
 let docTempLink;
 
-let moduleId = Config.getPublicConfiguartion().commonLogApi; 
- 
+let moduleId = Config.getPublicConfiguartion().commonLogApi;
+
 class CommonLog extends Component {
 
     constructor(props) {
@@ -285,129 +285,45 @@ class CommonLog extends Component {
         });
     }
     fillDropDowns() {
+        if (this.state.docType == 'submittal' || this.state.documentName == "Letters") {
+            dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + this.props.projectId, 'companyName', 'companyId', 'companies', this.props.projectId, 'projectId').then(result => {
+                this.setState({ companies: [...result] })
+            });
+        }
         if (this.state.docType == 'submittal') {
-            dataservice
-                .GetDataListCached(
-                    'GetProjectProjectsCompaniesForList?projectId=' +
-                        this.props.projectId,
-                    'companyName',
-                    'companyId',
-                    'companies',
-                    this.props.projectId,
-                    'projectId',
-                )
-                .then(result => {
-                    this.setState({
-                        companies: [...result],
-                    });
-                });
             //discplines
-            dataservice
-                .GetDataListCached(
-                    'GetaccountsDefaultListForList?listType=discipline',
-                    'title',
-                    'id',
-                    'defaultLists',
-                    'discipline',
-                    'listType',
-                )
-                .then(result => {
-                    this.setState({
-                        disciplines: [...result],
-                    });
-                });
+            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'defaultLists', 'discipline', 'listType').then(result => {
+                this.setState({ disciplines: [...result] })
+            });
 
             //SubmittalTypes
-            dataservice
-                .GetDataListCached(
-                    'GetaccountsDefaultListForList?listType=SubmittalTypes',
-                    'title',
-                    'id',
-                    'defaultLists',
-                    'SubmittalTypes',
-                    'listType',
-                )
-                .then(result => {
-                    this.setState({
-                        SubmittalTypes: [...result],
-                    });
-                });
+            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=SubmittalTypes', 'title', 'id', 'defaultLists', 'SubmittalTypes', 'listType').then(result => {
+                this.setState({ SubmittalTypes: [...result] })
+            });
 
             //location
-            dataservice
-                .GetDataListCached(
-                    'GetaccountsDefaultListForList?listType=location',
-                    'title',
-                    'id',
-                    'defaultLists',
-                    'location',
-                    'listType',
-                )
-                .then(result => {
-                    this.setState({
-                        locations: [...result],
-                    });
-                });
+            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=location', 'title', 'id', 'defaultLists', 'location', 'listType').then(result => {
+                this.setState({ locations: [...result] })
+            });
 
             //area
-            dataservice
-                .GetDataListCached(
-                    'GetaccountsDefaultListForList?listType=area',
-                    'title',
-                    'id',
-                    'defaultLists',
-                    'area',
-                    'listType',
-                )
-                .then(result => {
-                    this.setState({
-                        areas: [...result],
-                    });
-                });
+            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=area', 'title', 'id', 'defaultLists', 'area', 'listType').then(result => {
+                this.setState({ areas: [...result] })
+            });
 
             //approvalstatus
-            dataservice
-                .GetDataListCached(
-                    'GetaccountsDefaultListForList?listType=approvalstatus',
-                    'title',
-                    'id',
-                    'defaultLists',
-                    'approvalstatus',
-                    'listType',
-                )
-                .then(result => {
-                    this.setState({
-                        approvales: [...result],
-                    });
-                });
+            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=approvalstatus', 'title', 'id', 'defaultLists', 'approvalstatus', 'listType').then(result => {
+                this.setState({ approvales: [...result] })
+            });
 
             //specsSection
-            dataservice
-                .GetDataListCached(
-                    'GetaccountsDefaultListForList?listType=specssection',
-                    'title',
-                    'id',
-                    'defaultLists',
-                    'specssection',
-                    'listType',
-                )
-                .then(result => {
-                    this.setState({
-                        specsSection: [...result],
-                    });
-                });
+            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=specssection', 'title', 'id', 'defaultLists', 'specssection', 'listType').then(result => {
+                this.setState({ specsSection: [...result] })
+            });
             //contractList
-            dataservice
-                .GetDataList(
-                    'GetPoContractForList?projectId=' + this.props.projectId,
-                    'subject',
-                    'id',
-                )
-                .then(result => {
-                    this.setState({
-                        contracts: [...result],
-                    });
-                });
+            dataservice.GetDataList('GetPoContractForList?projectId=' + this.props.projectId, 'subject', 'id').then(result => {
+                this.setState({ contracts: [...result] })
+            });
         }
     }
     static getDerivedStateFromProps(nextProps, state) {
@@ -752,14 +668,14 @@ class CommonLog extends Component {
         if (stringifiedQuery !== '{}') {
             Api.get(
                 apiFilter +
-                    '?projectId=' +
-                    this.state.projectId +
-                    '&pageNumber=' +
-                    this.state.pageNumber +
-                    '&pageSize=' +
-                    this.state.pageSize +
-                    '&query=' +
-                    stringifiedQuery,
+                '?projectId=' +
+                this.state.projectId +
+                '&pageNumber=' +
+                this.state.pageNumber +
+                '&pageSize=' +
+                this.state.pageSize +
+                '&query=' +
+                stringifiedQuery,
                 undefined,
                 moduleId,
             )
@@ -955,13 +871,20 @@ class CommonLog extends Component {
                         item.dataType === 'number'
                             ? item.dataType
                             : item.dataType === 'date'
-                            ? item.dataType
-                            : 'text',
+                                ? item.dataType
+                                : 'text',
                 };
 
                 if (item.field === 'subject') {
                     obj.href = 'link';
-                    obj.onClick = () => {};
+                    obj.onClick = () => { };
+                    obj.classes = 'bold';
+                    obj.showTip = true;
+                }
+
+                if (item.field === 'description' && documentObj.docTyp == 50) {
+                    obj.href = 'link';
+                    obj.onClick = () => { };
                     obj.classes = 'bold';
                     obj.showTip = true;
                 }
@@ -1002,9 +925,9 @@ class CommonLog extends Component {
             for (var i in ColumnsHideShow) {
                 ColumnsHideShow[i].hidden = false;
             }
-/*
-
-*/
+            /*
+            
+            */
             this.setState({
                 ColumnsHideShow: ColumnsHideShow,
                 exportedColumns: exportedColumns,
@@ -1055,7 +978,7 @@ class CommonLog extends Component {
                     if (cNames[i].field === parsingList[item].field) {
                         let status = parsingList[item].hidden;
                         cNames[i].hidden = status;
-                        cNames[i].width=parsingList[item].width;
+                        cNames[i].width = parsingList[item].width;
                         break;
                     }
                 }
@@ -1228,19 +1151,19 @@ class CommonLog extends Component {
             }
         }
         setTimeout(() => {
-        this.setState({
-        columns: data.filter(i => i.hidden === false),
-        isLoading: false,
-         });
+            this.setState({
+                columns: data.filter(i => i.hidden === false),
+                isLoading: false,
+            });
         }, 300);
-        
 
-         /**************************update localStorege************************ */
-         var selectedCols ={columnsList:[],groups:[]}
-        selectedCols.columnsList=JSON.stringify(data)
-        selectedCols.groups="[]"
-       localStorage.setItem('CommonLog-' + this.state.documentName,JSON.stringify(selectedCols))
-         /*********************************************************** */
+
+        /**************************update localStorege************************ */
+        var selectedCols = { columnsList: [], groups: [] }
+        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.groups = "[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
+        /*********************************************************** */
     };
 
     handleChangeWidth = (key, newWidth) => {
@@ -1261,12 +1184,12 @@ class CommonLog extends Component {
             });
         }, 300);
 
-         /**************************update localStorege************************ */
-         var selectedCols ={columnsList:[],groups:[]}
-         selectedCols.columnsList=JSON.stringify(data)
-         selectedCols.groups="[]"
-        localStorage.setItem('CommonLog-' + this.state.documentName,JSON.stringify(selectedCols))
-          /*********************************************************** */
+        /**************************update localStorege************************ */
+        var selectedCols = { columnsList: [], groups: [] }
+        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.groups = "[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
+        /*********************************************************** */
     };
 
     handleCheckForExport = key => {
@@ -1284,7 +1207,7 @@ class CommonLog extends Component {
 
         var columnsExport = [];
 
-        chosenColumns.forEach(function(d) {
+        chosenColumns.forEach(function (d) {
             columnsExport.push({
                 field: d.field,
                 friendlyName: d.title,
@@ -1445,7 +1368,7 @@ class CommonLog extends Component {
         });
     }
 
-    render() { 
+    render() {
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
             (item, index) => {
                 return item.field == 'id' ? null : (
@@ -1458,7 +1381,7 @@ class CommonLog extends Component {
                                 name="CheckBox"
                                 type="checkbox"
                                 id="allPermissionInput"
-                                 checked={!item.hidden}
+                                checked={!item.hidden}
                                 onChange={e => this.handleCheck(item.field)}
                             />
                             <label>{item.title}</label>
@@ -1493,24 +1416,24 @@ class CommonLog extends Component {
                 return item.type === 'check-box' ||
                     item.field == 'id' ||
                     item.showInExport === false ? null : (
-                    <div className="grid__content" key={item.field}>
-                        <div
-                            className={
-                                'ui checkbox checkBoxGray300 count checked'
-                            }>
-                            <input
-                                name="CheckBox"
-                                type="checkbox"
-                                id={'export_' + item.field}
-                                checked={item.selected}
-                                onChange={e =>
-                                    this.handleCheckForExport(item.field)
-                                }
-                            />
-                            <label>{item.title}</label>
+                        <div className="grid__content" key={item.field}>
+                            <div
+                                className={
+                                    'ui checkbox checkBoxGray300 count checked'
+                                }>
+                                <input
+                                    name="CheckBox"
+                                    type="checkbox"
+                                    id={'export_' + item.field}
+                                    checked={item.selected}
+                                    onChange={e =>
+                                        this.handleCheckForExport(item.field)
+                                    }
+                                />
+                                <label>{item.title}</label>
+                            </div>
                         </div>
-                    </div>
-                );
+                    );
             },
         );
 
@@ -1524,8 +1447,8 @@ class CommonLog extends Component {
                         this.state.documentObj.docTyp == 50
                             ? this.inventoryRowActions
                             : this.state.documentObj.forEditApi != undefined
-                            ? this.rowActions
-                            : null
+                                ? this.rowActions
+                                : null
                     }
                     cells={this.state.columns}
                     openModalColumn={this.state.columnsModal}
@@ -1572,7 +1495,7 @@ class CommonLog extends Component {
                                         obj.isModification = false;
                                     }
                                     if (rowData === 'subject') {
-                                        obj.onClick = () => {};
+                                        obj.onClick = () => { };
                                         obj.classes = 'bold';
                                     }
 
@@ -1582,7 +1505,7 @@ class CommonLog extends Component {
                                     ) {
                                         obj.isModification =
                                             this.state.documentObj.docTyp ===
-                                            114
+                                                114
                                                 ? true
                                                 : false;
                                     }
@@ -1603,7 +1526,7 @@ class CommonLog extends Component {
                             } else {
                                 toast.warning(
                                     Resources['missingPermissions'][
-                                        currentLanguage
+                                    currentLanguage
                                     ],
                                 );
                             }
@@ -1615,8 +1538,8 @@ class CommonLog extends Component {
                     changeValueOfProps={this.changeValueOfProps.bind(this)}
                 />
             ) : (
-                <LoadingSection />
-            );
+                    <LoadingSection />
+                );
 
         const btnExport =
             this.state.export === false ? (
@@ -1728,14 +1651,14 @@ class CommonLog extends Component {
                                     <span className="show-fillter">
                                         {
                                             Resources['showFillter'][
-                                                currentLanguage
+                                            currentLanguage
                                             ]
                                         }
                                     </span>
                                     <span className="hide-fillter">
                                         {
                                             Resources['hideFillter'][
-                                                currentLanguage
+                                            currentLanguage
                                             ]
                                         }
                                     </span>
@@ -1749,13 +1672,13 @@ class CommonLog extends Component {
                             {btnInventoryImportAttach}
 
                             {this.state.documentName !==
-                            'paymentCertification' ? (
-                                <button
-                                    className="primaryBtn-1 btn mediumBtn"
-                                    onClick={() => this.addRecord()}>
-                                    {Resources['new'][currentLanguage]}
-                                </button>
-                            ) : null}
+                                'paymentCertification' ? (
+                                    <button
+                                        className="primaryBtn-1 btn mediumBtn"
+                                        onClick={() => this.addRecord()}>
+                                        {Resources['new'][currentLanguage]}
+                                    </button>
+                                ) : null}
                         </div>
                         <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
@@ -1769,11 +1692,11 @@ class CommonLog extends Component {
                                     {this.state.filterMode
                                         ? this.state.totalRows
                                         : this.state.pageSize *
-                                              this.state.pageNumber +
-                                          this.state.pageSize}
+                                        this.state.pageNumber +
+                                        this.state.pageSize}
                                 </span>
                                 {
-                                   Resources['jqxGridLanguagePagerrangestring'][currentLanguage]
+                                    Resources['jqxGridLanguagePagerrangestring'][currentLanguage]
                                 }
                                 <span> {this.state.totalRows}</span>
                             </div>
@@ -1789,7 +1712,7 @@ class CommonLog extends Component {
                             <button
                                 className={
                                     this.state.totalRows !==
-                                    this.state.pageSize *
+                                        this.state.pageSize *
                                         this.state.pageNumber +
                                         this.state.pageSize
                                         ? 'rowunActive'
@@ -1957,12 +1880,12 @@ class CommonLog extends Component {
                                 {this.state.isExporting == true ? (
                                     <LoadingSection />
                                 ) : (
-                                    <button
-                                        className="btn primaryBtn-2"
-                                        onClick={this.btnExportServerClick}>
-                                        {Resources.export[currentLanguage]}{' '}
-                                    </button>
-                                )}
+                                        <button
+                                            className="btn primaryBtn-2"
+                                            onClick={this.btnExportServerClick}>
+                                            {Resources.export[currentLanguage]}{' '}
+                                        </button>
+                                    )}
                             </div>
                         </div>
                     </div>
@@ -2327,7 +2250,7 @@ class CommonLog extends Component {
                                     submittalTypeId={
                                         this.state.document != null
                                             ? this.state.document
-                                                  .submittalTypeId
+                                                .submittalTypeId
                                             : null
                                     }
                                     area={
@@ -2348,7 +2271,7 @@ class CommonLog extends Component {
                                     approvalStatusId={
                                         this.state.documentCycle != null
                                             ? this.state.documentCycle
-                                                  .approvalStatusId
+                                                .approvalStatusId
                                             : null
                                     }
                                     docType={this.state.docType}
@@ -2363,9 +2286,9 @@ class CommonLog extends Component {
                                         this.GetRecordOfLog(
                                             this.state.isCustom === true
                                                 ? this.state.documentObj
-                                                      .documentApi.getCustom
+                                                    .documentApi.getCustom
                                                 : this.state.documentObj
-                                                      .documentApi.get,
+                                                    .documentApi.get,
                                             this.props.projectId,
                                         );
                                     }}
@@ -2404,11 +2327,20 @@ class CommonLog extends Component {
                                         '/downloads/excel/inventory.xlsx'
                                     }
                                     header="addManyItems"
-                                    afterUpload={() =>
+                                    afterUpload={() => {
                                         this.setState({
                                             inventoryImportAttachmentModal: false,
+                                            isLoading: true
                                         })
-                                    }
+                                        this.GetRecordOfLog(
+                                            this.state.isCustom === true
+                                                ? this.state.documentObj
+                                                    .documentApi.getCustom
+                                                : this.state.documentObj
+                                                    .documentApi.get,
+                                            this.props.projectId,
+                                        );
+                                    }}
                                 />
                             </div>
                         </SkyLightStateless>
@@ -2417,25 +2349,25 @@ class CommonLog extends Component {
                 {/* End Material Inventory Import Section  Ahmed Yousry  */}
 
                 {this.props.document.id > 0 &&
-                this.state.showExportModal == true ? (
-                    <div className="largePopup largeModal ">
-                        <SkyLight
-                            hideOnOverlayClicked
-                            beforeClose={this.ClosxMX}
-                            ref={ref => (this.ExportDetailsDialog = ref)}
-                            title={'export'}>
-                            <div>
-                                <ExportDetails
-                                    docTypeId={this.state.documentObj.docTyp}
-                                    document={this.state.exportDocument}
-                                    documentName={
-                                        this.state.documentObj.documentTitle
-                                    }
-                                />
-                            </div>
-                        </SkyLight>
-                    </div>
-                ) : null}
+                    this.state.showExportModal == true ? (
+                        <div className="largePopup largeModal ">
+                            <SkyLight
+                                hideOnOverlayClicked
+                                beforeClose={this.ClosxMX}
+                                ref={ref => (this.ExportDetailsDialog = ref)}
+                                title={'export'}>
+                                <div>
+                                    <ExportDetails
+                                        docTypeId={this.state.documentObj.docTyp}
+                                        document={this.state.exportDocument}
+                                        documentName={
+                                            this.state.documentObj.documentTitle
+                                        }
+                                    />
+                                </div>
+                            </SkyLight>
+                        </div>
+                    ) : null}
                 {this.state.showInventoryItemsModal == true ? (
                     <div className="largePopup largeModal ">
                         <InventoryItemsModal

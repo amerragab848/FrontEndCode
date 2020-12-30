@@ -938,7 +938,7 @@ class variationOrderAddEdit extends Component {
                 <Fragment>
                   <div className="subiTabsContent feilds__top">
                     <AddItemDescription
-                      docLink={this.state.document.isRaisedPrices =="true" ? "" : "/Downloads/Excel/VoItems.xlsx"}
+                      docLink={this.state.document.isRaisedPrices =="true"||this.state.document.isRaisedPrices ==true ? "" : "/Downloads/Excel/VoItems.xlsx"}
                       showImportExcel={this.state.document.isRaisedPrices}
                       docType={this.state.document.isRaisedPrices =="true" ? "VoItemPrices" : "voItems"}
                       isViewMode={this.state.isViewMode}
