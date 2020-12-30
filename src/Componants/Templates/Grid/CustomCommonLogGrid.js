@@ -44,7 +44,6 @@ export default class CustomGrid extends Component {
                 state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
-<<<<<<< HEAD
         
         // if(this.props.data !=undefined && this.props.data[0].docDate !=undefined )
         // {
@@ -56,7 +55,6 @@ export default class CustomGrid extends Component {
         //     }
         // }
        
-=======
         if (this.props.data.length > 0) {
             if (this.props.data[0].docDate != undefined) {
                 for (var i in this.props.data) {
@@ -67,7 +65,6 @@ export default class CustomGrid extends Component {
             }
         }
 
->>>>>>> 16fcd8177ca37f58e28c4d008037f7a10d7132be
         let ColumnsHideShow = this.props.cells;
         for (var i in ColumnsHideShow) {
             ColumnsHideShow[i].hidden = false;
