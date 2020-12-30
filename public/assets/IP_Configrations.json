@@ -28,5 +28,5 @@
   "dashboardApi": 3,
   "refCodeValidation": false,
   "activeExport": false,    
-  "useBackResources": false
+  "useBackResources": false 
 }
