@@ -12,8 +12,6 @@ import * as Yup from 'yup';
 import Api from '../../api';
 import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
 import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription';
-//import { nullLiteral } from '@babel/types';
-//import UploadBoqAttachment from '../../Componants/OptionsPanels/UploadBoqAttachment';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
@@ -124,7 +122,7 @@ class boqAddEdit extends Component {
         }
 
         this.boqItems = [
-            { title: '', type: 'check-box', fixed: true, field: 'id', width: 4 },
+            { title: '', type: 'check-box', fixed: true, field: 'id', width: 3 },
             {
                 field: 'arrange',
                 title: Resources['no'][currentLanguage],
@@ -169,7 +167,6 @@ class boqAddEdit extends Component {
                 field: 'description',
                 title: Resources['details'][currentLanguage],
                 width: 20,
-                showTip: true,
                 groupable: true,
                 fixed: false,
                 sortable: true,
@@ -225,21 +222,14 @@ class boqAddEdit extends Component {
                     if (Config.IsAllow(617)) {
                         this.setState({ isLoading: true });
 
-                        Api.post(
-                            'EditBoqItemUnitPrice?id=' +
-                            cell.id +
-                            '&unitPrice=' +
-                            cell.unitPrice,
-                        )
-                            .then(() => {
-                                toast.success(
-                                    Resources['operationSuccess'][
-                                    currentLanguage
-                                    ],
-                                );
-                                this.setState({ isLoading: false });
-                            })
-                            .catch(() => {
+                        Api.post('EditBoqItemUnitPrice?id=' + cell.id + '&unitPrice=' + cell.unitPrice).then(() => {
+                            toast.success(
+                                Resources['operationSuccess'][
+                                currentLanguage
+                                ],
+                            );
+                            this.setState({ isLoading: false });
+                        }) .catch(() => {
                                 toast.error(
                                     Resources['operationCanceled'][
                                     currentLanguage
@@ -703,43 +693,45 @@ class boqAddEdit extends Component {
         if (boqItemsList.length === 0) {
             let Table = [];
             this.setState({
-                isLoading: true,
-                LoadingPage: true
+                LoadingPage: true,
+                isLoading: true
             });
             Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize).then(res => {
                 let data = { items: res };
-                res.forEach((element) => {
-                    Table.push({
-                        id: element.id,
-                        boqId: element.boqId,
-                        unitPrice: this.state.items.unitPrice,
-                        itemType: element.itemType,
-                        itemTypeLabel: '',
-                        days: element.days,
-                        equipmentType: element.equipmentType,
-                        equipmentTypeLabel: '',
-                        editable: true,
-                        boqSubTypeId: element.boqSubTypeId,
-                        boqTypeId: element.boqTypeId,
-                        boqChildTypeId: element.boqChildTypeId,
-                        arrange: element.arrange,
-                        boqType: element.boqType,
-                        boqTypeChild: element.boqTypeChild,
-                        boqSubType: element.boqSubType,
-                        itemCode: element.itemCode,
-                        description: element.description,
-                        quantity: element.quantity,
-                        revisedQuntitty: element.revisedQuantity,
-                        unit: element.unit,
-                        unitPrice: element.unitPrice,
-                        total: element.total,
-                        resourceCode: element.resourceCode,
-                    });
+                // res.forEach((element) => {
+                //     Table.push({
+                //         id: element.id,
+                //         boqId: element.boqId,
+                //         unitPrice: this.state.items.unitPrice,
+                //         itemType: element.itemType,
+                //         itemTypeLabel: '',
+                //         days: element.days,
+                //         equipmentType: element.equipmentType,
+                //         equipmentTypeLabel: '',
+                //         editable: true,
+                //         boqSubTypeId: element.boqSubTypeId,
+                //         boqTypeId: element.boqTypeId,
+                //         boqChildTypeId: element.boqChildTypeId,
+                //         arrange: element.arrange,
+                //         boqType: element.boqType,
+                //         boqTypeChild: element.boqTypeChild,
+                //         boqSubType: element.boqSubType,
+                //         itemCode: element.itemCode,
+                //         description: element.description,
+                //         quantity: element.quantity,
+                //         revisedQuntitty: element.revisedQuantity,
+                //         unit: element.unit,
+                //         unitPrice: element.unitPrice,
+                //         total: element.total,
+                //         resourceCode: element.resourceCode,
+                //     });
+                // });
+                this.setState({
+                    _items: res,
+                    LoadingPage: false,
+                    isLoading: false
                 });
-                this.setState({ _items: Table, isLoading: false, LoadingPage: false });
-                this.props.actions.ExportingData(data);
-               
-
+                //this.props.actions.ExportingData(data);
             });
         }
     }
@@ -753,17 +745,15 @@ class boqAddEdit extends Component {
     componentWillReceiveProps(props, state) {
         if (props.document.id !== this.props.document.id) {
             let docDate = moment(props.document.documentDate);
-            props.document.statusName = props.document.status
-                ? 'Opened'
-                : 'Closed';
-            let document = Object.assign(props.document, {
-                documentDate: docDate,
-            });
+            props.document.statusName = props.document.status ? 'Opened' : 'Closed';
+            let document = Object.assign(props.document, { documentDate: docDate, });
             this.setState({ document });
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
+
         let _items = props.items ? props.items : [];
+
         if (
             JSON.stringify(this.state._items.length) != JSON.stringify(_items)
         ) {
@@ -919,11 +909,11 @@ class boqAddEdit extends Component {
         if (stepNo == 2 && this.state.docId > 0) {
             Api.get(`GetBoqTotal?id=${this.state.docId}`).then(result => {
                 this.setState({
-                    createdBoqTotal: result || 0 
+                    createdBoqTotal: result || 0
                 });
             });
         }
-        
+
         if (stepNo == 1 && this.state.docId > 0) {
             this.getTabelData();
         }

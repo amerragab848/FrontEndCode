@@ -28,7 +28,7 @@
 
  
   "commonLogApi": 2,
-  "dashboardApi": 1,
+  "dashboardApi": 3,
   "refCodeValidation": false,
   "activeExport": true,
   "useBackResources": false

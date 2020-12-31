@@ -15,7 +15,7 @@ export default class CustomGrid extends Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
             columns: this.props.cells,
             rows: this.props.data,
@@ -77,7 +77,6 @@ export default class CustomGrid extends Component {
 
             state.filterLoading = false;
         }
-
         this.setState({ GridLoading: true })
 
         var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
@@ -120,7 +119,7 @@ export default class CustomGrid extends Component {
             this.setState(
                 state
             );
-        }, 500);
+        }, 500); 
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -175,7 +174,7 @@ export default class CustomGrid extends Component {
             this.setState({
                 columns: ColumnsHideShow.filter(i => i.hidden === false),
                 ColumnsHideShow: ColumnsHideShow.filter(i => i.hidden === false),
-                Loading: false, 
+                Loading: false,
                 columnsModal: false
             })
         }, 300)
@@ -550,7 +549,7 @@ export default class CustomGrid extends Component {
                 </div>
             )
         })
-        
+
         return (
             <Fragment>
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
@@ -709,21 +708,23 @@ export default class CustomGrid extends Component {
                     </div>
 
                     {this.state.GridLoading === false ?
+ 
                         <GridCustom
                             key={this.props.gridKey}
                             cells={this.state.columns.filter(i => i.hidden != true)}
-                            data={this.state.rows}
+                            data={this.props.data}
                             actions={this.props.actions}
                             rowActions={this.props.rowActions}
                             rowClick={cell => this.props.rowClick(cell)}
                             groups={this.state.groupsList}
                             handleGroupUpdate={this.handleGroupEvent}
                             showPicker={this.props.showPicker}
-                             //shouldCheck={this.props.shouldCheck}
+                            shouldCheck={this.props.shouldCheck}
                         />
-                        : <div style={{ position: 'relative' }}>
-                            <LoadingSection />
-                        </div>}
+                        :
+                    <LoadingSection />
+                    }
+
 
                 </div>
 
