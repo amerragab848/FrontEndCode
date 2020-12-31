@@ -44,17 +44,7 @@ export default class CustomGrid extends Component {
                 state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
-        
-        // if(this.props.data !=undefined && this.props.data[0].docDate !=undefined )
-        // {
-        //     for( var i in this.props.data)
-        //     {
-        //         if(this.props.data[i].docDate !=null){
-        //             this.props.data[i].docDate= this.props.data[i].docDate.split('T')[0]
-        //         }
-        //     }
-        // }
-       
+ 
         if (this.props.data.length > 0) {
             if (this.props.data[0].docDate != undefined) {
                 for (var i in this.props.data) {

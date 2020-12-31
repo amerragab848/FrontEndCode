@@ -121,12 +121,6 @@ class Accounts extends Component {
                 isCustom: true
             },
             {
-                field: "empCode",
-                name: "employeeCode",
-                type: "number",
-                isCustom: true
-            },
-            {
                 field: "supervisorName",
                 name: "SupervisorName",
                 type: "string",
@@ -137,27 +131,25 @@ class Accounts extends Component {
                 name: "CompanyName",
                 type: "string",
                 isCustom: true
-            },
-            {
-                field: "userType",
-                name: "userType",
-                type: "string",
-                isCustom: true
-            }
-            ,
+            }, 
             {
                 field: "groupName",
                 name: "GroupName",
                 type: "string",
                 isCustom: true
-            }
-            ,
+            }            ,
             {
                 field: "active",
                 name: "activationStatus",
                 type: "toggle",
                 trueLabel: "active",
                 falseLabel: "inActive",
+                isCustom: true
+            },
+            {
+                field: "empCode",
+                name: "employeeCode",
+                type: "number",
                 isCustom: true
             }
         ];
@@ -422,6 +414,7 @@ class Accounts extends Component {
         else
             this.setState({ showCheckbox: false })
     }
+
     componentDidMount = () => {
         if (config.IsAllow(794)) {
             // let pageNumber = this.state.pageNumber + 1
