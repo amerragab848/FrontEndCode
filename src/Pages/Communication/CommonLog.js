@@ -1282,29 +1282,72 @@ class CommonLog extends Component {
             data.query = stringifiedQuery;
             data.chosenColumns = chosenColumns;
 
-            dataservice
-                .addObjectCore('ExcelServerExport', data, 'POST')
-                .then(data => {
-                    if (data) {
-                        data =
-                            Config.getPublicConfiguartion().downloads +
-                            '/' +
-                            data;
-                        var a = document.createElement('A');
-                        a.href = data;
-                        a.download = data.substr(data.lastIndexOf('/') + 1);
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
+            dataservice.addObjectCore('ExcelServerExport', data, 'POST').then(data => {
+                if (data) {
+                    data =
+                        Config.getPublicConfiguartion().downloads +
+                        '/' +
+                        data;
+                    var a = document.createElement('A');
+                    a.href = data;
+                    a.download = data.substr(data.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
 
-                        this.setState({
-                            exportColumnsModal: false,
-                            isExporting: false,
-                        });
-                    }
-                });
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false,
+                    });
+                }
+            });
         }
     };
+
+    btnExportStatisticsClick = () => {
+
+        if (Config.getPublicConfiguartion().activeExport != true) {
+            toast.warn('This feature is disabled. Please call your administrator for assistance');
+            return;
+          }
+      
+        let chosenColumns = this.state.columnsExport;
+        if (chosenColumns.length > 2) {
+            toast.warning("Can't Draw With more than 2 Columns Choosen");
+        }
+        else {
+            this.setState({ isExporting: true }); 
+            let query = this.state.query;
+            var stringifiedQuery = JSON.stringify(query);
+
+            if (stringifiedQuery == '{"isCustom":true}') {
+                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+            } else {
+                stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
+            }
+
+            let data = {};
+            data.query = stringifiedQuery;
+            data.columns = chosenColumns;
+            data.projectId = this.state.projectId;
+
+            dataservice.addObjectCore("GetStatisticSubmittalForProjectId", data, 'POST').then(data => {
+                if (data) {
+                    data = Config.getPublicConfiguartion().downloads + '/' + data;
+                    var a = document.createElement('A');
+                    a.href = data;
+                    a.download = data.substr(data.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    this.setState({ exportColumnsModal: false, isExporting: false })
+                }
+            }).catch(e => {
+                this.setState({ exportColumnsModal: false })
+            });
+        }
+    }
 
     changeValueOfProps = () => {
         this.setState({ isFilter: false });
@@ -1437,118 +1480,114 @@ class CommonLog extends Component {
             },
         );
 
-        const dataGrid =
-            this.state.isLoading === false ? (
-                <GridCustom
-                    gridKey={'CommonLog-' + this.state.documentName}
-                    data={this.state.rows}
-                    actions={this.actions}
-                    rowActions={
-                        this.state.documentObj.docTyp == 50
-                            ? this.inventoryRowActions
-                            : this.state.documentObj.forEditApi != undefined
-                                ? this.rowActions
-                                : null
-                    }
-                    cells={this.state.columns}
-                    openModalColumn={this.state.columnsModal}
-                    rowClick={cell => {
-                        if (cell.id != 0) {
-                            if (
-                                Config.IsAllow(
-                                    this.state.documentObj
-                                        .documentViewPermission,
-                                ) ||
-                                Config.IsAllow(
-                                    this.state.documentObj
-                                        .documentEditPermission,
-                                )
-                            ) {
-                                let addView = this.state.routeAddEdit;
+        const dataGrid = this.state.isLoading === false ? (
+            <GridCustom
+                gridKey={'CommonLog-' + this.state.documentName}
+                data={this.state.rows}
+                actions={this.actions}
+                rowActions={
+                    this.state.documentObj.docTyp == 50
+                        ? this.inventoryRowActions
+                        : this.state.documentObj.forEditApi != undefined
+                            ? this.rowActions
+                            : null
+                }
+                cells={this.state.columns}
+                openModalColumn={this.state.columnsModal}
+                rowClick={cell => {
+                    if (cell.id != 0) {
+                        if (
+                            Config.IsAllow(
+                                this.state.documentObj
+                                    .documentViewPermission,
+                            ) ||
+                            Config.IsAllow(
+                                this.state.documentObj
+                                    .documentEditPermission,
+                            )
+                        ) {
+                            let addView = this.state.routeAddEdit;
 
-                                let columns = this.state.columns;
+                            let columns = this.state.columns;
 
-                                let rowData = columns.filter(
-                                    x => x.id == cell.id - 1,
-                                ).key;
+                            let rowData = columns.filter(
+                                x => x.id == cell.id - 1,
+                            ).key;
 
-                                if (rowData !== 'subject') {
-                                    let obj = {
-                                        docId: cell.id,
-                                        projectId: this.state.projectId,
-                                        projectName: this.state.projectName,
-                                        arrange: 0,
-                                        docApprovalId: 0,
-                                        isApproveMode: false,
-                                        perviousRoute:
-                                            window.location.pathname +
-                                            window.location.search,
-                                    };
-                                    if (
-                                        documentObj.documentAddEditLink.replace(
-                                            '/',
-                                            '',
-                                        ) == 'addEditModificationDrawing'
-                                    ) {
-                                        obj.isModification = true;
-                                    } else {
-                                        obj.isModification = false;
-                                    }
-                                    if (rowData === 'subject') {
-                                        obj.onClick = () => { };
-                                        obj.classes = 'bold';
-                                    }
-
-                                    if (
-                                        this.state.documentObj.docTyp === 37 ||
-                                        this.state.documentObj.docTyp === 114
-                                    ) {
-                                        obj.isModification =
-                                            this.state.documentObj.docTyp ===
-                                                114
-                                                ? true
-                                                : false;
-                                    }
-
-                                    let parms = CryptoJS.enc.Utf8.parse(
-                                        JSON.stringify(obj),
-                                    );
-
-                                    let encodedPaylod = CryptoJS.enc.Base64.stringify(
-                                        parms,
-                                    );
-
-                                    this.props.history.push({
-                                        pathname: '/' + addView,
-                                        search: '?id=' + encodedPaylod,
-                                    });
+                            if (rowData !== 'subject') {
+                                let obj = {
+                                    docId: cell.id,
+                                    projectId: this.state.projectId,
+                                    projectName: this.state.projectName,
+                                    arrange: 0,
+                                    docApprovalId: 0,
+                                    isApproveMode: false,
+                                    perviousRoute:
+                                        window.location.pathname +
+                                        window.location.search,
+                                };
+                                if (
+                                    documentObj.documentAddEditLink.replace(
+                                        '/',
+                                        '',
+                                    ) == 'addEditModificationDrawing'
+                                ) {
+                                    obj.isModification = true;
+                                } else {
+                                    obj.isModification = false;
                                 }
-                            } else {
-                                toast.warning(
-                                    Resources['missingPermissions'][
-                                    currentLanguage
-                                    ],
-                                );
-                            }
-                        }
-                    }}
-                    groups={this.state.groups}
-                    isFilter={this.state.isFilter}
-                    showCheckAll={true}
-                    changeValueOfProps={this.changeValueOfProps.bind(this)}
-                />
-            ) : (
-                    <LoadingSection />
-                );
+                                if (rowData === 'subject') {
+                                    obj.onClick = () => { };
+                                    obj.classes = 'bold';
+                                }
 
-        const btnExport =
-            this.state.export === false ? (
-                <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={this.state.columns}
-                    fileName={this.state.pageTitle}
-                />
-            ) : null;
+                                if (
+                                    this.state.documentObj.docTyp === 37 ||
+                                    this.state.documentObj.docTyp === 114
+                                ) {
+                                    obj.isModification =
+                                        this.state.documentObj.docTyp ===
+                                            114
+                                            ? true
+                                            : false;
+                                }
+
+                                let parms = CryptoJS.enc.Utf8.parse(
+                                    JSON.stringify(obj),
+                                );
+
+                                let encodedPaylod = CryptoJS.enc.Base64.stringify(
+                                    parms,
+                                );
+
+                                this.props.history.push({
+                                    pathname: '/' + addView,
+                                    search: '?id=' + encodedPaylod,
+                                });
+                            }
+                        } else {
+                            toast.warning(
+                                Resources['missingPermissions'][
+                                currentLanguage
+                                ],
+                            );
+                        }
+                    }
+                }}
+                groups={this.state.groups}
+                isFilter={this.state.isFilter}
+                showCheckAll={true}
+                changeValueOfProps={this.changeValueOfProps.bind(this)}
+            />
+        ) : (<LoadingSection />);
+
+        const btnExport = this.state.export === false ? (
+            <Export
+                rows={this.state.isLoading === false ? this.state.rows : []}
+                columns={this.state.columns}
+                fileName={this.state.pageTitle}
+            />
+        ) : null;
 
         const btnExportServer =
             this.state.showExServerBtn == true ? (
@@ -1567,6 +1606,7 @@ class CommonLog extends Component {
                     {Resources['DocTemplate'][currentLanguage]}
                 </button>
             ) : null;
+
         const btnInventoryImportAttach =
             this.state.showInventoryImportAttachBtn == true ? (
                 <button
@@ -1880,11 +1920,10 @@ class CommonLog extends Component {
                                 {this.state.isExporting == true ? (
                                     <LoadingSection />
                                 ) : (
-                                        <button
-                                            className="btn primaryBtn-2"
-                                            onClick={this.btnExportServerClick}>
-                                            {Resources.export[currentLanguage]}{' '}
-                                        </button>
+                                        <>
+                                            <button className="btn primaryBtn-2" onClick={this.btnExportServerClick}>{Resources.export[currentLanguage]} </button>
+                                            <button className="btn primaryBtn-2" onClick={this.btnExportStatisticsClick}>{Resources.exportStatistic[currentLanguage]} </button>
+                                        </>
                                     )}
                             </div>
                         </div>
