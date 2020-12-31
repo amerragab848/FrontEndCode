@@ -1576,8 +1576,8 @@ class CommonLog extends Component {
                 }}
                 groups={this.state.groups}
                 isFilter={this.state.isFilter}
-                showCheckAll={true}
                 changeValueOfProps={this.changeValueOfProps.bind(this)}
+                showCheckAll={true}
             />
         ) : (<LoadingSection />);
 

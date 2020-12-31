@@ -22,7 +22,7 @@ import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
+import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescription";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";

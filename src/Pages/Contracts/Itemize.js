@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Api from "../../api";
 import Resources from "../../resources.json";
-//import _ from "lodash"; 
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import CryptoJS from "crypto-js";
@@ -10,20 +9,17 @@ import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
+import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescription";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import SkyLight from "react-skylight";
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 let boqId = 0;
-let projectId = 0;
 let id = 0;
 let projectName = "";
 
@@ -226,6 +222,7 @@ class Itemize extends Component {
     }
 
     componentDidUpdate(prevProps) { }
+
     extractDataFromURL(url) {
         const query = new URLSearchParams(url);
         let index = 0;
@@ -238,7 +235,6 @@ class Itemize extends Component {
                         )
                     );
                     boqId = obj.boqId;
-                    projectId = obj.projectId;
                     id = obj.id;
                     projectName = obj.projectName;
                 } catch {
@@ -273,18 +269,14 @@ class Itemize extends Component {
     }
 
     checkItemCode = code => {
-        Api.get(
-            "GetItemCode?itemCode=" +
-            code +
-            "&projectId=" +
-            this.state.projectId
-        ).then(res => {
+        Api.get("GetItemCode?itemCode=" + code + "&projectId=" + this.state.projectId).then(res => {
             if (res == true) {
                 toast.error(Resources["itemCodeExist"][currentLanguage]);
                 this.setState({ items: { ...this.state.items, itemCode: "" } });
             }
         });
     };
+    
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }

@@ -8,8 +8,7 @@ import { bindActionCreators } from "redux";
 
 import * as dashboardComponantActions from "../../store/actions/communication";
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class LeftReportMenu extends Component {
     constructor(props) {
@@ -28,8 +27,7 @@ class LeftReportMenu extends Component {
         Router.map(route => {
             if (route.settings) {
                 if (route.settings.OtherReports === true) {
-                    if (Config.IsAllow(route.settings.permission)) {
-                        console.log(route.title);
+                    if (Config.IsAllow(route.settings.permission)) { 
                         OtherReports.push({
                             label: Resources[route.title][currentLanguage],
                             value: route.moduleId
@@ -141,7 +139,6 @@ class LeftReportMenu extends Component {
     getReport = event => {
         this.setState({ selectedReport: event });
         localStorage.setItem('SelectedReport', JSON.stringify(event));
-        console.log(event.value)
         if (event.value) {
             import(`../../Pages/ReportsCenter/${event.value}`).then(module =>
                 this.setState({ module: module.default })
@@ -161,7 +158,7 @@ class LeftReportMenu extends Component {
         this.props.actions.ReportCenterMenuClick();
 
         var selectedReport = localStorage.getItem("SelectedReport") != null ? JSON.parse(localStorage.getItem("SelectedReport")) : this.state.selectedReport;
-        if(selectedReport.value != "0" || selectedReport.value > 0)this.getReport(selectedReport)
+        if (selectedReport.value != "0" || selectedReport.value > 0) this.getReport(selectedReport)
         this.setState({ selectedReport: selectedReport });
     }
 
@@ -228,14 +225,14 @@ class LeftReportMenu extends Component {
                                 </label>
                                 <div className="reposrts__menu--dropdown">
                                     <Dropdown
-                                        data={this.state.subReports} 
+                                        data={this.state.subReports}
                                         selectedValue={this.state.selectedReport}
                                         handleChange={event => this.getReport(event)} name="drop" id="drop" />
                                 </div>
                                 {this.state.selectedReport.value > 0 || this.state.selectedReport.value != "0" ?
                                     <div>
                                         <button
-                                            onClick={() => this.getExternalLink(this.state.selectedReport)} 
+                                            onClick={() => this.getExternalLink(this.state.selectedReport)}
                                             className="reports__menu_btn" >
                                             <i className="fa fa-external-link" aria-hidden="true"></i>
 

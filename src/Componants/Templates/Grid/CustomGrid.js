@@ -5,10 +5,6 @@ import moment from "moment";
 import Resources from "../../../resources.json";
 import { isEqual } from 'lodash';
 import LoadingSection from "../../publicComponants/LoadingSection";
-// import { withRouter } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import * as communicationActions from '../../../store/actions/communication';
 import { Slider } from 'react-semantic-ui-range';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -19,6 +15,7 @@ export default class CustomGrid extends Component {
 
     constructor(props) {
         super(props);
+        
         this.state = {
             columns: this.props.cells,
             rows: this.props.data,
@@ -60,6 +57,7 @@ export default class CustomGrid extends Component {
                 state[index + "-column"] = '';
             }
         });
+
         var filters = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
         if (filters.Filters) {
@@ -75,7 +73,8 @@ export default class CustomGrid extends Component {
                     state[element.index + "-column"] = element.value;
                 }
             });
-            this.getRowsFilter(rows, obj, 0);
+            this.getRowsFilter(rows, obj);
+
             state.filterLoading = false;
         }
 
@@ -86,6 +85,7 @@ export default class CustomGrid extends Component {
         var currentGP = this.props.groups;
 
         let itemsColumns = this.props.cells.map(item => ({ ...item, hidden: false }));
+
         if (selectedCols.length === 0) {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
@@ -124,8 +124,6 @@ export default class CustomGrid extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, state) {
-
-
         if (nextProps.isFilter && isEqual(state.rows, nextProps.data)) {
             return {
                 rows: nextProps.data,
@@ -137,7 +135,6 @@ export default class CustomGrid extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.isFilter && isEqual(prevState.rows, this.props.data)) {
-
             this.props.changeValueOfProps();
             this.setState({
                 GridLoading: false
@@ -178,7 +175,8 @@ export default class CustomGrid extends Component {
             this.setState({
                 columns: ColumnsHideShow.filter(i => i.hidden === false),
                 ColumnsHideShow: ColumnsHideShow.filter(i => i.hidden === false),
-                Loading: false, columnsModal: false
+                Loading: false, 
+                columnsModal: false
             })
         }, 300)
     };
@@ -327,7 +325,7 @@ export default class CustomGrid extends Component {
 
             let rows = [...this.state.filteredRows];
 
-            this.getRowsFilter(rows, newFilters, index);
+            this.getRowsFilter(rows, newFilters);
             let newFilterLst = this.state.localStorFiltersList;
 
             const i = newFilterLst.findIndex(x => x.index === index);
@@ -352,7 +350,7 @@ export default class CustomGrid extends Component {
         }
     }
 
-    getRowsFilter = (rows, _filters, index) => {
+    getRowsFilter = (rows, _filters) => {
 
         if (this.state.filteredRows.length > 0) {
 
@@ -504,23 +502,23 @@ export default class CustomGrid extends Component {
     handleChangeWidth = (key, newWidth) => {
         this.setState({ GridLoading: true });
 
-        let data = this.state.ColumnsHideShow;
-        for (var i in data) {
-            if (data[i].field === key) {
-                data[i].width = newWidth.toString();
+        let ColumnsHideShow = this.state.ColumnsHideShow;
+        for (var i in ColumnsHideShow) {
+            if (ColumnsHideShow[i].field === key) {
+                ColumnsHideShow[i].width = newWidth.toString();
                 break;
             }
         }
 
         setTimeout(() => {
             this.setState({
-                columns: data.filter(i => i.hidden == false),
+                columns: ColumnsHideShow.filter(i => i.hidden == false),
                 GridLoading: false,
             });
         }, 300);
 
         var selectedCols = { columnsList: [], groups: [] };
-        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.columnsList = JSON.stringify(ColumnsHideShow)
         selectedCols.groups = JSON.stringify(this.props.groups);
         localStorage.setItem(this.props.gridKey, JSON.stringify(selectedCols))
     };
@@ -528,32 +526,31 @@ export default class CustomGrid extends Component {
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
+
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
             return (
+
                 <div className="grid__content" key={item.field}>
                     <div className={'ui checkbox checkBoxGray300 count checked  ' + (item.fixed === true ? 'disabled' : '')}>
                         <input name="CheckBox" type="checkbox" id={item.field} checked={!item.hidden}
                             onChange={(e) => this.handleCheck(item.field)} />
                         <label>{item.title}</label>
                     </div>
-                    <p className="rangeSlider">
-                        <Slider
-                            key={item.field} discrete color="blue" inverted={false}
-                            settings={{
-                                start: parseInt(item.width ? item.width : 2), min: 5, max: 50, step: 5,
-                                onChange: e => {
-                                    this.handleChangeWidth(item.field, e);
-                                },
-                            }}
-                        />
-                        <label className="rangeLabel" color="red">
-                            Width: {item.width} px
-                            </label>
-                    </p>
-
+                    {item.field == 'id' || item.type === "check-box" ? null :
+                        <p className="rangeSlider">
+                            <Slider
+                                key={item.field} discrete color="blue" inverted={false}
+                                settings={{
+                                    start: parseInt(item.width ? item.width : 2), min: 5, max: 50, step: 5,
+                                    onChange: e => { this.handleChangeWidth(item.field, e); },
+                                }}
+                            />
+                            <label className="rangeLabel" color="red"> Width: {item.width} px </label>
+                        </p>}
                 </div>
             )
         })
+        
         return (
             <Fragment>
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
@@ -627,11 +624,7 @@ export default class CustomGrid extends Component {
                         <div style={{ position: 'relative', minHeight: '200px' }}>
                             <div className="header-filter">
                                 <h2 className="zero">Filter results</h2>
-                                {this.state.rows ?
-                                    <span><span className={this.state.Loading ? "res__load" : ""}>{this.state.rows.length}</span> Results</span>
-                                    :
-                                    null
-                                }
+                                {this.state.rows ? <span><span className={this.state.Loading ? "res__load" : ""}>{this.state.rows.length}</span> Results</span> : null}
                             </div>
                             <div className="content">
                                 <div className="filter__warrper">
@@ -716,9 +709,9 @@ export default class CustomGrid extends Component {
                     </div>
 
                     {this.state.GridLoading === false ?
-                        (<GridCustom
-                            gridKey={this.props.gridKey}
-                            cells={(this.state.columns).filter(i => i.hidden != true)}
+                        <GridCustom
+                            key={this.props.gridKey}
+                            cells={this.state.columns.filter(i => i.hidden != true)}
                             data={this.state.rows}
                             actions={this.props.actions}
                             rowActions={this.props.rowActions}
@@ -726,9 +719,11 @@ export default class CustomGrid extends Component {
                             groups={this.state.groupsList}
                             handleGroupUpdate={this.handleGroupEvent}
                             showPicker={this.props.showPicker}
-                            shouldCheck={this.props.shouldCheck}
-                        />)
-                        : <LoadingSection />}
+                             //shouldCheck={this.props.shouldCheck}
+                        />
+                        : <div style={{ position: 'relative' }}>
+                            <LoadingSection />
+                        </div>}
 
                 </div>
 

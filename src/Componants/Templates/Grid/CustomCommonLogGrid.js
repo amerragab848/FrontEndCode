@@ -44,7 +44,7 @@ export default class CustomGrid extends Component {
                 state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
- 
+
         if (this.props.data.length > 0) {
             if (this.props.data[0].docDate != undefined) {
                 for (var i in this.props.data) {
@@ -192,7 +192,7 @@ export default class CustomGrid extends Component {
                 {btnDocumentTemplate}
                 {this.state.GridLoading === false ? (
                     <GridCustom
-                        gridKey={this.props.gridKey}
+                        key={this.props.gridKey}
                         cells={this.state.columns.filter(i => i.hidden != true)}
                         data={this.state.rows}
                         pageSize={this.props.pageSize}
@@ -203,9 +203,7 @@ export default class CustomGrid extends Component {
                         handleGroupUpdate={this.handleGroupEvent}
                         showCheckAll={this.props.showCheckAll}
                     />
-                ) : (
-                        <LoadingSection />
-                    )}
+                ) : (<LoadingSection />)}
             </Fragment>
         );
     }
