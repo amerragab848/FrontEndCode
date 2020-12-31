@@ -137,8 +137,7 @@ class Accounts extends Component {
                 name: "GroupName",
                 type: "string",
                 isCustom: true
-            }
-            ,
+            }            ,
             {
                 field: "active",
                 name: "activationStatus",

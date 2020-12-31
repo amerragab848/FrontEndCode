@@ -314,13 +314,8 @@ class WFActivityReport extends Component {
                                     this.state.pageNumber +
                                     this.state.pageSize}
                             </span>
-                            {
-                                // Resources['jqxGridLanguage'][
-                                //     currentLanguage
-                                // ].localizationobj.pagerrangestring
-                                Resources['jqxGridLanguagePagergotopagestring'][
-                                    currentLanguage
-                                ]
+                            { 
+                                Resources['jqxGridLanguagePagergotopagestring'][currentLanguage]
                             }
                             <span> {this.state.totalRows}</span>
                         </div>

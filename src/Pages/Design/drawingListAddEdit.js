@@ -27,6 +27,7 @@ import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -190,7 +191,8 @@ class drawingListAddEdit extends Component {
 
             PriorityData: [],
             ToCompany: [],
-            contactData: []
+            contactData: [],
+            docTemplateModal:false
         }
 
 
@@ -271,7 +273,12 @@ class drawingListAddEdit extends Component {
             this.setState({ isViewMode: false });
         }
     }
-
+    btnDocumentTemplateShowModal = () => {
+        this.setState({
+            docTemplateModal: true,
+        });
+      };
+    
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let doc = nextProps.document
@@ -728,6 +735,14 @@ class drawingListAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
     render() {
+        const btnDocumentTemplate =(
+            <button
+                className="primaryBtn-2 btn mediumBtn"
+                onClick={() => this.btnDocumentTemplateShowModal()}>
+                {Resources['DocTemplate'][currentLanguage]}
+            </button>
+        ) 
+
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
@@ -758,11 +773,14 @@ class drawingListAddEdit extends Component {
                                 <div className='ui input inputDev linebylineInput '>
                                     <Dropdown title='descipline' data={this.state.DesciplineDropData}
                                         selectedValue={this.state.selectDescipline}
-                                        handleChange={(e) => this.handleChangeDisciplineDrop(e)} />
+                                        handleChange={(e) => this.handleChangeDisciplineDrop(e)} 
+                                        />
                                 </div>
                                 <div className='ui input inputDev linebylineInput '>
+                                    {btnDocumentTemplate}
                                     {this.state.ShowAddItem ? <button className="primaryBtn-1 btn meduimBtn" onClick={this.ShowPopUpForAdd}>Add</button> : null}
                                 </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -1123,7 +1141,6 @@ class drawingListAddEdit extends Component {
                     </div>
 
                 </div>
-
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessageContent"][currentLanguage]}
@@ -1133,6 +1150,59 @@ class drawingListAddEdit extends Component {
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                     />
                 ) : null}
+
+                 {/**************************drawing list items *********************/}
+        {this.state.docTemplateModal == true ? (
+                    <div className="largePopup largeModal ">
+                        <SkyLightStateless
+                            onOverlayClicked={() =>
+                                this.setState({ docTemplateModal: false })
+                            }
+                            title={Resources['DocTemplate'][currentLanguage]}
+                            onCloseClicked={() =>
+                                this.setState({ docTemplateModal: false })
+                            }
+                            isVisible={this.state.docTemplateModal}>
+                            <div className="proForm datepickerContainer customLayout">
+                           
+                                <div className="dropdownFullWidthContainer">
+                                  <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown title="disciplineTitle"
+                                        isMulti={false}
+                                        data={this.state.DesciplineDropData}
+                                        selectedValue={this.state.selectDescipline}
+                                        handleChange={(e) => this.handleChangeDisciplineDrop(e)}
+                                        name="disciplineId" 
+                                        id="disciplineId" />
+                                   </div>
+                                </div>
+                           
+                            <XSLfile
+                                    key="docTemplate"
+                                    projectId={this.state.projectId}
+                                    docId={docId}
+                                    disciplineId={this.state.selectDescipline.value != "0"? this.state.selectDescipline.value: null}
+                                    drawinListItemdocumentTemplate={true}
+                                    link={Config.getPublicConfiguartion().downloads +'/Downloads/Excel/tempDrawingListItems.xlsx'}
+                                    header="addManyItems"
+                                    afterUpload={() => {
+                                        this.setState({
+                                            docTemplateModal: false,
+                                        });
+                                        this.setState({ 
+                                            selectDescipline: { label: Resources.selectDescipline[currentLanguage], value: this.state.selectDescipline.value}
+                                        });
+                                    this.handleChangeDisciplineDrop(this.state.selectDescipline)
+                                      toast.success(
+                                        Resources['operationSuccess'][currentLanguage],
+                                    );
+                                    }}
+                                />
+                            </div>  
+                        </SkyLightStateless>
+                    </div>
+                ) : null}
+        {/**********************************************************************/}
             </div>
         )
     }
