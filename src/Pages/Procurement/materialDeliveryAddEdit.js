@@ -222,6 +222,7 @@ class materialDeliveryAddEdit extends Component {
             dataservice.GetDataGrid("GetLogsMaterialDeliveryTickets?deliveryId=" + this.state.docId).then(res => {
                 this.setState({ Items: res, arrangeItem: res.length + 1 });
             });
+          
         }
     }
 
@@ -554,7 +555,7 @@ class materialDeliveryAddEdit extends Component {
                         });
                         selectedRows = [];
                         let data = { items: originalRows };
-                        this.props.actions.ExportingData(data);
+                     
                         this.setState({
                             Items: originalRows,
                             showDeleteModal: false,
@@ -608,28 +609,17 @@ class materialDeliveryAddEdit extends Component {
                 unitPrice: this.state.unitPrice,
                 itemId: this.state.selectedItemId.value,
                 unit: this.state.ItemDescriptionInfo.unit,
-                quantity: this.state.ItemDescriptionInfo.quantity,
+                quantity: this.state.ItemDescriptionInfo.remaining,
                 maxQnty: Qty,
-                maxQuantity: this.state.ItemDescriptionInfo.quantity,
-                remarks: this.state.remarks
+                maxQuantity:this.state.ItemDescriptionInfo.remaining,
+                remarks: this.state.remarks,
             };
 
             dataservice
                 .addObject("AddLogsMaterialDeliveryTickets", obj)
                 .then(result => {
-                    ////////////////////////////
-                    let itemDocument=this.state.ItemDescriptionInfo;
-                    itemDocument.quantity= obj.approvedQuantity
-                    Api.post("EditContractsOriginalPurchaseOrderSum?id="+itemDocument.id+"&deliveredQuantity="+itemDocument.quantity)
-                    .then(res=>{
-                        itemDocument.quantity=res.quantity
-                        this.setState({
-                            ItemDescriptionInfo:itemDocument
-                           })
-                         }
-                        )
-                    ////////////////////////////
                     let Items = this.state.Items;
+                    result.originalQuantity=this.state.ItemDescriptionInfo.quantity
                     Items.push(result);
                     this.setState({
                         Items,
@@ -747,6 +737,7 @@ class materialDeliveryAddEdit extends Component {
                     arrangeItem: res.length + 1,
                     isLoading: false
                 });
+               
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             })
             .catch(ex => {
@@ -1116,6 +1107,11 @@ class materialDeliveryAddEdit extends Component {
                     width: 70
                 },
                 {
+                    Header:Resources["originalQuantity"][currentLanguage],
+                    accessor:"originalQuantity",
+                    width:100
+                },
+                {
                     Header: Resources["arrange"][currentLanguage],
                     accessor: "arrange",
                     width: 50
@@ -1126,7 +1122,7 @@ class materialDeliveryAddEdit extends Component {
                     width: 300
                 },
                 {
-                    Header: Resources["quantity"][currentLanguage],
+                    Header: Resources["remaining"][currentLanguage],
                     accessor: "quantity",
                     width: 100
                 },

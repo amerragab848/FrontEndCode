@@ -181,8 +181,8 @@ class SubmittalAddEdit extends Component {
       selectedNewFromCompanyCycles: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       type: "",
       viewCycle: false,
-      docTemplateModal:false,
-      reviewResultInPop:null,
+      docTemplateModal: false,
+      reviewResultInPop: null,
       selectedReviewResultInPop: { label: Resources.selectResult[currentLanguage], value: "0" },
 
     };
@@ -234,7 +234,8 @@ class SubmittalAddEdit extends Component {
       flowCompanyId: "",
       flowContactId: "",
       fromContactId: "",
-      approvalAction: "1"
+      approvalAction: "1",
+      fileNumber:""
     };
 
     if (this.state.docId > 0) {
@@ -348,7 +349,8 @@ class SubmittalAddEdit extends Component {
           flowCompanyId: "",
           flowContactId: "",
           fromContactId: "",
-          approvalAction: "1"
+          approvalAction: "1",
+          fileNumber:""
         };
 
         dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + this.props.document.id).then(result => {
@@ -358,7 +360,7 @@ class SubmittalAddEdit extends Component {
             cycle.docDate = result.docDate != null ? moment(result.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             cycle.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             cycle.arrange = result.arrange;
-            
+
             this.fillCycleDropDown(true);
 
             this.setState({
@@ -986,18 +988,16 @@ class SubmittalAddEdit extends Component {
     });
   }
 
-  handleDropDownInPopUpTtem(event)
-  {
-    
+  handleDropDownInPopUpTtem(event) {
+
     if (event == null) return;
     this.setState({
-      reviewResultInPop:event.value,
-      selectedReviewResultInPop:event
+      reviewResultInPop: event.value,
+      selectedReviewResultInPop: event
     })
   }
 
-  rerenderSubmittalItems()
-  {
+  rerenderSubmittalItems() {
     dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
       this.setState({
         itemData: data
@@ -1535,18 +1535,18 @@ class SubmittalAddEdit extends Component {
   }
   btnDocumentTemplateShowModal = () => {
     this.setState({
-        docTemplateModal: true,
+      docTemplateModal: true,
     });
   };
 
   render() {
-    const btnDocumentTemplate =(
-        <button
-            className="primaryBtn-2 btn mediumBtn"
-            onClick={() => this.btnDocumentTemplateShowModal()}>
-            {Resources['DocTemplate'][currentLanguage]}
-        </button>
-    ) 
+    const btnDocumentTemplate = (
+      <button
+        className="primaryBtn-2 btn mediumBtn"
+        onClick={() => this.btnDocumentTemplateShowModal()}>
+        {Resources['DocTemplate'][currentLanguage]}
+      </button>
+    )
 
     const columnsCycles = [
       {
@@ -1570,6 +1570,12 @@ class SubmittalAddEdit extends Component {
       {
         Header: Resources["subject"][currentLanguage],
         accessor: "subject",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["fileNumber"][currentLanguage],
+        accessor: "fileNumber",
         width: 200,
         sortabel: true
       },
@@ -1667,7 +1673,7 @@ class SubmittalAddEdit extends Component {
         )
       }
     ];
-   
+
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one_step one__tab readOnly_inputs" : "documents-stepper noTabs__document one_step one__tab noTabs__document"}>
@@ -1892,7 +1898,7 @@ class SubmittalAddEdit extends Component {
                                   <div className="inputDev ui input">
                                     <input type="text" className="form-control" id="sharedSettings" onChange={e => this.handleChange(e, "sharedSettings")}
                                       value={this.state.document.sharedSettings || ''} name="sharedSettings" placeholder={Resources.UrlForm[currentLanguage]} />
-                                      {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
+                                    {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
                                   </div>
                                   {this.state.document.sharedSettings === '' ||
                                     this.state.document.sharedSettings === null ||
@@ -1999,7 +2005,8 @@ class SubmittalAddEdit extends Component {
                                         {Resources.arrange[currentLanguage]}
                                       </label>
                                       <div className={"ui input inputDev fillter-item-c " + (errors.arrangeCycle && touched.arrangeCycle ? "has-error" : !errors.arrangeCycle && touched.arrangeCycle ? "has-success" : "")}>
-                                        <input type="text" className="form-control" readOnly value={this.state.documentCycle.arrange} name="arrangeCycle"
+                                        <input type="text" className="form-control" readOnly
+                                         value={this.state.documentCycle.arrange} name="arrangeCycle"
                                           placeholder={Resources.arrange[currentLanguage]}
                                           onBlur={e => { handleChange(e); handleBlur(e); }}
                                           onChange={e => this.handleChangeCycles(e, "arrange")} />
@@ -2018,6 +2025,21 @@ class SubmittalAddEdit extends Component {
                                         name="approvalStatusId"
                                         id="approvalStatusId" />
                                     </div>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                          {Resources.fileNumber[currentLanguage]}
+                                        </label>
+                                        <div className="inputDev ui input">
+                                          <input name="fileNumber" 
+                                           className="form-control fsadfsadsa"
+                                            id="fileNumber"
+                                            placeholder={Resources.fileNumber[currentLanguage]}
+                                            autoComplete="off" 
+                                            value={this.state.documentCycle.fileNumber}
+                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                            onChange={e => this.handleChangeCycles(e, "fileNumber")} />
+                                        </div>
+                                     </div>
                                     <div className="linebylineInput valid-input mix_dropdown">
                                       <label className="control-label">
                                         {Resources.toCompany[currentLanguage]}
@@ -2176,7 +2198,7 @@ class SubmittalAddEdit extends Component {
                                                     </div>
                                                   </button>
                                                 )) : null}
-                                                {btnDocumentTemplate}
+                                          {btnDocumentTemplate}
                                         </div>
                                       </Form>
                                     )}
@@ -2420,7 +2442,22 @@ class SubmittalAddEdit extends Component {
                       onBlur={setFieldTouched}
                       error={errors.approvalStatusId} touched={touched.approvalStatusId}
                       name="approvalStatusId" id="approvalStatusId" />
-
+                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                          {Resources.fileNumber[currentLanguage]}
+                                        </label>
+                                        <div className="inputDev ui input">
+                                          <input name="fileNumber" 
+                                           className="form-control fsadfsadsa"
+                                            id="fileNumber"
+                                            placeholder={Resources.fileNumber[currentLanguage]}
+                                            autoComplete="off" 
+                                            value={this.state.addCycleSubmital.fileNumber}
+                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                            onChange={e => this.handleChangeCyclesPopUp(e, "fileNumber")} />
+                                        </div>
+                    </div>
+                    
                     <div className="linebylineInput valid-input mix_dropdown">
                       <label className="control-label">
                         {Resources.fromCompany[currentLanguage]}
@@ -2470,62 +2507,62 @@ class SubmittalAddEdit extends Component {
               </Formik>
             </div>
           </SkyLight>
-        
-        {/**************************Upload submittal items *********************/}
-        {this.state.docTemplateModal == true ? (
-                    <div className="largePopup largeModal ">
-                        <SkyLightStateless
-                            onOverlayClicked={() =>
-                                this.setState({ docTemplateModal: false })
-                            }
-                            title={Resources['DocTemplate'][currentLanguage]}
-                            onCloseClicked={() =>
-                                this.setState({ docTemplateModal: false })
-                            }
-                            isVisible={this.state.docTemplateModal}>
-                            <div className="proForm datepickerContainer customLayout">
-                           
-                                <div className="dropdownFullWidthContainer">
-                                  <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown isMulti={false} 
-                                             title="reviewResult" 
-                                              data={this.state.reviewResult}
-                                              selectedValue={this.state.selectedReviewResultInPop}
-                                              name="reviewResultInPop" 
-                                              id="reviewResultInPop"
-                                              handleChange={event => this.handleDropDownInPopUpTtem(event)} />
-                                  </div>
-                                </div>
-                           
-                            <XSLfile
-                                    key="docTemplate"
-                                    projectId={this.state.projectId}
-                                    docType={this.state.docType}
-                                    submittalId={docId}
-                                    reviewResultId={this.state.reviewResultInPop != null? this.state.reviewResultInPop: null}
-                                    submittalItemdocumentTemplate={true}
-                                    link={Config.getPublicConfiguartion().downloads +'/Downloads/Excel/tempSubmittalItems.xlsx'}
-                                    header="addManySubmittalItems"
-                                    afterUpload={() => {
-                                        this.setState({
-                                            docTemplateModal: false,
-                                        });
-                                        this.setState({ 
-                                          selectedReviewResultInPop:{ label: Resources.selectResult[currentLanguage], value:null } ,
-                                          reviewResultInPop:null
-                                        });
-                                      this.rerenderSubmittalItems()
-                                      toast.success(
-                                        Resources['operationSuccess'][currentLanguage],
-                                    );
-                                    }}
-                                />
-                            </div>  
-                        </SkyLightStateless>
+
+          {/**************************Upload submittal items *********************/}
+          {this.state.docTemplateModal == true ? (
+            <div className="largePopup largeModal ">
+              <SkyLightStateless
+                onOverlayClicked={() =>
+                  this.setState({ docTemplateModal: false })
+                }
+                title={Resources['DocTemplate'][currentLanguage]}
+                onCloseClicked={() =>
+                  this.setState({ docTemplateModal: false })
+                }
+                isVisible={this.state.docTemplateModal}>
+                <div className="proForm datepickerContainer customLayout">
+
+                  <div className="dropdownFullWidthContainer">
+                    <div className="linebylineInput valid-input dropdownFullWidth">
+                      <Dropdown isMulti={false}
+                        title="reviewResult"
+                        data={this.state.reviewResult}
+                        selectedValue={this.state.selectedReviewResultInPop}
+                        name="reviewResultInPop"
+                        id="reviewResultInPop"
+                        handleChange={event => this.handleDropDownInPopUpTtem(event)} />
                     </div>
-                ) : null}
-        {/**********************************************************************/}
-        
+                  </div>
+
+                  <XSLfile
+                    key="docTemplate"
+                    projectId={this.state.projectId}
+                    docType={this.state.docType}
+                    submittalId={docId}
+                    reviewResultId={this.state.reviewResultInPop != null ? this.state.reviewResultInPop : null}
+                    submittalItemdocumentTemplate={true}
+                    link={Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittalItems.xlsx'}
+                    header="addManySubmittalItems"
+                    afterUpload={() => {
+                      this.setState({
+                        docTemplateModal: false,
+                      });
+                      this.setState({
+                        selectedReviewResultInPop: { label: Resources.selectResult[currentLanguage], value: null },
+                        reviewResultInPop: null
+                      });
+                      this.rerenderSubmittalItems()
+                      toast.success(
+                        Resources['operationSuccess'][currentLanguage],
+                      );
+                    }}
+                  />
+                </div>
+              </SkyLightStateless>
+            </div>
+          ) : null}
+          {/**********************************************************************/}
+
         </div>
       </div>
     );

@@ -247,9 +247,7 @@ class ModulesEdit extends Component {
                 <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter pagination">
                         <h3 className="zero">
-                            {CurrProject +
-                                ' - ' +
-                                Resources['Modules'][currentLanguage]}
+                            {Resources['Modules'][currentLanguage]}
                         </h3>
                         <span>
                             <svg
@@ -288,9 +286,9 @@ class ModulesEdit extends Component {
                                         this.state.pageSize}
                                 </span>
                                 {
-                                    Resources['jqxGridLanguage'][
+                                    Resources['jqxGridLanguagePagerrangestring'][
                                         currentLanguage
-                                    ].localizationobj.pagerrangestring
+                                    ]
                                 }
                                 <span> {this.state.totalRows}</span>
                             </div>
@@ -336,10 +334,10 @@ class ModulesEdit extends Component {
                                 <div className="submittalFilter resources">
                                     <div className="resources__inputs">
                                         <div className="linebylineInput fullInputWidth">
-                                            <label className="control-label">{Resources['ModuleTitle'][currentLanguage]}</label>
+                                            <label className="control-label">{Resources['EnglishName'][currentLanguage]}</label>
                                             <div className="ui input inputDev ">
                                                 <input name="moduleEn" id="moduleEn" type="text" value={this.state.moduleObj.moduleEn}
-                                                    placeholder={Resources['ModuleTitle'][currentLanguage]} autoComplete="on"
+                                                    placeholder={Resources['EnglishName'][currentLanguage]} autoComplete="on"
                                                     onBlur={e => { handleBlur(e); }} className="form-control"
                                                     onChange={e => this.handleChange(e.target.value, "moduleEn")} />
                                             </div>
