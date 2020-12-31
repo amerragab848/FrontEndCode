@@ -100,7 +100,7 @@ class ContractsStatus extends Component {
             {
                 "field": "totalDeduction",
                 "title": Resources.totalDeductions[currentLanguage],
-                "type": "number",
+                "type": "text",
                 "width": 18,
                 "groupable": true,
                 "sortable": true
@@ -141,6 +141,15 @@ class ContractsStatus extends Component {
     getGridRows = () => {
         this.setState({ isLoading: true })
         Dataservice.GetDataGrid('GetContractsStatus?projectId=' + this.state.selectedProject.value + "&contractorId=" + this.state.selectedContractor.value).then(res => {
+            res.forEach(item => {
+                item.originalContractSum=(item.originalContractSum).toLocaleString('en-US', {minimumFractionDigits: 2});
+                item.variationSum=(item.variationSum).toLocaleString('en-US', {minimumFractionDigits: 2});
+                item.amendmentSum=(item.amendmentSum).toLocaleString('en-US', {minimumFractionDigits: 2});
+                item.revisedContractSumToDate=(item.revisedContractSumToDate).toLocaleString('en-US', {minimumFractionDigits: 2});
+                item.contractExcutedToDate=(item.contractExcutedToDate).toLocaleString('en-US', {minimumFractionDigits: 2});
+                item.balance=(item.balance).toLocaleString('en-US', {minimumFractionDigits: 2});
+                item.totalDeduction=(item.totalDeduction).toLocaleString('en-US', {minimumFractionDigits: 2});
+            });
             this.setState({
                 rows: res,
                 isLoading: false
