@@ -88,6 +88,22 @@ class ContractsStatus extends Component {
                 "width": 18,
                 "groupable": true,
                 "sortable": true
+            },
+            {
+                "field": "companyName",
+                "title": Resources.CompanyName[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            },
+            {
+                "field": "totalDeduction",
+                "title": Resources.totalDeductions[currentLanguage],
+                "type": "number",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
             }
         ];
 
