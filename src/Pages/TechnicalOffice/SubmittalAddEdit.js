@@ -1574,6 +1574,12 @@ class SubmittalAddEdit extends Component {
         sortabel: true
       },
       {
+        Header: Resources["fileNumber"][currentLanguage],
+        accessor: "fileNumber",
+        width: 200,
+        sortabel: true
+      },
+      {
         Header: Resources["docDate"][currentLanguage],
         accessor: "docDate",
         width: 200,
@@ -2029,12 +2035,11 @@ class SubmittalAddEdit extends Component {
                                             id="fileNumber"
                                             placeholder={Resources.fileNumber[currentLanguage]}
                                             autoComplete="off" 
-                                            value={this.state.documentCycle.arrange}
+                                            value={this.state.documentCycle.fileNumber}
                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                             onChange={e => this.handleChangeCycles(e, "fileNumber")} />
                                         </div>
                                      </div>
-                                    
                                     <div className="linebylineInput valid-input mix_dropdown">
                                       <label className="control-label">
                                         {Resources.toCompany[currentLanguage]}
@@ -2437,7 +2442,22 @@ class SubmittalAddEdit extends Component {
                       onBlur={setFieldTouched}
                       error={errors.approvalStatusId} touched={touched.approvalStatusId}
                       name="approvalStatusId" id="approvalStatusId" />
-
+                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                          {Resources.fileNumber[currentLanguage]}
+                                        </label>
+                                        <div className="inputDev ui input">
+                                          <input name="fileNumber" 
+                                           className="form-control fsadfsadsa"
+                                            id="fileNumber"
+                                            placeholder={Resources.fileNumber[currentLanguage]}
+                                            autoComplete="off" 
+                                            value={this.state.addCycleSubmital.fileNumber}
+                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                            onChange={e => this.handleChangeCyclesPopUp(e, "fileNumber")} />
+                                        </div>
+                    </div>
+                    
                     <div className="linebylineInput valid-input mix_dropdown">
                       <label className="control-label">
                         {Resources.fromCompany[currentLanguage]}
