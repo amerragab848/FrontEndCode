@@ -32,8 +32,7 @@ class DocNotifyLogDetails extends Component {
         fixed: false,
         groupable: true,
         type: "text",
-        sortable: true,
-        showTip: true,
+        sortable: true, 
         classes: ' bold elipsisPadd',
         onRightClick: (e, cell) => { 
             Api.post(`UpdateReadStutas?id=${e.id}`); 
@@ -43,8 +42,7 @@ class DocNotifyLogDetails extends Component {
         field: 'creationDate',
         title: Resources['docDate'][currentLanguage],
         width: 20,
-        groupable: true,
-        showTip: true,
+        groupable: true, 
         fixed: false,
         type: "date",
         sortable: true,
@@ -55,8 +53,7 @@ class DocNotifyLogDetails extends Component {
         groupable: true,
         fixed: false,
         type: "text",
-        sortable: true,
-        showTip: true,
+        sortable: true, 
       }, {
         field: 'projectName',
         title: Resources['projectName'][currentLanguage],
@@ -81,8 +78,7 @@ class DocNotifyLogDetails extends Component {
         fixed: false,
         groupable: true,
         type: "text",
-        sortable: true,
-        showTip: true,
+        sortable: true, 
       }, {
         field: 'dueDate',
         title: Resources['dueDate'][currentLanguage],
@@ -90,8 +86,7 @@ class DocNotifyLogDetails extends Component {
         fixed: false,
         groupable: true,
         type: "date",
-        sortable: true,
-        showTip: true,
+        sortable: true, 
       }
     ];
     const filtersColumns = [

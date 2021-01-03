@@ -66,8 +66,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ GridLoading: true });
 
-        var selectedCols =
-            JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+        var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
         var currentGP = this.props.groups;
 
@@ -76,10 +75,7 @@ export default class CustomGrid extends Component {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
-            localStorage.setItem(
-                this.props.gridKey,
-                JSON.stringify(gridLocalStor),
-            );
+            localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
         } else {
             var parsingList = JSON.parse(selectedCols.columnsList);
             for (var item in parsingList) {
@@ -178,6 +174,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ groupsList: groups });
     };
+
     render() {
         const btnDocumentTemplate =
             this.state.showDocTemplateBtn == true ? (
