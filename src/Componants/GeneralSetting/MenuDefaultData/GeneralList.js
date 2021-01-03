@@ -93,8 +93,8 @@ const DropGeneralData =
     { label: Resources["approvalText"][currentLanguage], value: "WFApprovalstatus" },
     { label: Resources["deductionType"][currentLanguage], value: "deductionType" },
     { label: Resources["submittalType"][currentLanguage], value: "SubmittalTypes" },
-    { label: Resources["attachedPaperSize"][currentLanguage], value: "attachedPaperSize" }
-    ]
+    { label: Resources["attachedPaperSize"][currentLanguage], value: "attachedPaperSize" },
+    { label: Resources["submittedFor"][currentLanguage], value: "submittedFor" }]
 
 const ApprovalStatusDropData =
     [{ label: Resources["approved"][currentLanguage], value: 1 },
