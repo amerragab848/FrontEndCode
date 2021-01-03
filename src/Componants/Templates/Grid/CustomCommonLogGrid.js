@@ -188,18 +188,31 @@ export default class CustomGrid extends Component {
             <Fragment>
                 {btnDocumentTemplate}
                 {this.state.GridLoading === false ? (
-                    <GridCustom
-                        key={this.props.gridKey}
-                        cells={this.state.columns.filter(i => i.hidden != true)}
-                        data={this.state.rows}
-                        pageSize={this.props.pageSize}
-                        actions={this.props.actions}
-                        rowActions={this.props.rowActions}
-                        rowClick={cell => this.props.rowClick(cell)}
-                        groups={this.state.groupsList}
-                        handleGroupUpdate={this.handleGroupEvent}
-                        showCheckAll={this.props.showCheckAll}
-                    />
+                    <>
+                        <GridCustom
+                            key={this.props.gridKey}
+                            cells={this.state.columns.filter(i => i.hidden != true)}
+                            data={this.state.rows}
+                            pageSize={this.props.pageSize}
+                            actions={this.props.actions}
+                            rowActions={this.props.rowActions}
+                            rowClick={cell => this.props.rowClick(cell)}
+                            groups={this.state.groupsList}
+                            handleGroupUpdate={this.handleGroupEvent}
+                            showCheckAll={this.props.showCheckAll}
+                        />
+                        {   /* <div className="paginationNumbers custom">
+                            <ul className="zero">
+                                <li><a><i className="angle left icon" />  </a></li>
+                                <li className="active">
+                                    <a> 1 </a>
+                                </li>
+                                <li><a> 2 </a></li>
+                                <li><a> 3 </a></li>
+                                <li><a> <i className="angle right icon" /></a></li>
+                            </ul>
+                        </div> */}
+                    </>
                 ) : (<LoadingSection />)}
             </Fragment>
         );

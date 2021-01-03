@@ -17,6 +17,7 @@ export default class CustomGrid extends Component {
         this.state = {
             columns: this.props.cells,
             rows: this.props.data,
+            pagedData: this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             selectedIndexes: [],
             selectedRows: [],
@@ -72,7 +73,13 @@ export default class CustomGrid extends Component {
                 }
             });
             this.getRowsFilter(rows, obj, 0);
-        }
+
+            //this.chunkData(0);
+        } 
+        // else {
+
+        //     this.chunkData(0);
+        // }
 
         this.setState({ GridLoading: true })
 
@@ -177,7 +184,7 @@ export default class CustomGrid extends Component {
                 break;
             }
         }
-        var gridLocalStor = { columnsList: [], groups: [], Filters: [] }; 
+        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
         let newFilterLst = this.state.localStorFiltersList;
 
         gridLocalStor.columnsList = JSON.stringify(columnList);
@@ -213,6 +220,8 @@ export default class CustomGrid extends Component {
         });
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
+
+        // this.chunkData(0);
     };
 
     CloseModeFilter = () => {
@@ -253,6 +262,8 @@ export default class CustomGrid extends Component {
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
+
+        // this.chunkData(0);
     };
 
     onChange = (date, index, columnName, type, key) => {
@@ -396,6 +407,7 @@ export default class CustomGrid extends Component {
                     Loading: false
                 });
 
+                // this.chunkData(0);
             } else {
                 rows.forEach(row => {
                     matched = 0;
@@ -448,6 +460,7 @@ export default class CustomGrid extends Component {
                     Loading: false
                 });
             }
+
         }
     };
 
@@ -505,9 +518,34 @@ export default class CustomGrid extends Component {
                 columns: ColumnsHideShow.filter(i => i.hidden !== true),
                 GridLoading: false,
             });
-        }, 500); 
+        }, 500);
     };
 
+    /**
+     * Returns an array with arrays of the given size.
+     *
+     * @param myArray {Array} array to split 
+     * @param pageNumber {Integer} page called 
+     */
+    chunkData(pageNumber) {
+        var index = 0;
+        var myArray = this.state.rows;
+        var arrayLength = myArray.length;
+        var tempArray = [];
+
+        let startFrom = (pageNumber * 100);
+
+        for (index = startFrom; index < arrayLength; index += 100) {
+            let myChunk = myArray.slice(startFrom, (startFrom + 100) + (pageNumber * 100));
+            console.table(myChunk);
+            tempArray.push(myChunk);
+            break;
+        }
+        this.setState({
+            pagedData: tempArray
+        })
+        //return tempArray;
+    }
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
@@ -698,17 +736,32 @@ export default class CustomGrid extends Component {
                     </div>
 
                     {this.state.GridLoading === false ?
-                        (< GridCustom
-                            key={this.props.gridKey}
-                            cells={this.state.columns.filter(i => i.hidden != true)}
-                            data={this.state.rows}
-                            actions={this.props.actions}
-                            rowActions={this.props.rowActions}
-                            rowClick={cell => this.props.rowClick(cell)}
-                            groups={this.state.groupsList}
-                            handleGroupUpdate={this.handleGroupEvent}
-                            showPicker={this.props.showPicker}
-                        />)
+                        (
+                            <>
+                                < GridCustom
+                                    key={this.props.gridKey}
+                                    cells={this.state.columns.filter(i => i.hidden != true)}
+                                    data={this.state.rows}
+                                    actions={this.props.actions}
+                                    rowActions={this.props.rowActions}
+                                    rowClick={cell => this.props.rowClick(cell)}
+                                    groups={this.state.groupsList}
+                                    handleGroupUpdate={this.handleGroupEvent}
+                                    showPicker={this.props.showPicker}
+                                />
+                                {/* <div className="paginationNumbers custom">
+                                    <ul className="zero">
+                                        <li><a><i className="angle left icon" />  </a></li>
+                                        <li className="active" onClick={e => this.chunkData(1)}>
+                                            <a> 1 </a>
+                                        </li>
+                                        <li onClick={e => this.chunkData(2)}><a> 2 </a></li>
+                                        <li onClick={e => this.chunkData(3)}><a> 3 </a></li>
+                                        <li ><a> <i className="angle right icon" /></a></li>
+                                    </ul>
+                                </div> */}
+                            </>
+                        )
                         : <LoadingSection />}
 
                 </div>
