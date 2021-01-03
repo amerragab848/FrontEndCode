@@ -201,7 +201,13 @@ export default class IndexedDb {
         // tables.defaultLists = api.getSchema().table('defaultLists');
         //tables.companies = api.getSchema().table('companies');
         //tables.projects = api.getSchema().table('projects');
-        tables.resources = db.getSchema().table('resources');
+        try {
+            tables.resources = db.getSchema().table('resources');
+        } catch (error) {
+            window.indexedDB.databases().then((r) => {
+                for (var i = 0; i < r.length; i++) window.indexedDB.deleteDatabase(r[i].name);
+            }); 
+        }
 
         let rows = await db
             .select()
@@ -286,7 +292,7 @@ export default class IndexedDb {
                     id: item.id,
                     en: item.titleEn,
                     ar: item.titleAr,
-                    resourceKey: item.resourceKey 
+                    resourceKey: item.resourceKey
                 });
                 rows.push(widRow);
             });

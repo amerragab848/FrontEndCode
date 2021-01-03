@@ -79,8 +79,7 @@ class LoginHistoryReport extends Component {
                 "type": "text",
                 "width": 25,
                 "groupable": true,
-                "sortable": true,
-                "showTip": true
+                "sortable": true 
             }, {
                 "field": "date",
                 "title": Resources.date[currentLanguage],
@@ -102,8 +101,7 @@ class LoginHistoryReport extends Component {
                 "type": "text",
                 "width": 15,
                 "groupable": true,
-                "sortable": true,
-                "showTip": true
+                "sortable": true 
             }, {
                 "field": "macAddress",
                 "title": Resources.location[currentLanguage],

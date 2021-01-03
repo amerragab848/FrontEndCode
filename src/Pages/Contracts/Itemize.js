@@ -33,8 +33,7 @@ class Itemize extends Component {
                 title: "",
                 width: 10,
                 type: "check-box",
-                fixed: true,
-                showTip: true
+                fixed: true 
             },
             {
                 field: 'arrange',

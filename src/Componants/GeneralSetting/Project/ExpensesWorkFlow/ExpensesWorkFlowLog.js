@@ -23,8 +23,7 @@ class ExpensesWorkFlowLog extends Component {
             {
                 field: "id",
                 title: "",
-                fixed: true,
-                showTip: true,
+                fixed: true, 
                 type: "check-box"
             },
             {
