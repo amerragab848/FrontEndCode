@@ -205,8 +205,25 @@ export default class IndexedDb {
             tables.resources = db.getSchema().table('resources');
         } catch (error) {
             window.indexedDB.databases().then((r) => {
-                for (var i = 0; i < r.length; i++) window.indexedDB.deleteDatabase(r[i].name);
-            }); 
+                for (var i = 0; i < r.length; i++) {
+                    var deleteRequest = indexedDB.deleteDatabase(r[i].name)
+
+                    deleteRequest.onblocked = function (res) {
+                        console.log('blocked', res);
+                        db.close();
+                        dbDashBoard.close();
+                        api.close();
+                    }
+                    
+                    deleteRequest.onsuccess = function () {
+                        console.log("Deleted OK.");
+
+                        localStorage.clear();
+                        window.location.reload();
+
+                    };
+                }
+            });
         }
 
         let rows = await db
