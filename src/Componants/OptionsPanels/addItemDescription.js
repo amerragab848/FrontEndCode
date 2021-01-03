@@ -1,19 +1,16 @@
 import React, { Component } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import DataService from "../../Dataservice";
-import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
-import find from "lodash/find";
 import Config from "../../Services/Config.js";
-import { Flag } from "semantic-ui-react";
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -25,7 +22,7 @@ const documentItemValidationSchema = Yup.object().shape({
     quantity: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage])
 });
 
-class addItemDescription extends Component {
+class AddItemDescription extends Component {
     constructor(props) {
         super(props);
 
@@ -69,27 +66,17 @@ class addItemDescription extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.docId) {
-            this.fillTable();
-        }
-    }
+    componentDidMount() {
 
-    componentDidUpdate(prevProps) {
-        if (this.props.isViewMode !== prevProps.isViewMode) {
-        }
-    }
-    componentWillMount() {
-        this.fillTable();
         DataService.GetDataList("GetDefaultListForUnit?listType=unit", "listType", "listType").then(res => {
             this.setState({ Units: [...res] });
         });
 
-        if(this.props.showBoqType===true){
-        DataService.GetDataList("GetAllBoqParentNull?projectId=" + this.props.projectId, "title", "id").then(res => {
-            this.setState({ boqTypes: [...res] });
-        });
-    }
+        if (this.props.showBoqType === true) {
+            DataService.GetDataList("GetAllBoqParentNull?projectId=" + this.props.projectId, "title", "id").then(res => {
+                this.setState({ boqTypes: [...res] });
+            });
+        }
 
         if (this.props.showItemType === true) {
             DataService.GetDataGrid("GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000").then(result => {
@@ -107,21 +94,15 @@ class addItemDescription extends Component {
                 });
             });
         }
-            if (this.props.docType === "boq") {
+
+        if (this.props.docType === "boq") {
             DataService.GetDataList("GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000", "title", "id").then(res => {
                 this.setState({ equipmentTypes: [...res] });
             });
         }
-        
+
     }
 
-    fillTable() {
-        // dataservice.GetDataGrid(this.props.getItemsApi).then(result => {
-        //     this.setState({
-        //         itemsList: [...result]
-        //     });
-        // });
-    }
 
     saveVariationOrderItem(event) {
 
@@ -135,10 +116,8 @@ class addItemDescription extends Component {
 
         saveDocument.parentId = this.props.parentId;
 
-        dataservice.addObject(this.props.addItemApi, saveDocument).then(result => {
-
+        DataService.addObject(this.props.addItemApi, saveDocument).then(result => {
             if (result) {
-
                 let arr = [];
                 let item = result;
                 item.boqTypeChild = saveDocument.boqChildType;
@@ -220,7 +199,7 @@ class addItemDescription extends Component {
         }
         if (isSubscribe) {
             let action = url + "?" + param + "=" + event.value;
-            dataservice.GetDataList(action, "title", "id").then(result => {
+            DataService.GetDataList(action, "title", "id").then(result => {
                 this.setState({
                     [nextTragetState]: result
                 });
@@ -235,13 +214,15 @@ class addItemDescription extends Component {
                     <XSLfile key="boqImport"
                         docId={this.props.docId}
                         docType={this.props.docType}
-                        link={this.props.docLink !=""? Config.getPublicConfiguartion().downloads + this.props.docLink:""}
-                        header="addManyItems" disabled={this.props.changeStatus ? this.props.docId > 0 ? false : true : false} afterUpload={() => this.fillTable()} />
-                ) : null}
+                        link={this.props.docLink != "" ? Config.getPublicConfiguartion().downloads + this.props.docLink : ""}
+                        header="addManyItems" 
+                        disabled={this.props.changeStatus ? this.props.docId > 0 ? false : true : false}
+                        afterUpload={() => this.fillTable()} />                ) : null}
+                
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
                     <Formik initialValues={{ ...this.state.itemDescription }}
-                     validationSchema={documentItemValidationSchema}
-                      enableReinitialize={true}
+                        validationSchema={documentItemValidationSchema}
+                        enableReinitialize={true}
                         onSubmit={values => {
                             this.saveVariationOrderItem();
                         }}>
@@ -451,8 +432,7 @@ class addItemDescription extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
-        //docId: state.communication.docId,
+    return { 
         changeStatus: state.communication.changeStatus,
         items: state.communication.items
     };
@@ -464,4 +444,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(addItemDescription));
+export default connect(mapStateToProps, mapDispatchToProps)(AddItemDescription);
