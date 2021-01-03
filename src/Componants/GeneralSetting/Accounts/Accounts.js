@@ -11,9 +11,9 @@ import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker"; 
+import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
 
- 
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const find = require('lodash/find');
 
@@ -131,13 +131,13 @@ class Accounts extends Component {
                 name: "CompanyName",
                 type: "string",
                 isCustom: true
-            }, 
+            },
             {
                 field: "groupName",
                 name: "GroupName",
                 type: "string",
                 isCustom: true
-            }            ,
+            },
             {
                 field: "active",
                 name: "activationStatus",
@@ -161,7 +161,7 @@ class Accounts extends Component {
                     console.log(values);
                     this.setState({
                         showDeleteModal: true,
-                        IsActiveShow:true,
+                        IsActiveShow: true,
                         selectedRow: values
                     });
                 },
@@ -184,7 +184,7 @@ class Accounts extends Component {
             {
                 title: 'inActive',
                 handleClick: value => {
-                   this.IsActive(value.id)
+                    this.IsActive(value.id)
                 }
             },
             {
@@ -273,7 +273,7 @@ class Accounts extends Component {
 
             this.setState({
                 showDeleteModal: true,
-             
+
                 rowSelectedId: rowId,
             })
         }
@@ -297,9 +297,10 @@ class Accounts extends Component {
     }
 
     clickHandlerCancelMain = () => {
-        this.setState({ showDeleteModal: false, showResetPasswordModal: false,
-            IsActiveShow:false
-         });
+        this.setState({
+            showDeleteModal: false, showResetPasswordModal: false,
+            IsActiveShow: false
+        });
     };
 
     addRecord = () => {
@@ -315,9 +316,11 @@ class Accounts extends Component {
 
     ConfirmDeleteAccount = () => {
         let id = '';
-        this.setState({ showDeleteModal: true, 
-           
-            isLoading: true })
+        this.setState({
+            showDeleteModal: true,
+
+            isLoading: true
+        })
         let rowsData = this.state.rows;
         this.state.rowSelectedId.map(i => {
             id = i
@@ -369,39 +372,39 @@ class Accounts extends Component {
             })
 
     }
-    updateAccountActivation=()=>{
+    updateAccountActivation = () => {
         let id = this.state.rowSelectedId;
         let rowsData = this.state.rows;
         let userName = find(rowsData, { 'id': id })
-        let isActive='';
+        let isActive = '';
         let companyId = config.getPublicConfiguartion().accountCompanyId;
 
         Api.authorizationApi("ProcoorAuthorization?username=" + userName + "&companyId=" + companyId + "&isActive=" + isActive, null, 'PUT').then(
             res => {
                 Api.get("/UpdateAccountActivation", { id: id }).then(
-                    result=>{
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
-                });
+                    result => {
+                        toast.success(Resources["operationSuccess"][currentLanguage]);
+                    });
             });
     }
-    refreshGrid=()=>{
-       
+    refreshGrid = () => {
+
 
         if (config.IsAllow(794)) {
-            this.setState({ isLoading: true ,  rows:[]});
+            this.setState({ isLoading: true, rows: [] });
             // let pageNumber = this.state.pageNumber + 1
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
 
                     rows: result,
-                    isLoading: false, 
+                    isLoading: false,
                     totalRows: result.length,
                     search: false,
                 });
             });
 
-            this.setState({ 
-         
+            this.setState({
+
                 rowSelectedId: {}
             });
         }
@@ -439,15 +442,16 @@ class Accounts extends Component {
     }
 
     ConfirmResetPassword = () => {
-        let id = this.state.rowSelectedId; 
+        let id = this.state.rowSelectedId;
         let rowsData = this.state.rows;
+
         let userName = find(rowsData, { 'id': id })
 
         let companyId = config.getPublicConfiguartion().accountCompanyId;
 
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&emailOrPassword=' + this.state.NewPassword + '&companyId=' + companyId + '&changePassword=true', null, 'PUT').then(data => {
             if (data.status == 200) {
-                Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword ).then(result => {
+                Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword).then(result => {
                     this.setState({ showResetPasswordModal: false })
                 })
             } else {
@@ -595,12 +599,12 @@ class Accounts extends Component {
     IsActiveFun = () => {
         let id = 0;
         let userName = ''
-        let rowsData = this.state.rows; 
-        id=this.state.rowSelectedId;
-        userName = rowsData.filter(s => s.id === id) 
-         let userNameParam=   userName[0].userName;
+        let rowsData = this.state.rows;
+        id = this.state.rowSelectedId;
+        userName = rowsData.filter(s => s.id === id)
+        let userNameParam = userName[0].userName;
         let companyId = config.getPublicConfiguartion().accountCompanyId;
-        let active= userName[0].active ;
+        let active = userName[0].active;
         setTimeout(() => {
             Api.authorizationApi('ProcoorAuthorization?username=' + userNameParam + '&companyId=' + companyId + '&isActive=' + active + '', null, 'PUT').then(
                 Api.get('UpdateAccountActivation?id=' + id)
@@ -796,8 +800,8 @@ class Accounts extends Component {
                         </div>
                     </div>
                     <div className="filterBTNS">
-                        { <button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i className="fa fa-refresh"></i></button> }
-                        
+                        {<button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i className="fa fa-refresh"></i></button>}
+
                         {btnExport}
                         {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>
@@ -819,7 +823,7 @@ class Accounts extends Component {
                         {ComponantFilter}
                     </div>
                 </div>
-               
+
                 <div className="grid-container fixed__loading">
                     {dataGrid}
                 </div>
@@ -843,7 +847,7 @@ class Accounts extends Component {
                         buttonName='reset' clickHandlerContinue={this.ConfirmResetPassword}
                     />
                 ) : null}
-                 {this.state.IsActiveShow == true ? (
+                {this.state.IsActiveShow == true ? (
                     <ConfirmationModal
                         title='Are you sure you want to inActive Account?'
                         closed={this.onCloseModal}

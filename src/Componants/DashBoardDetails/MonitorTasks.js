@@ -32,8 +32,7 @@ class MonitorTasks extends Component {
         sortable: true,
         fixed: false,
         type: "text",
-        classes: 'bold',
-        showTip: true,
+        classes: 'bold', 
         classes: ' bold elipsisPadd',
         href: 'link'
       },

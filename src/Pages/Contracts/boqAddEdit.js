@@ -92,6 +92,7 @@ let arrange = 0;
 var steps_defination = [];
 let itm = [];
 class boqAddEdit extends Component {
+
     constructor(props) {
         super(props);
 
@@ -229,14 +230,14 @@ class boqAddEdit extends Component {
                                 ],
                             );
                             this.setState({ isLoading: false });
-                        }) .catch(() => {
-                                toast.error(
-                                    Resources['operationCanceled'][
-                                    currentLanguage
-                                    ],
-                                );
-                                this.setState({ isLoading: false });
-                            });
+                        }).catch(() => {
+                            toast.error(
+                                Resources['operationCanceled'][
+                                currentLanguage
+                                ],
+                            );
+                            this.setState({ isLoading: false });
+                        });
                     } else {
                         toast.warning(
                             Resources['missingPermissions'][currentLanguage],
@@ -1240,8 +1241,7 @@ class boqAddEdit extends Component {
                 gridKey='KO_boqIems'
                 cells={this.boqItems}
                 data={this.state._items}
-                groups={this.groups}
-                pageSize={this.state.pageSize}
+                groups={this.groups} 
                 actions={this.actions}
                 rowActions={this.rowActions}
                 rowClick={cell => {
@@ -1254,8 +1254,7 @@ class boqAddEdit extends Component {
                         });
                         this.simpleDialog1.show();
                     }
-                }}
-
+                }} 
                 isFilter={this.state.isFilter}
                 changeValueOfProps={this.changeValueOfProps.bind(this)}
             />) : (

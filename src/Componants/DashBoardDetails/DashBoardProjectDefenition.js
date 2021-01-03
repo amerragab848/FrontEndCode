@@ -16,8 +16,7 @@ let widgets = [
         fixed: true,
         type: "text",
         sortable: true,
-        classes: 'bold',
-        showTip: true
+        classes: 'bold' 
       },
       {
         field: 'statusName',
@@ -190,8 +189,7 @@ let widgets = [
         fixed: true,
         type: "text",
         sortable: true,
-        classes: 'bold',
-        showTip: true
+        classes: 'bold' 
       },
       {
         field: 'statusName',

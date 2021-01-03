@@ -37,8 +37,7 @@ class FollowUpsSummaryDetails extends Component {
                 type: 'text',
                 href: 'link',
                 onClick: () => { },
-                classes: 'bold',
-                showTip: true,
+                classes: 'bold' 
             },
             {
                 field: 'projectName',

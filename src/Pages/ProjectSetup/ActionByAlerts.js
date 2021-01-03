@@ -64,8 +64,7 @@ class ActionByAlerts extends Component {
                 title: "",
                 width: 10,
                 fixed: true,
-                type:"check-box",
-                showTip:true
+                type:"check-box" 
             },
             {
                 field: 'redAlertDays',

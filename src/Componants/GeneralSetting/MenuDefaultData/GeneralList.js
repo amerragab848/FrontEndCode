@@ -99,7 +99,7 @@ const DropGeneralData =
 const ApprovalStatusDropData =
     [{ label: Resources["approved"][currentLanguage], value: 1 },
     { label: Resources["rejected"][currentLanguage], value: 2 },
-    { label: Resources["pending"][currentLanguage], value: 3 }
+    { label: Resources["pending"][currentLanguage], value: 0 }
     ]
 class GeneralList extends Component {
 
@@ -116,8 +116,7 @@ class GeneralList extends Component {
                 fixed: true,
                 width: 25,
                 sortable: true,
-                type: "text",
-                showTip: true
+                type: "text" 
             }
         ];
 

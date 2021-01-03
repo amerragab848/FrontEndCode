@@ -6,7 +6,6 @@ import Resources from "../../../resources.json";
 import { isEqual } from 'lodash';
 import LoadingSection from "../../publicComponants/LoadingSection";
 import { Slider } from 'react-semantic-ui-range';
-
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 let arrColumn = ["arrange", "quantity", "unitPrice"];
@@ -15,10 +14,10 @@ export default class CustomGrid extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             columns: this.props.cells,
             rows: this.props.data,
+            pagedData: this.props.data,
             groupBy: this.props.groupBy != null ? this.props.groupBy : [],
             selectedIndexes: [],
             selectedRows: [],
@@ -31,7 +30,7 @@ export default class CustomGrid extends Component {
             filterLoading: false,
             ColumnsHideShow: [],
             Loading: false,
-            GridLoading: false,
+            GridLoading: true,
             filteredRows: this.props.data,
             setFilters: {},
             filters: [],
@@ -50,6 +49,7 @@ export default class CustomGrid extends Component {
     componentDidMount() {
 
         let state = {};
+
         this.props.cells.map((column, index) => {
             if (column.type === "date") {
                 state[index + "-column"] = moment().format("DD/MM/YYYY");
@@ -58,52 +58,58 @@ export default class CustomGrid extends Component {
             }
         });
 
-        var filters = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+        var savedGrid = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
-        if (filters.Filters) {
+        if (savedGrid.Filters) {
             let rows = [...this.state.filteredRows];
-            var parsedFilters = JSON.parse(filters.Filters)
+            var parsedFilters = JSON.parse(savedGrid.Filters)
             var obj = {};
             this.setState({ filterLoading: true })
 
             parsedFilters.forEach(element => {
                 if (element.value) {
                     obj[element.key] = element.value;
-
                     state[element.index + "-column"] = element.value;
                 }
             });
-            this.getRowsFilter(rows, obj);
+            this.getRowsFilter(rows, obj, 0);
 
-            state.filterLoading = false;
-        }
+            //this.chunkData(0);
+        } 
+        // else {
+
+        //     this.chunkData(0);
+        // }
+
         this.setState({ GridLoading: true })
 
-        var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+        var currentGP = [];
 
-        var currentGP = this.props.groups;
+        let itemsColumns = this.props.cells;
 
-        let itemsColumns = this.props.cells.map(item => ({ ...item, hidden: false }));
+        if (savedGrid.length === 0) {
 
-        if (selectedCols.length === 0) {
-            var gridLocalStor = { columnsList: [], groups: [] };
+            var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+            let newFilterLst = [];
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
+            gridLocalStor.Filters = JSON.stringify(newFilterLst);
+
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
         }
         else {
-            var parsingList = JSON.parse(selectedCols.columnsList);
+            var parsingList = JSON.parse(savedGrid.columnsList);
             for (var item in parsingList) {
                 for (var i in itemsColumns) {
                     if (itemsColumns[i].field === parsingList[item].field) {
                         let status = parsingList[item].hidden
-                        itemsColumns[i].hidden = status;
-                        itemsColumns[i].width = parsingList[item].width;
+                        itemsColumns[i].hidden = status
+                        itemsColumns[i].width = parsingList[item].width
                         break;
                     }
                 }
             };
-            currentGP = selectedCols.groups.length > 0 ? JSON.parse(selectedCols.groups) : [];
+            currentGP = savedGrid.groups.length > 0 ? JSON.parse(savedGrid.groups) : [];
         }
 
         this.setState({
@@ -111,15 +117,11 @@ export default class CustomGrid extends Component {
             columns: itemsColumns,
             groups: currentGP,
             groupsList: currentGP,
-            setFilters: filters.Filters ? obj : {},
-            GridLoading: false
+            setFilters: savedGrid.Filters ? obj : {},
+            GridLoading: false,
+            filterLoading: false,
+            ...state
         });
-
-        setTimeout(() => {
-            this.setState(
-                state
-            );
-        }, 500); 
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -162,47 +164,36 @@ export default class CustomGrid extends Component {
             let key = ColumnsHideShow[i].field
             this.setState({ [key]: false })
         }
-
-        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
-        gridLocalStor.columnsList = JSON.stringify(ColumnsHideShow);
-        gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : this.props.groups);
-        let newFilterLst = this.state.localStorFiltersList;
-        gridLocalStor.Filters = JSON.stringify(newFilterLst);
-        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
-
         setTimeout(() => {
             this.setState({
-                columns: ColumnsHideShow.filter(i => i.hidden === false),
-                ColumnsHideShow: ColumnsHideShow.filter(i => i.hidden === false),
-                Loading: false,
-                columnsModal: false
+                columns: ColumnsHideShow.filter(i => i.hidden != true),
+                ColumnsHideShow: ColumnsHideShow.filter(i => i.hidden != true),
+                Loading: false, columnsModal: false
             })
         }, 300)
     };
 
     handleCheck = (key) => {
+
         this.setState({ [key]: !this.state[key], Loading: true });
-        let data = this.state.ColumnsHideShow
-        for (var i in data) {
-            if (data[i].field === key) {
-                let status = data[i].hidden === true ? false : true
-                data[i].hidden = status
+        let columnList = this.state.ColumnsHideShow
+        for (var i in columnList) {
+            if (columnList[i].field === key) {
+                let status = columnList[i].hidden === true ? false : true
+                columnList[i].hidden = status
                 break;
             }
         }
         var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
-
-
-        gridLocalStor.columnsList = JSON.stringify(data);
-        gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : this.props.groups);
-
         let newFilterLst = this.state.localStorFiltersList;
 
+        gridLocalStor.columnsList = JSON.stringify(columnList);
+        gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : []);
         gridLocalStor.Filters = JSON.stringify(newFilterLst);
 
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+        let showColumn = columnList.filter(i => i.hidden != true);
 
-        let showColumn = data.filter(i => i.hidden === false);
         setTimeout(() => {
             this.setState({
                 columns: showColumn,
@@ -229,6 +220,8 @@ export default class CustomGrid extends Component {
         });
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
+
+        // this.chunkData(0);
     };
 
     CloseModeFilter = () => {
@@ -269,6 +262,8 @@ export default class CustomGrid extends Component {
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
+
+        // this.chunkData(0);
     };
 
     onChange = (date, index, columnName, type, key) => {
@@ -324,7 +319,8 @@ export default class CustomGrid extends Component {
 
             let rows = [...this.state.filteredRows];
 
-            this.getRowsFilter(rows, newFilters);
+            this.getRowsFilter(rows, newFilters, index);
+
             let newFilterLst = this.state.localStorFiltersList;
 
             const i = newFilterLst.findIndex(x => x.index === index);
@@ -335,7 +331,7 @@ export default class CustomGrid extends Component {
 
             gridLocalStor.Filters = JSON.stringify(newFilterLst);
             gridLocalStor.columnsList = JSON.stringify(this.state.columns);
-            gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : this.props.groups);
+            gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : []);
 
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
@@ -349,7 +345,7 @@ export default class CustomGrid extends Component {
         }
     }
 
-    getRowsFilter = (rows, _filters) => {
+    getRowsFilter = (rows, _filters, index) => {
 
         if (this.state.filteredRows.length > 0) {
 
@@ -411,6 +407,7 @@ export default class CustomGrid extends Component {
                     Loading: false
                 });
 
+                // this.chunkData(0);
             } else {
                 rows.forEach(row => {
                     matched = 0;
@@ -463,6 +460,7 @@ export default class CustomGrid extends Component {
                     Loading: false
                 });
             }
+
         }
     };
 
@@ -485,47 +483,72 @@ export default class CustomGrid extends Component {
 
     handleGroupEvent = (groups) => {
 
-        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
-
-        gridLocalStor.groups = JSON.stringify(groups);
-        gridLocalStor.columnsList = JSON.stringify(this.state.columns);
+        var gridLocalStore = { columnsList: [], groups: [], Filters: [] };
 
         let newFilterLst = this.state.localStorFiltersList;
-
-        gridLocalStor.Filters = JSON.stringify(newFilterLst);
-        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
+        gridLocalStore.groups = JSON.stringify(groups);
+        gridLocalStore.columnsList = JSON.stringify(this.state.columns);
+        gridLocalStore.Filters = JSON.stringify(newFilterLst);
+        localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStore));
 
         this.setState({ groupsList: groups });
     }
 
     handleChangeWidth = (key, newWidth) => {
+
         this.setState({ GridLoading: true });
 
         let ColumnsHideShow = this.state.ColumnsHideShow;
         for (var i in ColumnsHideShow) {
             if (ColumnsHideShow[i].field === key) {
-                ColumnsHideShow[i].width = newWidth.toString();
+                ColumnsHideShow[i].width = newWidth;
                 break;
             }
         }
 
+        var savedGrid = { columnsList: [], groups: [], Filters: [] };
+        let newFilterLst = this.state.localStorFiltersList;
+        savedGrid.columnsList = JSON.stringify(ColumnsHideShow)
+        savedGrid.groups = JSON.stringify(this.state.groupsList);
+        savedGrid.Filters = JSON.stringify(newFilterLst);
+        localStorage.setItem(this.props.gridKey, JSON.stringify(savedGrid))
+
         setTimeout(() => {
             this.setState({
-                columns: ColumnsHideShow.filter(i => i.hidden == false),
+                columns: ColumnsHideShow.filter(i => i.hidden !== true),
                 GridLoading: false,
             });
-        }, 300);
-
-        var selectedCols = { columnsList: [], groups: [] };
-        selectedCols.columnsList = JSON.stringify(ColumnsHideShow)
-        selectedCols.groups = JSON.stringify(this.props.groups);
-        localStorage.setItem(this.props.gridKey, JSON.stringify(selectedCols))
+        }, 500);
     };
 
+    /**
+     * Returns an array with arrays of the given size.
+     *
+     * @param myArray {Array} array to split 
+     * @param pageNumber {Integer} page called 
+     */
+    chunkData(pageNumber) {
+        var index = 0;
+        var myArray = this.state.rows;
+        var arrayLength = myArray.length;
+        var tempArray = [];
+
+        let startFrom = (pageNumber * 100);
+
+        for (index = startFrom; index < arrayLength; index += 100) {
+            let myChunk = myArray.slice(startFrom, (startFrom + 100) + (pageNumber * 100));
+            console.table(myChunk);
+            tempArray.push(myChunk);
+            break;
+        }
+        this.setState({
+            pagedData: tempArray
+        })
+        //return tempArray;
+    }
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
-
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
             return (
 
@@ -623,7 +646,11 @@ export default class CustomGrid extends Component {
                         <div style={{ position: 'relative', minHeight: '200px' }}>
                             <div className="header-filter">
                                 <h2 className="zero">Filter results</h2>
-                                {this.state.rows ? <span><span className={this.state.Loading ? "res__load" : ""}>{this.state.rows.length}</span> Results</span> : null}
+                                {this.state.rows ?
+                                    <span><span className={this.state.Loading ? "res__load" : ""}>{this.state.rows.length}</span> Results</span>
+                                    :
+                                    null
+                                }
                             </div>
                             <div className="content">
                                 <div className="filter__warrper">
@@ -686,6 +713,7 @@ export default class CustomGrid extends Component {
                     </div>
                 </div>
                 <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+
                     <div className="minimizeSpan" >
                         <div className="H-tableSize" data-toggle="tooltip" title="Minimize Rows" onClick={this.handleMinimize}>
                             <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
@@ -708,23 +736,33 @@ export default class CustomGrid extends Component {
                     </div>
 
                     {this.state.GridLoading === false ?
- 
-                        <GridCustom
-                            key={this.props.gridKey}
-                            cells={this.state.columns.filter(i => i.hidden != true)}
-                            data={this.props.data}
-                            actions={this.props.actions}
-                            rowActions={this.props.rowActions}
-                            rowClick={cell => this.props.rowClick(cell)}
-                            groups={this.state.groupsList}
-                            handleGroupUpdate={this.handleGroupEvent}
-                            showPicker={this.props.showPicker}
-                            shouldCheck={this.props.shouldCheck}
-                        />
-                        :
-                    <LoadingSection />
-                    }
-
+                        (
+                            <>
+                                < GridCustom
+                                    key={this.props.gridKey}
+                                    cells={this.state.columns.filter(i => i.hidden != true)}
+                                    data={this.state.rows}
+                                    actions={this.props.actions}
+                                    rowActions={this.props.rowActions}
+                                    rowClick={cell => this.props.rowClick(cell)}
+                                    groups={this.state.groupsList}
+                                    handleGroupUpdate={this.handleGroupEvent}
+                                    showPicker={this.props.showPicker}
+                                />
+                                {/* <div className="paginationNumbers custom">
+                                    <ul className="zero">
+                                        <li><a><i className="angle left icon" />  </a></li>
+                                        <li className="active" onClick={e => this.chunkData(1)}>
+                                            <a> 1 </a>
+                                        </li>
+                                        <li onClick={e => this.chunkData(2)}><a> 2 </a></li>
+                                        <li onClick={e => this.chunkData(3)}><a> 3 </a></li>
+                                        <li ><a> <i className="angle right icon" /></a></li>
+                                    </ul>
+                                </div> */}
+                            </>
+                        )
+                        : <LoadingSection />}
 
                 </div>
 
