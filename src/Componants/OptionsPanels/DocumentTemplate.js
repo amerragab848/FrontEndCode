@@ -1,15 +1,10 @@
-import React, { Component , Fragment } from 'react'
-import Api from '../../api'
-import Resources from '../../resources.json';
-import { Form } from 'formik';
+import React, { Component, Fragment } from 'react' 
 import XSLfile from "./XSLfiel";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from 'moment'; 
+import moment from 'moment';
 import * as communicationActions from '../../store/actions/communication';
-import UploadAttachment from "./UploadAttachment";
-import AddItemDescription from "./addItemDescription";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+ 
 import Config from "../../Services/Config.js";
 
 class DocumentTemplate extends Component {
@@ -27,23 +22,23 @@ class DocumentTemplate extends Component {
                 docDate: moment(),
             },
             selectedOption: 'true',
-            submitLoading: false, 
+            submitLoading: false,
         }
     }
-  
-    render() { 
+
+    render() {
         return (
-                 <Fragment> 
-                        <XSLfile key="docTemplate"
-                            docId={this.state.templates.docId}
-                            projectId={this.state.templates.projectId}
-                            docType="docTemplate"
-                            documentTemplate={true}
-                            link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
-                            header="addManyItems"
-                            afterUpload={() => {}} />   
-                </Fragment>
-         )
+            <Fragment>
+                <XSLfile key="docTemplate"
+                    docId={this.state.templates.docId}
+                    projectId={this.state.templates.projectId}
+                    docType="docTemplate"
+                    documentTemplate={true}
+                    link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/documentTemplate.xlsx"}
+                    header="addManyItems"
+                    afterUpload={() => { }} />
+            </Fragment>
+        )
     }
 }
 function mapStateToProps(state) {

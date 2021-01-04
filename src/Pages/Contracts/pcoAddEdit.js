@@ -23,6 +23,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 //import SkyLight from "react-skylight";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 
 var steps_defination = [];
 
@@ -63,7 +64,7 @@ const documentItemValidationSchema = Yup.object().shape({
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
 
     quantity: Yup.number().required(Resources['quantity'][currentLanguage])
-      
+
 })
 
 let columns = [
@@ -480,6 +481,16 @@ class pcoAddEdit extends Component {
             }
         }
     };
+
+    fillItemsTable=()=>{
+        dataservice.GetDataGrid("GetContractsPcoItemsByProposalIdUsingPaging?proposalId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            let data = { items: result };
+            this.props.actions.ExportingData(data);
+            this.setState({
+                voItems: result
+            });
+        });
+    }
 
     handleChange(e, field) {
 
@@ -1234,7 +1245,7 @@ class pcoAddEdit extends Component {
                                                                                 handleBlur(e)
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'profit')} />
-                                                                        {touched.profit ? (<em className="pError">{ errors.profit}</em>) : null}
+                                                                        {touched.profit ? (<em className="pError">{errors.profit}</em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
@@ -1290,19 +1301,19 @@ class pcoAddEdit extends Component {
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
                                                     {this.state.docId > 0 && this.state.isViewMode === false ? (
-                                                    <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3019} EditAttachments={3257} ShowDropBox={3571} ShowGoogleDrive={3572} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                                                       {this.state.docId > 0  ? (
+                                                        <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3019} EditAttachments={3257} ShowDropBox={3571} ShowGoogleDrive={3572} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                    {this.state.docId > 0 ? (
                                                         <Fragment>
-                                                        <div className="document-fields tableBTnabs">
-                                                            <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
-                                                        </div>
+                                                            <div className="document-fields tableBTnabs">
+                                                                <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                            </div>
                                                         </Fragment>
                                                     ) : null}
                                                     {this.viewAttachments()}
                                                     {this.props.changeStatus === true ?
                                                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                         : null}
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1311,6 +1322,15 @@ class pcoAddEdit extends Component {
                                 :
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
+                                        <XSLfile key="boqImport"
+                                            docId={this.state.docId}
+                                            docType={"PcoItems"}
+                                            action={1}
+                                            uploadPcoItems={true}
+                                            link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/PcoItems.xlsx"}
+                                            header="addManyItems"
+                                            disabled={this.props.changeStatus ? this.state.docId > 0 ? false : true : false}
+                                            afterUpload={() => this.fillItemsTable()} />
                                         {this.addVariationDraw()}
                                         <div className="doc-pre-cycle">
                                             <div class="submittalFilter">
@@ -1374,7 +1394,7 @@ class pcoAddEdit extends Component {
                                 </div>
                                 : null
                         }
-                         
+
                     </div>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? "block" : "none" }}>

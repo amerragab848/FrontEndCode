@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Formik, Form } from "formik";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import ReactTable from "react-table"; 
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -18,19 +17,15 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
-import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription';
+import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
 import { toast } from "react-toastify";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import "../../Styles/css/rodal.css";
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal"; 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import Steps from "../../Componants/publicComponants/Steps";
 
 
-var steps_defination = [];
-
-//const _ = require("lodash");
-
+var steps_defination = []; 
 let selectedRows = [];
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

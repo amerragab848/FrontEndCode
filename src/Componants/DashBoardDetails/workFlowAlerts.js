@@ -7,15 +7,16 @@ import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import Grid from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 class workFlowAlerts extends Component {
 
   constructor(props) {
     super(props);
 
-    const columnGrid = [
+    this.columnGrid = [
       {
         field: 'arrange',
         title: Resources['arrange'][currentLanguage],
@@ -24,6 +25,7 @@ class workFlowAlerts extends Component {
         fixed: true,
         type: "number",
         sortable: true,
+        hidden: false
       },
       {
         field: 'subject',
@@ -103,7 +105,6 @@ class workFlowAlerts extends Component {
     this.state = {
       pageTitle: Resources["workFlowAlert"][currentLanguage],
       viewfilter: false,
-      columns: columnGrid,
       isLoading: true,
       rows: [],
       isCustom: true
@@ -187,22 +188,12 @@ class workFlowAlerts extends Component {
     }
   }
 
+  changeValueOfProps = () => {
+    this.setState({ isFilter: false });
+  };
   render() {
-    const dataGrid = this.state.isLoading === false ? (
-      <GridCustom
-        ref='custom-data-grid'
-        gridKey="WorkFlowAlert"
-        data={this.state.rows}
-        groups={[]}
-        actions={[]}
-        rowActions={[]}
-        cells={this.state.columns}
-        rowClick={(cell) => { this.onRowClick(cell) }}
-      />
-    ) : <LoadingSection />;
 
-    const btnExport = this.state.isLoading === false ?
-      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+    const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
     return (
       <div className="mainContainer">
@@ -220,7 +211,20 @@ class workFlowAlerts extends Component {
           </div>
         </div>
 
-        <div>{dataGrid}</div>
+        <div>
+          {this.state.isLoading === false ? (
+            <Grid
+              gridKey="WorkFlowAlert"
+              data={this.state.rows}
+              cells={this.columnGrid}
+              changeValueOfProps={this.changeValueOfProps.bind(this)}
+              isFilter={this.state.isFilter}
+              groups={[]}
+              actions={[]}
+              rowActions={[]}
+              rowClick={(cell) => { this.onRowClick(cell) }}
+            />
+          ) : <LoadingSection />}</div>
       </div>
     );
   }

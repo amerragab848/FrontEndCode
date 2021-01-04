@@ -25132,3 +25132,16 @@ tbody.grid-body tr .text.elipsisPadd {
     font-size: 25px;
     color: rgb(94, 100, 117);
 }
+
+.paginationNumbers.custom ul {justify-content: flex-start;}
+.paginationNumbers.custom ul li a {margin: 0 5px;}
+.paginationNumbers.custom ul li a i {
+    height: auto;
+    margin: 0;
+}
+.paginationNumbers.custom ul li a i.icon.angle.left:before {
+    content: "\F105";
+}
+.paginationNumbers.custom ul li a i.icon.angle.right:before {
+    content: "\F104";
+}

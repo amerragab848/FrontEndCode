@@ -85,8 +85,7 @@ class punchListAddEdit extends Component {
                 "title": "",
                 "type": "check-box",
                 "fixed": true,
-                "field": "id",
-                "showTip": true,
+                "field": "id", 
                 "width":10
             }, {
                 "field": "arrange",

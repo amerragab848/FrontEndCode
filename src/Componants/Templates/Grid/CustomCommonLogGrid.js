@@ -44,7 +44,7 @@ export default class CustomGrid extends Component {
                 state[index + '-column'] = moment().format('DD/MM/YYYY');
             }
         });
- 
+
         if (this.props.data.length > 0) {
             if (this.props.data[0].docDate != undefined) {
                 for (var i in this.props.data) {
@@ -66,8 +66,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ GridLoading: true });
 
-        var selectedCols =
-            JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
+        var selectedCols = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
 
         var currentGP = this.props.groups;
 
@@ -76,10 +75,7 @@ export default class CustomGrid extends Component {
             var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
-            localStorage.setItem(
-                this.props.gridKey,
-                JSON.stringify(gridLocalStor),
-            );
+            localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
         } else {
             var parsingList = JSON.parse(selectedCols.columnsList);
             for (var item in parsingList) {
@@ -178,6 +174,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ groupsList: groups });
     };
+
     render() {
         const btnDocumentTemplate =
             this.state.showDocTemplateBtn == true ? (
@@ -191,21 +188,32 @@ export default class CustomGrid extends Component {
             <Fragment>
                 {btnDocumentTemplate}
                 {this.state.GridLoading === false ? (
-                    <GridCustom
-                        gridKey={this.props.gridKey}
-                        cells={this.state.columns.filter(i => i.hidden != true)}
-                        data={this.state.rows}
-                        pageSize={this.props.pageSize}
-                        actions={this.props.actions}
-                        rowActions={this.props.rowActions}
-                        rowClick={cell => this.props.rowClick(cell)}
-                        groups={this.state.groupsList}
-                        handleGroupUpdate={this.handleGroupEvent}
-                        showCheckAll={this.props.showCheckAll}
-                    />
-                ) : (
-                        <LoadingSection />
-                    )}
+                    <>
+                        <GridCustom
+                            key={this.props.gridKey}
+                            cells={this.state.columns.filter(i => i.hidden != true)}
+                            data={this.state.rows}
+                            pageSize={this.props.pageSize}
+                            actions={this.props.actions}
+                            rowActions={this.props.rowActions}
+                            rowClick={cell => this.props.rowClick(cell)}
+                            groups={this.state.groupsList}
+                            handleGroupUpdate={this.handleGroupEvent}
+                            showCheckAll={this.props.showCheckAll}
+                        />
+                        {   /* <div className="paginationNumbers custom">
+                            <ul className="zero">
+                                <li><a><i className="angle left icon" />  </a></li>
+                                <li className="active">
+                                    <a> 1 </a>
+                                </li>
+                                <li><a> 2 </a></li>
+                                <li><a> 3 </a></li>
+                                <li><a> <i className="angle right icon" /></a></li>
+                            </ul>
+                        </div> */}
+                    </>
+                ) : (<LoadingSection />)}
             </Fragment>
         );
     }

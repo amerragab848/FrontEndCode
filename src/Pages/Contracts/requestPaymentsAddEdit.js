@@ -900,7 +900,7 @@ class requestPaymentsAddEdit extends Component {
             { field: 'boqType', title: 'boqType', type: 'text' },
             { field: 'secondLevel', title: 'boqTypeChild', type: 'text' },
         ];
- 
+
         this.setState({
             ColumnsHideShow: itemsColumns,
             columns: itemsColumns,
@@ -3174,35 +3174,35 @@ class requestPaymentsAddEdit extends Component {
     }
 
     renderingGrid() {
-        const ItemsGrid =
-            this.state.gridLoader === false && this.state.currentStep === 1 ? (
-                <GridCustom
-                    gridKey="ReqPaymentsItems"
-                    data={this.state.paymentsItems}
-                    groups={this.state.groups}
-                    isFilter={this.state.isFilter}
-                    actions={this.actions}
-                    openModalColumn={this.state.columnsModal}
-                    cells={this.state.columns}
-                    rowActions={
-                        this.state.isViewMode !== true &&
-                            this.props.changeStatus
-                            ? this.rowActions
-                            : []
-                    }
-                    rowClick={cell => {
-                        this.onRowClick(cell);
-                    }}
-                    changeValueOfProps={this.changeValueOfProps.bind(this)}
-                />
-            ) : (
-                    <div style={{ position: 'relative' }}>
-                        <LoadingSection />
-                    </div>
-                );
+        const ItemsGrid = this.state.gridLoader === false && this.state.currentStep === 1 ? (
+            <GridCustom
+                gridKey="ReqPaymentsItems"
+                data={this.state.paymentsItems}
+                groups={this.state.groups}
+                isFilter={this.state.isFilter}
+                actions={this.actions}
+                openModalColumn={this.state.columnsModal}
+                cells={this.state.columns}
+                rowActions={
+                    this.state.isViewMode !== true &&
+                        this.props.changeStatus
+                        ? this.rowActions
+                        : []
+                }
+                rowClick={cell => {
+                    this.onRowClick(cell);
+                }}
+                changeValueOfProps={this.changeValueOfProps.bind(this)}
+            />
+        ) : (
+                <div style={{ position: 'relative' }}>
+                    <LoadingSection />
+                </div>
+            );
 
         return ItemsGrid;
     }
+    
     executeVoChangePrices = () => {
         this.setState({ isLoading: true, selected: {} });
 
@@ -5018,6 +5018,7 @@ class requestPaymentsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                             ) : null}
+
                             {this.state.currentStep == 1 ? (
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
@@ -5240,6 +5241,7 @@ class requestPaymentsAddEdit extends Component {
                                                     </button>
                                                 </div>
                                             </div>
+
                                             {this.renderingGrid()}
 
                                             {this.state.editRows.length > 0 ? (

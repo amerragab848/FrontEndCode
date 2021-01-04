@@ -284,6 +284,7 @@ class CommonLog extends Component {
             isCustom: true,
         });
     }
+
     fillDropDowns() {
         if (this.state.docType == 'submittal' || this.state.documentName == "Letters") {
             dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + this.props.projectId, 'companyName', 'companyId', 'companies', this.props.projectId, 'projectId').then(result => {
@@ -326,6 +327,7 @@ class CommonLog extends Component {
             });
         }
     }
+
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.match !== state.match) {
             return {
@@ -878,15 +880,13 @@ class CommonLog extends Component {
                 if (item.field === 'subject') {
                     obj.href = 'link';
                     obj.onClick = () => { };
-                    obj.classes = 'bold';
-                    obj.showTip = true;
+                    obj.classes = 'bold'; 
                 }
 
                 if (item.field === 'description' && documentObj.docTyp == 50) {
                     obj.href = 'link';
                     obj.onClick = () => { };
-                    obj.classes = 'bold';
-                    obj.showTip = true;
+                    obj.classes = 'bold'; 
                 }
 
                 if (
@@ -1576,8 +1576,8 @@ class CommonLog extends Component {
                 }}
                 groups={this.state.groups}
                 isFilter={this.state.isFilter}
-                showCheckAll={true}
                 changeValueOfProps={this.changeValueOfProps.bind(this)}
+                showCheckAll={true}
             />
         ) : (<LoadingSection />);
 

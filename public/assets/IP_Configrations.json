@@ -1,6 +1,6 @@
 {
   "BlobStorageContainerName": "project-files-badya",
-   "accountCompanyId": "14",
+   "accountCompanyId": "2",
    "azureStorage": true,
    "canSendAlert": "true",
    "refAutomatic": false, 
@@ -24,7 +24,7 @@
    "exportCore" : "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/",
    "client_id": "DlSeYObvI78EFYfvEzK9GOwcQ4jvERA8",
    "client_secret": "8eVDuCjah3JhAn1O",
-  "commonLogApi": 2,
+  "commonLogApi": 1,
   "dashboardApi": 1,
   "refCodeValidation": false,
   "activeExport": true,

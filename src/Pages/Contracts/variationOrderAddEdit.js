@@ -16,7 +16,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
+import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescription";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
