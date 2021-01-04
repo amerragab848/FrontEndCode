@@ -9162,5 +9162,18 @@
     "addManySubmittalItems": {
         "en": "Add Many Submittal Items",
         "ar": "اضف مجموعة عناصر"
+    },
+    "dateOfAdvPaymentAmount": {
+        "en": "date Of Advanced Payment Amount",
+        "ar": " تاريخ مبلغ الدفع المسبق "
+    },
+    "AddBy":{
+        "en":"Add By",
+         "ar":" تم الاضافه بواسطه"
+    },
+    "accumulativeAmount":{
+         "en":"accumulative Amount",
+         "ar":" تم الاضافه بواسطه"
     }
+ 
 }

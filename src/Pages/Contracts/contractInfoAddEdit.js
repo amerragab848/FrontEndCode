@@ -37,7 +37,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Dataservice from "../../Dataservice";
-
+import AdvacedPaymentAmount from "./AdvacedPaymentAmount";
 var steps_defination = [];
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -120,8 +120,8 @@ class ContractInfoAddEdit extends Component {
       pageNumber: 0,
       voPageNumber: 0,
       voPageSize: 50,
-      maPageNumber: 0,
-      maPageSize: 50,
+      advPageNumber: 0,
+      advPageSize: 50,
       pageSize: 2000,
       CurrStep: 0,
       firstComplete: false,
@@ -183,7 +183,10 @@ class ContractInfoAddEdit extends Component {
       showSubPurchaseOrders: false,
       showBoqLinkBtn: false,
       selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "" },
-      notContractedBoqList: []
+      notContractedBoqList: [],
+      AdvacedPaymentData:[],
+      ApmPageNumber:50,
+      AdvacedPaymentDataLength:0
     };
 
     this.groups = [];
@@ -766,8 +769,30 @@ class ContractInfoAddEdit extends Component {
     if (tabName == 'matReleased') {
       this.getMaterialRelease();
     }
-
+    if (tabName == 'AdvPayAmount') {
+    //  this.getAdvacedPaymwntAmount();
+    }
   };
+    getAdvacedPaymwntAmount=()=>{
+      if (this.state.AdvacedPaymentData.length == 0) {
+        this.setState({ isLoading: true })
+        Api.get('GetAdvancedPaymentBycontractId?contractId=' + this.state.docId + '&pageNumber=' + this.state.advPageNumber + '&pageSize=' + this.state.advPageSize).then(result => {
+          let AdvPAItems = [];
+          if (result.length > 0) {
+            AdvPAItems = result;
+            this.state.ApmPageNumber = this.state.ApmPageNumber + 1;
+          }
+  
+          this.setState({
+            AdvacedPaymentData: AdvPAItems,              
+            AdvacedPaymentDataLength:  result.length,  
+            isLoading: false,
+  
+          });
+  
+        }).catch(() => { this.setState({ isLoading: false }) })
+      }
+    }
   getMaterialRelease() {
     if (this.state.materialReleaseItems.length == 0) {
       this.setState({ isLoading: true })
@@ -1676,7 +1701,7 @@ class ContractInfoAddEdit extends Component {
                           <input type="text" className="form-control" id="advancedPaymentAmount"
                             onChange={handleChange} onBlur={handleBlur}
                             defaultValue={this.state.document.advancedPaymentAmount}
-                            name="advancedPaymentAmount" placeholder={Resources.advancedPaymentAmount[currentLanguage]} />
+                            name="advancedPaymentAmount" placeholder={Resources.advancedPaymentAmount[currentLanguage]} readOnly/>
                         </div>
                       </div>
 
@@ -1827,6 +1852,11 @@ class ContractInfoAddEdit extends Component {
             <li className={"data__tabs--list " + (this.state.activeTab == "subPOs" ? "active" : "")} onClick={() => this.changeTab("subPOs")}>
               {Resources.subPOs[currentLanguage]}
             </li>
+
+            <li className={"data__tabs--list " + (this.state.activeTab == "AdvPayAmount" ? "active" : "")} onClick={() => this.changeTab("AdvPayAmount")}>
+              {Resources.advancedPaymentAmount[currentLanguage]}
+            </li>
+
             <li className={"data__tabs--list " + (this.state.activeTab == "voi" ? "active" : "")} onClick={() => this.changeTab("voi")}>
               {Resources.variationOrderItems[currentLanguage]}
             </li>
@@ -1846,6 +1876,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId=' + this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId=" + docId} type="Contract" docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
+          
+          {this.state.activeTab == "AdvPayAmount" ? (<AdvacedPaymentAmount isViewMode={this.state.isViewMode} contractId={this.state.docId} items={this.state.AdvacedPaymentData}  pageNumberinit={this.state.ApmPageNumber} totalRows={this.state.AdvacedPaymentDataLength}/>) : null}        
           {this.state.activeTab == "matReleased" ? (<MaterialReleased contractId={this.state.docId} items={this.state.materialItems} totalVals={this.state.totalVal} totalRturnedvals={this.state.totalRturnedVal} pageNumberinit={this.state.marPageNumber} totalRows={this.state.materialReleaseItemsLength} />) : null}
           {this.state.activeTab == "voi" ? (<Fragment>{voiContent}</Fragment>) : null}
 
