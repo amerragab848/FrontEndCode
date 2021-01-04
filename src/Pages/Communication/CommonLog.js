@@ -418,6 +418,7 @@ class CommonLog extends Component {
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
             this.props.history.push({
+                //pathname: '/' + addView + '/' + 0 + '/' + this.props.projectId + '/0/0/false/' + this.state.projectName //,
                 pathname: '/' + addView,
                 search: '?id=' + encodedPaylod,
             });
@@ -452,8 +453,10 @@ class CommonLog extends Component {
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
+            ///:id/:projectId/:arrange/:docApprovalId/:isApproveMode/:projectName
             this.props.history.push({
+
+                //pathname: '/' + editView + '/' + row.id + '/' + row.projectId + '/0/0/false/' + this.state.projectName + '/' + window.location.pathname + window.location.search
                 pathname: '/' + editView,
                 search: '?id=' + encodedPaylod,
             });
@@ -824,190 +827,172 @@ class CommonLog extends Component {
     renderComponent(documentName, projectId, isCustom) {
         var projectId = projectId;
         var documents = documentName;
-        console.log(documentDefenition);
-        console.log(documentDefenition[documentName]);
+
         documentObj = documentDefenition[documentName];
-        if (documentObj.docTyp == 42) {
-            docTempLink =
-                Config.getPublicConfiguartion().downloads +
-                '/Downloads/Excel/tempSubmittal.xlsx';
-        }
-        //else if .... for more documents
-        else {
-            docTempLink =
-                Config.getPublicConfiguartion().downloads +
-                '/Downloads/Excel/tempLetter.xlsx';
-        }
-
-        //added
-        let docTypeId = documentObj.docTyp;
-        let showExServerBtn = false;
-        let showDocTemplateBtn = false;
-
-        var cNames = [];
-        var filtersColumns = [];
-        var exportedColumns = [];
-        if (documentObj.documentColumns) {
-            if (
-                Config.IsAllow(
-                    this.state.documentObj.documentDeletePermission,
-                ) &&
-                documentName !== 'paymentCertification'
-            ) {
-                cNames.push({
-                    title: '',
-                    type: 'check-box',
-                    fixed: true,
-                    field: 'id',
-                });
+        if (documentObj) {
+            if (documentObj.docTyp == 42) {
+                docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx';
             }
-            documentObj.documentColumns.map((item, index) => {
-                var obj = {
-                    field: item.field,
-                    fixed: index < 3 ? true : false,
-                    title: Resources[item.friendlyName][currentLanguage],
-                    width: item.width.replace('%', ''),
-                    sortable: true,
-                    groupable: true,
-                    type:
-                        item.dataType === 'number'
-                            ? item.dataType
-                            : item.dataType === 'date'
-                                ? item.dataType
-                                : 'text',
-                };
+            //else if .... for more documents
+            else {
+                docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx';
+            }
 
-                if (item.field === 'subject') {
-                    obj.href = 'link';
-                    obj.onClick = () => { };
-                    obj.classes = 'bold'; 
-                }
+            //added
+            let docTypeId = documentObj.docTyp;
+            let showExServerBtn = false;
+            let showDocTemplateBtn = false;
 
-                if (item.field === 'description' && documentObj.docTyp == 50) {
-                    obj.href = 'link';
-                    obj.onClick = () => { };
-                    obj.classes = 'bold'; 
-                }
-
+            var cNames = [];
+            var filtersColumns = [];
+            var exportedColumns = [];
+            if (documentObj.documentColumns) {
                 if (
-                    item.field === 'statusName' ||
-                    item.field === 'statusText'
-                ) {
-                    obj.classes = 'grid-status';
-                    obj.fixed = false;
-                    obj.leftPadding = 17;
-                }
-
-                if (isCustom !== true) {
-                    cNames.push(obj);
-                    exportedColumns.push({
-                        field: item.field,
-                        title: Resources[item.friendlyName][currentLanguage],
-                        selected: false,
-                        showInExport: item.showInExport,
+                    Config.IsAllow(this.state.documentObj.documentDeletePermission,) && documentName !== 'paymentCertification') {
+                    cNames.push({
+                        title: '',
+                        type: 'check-box',
+                        fixed: true,
+                        field: 'id',
                     });
-                } else {
-                    if (item.isCustom === true) {
+                }
+                documentObj.documentColumns.map((item, index) => {
+                    var obj = {
+                        field: item.field,
+                        fixed: index < 3 ? true : false,
+                        title: Resources[item.friendlyName][currentLanguage],
+                        width: item.width.replace('%', ''),
+                        sortable: true,
+                        groupable: true,
+                        type:
+                            item.dataType === 'number'
+                                ? item.dataType
+                                : item.dataType === 'date'
+                                    ? item.dataType
+                                    : 'text',
+                    };
+
+                    if (item.field === 'subject') {
+                        obj.href = 'link';
+                        obj.onClick = () => { };
+                        obj.classes = 'bold';
+                    }
+
+                    if (item.field === 'description' && documentObj.docTyp == 50) {
+                        obj.href = 'link';
+                        obj.onClick = () => { };
+                        obj.classes = 'bold';
+                    }
+
+                    if (
+                        item.field === 'statusName' ||
+                        item.field === 'statusText'
+                    ) {
+                        obj.classes = 'grid-status';
+                        obj.fixed = false;
+                        obj.leftPadding = 17;
+                    }
+
+                    if (isCustom !== true) {
                         cNames.push(obj);
                         exportedColumns.push({
                             field: item.field,
-                            title:
-                                Resources[item.friendlyName][currentLanguage],
+                            title: Resources[item.friendlyName][currentLanguage],
                             selected: false,
                             showInExport: item.showInExport,
                         });
+                    } else {
+                        if (item.isCustom === true) {
+                            cNames.push(obj);
+                            exportedColumns.push({
+                                field: item.field,
+                                title:
+                                    Resources[item.friendlyName][currentLanguage],
+                                selected: false,
+                                showInExport: item.showInExport,
+                            });
+                        }
+                    }
+                });
+
+                let ColumnsHideShow = [...cNames];
+
+                for (var i in ColumnsHideShow) {
+                    ColumnsHideShow[i].hidden = false;
+                }
+                /*
+                
+                */
+                this.setState({
+                    ColumnsHideShow: ColumnsHideShow,
+                    exportedColumns: exportedColumns,
+                });
+            }
+
+            if (
+                docTypeId == 19 ||
+                docTypeId == 23 ||
+                docTypeId == 42 ||
+                docTypeId == 28 ||
+                docTypeId == 103 ||
+                docTypeId == 25
+            ) {
+                showExServerBtn = true;
+            }
+
+            if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
+                showDocTemplateBtn = true;
+            } else {
+                showDocTemplateBtn = false;
+            }
+            if (docTypeId == 50) {
+                this.setState({ showInventoryImportAttachBtn: true });
+            } else {
+                this.setState({ showInventoryImportAttachBtn: false });
+            }
+
+            filtersColumns = documentObj.filters;
+
+            var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName),) || [];
+            var currentGP = [];
+            if (selectedCols.length === 0) {
+                var gridLocalStor = { columnsList: [], groups: [] };
+                gridLocalStor.columnsList = JSON.stringify(cNames);
+                gridLocalStor.groups = JSON.stringify(currentGP);
+                localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(gridLocalStor));
+            } else {
+                var parsingList = JSON.parse(selectedCols.columnsList);
+                for (var item in parsingList) {
+                    for (var i in cNames) {
+                        if (cNames[i].field === parsingList[item].field) {
+                            let status = parsingList[item].hidden;
+                            cNames[i].hidden = status;
+                            cNames[i].width = parsingList[item].width;
+                            break;
+                        }
                     }
                 }
-            });
-
-            let ColumnsHideShow = [...cNames];
-
-            for (var i in ColumnsHideShow) {
-                ColumnsHideShow[i].hidden = false;
+                currentGP = JSON.parse(selectedCols.groups);
             }
-            /*
-            
-            */
+
             this.setState({
-                ColumnsHideShow: ColumnsHideShow,
-                exportedColumns: exportedColumns,
+                pageTitle: Resources[documentObj.documentTitle][currentLanguage],
+                groups: currentGP,
+                docType: documents,
+                routeAddEdit: documentObj.documentAddEditLink,
+                apiFilter: documentObj.filterApi,
+                api: documentObj.documentApi.get,
+                apiDelete: documentObj.documentApi.delete,
+                columns: cNames,
+                filtersColumns: filtersColumns,
+                documentObj: documentObj,
+                projectId: projectId,
+                showExServerBtn,
+                showDocTemplateBtn,
             });
+
+            this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
         }
-
-        if (
-            docTypeId == 19 ||
-            docTypeId == 23 ||
-            docTypeId == 42 ||
-            docTypeId == 28 ||
-            docTypeId == 103 ||
-            docTypeId == 25
-        ) {
-            showExServerBtn = true;
-        }
-
-        if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
-            showDocTemplateBtn = true;
-        } else {
-            showDocTemplateBtn = false;
-        }
-        if (docTypeId == 50) {
-            this.setState({ showInventoryImportAttachBtn: true });
-        } else {
-            this.setState({ showInventoryImportAttachBtn: false });
-        }
-
-        filtersColumns = documentObj.filters;
-
-        var selectedCols =
-            JSON.parse(
-                localStorage.getItem('CommonLog-' + this.state.documentName),
-            ) || [];
-        var currentGP = [];
-        if (selectedCols.length === 0) {
-            var gridLocalStor = { columnsList: [], groups: [] };
-            gridLocalStor.columnsList = JSON.stringify(cNames);
-            gridLocalStor.groups = JSON.stringify(currentGP);
-            localStorage.setItem(
-                'CommonLog-' + this.state.documentName,
-                JSON.stringify(gridLocalStor),
-            );
-        } else {
-            var parsingList = JSON.parse(selectedCols.columnsList);
-            for (var item in parsingList) {
-                for (var i in cNames) {
-                    if (cNames[i].field === parsingList[item].field) {
-                        let status = parsingList[item].hidden;
-                        cNames[i].hidden = status;
-                        cNames[i].width = parsingList[item].width;
-                        break;
-                    }
-                }
-            }
-            currentGP = JSON.parse(selectedCols.groups);
-        }
-
-        this.setState({
-            pageTitle: Resources[documentObj.documentTitle][currentLanguage],
-            groups: currentGP,
-            docType: documents,
-            routeAddEdit: documentObj.documentAddEditLink,
-            apiFilter: documentObj.filterApi,
-            api: documentObj.documentApi.get,
-            apiDelete: documentObj.documentApi.delete,
-            columns: cNames,
-            filtersColumns: filtersColumns,
-            documentObj: documentObj,
-            projectId: projectId,
-            showExServerBtn,
-            showDocTemplateBtn,
-        });
-
-        this.GetRecordOfLog(
-            isCustom === true
-                ? documentObj.documentApi.getCustom
-                : documentObj.documentApi.get,
-            projectId,
-        );
     }
 
     GetRecordOfLog(api, projectId) {
@@ -1026,9 +1011,11 @@ class CommonLog extends Component {
             this.setState({ isLoading: false });
         }
     }
+
     clickMoreDetailsHandler = () => {
         this.addRecord();
     };
+
     GetLogData(url) {
         Api.get(url, undefined, moduleId)
             .then(result => {
@@ -1309,14 +1296,14 @@ class CommonLog extends Component {
         if (Config.getPublicConfiguartion().activeExport != true) {
             toast.warn('This feature is disabled. Please call your administrator for assistance');
             return;
-          }
-      
+        }
+
         let chosenColumns = this.state.columnsExport;
         if (chosenColumns.length > 2) {
             toast.warning("Can't Draw With more than 2 Columns Choosen");
         }
         else {
-            this.setState({ isExporting: true }); 
+            this.setState({ isExporting: true });
             let query = this.state.query;
             var stringifiedQuery = JSON.stringify(query);
 
@@ -1561,6 +1548,8 @@ class CommonLog extends Component {
                                 );
 
                                 this.props.history.push({
+
+                                    //pathname: '/' + addView + '/' + cell.id + '/' + cell.projectId + '/0/0/false/' + this.state.projectName + '/' + window.location.pathname  
                                     pathname: '/' + addView,
                                     search: '?id=' + encodedPaylod,
                                 });

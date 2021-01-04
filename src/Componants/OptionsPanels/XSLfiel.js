@@ -221,6 +221,46 @@ class XSLfile extends Component {
                 });
         }
     }
+
+    PcoItemsTemplateUpload = () => {
+        if (this.state.acceptedFiles.length > 0) {
+            this.setState({
+                Isloading: true,
+            });
+            let formData = new FormData();
+            let file = this.state.acceptedFiles[0];
+            let fileName = file.name;
+            let testName = [];
+            testName.push(fileName);
+            formData.append('file0', file);
+            let docType = this.props.docType;
+            let header = { docType: docType };
+            Api.postFile(
+                'AddMultiplePcoItemsFromExcel?docId=' +
+                this.props.docId+'&action='+this.props.action,
+                formData,
+                header,
+            )
+                .then(resp => {
+                    if (this.props.afterUpload != undefined) {
+                        this.props.afterUpload();
+                        toast.success(Resources['operationSuccess'][currentLanguage]);
+                        }
+                    setTimeout(() => {
+                        this.setState({ _className: 'zeropercent' });
+                    }, 1000);
+                    this.setState({
+                        Isloading: false,
+                    });
+                })
+                .catch(ex => {
+                    toast.error(
+                        Resources['operationCanceled'][currentLanguage],
+                    );
+                });
+        }
+    }
+
     drawinListItemsTemplateUpload=()=>{
         if (this.state.acceptedFiles.length > 0) {
             this.setState({
@@ -262,6 +302,7 @@ class XSLfile extends Component {
                 });
         }
     }
+
     render() {
         return (
             <div className="doc-pre-cycle">
@@ -411,6 +452,7 @@ class XSLfile extends Component {
                                                         ? this.submittalItemsTemplateUpload
                                                         :this.props.drawinListItemdocumentTemplate?
                                                         this.drawinListItemsTemplateUpload
+                                                        :this.props.uploadPcoItems?this.PcoItemsTemplateUpload
                                                         :this.upload
                                         }>
                                         {Resources['upload'][currentLanguage]}

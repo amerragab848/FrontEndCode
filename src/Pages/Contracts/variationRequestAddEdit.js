@@ -832,8 +832,8 @@ class VariationRequestAdd extends Component {
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
                                         <AddItemDescription
-                                            docLink="/Downloads/Excel/BOQ.xlsx"
-                                            docType="vr"
+                                            docLink="/Downloads/Excel/VRItems.xlsx"
+                                            docType="VRItems"
                                             isViewMode={this.state.isViewMode}
                                             docId={this.state.docId}
                                             mainColumn="variationRequestId"
@@ -841,7 +841,7 @@ class VariationRequestAdd extends Component {
                                             addItemApi="AddVRItems"
                                             projectId={this.state.projectId}
                                             showItemType={false}
-                                            showImportExcel={false}
+                                            showImportExcel={true}
                                         />
                                         <div className="doc-pre-cycle">
                                             <GridCustom

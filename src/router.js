@@ -695,6 +695,7 @@ let setupRoutes = ProjectSetupRoutes.map((item, index) => {
 
 let originalRoutes = [
     <Route key="r-1" exact path="/" component={DashBoard} />,
+    // <Route key="r-2" path="/LettersAddEdit/:docId/:projectId/:arrange/:docApprovalId/:isApproveMode/:projectName/:perviousRoute" component={LettersAddEdit} />,
     <Route key="r-2" path="/LettersAddEdit" component={LettersAddEdit} />,
     <Route
         key="r-2"
