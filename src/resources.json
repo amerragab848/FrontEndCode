@@ -9162,5 +9162,10 @@
     "addManySubmittalItems": {
         "en": "Add Many Submittal Items",
         "ar": "اضف مجموعة عناصر"
+    },
+    "MissingTransmittalsAlert":{
+        "en":"Missing Transmittals Alert",
+        "ar":"تنبيه التسليمات المفقودة"
     }
+    
 }

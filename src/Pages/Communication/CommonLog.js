@@ -25,6 +25,8 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Slider } from 'react-semantic-ui-range';
 import { Resources } from '../../Resources';
+import { da } from 'date-fns/locale';
+import { Flag } from 'semantic-ui-react';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -53,6 +55,7 @@ class CommonLog extends Component {
             rows: [],
             ColumnsHideShow: [],
             exportedColumns: [],
+            chartColumns:[],
             totalRows: 0,
             columns: [],
             pageSize: 50,
@@ -75,6 +78,7 @@ class CommonLog extends Component {
             match: props.match,
             export: false,
             columnsExport: [],
+            selectedcolumnsChart:[],
             companies: [],
             contacts: [],
             ToContacts: [],
@@ -132,6 +136,11 @@ class CommonLog extends Component {
             },
             inventoryImportAttachmentModal: false,
             showInventoryImportAttachBtn: false,
+            BarChartCompJS:null,
+            showChart:false,
+            chartContent:null,
+            chartColumnsModal:false,
+            showChartBtn:false
         };
         this.actions = [
             {
@@ -840,11 +849,13 @@ class CommonLog extends Component {
         //added
         let docTypeId = documentObj.docTyp;
         let showExServerBtn = false;
+        let showChartBtn=false;
         let showDocTemplateBtn = false;
 
         var cNames = [];
         var filtersColumns = [];
         var exportedColumns = [];
+        var chartColumns=[];
         if (documentObj.documentColumns) {
             if (
                 Config.IsAllow(
@@ -906,6 +917,13 @@ class CommonLog extends Component {
                         selected: false,
                         showInExport: item.showInExport,
                     });
+                    if(item.showInChart=== true){
+                        chartColumns.push({
+                            field: item.field,
+                            title: Resources[item.friendlyName][currentLanguage],
+                            selected: false,
+                        })
+                    }
                 } else {
                     if (item.isCustom === true) {
                         cNames.push(obj);
@@ -916,6 +934,13 @@ class CommonLog extends Component {
                             selected: false,
                             showInExport: item.showInExport,
                         });
+                        if(item.showInChart=== true){
+                        chartColumns.push({
+                            field: item.field,
+                            title: Resources[item.friendlyName][currentLanguage],
+                            selected: false,
+                        })
+                    }
                     }
                 }
             });
@@ -925,13 +950,15 @@ class CommonLog extends Component {
             for (var i in ColumnsHideShow) {
                 ColumnsHideShow[i].hidden = false;
             }
-            /*
-            
-            */
             this.setState({
                 ColumnsHideShow: ColumnsHideShow,
                 exportedColumns: exportedColumns,
+                chartColumns:chartColumns
             });
+        }
+        if(docTypeId==19|| docTypeId==42)
+        {
+            showChartBtn=true;
         }
 
         if (
@@ -1000,6 +1027,7 @@ class CommonLog extends Component {
             projectId: projectId,
             showExServerBtn,
             showDocTemplateBtn,
+            showChartBtn
         });
 
         this.GetRecordOfLog(
@@ -1117,6 +1145,7 @@ class CommonLog extends Component {
             columnsModal: false,
             exportColumnsModal: false,
             docTemplateModal: false,
+            chartColumnsModal:false,
         });
     };
 
@@ -1218,7 +1247,33 @@ class CommonLog extends Component {
             this.setState({ columnsExport: columnsExport, Loading: false });
         }, 300);
     };
+    handleCheckForChart = key => {
+        let data = this.state.chartColumns;
 
+        for (var i in data) {
+            if (data[i].field === key) {
+                let status = data[i].selected === true ? false : true;
+                data[i].selected = status;
+                break;
+            }
+        }
+
+        let chosenColumns = data.filter(i => i.selected === true);
+
+        var selectedcolumnsChart = [];
+
+        chosenColumns.forEach(function (d) {
+            selectedcolumnsChart.push({
+                field: d.field,
+                isMain:"true",
+                type:"string"
+            });
+        });
+
+        setTimeout(() => {
+            this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
+        }, 300);
+    };
     ClosxMX() {
         if (this.props != undefined) {
             this.props.actions.clearCashDocument();
@@ -1254,7 +1309,18 @@ class CommonLog extends Component {
             exportedColumns: exportedColumns,
         });
     };
+    btnChartShowModal = () => {
+         let chartColumns = this.state.chartColumns;
 
+        for (var i in chartColumns) {
+            chartColumns[i].selected = false;
+        }
+
+        this.setState({
+            chartColumnsModal: true,
+            chartColumns: chartColumns,
+        });
+    }
     btnExportServerClick = () => {
         let chosenColumns = this.state.columnsExport;
         if (chosenColumns.length < 3) {
@@ -1288,7 +1354,6 @@ class CommonLog extends Component {
                     if (data) {
                         data =
                             Config.getPublicConfiguartion().downloads +
-                            '/' +
                             data;
                         var a = document.createElement('A');
                         a.href = data;
@@ -1301,6 +1366,90 @@ class CommonLog extends Component {
                             exportColumnsModal: false,
                             isExporting: false,
                         });
+                    }
+                });
+        }
+    };
+
+    btnStatisticsServerClick = () => {
+        let chosenColumns = this.state.selectedcolumnsChart;
+
+        if (chosenColumns.length > 1) {
+            toast.warning("Can't do statistics  With more than 1 Column ");
+            this.setState({ chartColumnsModal: false });
+        } else {
+            this.setState({ isExporting: true });
+            let docTypeId = this.state.documentObj.docTyp;
+            let query = this.state.query;
+            var stringifiedQuery = JSON.stringify(query);
+            if (stringifiedQuery == '{"isCustom":true}') {
+                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+            } else {
+                stringifiedQuery =
+                    '{"projectId":' +
+                    this.state.projectId +
+                    ',"isCustom":' +
+                    this.state.isCustom +
+                    '}';
+            }
+            let data = {};
+            data.docType = docTypeId;
+            data.query = stringifiedQuery;
+            data.projectId=this.state.projectId;
+            data.chosenColumns = chosenColumns;
+            let columns=[];
+            for(let i =0;i<data.chosenColumns.length;i++)
+            {
+                let obj={field:data.chosenColumns[i].field,isMain:true,type:'string'}
+                columns.push(obj);
+            }
+            
+            data={};
+            data.docType = docTypeId;
+            data.query = stringifiedQuery;
+            data.projectId=this.state.projectId;
+            data.columns=columns;
+
+            dataservice
+                .addObjectCore('GetStatisticsData', data, 'POST')
+                .then(data => {
+                    if (data && data.length>0) {  // data is datatable
+                       // modal to show chart based on this data !
+                       this.setState({
+                        BarChartCompJS:require('../../Componants/ChartsWidgets/BarChartCompJS').default,
+                        isExporting:false
+                       })
+                       let BarChartCompJS=this.state.BarChartCompJS;
+                       let Chart =(
+                       <BarChartCompJS
+                           reports=""
+                           rows={data}
+                        //    barContent={[
+                        //        { name: "Estimated", value: 'estimatedTime' },
+                        //        { name: "Actual", value: 'actualTotal' },
+                        //        { name: "Variance", value: 'variance' }
+           
+                        //    ]}
+                        categoryName={Object.keys(data[0])[0]}
+                           ukey="wt-Name203"
+                           title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                           y="total"
+                       />) 
+                      
+                     //////////////////////////////////////////////////////
+                        this.setState({
+                            chartColumnsModal: false,
+                            isExporting: false,
+                            chartContent:Chart,
+                            showChart:true
+                        })
+                    }
+                    else{
+                        this.setState({
+                            exportColumnsModal: false,
+                            isExporting: false,
+                        }) 
+                        toast.warn('no data found !');
                     }
                 });
         }
@@ -1436,7 +1585,33 @@ class CommonLog extends Component {
                     );
             },
         );
+/******************************************RenderPopupShowChartColumns**************************************** */
+let RenderPopupShowChartColumns = this.state.chartColumns.map(
+    item => {
+        return item.type === 'check-box' ||
+            item.field == 'id' ? null : (
+                <div className="grid__content" key={item.field}>
+                    <div
+                        className={
+                            'ui checkbox checkBoxGray300 count checked'
+                        }>
+                        <input
+                            name="CheckBox"
+                            type="checkbox"
+                            id={'export_' + item.field}
+                            checked={item.selected}
+                            onChange={e =>
+                                this.handleCheckForChart(item.field)
+                            }
+                        />
+                        <label>{item.title}</label>
+                    </div>
+                </div>
+            );
+    },
+);
 
+/********************************************************************************** */
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
@@ -1558,6 +1733,14 @@ class CommonLog extends Component {
                     {Resources['exportAll'][currentLanguage]}
                 </button>
             ) : null;
+            const btnCharts =
+                    this.state.showChartBtn == true ? (
+                    <button
+                        className="btn primaryBtn-2"
+                        onClick={() =>this.btnChartShowModal()}>
+                        {Resources.chart[currentLanguage]}{' '}
+                   </button>
+         ) : null;
 
         const btnDocumentTemplate =
             this.state.showDocTemplateBtn == true ? (
@@ -1670,7 +1853,7 @@ class CommonLog extends Component {
                             {btnExportServer}
                             {btnDocumentTemplate}
                             {btnInventoryImportAttach}
-
+                            {btnCharts}
                             {this.state.documentName !==
                                 'paymentCertification' ? (
                                     <button
@@ -1880,15 +2063,59 @@ class CommonLog extends Component {
                                 {this.state.isExporting == true ? (
                                     <LoadingSection />
                                 ) : (
+                                    <div>
                                         <button
                                             className="btn primaryBtn-2"
                                             onClick={this.btnExportServerClick}>
                                             {Resources.export[currentLanguage]}{' '}
                                         </button>
+                                    </div>
                                     )}
                             </div>
                         </div>
                     </div>
+               {/********************************chart popup************************************* */}
+               <div
+                        className={
+                            this.state.chartColumnsModal
+                                ? 'grid__column active '
+                                : 'grid__column '
+                        }>
+                        <div className="grid__column--container">
+                            <button
+                                className="closeColumn"
+                                onClick={this.closeModalColumn}>
+                                X
+                            </button>
+                            <div className="grid__column--title">
+                                <h2>{Resources.chart[currentLanguage]}</h2>
+                            </div>
+                            <div className="grid__column--content">
+                                {RenderPopupShowChartColumns}
+                            </div>
+                            <div className="grid__column--footer">
+                                <button
+                                    className="btn primaryBtn-1"
+                                    onClick={this.closeModalColumn}>
+                                    {Resources.close[currentLanguage]}
+                                </button>
+
+                                {this.state.isExporting == true ? (
+                                    <LoadingSection />
+                                ) : (
+                                    <div>
+                                        <button
+                                            className="btn primaryBtn-2"
+                                            onClick={this.btnStatisticsServerClick}>
+                                            {Resources.chart[currentLanguage]}{' '}
+                                        </button>
+                                    </div>
+                                    )}
+                            </div>
+                        </div>
+                    </div>
+               {/********************************chart popup************************************* */}
+
                 </div>
 
                 {this.state.docTemplateModal == true ? (
@@ -2384,6 +2611,34 @@ class CommonLog extends Component {
                         />
                     </div>
                 ) : null}
+
+                {/***************************charts******************************* */}
+                {this.state.showChart==true?(
+                 <div className="largePopup largeModal ">
+                     <SkyLightStateless
+                            onOverlayClicked={() =>
+                                this.setState({
+                                    showChart: false,
+                                })
+                            }
+                           
+                            onCloseClicked={() =>
+                                this.setState({
+                                    showChart: false,
+                                })
+                            }
+                            isVisible={
+                                this.state.showChart
+                            }
+                            title={'statistics'}
+                            >
+                                 <div>
+                                     {this.state.chartContent}
+                                 </div>
+                      </SkyLightStateless>
+                 </div> 
+                ) : null}
+                {/***************************charts******************************* */}
             </Fragment>
         );
     }

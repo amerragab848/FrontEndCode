@@ -182,7 +182,6 @@ export default class Dataservice {
     };
 
     static addObjectCore = (url, docObj, verb) => {
-
         return Api.getDataAPIsByCore(url, docObj, verb).then(result => {
             return result;
         }).catch(ex => "");
