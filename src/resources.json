@@ -2628,16 +2628,16 @@
         "ar": "العنوان"
     },
     "materialReleasedsubject": {
-        "en": " Material Released Subject",
-        "ar": "صرف المواد"
+        "en": "Transaction Subject",
+        "ar": " عنوان العمليه التجاريه"
     },
     "materialReleasedarrange": {
-        "en": "Material Released Arrange",
-        "ar": "ترتيب صرف المواد"
+        "en": "Transaction Arrange",
+        "ar": "ترتيب العمليه التجاريه"
     },
     "materialReleasedDate": {
-        "en": "Material Released Date",
-        "ar": "تاريخ صرف المواد"
+        "en": "Transaction Date",
+        "ar": "تاريخ العمليه التجاريه"
     },
     "contractsItems": {
         "en": "Material Release Items",
@@ -9162,5 +9162,18 @@
     "addManySubmittalItems": {
         "en": "Add Many Submittal Items",
         "ar": "اضف مجموعة عناصر"
+    },
+    "dateOfAdvPaymentAmount": {
+        "en": "date Of Advanced Payment Amount",
+        "ar": " تاريخ مبلغ الدفع المسبق "
+    },
+    "AddBy":{
+        "en":"Add By",
+         "ar":" تم الاضافه بواسطه"
+    },
+    "accumulativeAmount":{
+         "en":"accumulative Amount",
+         "ar":" تم الاضافه بواسطه"
     }
+ 
 }

@@ -12,7 +12,6 @@ import config from "../../Services/Config";
 import { Formik, Form } from "formik";
 
 
-
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let selectedRows = [];
@@ -36,7 +35,8 @@ class MaterialReleased extends Component {
                 groupable: true,
                 width: 16,
                 sortable: true,
-                type: "text"
+                type: "text",
+                fixed: true,
             }, {
                 field: "description",
                 title: Resources["description"][currentLanguage],
@@ -311,6 +311,53 @@ class MaterialReleased extends Component {
         });
     }
     componentDidMount = () => {
+
+        this.setState({ 
+            isLoading: true ,
+            gridLoading: true,
+        })
+        Api.get('GetMaterialReleaseTicketsByContractId?contractId=' + this.state.contractId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize).then(result => {
+          let maItems = [];
+          if (result.length > 0) {
+            maItems = result;
+            this.state.marPageNumber = this.state.marPageNumber + 1;
+          }
+          const totalList = result.map(item => {
+            if (item.materialType == "Released")
+              return item.total;
+            else {
+              return 0;
+            }
+          });
+  
+          const totalRteurnedList = result.map(item => {
+            if (item.materialType == "Returned")
+              return item.total;
+            else {
+              return 0;
+            }
+          });
+  
+          const totalvalues = totalList.reduce(
+            (previousTotal, currentTotal, index) => previousTotal + currentTotal,
+            0);
+  
+          const totalRturnedvalues = totalRteurnedList.reduce(
+            (previousTotal, currentTotal, index) => previousTotal + currentTotal,
+            0);
+  
+          this.setState({
+            rows: maItems,
+            totalRows: result.length,
+            totalvalues: totalvalues,
+            totalRturnedvalues: totalRturnedvalues,
+            isLoading: false,
+            gridLoading: false,
+          });
+  
+        }).catch(() => { this.setState({ isLoading: false }) })
+  
+           
 
         if (config.IsAllow(1181)) {
             this.setState({ showCheckbox: true, isLoading: false })
