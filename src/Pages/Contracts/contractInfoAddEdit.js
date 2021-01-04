@@ -767,32 +767,13 @@ class ContractInfoAddEdit extends Component {
     }
 
     if (tabName == 'matReleased') {
-      this.getMaterialRelease();
+     // this.getMaterialRelease();
     }
     if (tabName == 'AdvPayAmount') {
     //  this.getAdvacedPaymwntAmount();
     }
   };
-    getAdvacedPaymwntAmount=()=>{
-      if (this.state.AdvacedPaymentData.length == 0) {
-        this.setState({ isLoading: true })
-        Api.get('GetAdvancedPaymentBycontractId?contractId=' + this.state.docId + '&pageNumber=' + this.state.advPageNumber + '&pageSize=' + this.state.advPageSize).then(result => {
-          let AdvPAItems = [];
-          if (result.length > 0) {
-            AdvPAItems = result;
-            this.state.ApmPageNumber = this.state.ApmPageNumber + 1;
-          }
-  
-          this.setState({
-            AdvacedPaymentData: AdvPAItems,              
-            AdvacedPaymentDataLength:  result.length,  
-            isLoading: false,
-  
-          });
-  
-        }).catch(() => { this.setState({ isLoading: false }) })
-      }
-    }
+   
   getMaterialRelease() {
     if (this.state.materialReleaseItems.length == 0) {
       this.setState({ isLoading: true })

@@ -366,12 +366,8 @@ class AdvacedPaymentAmount extends Component {
         });
 
         Api.post("DeleteContractAdvancedPayment?contractId="+this.state.contractId, this.state.selectedRows)
-            .then(result => {
-                // original = this.state.rows;
-
-                // this.state.selectedRows.map(i => {
-                //     original = original.filter(r => r.id !== i);
-                // });
+            .then(result => 
+                {
 
                 this.setState({
                     rows: result,
