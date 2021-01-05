@@ -25,6 +25,8 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Slider } from 'react-semantic-ui-range';
 import { Resources } from '../../Resources';
+import { da } from 'date-fns/locale';
+import { Flag } from 'semantic-ui-react';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -53,6 +55,7 @@ class CommonLog extends Component {
             rows: [],
             ColumnsHideShow: [],
             exportedColumns: [],
+            chartColumns: [],
             totalRows: 0,
             columns: [],
             pageSize: 50,
@@ -75,6 +78,7 @@ class CommonLog extends Component {
             match: props.match,
             export: false,
             columnsExport: [],
+            selectedcolumnsChart: [],
             companies: [],
             contacts: [],
             ToContacts: [],
@@ -132,6 +136,11 @@ class CommonLog extends Component {
             },
             inventoryImportAttachmentModal: false,
             showInventoryImportAttachBtn: false,
+            BarChartCompJS: null,
+            showChart: false,
+            chartContent: null,
+            chartColumnsModal: false,
+            showChartBtn: false
         };
         this.actions = [
             {
@@ -268,11 +277,7 @@ class CommonLog extends Component {
 
     componentDidMount() {
         this.props.actions.FillGridLeftMenu();
-        this.renderComponent(
-            this.state.documentName,
-            this.props.projectId,
-            !this.state.minimizeClick,
-        );
+        this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
         this.fillDropDowns();
     }
 
@@ -351,11 +356,7 @@ class CommonLog extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.match !== this.props.match) {
-            this.renderComponent(
-                this.props.match.params.document,
-                this.props.projectId,
-                true,
-            );
+            this.renderComponent(this.props.match.params.document, this.props.projectId, true);
         }
 
         if (this.props.document.id > 0) {
@@ -364,18 +365,9 @@ class CommonLog extends Component {
 
         if (this.props.projectId !== prevProps.projectId) {
             if (!this.state.documentObj.documentApi) {
-                this.renderComponent(
-                    this.props.match.params.document,
-                    this.props.projectId,
-                    true,
-                );
+                this.renderComponent(this.props.match.params.document, this.props.projectId, true);
             } else {
-                this.GetRecordOfLog(
-                    this.state.isCustom === true
-                        ? this.state.documentObj.documentApi.getCustom
-                        : this.state.documentObj.documentApi.get,
-                    this.props.projectId,
-                );
+                this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
                 this.fillDropDowns();
             }
         }
@@ -837,71 +829,81 @@ class CommonLog extends Component {
             else {
                 docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx';
             }
+        //added
+        let docTypeId = documentObj.docTyp;
+        let showExServerBtn = false;
+        let showChartBtn = false;
+        let showDocTemplateBtn = false;
 
-            //added
-            let docTypeId = documentObj.docTyp;
-            let showExServerBtn = false;
-            let showDocTemplateBtn = false;
+        var cNames = [];
+        var filtersColumns = [];
+        var exportedColumns = [];
+        var chartColumns = [];
+        if (documentObj.documentColumns) {
+            if (Config.IsAllow(this.state.documentObj.documentDeletePermission) &&
+                documentName !== 'paymentCertification'
+            ) {
+                cNames.push({
+                    title: '',
+                    type: 'check-box',
+                    fixed: true,
+                    field: 'id',
+                });
+            }
 
-            var cNames = [];
-            var filtersColumns = [];
-            var exportedColumns = [];
-            if (documentObj.documentColumns) {
-                if (
-                    Config.IsAllow(this.state.documentObj.documentDeletePermission,) && documentName !== 'paymentCertification') {
-                    cNames.push({
-                        title: '',
-                        type: 'check-box',
-                        fixed: true,
-                        field: 'id',
-                    });
-                }
-                documentObj.documentColumns.map((item, index) => {
-                    var obj = {
-                        field: item.field,
-                        fixed: index < 3 ? true : false,
-                        title: Resources[item.friendlyName][currentLanguage],
-                        width: item.width.replace('%', ''),
-                        sortable: true,
-                        groupable: true,
-                        type:
-                            item.dataType === 'number'
+            documentObj.documentColumns.map((item, index) => {
+                var obj = {
+                    field: item.field,
+                    fixed: index < 3 ? true : false,
+                    title: Resources[item.friendlyName][currentLanguage],
+                    width: item.width.replace('%', ''),
+                    sortable: true,
+                    groupable: true,
+                    type:
+                        item.dataType === 'number'
+                            ? item.dataType
+                            : item.dataType === 'date'
                                 ? item.dataType
-                                : item.dataType === 'date'
-                                    ? item.dataType
-                                    : 'text',
-                    };
+                                : 'text',
+                };
 
-                    if (item.field === 'subject') {
-                        obj.href = 'link';
-                        obj.onClick = () => { };
-                        obj.classes = 'bold';
-                    }
+                if (item.field === 'subject') {
+                    obj.href = 'link';
+                    obj.onClick = () => { };
+                    obj.classes = 'bold';
+                }
 
-                    if (item.field === 'description' && documentObj.docTyp == 50) {
-                        obj.href = 'link';
-                        obj.onClick = () => { };
-                        obj.classes = 'bold';
-                    }
-
-                    if (
-                        item.field === 'statusName' ||
-                        item.field === 'statusText'
-                    ) {
-                        obj.classes = 'grid-status';
-                        obj.fixed = false;
-                        obj.leftPadding = 17;
-                    }
-
-                    if (isCustom !== true) {
-                        cNames.push(obj);
-                        exportedColumns.push({
+                if (item.field === 'description' && documentObj.docTyp == 50) {
+                    obj.href = 'link';
+                    obj.onClick = () => { };
+                    obj.classes = 'bold';
+                }
+                if (
+                    item.field === 'statusName' ||
+                    item.field === 'statusText'
+                ) {
+                    obj.classes = 'grid-status';
+                    obj.fixed = false;
+                    obj.leftPadding = 17;
+                }
+                
+                if (isCustom !== true) {
+                    cNames.push(obj);
+                    exportedColumns.push({
+                        field: item.field,
+                        title: Resources[item.friendlyName][currentLanguage],
+                        selected: false,
+                        showInExport: item.showInExport,
+                    });
+                    if (item.showInChart === true) {
+                        chartColumns.push({
                             field: item.field,
                             title: Resources[item.friendlyName][currentLanguage],
                             selected: false,
-                            showInExport: item.showInExport,
-                        });
-                    } else {
+                        })
+                    }
+
+                } else {
                         if (item.isCustom === true) {
                             cNames.push(obj);
                             exportedColumns.push({
@@ -912,21 +914,29 @@ class CommonLog extends Component {
                                 showInExport: item.showInExport,
                             });
                         }
+                    if (item.showInChart === true) {
+                        chartColumns.push({
+                            field: item.field,
+                            title: Resources[item.friendlyName][currentLanguage],
+                            selected: false,
+                        })
                     }
-                });
+                }
+            });
 
                 let ColumnsHideShow = [...cNames];
 
                 for (var i in ColumnsHideShow) {
                     ColumnsHideShow[i].hidden = false;
                 }
-                /*
-                
-                */
-                this.setState({
-                    ColumnsHideShow: ColumnsHideShow,
-                    exportedColumns: exportedColumns,
-                });
+            this.setState({
+                ColumnsHideShow: ColumnsHideShow,
+                exportedColumns: exportedColumns,
+                chartColumns: chartColumns
+            });
+
+            if (docTypeId == 19 || docTypeId == 42) {
+                showChartBtn = true;
             }
 
             if (
@@ -953,7 +963,7 @@ class CommonLog extends Component {
 
             filtersColumns = documentObj.filters;
 
-            var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName),) || [];
+            var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
             var currentGP = [];
             if (selectedCols.length === 0) {
                 var gridLocalStor = { columnsList: [], groups: [] };
@@ -974,7 +984,8 @@ class CommonLog extends Component {
                 }
                 currentGP = JSON.parse(selectedCols.groups);
             }
-
+        
+        }
             this.setState({
                 pageTitle: Resources[documentObj.documentTitle][currentLanguage],
                 groups: currentGP,
@@ -989,23 +1000,17 @@ class CommonLog extends Component {
                 projectId: projectId,
                 showExServerBtn,
                 showDocTemplateBtn,
+                showChartBtn
             });
 
             this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-        }
+        
     }
+}
 
     GetRecordOfLog(api, projectId) {
         if (projectId !== 0) {
-            let url =
-                api +
-                (documentObj.docTyp == 33
-                    ? 'projectId=' + projectId
-                    : '?projectId=' + projectId) +
-                '&pageNumber=' +
-                this.state.pageNumber +
-                '&pageSize=' +
-                this.state.pageSize;
+            let url = api + (documentObj.docTyp == 33 ? 'projectId=' + projectId : '?projectId=' + projectId) + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize; 
             this.GetLogData(url);
         } else {
             this.setState({ isLoading: false });
@@ -1104,6 +1109,7 @@ class CommonLog extends Component {
             columnsModal: false,
             exportColumnsModal: false,
             docTemplateModal: false,
+            chartColumnsModal: false,
         });
     };
 
@@ -1205,7 +1211,33 @@ class CommonLog extends Component {
             this.setState({ columnsExport: columnsExport, Loading: false });
         }, 300);
     };
+    handleCheckForChart = key => {
+        let data = this.state.chartColumns;
 
+        for (var i in data) {
+            if (data[i].field === key) {
+                let status = data[i].selected === true ? false : true;
+                data[i].selected = status;
+                break;
+            }
+        }
+
+        let chosenColumns = data.filter(i => i.selected === true);
+
+        var selectedcolumnsChart = [];
+
+        chosenColumns.forEach(function (d) {
+            selectedcolumnsChart.push({
+                field: d.field,
+                isMain: "true",
+                type: "string"
+            });
+        });
+
+        setTimeout(() => {
+            this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
+        }, 300);
+    };
     ClosxMX() {
         if (this.props != undefined) {
             this.props.actions.clearCashDocument();
@@ -1241,7 +1273,18 @@ class CommonLog extends Component {
             exportedColumns: exportedColumns,
         });
     };
+    btnChartShowModal = () => {
+        let chartColumns = this.state.chartColumns;
 
+        for (var i in chartColumns) {
+            chartColumns[i].selected = false;
+        }
+
+        this.setState({
+            chartColumnsModal: true,
+            chartColumns: chartColumns,
+        });
+    }
     btnExportServerClick = () => {
         let chosenColumns = this.state.columnsExport;
         if (chosenColumns.length < 3) {
@@ -1290,6 +1333,133 @@ class CommonLog extends Component {
             });
         }
     };
+
+    btnStatisticsServerClick = () => {
+        let chosenColumns = this.state.selectedcolumnsChart;
+
+        if (chosenColumns.length > 1) {
+            toast.warning("Can't make a chart  With more than 1 Column ");
+            this.setState({ chartColumnsModal: false });
+        } else {
+            this.setState({ isExporting: true });
+            let docTypeId = this.state.documentObj.docTyp;
+            let query = this.state.query;
+            var stringifiedQuery = JSON.stringify(query);
+            if (stringifiedQuery == '{"isCustom":true}') {
+                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+            } else {
+                stringifiedQuery =
+                    '{"projectId":' +
+                    this.state.projectId +
+                    ',"isCustom":' +
+                    this.state.isCustom +
+                    '}';
+            }
+            let data = {};
+            data.docType = docTypeId;
+            data.query = stringifiedQuery;
+            data.projectId = this.state.projectId;
+            data.chosenColumns = chosenColumns;
+            let columns = [];
+            for (let i = 0; i < data.chosenColumns.length; i++) {
+                let obj = { field: data.chosenColumns[i].field, isMain: true, type: 'string' }
+                columns.push(obj);
+            }
+
+            data = {};
+            data.docType = docTypeId;
+            data.query = stringifiedQuery;
+            data.projectId = this.state.projectId;
+            data.columns = columns;
+
+            dataservice
+                .addObjectCore('GetStatisticsData', data, 'POST')
+                .then(data => {
+                    if (data && data.length > 0) {  // data is datatable
+                        // modal to show chart based on this data !
+                        this.setState({
+                            BarChartCompJS: require('../../Componants/ChartsWidgets/BarChartCompJS').default,
+                            isExporting: false
+                        })
+                        let BarChartCompJS = this.state.BarChartCompJS;
+                        let Chart = (
+                            <BarChartCompJS
+                                reports=""
+                                rows={data}
+                                //    barContent={[
+                                //        { name: "Estimated", value: 'estimatedTime' },
+                                //        { name: "Actual", value: 'actualTotal' },
+                                //        { name: "Variance", value: 'variance' }
+
+                                //    ]}
+                                categoryName={Object.keys(data[0])[0]}
+                                ukey="wt-Name203"
+                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                                y="total"
+                            />)
+
+                        //////////////////////////////////////////////////////
+                        this.setState({
+                            chartColumnsModal: false,
+                            isExporting: false,
+                            chartContent: Chart,
+                            showChart: true
+                        })
+                    }
+                    else {
+                        this.setState({
+                            exportColumnsModal: false,
+                            isExporting: false,
+                        })
+                        toast.warn('no data found !');
+                    }
+                });
+        }
+    };
+    btnExportStatisticsClick = () => {
+
+        if (Config.getPublicConfiguartion().activeExport != true) {
+            toast.warn('This feature is disabled. Please call your administrator for assistance');
+            return;
+        }
+
+        let chosenColumns = this.state.columnsExport;
+        if (chosenColumns.length > 2) {
+            toast.warning("Can't Draw With more than 2 Columns Choosen");
+        }
+        else {
+            this.setState({ isExporting: true });
+            let query = this.state.query;
+            var stringifiedQuery = JSON.stringify(query);
+
+            if (stringifiedQuery == '{"isCustom":true}') {
+                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+            } else {
+                stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
+            }
+
+            let data = {};
+            data.query = stringifiedQuery;
+            data.columns = chosenColumns;
+            data.projectId = this.state.projectId;
+
+            dataservice.addObjectCore("GetStatisticSubmittalForProjectId", data, 'POST').then(data => {
+                if (data) {
+                    data = Config.getPublicConfiguartion().downloads + '/' + data;
+                    var a = document.createElement('A');
+                    a.href = data;
+                    a.download = data.substr(data.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    this.setState({ exportColumnsModal: false, isExporting: false })
+                }
+            }).catch(e => {
+                this.setState({ exportColumnsModal: false })
+            });
+        }
+    }
 
     btnExportStatisticsClick = () => {
 
@@ -1466,6 +1636,31 @@ class CommonLog extends Component {
                     );
             },
         );
+        /******************************************RenderPopupShowChartColumns**************************************** */
+        let RenderPopupShowChartColumns = this.state.chartColumns.map(
+            item => {
+                return item.type === 'check-box' ||
+                    item.field == 'id' ? null : (
+                        <div className="grid__content" key={item.field}>
+                            <div
+                                className={
+                                    'ui checkbox checkBoxGray300 count checked'
+                                }>
+                                <input
+                                    name="CheckBox"
+                                    type="checkbox"
+                                    id={'export_' + item.field}
+                                    checked={item.selected}
+                                    onChange={e =>
+                                        this.handleCheckForChart(item.field)
+                                    }
+                                />
+                                <label>{item.title}</label>
+                            </div>
+                        </div>
+                    );
+            },
+        );
 
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom
@@ -1586,6 +1781,14 @@ class CommonLog extends Component {
                     {Resources['exportAll'][currentLanguage]}
                 </button>
             ) : null;
+        const btnCharts =
+            this.state.showChartBtn == true ? (
+                <button
+                    className="btn primaryBtn-2"
+                    onClick={() => this.btnChartShowModal()}>
+                    {Resources.chart[currentLanguage]}{' '}
+                </button>
+            ) : null;
 
         const btnDocumentTemplate =
             this.state.showDocTemplateBtn == true ? (
@@ -1699,7 +1902,7 @@ class CommonLog extends Component {
                             {btnExportServer}
                             {btnDocumentTemplate}
                             {btnInventoryImportAttach}
-
+                            {btnCharts}
                             {this.state.documentName !==
                                 'paymentCertification' ? (
                                     <button
@@ -1917,6 +2120,48 @@ class CommonLog extends Component {
                             </div>
                         </div>
                     </div>
+                    {/********************************chart popup************************************* */}
+                    <div
+                        className={
+                            this.state.chartColumnsModal
+                                ? 'grid__column active '
+                                : 'grid__column '
+                        }>
+                        <div className="grid__column--container">
+                            <button
+                                className="closeColumn"
+                                onClick={this.closeModalColumn}>
+                                X
+                            </button>
+                            <div className="grid__column--title">
+                                <h2>{Resources.chart[currentLanguage]}</h2>
+                            </div>
+                            <div className="grid__column--content">
+                                {RenderPopupShowChartColumns}
+                            </div>
+                            <div className="grid__column--footer">
+                                <button
+                                    className="btn primaryBtn-1"
+                                    onClick={this.closeModalColumn}>
+                                    {Resources.close[currentLanguage]}
+                                </button>
+
+                                {this.state.isExporting == true ? (
+                                    <LoadingSection />
+                                ) : (
+                                        <div>
+                                            <button
+                                                className="btn primaryBtn-2"
+                                                onClick={this.btnStatisticsServerClick}>
+                                                {Resources.chart[currentLanguage]}{' '}
+                                            </button>
+                                        </div>
+                                    )}
+                            </div>
+                        </div>
+                    </div>
+                    {/********************************chart popup************************************* */}
+
                 </div>
 
                 {this.state.docTemplateModal == true ? (
@@ -2412,6 +2657,34 @@ class CommonLog extends Component {
                         />
                     </div>
                 ) : null}
+
+                {/***************************charts******************************* */}
+                {this.state.showChart == true ? (
+                    <div className="largePopup largeModal ">
+                        <SkyLightStateless
+                            onOverlayClicked={() =>
+                                this.setState({
+                                    showChart: false,
+                                })
+                            }
+
+                            onCloseClicked={() =>
+                                this.setState({
+                                    showChart: false,
+                                })
+                            }
+                            isVisible={
+                                this.state.showChart
+                            }
+                            title={'statistics'}
+                        >
+                            <div>
+                                {this.state.chartContent}
+                            </div>
+                        </SkyLightStateless>
+                    </div>
+                ) : null}
+                {/***************************charts******************************* */}
             </Fragment>
         );
     }

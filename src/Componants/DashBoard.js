@@ -312,9 +312,7 @@ class DashBoard extends Component {
             this.state.types[this.state.type - 1].categories.find(category => category.id === this.state.category).widgets.map((widget, index) => {
                 if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                     let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
-
                     orderhavePermission.push(widget.order.toString());
-
                     return (
                         <Pane width='100%' height="100%" minHeight='unset' key={widget.order} resizable={{ x: false, y: false, xy: false }}>
                             <div className="secondTabs project__select ui-state-default">
