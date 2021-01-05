@@ -80,8 +80,7 @@ class CommonLog extends Component {
             columnsExport: [],
             selectedcolumnsChart: [],
             inventoryImportAttachmentModal: false,
-            showInventoryImportAttachBtn: false,
-            BarChartCompJS: null,
+            showInventoryImportAttachBtn: false, 
             showChart: false,
             chartContent: null,
             chartColumnsModal: false,
@@ -1156,7 +1155,7 @@ class CommonLog extends Component {
 
     btnDocumentTemplateShowModal = () => {
         import('./DocTemplateModal').then(module => {
-            this.setState({ DocTemplateModalCom: module.default , docTemplateModal: true })
+            this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
     btnInventoryImportAttachShowModal = () => {
@@ -1276,48 +1275,45 @@ class CommonLog extends Component {
             data.projectId = this.state.projectId;
             data.columns = columns;
 
-            dataservice
-                .addObjectCore('GetStatisticsData', data, 'POST')
-                .then(data => {
-                    if (data && data.length > 0) {  // data is datatable
-                        // modal to show chart based on this data !
-                        this.setState({
-                            BarChartCompJS: require('../../Componants/ChartsWidgets/BarChartCompJS').default,
-                            isExporting: false
-                        })
-                        let BarChartCompJS = this.state.BarChartCompJS;
-                        let Chart = (
-                            <BarChartCompJS
-                                reports=""
-                                rows={data}
-                                //    barContent={[
-                                //        { name: "Estimated", value: 'estimatedTime' },
-                                //        { name: "Actual", value: 'actualTotal' },
-                                //        { name: "Variance", value: 'variance' }
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
+                if (data && data.length > 0) {  // data is datatable
+                    // modal to show chart based on this data !
+                    this.setState({ 
+                        isExporting: false
+                    })
+                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    let Chart = (
+                        <BarChartCompJS
+                            reports=""
+                            rows={data}
+                            //    barContent={[
+                            //        { name: "Estimated", value: 'estimatedTime' },
+                            //        { name: "Actual", value: 'actualTotal' },
+                            //        { name: "Variance", value: 'variance' }
 
-                                //    ]}
-                                categoryName={Object.keys(data[0])[0]}
-                                ukey="wt-Name203"
-                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
-                                y="total"
-                            />)
+                            //    ]}
+                            categoryName={Object.keys(data[0])[0]}
+                            ukey="wt-Name203"
+                            title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                            y="total"
+                        />)
 
-                        //////////////////////////////////////////////////////
-                        this.setState({
-                            chartColumnsModal: false,
-                            isExporting: false,
-                            chartContent: Chart,
-                            showChart: true
-                        })
-                    }
-                    else {
-                        this.setState({
-                            exportColumnsModal: false,
-                            isExporting: false,
-                        })
-                        toast.warn('no data found !');
-                    }
-                });
+                    //////////////////////////////////////////////////////
+                    this.setState({
+                        chartColumnsModal: false,
+                        isExporting: false,
+                        chartContent: Chart,
+                        showChart: true
+                    })
+                }
+                else {
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false,
+                    })
+                    toast.warn('no data found !');
+                }
+            });
         }
     };
     btnExportStatisticsClick = () => {
