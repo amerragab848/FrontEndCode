@@ -1,10 +1,10 @@
 import React from 'react';
-import Dropzone from 'react-dropzone';
-import 'react-table/react-table.css';
+import Dropzone from 'react-dropzone'; 
 import api from '../../api'
 import config from "../../Services/Config";
 import resources from '../../resources.json'
 import { toast } from "react-toastify";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const signiturePath = '/downloads/users/sign_s_' + config.getPayload().aci + '.jpg';
 const profilePath = '/downloads/contacts/photo/img_s_' + config.getPayload().cni + '.gif';
@@ -33,11 +33,13 @@ export default class uploadSignture extends React.Component {
             signName: file[0].name
         });
     }
+
     RemoveHandlerSign = () => {
         this.setState({
             sign: {}, signName: '', signPreview: {}
         })
     }
+    
     componentWillUnmount() {
         URL.revokeObjectURL(this.state.signPreview)
         URL.revokeObjectURL(this.state.profilePreview)
@@ -55,8 +57,7 @@ export default class uploadSignture extends React.Component {
             });
         }
     }
-
-
+ 
     onDropPP(file) {
         this.setState({
             profile: file,
@@ -65,6 +66,7 @@ export default class uploadSignture extends React.Component {
             profileName: file[0].name
         });
     }
+
     RemoveHandlerPP = () => {
         this.setState({
             profile: {}, profileName: '', profilePreview: {}

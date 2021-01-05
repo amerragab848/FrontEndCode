@@ -16516,6 +16516,23 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "MissingTransmittalAlert",
+            "ar": "MissingTransmittalAlert"
+          },
+          "id": 1250,
+          "permissions": [
+            {
+              "code": 10143,
+              "title": {
+                "en": "View All ",
+                "ar": "عرض"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     }

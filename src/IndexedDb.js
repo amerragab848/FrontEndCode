@@ -74,13 +74,13 @@ export default class IndexedDb {
             .addColumn('type', lf.Type.STRING)
             .addPrimaryKey(['id']);
 
-        schemaBuilder
-            .createTable('resources')
-            .addColumn('id', lf.Type.INTEGER)
-            .addColumn('en', lf.Type.STRING)
-            .addColumn('ar', lf.Type.STRING)
-            .addColumn('resourceKey', lf.Type.STRING)
-            .addPrimaryKey(['id']);
+        // schemaBuilder
+        //     .createTable('resources')
+        //     .addColumn('id', lf.Type.INTEGER)
+        //     .addColumn('en', lf.Type.STRING)
+        //     .addColumn('ar', lf.Type.STRING)
+        //     .addColumn('resourceKey', lf.Type.STRING)
+        //     .addPrimaryKey(['id']);
     }
 
     static initializeCachedAPI() {
@@ -201,13 +201,30 @@ export default class IndexedDb {
         // tables.defaultLists = api.getSchema().table('defaultLists');
         //tables.companies = api.getSchema().table('companies');
         //tables.projects = api.getSchema().table('projects');
-        try {
-            tables.resources = db.getSchema().table('resources');
-        } catch (error) {
-            window.indexedDB.databases().then((r) => {
-                for (var i = 0; i < r.length; i++) window.indexedDB.deleteDatabase(r[i].name);
-            }); 
-        }
+        // try {
+        //     tables.resources = db.getSchema().table('resources');
+        // } catch (error) {
+        //     window.indexedDB.databases().then((r) => {
+        //         for (var i = 0; i < r.length; i++) {
+        //             var deleteRequest = indexedDB.deleteDatabase(r[i].name)
+
+        //             deleteRequest.onblocked = function (res) {
+        //                 console.log('blocked', res);
+        //                 db.close();
+        //                 dbDashBoard.close();
+        //                 api.close();
+        //             }
+                    
+        //             deleteRequest.onsuccess = function () {
+        //                 console.log("Deleted OK.");
+
+        //                 localStorage.clear();
+        //                 window.location.reload();
+
+        //             };
+        //         }
+        //     });
+        // }
 
         let rows = await db
             .select()
@@ -280,27 +297,27 @@ export default class IndexedDb {
     }
 
     static async getAccountsResources() {
-        let data = await db.select().from(tables.resources).exec();
+        let data =[];// await db.select().from(tables.resources).exec();
         return data;
     }
 
     static async seedResourcesIntoDB(ResourcesTableRows) {
         let rows = [];
         if (ResourcesTableRows.data != null) {
-            ResourcesTableRows.data.forEach(item => {
-                let widRow = tables['resources'].createRow({
-                    id: item.id,
-                    en: item.titleEn,
-                    ar: item.titleAr,
-                    resourceKey: item.resourceKey
-                });
-                rows.push(widRow);
-            });
-            await db
-                .insertOrReplace()
-                .into(tables.resources)
-                .values(rows)
-                .exec();
+            // ResourcesTableRows.data.forEach(item => {
+            //     let widRow = tables['resources'].createRow({
+            //         id: item.id,
+            //         en: item.titleEn,
+            //         ar: item.titleAr,
+            //         resourceKey: item.resourceKey
+            //     });
+            //     rows.push(widRow);
+            // });
+            // await db
+            //     .insertOrReplace()
+            //     .into(tables.resources)
+            //     .values(rows)
+            //     .exec();
         }
     }
 

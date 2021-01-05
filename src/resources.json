@@ -9163,6 +9163,11 @@
         "en": "Add Many Submittal Items",
         "ar": "اضف مجموعة عناصر"
     },
+    "MissingTransmittalsAlert":{
+        "en":"Missing Transmittals Alert",
+        "ar":"تنبيه التسليمات المفقودة"
+    }
+    ,
     "dateOfAdvPaymentAmount": {
         "en": "date Of Advanced Payment Amount",
         "ar": " تاريخ مبلغ الدفع المسبق "
