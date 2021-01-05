@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachmentWithProgress'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";

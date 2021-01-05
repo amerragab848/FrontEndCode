@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import ReactTable from "react-table";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachmentWithProgress'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";

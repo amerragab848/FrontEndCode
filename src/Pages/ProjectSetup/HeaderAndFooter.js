@@ -29,6 +29,7 @@ const ValidtionSchema = Yup.object().shape({
 });
 
 class HeaderAndFooter extends Component {
+    
     constructor(props) {
         super(props)
 

@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from '../../Dataservice';
-import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
-// import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous'; 
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from '../../Componants/OptionsPanels/ViewWorkFlow';
@@ -24,8 +23,7 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from 'lodash/find';
 import Api from '../../api';
 import UploadAttachmentWithProgress from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
-//import arrow from '../../Styles/images/right-arrow.png'
-
+//import arrow from '../../Styles/images/right-arrow.png' 
 //import ConnectionContext from '../../Componants/Layouts/Context'
 
 let currentLanguage =
