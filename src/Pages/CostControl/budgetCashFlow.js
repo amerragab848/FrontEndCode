@@ -34,8 +34,7 @@ class budgetCashFlow extends Component {
                 width: 10,
                 type: "check-box",
                 width: 10,
-                fixed: true,
-                showTip: true
+                fixed: true 
             },
             {
                 field: 'projectName',

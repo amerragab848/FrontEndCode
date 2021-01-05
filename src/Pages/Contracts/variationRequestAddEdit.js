@@ -22,7 +22,7 @@ import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
+import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescription";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -832,8 +832,8 @@ class VariationRequestAdd extends Component {
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
                                         <AddItemDescription
-                                            docLink="/Downloads/Excel/BOQ.xlsx"
-                                            docType="vr"
+                                            docLink="/Downloads/Excel/VRItems.xlsx"
+                                            docType="VRItems"
                                             isViewMode={this.state.isViewMode}
                                             docId={this.state.docId}
                                             mainColumn="variationRequestId"
@@ -841,7 +841,7 @@ class VariationRequestAdd extends Component {
                                             addItemApi="AddVRItems"
                                             projectId={this.state.projectId}
                                             showItemType={false}
-                                            showImportExcel={false}
+                                            showImportExcel={true}
                                         />
                                         <div className="doc-pre-cycle">
                                             <GridCustom

@@ -54,8 +54,7 @@ class projectEstimateAddEdit extends Component {
                 field: "id",
                 title: "",
                 type: "check-box",
-                fixed: true,
-                showTip: true,
+                fixed: true, 
                 width: 10
             },
             {

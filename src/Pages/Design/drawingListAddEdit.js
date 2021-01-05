@@ -403,7 +403,7 @@ class drawingListAddEdit extends Component {
             this.FillDrowDowns()
         }
 
-        dataservice.GetDataList('GetDesignDiscipline?accountOwnerId=2&pageNumber=0&pageSize=10000', 'title', 'id').then(
+        dataservice.GetDataList('GetDesignDiscipline?pageNumber=0&pageSize=10000', 'title', 'id').then(
             data => {
                 this.setState({
                     DesciplineDropData: data,
@@ -412,8 +412,7 @@ class drawingListAddEdit extends Component {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
-        // this.FillDrowDowns()
-
+      
     }
 
     clickHandler = (e) => {

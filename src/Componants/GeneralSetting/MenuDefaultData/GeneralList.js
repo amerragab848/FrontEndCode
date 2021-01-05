@@ -13,10 +13,13 @@ import { toast } from "react-toastify";
 import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
 import Api from '../../../api';
+import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
+
+const find = require('lodash/find');
 
 const ValidtionSchema = Yup.object().shape({
     abbreviation: Yup.string().required(Resources['isRequiredField'][currentLanguage]).max(50, Resources['maxLength'][currentLanguage] + " (50)"),
@@ -90,9 +93,14 @@ const DropGeneralData =
     { label: Resources["approvalText"][currentLanguage], value: "WFApprovalstatus" },
     { label: Resources["deductionType"][currentLanguage], value: "deductionType" },
     { label: Resources["submittalType"][currentLanguage], value: "SubmittalTypes" },
-    { label: Resources["attachedPaperSize"][currentLanguage], value: "attachedPaperSize" }
-    ]
+    { label: Resources["attachedPaperSize"][currentLanguage], value: "attachedPaperSize" },
+    { label: Resources["submittedFor"][currentLanguage], value: "submittedFor" }]
 
+const ApprovalStatusDropData =
+    [{ label: Resources["approved"][currentLanguage], value: 1 },
+    { label: Resources["rejected"][currentLanguage], value: 2 },
+    { label: Resources["pending"][currentLanguage], value: 0 }
+    ]
 class GeneralList extends Component {
 
     constructor(props) {
@@ -108,8 +116,7 @@ class GeneralList extends Component {
                 fixed: true,
                 width: 25,
                 sortable: true,
-                type: "text",
-                showTip: true
+                type: "text" 
             }
         ];
 
@@ -158,7 +165,11 @@ class GeneralList extends Component {
             selectedrow: '',
             showNotify: false,
             api: 'GetAccountsDefaultList?',
-            showValue: false
+            showValue: false,
+            showApprovalStatusDrop: false,
+            approvalStatusTypeId: 0,
+            selectedApprovalStatus: { label: Resources.approvalStatusSelection[currentLanguage], value: "0" },
+
         }
 
         if (!config.IsAllow(1182) && !config.IsAllow(1180) && !config.IsAllow(1179)) {
@@ -262,22 +273,32 @@ class GeneralList extends Component {
         })
         Api.get('GetAccountsDefaultList?listType=' + e.value + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '').then(
             res => {
+
                 this.setState({
                     rows: res,
                     isLoading: false
                 })
             }
         )
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true, showApprovalStatusDrop: e.value === 'approvalstatus' ? true : false })
     };
 
+    ApprovalStatusHandelChange(e) {
+
+        var approvalStatus = find(ApprovalStatusDropData, function (i) { return i.value == e.value; });
+
+        this.setState({ approvalStatusTypeId: e.value, selectedApprovalStatus: approvalStatus })
+    }
     onRowClick = (obj) => {
         if (config.IsAllow(1180)) {
             // if (obj.editable) {
             Api.get('GetAccountsDefaultListForEdit?id=' + obj.id + '').then(
                 res => {
+                    let selectedApprovalStatus = obj.value === 'approvalstatus' ? this.state.IsEdit ? this.state.action : 0 : 0;
+
                     this.setState({
                         EditListData: res,
+                        selectedApprovalStatus: selectedApprovalStatus,
                         IsEdit: true,
                         selectedrow: obj.id,
                         ShowPopup: true,
@@ -300,6 +321,11 @@ class GeneralList extends Component {
 
     save(values, resetForm) {
         this.setState({ isLoading: true });
+
+        if (values.listType === "approvalstatus") {
+            values.action = this.state.approvalStatusTypeId;
+        }
+
         if (this.state.IsEdit) {
             dataservice.addObject('EditAccountsDefaultList', values).then(
                 res => {
@@ -342,8 +368,11 @@ class GeneralList extends Component {
                         if (config.IsAllow(1180)) {
                             Api.get('GetAccountsDefaultListForEdit?id=' + id + '').then(
                                 res => {
+                                    let selectedApprovalStatus = row.listType === 'approvalstatus' ?  find(ApprovalStatusDropData, function (i) { return i.value == row.action; }) : 0;
+ 
                                     this.setState({
                                         EditListData: res,
+                                        selectedApprovalStatus: selectedApprovalStatus,
                                         IsEdit: true,
                                         selectedrow: id,
                                         ShowPopup: true,
@@ -392,9 +421,14 @@ class GeneralList extends Component {
                                 </div>
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                    <div className={'ui input inputDev customeError' + (errors.titleAr && touched.titleAr ? 'has-error' : null) + ' '}>
-                                        <input name='titleAr' className="form-control" autoComplete='off'
-                                            id='titleAr' value={values.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
+                                    <div className={'ui input inputDev customeError' + (errors.titleAr && touched.titleAr ? ' has-error' : null) + ' '}>
+                                        <input
+                                            name='titleAr'
+                                            className="form-control"
+                                            autoComplete='off'
+                                            id='titleAr'
+                                            value={values.titleAr}
+                                            placeholder={Resources['titleAr'][currentLanguage]}
                                             onBlur={handleBlur} onChange={handleChange} />
                                         {errors.titleAr && touched.titleAr ? <em className="pError dropdown__error">{errors.titleAr}</em> : null}
                                     </div>
@@ -409,7 +443,7 @@ class GeneralList extends Component {
                                             value={values.abbreviation}
                                             placeholder={Resources['abbreviation'][currentLanguage]}
                                             onBlur={handleBlur}
-                                            onChange={handleChange} />  
+                                            onChange={handleChange} />
                                         {errors.abbreviation ? (<em className="pError dropdown__error">{errors.abbreviation}</em>) : null}
 
                                     </div>
@@ -423,6 +457,16 @@ class GeneralList extends Component {
                                                 onBlur={handleBlur} />
                                             {errors.value ? (<em className="pError">{errors.value}</em>) : null}
                                         </div>
+                                    </div>
+                                    : null}
+                                {this.state.showApprovalStatusDrop ?
+                                    <div className="fillter-status fillter-item-c fullInputWidth">
+                                        <Dropdown
+                                            title="approvalStatus"
+                                            data={ApprovalStatusDropData}
+                                            selectedValue={this.state.selectedApprovalStatus}
+                                            handleChange={(e) => this.ApprovalStatusHandelChange(e)}
+                                        />
                                     </div>
                                     : null}
                                 <div className="fullWidthWrapper">

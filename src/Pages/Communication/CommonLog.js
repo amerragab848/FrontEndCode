@@ -55,7 +55,7 @@ class CommonLog extends Component {
             rows: [],
             ColumnsHideShow: [],
             exportedColumns: [],
-            chartColumns:[],
+            chartColumns: [],
             totalRows: 0,
             columns: [],
             pageSize: 50,
@@ -78,7 +78,7 @@ class CommonLog extends Component {
             match: props.match,
             export: false,
             columnsExport: [],
-            selectedcolumnsChart:[],
+            selectedcolumnsChart: [],
             companies: [],
             contacts: [],
             ToContacts: [],
@@ -136,11 +136,11 @@ class CommonLog extends Component {
             },
             inventoryImportAttachmentModal: false,
             showInventoryImportAttachBtn: false,
-            BarChartCompJS:null,
-            showChart:false,
-            chartContent:null,
-            chartColumnsModal:false,
-            showChartBtn:false
+            BarChartCompJS: null,
+            showChart: false,
+            chartContent: null,
+            chartColumnsModal: false,
+            showChartBtn: false
         };
         this.actions = [
             {
@@ -277,11 +277,7 @@ class CommonLog extends Component {
 
     componentDidMount() {
         this.props.actions.FillGridLeftMenu();
-        this.renderComponent(
-            this.state.documentName,
-            this.props.projectId,
-            !this.state.minimizeClick,
-        );
+        this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
         this.fillDropDowns();
     }
 
@@ -293,6 +289,7 @@ class CommonLog extends Component {
             isCustom: true,
         });
     }
+
     fillDropDowns() {
         if (this.state.docType == 'submittal' || this.state.documentName == "Letters") {
             dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + this.props.projectId, 'companyName', 'companyId', 'companies', this.props.projectId, 'projectId').then(result => {
@@ -335,6 +332,7 @@ class CommonLog extends Component {
             });
         }
     }
+
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.match !== state.match) {
             return {
@@ -358,11 +356,7 @@ class CommonLog extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.match !== this.props.match) {
-            this.renderComponent(
-                this.props.match.params.document,
-                this.props.projectId,
-                true,
-            );
+            this.renderComponent(this.props.match.params.document, this.props.projectId, true);
         }
 
         if (this.props.document.id > 0) {
@@ -371,18 +365,9 @@ class CommonLog extends Component {
 
         if (this.props.projectId !== prevProps.projectId) {
             if (!this.state.documentObj.documentApi) {
-                this.renderComponent(
-                    this.props.match.params.document,
-                    this.props.projectId,
-                    true,
-                );
+                this.renderComponent(this.props.match.params.document, this.props.projectId, true);
             } else {
-                this.GetRecordOfLog(
-                    this.state.isCustom === true
-                        ? this.state.documentObj.documentApi.getCustom
-                        : this.state.documentObj.documentApi.get,
-                    this.props.projectId,
-                );
+                this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
                 this.fillDropDowns();
             }
         }
@@ -425,6 +410,7 @@ class CommonLog extends Component {
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
             this.props.history.push({
+                //pathname: '/' + addView + '/' + 0 + '/' + this.props.projectId + '/0/0/false/' + this.state.projectName //,
                 pathname: '/' + addView,
                 search: '?id=' + encodedPaylod,
             });
@@ -459,8 +445,10 @@ class CommonLog extends Component {
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
+            ///:id/:projectId/:arrange/:docApprovalId/:isApproveMode/:projectName
             this.props.history.push({
+
+                //pathname: '/' + editView + '/' + row.id + '/' + row.projectId + '/0/0/false/' + this.state.projectName + '/' + window.location.pathname + window.location.search
                 pathname: '/' + editView,
                 search: '?id=' + encodedPaylod,
             });
@@ -831,36 +819,28 @@ class CommonLog extends Component {
     renderComponent(documentName, projectId, isCustom) {
         var projectId = projectId;
         var documents = documentName;
-        console.log(documentDefenition);
-        console.log(documentDefenition[documentName]);
-        documentObj = documentDefenition[documentName];
-        if (documentObj.docTyp == 42) {
-            docTempLink =
-                Config.getPublicConfiguartion().downloads +
-                '/Downloads/Excel/tempSubmittal.xlsx';
-        }
-        //else if .... for more documents
-        else {
-            docTempLink =
-                Config.getPublicConfiguartion().downloads +
-                '/Downloads/Excel/tempLetter.xlsx';
-        }
 
+        documentObj = documentDefenition[documentName];
+        if (documentObj) {
+            if (documentObj.docTyp == 42) {
+                docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx';
+            }
+            //else if .... for more documents
+            else {
+                docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx';
+            }
         //added
         let docTypeId = documentObj.docTyp;
         let showExServerBtn = false;
-        let showChartBtn=false;
+        let showChartBtn = false;
         let showDocTemplateBtn = false;
 
         var cNames = [];
         var filtersColumns = [];
         var exportedColumns = [];
-        var chartColumns=[];
+        var chartColumns = [];
         if (documentObj.documentColumns) {
-            if (
-                Config.IsAllow(
-                    this.state.documentObj.documentDeletePermission,
-                ) &&
+            if (Config.IsAllow(this.state.documentObj.documentDeletePermission) &&
                 documentName !== 'paymentCertification'
             ) {
                 cNames.push({
@@ -870,6 +850,7 @@ class CommonLog extends Component {
                     field: 'id',
                 });
             }
+
             documentObj.documentColumns.map((item, index) => {
                 var obj = {
                     field: item.field,
@@ -890,14 +871,12 @@ class CommonLog extends Component {
                     obj.href = 'link';
                     obj.onClick = () => { };
                     obj.classes = 'bold';
-                    obj.showTip = true;
                 }
 
                 if (item.field === 'description' && documentObj.docTyp == 50) {
                     obj.href = 'link';
                     obj.onClick = () => { };
                     obj.classes = 'bold';
-                    obj.showTip = true;
                 }
 
                 if (
@@ -917,14 +896,14 @@ class CommonLog extends Component {
                         selected: false,
                         showInExport: item.showInExport,
                     });
-                    if(item.showInChart=== true){
+                    if (item.showInChart === true) {
                         chartColumns.push({
                             field: item.field,
                             title: Resources[item.friendlyName][currentLanguage],
                             selected: false,
                         })
                     }
-                } else {
+                }else{
                     if (item.isCustom === true) {
                         cNames.push(obj);
                         exportedColumns.push({
@@ -934,13 +913,13 @@ class CommonLog extends Component {
                             selected: false,
                             showInExport: item.showInExport,
                         });
-                        if(item.showInChart=== true){
+                    }
+                    if (item.showInChart === true) {
                         chartColumns.push({
                             field: item.field,
                             title: Resources[item.friendlyName][currentLanguage],
                             selected: false,
                         })
-                    }
                     }
                 }
             });
@@ -953,110 +932,94 @@ class CommonLog extends Component {
             this.setState({
                 ColumnsHideShow: ColumnsHideShow,
                 exportedColumns: exportedColumns,
-                chartColumns:chartColumns
+                chartColumns: chartColumns
             });
-        }
-        if(docTypeId==19|| docTypeId==42)
-        {
-            showChartBtn=true;
-        }
 
-        if (
-            docTypeId == 19 ||
-            docTypeId == 23 ||
-            docTypeId == 42 ||
-            docTypeId == 28 ||
-            docTypeId == 103 ||
-            docTypeId == 25
-        ) {
-            showExServerBtn = true;
-        }
+            if (docTypeId == 19 || docTypeId == 42) {
+                showChartBtn = true;
+            }
 
-        if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
-            showDocTemplateBtn = true;
-        } else {
-            showDocTemplateBtn = false;
-        }
-        if (docTypeId == 50) {
-            this.setState({ showInventoryImportAttachBtn: true });
-        } else {
-            this.setState({ showInventoryImportAttachBtn: false });
-        }
+            if (
+                docTypeId == 19 ||
+                docTypeId == 23 ||
+                docTypeId == 42 ||
+                docTypeId == 28 ||
+                docTypeId == 103 ||
+                docTypeId == 25
+            ) {
+                showExServerBtn = true;
+            }
 
-        filtersColumns = documentObj.filters;
+            if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
+                showDocTemplateBtn = true;
+            } else {
+                showDocTemplateBtn = false;
+            }
+            if (docTypeId == 50) {
+                this.setState({ showInventoryImportAttachBtn: true });
+            } else {
+                this.setState({ showInventoryImportAttachBtn: false });
+            }
 
-        var selectedCols =
-            JSON.parse(
-                localStorage.getItem('CommonLog-' + this.state.documentName),
-            ) || [];
-        var currentGP = [];
-        if (selectedCols.length === 0) {
-            var gridLocalStor = { columnsList: [], groups: [] };
-            gridLocalStor.columnsList = JSON.stringify(cNames);
-            gridLocalStor.groups = JSON.stringify(currentGP);
-            localStorage.setItem(
-                'CommonLog-' + this.state.documentName,
-                JSON.stringify(gridLocalStor),
-            );
-        } else {
-            var parsingList = JSON.parse(selectedCols.columnsList);
-            for (var item in parsingList) {
-                for (var i in cNames) {
-                    if (cNames[i].field === parsingList[item].field) {
-                        let status = parsingList[item].hidden;
-                        cNames[i].hidden = status;
-                        cNames[i].width = parsingList[item].width;
-                        break;
+            filtersColumns = documentObj.filters;
+
+            var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
+            var currentGP = [];
+            if (selectedCols.length === 0) {
+                var gridLocalStor = { columnsList: [], groups: [] };
+                gridLocalStor.columnsList = JSON.stringify(cNames);
+                gridLocalStor.groups = JSON.stringify(currentGP);
+                localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(gridLocalStor));
+            } else {
+                var parsingList = JSON.parse(selectedCols.columnsList);
+                for (var item in parsingList) {
+                    for (var i in cNames) {
+                        if (cNames[i].field === parsingList[item].field) {
+                            let status = parsingList[item].hidden;
+                            cNames[i].hidden = status;
+                            cNames[i].width = parsingList[item].width;
+                            break;
+                        }
                     }
                 }
+                currentGP = JSON.parse(selectedCols.groups);
             }
-            currentGP = JSON.parse(selectedCols.groups);
+
+            this.setState({
+                pageTitle: Resources[documentObj.documentTitle][currentLanguage],
+                groups: currentGP,
+                docType: documents,
+                routeAddEdit: documentObj.documentAddEditLink,
+                apiFilter: documentObj.filterApi,
+                api: documentObj.documentApi.get,
+                apiDelete: documentObj.documentApi.delete,
+                columns: cNames,
+                filtersColumns: filtersColumns,
+                documentObj: documentObj,
+                projectId: projectId,
+                showExServerBtn,
+                showDocTemplateBtn,
+                showChartBtn
+            });
+
+            this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
         }
-
-        this.setState({
-            pageTitle: Resources[documentObj.documentTitle][currentLanguage],
-            groups: currentGP,
-            docType: documents,
-            routeAddEdit: documentObj.documentAddEditLink,
-            apiFilter: documentObj.filterApi,
-            api: documentObj.documentApi.get,
-            apiDelete: documentObj.documentApi.delete,
-            columns: cNames,
-            filtersColumns: filtersColumns,
-            documentObj: documentObj,
-            projectId: projectId,
-            showExServerBtn,
-            showDocTemplateBtn,
-            showChartBtn
-        });
-
-        this.GetRecordOfLog(
-            isCustom === true
-                ? documentObj.documentApi.getCustom
-                : documentObj.documentApi.get,
-            projectId,
-        );
     }
+}
 
     GetRecordOfLog(api, projectId) {
         if (projectId !== 0) {
-            let url =
-                api +
-                (documentObj.docTyp == 33
-                    ? 'projectId=' + projectId
-                    : '?projectId=' + projectId) +
-                '&pageNumber=' +
-                this.state.pageNumber +
-                '&pageSize=' +
-                this.state.pageSize;
+            let url = api + (documentObj.docTyp == 33 ? 'projectId=' + projectId : '?projectId=' + projectId) + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize; 
             this.GetLogData(url);
         } else {
             this.setState({ isLoading: false });
         }
     }
+
     clickMoreDetailsHandler = () => {
         this.addRecord();
     };
+
     GetLogData(url) {
         Api.get(url, undefined, moduleId)
             .then(result => {
@@ -1145,7 +1108,7 @@ class CommonLog extends Component {
             columnsModal: false,
             exportColumnsModal: false,
             docTemplateModal: false,
-            chartColumnsModal:false,
+            chartColumnsModal: false,
         });
     };
 
@@ -1265,8 +1228,8 @@ class CommonLog extends Component {
         chosenColumns.forEach(function (d) {
             selectedcolumnsChart.push({
                 field: d.field,
-                isMain:"true",
-                type:"string"
+                isMain: "true",
+                type: "string"
             });
         });
 
@@ -1310,7 +1273,7 @@ class CommonLog extends Component {
         });
     };
     btnChartShowModal = () => {
-         let chartColumns = this.state.chartColumns;
+        let chartColumns = this.state.chartColumns;
 
         for (var i in chartColumns) {
             chartColumns[i].selected = false;
@@ -1348,26 +1311,25 @@ class CommonLog extends Component {
             data.query = stringifiedQuery;
             data.chosenColumns = chosenColumns;
 
-            dataservice
-                .addObjectCore('ExcelServerExport', data, 'POST')
-                .then(data => {
-                    if (data) {
-                        data =
-                            Config.getPublicConfiguartion().downloads +
-                            data;
-                        var a = document.createElement('A');
-                        a.href = data;
-                        a.download = data.substr(data.lastIndexOf('/') + 1);
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
+            dataservice.addObjectCore('ExcelServerExport', data, 'POST').then(data => {
+                if (data) {
+                    data =
+                        Config.getPublicConfiguartion().downloads +
+                        '/' +
+                        data;
+                    var a = document.createElement('A');
+                    a.href = data;
+                    a.download = data.substr(data.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
 
-                        this.setState({
-                            exportColumnsModal: false,
-                            isExporting: false,
-                        });
-                    }
-                });
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false,
+                    });
+                }
+            });
         }
     };
 
@@ -1395,65 +1357,108 @@ class CommonLog extends Component {
             let data = {};
             data.docType = docTypeId;
             data.query = stringifiedQuery;
-            data.projectId=this.state.projectId;
+            data.projectId = this.state.projectId;
             data.chosenColumns = chosenColumns;
-            let columns=[];
-            for(let i =0;i<data.chosenColumns.length;i++)
-            {
-                let obj={field:data.chosenColumns[i].field,isMain:true,type:'string'}
+            let columns = [];
+            for (let i = 0; i < data.chosenColumns.length; i++) {
+                let obj = { field: data.chosenColumns[i].field, isMain: true, type: 'string' }
                 columns.push(obj);
             }
-            
-            data={};
+
+            data = {};
             data.docType = docTypeId;
             data.query = stringifiedQuery;
-            data.projectId=this.state.projectId;
-            data.columns=columns;
+            data.projectId = this.state.projectId;
+            data.columns = columns;
 
             dataservice
                 .addObjectCore('GetStatisticsData', data, 'POST')
                 .then(data => {
-                    if (data && data.length>0) {  // data is datatable
-                       // modal to show chart based on this data !
-                       this.setState({
-                        BarChartCompJS:require('../../Componants/ChartsWidgets/BarChartCompJS').default,
-                        isExporting:false
-                       })
-                       let BarChartCompJS=this.state.BarChartCompJS;
-                       let Chart =(
-                       <BarChartCompJS
-                           reports=""
-                           rows={data}
-                        //    barContent={[
-                        //        { name: "Estimated", value: 'estimatedTime' },
-                        //        { name: "Actual", value: 'actualTotal' },
-                        //        { name: "Variance", value: 'variance' }
-           
-                        //    ]}
-                        categoryName={Object.keys(data[0])[0]}
-                           ukey="wt-Name203"
-                           title={Resources[Object.keys(data[0])[0]][currentLanguage]}
-                           y="total"
-                       />) 
-                      
-                     //////////////////////////////////////////////////////
+                    if (data && data.length > 0) {  // data is datatable
+                        // modal to show chart based on this data !
+                        this.setState({
+                            BarChartCompJS: require('../../Componants/ChartsWidgets/BarChartCompJS').default,
+                            isExporting: false
+                        })
+                        let BarChartCompJS = this.state.BarChartCompJS;
+                        let Chart = (
+                            <BarChartCompJS
+                                reports=""
+                                rows={data}
+                                //    barContent={[
+                                //        { name: "Estimated", value: 'estimatedTime' },
+                                //        { name: "Actual", value: 'actualTotal' },
+                                //        { name: "Variance", value: 'variance' }
+
+                                //    ]}
+                                categoryName={Object.keys(data[0])[0]}
+                                ukey="wt-Name203"
+                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                                y="total"
+                            />)
+
+                        //////////////////////////////////////////////////////
                         this.setState({
                             chartColumnsModal: false,
                             isExporting: false,
-                            chartContent:Chart,
-                            showChart:true
+                            chartContent: Chart,
+                            showChart: true
                         })
                     }
-                    else{
+                    else {
                         this.setState({
                             exportColumnsModal: false,
                             isExporting: false,
-                        }) 
+                        })
                         toast.warn('no data found !');
                     }
                 });
         }
     };
+    btnExportStatisticsClick = () => {
+
+        if (Config.getPublicConfiguartion().activeExport != true) {
+            toast.warn('This feature is disabled. Please call your administrator for assistance');
+            return;
+        }
+
+        let chosenColumns = this.state.columnsExport;
+        if (chosenColumns.length > 2) {
+            toast.warning("Can't Draw With more than 2 Columns Choosen");
+        }
+        else {
+            this.setState({ isExporting: true });
+            let query = this.state.query;
+            var stringifiedQuery = JSON.stringify(query);
+
+            if (stringifiedQuery == '{"isCustom":true}') {
+                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+            } else {
+                stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
+            }
+
+            let data = {};
+            data.query = stringifiedQuery;
+            data.columns = chosenColumns;
+            data.projectId = this.state.projectId;
+
+            dataservice.addObjectCore("GetStatisticSubmittalForProjectId", data, 'POST').then(data => {
+                if (data) {
+                    data = Config.getPublicConfiguartion().downloads + '/' + data;
+                    var a = document.createElement('A');
+                    a.href = data;
+                    a.download = data.substr(data.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    this.setState({ exportColumnsModal: false, isExporting: false })
+                }
+            }).catch(e => {
+                this.setState({ exportColumnsModal: false })
+            });
+        }
+    }
 
     changeValueOfProps = () => {
         this.setState({ isFilter: false });
@@ -1585,145 +1590,142 @@ class CommonLog extends Component {
                     );
             },
         );
-/******************************************RenderPopupShowChartColumns**************************************** */
-let RenderPopupShowChartColumns = this.state.chartColumns.map(
-    item => {
-        return item.type === 'check-box' ||
-            item.field == 'id' ? null : (
-                <div className="grid__content" key={item.field}>
-                    <div
-                        className={
-                            'ui checkbox checkBoxGray300 count checked'
-                        }>
-                        <input
-                            name="CheckBox"
-                            type="checkbox"
-                            id={'export_' + item.field}
-                            checked={item.selected}
-                            onChange={e =>
-                                this.handleCheckForChart(item.field)
-                            }
-                        />
-                        <label>{item.title}</label>
-                    </div>
-                </div>
-            );
-    },
-);
-
-/********************************************************************************** */
-        const dataGrid =
-            this.state.isLoading === false ? (
-                <GridCustom
-                    gridKey={'CommonLog-' + this.state.documentName}
-                    data={this.state.rows}
-                    actions={this.actions}
-                    rowActions={
-                        this.state.documentObj.docTyp == 50
-                            ? this.inventoryRowActions
-                            : this.state.documentObj.forEditApi != undefined
-                                ? this.rowActions
-                                : null
-                    }
-                    cells={this.state.columns}
-                    openModalColumn={this.state.columnsModal}
-                    rowClick={cell => {
-                        if (cell.id != 0) {
-                            if (
-                                Config.IsAllow(
-                                    this.state.documentObj
-                                        .documentViewPermission,
-                                ) ||
-                                Config.IsAllow(
-                                    this.state.documentObj
-                                        .documentEditPermission,
-                                )
-                            ) {
-                                let addView = this.state.routeAddEdit;
-
-                                let columns = this.state.columns;
-
-                                let rowData = columns.filter(
-                                    x => x.id == cell.id - 1,
-                                ).key;
-
-                                if (rowData !== 'subject') {
-                                    let obj = {
-                                        docId: cell.id,
-                                        projectId: this.state.projectId,
-                                        projectName: this.state.projectName,
-                                        arrange: 0,
-                                        docApprovalId: 0,
-                                        isApproveMode: false,
-                                        perviousRoute:
-                                            window.location.pathname +
-                                            window.location.search,
-                                    };
-                                    if (
-                                        documentObj.documentAddEditLink.replace(
-                                            '/',
-                                            '',
-                                        ) == 'addEditModificationDrawing'
-                                    ) {
-                                        obj.isModification = true;
-                                    } else {
-                                        obj.isModification = false;
+        /******************************************RenderPopupShowChartColumns**************************************** */
+        let RenderPopupShowChartColumns = this.state.chartColumns.map(
+            item => {
+                return item.type === 'check-box' ||
+                    item.field == 'id' ? null : (
+                        <div className="grid__content" key={item.field}>
+                            <div
+                                className={
+                                    'ui checkbox checkBoxGray300 count checked'
+                                }>
+                                <input
+                                    name="CheckBox"
+                                    type="checkbox"
+                                    id={'export_' + item.field}
+                                    checked={item.selected}
+                                    onChange={e =>
+                                        this.handleCheckForChart(item.field)
                                     }
-                                    if (rowData === 'subject') {
-                                        obj.onClick = () => { };
-                                        obj.classes = 'bold';
-                                    }
+                                />
+                                <label>{item.title}</label>
+                            </div>
+                        </div>
+                    );
+            },
+        );
 
-                                    if (
-                                        this.state.documentObj.docTyp === 37 ||
-                                        this.state.documentObj.docTyp === 114
-                                    ) {
-                                        obj.isModification =
-                                            this.state.documentObj.docTyp ===
-                                                114
-                                                ? true
-                                                : false;
-                                    }
+        const dataGrid = this.state.isLoading === false ? (
+            <GridCustom
+                gridKey={'CommonLog-' + this.state.documentName}
+                data={this.state.rows}
+                actions={this.actions}
+                rowActions={
+                    this.state.documentObj.docTyp == 50
+                        ? this.inventoryRowActions
+                        : this.state.documentObj.forEditApi != undefined
+                            ? this.rowActions
+                            : null
+                }
+                cells={this.state.columns}
+                openModalColumn={this.state.columnsModal}
+                rowClick={cell => {
+                    if (cell.id != 0) {
+                        if (
+                            Config.IsAllow(
+                                this.state.documentObj
+                                    .documentViewPermission,
+                            ) ||
+                            Config.IsAllow(
+                                this.state.documentObj
+                                    .documentEditPermission,
+                            )
+                        ) {
+                            let addView = this.state.routeAddEdit;
 
-                                    let parms = CryptoJS.enc.Utf8.parse(
-                                        JSON.stringify(obj),
-                                    );
+                            let columns = this.state.columns;
 
-                                    let encodedPaylod = CryptoJS.enc.Base64.stringify(
-                                        parms,
-                                    );
+                            let rowData = columns.filter(
+                                x => x.id == cell.id - 1,
+                            ).key;
 
-                                    this.props.history.push({
-                                        pathname: '/' + addView,
-                                        search: '?id=' + encodedPaylod,
-                                    });
+                            if (rowData !== 'subject') {
+                                let obj = {
+                                    docId: cell.id,
+                                    projectId: this.state.projectId,
+                                    projectName: this.state.projectName,
+                                    arrange: 0,
+                                    docApprovalId: 0,
+                                    isApproveMode: false,
+                                    perviousRoute:
+                                        window.location.pathname +
+                                        window.location.search,
+                                };
+                                if (
+                                    documentObj.documentAddEditLink.replace(
+                                        '/',
+                                        '',
+                                    ) == 'addEditModificationDrawing'
+                                ) {
+                                    obj.isModification = true;
+                                } else {
+                                    obj.isModification = false;
                                 }
-                            } else {
-                                toast.warning(
-                                    Resources['missingPermissions'][
-                                    currentLanguage
-                                    ],
-                                );
-                            }
-                        }
-                    }}
-                    groups={this.state.groups}
-                    isFilter={this.state.isFilter}
-                    showCheckAll={true}
-                    changeValueOfProps={this.changeValueOfProps.bind(this)}
-                />
-            ) : (
-                    <LoadingSection />
-                );
+                                if (rowData === 'subject') {
+                                    obj.onClick = () => { };
+                                    obj.classes = 'bold';
+                                }
 
-        const btnExport =
-            this.state.export === false ? (
-                <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={this.state.columns}
-                    fileName={this.state.pageTitle}
-                />
-            ) : null;
+                                if (
+                                    this.state.documentObj.docTyp === 37 ||
+                                    this.state.documentObj.docTyp === 114
+                                ) {
+                                    obj.isModification =
+                                        this.state.documentObj.docTyp ===
+                                            114
+                                            ? true
+                                            : false;
+                                }
+
+                                let parms = CryptoJS.enc.Utf8.parse(
+                                    JSON.stringify(obj),
+                                );
+
+                                let encodedPaylod = CryptoJS.enc.Base64.stringify(
+                                    parms,
+                                );
+
+                                this.props.history.push({
+
+                                    //pathname: '/' + addView + '/' + cell.id + '/' + cell.projectId + '/0/0/false/' + this.state.projectName + '/' + window.location.pathname  
+                                    pathname: '/' + addView,
+                                    search: '?id=' + encodedPaylod,
+                                });
+                            }
+                        } else {
+                            toast.warning(
+                                Resources['missingPermissions'][
+                                currentLanguage
+                                ],
+                            );
+                        }
+                    }
+                }}
+                groups={this.state.groups}
+                isFilter={this.state.isFilter}
+                changeValueOfProps={this.changeValueOfProps.bind(this)}
+                showCheckAll={true}
+            />
+        ) : (<LoadingSection />);
+
+        const btnExport = this.state.export === false ? (
+            <Export
+                rows={this.state.isLoading === false ? this.state.rows : []}
+                columns={this.state.columns}
+                fileName={this.state.pageTitle}
+            />
+        ) : null;
 
         const btnExportServer =
             this.state.showExServerBtn == true ? (
@@ -1733,14 +1735,14 @@ let RenderPopupShowChartColumns = this.state.chartColumns.map(
                     {Resources['exportAll'][currentLanguage]}
                 </button>
             ) : null;
-            const btnCharts =
-                    this.state.showChartBtn == true ? (
-                    <button
-                        className="btn primaryBtn-2"
-                        onClick={() =>this.btnChartShowModal()}>
-                        {Resources.chart[currentLanguage]}{' '}
-                   </button>
-         ) : null;
+        const btnCharts =
+            this.state.showChartBtn == true ? (
+                <button
+                    className="btn primaryBtn-2"
+                    onClick={() => this.btnChartShowModal()}>
+                    {Resources.chart[currentLanguage]}{' '}
+                </button>
+            ) : null;
 
         const btnDocumentTemplate =
             this.state.showDocTemplateBtn == true ? (
@@ -1750,6 +1752,7 @@ let RenderPopupShowChartColumns = this.state.chartColumns.map(
                     {Resources['DocTemplate'][currentLanguage]}
                 </button>
             ) : null;
+
         const btnInventoryImportAttach =
             this.state.showInventoryImportAttachBtn == true ? (
                 <button
@@ -2063,19 +2066,16 @@ let RenderPopupShowChartColumns = this.state.chartColumns.map(
                                 {this.state.isExporting == true ? (
                                     <LoadingSection />
                                 ) : (
-                                    <div>
-                                        <button
-                                            className="btn primaryBtn-2"
-                                            onClick={this.btnExportServerClick}>
-                                            {Resources.export[currentLanguage]}{' '}
-                                        </button>
-                                    </div>
+                                        <>
+                                            <button className="btn primaryBtn-2" onClick={this.btnExportServerClick}>{Resources.export[currentLanguage]} </button>
+                                            <button className="btn primaryBtn-2" onClick={this.btnExportStatisticsClick}>{Resources.exportStatistic[currentLanguage]} </button>
+                                        </>
                                     )}
                             </div>
                         </div>
                     </div>
-               {/********************************chart popup************************************* */}
-               <div
+                    {/********************************chart popup************************************* */}
+                    <div
                         className={
                             this.state.chartColumnsModal
                                 ? 'grid__column active '
@@ -2103,18 +2103,18 @@ let RenderPopupShowChartColumns = this.state.chartColumns.map(
                                 {this.state.isExporting == true ? (
                                     <LoadingSection />
                                 ) : (
-                                    <div>
-                                        <button
-                                            className="btn primaryBtn-2"
-                                            onClick={this.btnStatisticsServerClick}>
-                                            {Resources.chart[currentLanguage]}{' '}
-                                        </button>
-                                    </div>
+                                        <div>
+                                            <button
+                                                className="btn primaryBtn-2"
+                                                onClick={this.btnStatisticsServerClick}>
+                                                {Resources.chart[currentLanguage]}{' '}
+                                            </button>
+                                        </div>
                                     )}
                             </div>
                         </div>
                     </div>
-               {/********************************chart popup************************************* */}
+                    {/********************************chart popup************************************* */}
 
                 </div>
 
@@ -2613,15 +2613,15 @@ let RenderPopupShowChartColumns = this.state.chartColumns.map(
                 ) : null}
 
                 {/***************************charts******************************* */}
-                {this.state.showChart==true?(
-                 <div className="largePopup largeModal ">
-                     <SkyLightStateless
+                {this.state.showChart == true ? (
+                    <div className="largePopup largeModal ">
+                        <SkyLightStateless
                             onOverlayClicked={() =>
                                 this.setState({
                                     showChart: false,
                                 })
                             }
-                           
+
                             onCloseClicked={() =>
                                 this.setState({
                                     showChart: false,
@@ -2631,12 +2631,12 @@ let RenderPopupShowChartColumns = this.state.chartColumns.map(
                                 this.state.showChart
                             }
                             title={'statistics'}
-                            >
-                                 <div>
-                                     {this.state.chartContent}
-                                 </div>
-                      </SkyLightStateless>
-                 </div> 
+                        >
+                            <div>
+                                {this.state.chartContent}
+                            </div>
+                        </SkyLightStateless>
+                    </div>
                 ) : null}
                 {/***************************charts******************************* */}
             </Fragment>

@@ -19,6 +19,7 @@ import IndexedDb from './IndexedDb';
 import Dataservice from './Dataservice';
 
 import 'react-customized-grid/main.css';
+import { date } from 'yup';
 // import ConnectionProvider from "./Componants/Layouts/Layout";
 // import ConnectionConsomer from "./Componants/Layouts/ConsomerLayout";
 
@@ -60,8 +61,7 @@ class App extends Component {
         super(props);
 
         IndexedDb.initialize();
-        IndexedDb.initializeCounterDB();
-        IndexedDb.initializeCachedAPI(); 
+        IndexedDb.initializeCounterDB(); 
     }
 
     state = {
@@ -72,38 +72,29 @@ class App extends Component {
     async componentDidMount() {
         await IndexedDb.seed();
         await IndexedDb.seedWidgetCounter();
-
-        let currentLanguage =
-            localStorage.getItem('lang') == null
-                ? 'en'
-                : localStorage.getItem('lang');
-
-        // let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-        fetch('/assets/IP_Configrations.json')
-            .then(r => r.json())
-            .then(data => {
-                Config.SetConfigObject(data);
-                if (data.useBackResources === true) {
-                    Dataservice.GetCachedFromIndexedDb('GetAllResources').then(data => {
-                        if (data) { IndexedDb.seedResourcesIntoDB(data); Config.SetResources(data); }
+        let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+        fetch('/assets/IP_Configrations.json').then(r => r.json()).then(data => {
+            Config.SetConfigObject(data);
+            if (data.useBackResources === true) {
+                Dataservice.GetCachedFromIndexedDb('GetAllResources').then(data => {
+                    if (data) { IndexedDb.seedResourcesIntoDB(data); Config.SetResources(data); }
+                });
+            }
+        }).then(e => {
+            currentLanguage === 'ar'
+                ? import('./Styles/scss/ar-eg/layout-ar.css').then(css => {
+                    this.setState({
+                        cssLoaded: true,
+                        isComplete: true,
                     });
-                }
-            })
-            .then(e => {
-                currentLanguage === 'ar'
-                    ? import('./Styles/scss/ar-eg/layout-ar.css').then(css => {
-                        this.setState({
-                            cssLoaded: true,
-                            isComplete: true,
-                        });
-                    })
-                    : import('./Styles/scss/en-us/layout.css').then(css => {
-                        this.setState({
-                            cssLoaded: true,
-                            isComplete: true,
-                        });
+                })
+                : import('./Styles/scss/en-us/layout.css').then(css => {
+                    this.setState({
+                        cssLoaded: true,
+                        isComplete: true,
                     });
-            });
+                });
+        });
     }
 
     render() {

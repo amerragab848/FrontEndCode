@@ -26,8 +26,7 @@ class FollowUpsSummaryDetails extends Component {
                 sortable: true,
                 type: 'text',
                 hidden: false,
-            },
-            {
+            }, {
                 field: 'subject',
                 title: Resources['subject'][currentLanguage],
                 width: 10,
@@ -37,10 +36,8 @@ class FollowUpsSummaryDetails extends Component {
                 type: 'text',
                 href: 'link',
                 onClick: () => { },
-                classes: 'bold',
-                showTip: true,
-            },
-            {
+                classes: 'bold'
+            }, {
                 field: 'projectName',
                 title: Resources['projectName'][currentLanguage],
                 width: 6,
@@ -48,8 +45,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'fromCompany',
                 title: Resources['fromCompany'][currentLanguage],
                 width: 10,
@@ -57,8 +53,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'actionByContactName',
                 title: Resources['actionByContact'][currentLanguage],
                 width: 10,
@@ -66,8 +61,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'companyType',
                 title: Resources['companyType'][currentLanguage],
                 groupable: true,
@@ -75,8 +69,7 @@ class FollowUpsSummaryDetails extends Component {
                 width: 10,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'approvalStatusName',
                 title: Resources['approvalStatus'][currentLanguage],
                 width: 8,
@@ -84,8 +77,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'docTypeName',
                 title: Resources['docType'][currentLanguage],
                 width: 7,
@@ -93,8 +85,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'delayDuration',
                 title: Resources['delay'][currentLanguage],
                 width: 5,
@@ -102,8 +93,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'duration2',
                 title: Resources['durationDays'][currentLanguage],
                 width: 5,
@@ -111,8 +101,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'text',
-            },
-            {
+            }, {
                 field: 'sendDate',
                 title: Resources['sendDate'][currentLanguage],
                 width: 6,
@@ -120,8 +109,7 @@ class FollowUpsSummaryDetails extends Component {
                 fixed: false,
                 sortable: true,
                 type: 'date',
-            },
-            {
+            }, {
                 field: 'lastApprovalDate',
                 title: Resources['lastApprovalDate'][currentLanguage],
                 width: 6,
@@ -247,13 +235,12 @@ class FollowUpsSummaryDetails extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridCustom
-                    gridKey="FollowingUpSummary"
+                <GridCustom 
                     gridKey="FollowingUpSummary"
                     cells={this.state.columns}
                     data={this.state.rows}
                     groups={this.state.groups}
-                    pageSize={this.state.rows ? this.state.rows.length : 0}
+                    //pageSize={this.state.rows ? this.state.rows.length : 0}
                     actions={[]}
                     rowActions={[]}
                     rowClick={obj => {

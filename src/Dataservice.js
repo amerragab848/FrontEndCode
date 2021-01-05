@@ -121,6 +121,8 @@ export default class Dataservice {
         }
         return rows;
     };
+
+
     static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
 
         let rows = await this.callAPIGetDataList(url, label, value, params);
@@ -232,8 +234,7 @@ export default class Dataservice {
             return result;
         }).catch(ex => { });
     };
-
-
+ 
     static checkSubmittalRefCode = (projectId, code) => {
 
         return Api.get("checkSubmittalRefCode?projectId=" + projectId + "&code=" + code).then(result => {

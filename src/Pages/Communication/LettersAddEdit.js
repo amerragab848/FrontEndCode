@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from '../../Dataservice';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+// import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from '../../Componants/OptionsPanels/ViewWorkFlow';
@@ -68,10 +68,10 @@ class LettersAddEdit extends Component {
     constructor(props) {
         super(props);
 
-        const query = new URLSearchParams(this.props.location.search);
-
+        const query = new URLSearchParams(this.props.location.search); 
         let obj = Config.extractDataFromParamas(query);
-
+      //  let obj=this.props.match.params;
+      //  console.log(obj);
         if (Object.entries(obj).length === 0) {
             this.props.history.goBack();
         } else {

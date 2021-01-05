@@ -136,8 +136,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                 field: "id",
                 title: "",
                 width:10,
-                fixed: true,
-                showTip: true,
+                fixed: true, 
                 type:"check-box"
             },
             {

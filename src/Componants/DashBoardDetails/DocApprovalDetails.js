@@ -50,8 +50,7 @@ class DocApprovalDetails extends Component {
             Api.post("UpdateStatusWorkFlow?id=" + e.id);
           }
         },
-        classes: 'bold',
-        showTip: true
+        classes: 'bold' 
       },
       {
         field: "creationDate",
