@@ -64,6 +64,12 @@ const ValidtionSchemaContactsForAdd = Yup.object().shape({
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 });
 
+const ValidtionSchemaDocumentTypeDrop=Yup.object().shape({
+     DocumentTypeDrop: Yup.string()
+        .required(Resources['selectDocType'][currentLanguage])
+        .nullable(true),
+});
+
 const ValidtionSchemaDocumentType = Yup.object().shape({
     DocumentTypeDrop: Yup.string()
         .required(Resources['selectDocType'][currentLanguage])
@@ -427,6 +433,9 @@ class projectWorkFlowAddEdit extends Component {
 
     handleChangeDrops = (item, name) => {
         switch (name) {
+            case "DocumentTypeDrop":
+               this.setState({ DocumentTypeDrop: item })
+                break;
             case "ProjectName":
                 this.setState({ selectedProject: item })
                 break;
@@ -939,7 +948,7 @@ class projectWorkFlowAddEdit extends Component {
                 values.yellowAlert = ''
 
                 this.setState({
-                    WorkFlowDocumentData: res,
+                    WorkFlowDocumentData: res||[],
                     IsLoadingCheckCode: false
                 })
 
@@ -1528,7 +1537,7 @@ class projectWorkFlowAddEdit extends Component {
                             GreenAlert: '',
                         }}
                         enableReinitialize={true}
-                        validationSchema={ValidtionSchemaDocumentType}
+                       validationSchema={ValidtionSchemaDocumentTypeDrop}
                         onSubmit={(values, actions) => {
                             this.AddDocumentType(values, actions)
                         }}>
@@ -1548,7 +1557,8 @@ class projectWorkFlowAddEdit extends Component {
                                                 onBlur={setFieldTouched}
                                                 error={errors.DocumentTypeDrop}
                                                 touched={touched.DocumentTypeDrop}
-                                                value={values.DocumentTypeDrop} />
+                                                value={values.DocumentTypeDrop} 
+                                                />
                                         </div>
                                     </div>
                                     <div className="slider-Btns">
