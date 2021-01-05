@@ -878,7 +878,6 @@ class CommonLog extends Component {
                     obj.onClick = () => { };
                     obj.classes = 'bold';
                 }
-
                 if (
                     item.field === 'statusName' ||
                     item.field === 'statusText'
@@ -887,7 +886,7 @@ class CommonLog extends Component {
                     obj.fixed = false;
                     obj.leftPadding = 17;
                 }
-
+                
                 if (isCustom !== true) {
                     cNames.push(obj);
                     exportedColumns.push({
@@ -903,17 +902,18 @@ class CommonLog extends Component {
                             selected: false,
                         })
                     }
-                }else{
-                    if (item.isCustom === true) {
-                        cNames.push(obj);
-                        exportedColumns.push({
-                            field: item.field,
-                            title:
-                                Resources[item.friendlyName][currentLanguage],
-                            selected: false,
-                            showInExport: item.showInExport,
-                        });
-                    }
+
+                } else {
+                        if (item.isCustom === true) {
+                            cNames.push(obj);
+                            exportedColumns.push({
+                                field: item.field,
+                                title:
+                                    Resources[item.friendlyName][currentLanguage],
+                                selected: false,
+                                showInExport: item.showInExport,
+                            });
+                        }
                     if (item.showInChart === true) {
                         chartColumns.push({
                             field: item.field,
@@ -924,11 +924,11 @@ class CommonLog extends Component {
                 }
             });
 
-            let ColumnsHideShow = [...cNames];
+                let ColumnsHideShow = [...cNames];
 
-            for (var i in ColumnsHideShow) {
-                ColumnsHideShow[i].hidden = false;
-            }
+                for (var i in ColumnsHideShow) {
+                    ColumnsHideShow[i].hidden = false;
+                }
             this.setState({
                 ColumnsHideShow: ColumnsHideShow,
                 exportedColumns: exportedColumns,
@@ -984,7 +984,8 @@ class CommonLog extends Component {
                 }
                 currentGP = JSON.parse(selectedCols.groups);
             }
-
+        
+        }
             this.setState({
                 pageTitle: Resources[documentObj.documentTitle][currentLanguage],
                 groups: currentGP,
@@ -1003,7 +1004,7 @@ class CommonLog extends Component {
             });
 
             this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-        }
+        
     }
 }
 
@@ -1337,7 +1338,7 @@ class CommonLog extends Component {
         let chosenColumns = this.state.selectedcolumnsChart;
 
         if (chosenColumns.length > 1) {
-            toast.warning("Can't do statistics  With more than 1 Column ");
+            toast.warning("Can't make a chart  With more than 1 Column ");
             this.setState({ chartColumnsModal: false });
         } else {
             this.setState({ isExporting: true });
@@ -1415,6 +1416,51 @@ class CommonLog extends Component {
                 });
         }
     };
+    btnExportStatisticsClick = () => {
+
+        if (Config.getPublicConfiguartion().activeExport != true) {
+            toast.warn('This feature is disabled. Please call your administrator for assistance');
+            return;
+        }
+
+        let chosenColumns = this.state.columnsExport;
+        if (chosenColumns.length > 2) {
+            toast.warning("Can't Draw With more than 2 Columns Choosen");
+        }
+        else {
+            this.setState({ isExporting: true });
+            let query = this.state.query;
+            var stringifiedQuery = JSON.stringify(query);
+
+            if (stringifiedQuery == '{"isCustom":true}') {
+                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+            } else {
+                stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
+            }
+
+            let data = {};
+            data.query = stringifiedQuery;
+            data.columns = chosenColumns;
+            data.projectId = this.state.projectId;
+
+            dataservice.addObjectCore("GetStatisticSubmittalForProjectId", data, 'POST').then(data => {
+                if (data) {
+                    data = Config.getPublicConfiguartion().downloads + '/' + data;
+                    var a = document.createElement('A');
+                    a.href = data;
+                    a.download = data.substr(data.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    this.setState({ exportColumnsModal: false, isExporting: false })
+                }
+            }).catch(e => {
+                this.setState({ exportColumnsModal: false })
+            });
+        }
+    }
+
     btnExportStatisticsClick = () => {
 
         if (Config.getPublicConfiguartion().activeExport != true) {
