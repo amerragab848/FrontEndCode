@@ -4,12 +4,10 @@ import Filter from '../../Componants/FilterComponent/filterComponent';
 import Api from '../../api';
 import dataservice from '../../Dataservice';
 import Export from '../../Componants/OptionsPanels/Export';
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
+import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
-import documentDefenition from '../../documentDefenition.json';
-//import Resources from '../../resources.json';
+import documentDefenition from '../../documentDefenition.json'; 
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -20,13 +18,9 @@ import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
-import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel'; 
 import { Slider } from 'react-semantic-ui-range';
-import { Resources } from '../../Resources';
-import { da } from 'date-fns/locale';
-import { Flag } from 'semantic-ui-react';
+import { Resources } from '../../Resources'; 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -233,9 +227,7 @@ class CommonLog extends Component {
             isCustom: true,
         });
     }
-
-
-
+ 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.match !== state.match) {
             return {
@@ -1114,6 +1106,7 @@ class CommonLog extends Component {
             this.setState({ columnsExport: columnsExport, Loading: false });
         }, 300);
     };
+
     handleCheckForChart = key => {
         let data = this.state.chartColumns;
 
@@ -1141,6 +1134,7 @@ class CommonLog extends Component {
             this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
         }, 300);
     };
+
     ClosxMX() {
         if (this.props != undefined) {
             this.props.actions.clearCashDocument();
@@ -1158,6 +1152,7 @@ class CommonLog extends Component {
             this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
+
     btnInventoryImportAttachShowModal = () => {
         this.setState({
             inventoryImportAttachmentModal: true,
@@ -1176,6 +1171,7 @@ class CommonLog extends Component {
             exportedColumns: exportedColumns,
         });
     };
+
     btnChartShowModal = () => {
         let chartColumns = this.state.chartColumns;
 
@@ -1316,6 +1312,7 @@ class CommonLog extends Component {
             });
         }
     };
+
     btnExportStatisticsClick = () => {
 
         if (Config.getPublicConfiguartion().activeExport != true) {
@@ -1424,6 +1421,7 @@ class CommonLog extends Component {
             this.props.projectId,
         );
     };
+
     render() {
         let DocTemplateModalCom = this.state.DocTemplateModalCom
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
