@@ -16,7 +16,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from '../../Componants/OptionsPanels/ViewWorkFlow';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';

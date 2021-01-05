@@ -16,7 +16,7 @@ import { SkyLightStateless } from "react-skylight";
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import * as AdminstrationActions from '../../store/actions/Adminstration';
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachmentWithProgress'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';

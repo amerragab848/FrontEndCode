@@ -17,7 +17,7 @@ import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import Export from '../../Componants/OptionsPanels/Export';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from '../../Componants/OptionsPanels/ViewWorkFlow';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
