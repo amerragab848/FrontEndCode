@@ -25149,6 +25149,12 @@ tbody.grid-body tr .text.elipsisPadd {
 
 
 
+.customLayout .dropWrapper{
+    margin: 20px 0;
+}
+.customLayout .dropWrapper .ui.radio.checkbox {
+    margin-left: 12px;
+}
 /*******************************/
 .rangeSlider .timeline {
     border-radius: 25px;

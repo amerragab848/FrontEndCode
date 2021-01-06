@@ -24598,7 +24598,12 @@ tbody.grid-body tr .text.elipsisPadd {
 }
 
 
-
+.customLayout .dropWrapper{
+    margin: 20px 0;
+}
+.customLayout .dropWrapper .ui.radio.checkbox {
+    margin-right: 12px;
+}
 
 
 /**************************/
