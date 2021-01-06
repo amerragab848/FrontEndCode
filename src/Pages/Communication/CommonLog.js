@@ -4,12 +4,10 @@ import Filter from '../../Componants/FilterComponent/filterComponent';
 import Api from '../../api';
 import dataservice from '../../Dataservice';
 import Export from '../../Componants/OptionsPanels/Export';
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
+import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
-import documentDefenition from '../../documentDefenition.json';
-//import Resources from '../../resources.json';
+import documentDefenition from '../../documentDefenition.json'; 
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -20,13 +18,9 @@ import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
-import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel'; 
 import { Slider } from 'react-semantic-ui-range';
-import { Resources } from '../../Resources';
-import { da } from 'date-fns/locale';
-import { Flag } from 'semantic-ui-react';
+import { Resources } from '../../Resources'; 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -80,8 +74,7 @@ class CommonLog extends Component {
             columnsExport: [],
             selectedcolumnsChart: [],
             inventoryImportAttachmentModal: false,
-            showInventoryImportAttachBtn: false,
-            BarChartCompJS: null,
+            showInventoryImportAttachBtn: false, 
             showChart: false,
             chartContent: null,
             chartColumnsModal: false,
@@ -234,9 +227,7 @@ class CommonLog extends Component {
             isCustom: true,
         });
     }
-
-
-
+ 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.match !== state.match) {
             return {
@@ -1110,6 +1101,7 @@ class CommonLog extends Component {
             this.setState({ columnsExport: columnsExport, Loading: false });
         }, 300);
     };
+
     handleCheckForChart = key => {
         let data = this.state.chartColumns;
 
@@ -1137,6 +1129,7 @@ class CommonLog extends Component {
             this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
         }, 300);
     };
+
     ClosxMX() {
         if (this.props != undefined) {
             this.props.actions.clearCashDocument();
@@ -1151,7 +1144,7 @@ class CommonLog extends Component {
 
     btnDocumentTemplateShowModal = () => {
         import('./DocTemplateModal').then(module => {
-            this.setState({ DocTemplateModalCom: module.default , docTemplateModal: true })
+            this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
     
@@ -1167,6 +1160,7 @@ class CommonLog extends Component {
             exportedColumns: exportedColumns,
         });
     };
+
     btnChartShowModal = () => {
         let chartColumns = this.state.chartColumns;
 
@@ -1266,50 +1260,48 @@ class CommonLog extends Component {
             data.projectId = this.state.projectId;
             data.columns = columns;
 
-            dataservice
-                .addObjectCore('GetStatisticsData', data, 'POST')
-                .then(data => {
-                    if (data && data.length > 0) {  // data is datatable
-                        // modal to show chart based on this data !
-                        this.setState({
-                            BarChartCompJS: require('../../Componants/ChartsWidgets/BarChartCompJS').default,
-                            isExporting: false
-                        })
-                        let BarChartCompJS = this.state.BarChartCompJS;
-                        let Chart = (
-                            <BarChartCompJS
-                                reports=""
-                                rows={data}
-                                //    barContent={[
-                                //        { name: "Estimated", value: 'estimatedTime' },
-                                //        { name: "Actual", value: 'actualTotal' },
-                                //        { name: "Variance", value: 'variance' }
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
+                if (data && data.length > 0) {  // data is datatable
+                    // modal to show chart based on this data !
+                    this.setState({ 
+                        isExporting: false
+                    })
+                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    let Chart = (
+                        <BarChartCompJS
+                            reports=""
+                            rows={data}
+                            //    barContent={[
+                            //        { name: "Estimated", value: 'estimatedTime' },
+                            //        { name: "Actual", value: 'actualTotal' },
+                            //        { name: "Variance", value: 'variance' }
 
-                                //    ]}
-                                categoryName={Object.keys(data[0])[0]}
-                                ukey="wt-Name203"
-                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
-                                y="total"
-                            />)
+                            //    ]}
+                            categoryName={Object.keys(data[0])[0]}
+                            ukey="wt-Name203"
+                            title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                            y="total"
+                        />)
 
-                        //////////////////////////////////////////////////////
-                        this.setState({
-                            chartColumnsModal: false,
-                            isExporting: false,
-                            chartContent: Chart,
-                            showChart: true
-                        })
-                    }
-                    else {
-                        this.setState({
-                            exportColumnsModal: false,
-                            isExporting: false,
-                        })
-                        toast.warn('no data found !');
-                    }
-                });
+                    //////////////////////////////////////////////////////
+                    this.setState({
+                        chartColumnsModal: false,
+                        isExporting: false,
+                        chartContent: Chart,
+                        showChart: true
+                    })
+                }
+                else {
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false,
+                    })
+                    toast.warn('no data found !');
+                }
+            });
         }
     };
+
     btnExportStatisticsClick = () => {
 
         if (Config.getPublicConfiguartion().activeExport != true) {
@@ -1418,6 +1410,7 @@ class CommonLog extends Component {
             this.props.projectId,
         );
     };
+
     render() {
         let DocTemplateModalCom = this.state.DocTemplateModalCom
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map(

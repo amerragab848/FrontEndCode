@@ -3,7 +3,7 @@ import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone-uploader';
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
- 
+
 import Drive from '../../Styles/images/gdrive.png';
 import dropbox from '../../Styles/images/dropbox.png';
 
@@ -13,12 +13,6 @@ import * as communicationActions from '../../store/actions/communication';
 
 import Config from '../../Services/Config';
 import Resources from '../../resources.json';
-
-// import classNames from 'classnames';
-// import AttachUpload from '../../Styles/images/attacthUpload.png';
-// import AttachDrag from '../../Styles/images/attachDraggable.png';
-// import Resources from '../../resources.json';
-
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachmentWithProgress extends Component {
@@ -103,14 +97,7 @@ class UploadAttachmentWithProgress extends Component {
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    extensions={[
-                        '.pdf',
-                        '.doc',
-                        '.docx',
-                        '.png',
-                        '.dwg',
-                        '.rvt',
-                    ]}>
+                    extensions={['.pdf', '.doc', '.docx', '.png', '.dwg', '.rvt',]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
@@ -180,9 +167,7 @@ class UploadAttachmentWithProgress extends Component {
             this.uploadBtnRef.current.click();
             this.setState({ fileStatus: '' });
             if (response) {
-                this.props.actions.insertFiletoAttachments(
-                    JSON.parse(response),
-                );
+                this.props.actions.insertFiletoAttachments(JSON.parse(response));
             }
         }
     };
