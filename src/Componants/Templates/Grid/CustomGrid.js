@@ -75,7 +75,7 @@ export default class CustomGrid extends Component {
             this.getRowsFilter(rows, obj, 0);
 
             //this.chunkData(0);
-        } 
+        }
         // else {
 
         //     this.chunkData(0);
@@ -546,6 +546,23 @@ export default class CustomGrid extends Component {
         })
         //return tempArray;
     }
+
+    timeLineBalls = (n, onClick, current) =>
+        Array(n)
+            .fill(0)
+            .map((i, index) => (
+                <div
+                    key={index}
+                    className={`timeline__ball ${current >= index ? "active" : null}`}
+                    onClick={() => onClick(index)}
+                >
+                    {index + 1}
+                </div>
+            ));
+
+    intermediaryBalls = 5;
+    calculatedWidth = (3 / (this.intermediaryBalls + 1)) * 100;
+
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
@@ -560,14 +577,21 @@ export default class CustomGrid extends Component {
                     </div>
                     {item.field == 'id' || item.type === "check-box" ? null :
                         <p className="rangeSlider">
-                            <Slider
+                            {/* <Slider
                                 key={item.field} discrete color="blue" inverted={false}
                                 settings={{
                                     start: parseInt(item.width ? item.width : 2), min: 5, max: 50, step: 5,
                                     onChange: e => { this.handleChangeWidth(item.field, e); },
                                 }}
-                            />
-                            <label className="rangeLabel" color="red"> Width: {item.width} px </label>
+                            /> */}
+                            <div className="timeline">
+                                <div
+                                    className="timeline__progress"
+                                    style={{ width: `${this.calculatedWidth}%` }}
+                                />
+                                {this.timeLineBalls(this.intermediaryBalls + 2, () => console.log("sdada"), 3)}
+                            </div>
+                            {/* <label className="rangeLabel" color="red"> Width: {item.width} px </label> */}
                         </p>}
                 </div>
             )

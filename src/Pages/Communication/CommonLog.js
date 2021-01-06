@@ -86,7 +86,7 @@ class CommonLog extends Component {
             chartContent: null,
             chartColumnsModal: false,
             showChartBtn: false,
-            DocTemplateModalCom: null
+            DocTemplateModalCom: null,
         };
         this.actions = [
             {
@@ -1063,31 +1063,7 @@ class CommonLog extends Component {
         /*********************************************************** */
     };
 
-    handleChangeWidth = (key, newWidth) => {
-        console.log('handleChangeWidth...', key, newWidth);
-        this.setState({ isLoading: true });
 
-        let data = this.state.ColumnsHideShow;
-        for (var i in data) {
-            if (data[i].field === key) {
-                data[i].width = newWidth.toString();
-                break;
-            }
-        }
-        setTimeout(() => {
-            this.setState({
-                columns: data.filter(i => i.hidden === false),
-                isLoading: false,
-            });
-        }, 300);
-
-        /**************************update localStorege************************ */
-        var selectedCols = { columnsList: [], groups: [] }
-        selectedCols.columnsList = JSON.stringify(data)
-        selectedCols.groups = "[]"
-        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
-        /*********************************************************** */
-    };
 
     handleCheckForExport = key => {
         let data = this.state.exportedColumns;
@@ -1156,7 +1132,7 @@ class CommonLog extends Component {
 
     btnDocumentTemplateShowModal = () => {
         import('./DocTemplateModal').then(module => {
-            this.setState({ DocTemplateModalCom: module.default , docTemplateModal: true })
+            this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
     btnInventoryImportAttachShowModal = () => {
@@ -1428,10 +1404,52 @@ class CommonLog extends Component {
             this.props.projectId,
         );
     };
+
+    handleChangeWidth = (key, newWidth) => {
+        console.log('handleChangeWidth...', key, newWidth);
+        this.setState({ isLoading: true });
+
+        let data = this.state.ColumnsHideShow;
+        for (var i in data) {
+            if (data[i].field === key) {
+                data[i].width = newWidth.toString();
+                break;
+            }
+        }
+        setTimeout(() => {
+            this.setState({
+                columns: data.filter(i => i.hidden === false),
+                isLoading: false,
+            });
+        }, 300);
+
+        /**************************update localStorege************************ */
+        var selectedCols = { columnsList: [], groups: [] }
+        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.groups = "[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
+        /*********************************************************** */
+    };
+
+    timeLineBalls = (n, onClick, current, key) =>
+        Array(n)
+            .fill(0)
+            .map((i, index) => (
+                <div
+                    key={index}
+                    className={`timeline__ball ${current >= index ? "active" : null}`}
+                    onClick={() => onClick(key, (index + 1) * 12)}
+                >
+                    {index + 1}
+                </div>
+            ));
+
+    intermediaryBalls = 4;
     render() {
         let DocTemplateModalCom = this.state.DocTemplateModalCom
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
             (item, index) => {
+                let calculatedWidth = (((item.width / 12) - 1) / (this.intermediaryBalls)) * 130;
                 return item.field == 'id' ? null : (
                     <div className="grid__content" key={item.field}>
                         <div
@@ -1448,24 +1466,11 @@ class CommonLog extends Component {
                             <label>{item.title}</label>
                         </div>
                         <p className="rangeSlider">
-                            <Slider
-                                key={item.field}
-                                discrete
-                                color="blue"
-                                inverted={false}
-                                settings={{
-                                    start: parseInt(item.width),
-                                    min: 5,
-                                    max: 50,
-                                    step: 5,
-                                    onChange: e => {
-                                        this.handleChangeWidth(item.field, e);
-                                    },
-                                }}
-                            />
-                            <label className="rangeLabel" color="red">
-                                Width: {item.width} px
-                            </label>
+                            <div className="timeline">
+                                <div className="timeline__progress" style={{ width: `${calculatedWidth}%` }} />
+                                {this.timeLineBalls(this.intermediaryBalls, this.handleChangeWidth, (item.width / 12) - 1, item.field)}
+                            </div>
+                            <label className="rnageWidth">width</label>
                         </p>
                     </div>
                 );
