@@ -25145,3 +25145,12 @@ tbody.grid-body tr .text.elipsisPadd {
 .paginationNumbers.custom ul li a i.icon.angle.right:before {
     content: "\F104";
 }
+
+
+
+.customLayout .dropWrapper{
+    margin: 20px 0;
+}
+.customLayout .dropWrapper .ui.radio.checkbox {
+    margin-left: 12px;
+}

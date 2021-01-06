@@ -5,15 +5,15 @@ import doc from "../../Styles/images/attatcheDOC.png";
 import png from "../../Styles/images/ex.png";
 import jpeg from "../../Styles/images/ex.png";
 import jpg from "../../Styles/images/ex.png";
-import pdfPrint from "../../Styles/images/pdfPrint.png";
-import pdfDelete from "../../Styles/images/pdfMDelete.png";
-import pdfMenuAction from "../../Styles/images/pdfMenuAction.png";
+// import pdfPrint from "../../Styles/images/pdfPrint.png";
+// import pdfDelete from "../../Styles/images/pdfMDelete.png";
+// import pdfMenuAction from "../../Styles/images/pdfMenuAction.png";
+// import pdfMaxi from "../../Styles/images/pdfMaxi.png";
 import autocad from "../../Styles/images/autocad.png";
-import pdfMaxi from "../../Styles/images/pdfMaxi.png";
 import CryptoJS from "crypto-js";
 import Api from "../../api";
 import Resources from "../../resources.json";
-import PDFViewer from "mgr-pdf-viewer-react";
+// import PDFViewer from "mgr-pdf-viewer-react";
 import { connect } from "react-redux";
 import SkyLight from "react-skylight";
 import axios from "axios";
@@ -62,10 +62,10 @@ class ViewExpensesAttachmments extends Component {
 
     previewPDF = (item, extension) => {
         if (extension == "pdf") {
-            this.setState({
-                activeURL: item.parentAttachFile
-            });
-            this.getPDFblob(item.parentAttachFile);
+            // this.setState({
+            //     activeURL: item.parentAttachFile
+            // });
+            // this.getPDFblob(item.parentAttachFile);
         } else {
 
             this.setState({
@@ -76,6 +76,39 @@ class ViewExpensesAttachmments extends Component {
             this.simpleDialogImage.show();
         }
     };
+
+    // getPDFblob = fileLink => {
+    //     //   Send filename (text string) to server and then retrieves file as a blob back.
+    //     //   using blob as input, converts it to a fileURL that is a link that loads the pdf
+    //     // let tagetServer = 'https://newgiza.azureedge.net/project-files-demov4';
+
+    //     axios.get(fileLink, {
+    //         method: "GET",
+    //         responseType: "blob",
+    //         headers: {
+    //             "Access-Control-Allow-Origin": "*",
+    //             "Content-Type": "application/json"
+    //         },
+    //         mode: "no-cors",
+    //         withCredentials: false
+    //     }).then(response => {
+    //         if (response) {
+    //             //Create a Blob from the PDF Stream
+    //             const blob = new Blob([response.data], {
+    //                 type: "application/pdf"
+    //             });
+    //             //Build a URL from the file
+    //             const fileURL = URL.createObjectURL(blob);
+    //             this.setState({
+    //                 activeURL: fileURL,
+    //                 view: true
+    //             });
+    //             this.simpleDialog.show();
+    //         }
+    //     }).catch(error => {
+    //         activeURL = "";
+    //     });
+    // };
 
     goEditPdf = (item, ext) => {
         var stamp = new Date().getTime();
@@ -94,11 +127,7 @@ class ViewExpensesAttachmments extends Component {
         });
 
         window.open(
-            Config.getPublicConfiguartion().exportLocal +
-            "/edit-pdf/?zoom=page-actual&q=" +
-            this.b64EncodeUnicode(data) +
-            "#/public/edit-pdf/" +
-            stamp +
+            Config.getPublicConfiguartion().exportLocal + "/edit-pdf/?zoom=page-actual&q=" + this.b64EncodeUnicode(data) + "#/public/edit-pdf/" + stamp +
             item.parentAttachFile.split("/")[4]
         );
     };
@@ -130,39 +159,6 @@ class ViewExpensesAttachmments extends Component {
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj1));
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
         window.open("autoDeskViewer?id=" + encodedPaylod);
-    };
-
-    getPDFblob = fileLink => {
-        //   Send filename (text string) to server and then retrieves file as a blob back.
-        //   using blob as input, converts it to a fileURL that is a link that loads the pdf
-        // let tagetServer = 'https://newgiza.azureedge.net/project-files-demov4';
-
-        axios.get(fileLink, {
-            method: "GET",
-            responseType: "blob",
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-            mode: "no-cors",
-            withCredentials: false
-        }).then(response => {
-            if (response) {
-                //Create a Blob from the PDF Stream
-                const blob = new Blob([response.data], {
-                    type: "application/pdf"
-                });
-                //Build a URL from the file
-                const fileURL = URL.createObjectURL(blob);
-                this.setState({
-                    activeURL: fileURL,
-                    view: true
-                });
-                this.simpleDialog.show();
-            }
-        }).catch(error => {
-            activeURL = "";
-        });
     };
 
     componentDidMount() {
@@ -306,7 +302,7 @@ class ViewExpensesAttachmments extends Component {
         };
 
         let tabel = this.props.isLoadingFiles == true ? this.props.files.map((item, Index) => {
-            let ext =item["fileName"] ? item["fileName"].split(".")[1] ? item["fileName"].split(".")[1].toLowerCase() : "png": "";
+            let ext = item["fileName"] ? item["fileName"].split(".")[1] ? item["fileName"].split(".")[1].toLowerCase() : "png" : "";
             let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
             let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
             if (item.isCloud !== true) {
@@ -462,7 +458,7 @@ class ViewExpensesAttachmments extends Component {
                     <tbody>{tabel}</tbody>
                 </table>
 
-                {this.state.view ? (
+                {/* {this.state.view ? (
                     <div
                         className="largePopup largeModal pdf__popup"
                         style={{ display: this.state.view ? "block" : "none" }}>
@@ -498,8 +494,8 @@ class ViewExpensesAttachmments extends Component {
                                 {activeURL === "" ? null : (<PDFViewer document={{ url: this.state.activeURL }} />)}
                             </div>
                         </SkyLight>
-                    </div>
-                ) : null}
+                    </div> 
+                ) : null}*/}
                 <div className="largePopup largeModal " style={{ display: this.state.viewVersion ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogVersion = ref)}>
                         <div className="dropWrapper">
