@@ -2,9 +2,6 @@ import React, { Component, Fragment } from 'react';
 import dataservice from '../../Dataservice';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config.js';
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
@@ -12,7 +9,6 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Resources } from '../../Resources';
 
-let docTempLink;
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -21,6 +17,7 @@ class DocTemplateModal extends Component {
         super(props);
 
         this.state = {
+            docTempLink: null,
             projectId: this.props.projectId,
             docTemplateModal: true,
             docType: this.props.docType,
@@ -82,15 +79,21 @@ class DocTemplateModal extends Component {
             updateMIQuantity: false
         };
     }
-    componentDidMount() {
+    componentWillMount() {
         if (this.state.docType == 'submittal') {
-            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx';
+            this.setState({
+                docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx'
+            })
         }
         else if (this.state.docType == 'Letters') {
-            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx'
+            this.setState({
+                docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx'
+            })
         }
         else {
-            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx';
+            this.setState({
+                docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx'
+            })
         }
         this.fillDropDowns();
     };
@@ -136,7 +139,6 @@ class DocTemplateModal extends Component {
             });
         }
     }
-
     handleChangeDropDown(
         event,
         field,
@@ -145,7 +147,6 @@ class DocTemplateModal extends Component {
         url,
         param,
         selectedValue,
-        subDatasource,
     ) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -173,12 +174,7 @@ class DocTemplateModal extends Component {
     handleChangeDropDownCycles(
         event,
         field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource,
+        selectedValue
     ) {
         if (event == null) return;
 
@@ -195,7 +191,6 @@ class DocTemplateModal extends Component {
             [selectedValue]: event,
         });
     }
-
 
     render() {
         return (
@@ -220,7 +215,6 @@ class DocTemplateModal extends Component {
                                     <div className="supervisor__company">
                                         <div className="super_name">
                                             <Dropdown
-                                                //title={"fromCompany"}
                                                 data={this.state.companies}
                                                 isMulti={false}
                                                 selectedValue={
@@ -273,62 +267,62 @@ class DocTemplateModal extends Component {
                                             />
                                         </div>
                                     </div>
-                                </div>
-                                <div className="linebylineInput valid-input mix_dropdown">
-                                    <label className="control-label">
-                                        {Resources.toCompany[currentLanguage]}
-                                    </label>
-                                    <div className="supervisor__company">
-                                        <div className="super_name">
-                                            <Dropdown
-                                                isMulti={false}
-                                                data={this.state.companies}
-                                                selectedValue={
-                                                    this.state.selectedToCompany
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'toCompanyId',
-                                                        true,
-                                                        'ToContacts',
-                                                        'GetContactsByCompanyId',
-                                                        'companyId',
-                                                        'selectedToCompany',
-                                                        'selectedToContact',
-                                                    )
-                                                }
-                                                index="letter-toCompany"
-                                                name="toCompanyId"
-                                                id="toCompanyId"
-                                                styles={CompanyDropdown}
-                                                classDrop="companyName1"
-                                            />
-                                        </div>
-                                        <div className="super_company">
-                                            <Dropdown
-                                                isMulti={false}
-                                                data={this.state.ToContacts}
-                                                selectedValue={
-                                                    this.state.selectedToContact
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'toContactId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedToContact',
-                                                    )
-                                                }
-                                                index="letter-toContactId"
-                                                name="toContactId"
-                                                id="toContactId"
-                                                classDrop="contactName1"
-                                                styles={ContactDropdown}
-                                            />
+                                    <div className="linebylineInput valid-input mix_dropdown">
+                                        <label className="control-label">
+                                            {Resources.toCompany[currentLanguage]}
+                                        </label>
+                                        <div className="supervisor__company">
+                                            <div className="super_name">
+                                                <Dropdown
+                                                    isMulti={false}
+                                                    data={this.state.companies}
+                                                    selectedValue={
+                                                        this.state.selectedToCompany
+                                                    }
+                                                    handleChange={event =>
+                                                        this.handleChangeDropDown(
+                                                            event,
+                                                            'toCompanyId',
+                                                            true,
+                                                            'ToContacts',
+                                                            'GetContactsByCompanyId',
+                                                            'companyId',
+                                                            'selectedToCompany',
+                                                            'selectedToContact',
+                                                        )
+                                                    }
+                                                    index="letter-toCompany"
+                                                    name="toCompanyId"
+                                                    id="toCompanyId"
+                                                    styles={CompanyDropdown}
+                                                    classDrop="companyName1"
+                                                />
+                                            </div>
+                                            <div className="super_company">
+                                                <Dropdown
+                                                    isMulti={false}
+                                                    data={this.state.ToContacts}
+                                                    selectedValue={
+                                                        this.state.selectedToContact
+                                                    }
+                                                    handleChange={event =>
+                                                        this.handleChangeDropDown(
+                                                            event,
+                                                            'toContactId',
+                                                            false,
+                                                            '',
+                                                            '',
+                                                            '',
+                                                            'selectedToContact',
+                                                        )
+                                                    }
+                                                    index="letter-toContactId"
+                                                    name="toContactId"
+                                                    id="toContactId"
+                                                    classDrop="contactName1"
+                                                    styles={ContactDropdown}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -337,7 +331,6 @@ class DocTemplateModal extends Component {
 
                         {(Config.getPayload().uty == 'company' && this.state.docType == 'submittal') || this.state.docType == 'materialInventory' ?
                             <>
-
                                 {/* //-----------------------Ahmed Yousry------------------ */}
                                 {this.state.docType == 'materialInventory' ?
                                     <div className="linebylineInput">
@@ -346,8 +339,10 @@ class DocTemplateModal extends Component {
                                             <div className="ui checkbox radio radioBoxBlue checked">
                                                 <input type="radio" name="Status" value="true"
                                                     onChange={(e) => {
-                                                        this.setState({ updateMIQuantity: true });
-                                                        docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx';
+                                                        this.setState({
+                                                            updateMIQuantity: true,
+                                                            docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventoryQuantityAndPrice.xlsx'
+                                                        });
                                                     }}
                                                     defaultChecked={this.state.updateMIQuantity ? 'checked' : null} />
                                                 <label>{Resources['oppened'][currentLanguage]}</label>
@@ -356,9 +351,10 @@ class DocTemplateModal extends Component {
                                                 <input type="radio" name="Status" value="false"
                                                     defaultChecked={this.state.updateMIQuantity ? null : 'checked'}
                                                     onChange={(e) => {
-                                                        this.setState({ updateMIQuantity: false });
-                                                        docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventoryQuantityAndPrice.xlsx';
-                                                        this.fillDropDowns();
+                                                        this.setState({
+                                                            updateMIQuantity: false,
+                                                            docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx'
+                                                        });
                                                     }} />
                                                 <label> {Resources['closed'][currentLanguage]}</label>
                                             </div>
@@ -619,75 +615,75 @@ class DocTemplateModal extends Component {
                             ) : null
                         ) : null}
 
-                        <XSLfile
-                            key="docTemplate"
-                            projectId={this.state.projectId}
-                            companyId={
-                                this.state.document != null
-                                    ? this.state.document.companyId
-                                    : null
-                            }
-                            contactId={
-                                this.state.document != null
-                                    ? this.state.document.contactId
-                                    : null
-                            }
-                            toCompanyId={
-                                this.state.document != null
-                                    ? this.state.document.toCompanyId
-                                    : null
-                            }
-                            toContactId={
-                                this.state.document != null
-                                    ? this.state.document.toContactId
-                                    : null
-                            }
-                            disciplineId={
-                                this.state.document != null
-                                    ? this.state.document.disciplineId
-                                    : null
-                            }
-                            specsSectionId={
-                                this.state.document != null
-                                    ? this.state.document.specsSectionId
-                                    : null
-                            }
-                            submittalTypeId={
-                                this.state.document != null
-                                    ? this.state.document
-                                        .submittalTypeId
-                                    : null
-                            }
-                            area={
-                                this.state.document != null
-                                    ? this.state.selectedArea.label
-                                    : null
-                            }
-                            location={
-                                this.state.document != null
-                                    ? this.state.selectedLocation.label
-                                    : null
-                            }
-                            contractId={
-                                this.state.document != null
-                                    ? this.state.document.contractId
-                                    : null
-                            }
-                            approvalStatusId={
-                                this.state.documentCycle != null
-                                    ? this.state.documentCycle
-                                        .approvalStatusId
-                                    : null
-                            }
-                            docType={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? "inventoryQuantityAndPrice" : this.state.docType}
-                            documentTemplate={this.state.docType == 'materialInventory' ? false : true}
-                            link={docTempLink}
-                            header="addManyItems"
-                            updateMaterialInventoryQuantity={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? true : false}
-                            afterUpload={() => {
-                                this.props.afterUpload()
-                            }}
-                        />
+                            <XSLfile
+                                key="docTemplate"
+                                projectId={this.state.projectId}
+                                companyId={
+                                    this.state.document != null
+                                        ? this.state.document.companyId
+                                        : null
+                                }
+                                contactId={
+                                    this.state.document != null
+                                        ? this.state.document.contactId
+                                        : null
+                                }
+                                toCompanyId={
+                                    this.state.document != null
+                                        ? this.state.document.toCompanyId
+                                        : null
+                                }
+                                toContactId={
+                                    this.state.document != null
+                                        ? this.state.document.toContactId
+                                        : null
+                                }
+                                disciplineId={
+                                    this.state.document != null
+                                        ? this.state.document.disciplineId
+                                        : null
+                                }
+                                specsSectionId={
+                                    this.state.document != null
+                                        ? this.state.document.specsSectionId
+                                        : null
+                                }
+                                submittalTypeId={
+                                    this.state.document != null
+                                        ? this.state.document
+                                            .submittalTypeId
+                                        : null
+                                }
+                                area={
+                                    this.state.document != null
+                                        ? this.state.selectedArea.label
+                                        : null
+                                }
+                                location={
+                                    this.state.document != null
+                                        ? this.state.selectedLocation.label
+                                        : null
+                                }
+                                contractId={
+                                    this.state.document != null
+                                        ? this.state.document.contractId
+                                        : null
+                                }
+                                approvalStatusId={
+                                    this.state.documentCycle != null
+                                        ? this.state.documentCycle
+                                            .approvalStatusId
+                                        : null
+                                }
+                                docType={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? "inventoryQuantityAndPrice" : this.state.docType}
+                                documentTemplate={this.state.docType == 'materialInventory' ? false : true}
+                                link={this.state.docTempLink}
+                                header="addManyItems"
+                                updateMaterialInventoryQuantity={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? true : false}
+                                afterUpload={() => {
+                                    this.props.afterUpload()
+                                }}
+                            />
                     </div>
                 </SkyLightStateless>
 
@@ -698,26 +694,5 @@ class DocTemplateModal extends Component {
 }
 
 
-function mapStateToProps(state, ownProps) {
-    return {
-        projectId: state.communication.projectId,
-        showLeftMenu: state.communication.showLeftMenu,
-        showSelectProject: state.communication.showSelectProject,
-        projectName: state.communication.projectName,
-        moduleName: state.communication.moduleName,
-        document: state.communication.document,
-        files: state.communication.files,
-        workFlowCycles: state.communication.workFlowCycles,
-        inventoryItems: state.communication.inventoryItems,
-    };
-}
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(communicationActions, dispatch),
-    };
-}
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DocTemplateModal));
+export default withRouter(DocTemplateModal);

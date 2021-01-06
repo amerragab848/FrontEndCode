@@ -4,10 +4,10 @@ import Filter from '../../Componants/FilterComponent/filterComponent';
 import Api from '../../api';
 import dataservice from '../../Dataservice';
 import Export from '../../Componants/OptionsPanels/Export';
-import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
-import documentDefenition from '../../documentDefenition.json'; 
+import documentDefenition from '../../documentDefenition.json';
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -18,9 +18,9 @@ import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel'; 
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import { Slider } from 'react-semantic-ui-range';
-import { Resources } from '../../Resources'; 
+import { Resources } from '../../Resources';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -74,12 +74,12 @@ class CommonLog extends Component {
             columnsExport: [],
             selectedcolumnsChart: [],
             inventoryImportAttachmentModal: false,
-            showInventoryImportAttachBtn: false, 
+            showInventoryImportAttachBtn: false,
             showChart: false,
             chartContent: null,
             chartColumnsModal: false,
             showChartBtn: false,
-            DocTemplateModalCom: null
+            DocTemplateModalCom: null,
         };
         this.actions = [
             {
@@ -227,7 +227,7 @@ class CommonLog extends Component {
             isCustom: true,
         });
     }
- 
+
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.match !== state.match) {
             return {
@@ -844,12 +844,12 @@ class CommonLog extends Component {
                     showExServerBtn = true;
                 }
 
-                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42||docTypeId==50) {
+                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42 || docTypeId == 50) {
                     showDocTemplateBtn = true;
                 } else {
                     showDocTemplateBtn = false;
                 }
-               
+
                 filtersColumns = documentObj.filters;
 
                 var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
@@ -1049,31 +1049,7 @@ class CommonLog extends Component {
         /*********************************************************** */
     };
 
-    handleChangeWidth = (key, newWidth) => {
-        console.log('handleChangeWidth...', key, newWidth);
-        this.setState({ isLoading: true });
 
-        let data = this.state.ColumnsHideShow;
-        for (var i in data) {
-            if (data[i].field === key) {
-                data[i].width = newWidth.toString();
-                break;
-            }
-        }
-        setTimeout(() => {
-            this.setState({
-                columns: data.filter(i => i.hidden === false),
-                isLoading: false,
-            });
-        }, 300);
-
-        /**************************update localStorege************************ */
-        var selectedCols = { columnsList: [], groups: [] }
-        selectedCols.columnsList = JSON.stringify(data)
-        selectedCols.groups = "[]"
-        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
-        /*********************************************************** */
-    };
 
     handleCheckForExport = key => {
         let data = this.state.exportedColumns;
@@ -1147,7 +1123,7 @@ class CommonLog extends Component {
             this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
-    
+
     btnExportServerShowModal = () => {
         let exportedColumns = this.state.exportedColumns;
 
@@ -1263,7 +1239,7 @@ class CommonLog extends Component {
             dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
                 if (data && data.length > 0) {  // data is datatable
                     // modal to show chart based on this data !
-                    this.setState({ 
+                    this.setState({
                         isExporting: false
                     })
                     let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
@@ -1411,10 +1387,51 @@ class CommonLog extends Component {
         );
     };
 
+    handleChangeWidth = (key, newWidth) => {
+        console.log('handleChangeWidth...', key, newWidth);
+        this.setState({ isLoading: true });
+
+        let data = this.state.ColumnsHideShow;
+        for (var i in data) {
+            if (data[i].field === key) {
+                data[i].width = newWidth.toString();
+                break;
+            }
+        }
+        setTimeout(() => {
+            this.setState({
+                columns: data.filter(i => i.hidden === false),
+                isLoading: false,
+            });
+        }, 300);
+
+        /**************************update localStorege************************ */
+        var selectedCols = { columnsList: [], groups: [] }
+        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.groups = "[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
+        /*********************************************************** */
+    };
+
+    timeLineBalls = (n, onClick, current, key) =>
+        Array(n)
+            .fill(0)
+            .map((i, index) => (
+                <div
+                    key={index}
+                    className={`timeline__ball ${current >= index ? "active" : null}`}
+                    onClick={() => onClick(key, (index + 1) * 12)}
+                >
+                    {index + 1}
+                </div>
+            ));
+
+    intermediaryBalls = 4;
     render() {
         let DocTemplateModalCom = this.state.DocTemplateModalCom
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
             (item, index) => {
+                let calculatedWidth = (((item.width / 12) - 1) / (this.intermediaryBalls)) * 130;
                 return item.field == 'id' ? null : (
                     <div className="grid__content" key={item.field}>
                         <div
@@ -1431,24 +1448,11 @@ class CommonLog extends Component {
                             <label>{item.title}</label>
                         </div>
                         <p className="rangeSlider">
-                            <Slider
-                                key={item.field}
-                                discrete
-                                color="blue"
-                                inverted={false}
-                                settings={{
-                                    start: parseInt(item.width),
-                                    min: 5,
-                                    max: 50,
-                                    step: 5,
-                                    onChange: e => {
-                                        this.handleChangeWidth(item.field, e);
-                                    },
-                                }}
-                            />
-                            <label className="rangeLabel" color="red">
-                                Width: {item.width} px
-                            </label>
+                            <div className="timeline">
+                                <div className="timeline__progress" style={{ width: `${calculatedWidth}%` }} />
+                                {this.timeLineBalls(this.intermediaryBalls, this.handleChangeWidth, (item.width / 12) - 1, item.field)}
+                            </div>
+                            <label className="rnageWidth">width</label>
                         </p>
                     </div>
                 );
@@ -2008,7 +2012,7 @@ class CommonLog extends Component {
                     />
                 ) : null}
                 {/********************************end docTemplateModal************************************* */}
-               
+
                 {/***************************start export******************************* */}
                 {this.props.document.id > 0 &&
                     this.state.showExportModal == true ? (
@@ -2030,7 +2034,7 @@ class CommonLog extends Component {
                             </SkyLight>
                         </div>
                     ) : null}
-               {/***************************end export******************************* */}
+                {/***************************end export******************************* */}
                 {this.state.showInventoryItemsModal == true ? (
                     <div className="largePopup largeModal ">
                         <InventoryItemsModal

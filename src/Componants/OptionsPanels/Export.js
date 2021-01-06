@@ -18,7 +18,6 @@ class Export extends Component {
     }
 
     tableToExcel(title) {
-
         if (this.state.isExport || this.state.isExportRequestPayment) {
 
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -46,7 +45,7 @@ class Export extends Component {
             }
 
             var blob = new Blob([format(template, ctx)]);
-            this.setState({ isExpor: false, isExportRequestPayment: false })
+            this.setState({ isExpor: false, isExportRequestPayment: this.props.isExportRequestPayment })
             var a = document.createElement('a');
             document.body.appendChild(a);
             if (window.navigator.msSaveBlob) {
@@ -72,7 +71,7 @@ class Export extends Component {
         if (nextProps.rows !== state.rows && nextProps.isExportRequestPayment === state.isExportRequestPayment) {
             return {
                 rows: nextProps.rows,
-                isExportRequestPayment: nextProps.isExportRequestPayment
+                isExportRequestPayment: nextProps.isExportRequestPayment,
             };
         }
         return null
@@ -145,7 +144,8 @@ class Export extends Component {
                         type="button" onClick={e => { this.setState({ isExport: true }); this.tableToExcel(this.props.fileName) }}>
                         {this.state.isExportRequestPayment ? (this.props.type === 1 ? Resources["export"][currentLanguage] : "Export As Vo") : Resources["export"][currentLanguage]}</button>
                     :
-                    <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => this.ShowMsg()} >{Resources["export"][currentLanguage]}</button>
+                    <button className="primaryBtn-2 btn mediumBtn" type="button"
+                     onClick={e => this.ShowMsg()} >{Resources["export"][currentLanguage]}</button>
                 }
                 <div style={{ display: 'none' }}>
                     {this.state.isExport === true || this.state.isExportRequestPayment ?

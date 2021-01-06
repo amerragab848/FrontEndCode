@@ -361,9 +361,9 @@ class XSLfile extends Component {
                 </header>
                 <div style={{ position: 'relative' }}>
                     <React.Fragment>
-                        {this.props.CantDownload ? null : this.state.link !=""?(
+                        {this.props.CantDownload ? null : this.props.link !=""?(
                             <div className="fileDownUp">
-                                <a href={this.state.link}>
+                                <a href={this.props.link}>
                                     <i
                                         className="fa fa-download"
                                         aria-hidden="true"></i>
