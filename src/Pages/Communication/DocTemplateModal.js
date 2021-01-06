@@ -2,9 +2,6 @@ import React, { Component, Fragment } from 'react';
 import dataservice from '../../Dataservice';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config.js';
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
@@ -12,7 +9,7 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Resources } from '../../Resources';
 
-let docTempLink;
+//let docTempLink;
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -21,6 +18,7 @@ class DocTemplateModal extends Component {
         super(props);
 
         this.state = {
+            docTempLink:null,
             projectId: this.props.projectId,
             docTemplateModal: true,
             docType: this.props.docType,
@@ -81,15 +79,21 @@ class DocTemplateModal extends Component {
             },
         };
     }
-    componentDidMount() {
+    componentWillMount() {
         if (this.state.docType == 'submittal') {
-            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx';
-        }
+            this.setState({
+                docTempLink : Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx'
+            }) 
+         }
           else if(this.state.docType == 'Letters') {
-            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx'
-        }
+            this.setState({
+            docTempLink : Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx'
+        }) 
+    }
         else{
-            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx';
+            this.setState({
+            docTempLink : Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx'
+        }) 
         }
         this.fillDropDowns();
     };
@@ -134,7 +138,6 @@ class DocTemplateModal extends Component {
             });
         }
     }
-
     handleChangeDropDown(
         event,
         field,
@@ -143,7 +146,6 @@ class DocTemplateModal extends Component {
         url,
         param,
         selectedValue,
-        subDatasource,
     ) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -171,12 +173,7 @@ class DocTemplateModal extends Component {
     handleChangeDropDownCycles(
         event,
         field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource,
+        selectedValue
     ) {
         if (event == null) return;
 
@@ -217,7 +214,6 @@ class DocTemplateModal extends Component {
                                 <div className="supervisor__company">
                                     <div className="super_name">
                                         <Dropdown
-                                            //title={"fromCompany"}
                                             data={this.state.companies}
                                             isMulti={false}
                                             selectedValue={
@@ -565,10 +561,6 @@ class DocTemplateModal extends Component {
                                                         this.handleChangeDropDownCycles(
                                                             event,
                                                             'approvalStatusId',
-                                                            false,
-                                                            '',
-                                                            '',
-                                                            '',
                                                             'selectedApprovalStatus',
                                                         )
                                                     }
@@ -644,7 +636,7 @@ class DocTemplateModal extends Component {
                                 }
                                 docType={this.state.docType}
                                 documentTemplate={this.state.docType=='materialInventory'?false:true}
-                                link={docTempLink}
+                                link={this.state.docTempLink}
                                 header="addManyItems"
                                 afterUpload={() => {
                                     this.props.afterUpload()
@@ -660,26 +652,5 @@ class DocTemplateModal extends Component {
 }
 
 
-function mapStateToProps(state, ownProps) {
-    return {
-        projectId: state.communication.projectId,
-        showLeftMenu: state.communication.showLeftMenu,
-        showSelectProject: state.communication.showSelectProject,
-        projectName: state.communication.projectName,
-        moduleName: state.communication.moduleName,
-        document: state.communication.document,
-        files: state.communication.files,
-        workFlowCycles: state.communication.workFlowCycles,
-        inventoryItems: state.communication.inventoryItems,
-    };
-}
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(communicationActions, dispatch),
-    };
-}
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DocTemplateModal));
+export default withRouter(DocTemplateModal);
