@@ -25,7 +25,7 @@
   "client_id": "DlSeYObvI78EFYfvEzK9GOwcQ4jvERA8",
   "client_secret": "8eVDuCjah3JhAn1O",
   "commonLogApi": 2,
-  "dashboardApi": 3,
+  "dashboardApi": 1,
   "refCodeValidation": true,
   "activeExport": true,
   "useBackResources": false

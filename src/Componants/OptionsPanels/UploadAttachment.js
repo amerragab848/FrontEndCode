@@ -77,12 +77,10 @@ class UploadAttachment extends Component {
                 docTypeId: this.props.docTypeId,
                 docId: this.props.docId,
                 parentId: this.state.parentId,
+                projectId: this.props.projectId
             };
             this.props.actions.uploadFile('BlobUpload', formData, header);
-        });
-        // setTimeout(() => {
-
-        // }, 1000);
+        }); 
         this.setState({ _className: 'zeropercent' });
     };
 
