@@ -114,8 +114,10 @@ class XSLfile extends Component {
             formData.append('file0', file);
             let docType = this.props.docType;
             let header = { docType: docType };
+            formData.append('disciplineId', this.props.disciplineId);
+            formData.append('specsSectionId',this.props.specsSectionId);
             this.setState({ Isloading: true });
-            Api.postFile('UploadExcelFiles?docId=' + this.props.docId, formData, header).then(resp => {
+            Api.postFile('UploadExcelFiles?docId=' + this.props.projectId, formData, header).then(resp => {
                 if (this.props.afterUpload != undefined) {
                     this.setState({ Isloading: false });
                     this.props.afterUpload();

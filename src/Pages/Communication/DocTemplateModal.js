@@ -1,22 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import GridCustom from '../../Componants/Templates/Grid/CustomCommonLogGrid';
-import Filter from '../../Componants/FilterComponent/filterComponent';
-import Api from '../../api';
 import dataservice from '../../Dataservice';
-import Export from '../../Componants/OptionsPanels/Export';
-import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
-import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
-import documentDefenition from '../../documentDefenition.json';
-//import Resources from '../../resources.json';
 import { withRouter } from 'react-router-dom';
-import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import { toast } from 'react-toastify';
 import Config from '../../Services/Config.js';
-import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
@@ -96,9 +85,11 @@ class DocTemplateModal extends Component {
         if (this.state.docType == 'submittal') {
             docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx';
         }
-        //else if .... for more documents
-        else {
-            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx';
+          else if(this.state.docType == 'Letters') {
+            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx'
+        }
+        else{
+            docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx';
         }
         this.fillDropDowns();
     };
@@ -109,35 +100,33 @@ class DocTemplateModal extends Component {
                 this.setState({ companies: [...result] })
             });
         }
-        if (this.state.docType == 'submittal') {
+        if (this.state.docType == 'submittal' ||this.state.docType=='materialInventory'){
             //discplines
             dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'defaultLists', 'discipline', 'listType').then(result => {
                 this.setState({ disciplines: [...result] })
             });
-
+            //specsSection
+            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=specssection', 'title', 'id', 'defaultLists', 'specssection', 'listType').then(result => {
+                this.setState({ specsSection: [...result] })
+            });
+        }
+        if (this.state.docType == 'submittal' ) {
+           
             //SubmittalTypes
             dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=SubmittalTypes', 'title', 'id', 'defaultLists', 'SubmittalTypes', 'listType').then(result => {
                 this.setState({ SubmittalTypes: [...result] })
             });
-
             //location
             dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=location', 'title', 'id', 'defaultLists', 'location', 'listType').then(result => {
                 this.setState({ locations: [...result] })
             });
-
             //area
             dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=area', 'title', 'id', 'defaultLists', 'area', 'listType').then(result => {
                 this.setState({ areas: [...result] })
             });
-
             //approvalstatus
             dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=approvalstatus', 'title', 'id', 'defaultLists', 'approvalstatus', 'listType').then(result => {
                 this.setState({ approvales: [...result] })
-            });
-
-            //specsSection
-            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=specssection', 'title', 'id', 'defaultLists', 'specssection', 'listType').then(result => {
-                this.setState({ specsSection: [...result] })
             });
             //contractList
             dataservice.GetDataList('GetPoContractForList?projectId=' + this.props.projectId, 'subject', 'id').then(result => {
@@ -219,6 +208,8 @@ class DocTemplateModal extends Component {
                         }
                         isVisible={this.state.docTemplateModal}>
                         <div className="proForm datepickerContainer customLayout">
+                         { this.state.docType =='Letters' ||this.state.docType == 'submittal'?(
+                             <>
                             <div className="linebylineInput valid-input mix_dropdown">
                                 <label className="control-label">
                                     {Resources.fromCompany[currentLanguage]}
@@ -338,6 +329,67 @@ class DocTemplateModal extends Component {
                                     </div>
                                 </div>
                             </div>
+                             </>
+                             ):null}
+
+                             {(Config.getPayload().uty == 'company'&&this.state.docType == 'submittal') ||this.state.docType=='materialInventory'?
+                             <div className="dropdownFullWidthContainer">
+                                 <div className="linebylineInput valid-input dropdownFullWidth">
+                                     <Dropdown
+                                         title="disciplineTitle"
+                                         data={
+                                             this.state
+                                                 .disciplines
+                                         }
+                                         isMulti={false}
+                                         selectedValue={
+                                             this.state
+                                                 .selectedDiscpline
+                                         }
+                                         handleChange={event =>
+                                             this.handleChangeDropDown(
+                                                 event,
+                                                 'disciplineId',
+                                                 false,
+                                                 '',
+                                                 '',
+                                                 '',
+                                                 'selectedDiscpline',
+                                             )
+                                         }
+                                         name="disciplineId"
+                                         id="disciplineId"
+                                     />
+                                 </div>
+                                 <div className="linebylineInput valid-input dropdownFullWidth">
+                                     <Dropdown
+                                         title="specsSection"
+                                         data={
+                                             this.state
+                                                 .specsSection
+                                         }
+                                         isMulti={false}
+                                         selectedValue={
+                                             this.state
+                                                 .selectedSpecsSection
+                                         }
+                                         handleChange={event =>
+                                             this.handleChangeDropDown(
+                                                 event,
+                                                 'specsSectionId',
+                                                 false,
+                                                 '',
+                                                 '',
+                                                 '',
+                                                 'selectedSpecsSection',
+                                             )
+                                         }
+                                         name="specsSectionId"
+                                         id="specsSectionId"
+                                     />
+                                 </div>
+                             </div>
+                             :null}
                             {Config.getPayload().uty == 'company' ? (
                                 this.state.docType == 'submittal' ? (
                                     <Fragment>
@@ -591,7 +643,7 @@ class DocTemplateModal extends Component {
                                         : null
                                 }
                                 docType={this.state.docType}
-                                documentTemplate={true}
+                                documentTemplate={this.state.docType=='materialInventory'?false:true}
                                 link={docTempLink}
                                 header="addManyItems"
                                 afterUpload={() => {

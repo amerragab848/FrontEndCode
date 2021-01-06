@@ -5,11 +5,9 @@ import Api from '../../api';
 import dataservice from '../../Dataservice';
 import Export from '../../Componants/OptionsPanels/Export';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
 import documentDefenition from '../../documentDefenition.json';
-//import Resources from '../../resources.json';
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -21,12 +19,8 @@ import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
-import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { Slider } from 'react-semantic-ui-range';
 import { Resources } from '../../Resources';
-import { da } from 'date-fns/locale';
-import { Flag } from 'semantic-ui-react';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -81,7 +75,6 @@ class CommonLog extends Component {
             selectedcolumnsChart: [],
             inventoryImportAttachmentModal: false,
             showInventoryImportAttachBtn: false,
-            BarChartCompJS: null,
             showChart: false,
             chartContent: null,
             chartColumnsModal: false,
@@ -234,8 +227,6 @@ class CommonLog extends Component {
             isCustom: true,
         });
     }
-
-
 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.match !== state.match) {
@@ -853,15 +844,10 @@ class CommonLog extends Component {
                     showExServerBtn = true;
                 }
 
-                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
+                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42 || docTypeId == 50) {
                     showDocTemplateBtn = true;
                 } else {
                     showDocTemplateBtn = false;
-                }
-                if (docTypeId == 50) {
-                    this.setState({ showInventoryImportAttachBtn: true });
-                } else {
-                    this.setState({ showInventoryImportAttachBtn: false });
                 }
 
                 filtersColumns = documentObj.filters;
@@ -1091,6 +1077,7 @@ class CommonLog extends Component {
             this.setState({ columnsExport: columnsExport, Loading: false });
         }, 300);
     };
+
     handleCheckForChart = key => {
         let data = this.state.chartColumns;
 
@@ -1118,6 +1105,7 @@ class CommonLog extends Component {
             this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
         }, 300);
     };
+
     ClosxMX() {
         if (this.props != undefined) {
             this.props.actions.clearCashDocument();
@@ -1135,11 +1123,6 @@ class CommonLog extends Component {
             this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
-    btnInventoryImportAttachShowModal = () => {
-        this.setState({
-            inventoryImportAttachmentModal: true,
-        });
-    };
 
     btnExportServerShowModal = () => {
         let exportedColumns = this.state.exportedColumns;
@@ -1153,6 +1136,7 @@ class CommonLog extends Component {
             exportedColumns: exportedColumns,
         });
     };
+
     btnChartShowModal = () => {
         let chartColumns = this.state.chartColumns;
 
@@ -1252,50 +1236,48 @@ class CommonLog extends Component {
             data.projectId = this.state.projectId;
             data.columns = columns;
 
-            dataservice
-                .addObjectCore('GetStatisticsData', data, 'POST')
-                .then(data => {
-                    if (data && data.length > 0) {  // data is datatable
-                        // modal to show chart based on this data !
-                        this.setState({
-                            BarChartCompJS: require('../../Componants/ChartsWidgets/BarChartCompJS').default,
-                            isExporting: false
-                        })
-                        let BarChartCompJS = this.state.BarChartCompJS;
-                        let Chart = (
-                            <BarChartCompJS
-                                reports=""
-                                rows={data}
-                                //    barContent={[
-                                //        { name: "Estimated", value: 'estimatedTime' },
-                                //        { name: "Actual", value: 'actualTotal' },
-                                //        { name: "Variance", value: 'variance' }
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
+                if (data && data.length > 0) {  // data is datatable
+                    // modal to show chart based on this data !
+                    this.setState({
+                        isExporting: false
+                    })
+                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    let Chart = (
+                        <BarChartCompJS
+                            reports=""
+                            rows={data}
+                            //    barContent={[
+                            //        { name: "Estimated", value: 'estimatedTime' },
+                            //        { name: "Actual", value: 'actualTotal' },
+                            //        { name: "Variance", value: 'variance' }
 
-                                //    ]}
-                                categoryName={Object.keys(data[0])[0]}
-                                ukey="wt-Name203"
-                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
-                                y="total"
-                            />)
+                            //    ]}
+                            categoryName={Object.keys(data[0])[0]}
+                            ukey="wt-Name203"
+                            title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                            y="total"
+                        />)
 
-                        //////////////////////////////////////////////////////
-                        this.setState({
-                            chartColumnsModal: false,
-                            isExporting: false,
-                            chartContent: Chart,
-                            showChart: true
-                        })
-                    }
-                    else {
-                        this.setState({
-                            exportColumnsModal: false,
-                            isExporting: false,
-                        })
-                        toast.warn('no data found !');
-                    }
-                });
+                    //////////////////////////////////////////////////////
+                    this.setState({
+                        chartColumnsModal: false,
+                        isExporting: false,
+                        chartContent: Chart,
+                        showChart: true
+                    })
+                }
+                else {
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false,
+                    })
+                    toast.warn('no data found !');
+                }
+            });
         }
     };
+
     btnExportStatisticsClick = () => {
 
         if (Config.getPublicConfiguartion().activeExport != true) {
@@ -1665,15 +1647,6 @@ class CommonLog extends Component {
                 </button>
             ) : null;
 
-        const btnInventoryImportAttach =
-            this.state.showInventoryImportAttachBtn == true ? (
-                <button
-                    className="primaryBtn-2 btn mediumBtn"
-                    onClick={() => this.btnInventoryImportAttachShowModal()}>
-                    {Resources['uploadAttach'][currentLanguage]}
-                </button>
-            ) : null;
-
         const ComponantFilter =
             this.state.isLoading === false ? (
                 <Filter
@@ -1767,7 +1740,6 @@ class CommonLog extends Component {
                             {btnExport}
                             {btnExportServer}
                             {btnDocumentTemplate}
-                            {btnInventoryImportAttach}
                             {btnCharts}
                             {this.state.documentName !==
                                 'paymentCertification' ? (
@@ -2039,58 +2011,9 @@ class CommonLog extends Component {
                         onClose={this.closeModalColumn}
                     />
                 ) : null}
-                {/********************************docTemplateModal************************************* */}
+                {/********************************end docTemplateModal************************************* */}
 
-                {/* Material Inventory Import Section  Ahmed Yousry */}
-                {this.state.inventoryImportAttachmentModal == true ? (
-                    <div className="largePopup largeModal ">
-                        <SkyLightStateless
-                            onOverlayClicked={() =>
-                                this.setState({
-                                    inventoryImportAttachmentModal: false,
-                                })
-                            }
-                            title={Resources['DocTemplate'][currentLanguage]}
-                            onCloseClicked={() =>
-                                this.setState({
-                                    inventoryImportAttachmentModal: false,
-                                })
-                            }
-                            isVisible={
-                                this.state.inventoryImportAttachmentModal
-                            }>
-                            <div>
-                                <XSLfile
-                                    key="MaterialInventory"
-                                    docId={this.props.projectId}
-                                    docType={'inventory'}
-                                    link={
-                                        Config.getPublicConfiguartion()
-                                            .downloads +
-                                        '/downloads/excel/inventory.xlsx'
-                                    }
-                                    header="addManyItems"
-                                    afterUpload={() => {
-                                        this.setState({
-                                            inventoryImportAttachmentModal: false,
-                                            isLoading: true
-                                        })
-                                        this.GetRecordOfLog(
-                                            this.state.isCustom === true
-                                                ? this.state.documentObj
-                                                    .documentApi.getCustom
-                                                : this.state.documentObj
-                                                    .documentApi.get,
-                                            this.props.projectId,
-                                        );
-                                    }}
-                                />
-                            </div>
-                        </SkyLightStateless>
-                    </div>
-                ) : null}
-                {/* End Material Inventory Import Section  Ahmed Yousry  */}
-
+                {/***************************start export******************************* */}
                 {this.props.document.id > 0 &&
                     this.state.showExportModal == true ? (
                         <div className="largePopup largeModal ">
@@ -2111,6 +2034,7 @@ class CommonLog extends Component {
                             </SkyLight>
                         </div>
                     ) : null}
+                {/***************************end export******************************* */}
                 {this.state.showInventoryItemsModal == true ? (
                     <div className="largePopup largeModal ">
                         <InventoryItemsModal
@@ -2128,7 +2052,7 @@ class CommonLog extends Component {
                     </div>
                 ) : null}
 
-                {/***************************charts******************************* */}
+                {/***************************start charts******************************* */}
                 {this.state.showChart == true ? (
                     <div className="largePopup largeModal ">
                         <SkyLightStateless
