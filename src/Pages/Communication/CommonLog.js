@@ -853,17 +853,12 @@ class CommonLog extends Component {
                     showExServerBtn = true;
                 }
 
-                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
+                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42||docTypeId==50) {
                     showDocTemplateBtn = true;
                 } else {
                     showDocTemplateBtn = false;
                 }
-                if (docTypeId == 50) {
-                    this.setState({ showInventoryImportAttachBtn: true });
-                } else {
-                    this.setState({ showInventoryImportAttachBtn: false });
-                }
-
+               
                 filtersColumns = documentObj.filters;
 
                 var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
@@ -1159,12 +1154,7 @@ class CommonLog extends Component {
             this.setState({ DocTemplateModalCom: module.default , docTemplateModal: true })
         });
     };
-    btnInventoryImportAttachShowModal = () => {
-        this.setState({
-            inventoryImportAttachmentModal: true,
-        });
-    };
-
+    
     btnExportServerShowModal = () => {
         let exportedColumns = this.state.exportedColumns;
 
@@ -1660,15 +1650,6 @@ class CommonLog extends Component {
                 </button>
             ) : null;
 
-        const btnInventoryImportAttach =
-            this.state.showInventoryImportAttachBtn == true ? (
-                <button
-                    className="primaryBtn-2 btn mediumBtn"
-                    onClick={() => this.btnInventoryImportAttachShowModal()}>
-                    {Resources['uploadAttach'][currentLanguage]}
-                </button>
-            ) : null;
-
         const ComponantFilter =
             this.state.isLoading === false ? (
                 <Filter
@@ -1762,7 +1743,6 @@ class CommonLog extends Component {
                             {btnExport}
                             {btnExportServer}
                             {btnDocumentTemplate}
-                            {btnInventoryImportAttach}
                             {btnCharts}
                             {this.state.documentName !==
                                 'paymentCertification' ? (
@@ -2034,58 +2014,9 @@ class CommonLog extends Component {
                         onClose={this.closeModalColumn}
                     />
                 ) : null}
-                {/********************************docTemplateModal************************************* */}
-
-                {/* Material Inventory Import Section  Ahmed Yousry */}
-                {this.state.inventoryImportAttachmentModal == true ? (
-                    <div className="largePopup largeModal ">
-                        <SkyLightStateless
-                            onOverlayClicked={() =>
-                                this.setState({
-                                    inventoryImportAttachmentModal: false,
-                                })
-                            }
-                            title={Resources['DocTemplate'][currentLanguage]}
-                            onCloseClicked={() =>
-                                this.setState({
-                                    inventoryImportAttachmentModal: false,
-                                })
-                            }
-                            isVisible={
-                                this.state.inventoryImportAttachmentModal
-                            }>
-                            <div>
-                                <XSLfile
-                                    key="MaterialInventory"
-                                    docId={this.props.projectId}
-                                    docType={'inventory'}
-                                    link={
-                                        Config.getPublicConfiguartion()
-                                            .downloads +
-                                        '/downloads/excel/inventory.xlsx'
-                                    }
-                                    header="addManyItems"
-                                    afterUpload={() => {
-                                        this.setState({
-                                            inventoryImportAttachmentModal: false,
-                                            isLoading: true
-                                        })
-                                        this.GetRecordOfLog(
-                                            this.state.isCustom === true
-                                                ? this.state.documentObj
-                                                    .documentApi.getCustom
-                                                : this.state.documentObj
-                                                    .documentApi.get,
-                                            this.props.projectId,
-                                        );
-                                    }}
-                                />
-                            </div>
-                        </SkyLightStateless>
-                    </div>
-                ) : null}
-                {/* End Material Inventory Import Section  Ahmed Yousry  */}
-
+                {/********************************end docTemplateModal************************************* */}
+               
+                {/***************************start export******************************* */}
                 {this.props.document.id > 0 &&
                     this.state.showExportModal == true ? (
                         <div className="largePopup largeModal ">
@@ -2106,6 +2037,7 @@ class CommonLog extends Component {
                             </SkyLight>
                         </div>
                     ) : null}
+               {/***************************end export******************************* */}
                 {this.state.showInventoryItemsModal == true ? (
                     <div className="largePopup largeModal ">
                         <InventoryItemsModal
@@ -2123,7 +2055,7 @@ class CommonLog extends Component {
                     </div>
                 ) : null}
 
-                {/***************************charts******************************* */}
+                {/***************************start charts******************************* */}
                 {this.state.showChart == true ? (
                     <div className="largePopup largeModal ">
                         <SkyLightStateless
