@@ -215,10 +215,10 @@ class AddItemDescription extends Component {
                         docId={this.props.docId}
                         docType={this.props.docType}
                         link={this.props.docLink != "" ? Config.getPublicConfiguartion().downloads + this.props.docLink : ""}
-                        header="addManyItems" 
+                        header="addManyItems"
                         disabled={this.props.changeStatus ? this.props.docId > 0 ? false : true : false}
-                        afterUpload={() => this.fillTable()} />                ) : null}
-                
+                        afterUpload={() => this.fillTable()} />) : null}
+
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
                     <Formik initialValues={{ ...this.state.itemDescription }}
                         validationSchema={documentItemValidationSchema}
@@ -432,7 +432,7 @@ class AddItemDescription extends Component {
 }
 
 function mapStateToProps(state) {
-    return { 
+    return {
         changeStatus: state.communication.changeStatus,
         items: state.communication.items
     };

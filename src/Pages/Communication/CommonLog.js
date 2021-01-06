@@ -4,10 +4,10 @@ import Filter from '../../Componants/FilterComponent/filterComponent';
 import Api from '../../api';
 import dataservice from '../../Dataservice';
 import Export from '../../Componants/OptionsPanels/Export';
-import LoadingSection from '../../Componants/publicComponants/LoadingSection'; 
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
-import documentDefenition from '../../documentDefenition.json'; 
+import documentDefenition from '../../documentDefenition.json';
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -18,9 +18,8 @@ import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel'; 
-import { Slider } from 'react-semantic-ui-range';
-import { Resources } from '../../Resources'; 
+// import { Slider } from 'react-semantic-ui-range';
+import { Resources } from '../../Resources';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -74,12 +73,12 @@ class CommonLog extends Component {
             columnsExport: [],
             selectedcolumnsChart: [],
             inventoryImportAttachmentModal: false,
-            showInventoryImportAttachBtn: false, 
+            showInventoryImportAttachBtn: false,
             showChart: false,
             chartContent: null,
             chartColumnsModal: false,
             showChartBtn: false,
-            DocTemplateModalCom: null
+            DocTemplateModalCom: null,
         };
         this.actions = [
             {
@@ -227,7 +226,7 @@ class CommonLog extends Component {
             isCustom: true,
         });
     }
- 
+
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.match !== state.match) {
             return {
@@ -457,83 +456,51 @@ class CommonLog extends Component {
                 pageNumber: pageNumber,
             });
 
-            let url =
-                (this.state.query == ''
-                    ? this.state.api
-                    : this.state.apiFilter) +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                (this.state.query == '' ? '' : '&query=' + this.state.query);
+            let url = (this.state.query == '' ? this.state.api : this.state.apiFilter) + '?projectId=' + this.state.projectId + '&pageNumber=' + pageNumber + '&pageSize=' + this.state.pageSize + (this.state.query == '' ? '' : '&query=' + this.state.query);
 
-            Api.get(url, undefined, moduleId)
-                .then(result => {
-                    let oldRows = [];
+            Api.get(url, undefined, moduleId).then(result => {
+                let oldRows = [];
 
-                    const newRows = [...oldRows, ...result.data];
+                const newRows = [...oldRows, ...result.data];
 
-                    newRows.forEach(row => {
-                        let subject = '';
-                        if (row) {
-                            let obj = {
-                                docId: row.id,
-                                projectId: row.projectId,
-                                projectName: row.projectName,
-                                arrange: 0,
-                                docApprovalId: 0,
-                                isApproveMode: false,
-                                perviousRoute:
-                                    window.location.pathname +
-                                    window.location.search,
-                            };
-                            if (
-                                documentObj.documentAddEditLink.replace(
-                                    '/',
-                                    '',
-                                ) == 'addEditModificationDrawing'
-                            ) {
-                                obj.isModification = true;
-                            }
-                            let parms = CryptoJS.enc.Utf8.parse(
-                                JSON.stringify(obj),
-                            );
+                newRows.forEach(row => {
+                    let subject = '';
+                    if (row) {
+                        let obj = {
+                            docId: row.id,
+                            projectId: row.projectId,
+                            projectName: row.projectName,
+                            arrange: 0,
+                            docApprovalId: 0,
+                            isApproveMode: false,
+                            perviousRoute:
+                                window.location.pathname +
+                                window.location.search,
+                        };
+                        if (documentObj.documentAddEditLink.replace('/', '',) == 'addEditModificationDrawing') { obj.isModification = true; }
+                        let parms = CryptoJS.enc.Utf8.parse(
+                            JSON.stringify(obj),
+                        );
 
-                            let encodedPaylod = CryptoJS.enc.Base64.stringify(
-                                parms,
-                            );
+                        let encodedPaylod = CryptoJS.enc.Base64.stringify(
+                            parms,
+                        );
 
-                            let doc_view =
-                                '/' +
-                                documentObj.documentAddEditLink.replace(
-                                    '/',
-                                    '',
-                                ) +
-                                '?id=' +
-                                encodedPaylod;
+                        let doc_view = '/' + documentObj.documentAddEditLink.replace('/', '',) + '?id=' + encodedPaylod;
 
-                            subject = doc_view;
-                        }
-                        if (
-                            Config.IsAllow(
-                                this.state.documentObj.documentViewPermission,
-                            ) ||
-                            Config.IsAllow(
-                                this.state.documentObj.documentEditPermission,
-                            )
-                        ) {
-                            row.link = subject;
-                        }
-                    });
+                        subject = doc_view;
+                    }
+                    if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+                        row.link = subject;
+                    }
+                });
 
-                    this.setState({
-                        rows: newRows,
-                        totalRows: result.total,
-                        isLoading: false,
-                    });
-                })
+                this.setState({
+                    rows: newRows,
+                    totalRows: result.total,
+                    isLoading: false,
+                });
+            })
                 .catch(ex => {
                     let oldRows = this.state.rows;
                     this.setState({
@@ -557,19 +524,7 @@ class CommonLog extends Component {
         });
 
         if (stringifiedQuery !== '{}') {
-            Api.get(
-                apiFilter +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                this.state.pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                '&query=' +
-                stringifiedQuery,
-                undefined,
-                moduleId,
-            )
+            Api.get(apiFilter + '?projectId=' + this.state.projectId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '&query=' + stringifiedQuery, undefined, moduleId)
                 .then(result => {
                     if (result.data.length > 0) {
                         result.data.forEach(row => {
@@ -844,12 +799,12 @@ class CommonLog extends Component {
                     showExServerBtn = true;
                 }
 
-                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42||docTypeId==50) {
+                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42 || docTypeId == 50) {
                     showDocTemplateBtn = true;
                 } else {
                     showDocTemplateBtn = false;
                 }
-               
+
                 filtersColumns = documentObj.filters;
 
                 var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
@@ -1049,32 +1004,6 @@ class CommonLog extends Component {
         /*********************************************************** */
     };
 
-    handleChangeWidth = (key, newWidth) => {
-        console.log('handleChangeWidth...', key, newWidth);
-        this.setState({ isLoading: true });
-
-        let data = this.state.ColumnsHideShow;
-        for (var i in data) {
-            if (data[i].field === key) {
-                data[i].width = newWidth.toString();
-                break;
-            }
-        }
-        setTimeout(() => {
-            this.setState({
-                columns: data.filter(i => i.hidden === false),
-                isLoading: false,
-            });
-        }, 300);
-
-        /**************************update localStorege************************ */
-        var selectedCols = { columnsList: [], groups: [] }
-        selectedCols.columnsList = JSON.stringify(data)
-        selectedCols.groups = "[]"
-        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
-        /*********************************************************** */
-    };
-
     handleCheckForExport = key => {
         let data = this.state.exportedColumns;
 
@@ -1147,7 +1076,7 @@ class CommonLog extends Component {
             this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
-    
+
     btnExportServerShowModal = () => {
         let exportedColumns = this.state.exportedColumns;
 
@@ -1263,7 +1192,7 @@ class CommonLog extends Component {
             dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
                 if (data && data.length > 0) {  // data is datatable
                     // modal to show chart based on this data !
-                    this.setState({ 
+                    this.setState({
                         isExporting: false
                     })
                     let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
@@ -1411,48 +1340,74 @@ class CommonLog extends Component {
         );
     };
 
+    handleChangeWidth = (key, newWidth) => {
+        console.log('handleChangeWidth...', key, newWidth);
+        this.setState({ isLoading: true });
+
+        let data = this.state.ColumnsHideShow;
+        for (var i in data) {
+            if (data[i].field === key) {
+                data[i].width = newWidth.toString();
+                break;
+            }
+        }
+        setTimeout(() => {
+            this.setState({
+                columns: data.filter(i => i.hidden === false),
+                isLoading: false,
+            });
+        }, 300);
+
+        /**************************update localStorege************************ */
+        var selectedCols = { columnsList: [], groups: [] }
+        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.groups = "[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
+        /*********************************************************** */
+    };
+
+    timeLineBalls = (n, onClick, current, key) =>
+        Array(n).fill(0).map((i, index) => (
+            <div
+                key={index}
+                className={`timeline__ball ${current >= index ? "active" : null}`}
+                onClick={() => onClick(key, (index + 1) * 12)} >
+                {index + 1}
+            </div>
+        ));
+
+    intermediaryBalls = 4;
+
     render() {
         let DocTemplateModalCom = this.state.DocTemplateModalCom
-        let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
-            (item, index) => {
-                return item.field == 'id' ? null : (
-                    <div className="grid__content" key={item.field}>
-                        <div
-                            className={
-                                'ui checkbox checkBoxGray300 count checked'
-                            }>
-                            <input
-                                name="CheckBox"
-                                type="checkbox"
-                                id="allPermissionInput"
-                                checked={!item.hidden}
-                                onChange={e => this.handleCheck(item.field)}
-                            />
-                            <label>{item.title}</label>
-                        </div>
-                        <p className="rangeSlider">
-                            <Slider
-                                key={item.field}
-                                discrete
-                                color="blue"
-                                inverted={false}
-                                settings={{
-                                    start: parseInt(item.width),
-                                    min: 5,
-                                    max: 50,
-                                    step: 5,
-                                    onChange: e => {
-                                        this.handleChangeWidth(item.field, e);
-                                    },
-                                }}
-                            />
-                            <label className="rangeLabel" color="red">
-                                Width: {item.width} px
-                            </label>
-                        </p>
+        let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
+            let container = (document.getElementById('grid__column--content').offsetWidth * 0.5) * 0.47 * 0.8
+            let BallsWidth = container / 4
+            let activeWidth = (item.width * container / BallsWidth) - BallsWidth
+            let diff = (activeWidth / BallsWidth) * 4
+            return item.field == 'id' ? null : (
+                <div className="grid__content" key={item.field}>
+                    <div
+                        className={'ui checkbox checkBoxGray300 count checked'}>
+                        <input
+                            name="CheckBox"
+                            type="checkbox"
+                            id="allPermissionInput"
+                            checked={!item.hidden}
+                            onChange={e => this.handleCheck(item.field)}
+                        />
+                        <label>{item.title}</label>
                     </div>
-                );
-            },
+                    <p className="rangeSlider">
+                        <div className="timeline" id="timeline">
+                            <div className="timeline__progress" style={{ width: `${activeWidth - (activeWidth > BallsWidth ? diff : 0)}px` }} />
+                            {this.timeLineBalls(4, this.handleChangeWidth, (item.width / 12) - 1, item.field)}
+                        </div>
+                        <label className="rnageWidth">width</label>
+                    </p>
+                </div>
+            );
+        },
         );
 
         let RenderPopupShowExportColumns = this.state.exportedColumns.map(
@@ -1900,7 +1855,7 @@ class CommonLog extends Component {
                                     {Resources.gridColumns[currentLanguage]}
                                 </h2>
                             </div>
-                            <div className="grid__column--content">
+                            <div className="grid__column--content" id="grid__column--content">
                                 {RenderPopupShowColumns}
                             </div>
                             <div className="grid__column--footer">
@@ -2008,7 +1963,7 @@ class CommonLog extends Component {
                     />
                 ) : null}
                 {/********************************end docTemplateModal************************************* */}
-               
+
                 {/***************************start export******************************* */}
                 {this.props.document.id > 0 &&
                     this.state.showExportModal == true ? (
@@ -2030,7 +1985,7 @@ class CommonLog extends Component {
                             </SkyLight>
                         </div>
                     ) : null}
-               {/***************************end export******************************* */}
+                {/***************************end export******************************* */}
                 {this.state.showInventoryItemsModal == true ? (
                     <div className="largePopup largeModal ">
                         <InventoryItemsModal
