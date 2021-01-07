@@ -491,6 +491,7 @@ class ViewAttachmments extends Component {
                 : null;
 
         return (
+         
             <React.Fragment>
                 <table className="attachmentTable">
                     <thead>

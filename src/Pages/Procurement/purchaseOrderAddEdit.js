@@ -5,7 +5,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Config from "../../Services/Config";
 import { toast } from "react-toastify";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
-import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
+import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import Resources from "../../resources.json";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
