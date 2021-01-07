@@ -44,7 +44,6 @@ class UploadAttachmentWithProgress extends Component {
             };
             selectedFiles.push(newFile);
         });
-
         this.props.actions.uploadFileLinks(
             'UploadFilesModalLinksByDocId?docId=' +
             this.props.docId +
@@ -236,9 +235,9 @@ class UploadAttachmentWithProgress extends Component {
 
                     <div className="drives__upload">
                         <label className="btn__upload" onClick={() => this.addBtnRef.current.click()}> {Resources.openMyFolders[currentLanguage]}</label>
-                        <span class="upload__border"></span>
+                        <span className="upload__border"></span>
                         <div className="drive__wrapper">
-                            <h2 class="zero"> {Resources.uploadFrom[currentLanguage]}</h2>
+                            <h2 className="zero"> {Resources.uploadFrom[currentLanguage]}</h2>
                             {Config.IsAllow(this.props.ShowGoogleDrive) ? this.renderGoogleDrive() : null}
                             {Config.IsAllow(this.props.ShowDropBox) ? this.renderDropBox() : null}
                         </div>

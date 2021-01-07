@@ -23,7 +23,7 @@ import Schedule from "./Schedule";
 import SubContract from "./SubContractLog";
 import SubPurchaseOrderLog from "./subPurchaseOrderLog";
 import MaterialReleased from "./MaterialReleased";
-import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
+import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Config from "../../Services/Config.js";
