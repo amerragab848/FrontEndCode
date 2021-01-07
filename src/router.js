@@ -409,6 +409,9 @@ const TemplatesSettings = AsyncComponent(() =>
 const GeneralList = AsyncComponent(() =>
     import('./Componants/GeneralSetting/MenuDefaultData/GeneralList'),
 );
+const DesignDiscipline = AsyncComponent(() =>
+    import('./Componants/GeneralSetting/MenuDefaultData/DesignDiscipline'),
+);
 const ExpensesWorkFlowLog = AsyncComponent(() =>
     import(
         './Componants/GeneralSetting/Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
@@ -1393,6 +1396,7 @@ let originalRoutes = [
         path="/SendToWFToday"
         component={SendToWFToday}
     />,
+    <Route key="r-202" path="/DesignDiscipline" component={DesignDiscipline} />,
 
 
 ];
