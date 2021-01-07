@@ -2,21 +2,18 @@ import React, { Component, createRef, Fragment } from 'react';
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone-uploader';
+import { getDroppedOrSelectedFiles } from 'html5-file-selector';
+
 import Drive from '../../Styles/images/gdrive.png';
 import dropbox from '../../Styles/images/dropbox.png';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
+
 import Config from '../../Services/Config';
-import { getDroppedOrSelectedFiles } from 'html5-file-selector';
-
-// import classNames from 'classnames';
-// import AttachUpload from '../../Styles/images/attacthUpload.png';
-// import AttachDrag from '../../Styles/images/attachDraggable.png';
-// import Resources from '../../resources.json';
-
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+import Resources from '../../resources.json';
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachmentWithProgress extends Component {
     addBtnRef = createRef();
@@ -39,7 +36,7 @@ class UploadAttachmentWithProgress extends Component {
     onSuccess(files) {
         let selectedFiles = [];
 
-        files.forEach(function(doc) {
+        files.forEach(function (doc) {
             var newFile = {
                 url: doc.link,
                 progress: 0,
@@ -47,12 +44,11 @@ class UploadAttachmentWithProgress extends Component {
             };
             selectedFiles.push(newFile);
         });
-
         this.props.actions.uploadFileLinks(
             'UploadFilesModalLinksByDocId?docId=' +
-                this.props.docId +
-                '&docTypeId=' +
-                this.props.docTypeId,
+            this.props.docId +
+            '&docTypeId=' +
+            this.props.docTypeId,
             selectedFiles,
         );
     }
@@ -77,6 +73,7 @@ class UploadAttachmentWithProgress extends Component {
                 docTypeId: this.props.docTypeId,
                 docId: this.props.docId,
                 parentId: this.state.parentId,
+                projectId: this.props.projectId
             };
             this.props.actions.uploadFile('BlobUpload', formData, header);
         });
@@ -100,14 +97,7 @@ class UploadAttachmentWithProgress extends Component {
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    extensions={[
-                        '.pdf',
-                        '.doc',
-                        '.docx',
-                        '.png',
-                        '.dwg',
-                        '.rvt',
-                    ]}>
+                    extensions={['.pdf', '.doc', '.docx', '.png', '.dwg', '.rvt',]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
@@ -122,9 +112,7 @@ class UploadAttachmentWithProgress extends Component {
     renderGoogleDrive = () => {
         return (
             <GooglePicker
-                clientId={
-                    Config.getPublicConfiguartion().googleDriveClientId || ''
-                }
+                clientId={Config.getPublicConfiguartion().googleDriveClientId || ''}
                 developerKey={Config.getPublicConfiguartion().googleDriveKey}
                 scope={['https://www.googleapis.com/auth/drive.readonly']}
                 onChange={data => console.log('on change:', data)}
@@ -132,14 +120,7 @@ class UploadAttachmentWithProgress extends Component {
                 multiselect={true}
                 navHidden={true}
                 authImmediate={false}
-                mimeTypes={[
-                    'image/png',
-                    'image/jpeg',
-                    'image/jpg',
-                    'application/autocad_dwg',
-                    'application/dwg',
-                    'application/octet-stream',
-                ]}
+                mimeTypes={['image/png', 'image/jpeg', 'image/jpg', 'application/autocad_dwg', 'application/dwg', 'application/octet-stream',]}
                 query={'a query string like .txt or fileName'}
                 viewId={'DOCS'}
                 createPicker={(google, oauthToken) => {
@@ -155,7 +136,7 @@ class UploadAttachmentWithProgress extends Component {
                         .setDeveloperKey(
                             Config.getPublicConfiguartion().googleDriveKey,
                         )
-                        .setCallback(() => {});
+                        .setCallback(() => { });
 
                     picker.build().setVisible(true);
                 }}>
@@ -175,10 +156,9 @@ class UploadAttachmentWithProgress extends Component {
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
             parentId: this.state.parentId,
+            projectId: this.props.projectId
         };
-        let url =
-            Config.getPublicConfiguartion().static +
-            'PM/api/Procoor/BlobUpload';
+        let url = Config.getPublicConfiguartion().static + 'PM/api/Procoor/BlobUpload';
         return { url: url, headers: header };
     };
 
@@ -188,9 +168,7 @@ class UploadAttachmentWithProgress extends Component {
             this.uploadBtnRef.current.click();
             this.setState({ fileStatus: '' });
             if (response) {
-                this.props.actions.insertFiletoAttachments(
-                    JSON.parse(response),
-                );
+                this.props.actions.insertFiletoAttachments(JSON.parse(response));
             }
         }
     };
@@ -208,16 +186,6 @@ class UploadAttachmentWithProgress extends Component {
     };
 
     InputChooseFile = ({ accept, onFiles, files, getFilesFromEvent }) => {
-        const text =
-            files.length > 0 ? 'Add more files' : 'Choose files to upload';
-
-        const buttonStyle = {
-            backgroundColor: '#67b0ff',
-            color: '#fff',
-            cursor: 'pointer',
-            padding: 15,
-            borderRadius: 30,
-        };
 
         return (
             <div className="dzu_actionbtns">
@@ -245,7 +213,7 @@ class UploadAttachmentWithProgress extends Component {
             <div
                 className="dzu_actionbtns submitButton"
                 ref={this.uploadBtnRef}>
-                Upload
+                {Resources.upload[currentLanguage]}
             </div>
         );
     };
@@ -253,37 +221,29 @@ class UploadAttachmentWithProgress extends Component {
     render() {
         return Config.IsAllow(this.props.AddAttachments) ||
             Config.IsAllow(this.props.EditAttachments) ? (
-            <div>
-                <Dropzone
-                    autoUpload={true}
-                    getUploadParams={this.getUploadParams}
-                    onChangeStatus={this.handleChangeStatus}
-                    onSubmit={this.handleSubmit}
-                    InputComponent={this.InputChooseFile}
-                    submitButtonContent={this.UploadFiles}
-                    getFilesFromEvent={this.getFilesFromEvent}
-                    classNames
-                />
+                <div>
+                    <Dropzone
+                        autoUpload={true}
+                        getUploadParams={this.getUploadParams}
+                        onChangeStatus={this.handleChangeStatus}
+                        onSubmit={this.handleSubmit}
+                        InputComponent={this.InputChooseFile}
+                        submitButtonContent={this.UploadFiles}
+                        getFilesFromEvent={this.getFilesFromEvent}
+                        classNames
+                    />
 
-                <div className="drives__upload">
-                    <label
-                        className="btn__upload"
-                        onClick={() => this.addBtnRef.current.click()}>
-                        Open my folders
-                    </label>
-                    <span class="upload__border"></span>
-                    <div className="drive__wrapper">
-                        <h2 class="zero">Upload From</h2>
-                        {Config.IsAllow(this.props.ShowGoogleDrive)
-                            ? this.renderGoogleDrive()
-                            : null}
-                        {Config.IsAllow(this.props.ShowDropBox)
-                            ? this.renderDropBox()
-                            : null}
+                    <div className="drives__upload">
+                        <label className="btn__upload" onClick={() => this.addBtnRef.current.click()}> {Resources.openMyFolders[currentLanguage]}</label>
+                        <span className="upload__border"></span>
+                        <div className="drive__wrapper">
+                            <h2 className="zero"> {Resources.uploadFrom[currentLanguage]}</h2>
+                            {Config.IsAllow(this.props.ShowGoogleDrive) ? this.renderGoogleDrive() : null}
+                            {Config.IsAllow(this.props.ShowDropBox) ? this.renderDropBox() : null}
+                        </div>
                     </div>
                 </div>
-            </div>
-        ) : null;
+            ) : null;
     }
 }
 

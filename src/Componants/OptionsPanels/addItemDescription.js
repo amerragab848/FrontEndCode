@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import XSLfile from "./XSLfiel";
 import DataService from "../../Dataservice";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -67,18 +67,14 @@ class AddItemDescription extends Component {
     }
 
     componentDidMount() {
-
         DataService.GetDataList("GetDefaultListForUnit?listType=unit", "listType", "listType").then(res => {
             this.setState({ Units: [...res] });
         });
 
-        if (this.props.showBoqType === true) {
             DataService.GetDataList("GetAllBoqParentNull?projectId=" + this.props.projectId, "title", "id").then(res => {
                 this.setState({ boqTypes: [...res] });
             });
-        }
 
-        if (this.props.showItemType === true) {
             DataService.GetDataGrid("GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000").then(result => {
                 let Data = [];
                 result.forEach(item => {
@@ -93,13 +89,10 @@ class AddItemDescription extends Component {
                     poolItemTypes: result
                 });
             });
-        }
 
-        if (this.props.docType === "boq") {
             DataService.GetDataList("GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000", "title", "id").then(res => {
                 this.setState({ equipmentTypes: [...res] });
             });
-        }
 
     }
 
@@ -215,10 +208,10 @@ class AddItemDescription extends Component {
                         docId={this.props.docId}
                         docType={this.props.docType}
                         link={this.props.docLink != "" ? Config.getPublicConfiguartion().downloads + this.props.docLink : ""}
-                        header="addManyItems" 
+                        header="addManyItems"
                         disabled={this.props.changeStatus ? this.props.docId > 0 ? false : true : false}
-                        afterUpload={() => this.fillTable()} />                ) : null}
-                
+                        afterUpload={() => this.fillTable()} />) : null}
+
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
                     <Formik initialValues={{ ...this.state.itemDescription }}
                         validationSchema={documentItemValidationSchema}
@@ -432,7 +425,7 @@ class AddItemDescription extends Component {
 }
 
 function mapStateToProps(state) {
-    return { 
+    return {
         changeStatus: state.communication.changeStatus,
         items: state.communication.items
     };

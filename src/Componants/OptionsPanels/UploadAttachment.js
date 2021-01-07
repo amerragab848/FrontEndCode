@@ -2,18 +2,19 @@ import React, { Component, Fragment } from 'react';
 import classNames from 'classnames';
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
+import Drive from '../../Styles/images/gdrive.png';
+import dropbox from '../../Styles/images/dropbox.png';
+
 import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone';
-import Drive from '../../Styles/images/gdrive.png';
-import dropbox from '../../Styles/images/dropbox.png';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
 import Resources from '../../resources.json';
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachment extends Component {
     constructor(props) {
@@ -76,12 +77,10 @@ class UploadAttachment extends Component {
                 docTypeId: this.props.docTypeId,
                 docId: this.props.docId,
                 parentId: this.state.parentId,
+                projectId: this.props.projectId
             };
             this.props.actions.uploadFile('BlobUpload', formData, header);
-        });
-        // setTimeout(() => {
-
-        // }, 1000);
+        }); 
         this.setState({ _className: 'zeropercent' });
     };
 

@@ -74,13 +74,13 @@ export default class IndexedDb {
             .addColumn('type', lf.Type.STRING)
             .addPrimaryKey(['id']);
 
-        schemaBuilder
-            .createTable('resources')
-            .addColumn('id', lf.Type.INTEGER)
-            .addColumn('en', lf.Type.STRING)
-            .addColumn('ar', lf.Type.STRING)
-            .addColumn('resourceKey', lf.Type.STRING)
-            .addPrimaryKey(['id']);
+        // schemaBuilder
+        //     .createTable('resources')
+        //     .addColumn('id', lf.Type.INTEGER)
+        //     .addColumn('en', lf.Type.STRING)
+        //     .addColumn('ar', lf.Type.STRING)
+        //     .addColumn('resourceKey', lf.Type.STRING)
+        //     .addPrimaryKey(['id']);
     }
 
     static initializeCachedAPI() {
@@ -214,7 +214,6 @@ export default class IndexedDb {
         //                 dbDashBoard.close();
         //                 api.close();
         //             }
-
         //             deleteRequest.onsuccess = function () {
         //                 console.log("Deleted OK.");
 

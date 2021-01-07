@@ -85,7 +85,7 @@ class TaskGroupsAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                 }
-                catch{
+                catch {
                     this.props.history.goBack();
                 }
                 index++;
@@ -93,7 +93,7 @@ class TaskGroupsAddEdit extends Component {
         }
 
         const columnsGrid = [
-            { title: '', type: 'check-box', fixed: true, field: 'id',width:10 },
+            { title: '', type: 'check-box', fixed: true, field: 'id', width: 10 },
             {
                 field: "arrange",
                 title: Resources["numberAbb"][currentLanguage],
@@ -260,11 +260,9 @@ class TaskGroupsAddEdit extends Component {
             case 'Company':
                 this.setState({ SelectedCompany: SelectedItem })
                 if (SelectedItem !== null) {
-                    dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + SelectedItem.value + '', 'contactName', 'id').then(
-                        res => {
-                            this.setState({ ContactData: res });
-                        }
-                    )
+                    dataservice.GetDataList('GetContactsByCompanyId?companyId=' + SelectedItem.value + '', 'contactName', 'id').then(res => {
+                        this.setState({ ContactData: res });
+                    })
                 }
                 break;
             case 'ContactName':
@@ -493,7 +491,7 @@ class TaskGroupsAddEdit extends Component {
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}  docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }];
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }];
 
         let RenderContactsTable = this.state.rows.map((item, index) => {
             return (

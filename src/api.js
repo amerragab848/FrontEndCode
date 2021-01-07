@@ -42,8 +42,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: JSON.stringify(params),
-                  }
+                    body: JSON.stringify(params),
+                }
                 : null,
         );
 
@@ -88,7 +88,10 @@ export default class Api {
     }
 
     static getDataAPIsByCore(route, params, verb) {
-        const host = Config.getPublicConfiguartion().exportCore;
+        
+        let apiPrefix = modules.find(x => x.key == 2);
+        const host = Config.getPublicConfiguartion().static + apiPrefix.api; 
+        //const host = Config.getPublicConfiguartion().exportCore; 
         const url = `${host}${route}`;
         let json = null;
 
@@ -98,8 +101,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: JSON.stringify(params),
-                  }
+                    body: JSON.stringify(params),
+                }
                 : null,
         );
         options.headers = Api.headers();
@@ -107,7 +110,9 @@ export default class Api {
             .then(resp => {
                 if (resp.status === 200) {
                     json = resp.json();
-                    if (json === undefined) return null;
+                    if (json === undefined) {
+                        return null
+                    };
                     return json;
                 } else if (resp.status === 201) {
                     json = resp.json();
@@ -148,8 +153,8 @@ export default class Api {
             if (params.hasOwnProperty(param)) {
                 data.push(
                     encodeURIComponent(param) +
-                        '=' +
-                        encodeURIComponent(params[param]),
+                    '=' +
+                    encodeURIComponent(params[param]),
                 );
             }
         }
@@ -208,8 +213,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: JSON.stringify(params),
-                  }
+                    body: JSON.stringify(params),
+                }
                 : null,
         );
 
@@ -285,8 +290,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: JSON.stringify(params),
-                  }
+                    body: JSON.stringify(params),
+                }
                 : null,
         );
 
@@ -448,8 +453,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: params,
-                  }
+                    body: params,
+                }
                 : null,
         );
 

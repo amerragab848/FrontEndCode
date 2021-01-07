@@ -93,6 +93,16 @@ class DocApprovalDetails extends Component {
         type: "text"
       },
       {
+        field: "fileNumber",
+        title: Resources["fileNumber"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 10,
+        sortable: true,
+        hidden: false,
+        type: "text"
+      },
+      {
         field: "companyType",
         title: Resources["companyType"][currentLanguage],
         groupable: true,
@@ -257,6 +267,12 @@ class DocApprovalDetails extends Component {
       {
         field: "companyType",
         name: "companyType",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "fileNumber",
+        name: "fileNumber",
         type: "string",
         isCustom: true
       },

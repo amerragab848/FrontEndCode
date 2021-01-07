@@ -152,7 +152,7 @@ var widgets = [
           isModal: false,
           // key: "0-1-6"
         }
-      },
+      }
     ]
   },
   {

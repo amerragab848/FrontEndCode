@@ -117,15 +117,7 @@ class SendToWFToday extends Component {
         type: "date",
         sortable: true
       },
-      {
-        field: 'discipline',
-        title: Resources['discipline'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
+
       {
         field: 'createdBy',
         title: Resources['createdBy'][currentLanguage],
