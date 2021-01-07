@@ -17,7 +17,7 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
-import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
+//import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal"; 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
@@ -533,6 +533,9 @@ class QsAddEdit extends Component {
         itemType: ""
       };
       this.setState({ CurrentStep: stepNo, addItemDocument: itemDocument })
+      import(`../../Componants/OptionsPanels/AddItemDescription`).then(module => { 
+        this.setState({ AddItemDescription: module.default })
+    });
     }
     else
       this.setState({ CurrentStep: stepNo });
@@ -652,7 +655,7 @@ class QsAddEdit extends Component {
 
 
   render() {
-
+const AddItemDescription=this.state.AddItemDescription
     const columnsItems = [
       {
         Header: Resources["arrange"][currentLanguage],
@@ -835,8 +838,6 @@ class QsAddEdit extends Component {
                               </div>
                             </div>
                             <div className="proForm datepickerContainer">
-
-
                               <div className="linebylineInput valid-input">
                                 <div className="inputDev ui input input-group date NormalInputDate">
                                   <div className="customDatepicker fillter-status fillter-item-c ">
@@ -927,9 +928,11 @@ class QsAddEdit extends Component {
                   ) : (
                       <Fragment>
                         <div className="document-fields">
+                          {this.state.CurrentStep ===1 && this.state.AddItemDescription !=null?
                           <AddItemDescription docLink="/Downloads/Excel/QS.xlsx" showImportExcel={true} docType="qs"
                             isViewMode={this.state.isViewMode} mainColumn="qsId" docId={this.state.docId} isUnitPrice={false} addItemApi="AddContractsQsItems"
                             projectId={this.state.projectId} showItemType={true} />
+                            :null}
                         </div>
 
                         {/* فاضل جزء عمل popup for createPaymentRequisitions */}
