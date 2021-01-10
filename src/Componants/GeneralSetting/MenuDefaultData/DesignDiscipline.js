@@ -132,7 +132,7 @@ class DesignDiscipline extends Component {
             selectedApprovalStatus: { label: Resources.approvalStatusSelection[currentLanguage], value: "0" },
         }
 
-        if (!config.IsAllow(1182) && !config.IsAllow(1180) && !config.IsAllow(1179)) {
+        if (!config.IsAllow(3333) && !config.IsAllow(3334) && !config.IsAllow(3337)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.goBack();
         }
@@ -188,10 +188,10 @@ class DesignDiscipline extends Component {
     };
 
     componentDidMount = () => {
-        if (config.IsAllow(3340)) {
+        if (config.IsAllow(3335)) {
             this.setState({ showCheckbox: true });
         }
-        if (config.IsAllow(1181)) {
+        if (config.IsAllow(3337)) {
             Api.get(this.state.api + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '').then(
                 res => {
 
@@ -368,7 +368,7 @@ class DesignDiscipline extends Component {
                     showPicker={false}
                     rowClick={(row, cell) => {
                         let id = row.id;
-                        if (config.IsAllow(1180)) {
+                        if (config.IsAllow(3334)) {
                             Api.get('GetdesigndicplineForEdit?id=' + id).then(
                                 res => {
 
@@ -554,7 +554,7 @@ class DesignDiscipline extends Component {
                         </button>
                     </div>
                     <div className="filterBTNS">
-                        {config.IsAllow(3661) ?
+                        {config.IsAllow(3333) ?
                             <button className="primaryBtn-1 btn mediumBtn" onClick={this.AddDesignDiscipline}>New</button>
                             : null}
                         {btnExport}
