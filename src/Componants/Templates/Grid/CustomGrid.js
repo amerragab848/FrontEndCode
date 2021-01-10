@@ -58,9 +58,10 @@ export default class CustomGrid extends Component {
             }
         });
 
-        var savedGrid = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
-
+        var savedGrid = JSON.parse(localStorage.getItem(this.props.gridKey)) || { groups: JSON.stringify([]), Filters: JSON.stringify([]), columnsList: JSON.stringify([]) };
+        
         var parsedFilters = JSON.parse(savedGrid.Filters)
+         
         if (parsedFilters.length > 0) {
             let rows = [...this.state.filteredRows];
             var obj = {};
@@ -76,8 +77,7 @@ export default class CustomGrid extends Component {
 
             //this.chunkData(0);
         }
-        // else {
-
+        // else { 
         //     this.chunkData(0);
         // }
 
@@ -87,7 +87,7 @@ export default class CustomGrid extends Component {
 
         let itemsColumns = this.props.cells;
 
-        if (savedGrid.length === 0) {
+        if (JSON.parse(savedGrid.columnsList).length === 0) {
 
             var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
             let newFilterLst = [];

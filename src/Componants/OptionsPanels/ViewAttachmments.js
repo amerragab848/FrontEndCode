@@ -6,14 +6,6 @@ import doc from "../../Styles/images/attatcheDOC.png";
 import png from "../../Styles/images/ex.png";
 
 import autocad from "../../Styles/images/autocad.png";
-
-// import pdfPrint from "../../Styles/images/pdfPrint.png";
-// import pdfDelete from "../../Styles/images/pdfMDelete.png";
-// import pdfMenuAction from "../../Styles/images/pdfMenuAction.png";
-// import pdfMaxi from "../../Styles/images/pdfMaxi.png";
-// import PDFViewer from "mgr-pdf-viewer-react";
-// import axios from "axios";
-
 import CryptoJS from "crypto-js";
 import Api from "../../api";
 import Resources from "../../resources.json";
@@ -64,7 +56,7 @@ class ViewAttachmments extends Component {
     };
 
     previewPDF = (item, extension) => {
-     
+
         if (extension == "pdf") {
             //this.getPDFblob(item.parentAttachFile);
         } else {
@@ -77,39 +69,6 @@ class ViewAttachmments extends Component {
             this.simpleDialogImage.show();
         }
     };
-
-    // getPDFblob = fileLink => {
-    //     //   Send filename (text string) to server and then retrieves file as a blob back.
-    //     //   using blob as input, converts it to a fileURL that is a link that loads the pdf
-    //     // let tagetServer = 'https://newgiza.azureedge.net/project-files-demov4';
-
-    //     axios.get(fileLink, {
-    //         method: "GET",
-    //         responseType: "blob",
-    //         headers: {
-    //             "Access-Control-Allow-Origin": "*",
-    //             "Content-Type": "application/json"
-    //         },
-    //         mode: "no-cors",
-    //         withCredentials: false
-    //     }).then(response => {
-    //         if (response) {
-    //             //Create a Blob from the PDF Stream
-    //             const blob = new Blob([response.data], {
-    //                 type: "application/pdf"
-    //             });
-    //             //Build a URL from the file
-    //             const fileURL = URL.createObjectURL(blob);
-    //             this.setState({
-    //                 activeURL: fileURL,
-    //                 view: true
-    //             });
-    //             this.simpleDialog.show();
-    //         }
-    //     }).catch(error => {
-    //         activeURL = "";
-    //     });
-    // };
 
     goEditPdf = (item, ext) => {
         let accountId = Config.getPayload().aci;
@@ -158,12 +117,9 @@ class ViewAttachmments extends Component {
 
     b64EncodeUnicode = str => {
         return btoa(
-            encodeURIComponent(str).replace(
-                /%([0-9A-F]{2})/g,
-                function toSolidBytes(match, p1) {
-                    return String.fromCharCode("0x" + p1);
-                }
-            )
+            encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
+                return String.fromCharCode("0x" + p1);
+            })
         );
     };
 
@@ -180,6 +136,7 @@ class ViewAttachmments extends Component {
             id: obj.id,
             projectId: obj.projectId
         };
+
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj1));
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
         window.open("autoDeskViewer?id=" + encodedPaylod);
@@ -220,8 +177,6 @@ class ViewAttachmments extends Component {
             link.click();
             link.remove();
         }
-
-        // document.body.removeChild(link);
     }
 
     ext = url => {
@@ -237,13 +192,12 @@ class ViewAttachmments extends Component {
             let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
 
             if (item.isCloud !== true) {
-                var containerIndex = item.attachFile.indexOf(
-                    "/" + Config.getPublicConfiguartion().BlobStorageContainerName
-                );
+                var containerIndex = item.attachFile.indexOf("/" + Config.getPublicConfiguartion().BlobStorageContainerName);
                 var filePath = item.attachFile.substr(containerIndex);
                 item.attachFile = Config.getPublicConfiguartion().cdn + filePath;
             }
-
+            let attachFile = item["attachFile"].replace('?dl=0', '?dl=1');
+            console.log(attachFile,'attachFile...................');
             if (item.fileName) {
                 item.fileNameDisplay = item.fileName.replace(/%23/g, "#");
                 item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
@@ -273,7 +227,7 @@ class ViewAttachmments extends Component {
                     <td>
                         <div className="contentCell tableCell-2">
                             <a
-                                href={item["attachFile"]}
+                                href={attachFile}
                                 download={item.fileName}
                                 className="pdfPopup various zero"
                                 data-toggle="tooltip"
@@ -294,7 +248,8 @@ class ViewAttachmments extends Component {
                     </td>
                     <td className="tdHover">
                         <div className="attachmentAction">
-                            <a href={item["attachFile"]} download={item.fileName} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                            <a href={attachFile} download={item.fileName}
+                                className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                     <g fill="none" fillRule="evenodd" transform="translate(1)">
                                         <g fill="#A8B0BF" mask="url(#b)">
@@ -365,8 +320,7 @@ class ViewAttachmments extends Component {
             );
         };
 
-        let tabel =
-            this.props.isLoadingFiles == true
+        let tabel =            this.props.isLoadingFiles == true
                 ? this.props.files.map((item, Index) => {
 
                     let newExt = this.ext(item.attachFile);
@@ -382,6 +336,7 @@ class ViewAttachmments extends Component {
                         item.attachFile = Config.getPublicConfiguartion().cdn + filePath;
                     }
 
+                    let attachFile = item["attachFile"].replace('?dl=0', '?dl=1');
                     if (item.fileName) {
                         item.fileNameDisplay = item.fileName.replace(/%23/g, "#");
                         item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
@@ -409,7 +364,7 @@ class ViewAttachmments extends Component {
                             <td>
                                 <div className="contentCell tableCell-2">
                                     <a
-                                        href={item["attachFile"]}
+                                        href={attachFile}
                                         download={item.fileName}
                                         className="pdfPopup various zero"
                                         data-toggle="tooltip"
@@ -447,7 +402,7 @@ class ViewAttachmments extends Component {
                                         : null
                                     }
 
-                                    <a href={item["attachFile"]} download={item.fileName} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                                    <a href={attachFile} download={item.fileName} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
 
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                             <g fill="none" fillRule="evenodd" transform="translate(1)">
@@ -491,7 +446,7 @@ class ViewAttachmments extends Component {
                 : null;
 
         return (
-         
+
             <React.Fragment>
                 <table className="attachmentTable">
                     <thead>
@@ -532,44 +487,7 @@ class ViewAttachmments extends Component {
                 <div>
                     {this.props.files.length > 0 ? <button className="primaryBtn-1 btn meduimBtn" onClick={this.downloadAll}> {Resources["downloadAll"][currentLanguage]} </button> : null}
                 </div>
-
-                {/* {this.state.view ? (
-                    <div className="largePopup largeModal pdf__popup" style={{ display: this.state.view ? "block" : "none" }}>
-                        <SkyLight
-                            hideOnOverlayClicked
-                            ref={ref => (this.simpleDialog = ref)}>
-                            <div id="pdf__size">
-                                <div className="pdf__action">
-                                    <div className="pdf__action--btns">
-                                        <h2 className="zero">PDF Name</h2>
-                                        <div className="pdf__action--items">
-                                            <div className="pdf__maxi">
-                                                <p className="zero">-</p>
-                                                <span>
-                                                    <img src={pdfMaxi} alt="Print" />
-                                                </span>
-                                                <p className="zero">+</p>
-                                            </div>
-                                            <div className="pdf__print">
-                                                <span>
-                                                    <img src={pdfPrint} alt="Print" />
-                                                </span>
-                                                <span>
-                                                    <img src={pdfDelete} alt="Print" />
-                                                </span>
-                                                <span>
-                                                    <img src={pdfMenuAction} alt="Print" />
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {activeURL === "" ? null : (<PDFViewer document={{ url: this.state.activeURL }} />)}
-                            </div>
-                        </SkyLight>
-                    </div>
-                ) : null} */}
-
+ 
                 <div className="largePopup largeModal " style={{ display: this.state.viewVersion ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogVersion = ref)}>
                         <div className="dropWrapper">
