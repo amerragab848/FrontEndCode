@@ -13,12 +13,10 @@ import language from '../resources.json';
 import Config from '../Services/Config';
 import IndexedDb from '../IndexedDb';
 import Details from './widgetsDetails';
-
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import mapValues from 'lodash/mapValues';
 import orderBy from 'lodash/orderBy';
-
 import GroupedBarCahrtComponent from './ChartJsWidgets/GroupedBarChart';
 
 let currentLanguage =

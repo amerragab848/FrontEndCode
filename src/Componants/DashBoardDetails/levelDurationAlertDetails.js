@@ -9,8 +9,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 
+import Config from '../../Services/Config.js';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class levelDurationAlertDetails extends Component {
 
   constructor(props) {
@@ -37,7 +39,7 @@ class levelDurationAlertDetails extends Component {
         type: "text",
         href: 'link',
         onClick: () => { },
-        classes: 'bold' 
+        classes: 'bold'
       },
       {
         field: "projectName",
@@ -156,12 +158,12 @@ class levelDurationAlertDetails extends Component {
       api: 'GetLevelDurationDelay?',
     };
   }
-  
+
   componentDidMount() {
 
     this.props.actions.RouteToTemplate();
 
-    Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+    Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize, undefined, moduleId).then(result => {
 
       result.forEach(row => {
         let obj = {

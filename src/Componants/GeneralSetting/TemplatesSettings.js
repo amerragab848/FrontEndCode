@@ -8,6 +8,7 @@ import FilesSettings from './Administrations/filesSettings';
 import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog';
 import GeneralConfiguration from './Project/GeneralConfiguration';
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList';
+import DesignDiscipline from '../GeneralSetting/MenuDefaultData/DesignDiscipline';
 import SpecSectionChild from '../GeneralSetting/MenuDefaultData/specSectionChild';
 import CostCodingTreeAddEdit from '../../Pages/Contracts/costCodingTreeAddEdit';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -193,6 +194,17 @@ class TemplatesSettings extends Component {
                                     </span>
                                 </Tab>
                             ) : null}
+                             {config.IsAllow(1179) ? (
+                                <Tab>
+                                    <span className="subUlTitle">
+                                        {
+                                            Resources['designDiscipline'][
+                                                currentLanguage
+                                            ]
+                                        }
+                                    </span>
+                                </Tab>
+                            ) : null}
                             <li className="title">
                                 <h4 className="zero">
                                     {Resources['App'][currentLanguage]}
@@ -278,12 +290,17 @@ class TemplatesSettings extends Component {
                                 <GeneralList />
                             </TabPanel>
                         ) : null}
-
+                         
                         {config.IsAllow(3342) ? (
                             <TabPanel>
                                 <SpecSectionChild />
                             </TabPanel>
                         ) : null}
+                        {config.IsAllow(1179) ? (
+                            <TabPanel>
+                                <DesignDiscipline />
+                            </TabPanel>
+                        ) : null} 
                         {config.IsAllow(138) ? (
                             <TabPanel>
                                 <ResourcesAddEdit />

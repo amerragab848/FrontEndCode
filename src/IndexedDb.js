@@ -214,7 +214,6 @@ export default class IndexedDb {
         //                 dbDashBoard.close();
         //                 api.close();
         //             }
-                    
         //             deleteRequest.onsuccess = function () {
         //                 console.log("Deleted OK.");
 
@@ -297,7 +296,7 @@ export default class IndexedDb {
     }
 
     static async getAccountsResources() {
-        let data =[];// await db.select().from(tables.resources).exec();
+        let data = [];// await db.select().from(tables.resources).exec();
         return data;
     }
 
