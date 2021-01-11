@@ -5,11 +5,9 @@ import Api from '../../api';
 import dataservice from '../../Dataservice';
 import Export from '../../Componants/OptionsPanels/Export';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import InventoryItemsModal from '../../Componants/publicComponants/InventoryItemsModal';
 import documentDefenition from '../../documentDefenition.json';
-//import Resources from '../../resources.json';
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
@@ -20,13 +18,8 @@ import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
-import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
-import { Slider } from 'react-semantic-ui-range';
+// import { Slider } from 'react-semantic-ui-range';
 import { Resources } from '../../Resources';
-import { da } from 'date-fns/locale';
-import { Flag } from 'semantic-ui-react';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -69,7 +62,7 @@ class CommonLog extends Component {
             showExportModal: false,
             showInventoryItemsModal: false,
             inventoryItems: [],
-            docTemplateModal: false,
+            docTemplateModal: true,
             selectedRows: [],
             minimizeClick: false,
             showExServerBtn: false,
@@ -79,68 +72,13 @@ class CommonLog extends Component {
             export: false,
             columnsExport: [],
             selectedcolumnsChart: [],
-            companies: [],
-            contacts: [],
-            ToContacts: [],
-            specsSection: [],
-            reasonForIssue: [],
-            disciplines: [],
-            contracts: [],
-            areas: [],
-            locations: [],
-            submittalType: [],
-            approvales: [],
-            selectedFromCompany: {
-                label: Resources.ComapnyNameRequired[currentLanguage],
-                value: '0',
-            },
-            selectedFromContact: {
-                label: Resources.contactNameRequired[currentLanguage],
-                value: '0',
-            },
-            selectedToCompany: {
-                label: Resources.ComapnyNameRequired[currentLanguage],
-                value: '0',
-            },
-            selectedToContact: {
-                label: Resources.contactNameRequired[currentLanguage],
-                value: '0',
-            },
-            selectedSpecsSection: {
-                label: Resources.specsSectionSelection[currentLanguage],
-                value: '0',
-            },
-            selectedDiscpline: {
-                label: Resources.disciplineRequired[currentLanguage],
-                value: '0',
-            },
-            selectedContract: {
-                label: Resources.contractPoSelection[currentLanguage],
-                value: '0',
-            },
-            selectedArea: {
-                label: Resources.area[currentLanguage],
-                value: '0',
-            },
-            selectedLocation: {
-                label: Resources.locationRequired[currentLanguage],
-                value: '0',
-            },
-            selectedSubmittalType: {
-                label: Resources.submittalType[currentLanguage],
-                value: '0',
-            },
-            selectedApprovalStatus: {
-                label: Resources.approvalStatusSelection[currentLanguage],
-                value: '0',
-            },
             inventoryImportAttachmentModal: false,
             showInventoryImportAttachBtn: false,
-            BarChartCompJS: null,
             showChart: false,
             chartContent: null,
             chartColumnsModal: false,
-            showChartBtn: false
+            showChartBtn: false,
+            DocTemplateModalCom: null,
         };
         this.actions = [
             {
@@ -278,7 +216,6 @@ class CommonLog extends Component {
     componentDidMount() {
         this.props.actions.FillGridLeftMenu();
         this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
-        this.fillDropDowns();
     }
 
     componentWillUnmount() {
@@ -288,49 +225,6 @@ class CommonLog extends Component {
             isLoading: true,
             isCustom: true,
         });
-    }
-
-    fillDropDowns() {
-        if (this.state.docType == 'submittal' || this.state.documentName == "Letters") {
-            dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + this.props.projectId, 'companyName', 'companyId', 'companies', this.props.projectId, 'projectId').then(result => {
-                this.setState({ companies: [...result] })
-            });
-        }
-        if (this.state.docType == 'submittal') {
-            //discplines
-            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'defaultLists', 'discipline', 'listType').then(result => {
-                this.setState({ disciplines: [...result] })
-            });
-
-            //SubmittalTypes
-            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=SubmittalTypes', 'title', 'id', 'defaultLists', 'SubmittalTypes', 'listType').then(result => {
-                this.setState({ SubmittalTypes: [...result] })
-            });
-
-            //location
-            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=location', 'title', 'id', 'defaultLists', 'location', 'listType').then(result => {
-                this.setState({ locations: [...result] })
-            });
-
-            //area
-            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=area', 'title', 'id', 'defaultLists', 'area', 'listType').then(result => {
-                this.setState({ areas: [...result] })
-            });
-
-            //approvalstatus
-            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=approvalstatus', 'title', 'id', 'defaultLists', 'approvalstatus', 'listType').then(result => {
-                this.setState({ approvales: [...result] })
-            });
-
-            //specsSection
-            dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=specssection', 'title', 'id', 'defaultLists', 'specssection', 'listType').then(result => {
-                this.setState({ specsSection: [...result] })
-            });
-            //contractList
-            dataservice.GetDataList('GetPoContractForList?projectId=' + this.props.projectId, 'subject', 'id').then(result => {
-                this.setState({ contracts: [...result] })
-            });
-        }
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -368,7 +262,6 @@ class CommonLog extends Component {
                 this.renderComponent(this.props.match.params.document, this.props.projectId, true);
             } else {
                 this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
-                this.fillDropDowns();
             }
         }
     }
@@ -563,83 +456,51 @@ class CommonLog extends Component {
                 pageNumber: pageNumber,
             });
 
-            let url =
-                (this.state.query == ''
-                    ? this.state.api
-                    : this.state.apiFilter) +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                (this.state.query == '' ? '' : '&query=' + this.state.query);
+            let url = (this.state.query == '' ? this.state.api : this.state.apiFilter) + '?projectId=' + this.state.projectId + '&pageNumber=' + pageNumber + '&pageSize=' + this.state.pageSize + (this.state.query == '' ? '' : '&query=' + this.state.query);
 
-            Api.get(url, undefined, moduleId)
-                .then(result => {
-                    let oldRows = [];
+            Api.get(url, undefined, moduleId).then(result => {
+                let oldRows = [];
 
-                    const newRows = [...oldRows, ...result.data];
+                const newRows = [...oldRows, ...result.data];
 
-                    newRows.forEach(row => {
-                        let subject = '';
-                        if (row) {
-                            let obj = {
-                                docId: row.id,
-                                projectId: row.projectId,
-                                projectName: row.projectName,
-                                arrange: 0,
-                                docApprovalId: 0,
-                                isApproveMode: false,
-                                perviousRoute:
-                                    window.location.pathname +
-                                    window.location.search,
-                            };
-                            if (
-                                documentObj.documentAddEditLink.replace(
-                                    '/',
-                                    '',
-                                ) == 'addEditModificationDrawing'
-                            ) {
-                                obj.isModification = true;
-                            }
-                            let parms = CryptoJS.enc.Utf8.parse(
-                                JSON.stringify(obj),
-                            );
+                newRows.forEach(row => {
+                    let subject = '';
+                    if (row) {
+                        let obj = {
+                            docId: row.id,
+                            projectId: row.projectId,
+                            projectName: row.projectName,
+                            arrange: 0,
+                            docApprovalId: 0,
+                            isApproveMode: false,
+                            perviousRoute:
+                                window.location.pathname +
+                                window.location.search,
+                        };
+                        if (documentObj.documentAddEditLink.replace('/', '',) == 'addEditModificationDrawing') { obj.isModification = true; }
+                        let parms = CryptoJS.enc.Utf8.parse(
+                            JSON.stringify(obj),
+                        );
 
-                            let encodedPaylod = CryptoJS.enc.Base64.stringify(
-                                parms,
-                            );
+                        let encodedPaylod = CryptoJS.enc.Base64.stringify(
+                            parms,
+                        );
 
-                            let doc_view =
-                                '/' +
-                                documentObj.documentAddEditLink.replace(
-                                    '/',
-                                    '',
-                                ) +
-                                '?id=' +
-                                encodedPaylod;
+                        let doc_view = '/' + documentObj.documentAddEditLink.replace('/', '',) + '?id=' + encodedPaylod;
 
-                            subject = doc_view;
-                        }
-                        if (
-                            Config.IsAllow(
-                                this.state.documentObj.documentViewPermission,
-                            ) ||
-                            Config.IsAllow(
-                                this.state.documentObj.documentEditPermission,
-                            )
-                        ) {
-                            row.link = subject;
-                        }
-                    });
+                        subject = doc_view;
+                    }
+                    if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+                        row.link = subject;
+                    }
+                });
 
-                    this.setState({
-                        rows: newRows,
-                        totalRows: result.total,
-                        isLoading: false,
-                    });
-                })
+                this.setState({
+                    rows: newRows,
+                    totalRows: result.total,
+                    isLoading: false,
+                });
+            })
                 .catch(ex => {
                     let oldRows = this.state.rows;
                     this.setState({
@@ -663,19 +524,7 @@ class CommonLog extends Component {
         });
 
         if (stringifiedQuery !== '{}') {
-            Api.get(
-                apiFilter +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                this.state.pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                '&query=' +
-                stringifiedQuery,
-                undefined,
-                moduleId,
-            )
+            Api.get(apiFilter + '?projectId=' + this.state.projectId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '&query=' + stringifiedQuery, undefined, moduleId)
                 .then(result => {
                     if (result.data.length > 0) {
                         result.data.forEach(row => {
@@ -829,81 +678,81 @@ class CommonLog extends Component {
             else {
                 docTempLink = Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempLetter.xlsx';
             }
-        //added
-        let docTypeId = documentObj.docTyp;
-        let showExServerBtn = false;
-        let showChartBtn = false;
-        let showDocTemplateBtn = false;
+            //added
+            let docTypeId = documentObj.docTyp;
+            let showExServerBtn = false;
+            let showChartBtn = false;
+            let showDocTemplateBtn = false;
 
-        var cNames = [];
-        var filtersColumns = [];
-        var exportedColumns = [];
-        var chartColumns = [];
-        if (documentObj.documentColumns) {
-            if (Config.IsAllow(this.state.documentObj.documentDeletePermission) &&
-                documentName !== 'paymentCertification'
-            ) {
-                cNames.push({
-                    title: '',
-                    type: 'check-box',
-                    fixed: true,
-                    field: 'id',
-                });
-            }
-
-            documentObj.documentColumns.map((item, index) => {
-                var obj = {
-                    field: item.field,
-                    fixed: index < 3 ? true : false,
-                    title: Resources[item.friendlyName][currentLanguage],
-                    width: item.width.replace('%', ''),
-                    sortable: true,
-                    groupable: true,
-                    type:
-                        item.dataType === 'number'
-                            ? item.dataType
-                            : item.dataType === 'date'
-                                ? item.dataType
-                                : 'text',
-                };
-
-                if (item.field === 'subject') {
-                    obj.href = 'link';
-                    obj.onClick = () => { };
-                    obj.classes = 'bold';
-                }
-
-                if (item.field === 'description' && documentObj.docTyp == 50) {
-                    obj.href = 'link';
-                    obj.onClick = () => { };
-                    obj.classes = 'bold';
-                }
-                if (
-                    item.field === 'statusName' ||
-                    item.field === 'statusText'
+            var cNames = [];
+            var filtersColumns = [];
+            var exportedColumns = [];
+            var chartColumns = [];
+            if (documentObj.documentColumns) {
+                if (Config.IsAllow(this.state.documentObj.documentDeletePermission) &&
+                    documentName !== 'paymentCertification'
                 ) {
-                    obj.classes = 'grid-status';
-                    obj.fixed = false;
-                    obj.leftPadding = 17;
-                }
-                
-                if (isCustom !== true) {
-                    cNames.push(obj);
-                    exportedColumns.push({
-                        field: item.field,
-                        title: Resources[item.friendlyName][currentLanguage],
-                        selected: false,
-                        showInExport: item.showInExport,
+                    cNames.push({
+                        title: '',
+                        type: 'check-box',
+                        fixed: true,
+                        field: 'id',
                     });
-                    if (item.showInChart === true) {
-                        chartColumns.push({
+                }
+
+                documentObj.documentColumns.map((item, index) => {
+                    var obj = {
+                        field: item.field,
+                        fixed: index < 3 ? true : false,
+                        title: Resources[item.friendlyName][currentLanguage],
+                        width: item.width.replace('%', ''),
+                        sortable: true,
+                        groupable: true,
+                        type:
+                            item.dataType === 'number'
+                                ? item.dataType
+                                : item.dataType === 'date'
+                                    ? item.dataType
+                                    : 'text',
+                    };
+
+                    if (item.field === 'subject') {
+                        obj.href = 'link';
+                        obj.onClick = () => { };
+                        obj.classes = 'bold';
+                    }
+
+                    if (item.field === 'description' && documentObj.docTyp == 50) {
+                        obj.href = 'link';
+                        obj.onClick = () => { };
+                        obj.classes = 'bold';
+                    }
+                    if (
+                        item.field === 'statusName' ||
+                        item.field === 'statusText'
+                    ) {
+                        obj.classes = 'grid-status';
+                        obj.fixed = false;
+                        obj.leftPadding = 17;
+                    }
+
+                    if (isCustom !== true) {
+                        cNames.push(obj);
+                        exportedColumns.push({
                             field: item.field,
                             title: Resources[item.friendlyName][currentLanguage],
                             selected: false,
-                        })
-                    }
+                            showInExport: item.showInExport,
+                        });
+                        if (item.showInChart === true) {
+                            chartColumns.push({
+                                field: item.field,
+                                title: Resources[item.friendlyName][currentLanguage],
+                                selected: false,
+                            })
+                        }
 
-                } else {
+                    } else {
                         if (item.isCustom === true) {
                             cNames.push(obj);
                             exportedColumns.push({
@@ -914,78 +763,73 @@ class CommonLog extends Component {
                                 showInExport: item.showInExport,
                             });
                         }
-                    if (item.showInChart === true) {
-                        chartColumns.push({
-                            field: item.field,
-                            title: Resources[item.friendlyName][currentLanguage],
-                            selected: false,
-                        })
+                        if (item.showInChart === true) {
+                            chartColumns.push({
+                                field: item.field,
+                                title: Resources[item.friendlyName][currentLanguage],
+                                selected: false,
+                            })
+                        }
                     }
-                }
-            });
+                });
 
                 let ColumnsHideShow = [...cNames];
 
                 for (var i in ColumnsHideShow) {
                     ColumnsHideShow[i].hidden = false;
                 }
-            this.setState({
-                ColumnsHideShow: ColumnsHideShow,
-                exportedColumns: exportedColumns,
-                chartColumns: chartColumns
-            });
+                this.setState({
+                    ColumnsHideShow: ColumnsHideShow,
+                    exportedColumns: exportedColumns,
+                    chartColumns: chartColumns
+                });
 
-            if (docTypeId == 19 || docTypeId == 42) {
-                showChartBtn = true;
-            }
+                if (docTypeId == 19 || docTypeId == 42) {
+                    showChartBtn = true;
+                }
 
-            if (
-                docTypeId == 19 ||
-                docTypeId == 23 ||
-                docTypeId == 42 ||
-                docTypeId == 28 ||
-                docTypeId == 103 ||
-                docTypeId == 25
-            ) {
-                showExServerBtn = true;
-            }
+                if (
+                    docTypeId == 19 ||
+                    docTypeId == 23 ||
+                    docTypeId == 42 ||
+                    docTypeId == 28 ||
+                    docTypeId == 103 ||
+                    docTypeId == 25
+                ) {
+                    showExServerBtn = true;
+                }
 
-            if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42) {
-                showDocTemplateBtn = true;
-            } else {
-                showDocTemplateBtn = false;
-            }
-            if (docTypeId == 50) {
-                this.setState({ showInventoryImportAttachBtn: true });
-            } else {
-                this.setState({ showInventoryImportAttachBtn: false });
-            }
+                if (docTypeId == 19 || docTypeId == 64 || docTypeId == 42 || docTypeId == 50) {
+                    showDocTemplateBtn = true;
+                } else {
+                    showDocTemplateBtn = false;
+                }
 
-            filtersColumns = documentObj.filters;
+                filtersColumns = documentObj.filters;
 
-            var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
-            var currentGP = [];
-            if (selectedCols.length === 0) {
-                var gridLocalStor = { columnsList: [], groups: [] };
-                gridLocalStor.columnsList = JSON.stringify(cNames);
-                gridLocalStor.groups = JSON.stringify(currentGP);
-                localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(gridLocalStor));
-            } else {
-                var parsingList = JSON.parse(selectedCols.columnsList);
-                for (var item in parsingList) {
-                    for (var i in cNames) {
-                        if (cNames[i].field === parsingList[item].field) {
-                            let status = parsingList[item].hidden;
-                            cNames[i].hidden = status;
-                            cNames[i].width = parsingList[item].width;
-                            break;
+                var selectedCols = JSON.parse(localStorage.getItem('CommonLog-' + this.state.documentName)) || [];
+                var currentGP = [];
+                if (selectedCols.length === 0) {
+                    var gridLocalStor = { columnsList: [], groups: [] };
+                    gridLocalStor.columnsList = JSON.stringify(cNames);
+                    gridLocalStor.groups = JSON.stringify(currentGP);
+                    localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(gridLocalStor));
+                } else {
+                    var parsingList = JSON.parse(selectedCols.columnsList);
+                    for (var item in parsingList) {
+                        for (var i in cNames) {
+                            if (cNames[i].field === parsingList[item].field) {
+                                let status = parsingList[item].hidden;
+                                cNames[i].hidden = status;
+                                cNames[i].width = parsingList[item].width;
+                                break;
+                            }
                         }
                     }
+                    currentGP = JSON.parse(selectedCols.groups);
                 }
-                currentGP = JSON.parse(selectedCols.groups);
+
             }
-        
-        }
             this.setState({
                 pageTitle: Resources[documentObj.documentTitle][currentLanguage],
                 groups: currentGP,
@@ -1004,13 +848,13 @@ class CommonLog extends Component {
             });
 
             this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-        
+
+        }
     }
-}
 
     GetRecordOfLog(api, projectId) {
         if (projectId !== 0) {
-            let url = api + (documentObj.docTyp == 33 ? 'projectId=' + projectId : '?projectId=' + projectId) + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize; 
+            let url = api + (documentObj.docTyp == 33 ? 'projectId=' + projectId : '?projectId=' + projectId) + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize;
             this.GetLogData(url);
         } else {
             this.setState({ isLoading: false });
@@ -1110,6 +954,7 @@ class CommonLog extends Component {
             exportColumnsModal: false,
             docTemplateModal: false,
             chartColumnsModal: false,
+            DocTemplateModalCom: null
         });
     };
 
@@ -1159,32 +1004,6 @@ class CommonLog extends Component {
         /*********************************************************** */
     };
 
-    handleChangeWidth = (key, newWidth) => {
-        console.log('handleChangeWidth...', key, newWidth);
-        this.setState({ isLoading: true });
-
-        let data = this.state.ColumnsHideShow;
-        for (var i in data) {
-            if (data[i].field === key) {
-                data[i].width = newWidth.toString();
-                break;
-            }
-        }
-        setTimeout(() => {
-            this.setState({
-                columns: data.filter(i => i.hidden === false),
-                isLoading: false,
-            });
-        }, 300);
-
-        /**************************update localStorege************************ */
-        var selectedCols = { columnsList: [], groups: [] }
-        selectedCols.columnsList = JSON.stringify(data)
-        selectedCols.groups = "[]"
-        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
-        /*********************************************************** */
-    };
-
     handleCheckForExport = key => {
         let data = this.state.exportedColumns;
 
@@ -1211,6 +1030,7 @@ class CommonLog extends Component {
             this.setState({ columnsExport: columnsExport, Loading: false });
         }, 300);
     };
+
     handleCheckForChart = key => {
         let data = this.state.chartColumns;
 
@@ -1238,6 +1058,7 @@ class CommonLog extends Component {
             this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
         }, 300);
     };
+
     ClosxMX() {
         if (this.props != undefined) {
             this.props.actions.clearCashDocument();
@@ -1251,13 +1072,8 @@ class CommonLog extends Component {
     }
 
     btnDocumentTemplateShowModal = () => {
-        this.setState({
-            docTemplateModal: true,
-        });
-    };
-    btnInventoryImportAttachShowModal = () => {
-        this.setState({
-            inventoryImportAttachmentModal: true,
+        import('./DocTemplateModal').then(module => {
+            this.setState({ DocTemplateModalCom: module.default, docTemplateModal: true })
         });
     };
 
@@ -1273,6 +1089,7 @@ class CommonLog extends Component {
             exportedColumns: exportedColumns,
         });
     };
+
     btnChartShowModal = () => {
         let chartColumns = this.state.chartColumns;
 
@@ -1372,50 +1189,48 @@ class CommonLog extends Component {
             data.projectId = this.state.projectId;
             data.columns = columns;
 
-            dataservice
-                .addObjectCore('GetStatisticsData', data, 'POST')
-                .then(data => {
-                    if (data && data.length > 0) {  // data is datatable
-                        // modal to show chart based on this data !
-                        this.setState({
-                            BarChartCompJS: require('../../Componants/ChartsWidgets/BarChartCompJS').default,
-                            isExporting: false
-                        })
-                        let BarChartCompJS = this.state.BarChartCompJS;
-                        let Chart = (
-                            <BarChartCompJS
-                                reports=""
-                                rows={data}
-                                //    barContent={[
-                                //        { name: "Estimated", value: 'estimatedTime' },
-                                //        { name: "Actual", value: 'actualTotal' },
-                                //        { name: "Variance", value: 'variance' }
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
+                if (data && data.length > 0) {  // data is datatable
+                    // modal to show chart based on this data !
+                    this.setState({
+                        isExporting: false
+                    })
+                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    let Chart = (
+                        <BarChartCompJS
+                            reports=""
+                            rows={data}
+                            //    barContent={[
+                            //        { name: "Estimated", value: 'estimatedTime' },
+                            //        { name: "Actual", value: 'actualTotal' },
+                            //        { name: "Variance", value: 'variance' }
 
-                                //    ]}
-                                categoryName={Object.keys(data[0])[0]}
-                                ukey="wt-Name203"
-                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
-                                y="total"
-                            />)
+                            //    ]}
+                            categoryName={Object.keys(data[0])[0]}
+                            ukey="wt-Name203"
+                            title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                            y="total"
+                        />)
 
-                        //////////////////////////////////////////////////////
-                        this.setState({
-                            chartColumnsModal: false,
-                            isExporting: false,
-                            chartContent: Chart,
-                            showChart: true
-                        })
-                    }
-                    else {
-                        this.setState({
-                            exportColumnsModal: false,
-                            isExporting: false,
-                        })
-                        toast.warn('no data found !');
-                    }
-                });
+                    //////////////////////////////////////////////////////
+                    this.setState({
+                        chartColumnsModal: false,
+                        isExporting: false,
+                        chartContent: Chart,
+                        showChart: true
+                    })
+                }
+                else {
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false,
+                    })
+                    toast.warn('no data found !');
+                }
+            });
         }
     };
+
     btnExportStatisticsClick = () => {
 
         if (Config.getPublicConfiguartion().activeExport != true) {
@@ -1510,105 +1325,89 @@ class CommonLog extends Component {
         this.setState({ isFilter: false });
     };
 
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource,
-    ) {
-        if (event == null) return;
-        let original_document = { ...this.state.document };
-        let updated_document = {};
-        updated_document[field] = event.value;
-        updated_document = Object.assign(original_document, updated_document);
-
+    afterUpload = () => {
         this.setState({
-            document: updated_document,
-            [selectedValue]: event,
+            docTemplateModal: false
         });
+        this.setState({ isLoading: true });
+        this.GetRecordOfLog(
+            this.state.isCustom === true
+                ? this.state.documentObj
+                    .documentApi.getCustom
+                : this.state.documentObj
+                    .documentApi.get,
+            this.props.projectId,
+        );
+    };
 
-        if (isSubscrib) {
-            let action = url + '?' + param + '=' + event.value;
-            dataservice
-                .GetDataList(action, 'contactName', 'id')
-                .then(result => {
-                    this.setState({
-                        [targetState]: result,
-                    });
-                });
+    handleChangeWidth = (key, newWidth) => {
+        console.log('handleChangeWidth...', key, newWidth);
+        this.setState({ isLoading: true });
+
+        let data = this.state.ColumnsHideShow;
+        for (var i in data) {
+            if (data[i].field === key) {
+                data[i].width = newWidth.toString();
+                break;
+            }
         }
-    }
-    handleChangeDropDownCycles(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource,
-    ) {
-        if (event == null) return;
+        setTimeout(() => {
+            this.setState({
+                columns: data.filter(i => i.hidden === false),
+                isLoading: false,
+            });
+        }, 300);
 
-        let original_document = { ...this.state.documentCycle };
+        /**************************update localStorege************************ */
+        var selectedCols = { columnsList: [], groups: [] }
+        selectedCols.columnsList = JSON.stringify(data)
+        selectedCols.groups = "[]"
+        localStorage.setItem('CommonLog-' + this.state.documentName, JSON.stringify(selectedCols))
+        /*********************************************************** */
+    };
 
-        let updated_document = {};
+    timeLineBalls = (n, onClick, current, key) =>
+        Array(n).fill(0).map((i, index) => (
+            <div
+                key={index}
+                className={`timeline__ball ${current >= index ? "active" : null}`}
+                onClick={() => onClick(key, (index + 1) * 12)} >
+                {index + 1}
+            </div>
+        ));
 
-        updated_document[field] = event.value;
-
-        updated_document = Object.assign(original_document, updated_document);
-
-        this.setState({
-            documentCycle: updated_document,
-            [selectedValue]: event,
-        });
-    }
+    intermediaryBalls = 4;
 
     render() {
-        let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
-            (item, index) => {
-                return item.field == 'id' ? null : (
-                    <div className="grid__content" key={item.field}>
-                        <div
-                            className={
-                                'ui checkbox checkBoxGray300 count checked'
-                            }>
-                            <input
-                                name="CheckBox"
-                                type="checkbox"
-                                id="allPermissionInput"
-                                checked={!item.hidden}
-                                onChange={e => this.handleCheck(item.field)}
-                            />
-                            <label>{item.title}</label>
-                        </div>
-                        <p className="rangeSlider">
-                            <Slider
-                                key={item.field}
-                                discrete
-                                color="blue"
-                                inverted={false}
-                                settings={{
-                                    start: parseInt(item.width),
-                                    min: 5,
-                                    max: 50,
-                                    step: 5,
-                                    onChange: e => {
-                                        this.handleChangeWidth(item.field, e);
-                                    },
-                                }}
-                            />
-                            <label className="rangeLabel" color="red">
-                                Width: {item.width} px
-                            </label>
-                        </p>
+        let DocTemplateModalCom = this.state.DocTemplateModalCom
+        let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
+            let container = (document.getElementById('grid__column--content').offsetWidth * 0.5) * 0.47 * 0.8
+            let BallsWidth = container / 4
+            let activeWidth = (item.width * container / BallsWidth) - BallsWidth
+            let diff = (activeWidth / BallsWidth) * 4
+            return item.field == 'id' ? null : (
+                <div className="grid__content" key={item.field}>
+                    <div
+                        className={'ui checkbox checkBoxGray300 count checked'}>
+                        <input
+                            name="CheckBox"
+                            type="checkbox"
+                            id="allPermissionInput"
+                            checked={!item.hidden}
+                            onChange={e => this.handleCheck(item.field)}
+                        />
+                        <label>{item.title}</label>
                     </div>
-                );
-            },
+                    <p className="rangeSlider">
+                        <div className="timeline" id="timeline">
+                            <div className="timeline__progress" style={{ width: `${activeWidth - (activeWidth > BallsWidth ? diff : 0)}px` }} />
+                            {this.timeLineBalls(4, this.handleChangeWidth, (item.width / 12) - 1, item.field)}
+                        </div>
+                        <label className="rnageWidth">width</label>
+                    </p>
+                </div>
+            );
+        },
         );
 
         let RenderPopupShowExportColumns = this.state.exportedColumns.map(
@@ -1799,15 +1598,6 @@ class CommonLog extends Component {
                 </button>
             ) : null;
 
-        const btnInventoryImportAttach =
-            this.state.showInventoryImportAttachBtn == true ? (
-                <button
-                    className="primaryBtn-2 btn mediumBtn"
-                    onClick={() => this.btnInventoryImportAttachShowModal()}>
-                    {Resources['uploadAttach'][currentLanguage]}
-                </button>
-            ) : null;
-
         const ComponantFilter =
             this.state.isLoading === false ? (
                 <Filter
@@ -1901,7 +1691,6 @@ class CommonLog extends Component {
                             {btnExport}
                             {btnExportServer}
                             {btnDocumentTemplate}
-                            {btnInventoryImportAttach}
                             {btnCharts}
                             {this.state.documentName !==
                                 'paymentCertification' ? (
@@ -2066,7 +1855,7 @@ class CommonLog extends Component {
                                     {Resources.gridColumns[currentLanguage]}
                                 </h2>
                             </div>
-                            <div className="grid__column--content">
+                            <div className="grid__column--content" id="grid__column--content">
                                 {RenderPopupShowColumns}
                             </div>
                             <div className="grid__column--footer">
@@ -2163,464 +1952,19 @@ class CommonLog extends Component {
                     {/********************************chart popup************************************* */}
 
                 </div>
+                {/********************************docTemplateModal************************************* */}
 
-                {this.state.docTemplateModal == true ? (
-                    <div className="largePopup largeModal ">
-                        <SkyLightStateless
-                            onOverlayClicked={() =>
-                                this.setState({ docTemplateModal: false })
-                            }
-                            title={Resources['DocTemplate'][currentLanguage]}
-                            onCloseClicked={() =>
-                                this.setState({ docTemplateModal: false })
-                            }
-                            isVisible={this.state.docTemplateModal}>
-                            <div className="proForm datepickerContainer customLayout">
-                                <div className="linebylineInput valid-input mix_dropdown">
-                                    <label className="control-label">
-                                        {Resources.fromCompany[currentLanguage]}
-                                    </label>
-                                    <div className="supervisor__company">
-                                        <div className="super_name">
-                                            <Dropdown
-                                                //title={"fromCompany"}
-                                                data={this.state.companies}
-                                                isMulti={false}
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedFromCompany
-                                                }
-                                                handleChange={event => {
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'companyId',
-                                                        true,
-                                                        'contacts',
-                                                        'GetContactsByCompanyId',
-                                                        'companyId',
-                                                        'selectedFromCompany',
-                                                        'selectedFromContact',
-                                                    );
-                                                }}
-                                                index="companyId"
-                                                name="companyId"
-                                                id=" companyId"
-                                                styles={CompanyDropdown}
-                                                classDrop="companyName1"
-                                            />
-                                        </div>
-                                        <div className="super_company">
-                                            <Dropdown
-                                                isMulti={false}
-                                                data={this.state.contacts}
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedFromContact
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'contactId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedFromContact',
-                                                    )
-                                                }
-                                                index="contactId"
-                                                name="contactId"
-                                                id="contactId"
-                                                classDrop="contactName1"
-                                                styles={ContactDropdown}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="linebylineInput valid-input mix_dropdown">
-                                    <label className="control-label">
-                                        {Resources.toCompany[currentLanguage]}
-                                    </label>
-                                    <div className="supervisor__company">
-                                        <div className="super_name">
-                                            <Dropdown
-                                                isMulti={false}
-                                                data={this.state.companies}
-                                                selectedValue={
-                                                    this.state.selectedToCompany
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'toCompanyId',
-                                                        true,
-                                                        'ToContacts',
-                                                        'GetContactsByCompanyId',
-                                                        'companyId',
-                                                        'selectedToCompany',
-                                                        'selectedToContact',
-                                                    )
-                                                }
-                                                index="letter-toCompany"
-                                                name="toCompanyId"
-                                                id="toCompanyId"
-                                                styles={CompanyDropdown}
-                                                classDrop="companyName1"
-                                            />
-                                        </div>
-                                        <div className="super_company">
-                                            <Dropdown
-                                                isMulti={false}
-                                                data={this.state.ToContacts}
-                                                selectedValue={
-                                                    this.state.selectedToContact
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'toContactId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedToContact',
-                                                    )
-                                                }
-                                                index="letter-toContactId"
-                                                name="toContactId"
-                                                id="toContactId"
-                                                classDrop="contactName1"
-                                                styles={ContactDropdown}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                {Config.getPayload().uty == 'company' ? (
-                                    this.state.docType == 'submittal' ? (
-                                        <Fragment>
-                                            <div className="dropdownFullWidthContainer">
-                                                <div className="linebylineInput valid-input dropdownFullWidth">
-                                                    <Dropdown
-                                                        title="disciplineTitle"
-                                                        data={
-                                                            this.state
-                                                                .disciplines
-                                                        }
-                                                        isMulti={false}
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedDiscpline
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDown(
-                                                                event,
-                                                                'disciplineId',
-                                                                false,
-                                                                '',
-                                                                '',
-                                                                '',
-                                                                'selectedDiscpline',
-                                                            )
-                                                        }
-                                                        name="disciplineId"
-                                                        id="disciplineId"
-                                                    />
-                                                </div>
-                                                <div className="linebylineInput valid-input dropdownFullWidth">
-                                                    <Dropdown
-                                                        title="specsSection"
-                                                        data={
-                                                            this.state
-                                                                .specsSection
-                                                        }
-                                                        isMulti={false}
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedSpecsSection
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDown(
-                                                                event,
-                                                                'specsSectionId',
-                                                                false,
-                                                                '',
-                                                                '',
-                                                                '',
-                                                                'selectedSpecsSection',
-                                                            )
-                                                        }
-                                                        name="specsSectionId"
-                                                        id="specsSectionId"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="dropdownFullWidthContainer">
-                                                <div className="linebylineInput valid-input dropdownFullWidth">
-                                                    <Dropdown
-                                                        title="submittalType"
-                                                        data={
-                                                            this.state
-                                                                .SubmittalTypes
-                                                        }
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedSubmittalType
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDown(
-                                                                event,
-                                                                'submittalTypeId',
-                                                                false,
-                                                                '',
-                                                                '',
-                                                                '',
-                                                                'selectedSubmittalType',
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="linebylineInput valid-input  dropdownFullWidth">
-                                                    <Dropdown
-                                                        title="area"
-                                                        data={this.state.areas}
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedArea
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDown(
-                                                                event,
-                                                                'area',
-                                                                false,
-                                                                '',
-                                                                '',
-                                                                '',
-                                                                'selectedArea',
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="dropdownFullWidthContainer">
-                                                <div className="linebylineInput valid-input dropdownFullWidth">
-                                                    <Dropdown
-                                                        title="location"
-                                                        data={
-                                                            this.state.locations
-                                                        }
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedLocation
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDown(
-                                                                event,
-                                                                'location',
-                                                                false,
-                                                                '',
-                                                                '',
-                                                                '',
-                                                                'selectedLocation',
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="linebylineInput valid-input dropdownFullWidth">
-                                                    <Dropdown
-                                                        title="contractPo"
-                                                        isMulti={false}
-                                                        data={
-                                                            this.state.contracts
-                                                        }
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedContract
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDown(
-                                                                event,
-                                                                'contractId',
-                                                                false,
-                                                                '',
-                                                                '',
-                                                                '',
-                                                                'selectedContract',
-                                                            )
-                                                        }
-                                                        name="contractId"
-                                                        id="contractId"
-                                                        index="contractId"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="dropdownFullWidthContainer">
-                                                <div className="linebylineInput valid-input dropdownFullWidth">
-                                                    <Dropdown
-                                                        title="approvalStatus"
-                                                        isMulti={false}
-                                                        data={
-                                                            this.state
-                                                                .approvales
-                                                        }
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedApprovalStatus
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDownCycles(
-                                                                event,
-                                                                'approvalStatusId',
-                                                                false,
-                                                                '',
-                                                                '',
-                                                                '',
-                                                                'selectedApprovalStatus',
-                                                            )
-                                                        }
-                                                        name="approvalStatusId"
-                                                        id="approvalStatusId"
-                                                        index="approvalStatusId"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </Fragment>
-                                    ) : null
-                                ) : null}
-
-                                <XSLfile
-                                    key="docTemplate"
-                                    projectId={this.state.projectId}
-                                    companyId={
-                                        this.state.document != null
-                                            ? this.state.document.companyId
-                                            : null
-                                    }
-                                    contactId={
-                                        this.state.document != null
-                                            ? this.state.document.contactId
-                                            : null
-                                    }
-                                    toCompanyId={
-                                        this.state.document != null
-                                            ? this.state.document.toCompanyId
-                                            : null
-                                    }
-                                    toContactId={
-                                        this.state.document != null
-                                            ? this.state.document.toContactId
-                                            : null
-                                    }
-                                    disciplineId={
-                                        this.state.document != null
-                                            ? this.state.document.disciplineId
-                                            : null
-                                    }
-                                    specsSectionId={
-                                        this.state.document != null
-                                            ? this.state.document.specsSectionId
-                                            : null
-                                    }
-                                    submittalTypeId={
-                                        this.state.document != null
-                                            ? this.state.document
-                                                .submittalTypeId
-                                            : null
-                                    }
-                                    area={
-                                        this.state.document != null
-                                            ? this.state.selectedArea.label
-                                            : null
-                                    }
-                                    location={
-                                        this.state.document != null
-                                            ? this.state.selectedLocation.label
-                                            : null
-                                    }
-                                    contractId={
-                                        this.state.document != null
-                                            ? this.state.document.contractId
-                                            : null
-                                    }
-                                    approvalStatusId={
-                                        this.state.documentCycle != null
-                                            ? this.state.documentCycle
-                                                .approvalStatusId
-                                            : null
-                                    }
-                                    docType={this.state.docType}
-                                    documentTemplate={true}
-                                    link={docTempLink}
-                                    header="addManyItems"
-                                    afterUpload={() => {
-                                        this.setState({
-                                            docTemplateModal: false,
-                                        });
-                                        this.setState({ isLoading: true });
-                                        this.GetRecordOfLog(
-                                            this.state.isCustom === true
-                                                ? this.state.documentObj
-                                                    .documentApi.getCustom
-                                                : this.state.documentObj
-                                                    .documentApi.get,
-                                            this.props.projectId,
-                                        );
-                                    }}
-                                />
-                            </div>
-                        </SkyLightStateless>
-                    </div>
+                {DocTemplateModalCom != null && this.state.docTemplateModal == true ? (
+                    <DocTemplateModalCom
+                        docType={this.state.documentName}
+                        projectId={this.state.projectId}
+                        afterUpload={this.afterUpload}
+                        onClose={this.closeModalColumn}
+                    />
                 ) : null}
+                {/********************************end docTemplateModal************************************* */}
 
-                {/* Material Inventory Import Section  Ahmed Yousry */}
-                {this.state.inventoryImportAttachmentModal == true ? (
-                    <div className="largePopup largeModal ">
-                        <SkyLightStateless
-                            onOverlayClicked={() =>
-                                this.setState({
-                                    inventoryImportAttachmentModal: false,
-                                })
-                            }
-                            title={Resources['DocTemplate'][currentLanguage]}
-                            onCloseClicked={() =>
-                                this.setState({
-                                    inventoryImportAttachmentModal: false,
-                                })
-                            }
-                            isVisible={
-                                this.state.inventoryImportAttachmentModal
-                            }>
-                            <div>
-                                <XSLfile
-                                    key="MaterialInventory"
-                                    docId={this.props.projectId}
-                                    docType={'inventory'}
-                                    link={
-                                        Config.getPublicConfiguartion()
-                                            .downloads +
-                                        '/downloads/excel/inventory.xlsx'
-                                    }
-                                    header="addManyItems"
-                                    afterUpload={() => {
-                                        this.setState({
-                                            inventoryImportAttachmentModal: false,
-                                            isLoading: true
-                                        })
-                                        this.GetRecordOfLog(
-                                            this.state.isCustom === true
-                                                ? this.state.documentObj
-                                                    .documentApi.getCustom
-                                                : this.state.documentObj
-                                                    .documentApi.get,
-                                            this.props.projectId,
-                                        );
-                                    }}
-                                />
-                            </div>
-                        </SkyLightStateless>
-                    </div>
-                ) : null}
-                {/* End Material Inventory Import Section  Ahmed Yousry  */}
-
+                {/***************************start export******************************* */}
                 {this.props.document.id > 0 &&
                     this.state.showExportModal == true ? (
                         <div className="largePopup largeModal ">
@@ -2641,6 +1985,7 @@ class CommonLog extends Component {
                             </SkyLight>
                         </div>
                     ) : null}
+                {/***************************end export******************************* */}
                 {this.state.showInventoryItemsModal == true ? (
                     <div className="largePopup largeModal ">
                         <InventoryItemsModal
@@ -2658,7 +2003,7 @@ class CommonLog extends Component {
                     </div>
                 ) : null}
 
-                {/***************************charts******************************* */}
+                {/***************************start charts******************************* */}
                 {this.state.showChart == true ? (
                     <div className="largePopup largeModal ">
                         <SkyLightStateless

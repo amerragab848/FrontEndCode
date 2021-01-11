@@ -3,7 +3,7 @@ import DropboxChooser from 'react-dropbox-chooser';
 import GooglePicker from 'react-google-picker';
 import Dropzone from 'react-dropzone-uploader';
 import { getDroppedOrSelectedFiles } from 'html5-file-selector';
- 
+
 import Drive from '../../Styles/images/gdrive.png';
 import dropbox from '../../Styles/images/dropbox.png';
 
@@ -13,12 +13,6 @@ import * as communicationActions from '../../store/actions/communication';
 
 import Config from '../../Services/Config';
 import Resources from '../../resources.json';
-
-// import classNames from 'classnames';
-// import AttachUpload from '../../Styles/images/attacthUpload.png';
-// import AttachDrag from '../../Styles/images/attachDraggable.png';
-// import Resources from '../../resources.json';
-
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UploadAttachmentWithProgress extends Component {
@@ -50,7 +44,6 @@ class UploadAttachmentWithProgress extends Component {
             };
             selectedFiles.push(newFile);
         });
-
         this.props.actions.uploadFileLinks(
             'UploadFilesModalLinksByDocId?docId=' +
             this.props.docId +
@@ -80,6 +73,7 @@ class UploadAttachmentWithProgress extends Component {
                 docTypeId: this.props.docTypeId,
                 docId: this.props.docId,
                 parentId: this.state.parentId,
+                projectId: this.props.projectId
             };
             this.props.actions.uploadFile('BlobUpload', formData, header);
         });
@@ -103,14 +97,7 @@ class UploadAttachmentWithProgress extends Component {
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    extensions={[
-                        '.pdf',
-                        '.doc',
-                        '.docx',
-                        '.png',
-                        '.dwg',
-                        '.rvt',
-                    ]}>
+                    extensions={['.pdf', '.doc', '.docx', '.png', '.dwg', '.rvt',]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
@@ -169,6 +156,7 @@ class UploadAttachmentWithProgress extends Component {
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
             parentId: this.state.parentId,
+            projectId: this.props.projectId
         };
         let url = Config.getPublicConfiguartion().static + 'PM/api/Procoor/BlobUpload';
         return { url: url, headers: header };
@@ -180,9 +168,7 @@ class UploadAttachmentWithProgress extends Component {
             this.uploadBtnRef.current.click();
             this.setState({ fileStatus: '' });
             if (response) {
-                this.props.actions.insertFiletoAttachments(
-                    JSON.parse(response),
-                );
+                this.props.actions.insertFiletoAttachments(JSON.parse(response));
             }
         }
     };
@@ -249,9 +235,9 @@ class UploadAttachmentWithProgress extends Component {
 
                     <div className="drives__upload">
                         <label className="btn__upload" onClick={() => this.addBtnRef.current.click()}> {Resources.openMyFolders[currentLanguage]}</label>
-                        <span class="upload__border"></span>
+                        <span className="upload__border"></span>
                         <div className="drive__wrapper">
-                            <h2 class="zero"> {Resources.uploadFrom[currentLanguage]}</h2>
+                            <h2 className="zero"> {Resources.uploadFrom[currentLanguage]}</h2>
                             {Config.IsAllow(this.props.ShowGoogleDrive) ? this.renderGoogleDrive() : null}
                             {Config.IsAllow(this.props.ShowDropBox) ? this.renderDropBox() : null}
                         </div>

@@ -5,7 +5,7 @@ import moment from "moment";
 import Resources from "../../../resources.json";
 import { isEqual } from 'lodash';
 import LoadingSection from "../../publicComponants/LoadingSection";
-import { Slider } from 'react-semantic-ui-range';
+// import { Slider } from 'react-semantic-ui-range';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 let arrColumn = ["arrange", "quantity", "unitPrice"];
@@ -58,11 +58,12 @@ export default class CustomGrid extends Component {
             }
         });
 
-        var savedGrid = JSON.parse(localStorage.getItem(this.props.gridKey)) || [];
-
-        if (savedGrid.Filters) {
+        var savedGrid = JSON.parse(localStorage.getItem(this.props.gridKey)) || { groups: JSON.stringify([]), Filters: JSON.stringify([]), columnsList: JSON.stringify([]) };
+        
+        var parsedFilters = JSON.parse(savedGrid.Filters)
+         
+        if (parsedFilters.length > 0) {
             let rows = [...this.state.filteredRows];
-            var parsedFilters = JSON.parse(savedGrid.Filters)
             var obj = {};
             this.setState({ filterLoading: true })
 
@@ -75,9 +76,8 @@ export default class CustomGrid extends Component {
             this.getRowsFilter(rows, obj, 0);
 
             //this.chunkData(0);
-        } 
-        // else {
-
+        }
+        // else { 
         //     this.chunkData(0);
         // }
 
@@ -87,7 +87,7 @@ export default class CustomGrid extends Component {
 
         let itemsColumns = this.props.cells;
 
-        if (savedGrid.length === 0) {
+        if (JSON.parse(savedGrid.columnsList).length === 0) {
 
             var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
             let newFilterLst = [];
@@ -546,10 +546,28 @@ export default class CustomGrid extends Component {
         })
         //return tempArray;
     }
+
+    timeLineBalls = (n, onClick, current, key) =>
+        Array(n).fill(0).map((i, index) => (
+            <div
+                key={index}
+                className={`timeline__ball ${current >= index ? "active" : null}`}
+                onClick={() => onClick(key, (index + 1) * 12)} >
+                {index + 1}
+            </div>
+        ));
+
+    intermediaryBalls = 4;
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
+
+            let container = (document.getElementById('grid__column--content').offsetWidth * 0.5) * 0.47 * 0.8
+            let BallsWidth = container / 4
+            let activeWidth = (item.width * container / BallsWidth) - BallsWidth
+            let diff = (activeWidth / BallsWidth) * 4
+
             return (
 
                 <div className="grid__content" key={item.field}>
@@ -560,15 +578,13 @@ export default class CustomGrid extends Component {
                     </div>
                     {item.field == 'id' || item.type === "check-box" ? null :
                         <p className="rangeSlider">
-                            <Slider
-                                key={item.field} discrete color="blue" inverted={false}
-                                settings={{
-                                    start: parseInt(item.width ? item.width : 2), min: 5, max: 50, step: 5,
-                                    onChange: e => { this.handleChangeWidth(item.field, e); },
-                                }}
-                            />
-                            <label className="rangeLabel" color="red"> Width: {item.width} px </label>
-                        </p>}
+                            <div className="timeline" id="timeline">
+                                <div className="timeline__progress" style={{ width: `${activeWidth - (activeWidth > BallsWidth ? diff : 0)}px` }} />
+                                {this.timeLineBalls(4, this.handleChangeWidth, (item.width / 12) - 1, item.field)}
+                            </div>
+                            <label className="rnageWidth">width</label>
+                        </p>
+                    }
                 </div>
             )
         })
@@ -772,7 +788,7 @@ export default class CustomGrid extends Component {
                         <div className="grid__column--title">
                             <h2>{Resources.gridColumns[currentLanguage]}</h2>
                         </div>
-                        <div className="grid__column--content">
+                        <div className="grid__column--content" id="grid__column--content">
                             {RenderPopupShowColumns}
                         </div>
                         <div className="grid__column--footer">

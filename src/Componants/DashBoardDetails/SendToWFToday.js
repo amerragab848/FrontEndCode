@@ -11,8 +11,10 @@ import GridCustom from "../Templates/Grid/CustomGrid";
 import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from 'formik';
+import Config from '../../Services/Config.js';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class SendToWFToday extends Component {
 
   constructor(props) {
@@ -154,7 +156,7 @@ class SendToWFToday extends Component {
 
     this.props.actions.RouteToTemplate();
 
-    Api.get("GetSendToWFTodayDetails").then(result => {
+    Api.get("GetSendToWFTodayDetails", undefined, moduleId).then(result => {
       result.forEach(row => {
         if (row) {
           let obj = {
@@ -178,6 +180,7 @@ class SendToWFToday extends Component {
       });
     });
   };
+
   cellClick = (rowId, colID) => {
 
     if (colID != 0 && colID != 1) {
@@ -204,7 +207,8 @@ class SendToWFToday extends Component {
         this.props.history.push({ pathname: "/" + rowData.docLink, search: "?id=" + encodedPaylod });
       }
     }
-  }; 
+  };
+
   onRowClick = (obj) => {
     if (this.state.RouteEdit !== '') {
       let objRout = {
@@ -224,9 +228,11 @@ class SendToWFToday extends Component {
       });
     }
   };
+
   handleChange = (name, value) => {
     this.setState({ [name]: value })
   };
+
   getSearchData = () => {
     this.setState({ isLoading: true })
 
@@ -234,9 +240,10 @@ class SendToWFToday extends Component {
     let toDate = moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
     Api.get("GetSendToWFTodayDetails?fromDate=" + fromDate + "&toDate=" + toDate).then(res => {
-      this.setState({rows: res != null ? res : [], isLoading: false })
+      this.setState({ rows: res != null ? res : [], isLoading: false })
     })
   };
+
   render() {
     const dataGrid = this.state.isLoading === false ? (
       <GridCustom

@@ -13,7 +13,7 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import DataService from "../../Dataservice";
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
-import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
+import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Config from "../../Services/Config.js";

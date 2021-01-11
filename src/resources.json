@@ -2788,7 +2788,7 @@
         "ar": "اكتب الرسالة هنا"
     },
     "replyletter": {
-        "en": "Reply Letter",
+        "en": "Reply On Letter",
         "ar": "رد على خطاب"
     },
     "letterNo": {
@@ -9179,6 +9179,10 @@
     "accumulativeAmount":{
          "en":"accumulative Amount",
          "ar":" تم الاضافه بواسطه"
-    }
+    },
+    "updateMaterialInventoryQuantitiesAndPrices":{
+        "en":"Update Material Inventory Quantities And Prices",
+        "ar":"تحديث كميات واسعار المخزن"
+   }
  
 }

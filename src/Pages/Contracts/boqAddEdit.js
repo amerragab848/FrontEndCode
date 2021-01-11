@@ -10,8 +10,8 @@ import { toast } from 'react-toastify';
 import { bindActionCreators } from 'redux';
 import * as Yup from 'yup';
 import Api from '../../api';
-import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
-import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription';
+//import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
+//import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
@@ -571,16 +571,7 @@ class boqAddEdit extends Component {
 
             this.setState({ Disciplines: [...res], isLoading: false });
         });
-        DataService.GetDataListCached(
-            'GetAccountsDefaultListForList?listType=currency',
-            'title',
-            'id',
-            'defaultLists',
-            'currency',
-            'listType',
-        ).then(res => {
-            this.setState({ currency: [...res], isLoading: false });
-        });
+       
     }
 
     fillSubDropDown(
@@ -921,13 +912,24 @@ class boqAddEdit extends Component {
 
         this.setState({ CurrStep: stepNo });
 
-        //if (stepNo == 1) {
-        // this.setState({ loadingAddItemModel: true });
-        //`../../Pages/ReportsCenter/
-        // import(`../../Componants/OptionsPanels/AddItemDescription`).then(module => { 
-        //     this.setState({ AddItemDescription: module.default, loadingAddItemModel: false })
-        // }); 
-        //}
+        if (stepNo == 1) {
+                import(`../../Componants/OptionsPanels/AddItemDescription`).then(module => { 
+                    this.setState({ AddItemDescription: module.default })
+                }); 
+        }
+        if(stepNo ==2)
+        {
+            DataService.GetDataListCached(
+                'GetAccountsDefaultListForList?listType=currency',
+                'title',
+                'id',
+                'defaultLists',
+                'currency',
+                'listType',
+            ).then(res => {
+                this.setState({ currency: [...res], isLoading: false });
+            });
+        }
 
     };
 
@@ -1246,6 +1248,9 @@ class boqAddEdit extends Component {
                 rowActions={this.rowActions}
                 rowClick={cell => {
                     if (cell.field != 'select-row' && cell.field != 'unitPrice') {
+                        import(`../../Componants/OptionsPanels/editItemDescription`).then(module => { 
+                            this.setState({ EditItemDescription: module.default })
+                        }); 
                         this.setState({
                             showPopUp: true,
                             btnText: 'save',
@@ -1268,6 +1273,8 @@ class boqAddEdit extends Component {
 
     render() {
 
+        let AddItemDescription=this.state.AddItemDescription
+        let EditItemDescription=this.state.EditItemDescription
         const contractContent = (
             <Fragment>
                 <div className="document-fields">
@@ -2175,7 +2182,7 @@ class boqAddEdit extends Component {
             </Fragment>
         ) : <LoadingSection />;
 
-        let itemsContent = this.state.isLoadingEdit === false && this.state.CurrStep == 1 ? (
+        let itemsContent = this.state.isLoadingEdit === false && this.state.CurrStep == 1 && EditItemDescription !=null ? (
             <Fragment>
                 <div
                     className=" proForm datepickerContainer customProform document-fields"

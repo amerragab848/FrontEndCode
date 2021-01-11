@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
+import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
@@ -16,7 +16,6 @@ import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescription";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
@@ -24,7 +23,6 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Api from "../../api";
-import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
@@ -54,7 +52,6 @@ class variationOrderAddEdit extends Component {
       if (index == 0) {
         try {
           let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
           docId = obj.docId;
           projectId = obj.projectId;
           projectName = obj.projectName;
@@ -196,7 +193,8 @@ class variationOrderAddEdit extends Component {
       showDeleteModal: false,
       selectedrow: '',
       editdRow: {},
-      showPopUp: false
+      showPopUp: false,
+      AddItemDescription:null
     }
 
     if (!Config.IsAllow(159) && !Config.IsAllow(158) && !Config.IsAllow(160)) {
@@ -654,6 +652,15 @@ class variationOrderAddEdit extends Component {
 
   changeCurrentStep = stepNo => {
     this.setState({ CurrentStep: stepNo });
+    if(stepNo==1)
+    {
+      import(`../../Componants/OptionsPanels/AddItemDescription`).then(module => { 
+        this.setState({ AddItemDescription: module.default })
+      })
+      import(`../../Componants/OptionsPanels/editItemDescription`).then(module => { 
+        this.setState({ EditItemDescription: module.default })
+      })
+    }
   };
 
   clickHandlerCancelMain = () => {
@@ -681,16 +688,16 @@ class variationOrderAddEdit extends Component {
   onRowClick = (value) => {
     this.setState({ LoadingSectionEdit: true, editdRow: value });
     setTimeout(() => { this.setState({ showPopUp: true, LoadingSectionEdit: false }); }, 200);
-    setTimeout(() => { console.log(this.state.editdRow) }, 700);
-    this.simpleDialog1.show();
-
-  }
+    this.simpleDialog1.show();   
+}
 
   disablePopUp = () => {
     this.setState({ showPopUp: false, });
   }
 
   render() {
+    const AddItemDescription=this.state.AddItemDescription
+    const EditItemDescription=this.state.EditItemDescription
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -937,20 +944,21 @@ class variationOrderAddEdit extends Component {
                 :
                 <Fragment>
                   <div className="subiTabsContent feilds__top">
-                    <AddItemDescription
-                      docLink={this.state.document.isRaisedPrices =="true"||this.state.document.isRaisedPrices ==true ? "" : "/Downloads/Excel/VoItems.xlsx"}
-                      showImportExcel={this.state.document.isRaisedPrices}
-                      docType={this.state.document.isRaisedPrices =="true" ? "VoItemPrices" : "voItems"}
-                      isViewMode={this.state.isViewMode}
-                      docId={this.state.docId}
-                      mainColumn="changeOrderId"
-                      addItemApi="AddVOItems"
-                      projectId={this.state.projectId}
-                      showItemType={false}
-                      showBoqType={true}
-                    />
+                    {this.state.AddItemDescription !=null && this.state.CurrentStep ===1?(
+                          <AddItemDescription
+                          docLink={this.state.document.isRaisedPrices =="true"||this.state.document.isRaisedPrices ==true ? "" : "/Downloads/Excel/VoItems.xlsx"}
+                          showImportExcel={this.state.document.isRaisedPrices}
+                          docType={this.state.document.isRaisedPrices =="true" ? "VoItemPrices" : "voItems"}
+                          isViewMode={this.state.isViewMode}
+                          docId={this.state.docId}
+                          mainColumn="changeOrderId"
+                          addItemApi="AddVOItems"
+                          projectId={this.state.projectId}
+                          showItemType={false}
+                          showBoqType={true}
+                          />
+                    ):null}
                     <div className="doc-pre-cycle">
-
                       {this.state.isLoading ? <LoadingSection /> :
                         <GridCustom
                           gridKey="Variation-Order-Items-Grid"
@@ -958,7 +966,11 @@ class variationOrderAddEdit extends Component {
                           groups={[]} pageSize={50}
                           actions={this.state.document.executed === "no" ? this.actions : []}
                           rowActions={this.rowActions}
-                          rowClick={cell => { (this.state.document.executed === "No" || this.state.document.executed === "no") ? this.onRowClick(cell) : toast.error("You Can not Edit Executed Document") }}
+                          rowClick={cell => { 
+                            (this.state.document.executed === "No" || this.state.document.executed === "no") ? 
+                            this.onRowClick(cell) :
+                             toast.error("You Can not Edit Executed Document")
+                           }}
                         />
                       }
                       <div>
@@ -980,7 +992,7 @@ class variationOrderAddEdit extends Component {
                         title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}>
                         <Fragment>
                           <div className=" proForm datepickerContainer customProform document-fields" key="editItem">
-                            {this.state.LoadingSectionEdit ? <LoadingSection /> :
+                            {this.state.LoadingSectionEdit===false && this.state.EditItemDescription !=null &&this.state.CurrentStep ===1 ?
                               <EditItemDescription
                                 showImportExcel={false}
                                 docType="vo"
@@ -995,7 +1007,7 @@ class variationOrderAddEdit extends Component {
                                 onRowClick={this.state.showPopUp}
                                 disablePopUp={this.disablePopUp} showBoqType={true}
                               />
-                            }
+                              :<LoadingSection /> }
                           </div>
                         </Fragment>
                       </SkyLight>
