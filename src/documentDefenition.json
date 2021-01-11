@@ -17732,6 +17732,7 @@
         "showInExport": false,
         "isCustom": true,
         "exportDataType": "d"
+       
       },
       {
         "field": "lastWorkFlow",
@@ -18022,7 +18023,7 @@
         "type": "date",
         "showInExport": false,
         "isCustom": false,
-        "isRange": true,
+        "isRange": false,
         "isSubmittals":true
       },
       
