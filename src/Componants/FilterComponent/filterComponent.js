@@ -149,21 +149,7 @@ class FilterComponent extends Component {
     this.state.valueColumns.map(column => {
       if (column.type === "date") {
         if (column.value != "") {
-          if (column.isSubmittals === true) {
-
-            let spliteDate = column.value.split("|");
-            if (spliteDate.length > 1) {
-              let p1=spliteDate[0];
-              let p2=spliteDate[1];
-              let fPart = moment(p1).format("YYYY-MM-DD");
-              let sPart = moment(p2).format("YYYY-MM-DD");
-              query[column.field] = fPart+"|"+sPart;//column.value
-            }
-            else {
-              query[column.field] = moment(column.value).format("YYYY-MM-DD");
-            }
-          }
-          else {
+        
 
             let spliteDate = column.value.split("|");
             if (spliteDate.length > 1) {
@@ -173,7 +159,7 @@ class FilterComponent extends Component {
             else {
               query[column.field] = column.value;
             }
-          }
+       
         }
       }
       else if (column.type === "number") {
@@ -210,14 +196,10 @@ class FilterComponent extends Component {
 
   onChange = (date, index, columnName,type,key,isSubmittals) => {
     let margeDate;
-   if(isSubmittals){
-     margeDate = date != null ? moment(date[0]).format("YYYY-MM-DD") + "|" + moment(date[1]).format("YYYY-MM-DD") : "";
-
-   }
-   else{
+  
     margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
 
-   }
+  
 
     let lastState = this.state;
 
@@ -301,7 +283,7 @@ class FilterComponent extends Component {
                         <div className={"form-group linebylineInput " + classX} key={index}>
                           <DatePicker title={column.name} startDate={this.state[index + "-column"]} index={index} key={index}
                             handleChange={date =>
-                              this.getValueHandler(date, column.type, column.field, index)
+                              this.getValueHandler(date, column.type, column.field, index,column.isSubmittals)
                             } />
                         </div>
                       );

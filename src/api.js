@@ -88,9 +88,9 @@ export default class Api {
     }
 
     static getDataAPIsByCore(route, params, verb) {
-        
+
         let apiPrefix = modules.find(x => x.key == 2);
-        const host = Config.getPublicConfiguartion().static + apiPrefix.api; 
+        const host = Config.getPublicConfiguartion().static + apiPrefix.api;
         //const host = Config.getPublicConfiguartion().exportCore; 
         const url = `${host}${route}`;
         let json = null;

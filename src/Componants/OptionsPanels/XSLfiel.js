@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import Dropzone from 'react-dropzone'; 
+import Dropzone from 'react-dropzone';
 import classNames from 'classnames';
 import AttachUpload from '../../Styles/images/attacthUpload.png';
 import AttachDrag from '../../Styles/images/attachDraggable.png';
@@ -11,7 +11,7 @@ import Api from '../../api';
 
 import * as communicationActions from '../../store/actions/communication';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-let projectId=localStorage.getItem('lastSelectedProject') == null ? null : localStorage.getItem('lastSelectedProject');
+let projectId = localStorage.getItem('lastSelectedProject') == null ? null : localStorage.getItem('lastSelectedProject');
 
 class XSLfile extends Component {
     constructor(props) {
@@ -74,33 +74,18 @@ class XSLfile extends Component {
             for (var item in submittalOptions) {
                 formData.append(item, submittalOptions[item]);
             }
-            Api.postFile(
-                'UploadExcelFilesTemplate?projectId=' +
-                this.props.projectId +
-                '&fromCompanyId=' +
-                this.props.companyId +
-                '&fromContactId=' +
-                this.props.contactId +
-                '&toCompanyId=' +
-                this.props.toCompanyId +
-                '&toContactId=' +
-                this.props.toContactId,
-                formData,
-                header,
-            )
-                .then(resp => {
-                    if (this.props.afterUpload != undefined) {
-                        this.setState({ Isloading: false });
-                        this.props.afterUpload();
-                    }
-                    setTimeout(() => {
-                        this.setState({
-                            _className: 'zeropercent',
-                            Isloading: false,
-                        });
-                    }, 1000);
-                })
-                .catch(ex => {
+            Api.postFile('UploadExcelFilesTemplate?projectId=' + this.props.projectId + '&fromCompanyId=' + this.props.companyId + '&fromContactId=' + this.props.contactId + '&toCompanyId=' + this.props.toCompanyId + '&toContactId=' + this.props.toContactId, formData, header).then(resp => {
+                if (this.props.afterUpload != undefined) {
+                    this.setState({ Isloading: false });
+                    this.props.afterUpload();
+                }
+                setTimeout(() => {
+                    this.setState({
+                        _className: 'zeropercent',
+                        Isloading: false,
+                    });
+                }, 1000);
+            })  .catch(ex => {
                     toast.error(
                         Resources['operationCanceled'][currentLanguage],
                     );
@@ -116,7 +101,7 @@ class XSLfile extends Component {
             let docType = this.props.docType;
             let header = { docType: docType };
             formData.append('disciplineId', this.props.disciplineId);
-            formData.append('specsSectionId',this.props.specsSectionId);
+            formData.append('specsSectionId', this.props.specsSectionId);
             this.setState({ Isloading: true });
             Api.postFile('UploadExcelFiles?docId=' + this.props.projectId, formData, header).then(resp => {
                 if (this.props.afterUpload != undefined) {
@@ -126,8 +111,7 @@ class XSLfile extends Component {
                 setTimeout(() => {
                     this.setState({ _className: 'zeropercent' });
                 }, 1000);
-            })
-                .catch(ex => {
+            })  .catch(ex => {
                     toast.error(
                         Resources['operationCanceled'][currentLanguage],
                     );
@@ -240,7 +224,7 @@ class XSLfile extends Component {
             let header = { docType: docType };
             Api.postFile(
                 'AddMultiplePcoItemsFromExcel?docId=' +
-                this.props.docId+'&action='+this.props.action,
+                this.props.docId + '&action=' + this.props.action,
                 formData,
                 header,
             )
@@ -248,7 +232,7 @@ class XSLfile extends Component {
                     if (this.props.afterUpload != undefined) {
                         this.props.afterUpload();
                         toast.success(Resources['operationSuccess'][currentLanguage]);
-                        }
+                    }
                     setTimeout(() => {
                         this.setState({ _className: 'zeropercent' });
                     }, 1000);
@@ -265,49 +249,49 @@ class XSLfile extends Component {
     }
 
     updateMaterialInventoryQuantityHandler = () => {
-        if(projectId !=null){
-        if (this.state.acceptedFiles.length > 0) {
-            this.setState({
-                Isloading: true,
-            });
-            let formData = new FormData();
-            let file = this.state.acceptedFiles[0];
-            let fileName = file.name;
-            let testName = [];
-            testName.push(fileName);
-            formData.append('file0', file);
-            let docType = this.props.docType;
-            let header = { docType: docType };
-            Api.postFile(
-                'UpdateInventoryQuantitiesAndPricesFromExcel?projectId=' +
-                projectId,
-                formData,
-                header,
-            )
-                .then(resp => {
-                    if (this.props.afterUpload != undefined) {
-                        this.props.afterUpload();
-                        toast.success(Resources['operationSuccess'][currentLanguage]);
-                        }
-                    setTimeout(() => {
-                        this.setState({ _className: 'zeropercent' });
-                    }, 1000);
-                    this.setState({
-                        Isloading: false,
-                    });
-                })
-                .catch(ex => {
-                    toast.error(
-                        Resources['operationCanceled'][currentLanguage],
-                    );
+        if (projectId != null) {
+            if (this.state.acceptedFiles.length > 0) {
+                this.setState({
+                    Isloading: true,
                 });
+                let formData = new FormData();
+                let file = this.state.acceptedFiles[0];
+                let fileName = file.name;
+                let testName = [];
+                testName.push(fileName);
+                formData.append('file0', file);
+                let docType = this.props.docType;
+                let header = { docType: docType };
+                Api.postFile(
+                    'UpdateInventoryQuantitiesAndPricesFromExcel?projectId=' +
+                    projectId,
+                    formData,
+                    header,
+                )
+                    .then(resp => {
+                        if (this.props.afterUpload != undefined) {
+                            this.props.afterUpload();
+                            toast.success(Resources['operationSuccess'][currentLanguage]);
+                        }
+                        setTimeout(() => {
+                            this.setState({ _className: 'zeropercent' });
+                        }, 1000);
+                        this.setState({
+                            Isloading: false,
+                        });
+                    })
+                    .catch(ex => {
+                        toast.error(
+                            Resources['operationCanceled'][currentLanguage],
+                        );
+                    });
+            }
+        } else {
+            toast.error("Please Select Project")
         }
-    }else{
-        toast.error("Please Select Project")
-    }
     }
 
-    drawinListItemsTemplateUpload=()=>{
+    drawinListItemsTemplateUpload = () => {
         if (this.state.acceptedFiles.length > 0) {
             this.setState({
                 Isloading: true,
@@ -316,7 +300,7 @@ class XSLfile extends Component {
             let file = this.state.acceptedFiles[0];
             let fileName = file.name;
             let testName = [];
-            let header="";
+            let header = "";
             testName.push(fileName);
             formData.append('file0', file);
             let docId = this.props.docId;
@@ -354,38 +338,25 @@ class XSLfile extends Component {
             <div className="doc-pre-cycle">
                 <header>
                     <h2 className="zero">
-                        {this.state.header
-                            ? Resources[this.state.header][currentLanguage]
-                            : ''}
+                        {this.state.header ? Resources[this.state.header][currentLanguage] : ''}
                     </h2>
                 </header>
                 <div style={{ position: 'relative' }}>
                     <React.Fragment>
-                        {this.props.CantDownload ? null : this.props.link !=""?(
+                        {this.props.CantDownload ? null : this.props.link != "" ? (
                             <div className="fileDownUp">
                                 <a href={this.props.link}>
-                                    <i
-                                        className="fa fa-download"
-                                        aria-hidden="true"></i>
-                                    {
-                                        Resources.downloadExcelFormatFile[
-                                        currentLanguage
-                                        ]
-                                    }
+                                    <i className="fa fa-download" aria-hidden="true"></i> {Resources.downloadExcelFormatFile[currentLanguage]}
                                 </a>
                             </div>
-                        ):null}
+                        ) : null}
 
                         <Dropzone
                             multiple={false}
                             accept={this.props.CustomAccept ? '.xer' : '.xlsx'}
                             onDrop={e => this.onDrop(e)}
-                            onDragLeave={e =>
-                                this.setState({ _className: ' ' })
-                            }
-                            onDragOver={e =>
-                                this.setState({ _className: 'dragHover' })
-                            }
+                            onDragLeave={e => this.setState({ _className: ' ' })}
+                            onDragOver={e => this.setState({ _className: 'dragHover' })}
                             onDropAccepted={e => this.onDropAcceptedHandler(e)}
                             onDropRejected={this.onDropRejected}>
                             {({
@@ -410,27 +381,12 @@ class XSLfile extends Component {
                                                     <img src={AttachUpload} />
                                                     <div className="dragUpload">
                                                         <p>
-                                                            {
-                                                                Resources
-                                                                    .includeFiles[
-                                                                currentLanguage
-                                                                ]
-                                                            }
+                                                            {Resources.includeFiles[currentLanguage]}
                                                         </p>
                                                         <form>
-                                                            <input
-                                                                type="file"
-                                                                name="file"
-                                                                id="file"
-                                                                className="inputfile"
-                                                            />
+                                                            <input type="file" name="file" id="file" className="inputfile" />
                                                             <label>
-                                                                {
-                                                                    Resources
-                                                                        .upload[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.upload[currentLanguage]}
                                                             </label>
                                                         </form>
                                                     </div>
@@ -461,10 +417,7 @@ class XSLfile extends Component {
                                         {Resources.fileName[currentLanguage]}
                                         {this.state.acceptedFiles.length > 0 ? (
                                             <span>
-                                                {
-                                                    this.state.acceptedFiles[0]
-                                                        .name
-                                                }
+                                                {   this.state.acceptedFiles[0].name}
                                             </span>
                                         ) : null}
                                     </p>
@@ -496,13 +449,13 @@ class XSLfile extends Component {
                                                     ? this.CustomUpload
                                                     : this.props.submittalItemdocumentTemplate
                                                         ? this.submittalItemsTemplateUpload
-                                                        :this.props.drawinListItemdocumentTemplate?
-                                                        this.drawinListItemsTemplateUpload
-                                                        :this.props.uploadPcoItems?
-                                                        this.PcoItemsTemplateUpload
-                                                        :this.props.updateMaterialInventoryQuantity?
-                                                        this.updateMaterialInventoryQuantityHandler
-                                                        :this.upload
+                                                        : this.props.drawinListItemdocumentTemplate ?
+                                                            this.drawinListItemsTemplateUpload
+                                                            : this.props.uploadPcoItems ?
+                                                                this.PcoItemsTemplateUpload
+                                                                : this.props.updateMaterialInventoryQuantity ?
+                                                                    this.updateMaterialInventoryQuantityHandler
+                                                                    : this.upload
                                         }>
                                         {Resources['upload'][currentLanguage]}
                                     </button>

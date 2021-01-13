@@ -59,9 +59,9 @@ export default class CustomGrid extends Component {
         });
 
         var savedGrid = JSON.parse(localStorage.getItem(this.props.gridKey)) || { groups: JSON.stringify([]), Filters: JSON.stringify([]), columnsList: JSON.stringify([]) };
-        
-        var parsedFilters = JSON.parse(savedGrid.Filters)
-         
+
+        var parsedFilters = savedGrid.Filters && savedGrid.Filters.length > 0 ? JSON.parse(savedGrid.Filters) : []
+
         if (parsedFilters.length > 0) {
             let rows = [...this.state.filteredRows];
             var obj = {};

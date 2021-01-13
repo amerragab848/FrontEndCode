@@ -18061,7 +18061,7 @@
         "type": "date",
         "showInExport": false,
         "isCustom": false,
-        "isRange": true,
+        "isRange": false,
         "isSubmittals":true
       },
       
