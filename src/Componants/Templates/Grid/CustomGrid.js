@@ -82,11 +82,8 @@ export default class CustomGrid extends Component {
         // }
 
         this.setState({ GridLoading: true })
-
         var currentGP = [];
-
         let itemsColumns = this.props.cells;
-
         if (JSON.parse(savedGrid.columnsList).length === 0) {
 
             var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
@@ -117,7 +114,7 @@ export default class CustomGrid extends Component {
             columns: itemsColumns,
             groups: currentGP,
             groupsList: currentGP,
-            setFilters: savedGrid.Filters ? obj : {},
+            setFilters: JSON.parse(savedGrid.Filters).length > 0 ? obj : itemsColumns,
             GridLoading: false,
             filterLoading: false,
             ...state
@@ -348,13 +345,9 @@ export default class CustomGrid extends Component {
     getRowsFilter = (rows, _filters, index) => {
 
         if (this.state.filteredRows.length > 0) {
-
             let rowsList = [];
-
             let matched = 0;
-
             let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k], n), {});
-
             if (Object.keys(filters).length > 1) {
 
                 rows.forEach(row => {
@@ -388,9 +381,9 @@ export default class CustomGrid extends Component {
                                 }
                             } else if (typeof filters[key] === "number") {
                                 matched = 0;
-                            } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                            } else if ((row[`${key}`].toString().toUpperCase()).includes(`${filters[key]}`)) {
                                 matched++;
-                            } else if (row[`${key}`] === `${filters[key]}`) {
+                            } else if (row[`${key}`].toString().toUpperCase() === `${filters[key]}`) {
                                 matched++;
                             }
                             else {
@@ -452,9 +445,7 @@ export default class CustomGrid extends Component {
                     });
                     if (matched > 0) rowsList.push(row);
                 });
-
                 let newRows = Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows;
-
                 this.setState({
                     rows: newRows,
                     Loading: false

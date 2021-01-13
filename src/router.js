@@ -66,6 +66,9 @@ const CorrRecievedSent = AsyncComponent(() =>
 const WFActivityReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/WFActivityReport'),
 );
+const DetailedFollowUpReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/DetailedFollowUpReport'),
+);
 const ReportsMenu = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ReportsMenu'),
 );
@@ -1051,6 +1054,7 @@ let originalRoutes = [
         component={ProjectScheduleAddEdit}
     />,
     <Route key="r-104" path="/WFActivityReport" component={WFActivityReport} />,
+    
     <Route key="r-105" path="/boqStructure" component={BoqStructure} />,
     <Route
         key="r-106"
@@ -1398,6 +1402,7 @@ let originalRoutes = [
         component={SendToWFToday}
     />,
     <Route key="r-202" path="/DesignDiscipline" component={DesignDiscipline} />,
+    <Route key="r-203" path="/DetailedFollowUpReport" component={DetailedFollowUpReport} />,
 
 
 ];

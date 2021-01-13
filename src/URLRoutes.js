@@ -2264,6 +2264,13 @@ var routes = [
         settings: { OtherReports: true, permission: 4017, order: 5 }
     },
     {
+        route: "DetailedFollowUpReport",
+        moduleId: "OtherReports/DetailedFollowUpReport",
+        title: "DetailedFollowUpReport",
+        nav: true,
+        settings: { OtherReports: true, permission: 4030, order: 15 }
+    }, 
+    {
         route: "WFUsageReport",
         moduleId: "OtherReports/WFUsageReport",
         title: "workFlowUsageReport",
