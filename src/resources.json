@@ -3679,6 +3679,10 @@
         "en": "Boq Cost Report",
         "ar": "تقرير قائمة الكميات"
     },
+    "DetailedFollowUpReport": {
+        "en": "Detailed FollowUp Report",
+        "ar": "تقرير تفاصيل متابعات الدورة المستندية"
+    },
     "timeSheetUserDetails": {
         "en": "Time Sheet User Details",
         "ar": "تقرير تفصيل مشاريع المستخدم"
