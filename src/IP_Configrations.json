@@ -26,7 +26,8 @@
    "client_secret": "8eVDuCjah3JhAn1O",
   "commonLogApi": 1,
   "dashboardApi": 3,
+  "reportsApi": 4,
   "refCodeValidation": false,
-  "activeExport": true,
+  "activeExport": true,    
   "useBackResources": false
 }

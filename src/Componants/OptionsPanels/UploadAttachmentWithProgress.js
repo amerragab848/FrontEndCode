@@ -97,7 +97,7 @@ class UploadAttachmentWithProgress extends Component {
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    extensions={['.pdf', '.doc', '.docx', '.png', '.dwg', '.rvt',]}>
+                    extensions={['.pdf', '.doc', '.docx', '.png', '.dwg', '.rvt', '.rar', '.zip']}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
@@ -230,6 +230,7 @@ class UploadAttachmentWithProgress extends Component {
                         InputComponent={this.InputChooseFile}
                         submitButtonContent={this.UploadFiles}
                         getFilesFromEvent={this.getFilesFromEvent}
+                        maxSizeBytes={158000000}
                         classNames
                     />
 

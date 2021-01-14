@@ -3679,6 +3679,10 @@
         "en": "Boq Cost Report",
         "ar": "تقرير قائمة الكميات"
     },
+    "DetailedFollowUpReport": {
+        "en": "Detailed FollowUp Report",
+        "ar": "تقرير تفاصيل متابعات الدورة المستندية"
+    },
     "timeSheetUserDetails": {
         "en": "Time Sheet User Details",
         "ar": "تقرير تفصيل مشاريع المستخدم"
@@ -7246,6 +7250,10 @@
     "alternativeAccount": {
         "en": "Alternative Account",
         "ar": "الأكونت البديل"
+    },
+    "activeAlternativeAccount": {
+        "en": "Active Alternative Account",
+        "ar": "تفعيل الأكونت البديل"
     },
     "alternativeDate": {
         "en": "Alternative Date",
