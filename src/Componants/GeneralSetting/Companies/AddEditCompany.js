@@ -3,17 +3,18 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from "../../../api";
 import Dropdown from "../../OptionsPanels/DropdownMelcous";
-import Dropzone from "react-dropzone";
 import Resources from "../../../resources.json";
 import TokenStore from '../../../tokenStore'
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../publicComponants/LoadingSection";
 import Dataservice from "../../../Dataservice";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import config from "../../../Services/Config";
 import * as AdminstrationActions from '../../../store/actions/Adminstration'
 import { bindActionCreators } from 'redux';
-import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument"
+import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument";
+import Dropzone from "../../../Componants/OptionsPanels/UploadSingleFile";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
@@ -82,11 +83,12 @@ class AddEditCompany extends Component {
             imageFooter: {},
             imageFooterName: '',
             imageFooterIamge: '',
-            document: {}
+            document: {},
+            imageFooterPath:''
         }
     }
 
-    onDropImage(file) {
+    onDropImage = (file) => {
         let _formData = new FormData();
         _formData.append("file", file)
         this.setState({
@@ -186,7 +188,8 @@ class AddEditCompany extends Component {
                 res.companyRole = res.roleTitle;
                 this.setState({
                     document: res,
-                    imagePreview: res.logo,
+                    imagePreview: res.logoFileData,
+                    imageFooterPath: config.getPublicConfiguartion().downloads + "/" + res.footerPath,
                     sectionLoading: false,
                     selectedDiscipline: { label: res.disciplineTitle, value: res.disciplineId },
                     selectedCompanyRole: { label: res.roleTitle, value: res.roleId },
@@ -246,7 +249,8 @@ class AddEditCompany extends Component {
                 formData.append("companyId", this.state.companyID);
 
                 Api.postFile('UploadCompanyFooter?companyId=' + this.state.companyID, formData).then(res => {
-                    res.status === 200 ? toast.success(Resources["operationSuccess"][currentLanguage]) : toast.error(Resources["operationCanceled"][currentLanguage]);
+                    // res.status === 200 ? toast.success(Resources["operationSuccess"][currentLanguage]) : toast.error(Resources["operationCanceled"][currentLanguage]);
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
                     toast.error(Resources["operationCanceled"][currentLanguage]);
                 });
@@ -367,7 +371,7 @@ class AddEditCompany extends Component {
 
                                                     <div className='form-control fullWidthWrapper'>
                                                         <h2 className="upload__title">Upload Logo</h2>
-                                                        <section className="singleUploadForm">
+                                                        <section className="dropZoneUploader">
                                                             {this.state.imageName.length > 0 || this.state.companyID != 0 ?
                                                                 <aside className='thumbsContainer'>
                                                                     <div className="uploadedName ">
@@ -381,28 +385,19 @@ class AddEditCompany extends Component {
                                                                         </div>
                                                                         : null}
                                                                 </aside> : null}
-                                                            <Dropzone accept="image/*" onDrop={this.onDropImage.bind(this)}>
-                                                                {({ getRootProps, getInputProps }) => (
-                                                                    <div className="singleDragText" {...getRootProps()}>
-                                                                        <input {...getInputProps()} />
-                                                                        {this.state.imageName.length > 0 ?
-                                                                            null : <p>{Resources['dragFileHere'][currentLanguage]}</p>}
-                                                                        <button type='button' className="primaryBtn-1 btn smallBtn">{Resources['chooseFile'][currentLanguage]}</button>
-                                                                    </div>
-                                                                )}
-                                                            </Dropzone>
-                                                            {this.state.imageName.length > 0 ?
-                                                                <div className="removeBtn">
-                                                                    <button className="primaryBtn-2 btn smallBtn" type='button'
-                                                                        onClick={this.removeImage}>{Resources['clear'][currentLanguage]}</button>
-                                                                </div> : null}
+                                                            <Dropzone
+                                                                accept="image/*"
+                                                                onDrop={this.onDropImage}
+                                                            />
+
                                                         </section>
                                                     </div>
 
                                                     {this.state.companyID > 0 ?
                                                         <div className='form-control fullWidthWrapper'>
                                                             <h2 className="upload__title">Upload Company Image</h2>
-                                                            <section className="singleUploadForm">
+                                                            <section className="dropZoneUploader">
+
                                                                 {this.state.imageFooterIamge.length > 0 || this.state.companyID != 0 ?
                                                                     <aside className='thumbsContainer'>
                                                                         <div className="uploadedName ">
@@ -416,20 +411,15 @@ class AddEditCompany extends Component {
                                                                             </div>
                                                                             : null}
                                                                     </aside> : null}
-                                                                <Dropzone accept="image/*" onDrop={this.onDropImageFooter}>
-                                                                    {({ getRootProps, getInputProps }) => (
-                                                                        <div className="singleDragText" {...getRootProps()}>
-                                                                            <input {...getInputProps()} />
-                                                                            {this.state.imageFooterIamge.length > 0 ?
-                                                                                null : <p>{Resources['dragFileHere'][currentLanguage]}</p>}
-                                                                            <button type='button' className="primaryBtn-1 btn smallBtn">{Resources['chooseFile'][currentLanguage]}</button>
-                                                                        </div>
-                                                                    )}
-                                                                </Dropzone>
-                                                                {this.state.imageFooter.length > 0 ?
-                                                                    <div className="removeBtn">
-                                                                        <button className="primaryBtn-2 btn smallBtn" type='button' onClick={this.removeFooterImage}>{Resources['clear'][currentLanguage]}</button>
-                                                                    </div> : null}
+                                                                <Dropzone
+                                                                    accept="image/*"
+                                                                    onDrop={this.onDropImageFooter}
+                                                                />
+
+                                                                <div className="thumbUploadedImg">
+                                                                    {(this.state.imageFooterPath && this.state.companyID > 0) ? <img src={this.state.imageFooterPath} /> : null}
+                                                                </div>
+
                                                             </section>
                                                         </div> : null}
                                                     <div>
@@ -596,7 +586,7 @@ class AddEditCompany extends Component {
                                                                 </div>
                                                             </>
                                                             : null}
-                                                        <div className="slider-Btns">
+                                                        <div>
                                                             {this.state.isLoading === false ? (
                                                                 <button className="primaryBtn-1 btn" type="submit" >{Resources['save'][currentLanguage]}</button>
                                                             ) :

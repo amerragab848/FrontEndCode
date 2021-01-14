@@ -25,7 +25,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 
 
 const find = require("lodash/find");
@@ -2534,7 +2534,7 @@ class SubmittalAddEdit extends Component {
                     </div>
                   </div>
 
-                  <XSLfile
+                  <UploadSingleAttachment
                     key="docTemplate"
                     projectId={this.state.projectId}
                     docType={this.state.docType}

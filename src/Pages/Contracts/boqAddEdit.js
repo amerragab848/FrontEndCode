@@ -27,7 +27,7 @@ import Resources from '../../resources.json';
 import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -679,7 +679,7 @@ class boqAddEdit extends Component {
         this.setState({ value: event.target.value });
     };
 
-    getTabelData() {
+    getTabelData=()=> {
         let boqItemsList = [...this.state._items];
 
         if (boqItemsList.length === 0) {
@@ -719,7 +719,7 @@ class boqAddEdit extends Component {
                 //     });
                 // });
                 this.setState({
-                    _items: res,
+                    _items: res || [],
                     LoadingPage: false,
                     isLoading: false
                 });
@@ -2795,8 +2795,8 @@ class boqAddEdit extends Component {
             <Fragment>
                 {addItemContent}
                 <Fragment>
-                    <XSLfile key="boqStructure"
-                        docId={this.state.docId}
+                    <UploadSingleAttachment key="boqStructure"
+                        projectId={this.state.docId}
                         docType="boq2"
                         link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQStructure.xlsx"}
                         header="addManyItems"

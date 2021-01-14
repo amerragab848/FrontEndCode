@@ -4,11 +4,10 @@ import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import { withRouter } from 'react-router-dom';
 import Config from '../../Services/Config.js';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
-import { Resources } from '../../Resources';
-
+import { Resources } from '../../Resources'; 
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -79,6 +78,7 @@ class DocTemplateModal extends Component {
             updateMIQuantity: false
         };
     }
+
     componentWillMount() {
         if (this.state.docType == 'submittal') {
             this.setState({
@@ -97,8 +97,7 @@ class DocTemplateModal extends Component {
         }
         this.fillDropDowns();
     };
-
-
+ 
     fillDropDowns() {
         if (this.state.docType == 'submittal' || this.state.docType == "Letters") {
             dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + this.props.projectId, 'companyName', 'companyId', 'companies', this.props.projectId, 'projectId').then(result => {
@@ -139,15 +138,8 @@ class DocTemplateModal extends Component {
             });
         }
     }
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-    ) {
+
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, ) {
         if (event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -171,11 +163,7 @@ class DocTemplateModal extends Component {
         }
     }
 
-    handleChangeDropDownCycles(
-        event,
-        field,
-        selectedValue
-    ) {
+    handleChangeDropDownCycles(event, field, selectedValue) {
         if (event == null) return;
 
         let original_document = { ...this.state.documentCycle };
@@ -615,75 +603,29 @@ class DocTemplateModal extends Component {
                             ) : null
                         ) : null}
 
-                            <XSLfile
-                                key="docTemplate"
-                                projectId={this.state.projectId}
-                                companyId={
-                                    this.state.document != null
-                                        ? this.state.document.companyId
-                                        : null
-                                }
-                                contactId={
-                                    this.state.document != null
-                                        ? this.state.document.contactId
-                                        : null
-                                }
-                                toCompanyId={
-                                    this.state.document != null
-                                        ? this.state.document.toCompanyId
-                                        : null
-                                }
-                                toContactId={
-                                    this.state.document != null
-                                        ? this.state.document.toContactId
-                                        : null
-                                }
-                                disciplineId={
-                                    this.state.document != null
-                                        ? this.state.document.disciplineId
-                                        : null
-                                }
-                                specsSectionId={
-                                    this.state.document != null
-                                        ? this.state.document.specsSectionId
-                                        : null
-                                }
-                                submittalTypeId={
-                                    this.state.document != null
-                                        ? this.state.document
-                                            .submittalTypeId
-                                        : null
-                                }
-                                area={
-                                    this.state.document != null
-                                        ? this.state.selectedArea.label
-                                        : null
-                                }
-                                location={
-                                    this.state.document != null
-                                        ? this.state.selectedLocation.label
-                                        : null
-                                }
-                                contractId={
-                                    this.state.document != null
-                                        ? this.state.document.contractId
-                                        : null
-                                }
-                                approvalStatusId={
-                                    this.state.documentCycle != null
-                                        ? this.state.documentCycle
-                                            .approvalStatusId
-                                        : null
-                                }
-                                docType={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? "inventoryQuantityAndPrice" : this.state.docType}
-                                documentTemplate={this.state.docType == 'materialInventory' ? false : true}
-                                link={this.state.docTempLink}
-                                header="addManyItems"
-                                updateMaterialInventoryQuantity={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? true : false}
-                                afterUpload={() => {
-                                    this.props.afterUpload()
-                                }}
-                            />
+                        <UploadSingleAttachment
+                            key="docTemplate"
+                            projectId={this.state.projectId}
+                            companyId={this.state.document != null ? this.state.document.companyId : null}
+                            contactId={this.state.document != null ? this.state.document.contactId : null}
+                            toCompanyId={this.state.document != null ? this.state.document.toCompanyId : null}
+                            toContactId={this.state.document != null ? this.state.document.toContactId : null}
+                            disciplineId={this.state.document != null ? this.state.document.disciplineId : null}
+                            specsSectionId={this.state.document != null ? this.state.document.specsSectionId : null}
+                            submittalTypeId={this.state.document != null ? this.state.document.submittalTypeId : null}
+                            area={this.state.document != null ? this.state.selectedArea.label : null}
+                            location={this.state.document != null ? this.state.selectedLocation.label : null}
+                            contractId={this.state.document != null ? this.state.document.contractId : null}
+                            approvalStatusId={this.state.documentCycle != null ? this.state.documentCycle.approvalStatusId : null}
+                            docType={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? "inventoryQuantityAndPrice" : this.state.docType}
+                            documentTemplate={this.state.docType == 'materialInventory' ? false : true}
+                            link={this.state.docTempLink}
+                            header="addManyItems"
+                            updateMaterialInventoryQuantity={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? true : false}
+                            afterUpload={() => {
+                                this.props.afterUpload()
+                            }}
+                        />
                     </div>
                 </SkyLightStateless>
 

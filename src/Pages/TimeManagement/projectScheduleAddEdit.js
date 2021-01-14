@@ -19,7 +19,7 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -665,7 +665,9 @@ class projectScheduleAddEdit extends Component {
         this.setState({ isLoading: true });
         dataservice.GetDataGrid("GetProjectScheduleItemsByScheduleId?scheduleId=" + this.state.docId).then(result => {
             this.setState({
-                scheduleItemData: result
+                scheduleItemData: result || [],
+                rows:result || [],
+                isLoading:false
             });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
@@ -1155,9 +1157,9 @@ class projectScheduleAddEdit extends Component {
                         </Formik>
                     </div>
                     <Fragment>
-                        <XSLfile key="addManyActivities"
-                            docId={this.state.docId}
-                            docType={this.state.docTypeId}
+                        <UploadSingleAttachment key="addManyActivities"
+                            projectId={this.state.docId}
+                            docType={"schedule"}
                             link={Config.getPublicConfiguartion().downloads +
                                 "/Downloads/Excel/ProjectSchedule.xlsx"}
                             header="addManyItems"
@@ -1269,12 +1271,12 @@ class projectScheduleAddEdit extends Component {
                                                 <header>
                                                     <h2 className="zero">{Resources.items[currentLanguage]}</h2>
                                                 </header>
-                                                <ReactTable data={this.state.scheduleItemData}
+                                               {this.state.isLoading?null: <ReactTable data={this.state.scheduleItemData}
                                                     columns={columnsSchedule}
                                                     defaultPageSize={5}
                                                     minRows={2}
                                                     noDataText={Resources["noData"][currentLanguage]}
-                                                    className="-striped -highlight" />
+                                                    className="-striped -highlight" />}
                                             </div>
                                         </div>
                                         : null

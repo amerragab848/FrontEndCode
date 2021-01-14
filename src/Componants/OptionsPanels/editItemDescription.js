@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
 import DataService from "../../Dataservice";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -24,7 +24,7 @@ const documentItemValidationSchema = Yup.object().shape({
     days: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]),
     quantity: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage])
 });
-class addItemDescription extends Component {
+class editItemDescription extends Component {
 
     constructor(props) {
         super(props);
@@ -272,9 +272,9 @@ class addItemDescription extends Component {
         return (
             <div className="step-content">
                 {this.props.showImportExcel !== false ? (
-                    <XSLfile
+                    <UploadSingleAttachment
                         key="boqImport"
-                        docId={this.props.docId}
+                        projectId={this.props.docId}
                         docType={this.props.docType}
                         link={Config.getPublicConfiguartion().downloads + this.props.docLink}
                         header="addManyItems"
@@ -479,4 +479,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(addItemDescription));
+)(withRouter(editItemDescription));
