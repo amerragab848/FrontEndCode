@@ -7251,6 +7251,10 @@
         "en": "Alternative Account",
         "ar": "الأكونت البديل"
     },
+    "activeAlternativeAccount": {
+        "en": "Active Alternative Account",
+        "ar": "تفعيل الأكونت البديل"
+    },
     "alternativeDate": {
         "en": "Alternative Date",
         "ar": "تاريخ البداية"
