@@ -651,7 +651,6 @@ class QsAddEdit extends Component {
 
   GetQsItems = () => {
     dataservice.GetDataGrid("GetContractsQsItems?qsId=" + docId).then(result => {
-      //this.props.actions.addItemDescription(result);
       this.props.actions.addExcelItems(result);
     });
   }

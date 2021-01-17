@@ -322,7 +322,7 @@ class variationOrderAddEdit extends Component {
       let data = { items: result };
 
       this.props.actions.ExportingData(data);
-      this.props.actions.addItemDescription(result);
+      this.props.actions.addExcelItems(result);
       this.setState({
         isLoading:false
       });
