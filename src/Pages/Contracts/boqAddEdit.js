@@ -723,7 +723,7 @@ class boqAddEdit extends Component {
                 });
                 //this.props.actions.ExportingData(data);
             });
-        }
+       }
     }
 
     componentDidUpdate(prevProps) {
