@@ -24,7 +24,7 @@
    "exportCore" : "https://BadyaServices.procoor.com/ExportAPI/api/ExportController/",
    "client_id": "DlSeYObvI78EFYfvEzK9GOwcQ4jvERA8",
    "client_secret": "8eVDuCjah3JhAn1O",
-  "commonLogApi": 1,
+  "commonLogApi": 2,
   "dashboardApi": 3,
   "reportsApi": 4,
   "refCodeValidation": false,

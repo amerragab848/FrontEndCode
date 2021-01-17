@@ -106,7 +106,7 @@ export default class CustomGrid extends Component {
                     }
                 }
             };
-            currentGP = savedGrid.groups.length > 0 ? JSON.parse(savedGrid.groups) : [];
+            currentGP = savedGrid.groups && savedGrid.groups.length > 0 ? JSON.parse(savedGrid.groups) : [];
         }
 
         this.setState({
@@ -114,7 +114,7 @@ export default class CustomGrid extends Component {
             columns: itemsColumns,
             groups: currentGP,
             groupsList: currentGP,
-            setFilters: JSON.parse(savedGrid.Filters).length > 0 ? obj : itemsColumns,
+            setFilters:savedGrid.Filters && savedGrid.Filters.length > 0 ? obj : itemsColumns,
             GridLoading: false,
             filterLoading: false,
             ...state

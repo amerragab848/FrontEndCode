@@ -47,6 +47,7 @@ export const GET_RELATED_LINK = 'GET_RELATED_LINK';
 export const DELETE_DOCS_ATTACH = 'DELETE_DOCS_ATTACH';
 export const ADD_DOCS_ATTACH = 'ADD_DOCS_ATTACH';
 export const GET_DOCUMNET_DATA = 'GET_DOCUMNET_DATA';
+export const ADD_EXCEL_ITEMS='ADD_EXCEL_ITEMS';
 // ProjectActionsTypes
 
 //----ExpenesWorkFlow
