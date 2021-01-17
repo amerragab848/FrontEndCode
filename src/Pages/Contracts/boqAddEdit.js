@@ -895,38 +895,28 @@ class boqAddEdit extends Component {
     };
 
     changeCurrentStep = stepNo => {
+        console.log('changeCurrentStep..', stepNo);
+        this.setState({ isLoading: true });
+
         if (stepNo == 2 && this.state.docId > 0) {
             Api.get(`GetBoqTotal?id=${this.state.docId}`).then(result => {
                 this.setState({
                     createdBoqTotal: result || 0
                 });
             });
-        }
-
-        if (stepNo == 1 && this.state.docId > 0) {
-            this.getTabelData();
+            DataService.GetDataListCached('GetAccountsDefaultListForList?listType=currency', 'title', 'id', 'defaultLists', 'currency', 'listType').then(res => {
+                this.setState({ currency: [...res], isLoading: false });
+            });
         }
 
         this.setState({ CurrStep: stepNo });
 
         if (stepNo == 1) {
             import(`../../Componants/OptionsPanels/AddItemDescription`).then(module => {
-                this.setState({ AddItemDescription: module.default })
+                this.setState({ AddItemDescription: module.default, isLoading: false })
             });
+            this.getTabelData();
         }
-        if (stepNo == 2) {
-            DataService.GetDataListCached(
-                'GetAccountsDefaultListForList?listType=currency',
-                'title',
-                'id',
-                'defaultLists',
-                'currency',
-                'listType',
-            ).then(res => {
-                this.setState({ currency: [...res], isLoading: false });
-            });
-        }
-
     };
 
     showOptionPanel = () => {
@@ -2159,7 +2149,7 @@ class boqAddEdit extends Component {
             </Fragment>
         );
 
-        const addItemContent = this.state.CurrStep == 1 && this.state.isLoading == false ? (
+        const addItemContent = this.state.CurrStep == 1 && this.state.isLoading == false && AddItemDescription != null ? (
             <Fragment>
                 <div className="document-fields">
                     <AddItemDescription
@@ -2371,16 +2361,7 @@ class boqAddEdit extends Component {
                                         this.changeCurrentStep(1);
                                     }
                                 }}>
-                                {({
-                                    errors,
-                                    touched,
-                                    handleBlur,
-                                    handleChange,
-                                    handleSubmit,
-                                    setFieldValue,
-                                    setFieldTouched,
-                                    values,
-                                }) => (
+                                {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                     <Form
                                         id="ClientSelectionForm"
                                         className="customProform"
@@ -2724,14 +2705,13 @@ class boqAddEdit extends Component {
 
                                             <div className={'slider-Btns fullWidthWrapper textLeft'}>
                                                 {this.state.isLoading === false ?
-                                                    (<button
+                                                   <button
                                                         className={'primaryBtn-1 btn ' + (this.state.isViewMode === true ? 'disNone' : '')}
-                                                        type="submit"
-                                                        onClick={() => this.changeCurrentStep(1)}
+                                                        type="submit" 
                                                         disabled={this.state.isViewMode}>
                                                         {Resources[this.state.btnTxt][currentLanguage]}
                                                     </button>
-                                                    ) : (
+                                                     : 
                                                         <button
                                                             className="primaryBtn-1 btn  disabled"
                                                             disabled="disabled">
@@ -2740,8 +2720,7 @@ class boqAddEdit extends Component {
                                                                 <div className="bounce2" />
                                                                 <div className="bounce3" />
                                                             </div>
-                                                        </button>
-                                                    )
+                                                        </button> 
                                                 }
                                             </div>
                                         </div>

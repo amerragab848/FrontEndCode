@@ -420,6 +420,22 @@ export default function (state = initialState.app.communication, action) {
 
         case types.STORE_COMMON_LOG_CoLUMNS:
             return { ...state, CommonLogColumns: action.columns }
+        case types.ADD_EXCEL_ITEMS:
+            let documentId = state.docId == 0 ? action.docId : state.docId;
+            const originalItems = action.items || [];
+
+            totalCost = 0;
+
+            originalItems.forEach(item => {
+                return totalCost += item.total;
+            })
+            return {
+                ...state,
+                docId:documentId,
+                items: originalItems,
+                totalCost,
+                isLoading: false
+            };
         default:
             return {
                 ...state

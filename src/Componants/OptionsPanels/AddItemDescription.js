@@ -23,6 +23,7 @@ const documentItemValidationSchema = Yup.object().shape({
 });
 
 class AddItemDescription extends Component {
+
     constructor(props) {
         super(props);
 
@@ -95,8 +96,7 @@ class AddItemDescription extends Component {
             });
 
     }
-
-
+ 
     saveVariationOrderItem(event) {
 
         this.props.actions.setLoading();
@@ -199,9 +199,11 @@ class AddItemDescription extends Component {
             });
         }
     }
+
     fillTable(){
         this.props.afterUpload()
     }
+
     render() {
         return (
             <div className="step-content">
