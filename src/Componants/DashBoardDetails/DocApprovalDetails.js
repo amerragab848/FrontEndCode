@@ -20,6 +20,7 @@ class DocApprovalDetails extends Component {
     for (let param of query.entries()) {
       action = param[1];
     }
+    
     const columnsGrid = [
       { title: '', type: 'check-box', fixed: true, field: 'id' },
       {
