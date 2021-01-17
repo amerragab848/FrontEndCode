@@ -331,7 +331,7 @@ class VariationRequestAdd extends Component {
     GetVRItems = () => {
         this.setState({isLoading:true})
         dataservice.GetDataGrid(`GetVRItems?variationRequestId=${this.state.docId}`).then(result => {
-            this.props.actions.addItemDescription(result);
+            this.props.actions.addExcelItems(result);
             this.setState({isLoading:false})
         })
     }
