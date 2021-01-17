@@ -229,7 +229,7 @@ class UploadAttachmentWithProgress extends Component {
                     InputComponent={this.InputChooseFile}
                     submitButtonContent={this.UploadFiles}
                     getFilesFromEvent={this.getFilesFromEvent}
-                    maxSizeBytes={158000000}
+                    maxSizeBytes={Config.getPublicConfiguartion().fileSize }
                     classNames
                 />
 

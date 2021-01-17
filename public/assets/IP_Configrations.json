@@ -28,5 +28,6 @@
   "dashboardApi": 1,
   "refCodeValidation": true,
   "activeExport": true,
-  "useBackResources": false
+  "useBackResources": false,
+  "fileSize": 158000000
 }
