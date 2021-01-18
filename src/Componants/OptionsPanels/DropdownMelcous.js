@@ -40,7 +40,7 @@ class DropdownMelcous extends Component {
     handleChange = value => {
         if (this.props.onChange != undefined) {
             this.props.onChange(this.props.name, value);
-        }  
+        }
         this.props.handleChange(value, this.props.name);
     };
 
@@ -141,8 +141,8 @@ class DropdownMelcous extends Component {
                                 defaultValue={this.props.isMulti ? this.props.selectedValue : this.props.value}
                                 value={this.props.isMulti ? this.props.value : this.props.selectedValue}
                                 isMulti={this.props.isMulti}
-                                // isClearable={this.props.isClear ? true : false}
-                                isClearable={true}
+                                isClearable={this.props.isClear === true ? true : false}
+                                //isClearable={true}
                                 name={this.props.name ? this.props.index : this.props.name}
                                 id={this.props.id ? this.props.index : this.props.id}
                                 onChange={this.handleChange}

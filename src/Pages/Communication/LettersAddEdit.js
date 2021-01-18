@@ -1320,6 +1320,7 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={
                                                                             false
                                                                         }
@@ -1355,10 +1356,7 @@ class LettersAddEdit extends Component {
                                                                         }
                                                                         touched={
                                                                             true
-                                                                        }
-                                                                        isClear={
-                                                                            false
-                                                                        }
+                                                                        } 
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId"
@@ -1382,19 +1380,10 @@ class LettersAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
-                                                                        isMulti={
-                                                                            false
-                                                                        }
-                                                                        data={
-                                                                            this
-                                                                                .state
-                                                                                .companies
-                                                                        }
-                                                                        selectedValue={
-                                                                            this
-                                                                                .state
-                                                                                .selectedToCompany
-                                                                        }
+                                                                        isClear={true}
+                                                                        isMulti={false}
+                                                                        data={this.state.companies}
+                                                                        selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(
                                                                                 event,
@@ -1407,18 +1396,10 @@ class LettersAddEdit extends Component {
                                                                                 'selectedToContact',
                                                                             )
                                                                         }
-                                                                        onChange={
-                                                                            setFieldValue
-                                                                        }
-                                                                        onBlur={
-                                                                            setFieldTouched
-                                                                        }
-                                                                        error={
-                                                                            errors.toCompanyId
-                                                                        }
-                                                                        touched={
-                                                                            touched.toCompanyId
-                                                                        }
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toCompanyId}
+                                                                        touched={touched.toCompanyId}
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
                                                                         id="toCompanyId"
@@ -1430,9 +1411,8 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
-                                                                        isMulti={
-                                                                            false
-                                                                        }
+                                                                        isClear={true}
+                                                                        isMulti={false}
                                                                         data={
                                                                             this
                                                                                 .state
@@ -1479,6 +1459,7 @@ class LettersAddEdit extends Component {
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="discipline"
                                                                 data={
                                                                     this.state
