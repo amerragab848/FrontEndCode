@@ -245,6 +245,40 @@ class UploadBoqAttachment extends Component {
     }
     };
 
+    UploadAccountsHandler=(files, allFiles)=>{
+        if (files.length > 0) {
+            this.setState({
+                Isloading: true,
+            });
+            let formData = new FormData();
+            let file = files[0].file;
+            let fileName = file.name;
+            let testName = [];
+            testName.push(fileName);
+            formData.append('file0', file);
+            Api.postFile('UploadAccountsFromExcel',formData).then(resp => {
+                    if (this.props.afterUpload != undefined) {
+                        this.setState({ uploaded: true, filesExist: false, Isloading: true });
+                        allFiles.forEach(f => f.remove());
+                        this.setState({ Isloading: false });
+                        this.props.afterUpload();
+                        toast.success(Resources['operationSuccess'][currentLanguage]);
+                        }
+                    setTimeout(() => {
+                        this.setState({ _className: 'zeropercent' });
+                    }, 1000);
+                    this.setState({
+                        Isloading: false,
+                    });
+                })
+                .catch(ex => {
+                    toast.error(
+                        Resources['operationCanceled'][currentLanguage],
+                    );
+                });
+        }
+    };
+
     handleSubmit = (files, allFiles) => {
         if (files.length > 0) {
             let formData = new FormData();
@@ -380,6 +414,8 @@ class UploadBoqAttachment extends Component {
                                                         this.PcoItemsTemplateUpload
                                                         : this.props.updateMaterialInventoryQuantity ?
                                                             this.updateMaterialInventoryQuantityHandler
+                                                            :this.props.uploadAccounts?
+                                                            this.UploadAccountsHandler
                                                             : this.handleSubmit
                                 }
                             />

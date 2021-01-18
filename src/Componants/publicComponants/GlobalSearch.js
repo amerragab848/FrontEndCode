@@ -22,16 +22,16 @@ let publicFonts = currentLanguage === "ar" ? 'cairo-sb' : 'Muli, sans-serif'
 
 const filterStyle = {
     control: (styles, { isFocused }) =>
-        ({
-            ...styles,
-            backgroundColor: '#fff',
-            width: '100%',
-            borderRadius: '4px',
-            border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
-            boxShadow: 'none',
-            transition: ' all 0.4s ease-in-out',
-            minHeight: '36px'
-        }),
+    ({
+        ...styles,
+        backgroundColor: '#fff',
+        width: '100%',
+        borderRadius: '4px',
+        border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
+        boxShadow: 'none',
+        transition: ' all 0.4s ease-in-out',
+        minHeight: '36px'
+    }),
     option: (styles, { isDisabled, isFocused, isSelected }) => {
         return {
             ...styles,
@@ -192,7 +192,7 @@ class GlobalSearch extends Component {
         }
     }
 
-    
+
     componentWillMount() {
         var e = { label: this.props.projectName, value: this.props.projectId };
         this.props.actions.RouteToMainDashboard(e);
@@ -205,36 +205,37 @@ class GlobalSearch extends Component {
             status: null,
             pageNumber: 0
         }
-      
-       this.setState({ isLoading: true })
-      if(searchOptions.subject !='')
-       {
-        dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
-            if (searchResult) {
-                this.readFiles(searchResult.attachFiles, searchOptions, false);
-                let data = []
-                if (searchResult.searchResp.searchList.length > 0)
-                    searchResult.searchResp.searchList.forEach((item, i) => {
-                        item.index = i + 1;
-                        data.push(item)
-                    })
-                this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total, isLoading: false })
-            }
-            else
-              this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
-              
-            dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
-             this.setState({ isLoading: false, showAttachLoading: false, docsType: result })
-             })
-        })
+
+        this.setState({ isLoading: true })
+
+        if (searchOptions.subject != '') {
+            dataService.addObject("GetDataForSearchInApp?docType=19", searchOptions).then(searchResult => {
+                if (searchResult) {
+                    //this.readFiles(searchResult.attachFiles, searchOptions, false);
+                    let data = []
+                    if (searchResult.searchResp.searchList.length > 0)
+                        searchResult.searchResp.searchList.forEach((item, i) => {
+                            item.index = i + 1;
+                            data.push(item)
+                        })
+                    this.setState({ allAttaches: searchResult.attachFiles, searchResult: data, totalRows: searchResult.searchResp.total, isLoading: false })
+                }
+                else
+                    this.setState({ allAttaches: [], searchResult: [], totalRows: searchResult.searchResp.total })
+
+                dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
+                    this.setState({ isLoading: false, showAttachLoading: false, docsType: result })
+                })
+            })
+        }
+        else {
+            this.setState({
+                allAttaches: [], searchResult: [], totalRows: 0,
+                isLoading: false, showAttachLoading: false, docsType: []
+            })
+        }
+
     }
-    else
-    {
-        this.setState({ allAttaches: [], searchResult: [], totalRows: 0,
-            isLoading: false, showAttachLoading: false, docsType: [] })
-    }
-       
-}
 
     async readFiles(files, searchOptions, firstOrNext) {
 
@@ -288,7 +289,7 @@ class GlobalSearch extends Component {
             pageNumber: 0
         }
 
-        this.readFiles(this.state.allAttaches, searchOptions, true);
+        //this.readFiles(this.state.allAttaches, searchOptions, true);
     }
 
     changeDate() {
@@ -344,7 +345,7 @@ class GlobalSearch extends Component {
 
         dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
-                this.readFiles(this.state.allAttaches, searchOptions, false);
+               // this.readFiles(this.state.allAttaches, searchOptions, false);
 
                 let data = []
                 if (searchResult.searchResp.searchList.length > 0)

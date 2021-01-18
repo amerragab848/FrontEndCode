@@ -229,6 +229,15 @@ export function addItemDescription(item) {
     };
 }
 
+export function addExcelItems(items) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.ADD_EXCEL_ITEMS,
+            items: items,
+        });
+    };
+}
+
 export function deleteItemDescription(item) {
     return (dispatch, getState) => {
         dispatch({

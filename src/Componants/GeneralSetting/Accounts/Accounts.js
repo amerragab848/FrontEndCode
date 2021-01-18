@@ -260,7 +260,9 @@ class Accounts extends Component {
             showDeleteModal: false,
             NewPassword: '',
             showResetPasswordModal: false,
-            showCheckbox: false
+            showCheckbox: false,
+            showDocTemplateModal:false,
+            docTemplateModalComponent:null
         }
         this.GetCellActions = this.GetCellActions.bind(this);
     }
@@ -709,7 +711,29 @@ class Accounts extends Component {
         })
     }
 
+    documentTemplateShowModalHandler = () => {
+        import('../../Templates/DocumentTemplateAttachment/GeneralSettingsDocTemplateAttachment').then(module => {
+            this.setState({ docTemplateModalComponent: module.default, showDocTemplateModal: true })
+        });
+    };
+
+    closeDocTemplateModalHandler=()=>{
+        this.setState({showDocTemplateModal:false})
+    };
+    afterUpload=()=>{
+        Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            this.setState({
+                rows: result,
+                isLoading: false,
+                //pageNumber: pageNumber,
+                totalRows: result.length,
+                search: false,
+            });
+        });
+    }
+
     render() {
+        let DocTemplateModalComponent = this.state.docTemplateModalComponent
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
@@ -740,6 +764,12 @@ class Accounts extends Component {
         const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={Exportcolumns} fileName={this.state.pageTitle} /> : null;
 
         const ComponantFilter = <Filter filtersColumns={this.state.filtersColumns} filterMethod={this.filterMethodMain} />;
+      
+        const btnDocumentTemplate = (<button
+            className="primaryBtn-2 btn mediumBtn"
+            onClick={() => this.documentTemplateShowModalHandler()}>
+            {Resources['DocTemplate'][currentLanguage]}
+        </button>);
 
         return (
             <div>
@@ -801,7 +831,7 @@ class Accounts extends Component {
                     </div>
                     <div className="filterBTNS">
                         {<button className="primaryBtn-1 btn mediumBtn " onClick={this.refreshGrid}><i className="fa fa-refresh"></i></button>}
-
+                        {btnDocumentTemplate}
                         {btnExport}
                         {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>
@@ -854,6 +884,13 @@ class Accounts extends Component {
                         showDeleteModal={this.state.IsActiveShow}
                         clickHandlerCancel={this.clickHandlerCancelMain}
                         buttonName='save' clickHandlerContinue={this.IsActiveFun}
+                    />
+                ) : null}
+                  {DocTemplateModalComponent != null && this.state.showDocTemplateModal == true ? (
+                    <DocTemplateModalComponent
+                        afterUpload={this.afterUpload}
+                        onClose={this.closeDocTemplateModalHandler}
+                        docTempLink=" "
                     />
                 ) : null}
             </div>

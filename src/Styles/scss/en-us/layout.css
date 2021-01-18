@@ -9437,16 +9437,16 @@ h5 {
 }
 
 .attachmentTable tbody tr td:first-child {
-    width: 45px;
+    /* width: 45px; */
 }
 
 .attachmentTable tbody tr td:nth-child(2) {
     border-right: 1px solid #e9ecf0;
-    width: 200px;
+    /* width: 200px; */
 }
 
 .attachmentTable tbody tr td:nth-child(3) {
-    width: 100px;
+    /* width: 100px; */
 }
 
 .attachmentTable tbody tr td.tdHover {
@@ -9456,7 +9456,7 @@ h5 {
 
 @media screen and (max-width: 1300px) {
     .attachmentTable tbody tr td.tdHover {
-        min-width: 70px;
+        /* min-width: 70px; */
     }
 }
 
