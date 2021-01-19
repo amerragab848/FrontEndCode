@@ -765,11 +765,11 @@ class Accounts extends Component {
 
         const ComponantFilter = <Filter filtersColumns={this.state.filtersColumns} filterMethod={this.filterMethodMain} />;
       
-        const btnDocumentTemplate = (<button
+       const btnDocumentTemplate =config.IsAllow(801)?  (<button
             className="primaryBtn-2 btn mediumBtn"
             onClick={() => this.documentTemplateShowModalHandler()}>
             {Resources['DocTemplate'][currentLanguage]}
-        </button>);
+        </button>):null;
 
         return (
             <div>
@@ -890,7 +890,7 @@ class Accounts extends Component {
                     <DocTemplateModalComponent
                         afterUpload={this.afterUpload}
                         onClose={this.closeDocTemplateModalHandler}
-                        docTempLink=" "
+                        docTempLink={ config.getPublicConfiguartion().downloads + '/Downloads/Excel/AccountsTemplate.xlsx'}
                     />
                 ) : null}
             </div>
