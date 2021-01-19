@@ -53,19 +53,19 @@ class DropdownMelcous extends Component {
 
         const publicStyles = {
             control: (styles, { isFocused }) =>
-                ({
-                    ...styles,
-                    backgroundColor: '#fff',
-                    width: this.props.isMulti ? '100%' : '360px',
-                    maxWidth: '100%',
-                    minHeight: '48px',
-                    maxHeight: this.props.isMulti ? 'unset' : '48px',
-                    borderRadius: '4px',
-                    border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
-                    boxShadow: 'none',
-                    transition: ' all 0.4s ease-in-out',
-                    cursor: 'pointer'
-                }),
+            ({
+                ...styles,
+                backgroundColor: '#fff',
+                width: this.props.isMulti ? '100%' : '360px',
+                maxWidth: '100%',
+                minHeight: '48px',
+                maxHeight: this.props.isMulti ? 'unset' : '48px',
+                borderRadius: '4px',
+                border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
+                boxShadow: 'none',
+                transition: ' all 0.4s ease-in-out',
+                cursor: 'pointer'
+            }),
             option: (styles, { isDisabled, isFocused, isSelected }) => {
                 return {
                     ...styles,
@@ -141,7 +141,8 @@ class DropdownMelcous extends Component {
                                 defaultValue={this.props.isMulti ? this.props.selectedValue : this.props.value}
                                 value={this.props.isMulti ? this.props.value : this.props.selectedValue}
                                 isMulti={this.props.isMulti}
-                                isClearable={this.props.isClear ? true : false}
+                                isClearable={this.props.isClear === true ? true : false}
+                                //isClearable={true}
                                 name={this.props.name ? this.props.index : this.props.name}
                                 id={this.props.id ? this.props.index : this.props.id}
                                 onChange={this.handleChange}

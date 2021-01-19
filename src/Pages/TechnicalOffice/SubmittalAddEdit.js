@@ -47,7 +47,7 @@ const validationSchema = Yup.object().shape({
 
 const validationCycleSubmital = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).max(450, Resources["maxLength"][currentLanguage]),
-  arrange: Yup.number().required(Resources["arrange"][currentLanguage]),
+  //arrange: Yup.number().required(Resources["arrange"][currentLanguage]),
   flowContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
   approvalStatusId: Yup.string().required(Resources["approvalStatusSelection"][currentLanguage]).nullable(true)
 });
@@ -361,7 +361,7 @@ class SubmittalAddEdit extends Component {
             cycle.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             cycle.arrange = result.arrange;
 
-            this.fillCycleDropDown(true);
+            //this.fillCycleDropDown(true);
 
             this.setState({
               documentCycle: cycle,
@@ -376,6 +376,9 @@ class SubmittalAddEdit extends Component {
           }
 
         });
+
+              this.fillCycleDropDown(true);
+
       }
       this.fillDropDowns(this.props.document.id > 0 ? true : false);
 
@@ -1042,7 +1045,10 @@ class SubmittalAddEdit extends Component {
 
     saveDocumentCycle.submittalId = this.state.docId;
     this.setState({ isLoading: true });
-    dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
+    dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(result => {
+       
+        this.setState({submittalItemData:result})
+      
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
 
         let submittalItem = {};
@@ -1963,7 +1969,7 @@ class SubmittalAddEdit extends Component {
                                     <div className="linebylineInput valid-input">
                                       <label className="control-label">
                                         {Resources.subject[currentLanguage]}
-                                      </label>
+                                      </label> 
                                       <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")} >
                                         <input name="subject" className="form-control fsadfsadsa"
                                           placeholder={Resources.subject[currentLanguage]} autoComplete="off"

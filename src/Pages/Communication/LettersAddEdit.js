@@ -648,17 +648,14 @@ class LettersAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource,
-    ) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue) {
+
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+            });
+            return
+        };
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document[field] = event.value;
@@ -670,19 +667,9 @@ class LettersAddEdit extends Component {
         });
 
         if (field == 'toContactId') {
-            let url =
-                'GetRefCodeArrangeMainDoc?projectId=' +
-                this.state.projectId +
-                '&docType=' +
-                this.state.docTypeId +
-                '&fromCompanyId=' +
-                this.state.document.fromCompanyId +
-                '&fromContactId=' +
-                this.state.document.fromContactId +
-                '&toCompanyId=' +
-                this.state.document.toCompanyId +
-                '&toContactId=' +
-                event.value;
+            let url = 'GetRefCodeArrangeMainDoc?projectId=' + this.state.projectId +
+                '&docType=' + this.state.docTypeId + '&fromCompanyId=' + this.state.document.fromCompanyId + '&fromContactId=' + this.state.document.fromContactId +
+                '&toCompanyId=' + this.state.document.toCompanyId + '&toContactId=' + event.value;
 
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
@@ -1241,6 +1228,7 @@ class LettersAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         data={
                                                                             this
                                                                                 .state
@@ -1255,16 +1243,7 @@ class LettersAddEdit extends Component {
                                                                                 .selectedFromCompany
                                                                         }
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(
-                                                                                event,
-                                                                                'fromCompanyId',
-                                                                                true,
-                                                                                'fromContacts',
-                                                                                'GetContactsByCompanyId',
-                                                                                'companyId',
-                                                                                'selectedFromCompany',
-                                                                                'selectedFromContact',
-                                                                            );
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact');
                                                                         }}
                                                                         onChange={
                                                                             setFieldValue
@@ -1289,6 +1268,7 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={
                                                                             false
                                                                         }
@@ -1324,10 +1304,7 @@ class LettersAddEdit extends Component {
                                                                         }
                                                                         touched={
                                                                             true
-                                                                        }
-                                                                        isClear={
-                                                                            false
-                                                                        }
+                                                                        } 
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId"
@@ -1351,19 +1328,10 @@ class LettersAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
-                                                                        isMulti={
-                                                                            false
-                                                                        }
-                                                                        data={
-                                                                            this
-                                                                                .state
-                                                                                .companies
-                                                                        }
-                                                                        selectedValue={
-                                                                            this
-                                                                                .state
-                                                                                .selectedToCompany
-                                                                        }
+                                                                        isClear={true}
+                                                                        isMulti={false}
+                                                                        data={this.state.companies}
+                                                                        selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(
                                                                                 event,
@@ -1376,18 +1344,10 @@ class LettersAddEdit extends Component {
                                                                                 'selectedToContact',
                                                                             )
                                                                         }
-                                                                        onChange={
-                                                                            setFieldValue
-                                                                        }
-                                                                        onBlur={
-                                                                            setFieldTouched
-                                                                        }
-                                                                        error={
-                                                                            errors.toCompanyId
-                                                                        }
-                                                                        touched={
-                                                                            touched.toCompanyId
-                                                                        }
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toCompanyId}
+                                                                        touched={touched.toCompanyId}
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
                                                                         id="toCompanyId"
@@ -1399,9 +1359,8 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
-                                                                        isMulti={
-                                                                            false
-                                                                        }
+                                                                        isClear={true}
+                                                                        isMulti={false}
                                                                         data={
                                                                             this
                                                                                 .state
@@ -1448,6 +1407,7 @@ class LettersAddEdit extends Component {
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="discipline"
                                                                 data={
                                                                     this.state
@@ -1503,68 +1463,32 @@ class LettersAddEdit extends Component {
                                                                     }
                                                                     index="letter-replyId"
                                                                 />
-                                                                {this.props
-                                                                    .changeStatus ===
-                                                                    true ? (
-                                                                        <i
-                                                                            onClick={() =>
-                                                                                this.replyNewLetter()
-                                                                            }
-                                                                            style={{
-                                                                                position:
-                                                                                    'absolute',
-                                                                                right:
-                                                                                    '0',
-                                                                                cursor:
-                                                                                    'pointer',
-                                                                                top:
-                                                                                    '27px',
-                                                                                fontSize:
-                                                                                    '15px',
-                                                                                color:
-                                                                                    '#5E6475',
-                                                                            }}
-                                                                            className="fa fa-reply"
-                                                                            aria-hidden="true"></i>
-                                                                    ) : null}
-                                                                {this.state
-                                                                    .selectedReplyLetter
-                                                                    .value >
-                                                                    0 ? (
-                                                                        <a
-                                                                            style={{
-                                                                                marginLeft:
-                                                                                    '7%',
-                                                                                marginTop:
-                                                                                    '2%',
-                                                                            }}
-                                                                            target="_blank"
-                                                                            href={
-                                                                                this
-                                                                                    .state
-                                                                                    .replyLink
-                                                                            }>
-                                                                            <span>
-                                                                                {' '}
-                                                                                {
-                                                                                    Resources
-                                                                                        .openFolder[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }{' '}
-                                                                            </span>
-                                                                        </a>
-                                                                    ) : null}
+                                                                {this.props.changeStatus === true ? (
+                                                                    <i
+                                                                        onClick={e =>
+                                                                            this.replyNewLetter(e)
+                                                                        }
+                                                                        style={{
+                                                                            position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475',
+                                                                        }}
+                                                                        className="fa fa-reply"
+                                                                        aria-hidden="true"></i>
+                                                                ) : null}
+                                                                {this.state.selectedReplyLetter.value > 0 ? (
+                                                                    <a
+                                                                        style={{
+                                                                            marginLeft: '7%', marginTop: '2%',
+                                                                        }}
+                                                                        target="_blank"
+                                                                        href={this.state.replyLink}>
+                                                                        <span> {' '} {Resources.openFolder[currentLanguage]}{' '} </span>
+                                                                    </a>
+                                                                ) : null}
                                                             </div>
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .message[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.message[currentLanguage]}
                                                             </label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
