@@ -256,13 +256,13 @@ class UploadBoqAttachment extends Component {
             let testName = [];
             testName.push(fileName);
             formData.append('file0', file);
-            Api.postFile('UploadAccountsFromExcel',formData).then(resp => {
+            Api.postFile('UploadAccountsExcelFiles',formData).then(resp => {
                     if (this.props.afterUpload != undefined) {
                         this.setState({ uploaded: true, filesExist: false, Isloading: true });
                         allFiles.forEach(f => f.remove());
                         this.setState({ Isloading: false });
                         this.props.afterUpload();
-                        toast.success(Resources['operationSuccess'][currentLanguage]);
+                        //toast.success(Resources['operationSuccess'][currentLanguage]);
                         }
                     setTimeout(() => {
                         this.setState({ _className: 'zeropercent' });
