@@ -160,8 +160,8 @@ class GlobalSearch extends Component {
                 sortable: true,
             },
             {
-                field: 'refNumber',
-                title: Resources['refNumber'][currentLanguage],
+                field: 'fileNumber',
+                title: Resources['fileNumber'][currentLanguage],
                 width: 20,
                 groupable: true,
                 fixed: false,
@@ -169,8 +169,8 @@ class GlobalSearch extends Component {
                 sortable: true,
             },
             {
-                field: 'fileNumber',
-                title: Resources['fileNumber'][currentLanguage],
+                field: 'refDoc',
+                title: Resources['refNumber'][currentLanguage],
                 width: 20,
                 groupable: true,
                 fixed: false,
@@ -206,7 +206,7 @@ class GlobalSearch extends Component {
             selectedDocs: [],
             attachementsSearchResult: [],
             allAttaches: [],
-            refNumber:'',
+            refCode:'',
             fileNumber:''
         }
     }
@@ -354,7 +354,7 @@ class GlobalSearch extends Component {
         let searchOptions = {
             subject: this.state.subject,
             fileNumber: this.state.fileNumber,
-            refNumber: this.state.refNumber,
+            refCode: this.state.refCode,
             fromDate: fromDate,
             toDate: toDate,
             docs: docs,
@@ -527,7 +527,7 @@ class GlobalSearch extends Component {
                         <div className="form-group linebylineInput medium__input--width">
                             <label className="control-label"> {Resources.refNumber[currentLanguage]}   </label>
                             <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
-                                <input type="text" autoComplete="off" placeholder="Ref Number" defaultValue={this.state.refNumber} onChange={(event) => this.setState({ refNumber: event.target.value })} />
+                                <input type="text" autoComplete="off" placeholder="Ref Number" defaultValue={this.state.refCode} onChange={(event) => this.setState({ refCode: event.target.value })} />
                             </div>
                         </div>
                          {/************************************** */}
