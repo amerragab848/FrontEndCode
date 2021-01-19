@@ -97,7 +97,7 @@ class UploadAttachmentWithProgress extends Component {
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    extensions={['.pdf', '.doc', '.docx', '.png', '.dwg', '.rvt',]}>
+                    extensions={['.pdf', '.doc', '.docx', '.png', '.dwg', '.rvt', '.rar', '.zip']}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
@@ -219,31 +219,31 @@ class UploadAttachmentWithProgress extends Component {
     };
 
     render() {
-        return Config.IsAllow(this.props.AddAttachments) ||
-            Config.IsAllow(this.props.EditAttachments) ? (
-                <div>
-                    <Dropzone
-                        autoUpload={true}
-                        getUploadParams={this.getUploadParams}
-                        onChangeStatus={this.handleChangeStatus}
-                        onSubmit={this.handleSubmit}
-                        InputComponent={this.InputChooseFile}
-                        submitButtonContent={this.UploadFiles}
-                        getFilesFromEvent={this.getFilesFromEvent}
-                        classNames
-                    />
+        return Config.IsAllow(this.props.AddAttachments) || Config.IsAllow(this.props.EditAttachments) ? (
+            <div>
+                <Dropzone
+                    autoUpload={true}
+                    getUploadParams={this.getUploadParams}
+                    onChangeStatus={this.handleChangeStatus}
+                    onSubmit={this.handleSubmit}
+                    InputComponent={this.InputChooseFile}
+                    submitButtonContent={this.UploadFiles}
+                    getFilesFromEvent={this.getFilesFromEvent}
+                    maxSizeBytes={Config.getPublicConfiguartion().fileSize }
+                    classNames
+                />
 
-                    <div className="drives__upload">
-                        <label className="btn__upload" onClick={() => this.addBtnRef.current.click()}> {Resources.openMyFolders[currentLanguage]}</label>
-                        <span className="upload__border"></span>
-                        <div className="drive__wrapper">
-                            <h2 className="zero"> {Resources.uploadFrom[currentLanguage]}</h2>
-                            {Config.IsAllow(this.props.ShowGoogleDrive) ? this.renderGoogleDrive() : null}
-                            {Config.IsAllow(this.props.ShowDropBox) ? this.renderDropBox() : null}
-                        </div>
+                <div className="drives__upload">
+                    <label className="btn__upload" onClick={() => this.addBtnRef.current.click()}> {Resources.openMyFolders[currentLanguage]}</label>
+                    <span className="upload__border"></span>
+                    <div className="drive__wrapper">
+                        <h2 className="zero"> {Resources.uploadFrom[currentLanguage]}</h2>
+                        {Config.IsAllow(this.props.ShowGoogleDrive) ? this.renderGoogleDrive() : null}
+                        {Config.IsAllow(this.props.ShowDropBox) ? this.renderDropBox() : null}
                     </div>
                 </div>
-            ) : null;
+            </div>
+        ) : null;
     }
 }
 

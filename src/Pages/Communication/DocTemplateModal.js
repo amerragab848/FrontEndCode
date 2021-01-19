@@ -4,11 +4,10 @@ import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import { withRouter } from 'react-router-dom';
 import Config from '../../Services/Config.js';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
-import { Resources } from '../../Resources';
-
+import { Resources } from '../../Resources'; 
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -79,6 +78,7 @@ class DocTemplateModal extends Component {
             updateMIQuantity: false
         };
     }
+
     componentWillMount() {
         if (this.state.docType == 'submittal') {
             this.setState({
@@ -97,7 +97,7 @@ class DocTemplateModal extends Component {
         }
         this.fillDropDowns();
     };
-
+ 
 
     fillDropDowns() {
         if (this.state.docType == 'submittal' || this.state.docType == "Letters") {
@@ -115,8 +115,7 @@ class DocTemplateModal extends Component {
                 this.setState({ specsSection: [...result] })
             });
         }
-        if (this.state.docType == 'submittal') {
-
+        if (this.state.docType == 'submittal') { 
             //SubmittalTypes
             dataservice.GetDataListCached('GetaccountsDefaultListForList?listType=SubmittalTypes', 'title', 'id', 'defaultLists', 'SubmittalTypes', 'listType').then(result => {
                 this.setState({ SubmittalTypes: [...result] })
@@ -139,15 +138,8 @@ class DocTemplateModal extends Component {
             });
         }
     }
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-    ) {
+
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, ) {
         if (event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -171,11 +163,7 @@ class DocTemplateModal extends Component {
         }
     }
 
-    handleChangeDropDownCycles(
-        event,
-        field,
-        selectedValue
-    ) {
+    handleChangeDropDownCycles(event, field, selectedValue) {
         if (event == null) return;
 
         let original_document = { ...this.state.documentCycle };
@@ -333,357 +321,191 @@ class DocTemplateModal extends Component {
                             <>
                                 {/* //-----------------------Ahmed Yousry------------------ */}
                                 {this.state.docType == 'materialInventory' ?
-                                    <div className="linebylineInput">
-                                        <label className="control-label"> {Resources['updateMaterialInventoryQuantitiesAndPrices'][currentLanguage]} </label>
-                                        <div className="dropWrapper">
-                                            <div className="ui checkbox radio radioBoxBlue checked">
-                                                <input type="radio" name="Status" value="true"
-                                                    onChange={(e) => {
-                                                        this.setState({
-                                                            updateMIQuantity: true,
-                                                            docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventoryQuantityAndPrice.xlsx'
-                                                        });
-                                                    }}
-                                                    defaultChecked={this.state.updateMIQuantity ? 'checked' : null} />
-                                                <label>{Resources['oppened'][currentLanguage]}</label>
-                                            </div>
-                                            <div className="ui checkbox radio radioBoxBlue ">
-                                                <input type="radio" name="Status" value="false"
-                                                    defaultChecked={this.state.updateMIQuantity ? null : 'checked'}
-                                                    onChange={(e) => {
-                                                        this.setState({
-                                                            updateMIQuantity: false,
-                                                            docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx'
-                                                        });
-                                                    }} />
-                                                <label> {Resources['closed'][currentLanguage]}</label>
-                                            </div>
+                                    <>
+                                        <div className="linebylineInput">
+                                            <label className="control-label"> {Resources['updateMaterialInventoryQuantitiesAndPrices'][currentLanguage]} </label>
+                                            <div className="dropWrapper">
+                                                <div className="ui checkbox radio radioBoxBlue checked">
+                                                    <input type="radio" name="Status" value="true"
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                updateMIQuantity: true,
+                                                                docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventoryQuantityAndPrice.xlsx'
+                                                            });
+                                                        }}
+                                                        defaultChecked={this.state.updateMIQuantity ? 'checked' : null} />
+                                                    <label>{Resources['yes'][currentLanguage]}</label>
+                                                </div>
+                                                <div className="ui checkbox radio radioBoxBlue ">
+                                                    <input type="radio" name="Status" value="false"
+                                                        defaultChecked={this.state.updateMIQuantity ? null : 'checked'}
+                                                        onChange={(e) => {
+                                                            this.setState({
+                                                                updateMIQuantity: false,
+                                                                docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/inventory.xlsx'
+                                                            });
+                                                        }} />
+                                                    <label> {Resources['no'][currentLanguage]}</label>
+                                                </div>
 
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        {/* //-----------------------End Ahmed Yousry-------------- */}
+                                        {this.state.updateMIQuantity != true ?
+                                            <div className="dropdownFullWidthContainer">
+                                                <div className="linebylineInput valid-input dropdownFullWidth">
+                                                    <Dropdown
+                                                        title="disciplineTitle"
+                                                        data={this.state.disciplines}
+                                                        isMulti={false}
+                                                        selectedValue={this.state.selectedDiscpline}
+                                                        handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline',)}
+                                                        name="disciplineId"
+                                                        id="disciplineId"
+                                                    />
+                                                </div>
+                                                <div className="linebylineInput valid-input dropdownFullWidth">
+                                                    <Dropdown
+                                                        title="specsSection"
+                                                        data={this.state.specsSection} isMulti={false}
+                                                        selectedValue={this.state.selectedSpecsSection}
+                                                        handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedSpecsSection',)}
+                                                        name="specsSectionId"
+                                                        id="specsSectionId"
+                                                    />
+                                                </div>
+                                            </div>
+                                            : null
+                                        }
+                                    </>
                                     : null}
-                                {/* //-----------------------End Ahmed Yousry-------------- */}
-                                {this.state.updateMIQuantity != true ?
-                                    <div className="dropdownFullWidthContainer">
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="disciplineTitle"
-                                                data={
-                                                    this.state
-                                                        .disciplines
-                                                }
-                                                isMulti={false}
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedDiscpline
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'disciplineId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedDiscpline',
-                                                    )
-                                                }
-                                                name="disciplineId"
-                                                id="disciplineId"
-                                            />
-                                        </div>
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="specsSection"
-                                                data={
-                                                    this.state
-                                                        .specsSection
-                                                }
-                                                isMulti={false}
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedSpecsSection
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'specsSectionId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedSpecsSection',
-                                                    )
-                                                }
-                                                name="specsSectionId"
-                                                id="specsSectionId"
-                                            />
-                                        </div>
-                                    </div>
-                                    : null}
+
                             </>
                             : null}
-                        {Config.getPayload().uty == 'company' ? (
-                            this.state.docType == 'submittal' ? (
-                                <Fragment>
-                                    <div className="dropdownFullWidthContainer">
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="disciplineTitle"
-                                                data={
-                                                    this.state
-                                                        .disciplines
-                                                }
-                                                isMulti={false}
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedDiscpline
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'disciplineId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedDiscpline',
-                                                    )
-                                                }
-                                                name="disciplineId"
-                                                id="disciplineId"
-                                            />
-                                        </div>
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="specsSection"
-                                                data={
-                                                    this.state
-                                                        .specsSection
-                                                }
-                                                isMulti={false}
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedSpecsSection
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'specsSectionId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedSpecsSection',
-                                                    )
-                                                }
-                                                name="specsSectionId"
-                                                id="specsSectionId"
-                                            />
-                                        </div>
+
+                        {Config.getPayload().uty == 'company' ? (this.state.docType == 'submittal' ? (
+                            <Fragment>
+                                <div className="dropdownFullWidthContainer">
+                                    <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown
+                                            title="disciplineTitle"
+                                            data={this.state.disciplines}
+                                            isMulti={false}
+                                            selectedValue={this.state.selectedDiscpline}
+                                            handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                            name="disciplineId"
+                                            id="disciplineId"
+                                        />
                                     </div>
-                                    <div className="dropdownFullWidthContainer">
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="submittalType"
-                                                data={
-                                                    this.state
-                                                        .SubmittalTypes
-                                                }
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedSubmittalType
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'submittalTypeId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedSubmittalType',
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                        <div className="linebylineInput valid-input  dropdownFullWidth">
-                                            <Dropdown
-                                                title="area"
-                                                data={this.state.areas}
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedArea
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'area',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedArea',
-                                                    )
-                                                }
-                                            />
-                                        </div>
+                                    <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown
+                                            title="specsSection"
+                                            data={this.state.specsSection}
+                                            isMulti={false}
+                                            selectedValue={this.state.selectedSpecsSection}
+                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedSpecsSection')}
+                                            name="specsSectionId"
+                                            id="specsSectionId"
+                                        />
                                     </div>
-                                    <div className="dropdownFullWidthContainer">
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="location"
-                                                data={
-                                                    this.state.locations
-                                                }
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedLocation
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'location',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedLocation',
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="contractPo"
-                                                isMulti={false}
-                                                data={
-                                                    this.state.contracts
-                                                }
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedContract
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDown(
-                                                        event,
-                                                        'contractId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedContract',
-                                                    )
-                                                }
-                                                name="contractId"
-                                                id="contractId"
-                                                index="contractId"
-                                            />
-                                        </div>
+                                </div>
+                                <div className="dropdownFullWidthContainer">
+                                    <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown
+                                            title="submittalType"
+                                            data={this.state.SubmittalTypes}
+                                            selectedValue={this.state.selectedSubmittalType}
+                                            handleChange={event => this.handleChangeDropDown(event, 'submittalTypeId', false, '', '', '', 'selectedSubmittalType',)}
+                                        />
                                     </div>
-                                    <div className="dropdownFullWidthContainer">
-                                        <div className="linebylineInput valid-input dropdownFullWidth">
-                                            <Dropdown
-                                                title="approvalStatus"
-                                                isMulti={false}
-                                                data={
-                                                    this.state
-                                                        .approvales
-                                                }
-                                                selectedValue={
-                                                    this.state
-                                                        .selectedApprovalStatus
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeDropDownCycles(
-                                                        event,
-                                                        'approvalStatusId',
-                                                        false,
-                                                        '',
-                                                        '',
-                                                        '',
-                                                        'selectedApprovalStatus',
-                                                    )
-                                                }
-                                                name="approvalStatusId"
-                                                id="approvalStatusId"
-                                                index="approvalStatusId"
-                                            />
-                                        </div>
+                                    <div className="linebylineInput valid-input  dropdownFullWidth">
+                                        <Dropdown
+                                            title="area"
+                                            data={this.state.areas}
+                                            selectedValue={
+                                                this.state
+                                                    .selectedArea
+                                            }
+                                            handleChange={event =>
+                                                this.handleChangeDropDown(
+                                                    event,
+                                                    'area',
+                                                    false,
+                                                    '',
+                                                    '',
+                                                    '',
+                                                    'selectedArea',
+                                                )
+                                            }
+                                        />
                                     </div>
-                                </Fragment>
-                            ) : null
+                                </div>
+                                <div className="dropdownFullWidthContainer">
+                                    <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown
+                                            title="location"
+                                            data={this.state.locations}
+                                            selectedValue={this.state.selectedLocation}
+                                            handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocation',)}
+                                        />
+                                    </div>
+                                    <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown
+                                            title="contractPo"
+                                            isMulti={false}
+                                            data={this.state.contracts}
+                                            selectedValue={this.state.selectedContract}
+                                            handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                            name="contractId"
+                                            id="contractId"
+                                            index="contractId"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="dropdownFullWidthContainer">
+                                    <div className="linebylineInput valid-input dropdownFullWidth">
+                                        <Dropdown
+                                            title="approvalStatus"
+                                            isMulti={false}
+                                            data={this.state.approvales}
+                                            selectedValue={this.state.selectedApprovalStatus}
+                                            handleChange={event =>
+                                                this.handleChangeDropDownCycles(event, 'approvalStatusId', false, '', '', '', 'selectedApprovalStatus',)
+                                            }
+                                            name="approvalStatusId"
+                                            id="approvalStatusId"
+                                            index="approvalStatusId"
+                                        />
+                                    </div>
+                                </div>
+                            </Fragment>
+                        ) : null
                         ) : null}
 
-                            <XSLfile
-                                key="docTemplate"
-                                projectId={this.state.projectId}
-                                companyId={
-                                    this.state.document != null
-                                        ? this.state.document.companyId
-                                        : null
-                                }
-                                contactId={
-                                    this.state.document != null
-                                        ? this.state.document.contactId
-                                        : null
-                                }
-                                toCompanyId={
-                                    this.state.document != null
-                                        ? this.state.document.toCompanyId
-                                        : null
-                                }
-                                toContactId={
-                                    this.state.document != null
-                                        ? this.state.document.toContactId
-                                        : null
-                                }
-                                disciplineId={
-                                    this.state.document != null
-                                        ? this.state.document.disciplineId
-                                        : null
-                                }
-                                specsSectionId={
-                                    this.state.document != null
-                                        ? this.state.document.specsSectionId
-                                        : null
-                                }
-                                submittalTypeId={
-                                    this.state.document != null
-                                        ? this.state.document
-                                            .submittalTypeId
-                                        : null
-                                }
-                                area={
-                                    this.state.document != null
-                                        ? this.state.selectedArea.label
-                                        : null
-                                }
-                                location={
-                                    this.state.document != null
-                                        ? this.state.selectedLocation.label
-                                        : null
-                                }
-                                contractId={
-                                    this.state.document != null
-                                        ? this.state.document.contractId
-                                        : null
-                                }
-                                approvalStatusId={
-                                    this.state.documentCycle != null
-                                        ? this.state.documentCycle
-                                            .approvalStatusId
-                                        : null
-                                }
-                                docType={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? "inventoryQuantityAndPrice" : this.state.docType}
-                                documentTemplate={this.state.docType == 'materialInventory' ? false : true}
-                                link={this.state.docTempLink}
-                                header="addManyItems"
-                                updateMaterialInventoryQuantity={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? true : false}
-                                afterUpload={() => {
-                                    this.props.afterUpload()
-                                }}
-                            />
+                        <UploadSingleAttachment
+                            key="docTemplate"
+                            projectId={this.state.projectId}
+                            companyId={this.state.document != null ? this.state.document.companyId : null}
+                            contactId={this.state.document != null ? this.state.document.contactId : null}
+                            toCompanyId={this.state.document != null ? this.state.document.toCompanyId : null}
+                            toContactId={this.state.document != null ? this.state.document.toContactId : null}
+                            disciplineId={this.state.document != null ? this.state.document.disciplineId : null}
+                            specsSectionId={this.state.document != null ? this.state.document.specsSectionId : null}
+                            submittalTypeId={this.state.document != null ? this.state.document.submittalTypeId : null}
+                            area={this.state.document != null ? this.state.selectedArea.label : null}
+                            location={this.state.document != null ? this.state.selectedLocation.label : null}
+                            contractId={this.state.document != null ? this.state.document.contractId : null}
+                            approvalStatusId={this.state.documentCycle != null ? this.state.documentCycle.approvalStatusId : null}
+                            docType={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? "inventoryQuantityAndPrice" : this.state.docType}
+                            documentTemplate={this.state.docType == 'materialInventory' ? false : true}
+                            link={this.state.docTempLink}
+                            header="addManyItems"
+                            updateMaterialInventoryQuantity={(this.state.docType == 'materialInventory' && this.state.updateMIQuantity == true) ? true : false}
+                            afterUpload={() => {
+                                this.props.afterUpload()
+                            }}
+                        />
                     </div>
                 </SkyLightStateless>
 

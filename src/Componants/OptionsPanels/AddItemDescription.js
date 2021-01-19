@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
-import XSLfile from "./XSLfiel";
+import UploadSingleAttachment from "./UploadSingleAttachment";
 import DataService from "../../Dataservice";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -23,6 +23,7 @@ const documentItemValidationSchema = Yup.object().shape({
 });
 
 class AddItemDescription extends Component {
+
     constructor(props) {
         super(props);
 
@@ -95,8 +96,7 @@ class AddItemDescription extends Component {
             });
 
     }
-
-
+ 
     saveVariationOrderItem(event) {
 
         this.props.actions.setLoading();
@@ -200,12 +200,16 @@ class AddItemDescription extends Component {
         }
     }
 
+    fillTable(){
+        this.props.afterUpload()
+    }
+
     render() {
         return (
             <div className="step-content">
                 {this.props.showImportExcel !== false ? (
-                    <XSLfile key="boqImport"
-                        docId={this.props.docId}
+                    <UploadSingleAttachment key="boqImport"
+                        projectId={this.props.docId}
                         docType={this.props.docType}
                         link={this.props.docLink != "" ? Config.getPublicConfiguartion().downloads + this.props.docLink : ""}
                         header="addManyItems"

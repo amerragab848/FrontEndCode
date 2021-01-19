@@ -13,7 +13,7 @@ import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescriptio
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
 import SkyLight from "react-skylight";
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 
@@ -483,10 +483,10 @@ class Itemize extends Component {
         );
         const addManyItems = (
             <Fragment>
-                <Fragment>
-                    <XSLfile
+                {/* <Fragment>
+                    <UploadSingleAttachment
                         key="boqImport"
-                        docId={this.state.docId}
+                        projectId={this.state.docId}
                         docType="boq"
                         link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQ.xlsx"}
                         header="addManyItems"
@@ -499,13 +499,13 @@ class Itemize extends Component {
                         }
                         afterUpload={() => this.getTabelData()}
                     />
-                </Fragment>
+                </Fragment> */}
                 {this.state.isCompany ? (
                     <Fragment>
-                        <XSLfile
+                        <UploadSingleAttachment
                             key="boqStructure"
-                            docId={this.state.docId}
-                            docType="boq2"
+                            projectId={this.state.docId}
+                            docType="BOQ2"
                             link={
                                 Config.getPublicConfiguartion().downloads +
                                 "/Downloads/Excel/BOQ2.xlsx"

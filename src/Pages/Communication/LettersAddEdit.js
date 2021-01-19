@@ -5,6 +5,7 @@ import dataservice from '../../Dataservice';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
+import ViewLetterReplies from '../../Componants/OptionsPanels/ViewLetterReplies'; 
 import ViewWorkFlow from '../../Componants/OptionsPanels/ViewWorkFlow';
 import Resources from '../../resources.json';
 import { withRouter } from 'react-router-dom';
@@ -318,7 +319,7 @@ class LettersAddEdit extends Component {
     getReplies() {
         if (this.state.docId > 0) {
             let url =
-                'GetAllReplyLettersByletterId?letterId=' + this.state.docId;
+                'GetAllRepliesByLetterId?letterId=' + this.state.docId;
             this.GetLogData(url);
         }
     }
@@ -464,131 +465,70 @@ class LettersAddEdit extends Component {
     fillDropDowns(isEdit, cb) {
         if (!isEdit) {
             dataservice
-                .GetDataList(
-                    'ProjectWorkFlowGetList?projectId=' + this.state.projectId,
-                    'subject',
-                    'id',
-                )
-                .then(result => {
+                .GetDataList('ProjectWorkFlowGetList?projectId=' + this.state.projectId, 'subject', 'id').then(result => {
                     this.setState({
                         WorkFlowData: [...result],
                     });
                 });
         }
-        dataservice
-            .GetDataListCached(
-                'GetProjectProjectsCompaniesForList?projectId=' +
-                this.state.projectId,
-                'companyName',
-                'companyId',
-                'companies',
-                this.state.projectId,
-                'projectId',
-            )
-            .then(result => {
-                if (isEdit) {
-                    let companyId = this.props.document.fromCompanyId;
-                    if (companyId) {
-                        this.setState({
-                            selectedFromCompany: {
-                                label: this.props.document.fromCompanyName,
-                                value: companyId,
-                            },
-                        });
-                        this.fillSubDropDownInEdit(
-                            'GetContactsByCompanyId',
-                            'companyId',
-                            companyId,
-                            'fromContactId',
-                            'selectedFromContact',
-                            'fromContacts',
-                        );
-                    }
-                    let toCompanyId = this.props.document.toCompanyId;
-                    if (toCompanyId) {
-                        this.setState({
-                            selectedToCompany: {
-                                label: this.props.document.toCompanyName,
-                                value: toCompanyId,
-                            },
-                        });
-
-                        this.fillSubDropDownInEdit(
-                            'GetContactsByCompanyId',
-                            'companyId',
-                            toCompanyId,
-                            'toContactId',
-                            'selectedToContact',
-                            'ToContacts',
-                        );
-                    }
-                } else {
-                    if (fromCompanyId && toCompanyId) {
-                        let fromCompany = find(result, function (item) {
-                            return item.value == fromCompanyId;
-                        });
-                        let toCompany = find(result, function (item) {
-                            return item.value == toCompanyId;
-                        });
-
-                        this.fillSubDropDownInEdit(
-                            'GetContactsByCompanyId',
-                            'companyId',
-                            fromCompany ? fromCompanyId : null,
-                            'fromContactId',
-                            'selectedFromContact',
-                            'fromContacts',
-                            'frmContactId',
-                        );
-
-                        this.fillSubDropDownInEdit(
-                            'GetContactsByCompanyId',
-                            'companyId',
-                            toCompany ? toCompanyId : null,
-                            'toContactId',
-                            'selectedToContact',
-                            'ToContacts',
-                            'tContactId',
-                        );
-
-                        this.setState({
-                            selectedFromCompany: {
-                                label: fromCompany ? fromCompany.label : '',
-                                value: fromCompany ? fromCompanyId : '0',
-                            },
-                            selectedToCompany: {
-                                label: toCompany ? toCompany.label : '',
-                                value: toCompany ? toCompanyId : '0',
-                            },
-                        });
-
-                        this.handleChangeDropDown(
-                            fromCompany,
-                            'fromCompanyId',
-                            true,
-                            'fromContacts',
-                            'GetContactsByCompanyId',
-                            'companyId',
-                            'selectedFromCompany',
-                            'selectedFromContact',
-                        );
-                        this.handleChangeDropDown(
-                            toCompany,
-                            'toCompanyId',
-                            true,
-                            'ToContacts',
-                            'GetContactsByCompanyId',
-                            'companyId',
-                            'selectedToCompany',
-                            'selectedToContact',
-                        );
-                    }
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, 'projectId').then(result => {
+            if (isEdit) {
+                let companyId = this.props.document.fromCompanyId;
+                if (companyId) {
+                    this.setState({
+                        selectedFromCompany: {
+                            label: this.props.document.fromCompanyName,
+                            value: companyId,
+                        },
+                    });
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
+                let toCompanyId = this.props.document.toCompanyId;
+                if (toCompanyId) {
+                    this.setState({
+                        selectedToCompany: {
+                            label: this.props.document.toCompanyName,
+                            value: toCompanyId,
+                        },
+                    });
 
-                this.setState({
-                    companies: [...result],
-                });
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+                }
+            } else {
+                if (fromCompanyId && toCompanyId) {
+                    let fromCompany = find(result, function (item) {
+                        return item.value == fromCompanyId;
+                    });
+                    let toCompany = find(result, function (item) {
+                        return item.value == toCompanyId;
+                    });
+
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', fromCompany ? fromCompanyId : null, 'fromContactId', 'selectedFromContact', 'fromContacts', 'frmContactId'
+                    );
+
+                    this.fillSubDropDownInEdit(
+                        'GetContactsByCompanyId', 'companyId', toCompany ? toCompanyId : null, 'toContactId', 'selectedToContact', 'ToContacts', 'tContactId');
+
+                    this.setState({
+                        selectedFromCompany: {
+                            label: fromCompany ? fromCompany.label : '',
+                            value: fromCompany ? fromCompanyId : '0',
+                        },
+                        selectedToCompany: {
+                            label: toCompany ? toCompany.label : '',
+                            value: toCompany ? toCompanyId : '0',
+                        },
+                    });
+
+                    this.handleChangeDropDown(fromCompany, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact');
+                    this.handleChangeDropDown(toCompany, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact');
+                }
+            }
+
+            this.setState({
+                companies: [...result],
             });
+        });
 
         dataservice
             .GetDataListCached(
@@ -708,17 +648,14 @@ class LettersAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource,
-    ) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue) {
+
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+            });
+            return
+        };
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document[field] = event.value;
@@ -730,19 +667,9 @@ class LettersAddEdit extends Component {
         });
 
         if (field == 'toContactId') {
-            let url =
-                'GetRefCodeArrangeMainDoc?projectId=' +
-                this.state.projectId +
-                '&docType=' +
-                this.state.docTypeId +
-                '&fromCompanyId=' +
-                this.state.document.fromCompanyId +
-                '&fromContactId=' +
-                this.state.document.fromContactId +
-                '&toCompanyId=' +
-                this.state.document.toCompanyId +
-                '&toContactId=' +
-                event.value;
+            let url = 'GetRefCodeArrangeMainDoc?projectId=' + this.state.projectId +
+                '&docType=' + this.state.docTypeId + '&fromCompanyId=' + this.state.document.fromCompanyId + '&fromContactId=' + this.state.document.fromContactId +
+                '&toCompanyId=' + this.state.document.toCompanyId + '&toContactId=' + event.value;
 
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
@@ -891,7 +818,15 @@ class LettersAddEdit extends Component {
             ) : null
         ) : null;
     }
-
+    ViewLetterReplies() {
+        return this.state.docId > 0 ? (
+            <ViewLetterReplies
+                docTypeId={this.state.docTypeId}
+                docId={this.state.docId}
+                projectId={this.state.projectId}
+            />
+        ) : null;
+    }
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     };
@@ -1293,6 +1228,7 @@ class LettersAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         data={
                                                                             this
                                                                                 .state
@@ -1307,16 +1243,7 @@ class LettersAddEdit extends Component {
                                                                                 .selectedFromCompany
                                                                         }
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(
-                                                                                event,
-                                                                                'fromCompanyId',
-                                                                                true,
-                                                                                'fromContacts',
-                                                                                'GetContactsByCompanyId',
-                                                                                'companyId',
-                                                                                'selectedFromCompany',
-                                                                                'selectedFromContact',
-                                                                            );
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact');
                                                                         }}
                                                                         onChange={
                                                                             setFieldValue
@@ -1341,6 +1268,7 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={
                                                                             false
                                                                         }
@@ -1376,10 +1304,7 @@ class LettersAddEdit extends Component {
                                                                         }
                                                                         touched={
                                                                             true
-                                                                        }
-                                                                        isClear={
-                                                                            false
-                                                                        }
+                                                                        } 
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId"
@@ -1403,19 +1328,10 @@ class LettersAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
-                                                                        isMulti={
-                                                                            false
-                                                                        }
-                                                                        data={
-                                                                            this
-                                                                                .state
-                                                                                .companies
-                                                                        }
-                                                                        selectedValue={
-                                                                            this
-                                                                                .state
-                                                                                .selectedToCompany
-                                                                        }
+                                                                        isClear={true}
+                                                                        isMulti={false}
+                                                                        data={this.state.companies}
+                                                                        selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(
                                                                                 event,
@@ -1428,18 +1344,10 @@ class LettersAddEdit extends Component {
                                                                                 'selectedToContact',
                                                                             )
                                                                         }
-                                                                        onChange={
-                                                                            setFieldValue
-                                                                        }
-                                                                        onBlur={
-                                                                            setFieldTouched
-                                                                        }
-                                                                        error={
-                                                                            errors.toCompanyId
-                                                                        }
-                                                                        touched={
-                                                                            touched.toCompanyId
-                                                                        }
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toCompanyId}
+                                                                        touched={touched.toCompanyId}
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
                                                                         id="toCompanyId"
@@ -1451,9 +1359,8 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
-                                                                        isMulti={
-                                                                            false
-                                                                        }
+                                                                        isClear={true}
+                                                                        isMulti={false}
                                                                         data={
                                                                             this
                                                                                 .state
@@ -1500,6 +1407,7 @@ class LettersAddEdit extends Component {
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="discipline"
                                                                 data={
                                                                     this.state
@@ -1555,68 +1463,32 @@ class LettersAddEdit extends Component {
                                                                     }
                                                                     index="letter-replyId"
                                                                 />
-                                                                {this.props
-                                                                    .changeStatus ===
-                                                                    true ? (
-                                                                        <i
-                                                                            onClick={() =>
-                                                                                this.replyNewLetter()
-                                                                            }
-                                                                            style={{
-                                                                                position:
-                                                                                    'absolute',
-                                                                                right:
-                                                                                    '0',
-                                                                                cursor:
-                                                                                    'pointer',
-                                                                                top:
-                                                                                    '27px',
-                                                                                fontSize:
-                                                                                    '15px',
-                                                                                color:
-                                                                                    '#5E6475',
-                                                                            }}
-                                                                            className="fa fa-reply"
-                                                                            aria-hidden="true"></i>
-                                                                    ) : null}
-                                                                {this.state
-                                                                    .selectedReplyLetter
-                                                                    .value >
-                                                                    0 ? (
-                                                                        <a
-                                                                            style={{
-                                                                                marginLeft:
-                                                                                    '7%',
-                                                                                marginTop:
-                                                                                    '2%',
-                                                                            }}
-                                                                            target="_blank"
-                                                                            href={
-                                                                                this
-                                                                                    .state
-                                                                                    .replyLink
-                                                                            }>
-                                                                            <span>
-                                                                                {' '}
-                                                                                {
-                                                                                    Resources
-                                                                                        .openFolder[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }{' '}
-                                                                            </span>
-                                                                        </a>
-                                                                    ) : null}
+                                                                {this.props.changeStatus === true ? (
+                                                                    <i
+                                                                        onClick={e =>
+                                                                            this.replyNewLetter(e)
+                                                                        }
+                                                                        style={{
+                                                                            position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475',
+                                                                        }}
+                                                                        className="fa fa-reply"
+                                                                        aria-hidden="true"></i>
+                                                                ) : null}
+                                                                {this.state.selectedReplyLetter.value > 0 ? (
+                                                                    <a
+                                                                        style={{
+                                                                            marginLeft: '7%', marginTop: '2%',
+                                                                        }}
+                                                                        target="_blank"
+                                                                        href={this.state.replyLink}>
+                                                                        <span> {' '} {Resources.openFolder[currentLanguage]}{' '} </span>
+                                                                    </a>
+                                                                ) : null}
                                                             </div>
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .message[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.message[currentLanguage]}
                                                             </label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
@@ -1798,190 +1670,7 @@ class LettersAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div>
-                                        <div className="drive__wrapper">
-                                            <h2 className="title">
-                                                {
-                                                    Resources['replies'][
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                            </h2>
-                                        </div>
-                                        <table className="attachmentTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>Actions</span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>Subject</span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                ProjectName
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                From Company
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                From Contact
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                To Company
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                To Contact
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.replies.map(
-                                                    (ele, index) => {
-                                                        return (
-                                                            <tr key={ele.id}>
-                                                                <td className="removeTr">
-                                                                    <div className="contentCell tableCell-1">
-                                                                        <span
-                                                                            className="pdfImage"
-                                                                            onClick={() =>
-                                                                                this.navigateToReplyFromTable(
-                                                                                    ele,
-                                                                                    index,
-                                                                                )
-                                                                            }>
-                                                                            <a>
-                                                                                <i
-                                                                                    className="fa fa-link"
-                                                                                    aria-hidden="true"></i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.subject !=
-                                                                                    null
-                                                                                    ? ele.subject
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.subject
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.projectName !=
-                                                                                    null
-                                                                                    ? ele.projectName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.projectName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.fromCompanyName !=
-                                                                                    null
-                                                                                    ? ele.fromCompanyName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.fromCompanyName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.fromContactName !=
-                                                                                    null
-                                                                                    ? ele.fromContactName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.fromContactName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.toCompanyName !=
-                                                                                    null
-                                                                                    ? ele.toCompanyName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.toCompanyName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.toContactName !=
-                                                                                    null
-                                                                                    ? ele.toContactName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.toContactName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    },
-                                                )}
-                                            </tbody>
-                                        </table>
+                                        {this.ViewLetterReplies()}
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>

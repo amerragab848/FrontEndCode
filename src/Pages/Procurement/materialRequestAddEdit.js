@@ -17,7 +17,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
@@ -1024,7 +1024,9 @@ class materialRequestAddEdit extends Component {
 
         Api.get("GetBoqItemsStracture?boqId=" + boqId)
             .then(res => {
-                if (res) this.setState({ items: res, isLoading: false });
+                if (res){ 
+                    this.setState({ items: res || [], isLoading: false });
+                }
                 else this.setState({ items: [], isLoading: false });
             })
             .catch(() => this.setState({ items: [], isLoading: false }));
@@ -1786,7 +1788,7 @@ class materialRequestAddEdit extends Component {
                             )}
                     </div>
                 </div>
-                <ReactTable
+              {this.state.isLoading?null: <ReactTable
                     data={this.state.inventoryTable}
                     columns={[
                         {
@@ -1817,7 +1819,7 @@ class materialRequestAddEdit extends Component {
                     ]}
                     defaultPageSize={5}
                     className="-striped -highlight"
-                />
+                />}
                 <div className="slider-Btns">
                     {this.state.isLoading ? (
                         <button className="primaryBtn-1 btn disabled">
@@ -2921,7 +2923,8 @@ class materialRequestAddEdit extends Component {
                         // />
                     }
                 </div>
-                {Config.IsAllow(117) ? <XSLfile key="boqImport" docId={this.state.docId} docType="siteRequest"
+                {Config.IsAllow(117) ? 
+                <UploadSingleAttachment key="boqImport" projectId={this.state.docId} docType="siteRequest"
                     link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/SiteRequest.xlsx"}
                     header="addManyItems"
                     disabled={this.state.isViewMode}

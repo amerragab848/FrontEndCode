@@ -102,6 +102,7 @@ class EditAccount extends Component {
                     alternativAccountId: result.alternativAccountId,
                     alternativDate: result.alternativDate,
                     isAlternativeWorkFlow: result.isAlternativeWorkFlow,
+                    activeAlternative: result.activeAlternative,
                     groupId: result.groupId
                 }
 
@@ -215,6 +216,7 @@ class EditAccount extends Component {
             alternativAccountId: this.state.selectedAlternative.value,
             alternativDate: alternativeDate,
             isAlternativeWorkFlow: value.isAlternativeWorkFlow,
+            activeAlternative : value.activeAlternative,
             groupId: this.state.selectedGroup.value,
             companyId: value.companyId,
             contactSupervisorId: this.state.selectedSupervisorContact.value,
@@ -315,7 +317,8 @@ class EditAccount extends Component {
                                             alternativAccountId: this.state.accountDocument.alternativAccountId,
                                             alternativDate: this.state.alternativeDate,
                                             isAlternativeWorkFlow: this.state.accountDocument.isAlternativeWorkFlow,
-                                            groupId: this.state.accountDocument.groupId
+                                            groupId: this.state.accountDocument.groupId,
+                                            activeAlternative : this.state.accountDocument.activeAlternative
                                         }}
                                         enableReinitialize={true}
                                         validationSchema={validationSchema}
@@ -417,7 +420,7 @@ class EditAccount extends Component {
                                                             </div>
                                                         </div>
                                                     }
-                                                </Fragment>
+                                                </Fragment> 
                                                 <div className="fullWidthWrapper account__checkbox">
                                                     <div className="proForm fullLinearInput">
                                                         <div className="linebylineInput">
@@ -428,6 +431,19 @@ class EditAccount extends Component {
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
                                                                 <input type="radio" checked={values.designTeam === false} name="designTeam" value={values.designTeam} onChange={(e) => { setFieldValue('designTeam', false) }} />
+                                                                <label> {Resources['no'][currentLanguage]}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="proForm fullLinearInput">
+                                                        <div className="linebylineInput">
+                                                            <label data-toggle="tooltip" title={Resources['activeAlternativeAccount'][currentLanguage]} className="control-label"> {Resources['activeAlternativeAccount'][currentLanguage]} </label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input type="radio" name="activeAlternative" checked={values.activeAlternative === true} value={values.activeAlternative} onChange={(e) => { setFieldValue('activeAlternative', true) }} />
+                                                                <label>{Resources['yes'][currentLanguage]}</label>
+                                                            </div>
+                                                            <div className="ui checkbox radio radioBoxBlue checked">
+                                                                <input type="radio" checked={values.activeAlternative === false} name="activeAlternative" value={values.activeAlternative} onChange={(e) => { setFieldValue('activeAlternative', false) }} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
                                                         </div>

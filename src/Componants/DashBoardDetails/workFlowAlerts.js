@@ -191,9 +191,13 @@ class workFlowAlerts extends Component {
   changeValueOfProps = () => {
     this.setState({ isFilter: false });
   };
+
   render() {
 
-    const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+    const btnExport = this.state.isLoading === false ?
+                  <Export rows={this.state.isLoading === false ? this.state.rows : []}
+                    columns={this.columnGrid}
+                    fileName={this.state.pageTitle} />
       : <LoadingSection />;
     return (
       <div className="mainContainer">

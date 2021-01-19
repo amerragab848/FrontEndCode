@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [0423/150541.376:ERROR:settings.cc(320)] Settings magic is not 1129342067
 [0914/083437.234:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
 [0914/083437.236:ERROR:process_info.cc(556)] ReadMemoryInfo failed
@@ -43,3 +44,6 @@
 [0113/185428.401:ERROR:exception_snapshot_win.cc(99)] thread ID 20720 not found in process
 [0113/185428.416:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
 [0113/185428.416:ERROR:exception_snapshot_win.cc(99)] thread ID 19536 not found in process
+=======
+[0118/094621.023:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+>>>>>>> d5d97731647a85cd8f589200371aa39ba32b3436

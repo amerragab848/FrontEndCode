@@ -5,8 +5,6 @@ import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
-//import XSLfile from "./XSLfiel";
-//import IPConfig from "../../assets/IP_Configrations";
 import DataService from "../../Dataservice";
 import ReactTable from "react-table";
 import { withRouter } from "react-router-dom";

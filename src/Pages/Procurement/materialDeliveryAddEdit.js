@@ -8,7 +8,7 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -1219,10 +1219,10 @@ class materialDeliveryAddEdit extends Component {
 
             return (
                 <div className="step-content">
-                    <XSLfile
+                    <UploadSingleAttachment
                         key="materialDeliveryitem"
-                        docId={this.state.docId}
-                        docType={this.state.docType}
+                        docType="MaterialDelivery"
+                        projectId={this.state.docId}
                         link={
                             Config.getPublicConfiguartion().downloads +
                             "/DownLoads/Excel/MaterialDelivery.xlsx"

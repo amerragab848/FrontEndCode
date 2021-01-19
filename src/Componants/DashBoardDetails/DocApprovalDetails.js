@@ -20,6 +20,7 @@ class DocApprovalDetails extends Component {
     for (let param of query.entries()) {
       action = param[1];
     }
+    
     const columnsGrid = [
       { title: '', type: 'check-box', fixed: true, field: 'id' },
       {
@@ -50,7 +51,7 @@ class DocApprovalDetails extends Component {
             Api.post("UpdateStatusWorkFlow?id=" + e.id);
           }
         },
-        classes: 'bold' 
+        classes: 'bold'
       },
       {
         field: "creationDate",
@@ -156,6 +157,16 @@ class DocApprovalDetails extends Component {
       {
         field: "refDoc",
         title: Resources["docNo"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 6,
+        sortable: true,
+        hidden: false,
+        type: "text"
+      },
+      {
+        field: "docReferance",
+        title: Resources["refDoc"][currentLanguage],
         groupable: true,
         fixed: false,
         width: 6,
@@ -318,7 +329,7 @@ class DocApprovalDetails extends Component {
       apiFilter: "",
       groups: [],
       gridName: gridName
-    }; 
+    };
   }
 
   componentDidMount() {
@@ -382,6 +393,9 @@ class DocApprovalDetails extends Component {
               perviousRoute: window.location.pathname + window.location.search
             };
 
+            if (row.docLink == "addEditModificationDrawing") {
+              obj.isModification = true;
+            }
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -421,12 +435,13 @@ class DocApprovalDetails extends Component {
               perviousRoute: window.location.pathname + window.location.search
             };
 
-            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+            if (row.docLink == "addEditModificationDrawing") {
+              obj.isModification = true;
+            }
 
-            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj)); 
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms); 
             let doc_view = "/" + row.docLink.replace("/", "") + "?id=" + encodedPaylod;
-
             subject = doc_view;
           }
           row.link = subject;

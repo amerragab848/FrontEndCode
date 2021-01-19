@@ -23,7 +23,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 //import SkyLight from "react-skylight";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 
 var steps_defination = [];
 
@@ -1322,7 +1322,7 @@ class pcoAddEdit extends Component {
                                 :
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
-                                        <XSLfile key="boqImport"
+                                        <UploadSingleAttachment key="boqImport"
                                             docId={this.state.docId}
                                             docType={"PcoItems"}
                                             action={1}

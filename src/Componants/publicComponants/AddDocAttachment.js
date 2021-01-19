@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-// import "../../Styles/css/rodal.css";
+import { withRouter } from "react-router-dom"; 
 import CryptoJS from 'crypto-js';
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -272,12 +271,12 @@ class AddDocAttachment extends Component {
               </div>
             );
           },
-          width: 400
+          width: 600
         },
         {
           Header: Resources["docType"][currentLanguage],
           accessor: "docTypeName",
-          width: 200
+          width: 250
         },
         {
           Header: Resources["docDate"][currentLanguage],
@@ -303,7 +302,7 @@ class AddDocAttachment extends Component {
         {
           field: 'subject',
           title: Resources['subject'][currentLanguage],
-          width: 40,
+          width: 180,
           fixed: false,
           groupable: true,
           type: "text",
@@ -315,7 +314,7 @@ class AddDocAttachment extends Component {
         {
           field: 'statusText',
           title: Resources['docStatus'][currentLanguage],
-          width: 20,
+          width:90,
           groupable: true,
           sortable: true,
           fixed: true,

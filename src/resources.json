@@ -2791,6 +2791,14 @@
         "en": "Reply On Letter",
         "ar": "رد على خطاب"
     },
+    "repliesOnLetter": {
+        "en": "Replies On Letter",
+        "ar": "ردود على الخطاب"
+    },
+    "replyFor": {
+        "en": "Reply For",
+        "ar": "رد على"
+    },
     "letterNo": {
         "en": "Letter No.",
         "ar": "رقم الخطاب"
@@ -3678,6 +3686,10 @@
     "boqCostReport": {
         "en": "Boq Cost Report",
         "ar": "تقرير قائمة الكميات"
+    },
+    "DetailedFollowUpReport": {
+        "en": "Detailed FollowUp Report",
+        "ar": "تقرير تفاصيل متابعات الدورة المستندية"
     },
     "timeSheetUserDetails": {
         "en": "Time Sheet User Details",
@@ -7246,6 +7258,10 @@
     "alternativeAccount": {
         "en": "Alternative Account",
         "ar": "الأكونت البديل"
+    },
+    "activeAlternativeAccount": {
+        "en": "Active Alternative Account",
+        "ar": "تفعيل الأكونت البديل"
     },
     "alternativeDate": {
         "en": "Alternative Date",

@@ -315,15 +315,16 @@ class variationOrderAddEdit extends Component {
     }
   }
 
-  fillVoItems() {
+  fillVoItems=()=> {
+    this.setState({isLoading:true})
     dataservice.GetDataGrid("GetChangeOrderItemsByChangeOrderId?changeOrderId=" + this.state.docId).then(result => {
 
       let data = { items: result };
 
       this.props.actions.ExportingData(data);
-
+      this.props.actions.addExcelItems(result);
       this.setState({
-        voItems: [...result]
+        isLoading:false
       });
     });
   }
@@ -948,7 +949,7 @@ class variationOrderAddEdit extends Component {
                           <AddItemDescription
                           docLink={this.state.document.isRaisedPrices =="true"||this.state.document.isRaisedPrices ==true ? "" : "/Downloads/Excel/VoItems.xlsx"}
                           showImportExcel={this.state.document.isRaisedPrices}
-                          docType={this.state.document.isRaisedPrices =="true" ? "VoItemPrices" : "voItems"}
+                          docType={this.state.document.isRaisedPrices =="true" ||this.state.document.isRaisedPrices ==true ? "VoItemPrices" : "voItems"}
                           isViewMode={this.state.isViewMode}
                           docId={this.state.docId}
                           mainColumn="changeOrderId"
@@ -956,6 +957,7 @@ class variationOrderAddEdit extends Component {
                           projectId={this.state.projectId}
                           showItemType={false}
                           showBoqType={true}
+                          afterUpload={()=>{this.fillVoItems()}}
                           />
                     ):null}
                     <div className="doc-pre-cycle">

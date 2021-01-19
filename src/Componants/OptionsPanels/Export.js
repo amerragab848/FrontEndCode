@@ -96,7 +96,7 @@ class Export extends Component {
     drawItems() {
         let fieldsItems = this.props.columns;
 
-        let rows = this.props.rows.length > 0 ?
+        let rows = this.props.rows.length > 0 ? 
             (this.props.rows.map((row, index) => {
                 return (
                     <tr key={index}>

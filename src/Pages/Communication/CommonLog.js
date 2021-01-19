@@ -18,7 +18,6 @@ import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
-// import { Slider } from 'react-semantic-ui-range';
 import { Resources } from '../../Resources';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -1330,14 +1329,7 @@ class CommonLog extends Component {
             docTemplateModal: false
         });
         this.setState({ isLoading: true });
-        this.GetRecordOfLog(
-            this.state.isCustom === true
-                ? this.state.documentObj
-                    .documentApi.getCustom
-                : this.state.documentObj
-                    .documentApi.get,
-            this.props.projectId,
-        );
+        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
     };
 
     handleChangeWidth = (key, newWidth) => {

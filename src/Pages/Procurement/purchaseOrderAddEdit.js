@@ -27,7 +27,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { SkyLightStateless } from "react-skylight";
 import Recycle from "../../Styles/images/attacheRecycle.png";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import Schedule from "../Contracts/Schedule";
 import ContractInsurance from "../Contracts/ContractInsurance";
@@ -2009,9 +2009,9 @@ class PurchaseOrderAddEdit extends Component {
                         )}
                 </div>
                 <div className="step-content">
-                    <XSLfile
+                    <UploadSingleAttachment
                         key="POImport"
-                        docId={this.state.docId}
+                        projectId={this.state.docId}
                         docType="po"
                         link={
                             Config.getPublicConfiguartion().downloads +

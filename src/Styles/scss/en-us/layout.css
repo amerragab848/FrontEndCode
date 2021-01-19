@@ -9437,16 +9437,16 @@ h5 {
 }
 
 .attachmentTable tbody tr td:first-child {
-    width: 45px;
+    /* width: 45px; */
 }
 
 .attachmentTable tbody tr td:nth-child(2) {
     border-right: 1px solid #e9ecf0;
-    width: 200px;
+    /* width: 200px; */
 }
 
 .attachmentTable tbody tr td:nth-child(3) {
-    width: 100px;
+    /* width: 100px; */
 }
 
 .attachmentTable tbody tr td.tdHover {
@@ -9456,7 +9456,7 @@ h5 {
 
 @media screen and (max-width: 1300px) {
     .attachmentTable tbody tr td.tdHover {
-        min-width: 70px;
+        /* min-width: 70px; */
     }
 }
 
@@ -24654,4 +24654,22 @@ tbody.grid-body tr .text.elipsisPadd {
     top: -6px;
     right: -12px;
     font-size: 9px;
+}
+
+.dropZoneUploader .dzu-dropzone .dzu-previewStatusContainer{
+    bottom: auto;
+    top: 16px;
+    justify-content: flex-end;
+    left: auto;
+    right: 6px;
+}
+.dropZoneUploader .dzu-dropzone .dzu-previewButton {margin: 0}
+.singleUpload.dropZoneUploader .dzu-dropzone .dzu-previewContainer{
+    width: auto;
+    max-width: 95%;
+}
+.singleUpload.dropZoneUploader .dzu-dropzone .dzu-previewStatusContainer {
+    top: 50%;
+    right: -28px;
+    transform: translateY(-50%);
 }
