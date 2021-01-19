@@ -1970,7 +1970,6 @@ class SubmittalAddEdit extends Component {
                                       <label className="control-label">
                                         {Resources.subject[currentLanguage]}
                                       </label>
-                                      {JSON.stringify(errors)}
                                       <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")} >
                                         <input name="subject" className="form-control fsadfsadsa"
                                           placeholder={Resources.subject[currentLanguage]} autoComplete="off"
