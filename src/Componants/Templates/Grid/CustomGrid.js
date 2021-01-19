@@ -85,11 +85,12 @@ export default class CustomGrid extends Component {
         let itemsColumns = this.props.cells;
         if (JSON.parse(savedGrid.columnsList).length === 0) {
 
-            var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
-            let newFilterLst = [];
+            // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+            var gridLocalStor = { columnsList: [], groups: [] };
+            //let newFilterLst = [];
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
-            gridLocalStor.Filters = JSON.stringify(newFilterLst);
+            //gridLocalStor.Filters = JSON.stringify(newFilterLst);
 
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
         }
@@ -180,12 +181,13 @@ export default class CustomGrid extends Component {
                 break;
             }
         }
-        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
-        let newFilterLst = this.state.localStorFiltersList;
+        // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+        var gridLocalStor = { columnsList: [], groups: [] };
+        //let newFilterLst = this.state.localStorFiltersList;
 
         gridLocalStor.columnsList = JSON.stringify(columnList);
         gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : []);
-        gridLocalStor.Filters = JSON.stringify(newFilterLst);
+        //gridLocalStor.Filters = JSON.stringify(newFilterLst);
 
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
         let showColumn = columnList.filter(i => i.hidden != true);
@@ -246,14 +248,15 @@ export default class CustomGrid extends Component {
             }
         });
 
-        var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+        // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+        var gridLocalStor = { columnsList: [], groups: [] };
 
         gridLocalStor.groups = JSON.stringify(this.state.groupsList);
         gridLocalStor.columnsList = JSON.stringify(this.state.columns);
 
-        let newFilterLst = this.state.localStorFiltersList;
+        //let newFilterLst = this.state.localStorFiltersList;
 
-        gridLocalStor.Filters = JSON.stringify(newFilterLst);
+        //gridLocalStor.Filters = JSON.stringify(newFilterLst);
 
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
 
@@ -316,9 +319,10 @@ export default class CustomGrid extends Component {
             if (i > -1) newFilterLst[i] = { key: filter.key, index: index, value: newFilters[filter.key] };
             else newFilterLst.push({ key: filter.key, index: index, value: newFilters[filter.key] })
 
-            var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+            // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
+            var gridLocalStor = { columnsList: [], groups: []};
 
-            gridLocalStor.Filters = JSON.stringify(newFilterLst);
+           // gridLocalStor.Filters = JSON.stringify(newFilterLst);
             gridLocalStor.columnsList = JSON.stringify(this.state.columns);
             gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : []);
 
@@ -466,12 +470,13 @@ export default class CustomGrid extends Component {
 
     handleGroupEvent = (groups) => {
 
-        var gridLocalStore = { columnsList: [], groups: [], Filters: [] };
+        // var gridLocalStore = { columnsList: [], groups: [], Filters: [] };
+        var gridLocalStore = { columnsList: [], groups: [] };
 
-        let newFilterLst = this.state.localStorFiltersList;
+        //let newFilterLst = this.state.localStorFiltersList;
         gridLocalStore.groups = JSON.stringify(groups);
         gridLocalStore.columnsList = JSON.stringify(this.state.columns);
-        gridLocalStore.Filters = JSON.stringify(newFilterLst);
+        //gridLocalStore.Filters = JSON.stringify(newFilterLst);
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStore));
 
         this.setState({ groupsList: groups });
@@ -489,11 +494,12 @@ export default class CustomGrid extends Component {
             }
         }
 
-        var savedGrid = { columnsList: [], groups: [], Filters: [] };
-        let newFilterLst = this.state.localStorFiltersList;
+        // var savedGrid = { columnsList: [], groups: [], Filters: [] };
+        var savedGrid = { columnsList: [], groups: [] };
+        //let newFilterLst = this.state.localStorFiltersList;
         savedGrid.columnsList = JSON.stringify(ColumnsHideShow)
         savedGrid.groups = JSON.stringify(this.state.groupsList);
-        savedGrid.Filters = JSON.stringify(newFilterLst);
+        //savedGrid.Filters = JSON.stringify(newFilterLst);
         localStorage.setItem(this.props.gridKey, JSON.stringify(savedGrid))
 
         setTimeout(() => {
