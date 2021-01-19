@@ -61,10 +61,9 @@ export default class CustomGrid extends Component {
         var savedGrid = JSON.parse(localStorage.getItem(this.props.gridKey)) || { groups: JSON.stringify([]), Filters: JSON.stringify([]), columnsList: JSON.stringify([]) };
 
         var parsedFilters = savedGrid.Filters && savedGrid.Filters.length > 0 ? JSON.parse(savedGrid.Filters) : []
-
+        var obj = {};
         if (parsedFilters.length > 0) {
             let rows = [...this.state.filteredRows];
-            var obj = {};
             this.setState({ filterLoading: true })
 
             parsedFilters.forEach(element => {
@@ -264,22 +263,15 @@ export default class CustomGrid extends Component {
     };
 
     onChange = (date, index, columnName, type, key) => {
-
         let margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
-
         this.saveFilter(margeDate, index, columnName, type, key);
-
         let state = this.state;
-
         state[index + "-column"] = margeDate;
-
         this.setState({ state, currentData: 0 });
     };
 
     saveFilter(event, index, name, type, key) {
-
         if (this.state.filteredRows.length > 0) {
-
             this.setState({
                 Loading: true
             });
@@ -601,7 +593,8 @@ export default class CustomGrid extends Component {
                                                     <input type="text" autoComplete="off" key={index} placeholder={column.title}
                                                         onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)}
                                                         value={this.state[index + "-column"] != null ? this.state[index + "-column"] : ''}
-                                                        onClick={() => this.changeDate(index, column.type)} />
+                                                        onClick={() => this.changeDate(index, column.type)} 
+                                                        />
 
                                                     {this.state.currentData === index && this.state.currentData != 0 ?
                                                         (<div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
