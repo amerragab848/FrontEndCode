@@ -744,7 +744,7 @@ export default class CustomGrid extends Component {
                     {this.state.GridLoading === false ?
                         (
                             <>
-                                < GridCustom
+                                <GridCustom
                                     key={this.props.gridKey}
                                     cells={this.state.columns.filter(i => i.hidden != true)}
                                     data={this.state.rows}
@@ -754,6 +754,7 @@ export default class CustomGrid extends Component {
                                     groups={this.state.groupsList}
                                     handleGroupUpdate={this.handleGroupEvent}
                                     showPicker={this.props.showPicker}
+                                    shouldCheck={this.props.shouldCheck}
                                 />
                                 {/* <div className="paginationNumbers custom">
                                     <ul className="zero">
