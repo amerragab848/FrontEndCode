@@ -91,3 +91,5 @@ export const EMPTY_LIST='EMPTY_LIST';
 export const Clear_Cash_CompanyContact='Clear_Cash_CompanyContact';
 
 export const STORE_COMMON_LOG_CoLUMNS='STORE_COMMON_LOG_CoLUMNS';
+
+export const fireLoading='fireLoading';
