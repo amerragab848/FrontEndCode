@@ -33,25 +33,25 @@ let currentLanguage =
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(
         Resources["subjectRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     fromContact: Yup.string().required(
         Resources["fromContactRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     calledByContact: Yup.string().required(
         Resources["calledByContactRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     facilitatorContact: Yup.string().required(
         Resources["facilitatorContactReuired"][currentLanguage]
-    ),
+    ).nullable(true),
     noteTakerContact: Yup.string().required(
         Resources["noteTakerContactRequired"][currentLanguage]
-    )
+    ).nullable(true)
 });
 
 const attendeesValidationSchema = Yup.object().shape({
     attendeesContact: Yup.string().required(
         Resources["fromContactRequired"][currentLanguage]
-    )
+    ).nullable()
 });
 
 const topicsValidationSchema = Yup.object().shape({
@@ -727,7 +727,10 @@ class MeetingMinutesAddEdit extends Component {
         });
     }
 
-    updateSelectedValue = (selected, label, value, targetSelected) => {
+    updateSelectedValue = (selected, label, value,selected_subScripe_Id, targetSelected) => {
+        if( selected !=null){
+
+      
         if (
             label == "fromContactName" &&
             this.props.changeStatus === false &&
@@ -742,7 +745,7 @@ class MeetingMinutesAddEdit extends Component {
                 "&companyId=" +
                 this.state.selectedFromCompany.value +
                 "&contactId=" +
-                this.state.selectedFromContact.value
+                  selected.value
             ).then(res => {
                 this.setState({
                     document: { ...this.state.document, arrange: res },
@@ -751,9 +754,24 @@ class MeetingMinutesAddEdit extends Component {
                 });
             });
         }
+      }
+      else{
+        this.setState({
+            document: { ...this.state.document, arrange: "" },
+            isLoading: false,
+            validStep: true
+        });
+      }
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[value] = selected.value;
+        if(selected==null){
+            updated_document[value] = selected;
+            updated_document[selected_subScripe_Id]=selected
+        }
+        else{
+            updated_document[value] = selected.value;
+        }
+        
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             document: updated_document,
@@ -761,30 +779,33 @@ class MeetingMinutesAddEdit extends Component {
         });
     };
 
-    handleChangeDropDowns = (
-        item,
-        lbl,
-        val,
-        selected,
-        listData,
-        selected_subScripe
-    ) => {
+    handleChangeDropDowns = ( item,lbl, val, selected, listData, selected_subScripe,selected_subScripe_Id) => {
         this.setState({ isLoading: true });
-
-        DataService.GetDataList(
-            "GetContactsByCompanyId?companyId=" + item.value,
-            "contactName",
-            "id"
-        ).then(res => {
+       if(item==null){
             this.setState({
-                [listData]: res,
+                [listData]:[],
                 isLoading: false,
                 [selected]: item,
-                [selected_subScripe]: this.state[selected_subScripe]
+                [selected_subScripe]: null
             });
-        });
+       }
+       else{
+            DataService.GetDataList(
+                "GetContactsByCompanyId?companyId=" + item.value,
+                "contactName",
+                "id"
+            ).then(res => {
+                this.setState({
+                    [listData]: res,
+                    isLoading: false,
+                    [selected]: item,
+                    [selected_subScripe]: this.state[selected_subScripe]
+                });
+            });
+       }
+       
 
-        this.updateSelectedValue(item, lbl, val);
+        this.updateSelectedValue(item, lbl, val,selected_subScripe_Id);
     };
 
     handleChange = (key, value) => {
@@ -837,6 +858,7 @@ class MeetingMinutesAddEdit extends Component {
                             noteTakerContact: this.state.document
                                 .noteTakerContactName
                         }}
+                       
                         enableReinitialize={true}
                         onSubmit={values => {
                             if (this.props.showModal) {
@@ -1126,6 +1148,7 @@ class MeetingMinutesAddEdit extends Component {
                                         <div className="supervisor__company">
                                             <div className="super_name">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="fromCompany"
                                                     data={this.state.Companies}
                                                     handleChange={e =>
@@ -1135,7 +1158,8 @@ class MeetingMinutesAddEdit extends Component {
                                                             "fromCompanyId",
                                                             "selectedFromCompany",
                                                             "fromContacts",
-                                                            "selectedFromContact"
+                                                            "selectedFromContact",
+                                                            "fromContactId"
                                                         )
                                                     }
                                                     placeholder="fromCompany"
@@ -1148,6 +1172,7 @@ class MeetingMinutesAddEdit extends Component {
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="fromContact"
                                                     data={this.state.fromContacts}
                                                     handleChange={e =>
@@ -1155,6 +1180,7 @@ class MeetingMinutesAddEdit extends Component {
                                                             e,
                                                             "fromContactName",
                                                             "fromContactId",
+                                                             " ",
                                                             "selectedFromContact"
                                                         )
                                                     }
@@ -1185,6 +1211,7 @@ class MeetingMinutesAddEdit extends Component {
                                         <div className="supervisor__company">
                                             <div className="super_name">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="calledCompany"
                                                     data={this.state.Companies}
                                                     handleChange={e =>
@@ -1194,7 +1221,8 @@ class MeetingMinutesAddEdit extends Component {
                                                             "calledByCompanyId",
                                                             "selectedCalledByCompany",
                                                             "calledContacts",
-                                                            "selectedCalledByContact"
+                                                            "selectedCalledByContact",
+                                                            "calledByContactId"
                                                         )
                                                     }
                                                     placeholder="calledByCompany"
@@ -1207,13 +1235,14 @@ class MeetingMinutesAddEdit extends Component {
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="calledByContact"
                                                     data={this.state.calledContacts}
                                                     handleChange={e =>
                                                         this.updateSelectedValue(
                                                             e,
                                                             "calledByContactName",
-                                                            "calledByContactId",
+                                                            "calledByContactId","",
                                                             "selectedCalledByContact"
                                                         )
                                                     }
@@ -1244,6 +1273,7 @@ class MeetingMinutesAddEdit extends Component {
                                         <div className="supervisor__company">
                                             <div className="super_name">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="facilitatorCompany"
                                                     data={this.state.Companies}
                                                     handleChange={e =>
@@ -1253,7 +1283,8 @@ class MeetingMinutesAddEdit extends Component {
                                                             "facilitatorCompanyId",
                                                             "selectedFacilitatorCompany",
                                                             "facilitatorContacts",
-                                                            "selectedFacilitatorContact"
+                                                            "selectedFacilitatorContact",
+                                                            "facilitatorContactId"
                                                         )
                                                     }
                                                     placeholder="facilitatorCompany"
@@ -1266,6 +1297,7 @@ class MeetingMinutesAddEdit extends Component {
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="facilitatorContact"
                                                     data={
                                                         this.state
@@ -1276,6 +1308,7 @@ class MeetingMinutesAddEdit extends Component {
                                                             e,
                                                             "facilitatorContactName",
                                                             "facilitatorContactId",
+                                                            " ",
                                                             "selectedFacilitatorContact"
                                                         )
                                                     }
@@ -1308,6 +1341,7 @@ class MeetingMinutesAddEdit extends Component {
                                         <div className="supervisor__company">
                                             <div className="super_name">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="noteTakerCompany"
                                                     data={this.state.Companies}
                                                     handleChange={e =>
@@ -1317,7 +1351,8 @@ class MeetingMinutesAddEdit extends Component {
                                                             "noteTakerCompanyId",
                                                             "selectedNoteTakerCompany",
                                                             "noteTakerContacts",
-                                                            "selectedNoteTakerContact"
+                                                            "selectedNoteTakerContact",
+                                                            "noteTakerContactId"
                                                         )
                                                     }
                                                     placeholder="noteTakerCompany"
@@ -1330,6 +1365,7 @@ class MeetingMinutesAddEdit extends Component {
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="noteTakerContact"
                                                     data={
                                                         this.state.noteTakerContacts
@@ -1339,6 +1375,7 @@ class MeetingMinutesAddEdit extends Component {
                                                             e,
                                                             "noteTakerContactName",
                                                             "noteTakerContactId",
+                                                            " ",
                                                             "selectedNoteTakerContact"
                                                         )
                                                     }
@@ -1404,7 +1441,9 @@ class MeetingMinutesAddEdit extends Component {
                         validationSchema={attendeesValidationSchema}
                         onSubmit={values => {
                             this.addAttendences(values);
-                        }}>
+                        }}
+                        enableReinitialize={true}
+                        >
                         {({
                             errors,
                             touched,
@@ -1428,6 +1467,7 @@ class MeetingMinutesAddEdit extends Component {
                                             <div className="supervisor__company">
                                                 <div className="super_name">
                                                     <DropdownMelcous
+                                                        isClear={true}
                                                         name="fromCompany"
                                                         data={this.state.Companies}
                                                         handleChange={e =>
@@ -1450,6 +1490,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 </div>
                                                 <div className="super_company">
                                                     <DropdownMelcous
+                                                        isClear={true}
                                                         name="attendeesContact"
                                                         data={
                                                             this.state
@@ -1542,6 +1583,7 @@ class MeetingMinutesAddEdit extends Component {
                             topicContact: "",
                             topicArrange: 1
                         }}
+                        enableReinitialize={true}
                         validationSchema={topicsValidationSchema}
                         onSubmit={values => {
                             this.addTopics(values);
@@ -1697,6 +1739,7 @@ class MeetingMinutesAddEdit extends Component {
                                         <div className="supervisor__company">
                                             <div className="super_name">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="topicCompany"
                                                     data={this.state.Companies}
                                                     handleChange={e =>
@@ -1719,6 +1762,7 @@ class MeetingMinutesAddEdit extends Component {
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
+                                                    isClear={true}
                                                     name="topicContact"
                                                     data={this.state.topicsContacts}
                                                     handleChange={e =>

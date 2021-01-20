@@ -185,14 +185,15 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 workFlowCycles: action.workFlowCycles,
                 hasWorkflow: action.hasWorkflow,
-                showModal: action.showModal
+                showModal: action.showModal,
+                isLoading:false
             };
 
 
         case types.Send_WorkFlow:
             return {
                 ...state,
-                cycles: action.cycles
+                cycles: action.cycles,
             };
 
         case types.Sending_WorkFlow:
