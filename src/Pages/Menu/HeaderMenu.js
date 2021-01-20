@@ -102,7 +102,7 @@ class HeaderMenu extends Component {
         value: "0"
       },
       viewNotification: false,
-      notifications: [],
+      notifications: {},
       taskes: [],
       totalNotification: 0,
       tabNotifi: true,
@@ -1160,7 +1160,7 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length;
+//    let totalNotification = this.state.notifications.total;
 
     return (
       <div>
@@ -1287,7 +1287,7 @@ class HeaderMenu extends Component {
                         </g>
                       </g>
                     </svg>
-                    <div className="inboxNotif smallSquare">{totalNotification}</div>
+                   {/* <div className="inboxNotif smallSquare">{totalNotification}</div> */}
                   </a>
                   {this.state.viewNotification ? (
                     <div onClick={(e, field) => this.notfiClick(e, 'notifiBar')} id="notiClosed" className="notifiBar">

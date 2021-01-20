@@ -15,6 +15,31 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
+
+    static GetLettersWithReplies(url, label, value,value2) {
+        let letters = [];
+        let replies = [];
+        let Data = {};
+        return Api.get(url).then(result => {
+           (result.letters).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                letters.push(obj);
+            });
+            (result.replies).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value2];
+                replies.push(obj);
+            });
+            Data.letters = letters;
+            Data.replies = replies;
+
+            return Data;
+        }).catch(ex => Data);
+    };
+    
     static GetDataListForUserAlert(url, label, value) {
         let primaveraList = [];
         let scheduleList = [];
