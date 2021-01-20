@@ -140,7 +140,7 @@ class HeaderMenu extends Component {
 
     dataservice.GetDataGrid("GetNotificationPostit").then(result => {
       this._isMounted && this.setState({
-        notifications: result
+        notifications: result 
       });
     });
 
@@ -1160,7 +1160,7 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length;
+    let totalNotification =[] //this.state.notifications.filter(x => x.viewStatus !== true).length;
 
     return (
       <div>
