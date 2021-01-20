@@ -227,6 +227,23 @@ class ViewAttachmments extends Component {
 
         var appliedVersions = [obj, ...lodash.uniqBy(prevVersions, 'accountId')];
 
+        for (let avd = 0; avd < appliedVersions.length; avd++) { 
+            let res = await fetch("https://cjpgr4qmpe.execute-api.eu-west-1.amazonaws.com/v1/get-version-data",
+                {
+                    method: "POST",
+                    body: JSON.stringify({versionId: appliedVersions[avd].id }),
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+            var responseJson = await res.json();
+
+            appliedVersions[avd].data = responseJson.data;
+        }
+
         var existingPdfBytes = await fetch(documentAttachmentsChilds[0].attachFile).then(res =>
             res.arrayBuffer(),
         );
