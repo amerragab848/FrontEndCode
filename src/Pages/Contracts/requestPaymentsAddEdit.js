@@ -685,6 +685,9 @@ class requestPaymentsAddEdit extends Component {
                 sortable: true,
                 hidden: false,
                 type: 'text',
+                conditionalClasses: obj => {
+                    return obj.revisedQuantity > obj.quantity ? 'gridBtns status Read' : '';
+                }
             },
             {
                 field: 'actualPercentage',
@@ -776,7 +779,10 @@ class requestPaymentsAddEdit extends Component {
                         groupable: true,
                         sortable: true,
                         hidden: false,
-                        type: 'number',
+                        type: 'number', 
+                        conditionalClasses: obj => {
+                          return obj.siteQuantityComplete > obj.quantity ? 'gridBtns status UnRead' : '';
+                        }
                     },
                     {
                         field: 'paymentPercent',

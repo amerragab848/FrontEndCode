@@ -2791,6 +2791,14 @@
         "en": "Reply On Letter",
         "ar": "رد على خطاب"
     },
+    "repliesOnLetter": {
+        "en": "Replies On Letter",
+        "ar": "ردود على الخطاب"
+    },
+    "replyFor": {
+        "en": "Reply For",
+        "ar": "رد على"
+    },
     "letterNo": {
         "en": "Letter No.",
         "ar": "رقم الخطاب"

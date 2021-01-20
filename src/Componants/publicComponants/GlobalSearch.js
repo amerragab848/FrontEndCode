@@ -158,6 +158,24 @@ class GlobalSearch extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
+            },
+            {
+                field: 'fileNumber',
+                title: Resources['fileNumber'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: 'refDoc',
+                title: Resources['refNumber'][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }
         ];
 
@@ -188,7 +206,8 @@ class GlobalSearch extends Component {
             selectedDocs: [],
             attachementsSearchResult: [],
             allAttaches: [],
-
+            refCode:'',
+            fileNumber:''
         }
     }
 
@@ -334,6 +353,8 @@ class GlobalSearch extends Component {
 
         let searchOptions = {
             subject: this.state.subject,
+            fileNumber: this.state.fileNumber,
+            refCode: this.state.refCode,
             fromDate: fromDate,
             toDate: toDate,
             docs: docs,
@@ -496,6 +517,21 @@ class GlobalSearch extends Component {
                                 handleChange={event => this.setState({ selectedStatus: event })}
                                 name="status" styles={filterStyle} />
                         </div>
+                        {/************************************** */}
+                        <div className="form-group linebylineInput medium__input--width">
+                            <label className="control-label"> {Resources.fileNumber[currentLanguage]}   </label>
+                            <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
+                                <input type="text" autoComplete="off" placeholder="File Number" defaultValue={this.state.fileNumber} onChange={(event) => this.setState({ fileNumber: event.target.value })} />
+                            </div>
+                        </div>
+                        <div className="form-group linebylineInput medium__input--width">
+                            <label className="control-label"> {Resources.refNumber[currentLanguage]}   </label>
+                            <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
+                                <input type="text" autoComplete="off" placeholder="Ref Number" defaultValue={this.state.refCode} onChange={(event) => this.setState({ refCode: event.target.value })} />
+                            </div>
+                        </div>
+                         {/************************************** */}
+
                         <button className="defaultBtn btn" onClick={() => this.search(0)} type="button">Search</button>
                     </div>
                 </div>

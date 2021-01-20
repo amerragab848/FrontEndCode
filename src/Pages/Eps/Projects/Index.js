@@ -260,7 +260,8 @@ class Index extends Component {
         this.setState({
             showDeleteModal: true,
             rowId: rowId,
-            index: index
+            index: index,
+            selectedRowId:rowId
         })
     }
 
@@ -356,7 +357,7 @@ class Index extends Component {
                 accountsDataList: themData
             });
             this.setState({ showDeleteModal: false, isLoading: true })
-            Api.post("DeleteAccountsProjects?id=" + this.state.selectedRowId).then(() => {
+            Api.get("DeleteAccountsProjects?id=" + this.state.rowId).then(() => {
                 this.setState({ isLoading: false })
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
