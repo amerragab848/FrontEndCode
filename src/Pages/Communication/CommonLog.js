@@ -358,17 +358,8 @@ class CommonLog extends Component {
                 pageNumber: pageNumber,
             });
 
-            let url =
-                (this.state.query == ''
-                    ? this.state.api
-                    : this.state.apiFilter) +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                (this.state.query == '' ? '' : '&query=' + this.state.query);
+            let url = (this.state.query == '' ? this.state.api : this.state.apiFilter) + '?projectId=' +
+                this.state.projectId + '&pageNumber=' + pageNumber + '&pageSize=' + this.state.pageSize + (this.state.query == '' ? '' : '&query=' + this.state.query);
 
             Api.get(url, undefined, moduleId)
                 .then(result => {
@@ -1333,7 +1324,6 @@ class CommonLog extends Component {
     };
 
     handleChangeWidth = (key, newWidth) => {
-        console.log('handleChangeWidth...', key, newWidth);
         this.setState({ isLoading: true });
 
         let data = this.state.ColumnsHideShow;
