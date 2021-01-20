@@ -46,16 +46,16 @@ const validationSchema = Yup.object().shape({
 const attendeesValidationSchema = Yup.object().shape({
     attendeesContact: Yup.string().required(
         Resources["fromContactRequired"][currentLanguage]
-    )
+    ).nullable(true)
 });
 
 const topicsValidationSchema = Yup.object().shape({
     itemDescription: Yup.string().required(
         Resources["descriptionRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     actionByContact: Yup.string().required(
         Resources["actionByContactRequired"][currentLanguage]
-    )
+    ).nullable(true)
 });
 
 let docId = 0;
@@ -1276,10 +1276,10 @@ class meetingAgendaAddEdit extends Component {
                     <Formik
                         enableReinitialize={true}
                         initialValues={{
-                            attendeesContact:
+                            attendeesContact:this.state.selectedActionByContact!=null?
                                 this.state.selectedActionByContact.value > 0
                                     ? this.state.selectedActionByContact.value
-                                    : ""
+                                    : "":""
                         }}
                         validationSchema={attendeesValidationSchema}
                         onSubmit={values => {

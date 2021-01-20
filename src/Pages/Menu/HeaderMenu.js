@@ -102,7 +102,7 @@ class HeaderMenu extends Component {
         value: "0"
       },
       viewNotification: false,
-      notifications: [],
+      notifications: {},
       taskes: [],
       totalNotification: 0,
       tabNotifi: true,
@@ -1160,8 +1160,9 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length;
-
+    //let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length;
+   
+    let totalNotification = 0;
     return (
       <div>
         <div className="wrapper">
