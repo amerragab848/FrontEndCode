@@ -129,7 +129,7 @@ class DistributionInboxListSummaryDetails extends Component {
         type: "text",
         classes: 'gridBtns status ',
         conditionalClasses: obj => {
-          return obj.status == true ? ' Read' : ' UnRead';
+          return obj.status == true ? ' Read' : 'UnRead';
         }
       }, {
         field: 'subject',
