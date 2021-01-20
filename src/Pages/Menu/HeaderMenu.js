@@ -102,7 +102,7 @@ class HeaderMenu extends Component {
         value: "0"
       },
       viewNotification: false,
-      notifications: [],
+      notifications: {},
       taskes: [],
       totalNotification: 0,
       tabNotifi: true,
@@ -311,7 +311,7 @@ class HeaderMenu extends Component {
             this.props.history.push(docView);
           } else {
             let obj = {
-              docId: item.id,
+              docId:docView.split('/')[1],//item.id,
               projectId: projectId,
               projectName: projectName,
               arrange: arrange,
@@ -334,11 +334,14 @@ class HeaderMenu extends Component {
 
   updateStatus(obj) {
     dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
-      let notifcations = this.state.notifications;
-      let rowIndex = this.state.notifications.findIndex(x => x.id == obj.id);
+      let notifcations = this.state.notifications.data;
+      let rowIndex = this.state.notifications.data.findIndex(x => x.id == obj.id);
       if (notifcations.length > 0 && rowIndex >= 0) {
         notifcations[rowIndex].viewStatus = true;
-        this.setState({ notifications: notifcations })
+        let NewNotification=this.state.notifications;
+        NewNotification.data=notifcations
+        NewNotification.total =NewNotification.total -1
+        this.setState({ notifications: NewNotification })
       }
       if (obj.description) {
         let id = obj.description.split("/")[1];
@@ -914,7 +917,7 @@ class HeaderMenu extends Component {
 
           case "materialReleaseAddEdit":
             dataservice
-              .GetDataGrid("GetLogsMaterialReleaseForEdit?id=" + id)
+              .GetDataGrid("GetLogsMaterialReleasesForEdit?id=" + id)
               .then(data => {
                 this.routeToView(
                   obj.description,
@@ -1160,7 +1163,7 @@ class HeaderMenu extends Component {
   }
 
   render() {
-    let totalNotification = this.state.notifications.filter(x => x.viewStatus !== true).length;
+    let totalNotification =this.state.notifications.total ;//0//this.state.notifications.data.filter(x => x.viewStatus !== true).length;
 
     return (
       <div>
@@ -1331,14 +1334,14 @@ class HeaderMenu extends Component {
                             </TabList>
                             <TabPanel>
                               <Fragment>
-                                {this.state.notifications.map(item => {
+                                {this.state.notifications.data.filter(x => x.viewStatus !== true).map(item => {
                                   let now = moment(new Date());
                                   let sentDate = moment(item.sentDate);
                                   let duration = moment.duration(now.diff(sentDate));
                                   let diffDays = duration.asDays();
 
                                   let obj = {
-                                    docId: item.id,
+                                    docId: item.docId,  
                                     projectId: window.localStorage.getItem("lastSelectedProject"),
                                     projectName: window.localStorage.getItem("lastSelectedprojectName"),
                                     arrange: 0,
