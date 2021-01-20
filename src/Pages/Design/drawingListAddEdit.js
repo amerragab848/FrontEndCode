@@ -27,7 +27,7 @@ import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -1176,7 +1176,7 @@ class drawingListAddEdit extends Component {
                                    </div>
                                 </div>
                            
-                            <XSLfile
+                            <UploadSingleAttachment
                                     key="docTemplate"
                                     projectId={this.state.projectId}
                                     docId={docId}

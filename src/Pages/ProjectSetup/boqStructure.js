@@ -17,7 +17,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
  
 //var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 //var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
@@ -516,10 +516,10 @@ class boqStructure extends Component {
                                 onCloseClicked={() => this.setState({ docTemplateModal: false })}
                                 isVisible={this.state.docTemplateModal}>
                                 <div>
-                                    <XSLfile key="docTemplate"
+                                    <UploadSingleAttachment key="docTemplate"
                                         documentTemplate={false}
                                         docType="BoqStructure"
-                                        docId={this.props.projectId}
+                                        projectId={this.props.projectId}
                                         link={Config.getPublicConfiguartion().downloads + "/downloads/excel/tempBoqStructure.xlsx"}
                                         header="addManyItems"
                                         afterUpload={() => {                    

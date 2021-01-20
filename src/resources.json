@@ -2788,8 +2788,16 @@
         "ar": "اكتب الرسالة هنا"
     },
     "replyletter": {
-        "en": "Reply Letter",
+        "en": "Reply On Letter",
         "ar": "رد على خطاب"
+    },
+    "repliesOnLetter": {
+        "en": "Replies On Letter",
+        "ar": "ردود على الخطاب"
+    },
+    "replyFor": {
+        "en": "Reply For",
+        "ar": "رد على"
     },
     "letterNo": {
         "en": "Letter No.",
@@ -3678,6 +3686,10 @@
     "boqCostReport": {
         "en": "Boq Cost Report",
         "ar": "تقرير قائمة الكميات"
+    },
+    "DetailedFollowUpReport": {
+        "en": "Detailed FollowUp Report",
+        "ar": "تقرير تفاصيل متابعات الدورة المستندية"
     },
     "timeSheetUserDetails": {
         "en": "Time Sheet User Details",
@@ -7247,6 +7259,10 @@
         "en": "Alternative Account",
         "ar": "الأكونت البديل"
     },
+    "activeAlternativeAccount": {
+        "en": "Active Alternative Account",
+        "ar": "تفعيل الأكونت البديل"
+    },
     "alternativeDate": {
         "en": "Alternative Date",
         "ar": "تاريخ البداية"
@@ -9179,6 +9195,10 @@
     "accumulativeAmount":{
          "en":"accumulative Amount",
          "ar":" تم الاضافه بواسطه"
-    }
+    },
+    "updateMaterialInventoryQuantitiesAndPrices":{
+        "en":"Update Material Inventory Quantities And Prices",
+        "ar":"تحديث كميات واسعار المخزن"
+   }
  
 }

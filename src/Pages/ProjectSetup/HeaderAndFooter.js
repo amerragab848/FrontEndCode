@@ -15,11 +15,12 @@ import { SkyLightStateless } from 'react-skylight';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
-import Dropzone from 'react-dropzone';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import api from '../../api'
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
-import ConnectionContext from '../../Componants/Layouts/Context'
+import ConnectionContext from '../../Componants/Layouts/Context';
+import Dropzone from "../../Componants/OptionsPanels/UploadSingleFile";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
@@ -101,7 +102,6 @@ class HeaderAndFooter extends Component {
             document: {},
             uploadedImage: null,
             uploadedImagePreview: null,
-            showRemoveBtn: false,
             selectedType: null,
             selectedId: 0
         }
@@ -145,7 +145,7 @@ class HeaderAndFooter extends Component {
                         showPopup: true,
                         IsEditModel: true,
                         selectedType: this.types.find(x => x.value == res.type),
-                        uploadedImage: res.pathImg,
+                        //uploadedImage: res.pathImg,
                         uploadedImagePreview: res.pathImg,
                         selectedId: obj.id
                     })
@@ -195,7 +195,7 @@ class HeaderAndFooter extends Component {
 
     showPopupModel = () => {
         if (config.IsAllow(485))
-            this.setState({ showPopup: true, IsEditModel: false, selectedId: 0, document: {} });
+            this.setState({ showPopup: true, IsEditModel: false, selectedId: 0, document: {},uploadedImage: null,uploadedImagePreview: null });
     }
 
     hideFilter(value) {
@@ -248,7 +248,7 @@ class HeaderAndFooter extends Component {
                         let oldrows = _rows.filter(function (x) { return x.id != res.id });
                         _rows = [...oldrows, res]
                     }
-                    this.setState({ showPopup: false, rows: _rows, isLoading: false, document: {}, uploadedImage: null, uploadedImagePreview: null, showRemoveBtn: false });
+                    this.setState({ showPopup: false, rows: _rows, isLoading: false, document: {}, uploadedImage: null, uploadedImagePreview: null });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
 
                 }).catch(ex => {
@@ -271,16 +271,9 @@ class HeaderAndFooter extends Component {
     onDrop = (file) => {
         this.setState({
             uploadedImage: file,
-            uploadedImagePreview: URL.createObjectURL(file[0]),
-            showRemoveBtn: true
         });
     }
 
-    RemoveHandler = () => {
-        this.setState({
-            uploadedImage: {}, uploadedImagePreview: {}
-        })
-    }
 
     GetMoreData(flag) {
 
@@ -443,46 +436,16 @@ class HeaderAndFooter extends Component {
                                             <div className="slider-Btns">
                                                 <button className="primaryBtn-1 btn meduimBtn" type='submit' >{this.state.IsEditModel ? Resources['editTitle'][currentLanguage] : Resources['addTitle'][currentLanguage]}</button>
                                             </div>
-                                            <div className="thumbUploadedImg">
-                                                {this.state.uploadedImage ? <img alt='' src={this.state.uploadedImage} /> : null}
-                                            </div>
-                                            <section className="singleUploadForm">
-                                                {this.state.showRemoveBtn ?
-                                                    <aside className='thumbsContainer'>
-                                                        <div className="uploadedName ">
-                                                            <p>{this.state.uploadedImage[0].name || null}</p>
-                                                        </div>
-                                                        {this.state.uploadedImage[0].name ?
-                                                            <div className="thumbStyle" key={this.state.uploadedImage}>
-                                                                <div className="thumbInnerStyle">
-                                                                    <img alt=''
-                                                                        src={this.state.uploadedImagePreview}
-                                                                        className="imgStyle"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            : null}
-
-                                                    </aside> : null}
-
-                                                <Dropzone
-                                                    accept="image/*"
-                                                    onDrop={this.onDrop}
-                                                >
-                                                    {({ getRootProps, getInputProps }) => (
-                                                        <div className="singleDragText" {...getRootProps()}>
-                                                            <input {...getInputProps()} />
-                                                            {this.state.uploadedImage ? this.state.uploadedImage[0].name : null ?
-                                                                null : <p>{Resources['dragFileHere'][currentLanguage]}</p>}
-                                                            <button type="button" className="primaryBtn-2 btn smallBtn">{Resources['chooseFile'][currentLanguage]}</button>
-                                                        </div>
-                                                    )}
-                                                </Dropzone>
-                                                {this.state.showRemoveBtn ?
-                                                    <div className="removeBtn">
-                                                        <button type="button" className="primaryBtn-2 btn smallBtn" onClick={this.RemoveHandler}>{Resources['clear'][currentLanguage]}</button>
-                                                    </div> : null}
+                                            <section className="dropZoneUploader">
+                                                <div className="thumbUploadedImg">
+                                                    {this.state.uploadedImagePreview ? <img alt='' src={this.state.uploadedImagePreview} /> : null}
+                                                </div>
+                                                    <Dropzone
+                                                        accept="image/*"
+                                                        onDrop={this.onDrop}
+                                                    />
                                             </section>
+                                            
                                         </div>
                                     </Form>
                                 )}
@@ -499,6 +462,7 @@ class HeaderAndFooter extends Component {
                             buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                         />
                     ) : null}
+                    {this.state.isLoading==true?<LoadingSection />:null}
                 </div>
             </Fragment>
         )

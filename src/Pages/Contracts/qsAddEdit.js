@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { Formik, Form } from "formik";
-import ReactTable from "react-table"; 
+import ReactTable from "react-table";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
+import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
@@ -17,15 +17,15 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
-import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
+//import AddItemDescription from '../../Componants/OptionsPanels/AddItemDescription';
 import { toast } from "react-toastify";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal"; 
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import Steps from "../../Componants/publicComponants/Steps";
 
 
-var steps_defination = []; 
+var steps_defination = [];
 let selectedRows = [];
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -231,10 +231,7 @@ class QsAddEdit extends Component {
 
       this.props.actions.documentForEdit(url, this.state.docTypeId, 'contractsQs');
 
-
-      dataservice.GetDataGrid("GetContractsQsItems?qsId=" + docId).then(result => {
-        this.props.actions.addItemDescription(result);
-      });
+      this.GetQsItems();
 
       this.setState({
         addItemDocument: itemDocument
@@ -533,6 +530,9 @@ class QsAddEdit extends Component {
         itemType: ""
       };
       this.setState({ CurrentStep: stepNo, addItemDocument: itemDocument })
+      import(`../../Componants/OptionsPanels/AddItemDescription`).then(module => {
+        this.setState({ AddItemDescription: module.default })
+      });
     }
     else
       this.setState({ CurrentStep: stepNo });
@@ -649,10 +649,14 @@ class QsAddEdit extends Component {
     });
   }
 
-
+  GetQsItems = () => {
+    dataservice.GetDataGrid("GetContractsQsItems?qsId=" + docId).then(result => {
+      this.props.actions.addExcelItems(result);
+    });
+  }
 
   render() {
-
+    const AddItemDescription = this.state.AddItemDescription
     const columnsItems = [
       {
         Header: Resources["arrange"][currentLanguage],
@@ -835,8 +839,6 @@ class QsAddEdit extends Component {
                               </div>
                             </div>
                             <div className="proForm datepickerContainer">
-
-
                               <div className="linebylineInput valid-input">
                                 <div className="inputDev ui input input-group date NormalInputDate">
                                   <div className="customDatepicker fillter-status fillter-item-c ">
@@ -927,9 +929,15 @@ class QsAddEdit extends Component {
                   ) : (
                       <Fragment>
                         <div className="document-fields">
-                          <AddItemDescription docLink="/Downloads/Excel/QS.xlsx" showImportExcel={true} docType="qs"
-                            isViewMode={this.state.isViewMode} mainColumn="qsId" docId={this.state.docId} isUnitPrice={false} addItemApi="AddContractsQsItems"
-                            projectId={this.state.projectId} showItemType={true} />
+                          {this.state.CurrentStep === 1 && this.state.AddItemDescription != null ?
+                            <AddItemDescription docLink="/Downloads/Excel/QS.xlsx"
+                              showImportExcel={true} docType="qs"
+                              isViewMode={this.state.isViewMode}
+                              mainColumn="qsId" docId={this.state.docId}
+                              isUnitPrice={false} addItemApi="AddContractsQsItems"
+                              projectId={this.state.projectId} showItemType={true}
+                              afterUpload={()=>{this.GetQsItems();}} />
+                            : null}
                         </div>
 
                         {/* فاضل جزء عمل popup for createPaymentRequisitions */}

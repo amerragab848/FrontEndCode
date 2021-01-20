@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react' 
-import XSLfile from "./XSLfiel";
+import UploadSingleAttachment from "./UploadSingleAttachment";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
@@ -29,7 +29,7 @@ class DocumentTemplate extends Component {
     render() {
         return (
             <Fragment>
-                <XSLfile key="docTemplate"
+                <UploadSingleAttachment key="docTemplate"
                     docId={this.state.templates.docId}
                     projectId={this.state.templates.projectId}
                     docType="docTemplate"

@@ -22,8 +22,8 @@ import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
-import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescription";
-import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
+//import AddItemDescription from "../../Componants/OptionsPanels/AddItemDescription";
+//import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
@@ -61,7 +61,6 @@ class VariationRequestAdd extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
@@ -206,7 +205,9 @@ class VariationRequestAdd extends Component {
             CurrentStep: 0,
             items: [],
             totalCost: 0,
-            selectedRows: []
+            selectedRows: [],
+            AddItemDescription: null,
+            EditItemDescription: null
         }
 
         if (!Config.IsAllow(3162) && !Config.IsAllow(3163) && !Config.IsAllow(3165)) {
@@ -303,10 +304,8 @@ class VariationRequestAdd extends Component {
         if (this.state.docId > 0) {
             let url = "GetContractsVariationRequestForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'cvr');
+            this.GetVRItems();
 
-            dataservice.GetDataGrid(`GetVRItems?variationRequestId=${this.state.docId}`).then(result => {
-                this.props.actions.addItemDescription(result);
-            })
         } else {
             let Variation = {
                 subject: '',
@@ -328,6 +327,13 @@ class VariationRequestAdd extends Component {
             this.props.actions.documentForAdding();
             this.GetNextArrange();
         }
+    }
+    GetVRItems = () => {
+        this.setState({isLoading:true})
+        dataservice.GetDataGrid(`GetVRItems?variationRequestId=${this.state.docId}`).then(result => {
+            this.props.actions.addExcelItems(result);
+            this.setState({isLoading:false})
+        })
     }
 
     GetNextArrange() {
@@ -550,6 +556,15 @@ class VariationRequestAdd extends Component {
     }
 
     changeCurrentStep = stepNo => {
+        if (stepNo === 1) {
+            import(`../../Componants/OptionsPanels/AddItemDescription`).then(module => {
+                this.setState({ AddItemDescription: module.default })
+            });
+            import(`../../Componants/OptionsPanels/editItemDescription`).then(module => {
+                this.setState({ EditItemDescription: module.default })
+            });
+        }
+
         if (stepNo === 2) {
             this.props.history.push(`variationRequest/${projectId}`);
         }
@@ -624,6 +639,8 @@ class VariationRequestAdd extends Component {
     }
 
     render() {
+        const AddItemDescription = this.state.AddItemDescription
+        const EditItemDescription = this.state.EditItemDescription
         return this.state.isLoading ? <LoadingSection /> :
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -831,20 +848,22 @@ class VariationRequestAdd extends Component {
                                 :
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
-                                        <AddItemDescription
-                                            docLink="/Downloads/Excel/VRItems.xlsx"
-                                            docType="VRItems"
-                                            isViewMode={this.state.isViewMode}
-                                            docId={this.state.docId}
-                                            mainColumn="variationRequestId"
-                                            showBoqType={true}
-                                            addItemApi="AddVRItems"
-                                            projectId={this.state.projectId}
-                                            showItemType={false}
-                                            showImportExcel={true}
-                                        />
+                                        {this.state.CurrentStep === 1 && this.state.AddItemDescription != null ?
+                                            <AddItemDescription
+                                                docLink="/Downloads/Excel/VRItems.xlsx"
+                                                docType="VRItems"
+                                                isViewMode={this.state.isViewMode}
+                                                docId={this.state.docId}
+                                                mainColumn="variationRequestId"
+                                                showBoqType={true}
+                                                addItemApi="AddVRItems"
+                                                projectId={this.state.projectId}
+                                                showItemType={false}
+                                                showImportExcel={true}
+                                                afterUpload={()=>{this.GetVRItems();}}
+                                            /> : null}
                                         <div className="doc-pre-cycle">
-                                            <GridCustom
+                                         {this.state.isLoading?null:   <GridCustom
                                                 gridKey="VariationRequestAddEdit"
                                                 cells={this.cells}
                                                 data={this.state.items}
@@ -852,7 +871,7 @@ class VariationRequestAdd extends Component {
                                                 actions={this.actions}
                                                 rowActions={this.rowActions}
                                                 rowClick={cells => this.onRowClick(cells)}
-                                            />
+                                            />}
                                         </div>
                                         <div className="doc-pre-cycle">
                                             <div className="slider-Btns">
@@ -870,7 +889,7 @@ class VariationRequestAdd extends Component {
                                     title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}>
                                     <Fragment>
                                         <div className=" proForm datepickerContainer customProform document-fields" key="editItem">
-                                            {this.state.LoadingSectionEdit ? <LoadingSection /> :
+                                            {this.state.LoadingSectionEdit === false && this.state.EditItemDescription != null && this.state.CurrentStep === 1 ?
                                                 <EditItemDescription
                                                     showImportExcel={false}
                                                     docType="vr"
@@ -885,7 +904,7 @@ class VariationRequestAdd extends Component {
                                                     onRowClick={this.state.showPopUp}
                                                     disablePopUp={this.disablePopUp}
                                                 />
-                                            }
+                                                : <LoadingSection />}
                                         </div>
                                     </Fragment>
                                 </SkyLight>

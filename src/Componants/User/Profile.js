@@ -1,9 +1,9 @@
 import React from 'react';
-import Dropzone from 'react-dropzone'; 
 import api from '../../api'
 import config from "../../Services/Config";
 import resources from '../../resources.json'
 import { toast } from "react-toastify";
+import Dropzone from "../../Componants/OptionsPanels/UploadSingleFile";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const signiturePath = '/downloads/users/sign_s_' + config.getPayload().aci + '.jpg';
@@ -19,13 +19,13 @@ export default class uploadSignture extends React.Component {
             signShowRemoveBtn: false, signName: '',
             signIamge: signiturePath,
             profile: {},
-            profilePreview: {},
+            profilePreview: profilePath,
             profileShowRemoveBtn: false, profileName: '',
-            profileIamge: profilePath
+            profileIamge: config.getPublicConfiguartion().downloads + "/" + profilePath
         };
     }
     //signture Methods
-    onDropSign(file) {
+    onDropSign = (file) => {
         this.setState({
             sign: file,
             signPreview: URL.createObjectURL(file[0]),
@@ -39,7 +39,7 @@ export default class uploadSignture extends React.Component {
             sign: {}, signName: '', signPreview: {}
         })
     }
-    
+
     componentWillUnmount() {
         URL.revokeObjectURL(this.state.signPreview)
         URL.revokeObjectURL(this.state.profilePreview)
@@ -57,8 +57,8 @@ export default class uploadSignture extends React.Component {
             });
         }
     }
- 
-    onDropPP(file) {
+
+    onDropPP = (file) => {
         this.setState({
             profile: file,
             profilePreview: URL.createObjectURL(file[0]),
@@ -92,7 +92,7 @@ export default class uploadSignture extends React.Component {
                 <div className="main__fulldash--container">
                     <div >
                         <h4>{resources.uploadSignature[currentLanguage]}</h4>
-                        <section className="singleUploadForm">
+                        <section className="dropZoneUploader">
                             {this.state.signShowRemoveBtn ?
                                 <aside className='thumbsContainer'>
                                     <div className="uploadedName ">
@@ -108,25 +108,12 @@ export default class uploadSignture extends React.Component {
                                             </div>
                                         </div>
                                         : null}
-
                                 </aside> : null}
+
                             <Dropzone
                                 accept="image/*"
-                                onDrop={this.onDropSign.bind(this)}
-                            >
-                                {({ getRootProps, getInputProps }) => (
-                                    <div className="singleDragText" {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                        {this.state.signName ?
-                                            null : <p>{resources['dragFileHere'][currentLanguage]}</p>}
-                                        <button className="primaryBtn-2 btn smallBtn">{resources['chooseFile'][currentLanguage]}</button>
-                                    </div>
-                                )}
-                            </Dropzone>
-                            {this.state.signShowRemoveBtn ?
-                                <div className="removeBtn">
-                                    <button className="primaryBtn-2 btn smallBtn" onClick={this.RemoveHandlerSign}>{resources['clear'][currentLanguage]}</button>
-                                </div> : null}
+                                onDrop={this.onDropSign}
+                            />
                         </section>
                         <div className="removeBtn">
                             <button className="primaryBtn-1 btn smallBtn" onClick={this.uploadSign}>{resources['uploadSignature'][currentLanguage]}</button>
@@ -138,7 +125,7 @@ export default class uploadSignture extends React.Component {
                     </div>
                     <div>
                         <h4>{resources.uploadPhoto[currentLanguage]}</h4>
-                        <section className="singleUploadForm">
+                        <section className="dropZoneUploader">
                             {this.state.profileShowRemoveBtn ?
                                 <aside className='thumbsContainer'>
                                     <div className="uploadedName ">
@@ -157,21 +144,9 @@ export default class uploadSignture extends React.Component {
                                 </aside> : null}
                             <Dropzone
                                 accept="image/*"
-                                onDrop={this.onDropPP.bind(this)}
-                            >
-                                {({ getRootProps, getInputProps }) => (
-                                    <div className="singleDragText" {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                        {this.state.profileName ?
-                                            null : <p>{resources['dragFileHere'][currentLanguage]}</p>}
-                                        <button className="primaryBtn-2 btn smallBtn">{resources['chooseFile'][currentLanguage]}</button>
-                                    </div>
-                                )}
-                            </Dropzone>
-                            {this.state.profileShowRemoveBtn ?
-                                <div className="removeBtn">
-                                    <button className="primaryBtn-2 btn smallBtn" onClick={this.RemoveHandlerPP}>{resources['clear'][currentLanguage]}</button>
-                                </div> : null}
+                                onDrop={this.onDropPP}
+                            />
+
                         </section>
                         <div className="removeBtn">
                             <button className="primaryBtn-1 btn smallBtn" onClick={this.uploadPP}>{resources['uploadPhoto'][currentLanguage]}</button>

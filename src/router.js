@@ -66,6 +66,9 @@ const CorrRecievedSent = AsyncComponent(() =>
 const WFActivityReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/WFActivityReport'),
 );
+const DetailedFollowUpReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/DetailedFollowUpReport'),
+);
 const ReportsMenu = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ReportsMenu'),
 );
@@ -408,6 +411,9 @@ const TemplatesSettings = AsyncComponent(() =>
 );
 const GeneralList = AsyncComponent(() =>
     import('./Componants/GeneralSetting/MenuDefaultData/GeneralList'),
+);
+const DesignDiscipline = AsyncComponent(() =>
+    import('./Componants/GeneralSetting/MenuDefaultData/DesignDiscipline'),
 );
 const ExpensesWorkFlowLog = AsyncComponent(() =>
     import(
@@ -1048,6 +1054,7 @@ let originalRoutes = [
         component={ProjectScheduleAddEdit}
     />,
     <Route key="r-104" path="/WFActivityReport" component={WFActivityReport} />,
+    
     <Route key="r-105" path="/boqStructure" component={BoqStructure} />,
     <Route
         key="r-106"
@@ -1394,6 +1401,8 @@ let originalRoutes = [
         path="/SendToWFToday"
         component={SendToWFToday}
     />,
+    <Route key="r-202" path="/DesignDiscipline" component={DesignDiscipline} />,
+    <Route key="r-203" path="/DetailedFollowUpReport" component={DetailedFollowUpReport} />,
 
 
 ];

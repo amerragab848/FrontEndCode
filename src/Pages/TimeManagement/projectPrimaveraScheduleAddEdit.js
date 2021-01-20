@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment'
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
@@ -918,7 +918,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                 :
                                 <Fragment>
 
-                                    <XSLfile CustomAccept={true} key='gen_primavera_schedule_items' docId={this.state.docId}
+                                    <UploadSingleAttachment CustomAccept={true} key='gen_primavera_schedule_items' docId={this.state.docId}
                                         docType='gen_primavera_schedule_items' CantDownload={true} CustomUpload={true} projectId={this.state.projectId}
                                         afterUpload={() => this.getTabelData()}
                                     />

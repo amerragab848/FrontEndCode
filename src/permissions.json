@@ -15592,6 +15592,14 @@
                 "ar": "عرض الموظفين فى انشطة الموظف "
               },
               "value": false
+            },
+            {
+              "code": 4030,
+              "title": {
+                "en": "Detailed FollowUp Report",
+                "ar": "تقرير تفاصيل متابعات الدورة المستندية"
+              },
+              "value": false
             }
           ]
         },

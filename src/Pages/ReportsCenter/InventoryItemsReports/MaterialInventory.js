@@ -12,7 +12,7 @@ import Api from '../../../api.js';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-class ExpensesStatus extends Component {
+class MaterialInventory extends Component {
 
     constructor(props) {
         super(props)
@@ -190,4 +190,4 @@ class ExpensesStatus extends Component {
     }
 
 }
-export default withRouter(ExpensesStatus)
+export default withRouter(MaterialInventory)

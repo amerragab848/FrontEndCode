@@ -18,8 +18,6 @@ import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
-import XSLfile from '../../Componants/OptionsPanels/XSLfiel';
-import { Slider } from 'react-semantic-ui-range';
 import { Resources } from '../../Resources';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -360,17 +358,8 @@ class CommonLog extends Component {
                 pageNumber: pageNumber,
             });
 
-            let url =
-                (this.state.query == ''
-                    ? this.state.api
-                    : this.state.apiFilter) +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                (this.state.query == '' ? '' : '&query=' + this.state.query);
+            let url = (this.state.query == '' ? this.state.api : this.state.apiFilter) + '?projectId=' +
+                this.state.projectId + '&pageNumber=' + pageNumber + '&pageSize=' + this.state.pageSize + (this.state.query == '' ? '' : '&query=' + this.state.query);
 
             Api.get(url, undefined, moduleId)
                 .then(result => {
@@ -457,83 +446,51 @@ class CommonLog extends Component {
                 pageNumber: pageNumber,
             });
 
-            let url =
-                (this.state.query == ''
-                    ? this.state.api
-                    : this.state.apiFilter) +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                (this.state.query == '' ? '' : '&query=' + this.state.query);
+            let url = (this.state.query == '' ? this.state.api : this.state.apiFilter) + '?projectId=' + this.state.projectId + '&pageNumber=' + pageNumber + '&pageSize=' + this.state.pageSize + (this.state.query == '' ? '' : '&query=' + this.state.query);
 
-            Api.get(url, undefined, moduleId)
-                .then(result => {
-                    let oldRows = [];
+            Api.get(url, undefined, moduleId).then(result => {
+                let oldRows = [];
 
-                    const newRows = [...oldRows, ...result.data];
+                const newRows = [...oldRows, ...result.data];
 
-                    newRows.forEach(row => {
-                        let subject = '';
-                        if (row) {
-                            let obj = {
-                                docId: row.id,
-                                projectId: row.projectId,
-                                projectName: row.projectName,
-                                arrange: 0,
-                                docApprovalId: 0,
-                                isApproveMode: false,
-                                perviousRoute:
-                                    window.location.pathname +
-                                    window.location.search,
-                            };
-                            if (
-                                documentObj.documentAddEditLink.replace(
-                                    '/',
-                                    '',
-                                ) == 'addEditModificationDrawing'
-                            ) {
-                                obj.isModification = true;
-                            }
-                            let parms = CryptoJS.enc.Utf8.parse(
-                                JSON.stringify(obj),
-                            );
+                newRows.forEach(row => {
+                    let subject = '';
+                    if (row) {
+                        let obj = {
+                            docId: row.id,
+                            projectId: row.projectId,
+                            projectName: row.projectName,
+                            arrange: 0,
+                            docApprovalId: 0,
+                            isApproveMode: false,
+                            perviousRoute:
+                                window.location.pathname +
+                                window.location.search,
+                        };
+                        if (documentObj.documentAddEditLink.replace('/', '',) == 'addEditModificationDrawing') { obj.isModification = true; }
+                        let parms = CryptoJS.enc.Utf8.parse(
+                            JSON.stringify(obj),
+                        );
 
-                            let encodedPaylod = CryptoJS.enc.Base64.stringify(
-                                parms,
-                            );
+                        let encodedPaylod = CryptoJS.enc.Base64.stringify(
+                            parms,
+                        );
 
-                            let doc_view =
-                                '/' +
-                                documentObj.documentAddEditLink.replace(
-                                    '/',
-                                    '',
-                                ) +
-                                '?id=' +
-                                encodedPaylod;
+                        let doc_view = '/' + documentObj.documentAddEditLink.replace('/', '',) + '?id=' + encodedPaylod;
 
-                            subject = doc_view;
-                        }
-                        if (
-                            Config.IsAllow(
-                                this.state.documentObj.documentViewPermission,
-                            ) ||
-                            Config.IsAllow(
-                                this.state.documentObj.documentEditPermission,
-                            )
-                        ) {
-                            row.link = subject;
-                        }
-                    });
+                        subject = doc_view;
+                    }
+                    if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+                        row.link = subject;
+                    }
+                });
 
-                    this.setState({
-                        rows: newRows,
-                        totalRows: result.total,
-                        isLoading: false,
-                    });
-                })
+                this.setState({
+                    rows: newRows,
+                    totalRows: result.total,
+                    isLoading: false,
+                });
+            })
                 .catch(ex => {
                     let oldRows = this.state.rows;
                     this.setState({
@@ -557,19 +514,7 @@ class CommonLog extends Component {
         });
 
         if (stringifiedQuery !== '{}') {
-            Api.get(
-                apiFilter +
-                '?projectId=' +
-                this.state.projectId +
-                '&pageNumber=' +
-                this.state.pageNumber +
-                '&pageSize=' +
-                this.state.pageSize +
-                '&query=' +
-                stringifiedQuery,
-                undefined,
-                moduleId,
-            )
+            Api.get(apiFilter + '?projectId=' + this.state.projectId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize + '&query=' + stringifiedQuery, undefined, moduleId)
                 .then(result => {
                     if (result.data.length > 0) {
                         result.data.forEach(row => {
@@ -1049,8 +994,6 @@ class CommonLog extends Component {
         /*********************************************************** */
     };
 
-
-
     handleCheckForExport = key => {
         let data = this.state.exportedColumns;
 
@@ -1377,18 +1320,10 @@ class CommonLog extends Component {
             docTemplateModal: false
         });
         this.setState({ isLoading: true });
-        this.GetRecordOfLog(
-            this.state.isCustom === true
-                ? this.state.documentObj
-                    .documentApi.getCustom
-                : this.state.documentObj
-                    .documentApi.get,
-            this.props.projectId,
-        );
+        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
     };
 
     handleChangeWidth = (key, newWidth) => {
-        console.log('handleChangeWidth...', key, newWidth);
         this.setState({ isLoading: true });
 
         let data = this.state.ColumnsHideShow;
@@ -1414,49 +1349,47 @@ class CommonLog extends Component {
     };
 
     timeLineBalls = (n, onClick, current, key) =>
-        Array(n)
-            .fill(0)
-            .map((i, index) => (
-                <div
-                    key={index}
-                    className={`timeline__ball ${current >= index ? "active" : null}`}
-                    onClick={() => onClick(key, (index + 1) * 12)}
-                >
-                    {index + 1}
-                </div>
-            ));
+        Array(n).fill(0).map((i, index) => (
+            <div
+                key={index}
+                className={`timeline__ball ${current >= index ? "active" : null}`}
+                onClick={() => onClick(key, (index + 1) * 12)} >
+                {index + 1}
+            </div>
+        ));
 
     intermediaryBalls = 4;
+
     render() {
         let DocTemplateModalCom = this.state.DocTemplateModalCom
-        let RenderPopupShowColumns = this.state.ColumnsHideShow.map(
-            (item, index) => {
-                let calculatedWidth = (((item.width / 12) - 1) / (this.intermediaryBalls)) * 130;
-                return item.field == 'id' ? null : (
-                    <div className="grid__content" key={item.field}>
-                        <div
-                            className={
-                                'ui checkbox checkBoxGray300 count checked'
-                            }>
-                            <input
-                                name="CheckBox"
-                                type="checkbox"
-                                id="allPermissionInput"
-                                checked={!item.hidden}
-                                onChange={e => this.handleCheck(item.field)}
-                            />
-                            <label>{item.title}</label>
-                        </div>
-                        <p className="rangeSlider">
-                            <div className="timeline">
-                                <div className="timeline__progress" style={{ width: `${calculatedWidth}%` }} />
-                                {this.timeLineBalls(this.intermediaryBalls, this.handleChangeWidth, (item.width / 12) - 1, item.field)}
-                            </div>
-                            <label className="rnageWidth">width</label>
-                        </p>
+        let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
+            let container = (document.getElementById('grid__column--content').offsetWidth * 0.5) * 0.47 * 0.8
+            let BallsWidth = container / 4
+            let activeWidth = (item.width * container / BallsWidth) - BallsWidth
+            let diff = (activeWidth / BallsWidth) * 4
+            return item.field == 'id' ? null : (
+                <div className="grid__content" key={item.field}>
+                    <div
+                        className={'ui checkbox checkBoxGray300 count checked'}>
+                        <input
+                            name="CheckBox"
+                            type="checkbox"
+                            id="allPermissionInput"
+                            checked={!item.hidden}
+                            onChange={e => this.handleCheck(item.field)}
+                        />
+                        <label>{item.title}</label>
                     </div>
-                );
-            },
+                    <p className="rangeSlider">
+                        <div className="timeline" id="timeline">
+                            <div className="timeline__progress" style={{ width: `${activeWidth - (activeWidth > BallsWidth ? diff : 0)}px` }} />
+                            {this.timeLineBalls(4, this.handleChangeWidth, (item.width / 12) - 1, item.field)}
+                        </div>
+                        <label className="rnageWidth">width</label>
+                    </p>
+                </div>
+            );
+        },
         );
 
         let RenderPopupShowExportColumns = this.state.exportedColumns.map(
@@ -1904,7 +1837,7 @@ class CommonLog extends Component {
                                     {Resources.gridColumns[currentLanguage]}
                                 </h2>
                             </div>
-                            <div className="grid__column--content">
+                            <div className="grid__column--content" id="grid__column--content">
                                 {RenderPopupShowColumns}
                             </div>
                             <div className="grid__column--footer">

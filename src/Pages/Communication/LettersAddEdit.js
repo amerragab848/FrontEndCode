@@ -23,9 +23,7 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from 'lodash/find';
 import Api from '../../api';
 import UploadAttachmentWithProgress from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
-//import arrow from '../../Styles/images/right-arrow.png' 
-//import ConnectionContext from '../../Componants/Layouts/Context'
-
+ 
 let currentLanguage =
     localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -708,17 +706,14 @@ class LettersAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource,
-    ) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue) {
+
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+            });
+            return
+        };
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document[field] = event.value;
@@ -730,19 +725,9 @@ class LettersAddEdit extends Component {
         });
 
         if (field == 'toContactId') {
-            let url =
-                'GetRefCodeArrangeMainDoc?projectId=' +
-                this.state.projectId +
-                '&docType=' +
-                this.state.docTypeId +
-                '&fromCompanyId=' +
-                this.state.document.fromCompanyId +
-                '&fromContactId=' +
-                this.state.document.fromContactId +
-                '&toCompanyId=' +
-                this.state.document.toCompanyId +
-                '&toContactId=' +
-                event.value;
+            let url = 'GetRefCodeArrangeMainDoc?projectId=' + this.state.projectId +
+                '&docType=' + this.state.docTypeId + '&fromCompanyId=' + this.state.document.fromCompanyId + '&fromContactId=' + this.state.document.fromContactId +
+                '&toCompanyId=' + this.state.document.toCompanyId + '&toContactId=' + event.value;
 
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
@@ -960,841 +945,778 @@ class LettersAddEdit extends Component {
                                                 setFieldValue,
                                                 setFieldTouched,
                                             }) => (
-                                                    <Form
-                                                        id="letterForm"
-                                                        className="customProform"
-                                                        noValidate="novalidate"
-                                                        onSubmit={handleSubmit}>
-                                                        <div className="proForm first-proform">
-                                                            <div className="linebylineInput valid-input">
-                                                                <label className="control-label">
-                                                                    {
+                                                <Form
+                                                    id="letterForm"
+                                                    className="customProform"
+                                                    noValidate="novalidate"
+                                                    onSubmit={handleSubmit}>
+                                                    <div className="proForm first-proform">
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .subject[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div
+                                                                className={
+                                                                    'inputDev ui input' +
+                                                                    (errors.subject
+                                                                        ? ' has-error'
+                                                                        : !errors.subject &&
+                                                                            touched.subject
+                                                                            ? ' has-success'
+                                                                            : ' ')
+                                                                }>
+                                                                <textarea
+                                                                    name="subject"
+                                                                    id="subject"
+                                                                    className="form-control fsadfsadsa"
+                                                                    placeholder={
                                                                         Resources
                                                                             .subject[
                                                                         currentLanguage
                                                                         ]
                                                                     }
-                                                                </label>
-                                                                <div
-                                                                    className={
-                                                                        'inputDev ui input' +
-                                                                        (errors.subject
-                                                                            ? ' has-error'
-                                                                            : !errors.subject &&
-                                                                                touched.subject
-                                                                                ? ' has-success'
-                                                                                : ' ')
+                                                                    autoComplete="off"
+                                                                    value={
+                                                                        this
+                                                                            .state
+                                                                            .document
+                                                                            .subject
+                                                                    }
+                                                                    onBlur={e => {
+                                                                        handleBlur(
+                                                                            e,
+                                                                        );
+                                                                        handleChange(
+                                                                            e,
+                                                                        );
+                                                                    }}
+                                                                    onChange={e =>
+                                                                        this.handleChange(
+                                                                            e,
+                                                                            'subject',
+                                                                        )
                                                                     }>
-                                                                    <textarea
-                                                                        name="subject"
-                                                                        id="subject"
-                                                                        className="form-control fsadfsadsa"
-                                                                        placeholder={
-                                                                            Resources
-                                                                                .subject[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
-                                                                        autoComplete="off"
-                                                                        value={
-                                                                            this
-                                                                                .state
-                                                                                .document
-                                                                                .subject
-                                                                        }
-                                                                        onBlur={e => {
-                                                                            handleBlur(
-                                                                                e,
-                                                                            );
-                                                                            handleChange(
-                                                                                e,
-                                                                            );
-                                                                        }}
-                                                                        onChange={e =>
-                                                                            this.handleChange(
-                                                                                e,
-                                                                                'subject',
-                                                                            )
-                                                                        }>
-                                                                        {touched.subject ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.subject
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
-                                                                    </textarea>
-                                                                </div>
+                                                                    {touched.subject ? (
+                                                                        <em className="pError">
+                                                                            {
+                                                                                errors.subject
+                                                                            }
+                                                                        </em>
+                                                                    ) : null}
+                                                                </textarea>
                                                             </div>
+                                                        </div>
 
-                                                            <div className="linebylineInput valid-input">
-                                                                <label className="control-label">
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .status[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input
+                                                                    type="radio"
+                                                                    name="letter-status"
+                                                                    defaultChecked={
+                                                                        this
+                                                                            .state
+                                                                            .document
+                                                                            .status ===
+                                                                            false
+                                                                            ? null
+                                                                            : 'checked'
+                                                                    }
+                                                                    value="true"
+                                                                    onChange={e =>
+                                                                        this.handleChange(
+                                                                            e,
+                                                                            'status',
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <label>
                                                                     {
                                                                         Resources
-                                                                            .status[
+                                                                            .oppened[
                                                                         currentLanguage
                                                                         ]
                                                                     }
                                                                 </label>
-                                                                <div className="ui checkbox radio radioBoxBlue">
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="letter-status"
-                                                                        defaultChecked={
-                                                                            this
-                                                                                .state
-                                                                                .document
-                                                                                .status ===
-                                                                                false
-                                                                                ? null
-                                                                                : 'checked'
-                                                                        }
-                                                                        value="true"
-                                                                        onChange={e =>
-                                                                            this.handleChange(
-                                                                                e,
-                                                                                'status',
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                    <label>
-                                                                        {
-                                                                            Resources
-                                                                                .oppened[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
-                                                                    </label>
-                                                                </div>
-                                                                <div className="ui checkbox radio radioBoxBlue">
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="letter-status"
-                                                                        defaultChecked={
-                                                                            this
-                                                                                .state
-                                                                                .document
-                                                                                .status ===
-                                                                                false
-                                                                                ? 'checked'
-                                                                                : null
-                                                                        }
-                                                                        value="false"
-                                                                        onChange={e =>
-                                                                            this.handleChange(
-                                                                                e,
-                                                                                'status',
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                    <label>
-                                                                        {
-                                                                            Resources
-                                                                                .closed[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
-                                                                    </label>
-                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div className="proForm datepickerContainer">
-                                                            <div className="linebylineInput valid-input alternativeDate">
-                                                                <DatePicker
-                                                                    title="docDate"
-                                                                    startDate={
-                                                                        this.state
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input
+                                                                    type="radio"
+                                                                    name="letter-status"
+                                                                    defaultChecked={
+                                                                        this
+                                                                            .state
                                                                             .document
-                                                                            .docDate
+                                                                            .status ===
+                                                                            false
+                                                                            ? 'checked'
+                                                                            : null
                                                                     }
-                                                                    handleChange={e =>
-                                                                        this.handleChangeDate(
+                                                                    value="false"
+                                                                    onChange={e =>
+                                                                        this.handleChange(
                                                                             e,
-                                                                            'docDate',
+                                                                            'status',
                                                                         )
                                                                     }
                                                                 />
-                                                            </div>
-                                                            <div className="linebylineInput valid-input">
-                                                                <label className="control-label">
+                                                                <label>
                                                                     {
+                                                                        Resources
+                                                                            .closed[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="proForm datepickerContainer">
+                                                        <div className="linebylineInput valid-input alternativeDate">
+                                                            <DatePicker
+                                                                title="docDate"
+                                                                startDate={
+                                                                    this.state
+                                                                        .document
+                                                                        .docDate
+                                                                }
+                                                                handleChange={e =>
+                                                                    this.handleChangeDate(
+                                                                        e,
+                                                                        'docDate',
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
+                                                        <div className="linebylineInput valid-input">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .arrange[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="ui input inputDev">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    id="arrange"
+                                                                    readOnly
+                                                                    value={
+                                                                        this
+                                                                            .state
+                                                                            .document
+                                                                            .arrange
+                                                                    }
+                                                                    name="arrange"
+                                                                    placeholder={
                                                                         Resources
                                                                             .arrange[
                                                                         currentLanguage
                                                                         ]
                                                                     }
-                                                                </label>
-                                                                <div className="ui input inputDev">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        id="arrange"
-                                                                        readOnly
-                                                                        value={
-                                                                            this
-                                                                                .state
-                                                                                .document
-                                                                                .arrange
-                                                                        }
-                                                                        name="arrange"
-                                                                        placeholder={
-                                                                            Resources
-                                                                                .arrange[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
-                                                                        onBlur={e => {
-                                                                            handleChange(
-                                                                                e,
-                                                                            );
-                                                                            handleBlur(
-                                                                                e,
-                                                                            );
-                                                                        }}
-                                                                        onChange={e =>
-                                                                            this.handleChange(
-                                                                                e,
-                                                                                'arrange',
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </div>
+                                                                    onBlur={e => {
+                                                                        handleChange(
+                                                                            e,
+                                                                        );
+                                                                        handleBlur(
+                                                                            e,
+                                                                        );
+                                                                    }}
+                                                                    onChange={e =>
+                                                                        this.handleChange(
+                                                                            e,
+                                                                            'arrange',
+                                                                        )
+                                                                    }
+                                                                />
                                                             </div>
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {
+                                                        </div>
+                                                        <div className="linebylineInput fullInputWidth">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .refDoc[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="ui input inputDev">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    id="refDoc"
+                                                                    value={
+                                                                        this
+                                                                            .state
+                                                                            .document
+                                                                            .refDoc
+                                                                    }
+                                                                    name="refDoc"
+                                                                    placeholder={
                                                                         Resources
                                                                             .refDoc[
                                                                         currentLanguage
                                                                         ]
                                                                     }
-                                                                </label>
-                                                                <div className="ui input inputDev">
+                                                                    onChange={e =>
+                                                                        this.handleChange(
+                                                                            e,
+                                                                            'refDoc',
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="linebylineInput fullInputWidth">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .sharedSettings[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="shareLinks">
+                                                                <div
+                                                                    className={
+                                                                        'inputDev ui input' +
+                                                                        (errors.sharedSettings
+                                                                            ? ' has-error'
+                                                                            : !errors.sharedSettings &&
+                                                                                touched.sharedSettings
+                                                                                ? ' has-success'
+                                                                                : ' ')
+                                                                    }>
                                                                     <input
                                                                         type="text"
                                                                         className="form-control"
-                                                                        id="refDoc"
+                                                                        id="sharedSettings"
+                                                                        onChange={e =>
+                                                                            this.handleChange(
+                                                                                e,
+                                                                                'sharedSettings',
+                                                                            )
+                                                                        }
                                                                         value={
                                                                             this
                                                                                 .state
                                                                                 .document
-                                                                                .refDoc
+                                                                                .sharedSettings
                                                                         }
-                                                                        name="refDoc"
+                                                                        name="sharedSettings"
                                                                         placeholder={
                                                                             Resources
-                                                                                .refDoc[
+                                                                                .UrlForm[
                                                                             currentLanguage
                                                                             ]
                                                                         }
-                                                                        onChange={e =>
-                                                                            this.handleChange(
-                                                                                e,
-                                                                                'refDoc',
-                                                                            )
-                                                                        }
                                                                     />
-                                                                </div>
-                                                            </div>
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources
-                                                                            .sharedSettings[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                </label>
-                                                                <div className="shareLinks">
-                                                                    <div
-                                                                        className={
-                                                                            'inputDev ui input' +
-                                                                            (errors.sharedSettings
-                                                                                ? ' has-error'
-                                                                                : !errors.sharedSettings &&
-                                                                                    touched.sharedSettings
-                                                                                    ? ' has-success'
-                                                                                    : ' ')
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="sharedSettings"
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    'sharedSettings',
-                                                                                )
+                                                                    {errors.sharedSettings ? (
+                                                                        <em className="pError">
+                                                                            {
+                                                                                errors.sharedSettings
                                                                             }
-                                                                            value={
+                                                                        </em>
+                                                                    ) : null}
+                                                                </div>
+                                                                {this.state
+                                                                    .document
+                                                                    .sharedSettings ===
+                                                                    '' ||
+                                                                    this.state
+                                                                        .document
+                                                                        .sharedSettings ===
+                                                                    null ||
+                                                                    this.state
+                                                                        .document
+                                                                        .sharedSettings ===
+                                                                    undefined ? null : (
+                                                                        <a
+                                                                            target="_blank"
+                                                                            href={
                                                                                 this
                                                                                     .state
                                                                                     .document
                                                                                     .sharedSettings
-                                                                            }
-                                                                            name="sharedSettings"
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .UrlForm[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        />
-                                                                        {errors.sharedSettings ? (
-                                                                            <em className="pError">
+                                                                            }>
+                                                                            <span>
+                                                                                {' '}
                                                                                 {
-                                                                                    errors.sharedSettings
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
-                                                                    </div>
-                                                                    {this.state
-                                                                        .document
-                                                                        .sharedSettings ===
-                                                                        '' ||
-                                                                        this.state
-                                                                            .document
-                                                                            .sharedSettings ===
-                                                                        null ||
-                                                                        this.state
-                                                                            .document
-                                                                            .sharedSettings ===
-                                                                        undefined ? null : (
-                                                                            <a
-                                                                                target="_blank"
-                                                                                href={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .sharedSettings
-                                                                                }>
-                                                                                <span>
-                                                                                    {' '}
-                                                                                    {
-                                                                                        Resources
-                                                                                            .openFolder[
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }{' '}
-                                                                                </span>
-                                                                            </a>
-                                                                        )}
-                                                                </div>
+                                                                                    Resources
+                                                                                        .openFolder[
+                                                                                    currentLanguage
+                                                                                    ]
+                                                                                }{' '}
+                                                                            </span>
+                                                                        </a>
+                                                                    )}
                                                             </div>
-                                                            <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources
-                                                                            .fromCompany[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                </label>
-                                                                <div className="supervisor__company">
-                                                                    <div className="super_name">
-                                                                        <Dropdown
-                                                                            data={
-                                                                                this
-                                                                                    .state
-                                                                                    .companies
-                                                                            }
-                                                                            isMulti={
-                                                                                false
-                                                                            }
-                                                                            selectedValue={
-                                                                                this
-                                                                                    .state
-                                                                                    .selectedFromCompany
-                                                                            }
-                                                                            handleChange={event => {
-                                                                                this.handleChangeDropDown(
-                                                                                    event,
-                                                                                    'fromCompanyId',
-                                                                                    true,
-                                                                                    'fromContacts',
-                                                                                    'GetContactsByCompanyId',
-                                                                                    'companyId',
-                                                                                    'selectedFromCompany',
-                                                                                    'selectedFromContact',
-                                                                                );
-                                                                            }}
-                                                                            onChange={
-                                                                                setFieldValue
-                                                                            }
-                                                                            onBlur={
-                                                                                setFieldTouched
-                                                                            }
-                                                                            error={
-                                                                                errors.fromCompanyId
-                                                                            }
-                                                                            touched={
-                                                                                touched.fromCompanyId
-                                                                            }
-                                                                            index="fromCompanyId"
-                                                                            name="fromCompanyId"
-                                                                            id="fromCompanyId"
-                                                                            styles={
-                                                                                CompanyDropdown
-                                                                            }
-                                                                            classDrop="companyName1"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="super_company">
-                                                                        <Dropdown
-                                                                            isMulti={
-                                                                                false
-                                                                            }
-                                                                            data={
-                                                                                this
-                                                                                    .state
-                                                                                    .fromContacts
-                                                                            }
-                                                                            selectedValue={
-                                                                                this
-                                                                                    .state
-                                                                                    .selectedFromContact
-                                                                            }
-                                                                            handleChange={event =>
-                                                                                this.handleChangeDropDown(
-                                                                                    event,
-                                                                                    'fromContactId',
-                                                                                    false,
-                                                                                    '',
-                                                                                    '',
-                                                                                    '',
-                                                                                    'selectedFromContact',
-                                                                                )
-                                                                            }
-                                                                            onChange={
-                                                                                setFieldValue
-                                                                            }
-                                                                            onBlur={
-                                                                                setFieldTouched
-                                                                            }
-                                                                            error={
-                                                                                errors.fromContactId
-                                                                            }
-                                                                            touched={
-                                                                                true
-                                                                            }
-                                                                            isClear={
-                                                                                false
-                                                                            }
-                                                                            index="letter-fromContactId"
-                                                                            name="fromContactId"
-                                                                            id="fromContactId"
-                                                                            classDrop="contactName1"
-                                                                            styles={
-                                                                                ContactDropdown
-                                                                            }
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources
-                                                                            .toCompany[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                </label>
-                                                                <div className="supervisor__company">
-                                                                    <div className="super_name">
-                                                                        <Dropdown
-                                                                            isMulti={
-                                                                                false
-                                                                            }
-                                                                            data={
-                                                                                this
-                                                                                    .state
-                                                                                    .companies
-                                                                            }
-                                                                            selectedValue={
-                                                                                this
-                                                                                    .state
-                                                                                    .selectedToCompany
-                                                                            }
-                                                                            handleChange={event =>
-                                                                                this.handleChangeDropDown(
-                                                                                    event,
-                                                                                    'toCompanyId',
-                                                                                    true,
-                                                                                    'ToContacts',
-                                                                                    'GetContactsByCompanyId',
-                                                                                    'companyId',
-                                                                                    'selectedToCompany',
-                                                                                    'selectedToContact',
-                                                                                )
-                                                                            }
-                                                                            onChange={
-                                                                                setFieldValue
-                                                                            }
-                                                                            onBlur={
-                                                                                setFieldTouched
-                                                                            }
-                                                                            error={
-                                                                                errors.toCompanyId
-                                                                            }
-                                                                            touched={
-                                                                                touched.toCompanyId
-                                                                            }
-                                                                            index="letter-toCompany"
-                                                                            name="toCompanyId"
-                                                                            id="toCompanyId"
-                                                                            styles={
-                                                                                CompanyDropdown
-                                                                            }
-                                                                            classDrop="companyName1"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="super_company">
-                                                                        <Dropdown
-                                                                            isMulti={
-                                                                                false
-                                                                            }
-                                                                            data={
-                                                                                this
-                                                                                    .state
-                                                                                    .ToContacts
-                                                                            }
-                                                                            selectedValue={
-                                                                                this
-                                                                                    .state
-                                                                                    .selectedToContact
-                                                                            }
-                                                                            handleChange={event =>
-                                                                                this.handleChangeDropDown(
-                                                                                    event,
-                                                                                    'toContactId',
-                                                                                    false,
-                                                                                    '',
-                                                                                    '',
-                                                                                    '',
-                                                                                    'selectedToContact',
-                                                                                )
-                                                                            }
-                                                                            onChange={
-                                                                                setFieldValue
-                                                                            }
-                                                                            onBlur={
-                                                                                setFieldTouched
-                                                                            }
-                                                                            touched={
-                                                                                true
-                                                                            }
-                                                                            error={
-                                                                                errors.toContactId
-                                                                            }
-                                                                            index="letter-toContactId"
-                                                                            name="toContactId"
-                                                                            id="toContactId"
-                                                                            classDrop="contactName1"
-                                                                            styles={
-                                                                                ContactDropdown
-                                                                            }
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="linebylineInput valid-input">
-                                                                <Dropdown
-                                                                    title="discipline"
-                                                                    data={
-                                                                        this.state
-                                                                            .discplines
-                                                                    }
-                                                                    selectedValue={
-                                                                        this.state
-                                                                            .selectedDiscpline
-                                                                    }
-                                                                    handleChange={event =>
-                                                                        this.handleChangeDropDown(
-                                                                            event,
-                                                                            'disciplineId',
-                                                                            false,
-                                                                            '',
-                                                                            '',
-                                                                            '',
-                                                                            'selectedDiscpline',
-                                                                        )
-                                                                    }
-                                                                    index="letter-discipline"
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                className="linebylineInput valid-input"
-                                                                style={{
-                                                                    position:
-                                                                        'relative',
-                                                                }}>
-                                                                <div className="shareLinks">
+                                                        </div>
+                                                        <div className="linebylineInput valid-input mix_dropdown">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .fromCompany[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="supervisor__company">
+                                                                <div className="super_name">
                                                                     <Dropdown
-                                                                        title="replyletter"
+                                                                        isClear={true}
                                                                         data={
                                                                             this
                                                                                 .state
-                                                                                .letters
+                                                                                .companies
+                                                                        }
+                                                                        isMulti={
+                                                                            false
                                                                         }
                                                                         selectedValue={
                                                                             this
                                                                                 .state
-                                                                                .selectedReplyLetter
+                                                                                .selectedFromCompany
+                                                                        }
+                                                                        handleChange={event => {
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact');
+                                                                        }}
+                                                                        onChange={
+                                                                            setFieldValue
+                                                                        }
+                                                                        onBlur={
+                                                                            setFieldTouched
+                                                                        }
+                                                                        error={
+                                                                            errors.fromCompanyId
+                                                                        }
+                                                                        touched={
+                                                                            touched.fromCompanyId
+                                                                        }
+                                                                        index="fromCompanyId"
+                                                                        name="fromCompanyId"
+                                                                        id="fromCompanyId"
+                                                                        styles={
+                                                                            CompanyDropdown
+                                                                        }
+                                                                        classDrop="companyName1"
+                                                                    />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        isMulti={
+                                                                            false
+                                                                        }
+                                                                        data={
+                                                                            this
+                                                                                .state
+                                                                                .fromContacts
+                                                                        }
+                                                                        selectedValue={
+                                                                            this
+                                                                                .state
+                                                                                .selectedFromContact
                                                                         }
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(
                                                                                 event,
-                                                                                'replyId',
+                                                                                'fromContactId',
                                                                                 false,
                                                                                 '',
                                                                                 '',
                                                                                 '',
-                                                                                'selectedReplyLetter',
+                                                                                'selectedFromContact',
                                                                             )
                                                                         }
-                                                                        index="letter-replyId"
+                                                                        onChange={
+                                                                            setFieldValue
+                                                                        }
+                                                                        onBlur={
+                                                                            setFieldTouched
+                                                                        }
+                                                                        error={
+                                                                            errors.fromContactId
+                                                                        }
+                                                                        touched={
+                                                                            true
+                                                                        } 
+                                                                        index="letter-fromContactId"
+                                                                        name="fromContactId"
+                                                                        id="fromContactId"
+                                                                        classDrop="contactName1"
+                                                                        styles={
+                                                                            ContactDropdown
+                                                                        }
                                                                     />
-                                                                    {this.props
-                                                                        .changeStatus ===
-                                                                        true ? (
-                                                                            <i
-                                                                                onClick={() =>
-                                                                                    this.replyNewLetter()
-                                                                                }
-                                                                                style={{
-                                                                                    position:
-                                                                                        'absolute',
-                                                                                    right:
-                                                                                        '0',
-                                                                                    cursor:
-                                                                                        'pointer',
-                                                                                    top:
-                                                                                        '27px',
-                                                                                    fontSize:
-                                                                                        '15px',
-                                                                                    color:
-                                                                                        '#5E6475',
-                                                                                }}
-                                                                                className="fa fa-reply"
-                                                                                aria-hidden="true"></i>
-                                                                        ) : null}
-                                                                    {this.state
-                                                                        .selectedReplyLetter
-                                                                        .value >
-                                                                        0 ? (
-                                                                            <a
-                                                                                style={{
-                                                                                    marginLeft:
-                                                                                        '7%',
-                                                                                    marginTop:
-                                                                                        '2%',
-                                                                                }}
-                                                                                target="_blank"
-                                                                                href={
-                                                                                    this
-                                                                                        .state
-                                                                                        .replyLink
-                                                                                }>
-                                                                                <span>
-                                                                                    {' '}
-                                                                                    {
-                                                                                        Resources
-                                                                                            .openFolder[
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }{' '}
-                                                                                </span>
-                                                                            </a>
-                                                                        ) : null}
                                                                 </div>
                                                             </div>
-                                                            <div className="letterFullWidth">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources
-                                                                            .message[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                </label>
-                                                                <div className="inputDev ui input">
-                                                                    <TextEditor
-                                                                        value={
+                                                        </div>
+                                                        <div className="linebylineInput valid-input mix_dropdown">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .toCompany[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="supervisor__company">
+                                                                <div className="super_name">
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        isMulti={false}
+                                                                        data={this.state.companies}
+                                                                        selectedValue={this.state.selectedToCompany}
+                                                                        handleChange={event =>
+                                                                            this.handleChangeDropDown(
+                                                                                event,
+                                                                                'toCompanyId',
+                                                                                true,
+                                                                                'ToContacts',
+                                                                                'GetContactsByCompanyId',
+                                                                                'companyId',
+                                                                                'selectedToCompany',
+                                                                                'selectedToContact',
+                                                                            )
+                                                                        }
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toCompanyId}
+                                                                        touched={touched.toCompanyId}
+                                                                        index="letter-toCompany"
+                                                                        name="toCompanyId"
+                                                                        id="toCompanyId"
+                                                                        styles={
+                                                                            CompanyDropdown
+                                                                        }
+                                                                        classDrop="companyName1"
+                                                                    />
+                                                                </div>
+                                                                <div className="super_company">
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        isMulti={false}
+                                                                        data={
                                                                             this
                                                                                 .state
-                                                                                .message
+                                                                                .ToContacts
+                                                                        }
+                                                                        selectedValue={
+                                                                            this
+                                                                                .state
+                                                                                .selectedToContact
+                                                                        }
+                                                                        handleChange={event =>
+                                                                            this.handleChangeDropDown(
+                                                                                event,
+                                                                                'toContactId',
+                                                                                false,
+                                                                                '',
+                                                                                '',
+                                                                                '',
+                                                                                'selectedToContact',
+                                                                            )
                                                                         }
                                                                         onChange={
-                                                                            this
-                                                                                .onChangeMessage
+                                                                            setFieldValue
+                                                                        }
+                                                                        onBlur={
+                                                                            setFieldTouched
+                                                                        }
+                                                                        touched={
+                                                                            true
+                                                                        }
+                                                                        error={
+                                                                            errors.toContactId
+                                                                        }
+                                                                        index="letter-toContactId"
+                                                                        name="toContactId"
+                                                                        id="toContactId"
+                                                                        classDrop="contactName1"
+                                                                        styles={
+                                                                            ContactDropdown
                                                                         }
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            {this.props
-                                                                .changeStatus ===
-                                                                false ? (
-                                                                    <Fragment>
-                                                                        <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="workFlow"
-                                                                                data={
-                                                                                    this
-                                                                                        .state
-                                                                                        .WorkFlowData
-                                                                                }
-                                                                                handleChange={
-                                                                                    this
-                                                                                        .workFlowhandelChangeLetter
-                                                                                }
-                                                                                selectedValue={
-                                                                                    this
-                                                                                        .state
-                                                                                        .selectedWorkFlow
-                                                                                }
-                                                                                index="ddlworkFlowId"
-                                                                            />
-                                                                        </div>
-                                                                        <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="contact"
-                                                                                data={
-                                                                                    this
-                                                                                        .state
-                                                                                        .WorkFlowContactData
-                                                                                }
-                                                                                name="ddlApproveTo"
-                                                                                selectedValue={
-                                                                                    this
-                                                                                        .state
-                                                                                        .selectedApproveId
-                                                                                }
-                                                                                index="ddlApproveTo"
-                                                                                handleChange={
-                                                                                    this
-                                                                                        .toAccounthandelChangeLetter
-                                                                                }
+                                                        </div>
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown
+                                                                isClear={true}
+                                                                title="discipline"
+                                                                data={
+                                                                    this.state
+                                                                        .discplines
+                                                                }
+                                                                selectedValue={
+                                                                    this.state
+                                                                        .selectedDiscpline
+                                                                }
+                                                                handleChange={event =>
+                                                                    this.handleChangeDropDown(
+                                                                        event,
+                                                                        'disciplineId',
+                                                                        false,
+                                                                        '',
+                                                                        '',
+                                                                        '',
+                                                                        'selectedDiscpline',
+                                                                    )
+                                                                }
+                                                                index="letter-discipline"
+                                                            />
+                                                        </div>
+                                                        <div
+                                                            className="linebylineInput valid-input"
+                                                            style={{
+                                                                position:
+                                                                    'relative',
+                                                            }}>
+                                                            <div className="shareLinks">
+                                                                <Dropdown
+                                                                    title="replyletter"
+                                                                    data={
+                                                                        this
+                                                                            .state
+                                                                            .letters
+                                                                    }
+                                                                    selectedValue={
+                                                                        this
+                                                                            .state
+                                                                            .selectedReplyLetter
+                                                                    }
+                                                                    handleChange={event =>
+                                                                        this.handleChangeDropDown(
+                                                                            event,
+                                                                            'replyId',
+                                                                            false,
+                                                                            '',
+                                                                            '',
+                                                                            '',
+                                                                            'selectedReplyLetter',
+                                                                        )
+                                                                    }
+                                                                    index="letter-replyId"
+                                                                />
+                                                                {this.props.changeStatus === true ? (
+                                                                    <i
+                                                                        onClick={e =>
+                                                                            this.replyNewLetter(e)
+                                                                        }
+                                                                        style={{
+                                                                            position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475',
+                                                                        }}
+                                                                        className="fa fa-reply"
+                                                                        aria-hidden="true"></i>
+                                                                ) : null}
+                                                                {this.state.selectedReplyLetter.value > 0 ? (
+                                                                    <a
+                                                                        style={{
+                                                                            marginLeft: '7%', marginTop: '2%',
+                                                                        }}
+                                                                        target="_blank"
+                                                                        href={this.state.replyLink}>
+                                                                        <span> {' '} {Resources.openFolder[currentLanguage]}{' '} </span>
+                                                                    </a>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
+                                                        <div className="letterFullWidth">
+                                                            <label className="control-label">
+                                                                {Resources.message[currentLanguage]}
+                                                            </label>
+                                                            <div className="inputDev ui input">
+                                                                <TextEditor
+                                                                    value={
+                                                                        this
+                                                                            .state
+                                                                            .message
+                                                                    }
+                                                                    onChange={
+                                                                        this
+                                                                            .onChangeMessage
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        {this.props
+                                                            .changeStatus ===
+                                                            false ? (
+                                                                <Fragment>
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <Dropdown
+                                                                            title="workFlow"
+                                                                            data={
+                                                                                this
+                                                                                    .state
+                                                                                    .WorkFlowData
+                                                                            }
+                                                                            handleChange={
+                                                                                this
+                                                                                    .workFlowhandelChangeLetter
+                                                                            }
+                                                                            selectedValue={
+                                                                                this
+                                                                                    .state
+                                                                                    .selectedWorkFlow
+                                                                            }
+                                                                            index="ddlworkFlowId"
+                                                                        />
+                                                                    </div>
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <Dropdown
+                                                                            title="contact"
+                                                                            data={
+                                                                                this
+                                                                                    .state
+                                                                                    .WorkFlowContactData
+                                                                            }
+                                                                            name="ddlApproveTo"
+                                                                            selectedValue={
+                                                                                this
+                                                                                    .state
+                                                                                    .selectedApproveId
+                                                                            }
+                                                                            index="ddlApproveTo"
+                                                                            handleChange={
+                                                                                this
+                                                                                    .toAccounthandelChangeLetter
+                                                                            }
+                                                                            className={
+                                                                                this
+                                                                                    .state
+                                                                                    .toCompanyClass
+                                                                            }
+                                                                        />
+                                                                    </div>
+                                                                </Fragment>
+                                                            ) : null}
+                                                    </div>
+                                                    <div className="slider-Btns">
+                                                        {this.state
+                                                            .isLoading ? (
+                                                                <button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>
+                                                            ) : (
+                                                                <div className="slider-Btns">
+                                                                    {this.showBtnsSaving()}
+                                                                </div>
+                                                            )}
+                                                    </div>
+
+                                                    {this.props.changeStatus ===
+                                                        true ? (
+                                                            <div className="approveDocument">
+                                                                <div className="approveDocumentBTNS">
+                                                                    {this.state
+                                                                        .isLoading ? (
+                                                                            <button className="primaryBtn-1 btn disabled">
+                                                                                <div className="spinner">
+                                                                                    <div className="bounce1" />
+                                                                                    <div className="bounce2" />
+                                                                                    <div className="bounce3" />
+                                                                                </div>
+                                                                            </button>
+                                                                        ) : (
+                                                                            <button
                                                                                 className={
                                                                                     this
                                                                                         .state
-                                                                                        .toCompanyClass
+                                                                                        .isViewMode ===
+                                                                                        true
+                                                                                        ? 'primaryBtn-1 btn middle__btn disNone'
+                                                                                        : 'primaryBtn-1 btn middle__btn'
+                                                                                }>
+                                                                                {
+                                                                                    Resources
+                                                                                        .save[
+                                                                                    currentLanguage
+                                                                                    ]
                                                                                 }
-                                                                            />
-                                                                        </div>
-                                                                    </Fragment>
-                                                                ) : null}
-                                                        </div>
-                                                        <div className="slider-Btns">
-                                                            {this.state
-                                                                .isLoading ? (
-                                                                    <button className="primaryBtn-1 btn disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
-                                                                        </div>
-                                                                    </button>
-                                                                ) : (
-                                                                    <div className="slider-Btns">
-                                                                        {this.showBtnsSaving()}
-                                                                    </div>
-                                                                )}
-                                                        </div>
-
-                                                        {this.props.changeStatus ===
-                                                            true ? (
-                                                                <div className="approveDocument">
-                                                                    <div className="approveDocumentBTNS">
-                                                                        {this.state
-                                                                            .isLoading ? (
-                                                                                <button className="primaryBtn-1 btn disabled">
-                                                                                    <div className="spinner">
-                                                                                        <div className="bounce1" />
-                                                                                        <div className="bounce2" />
-                                                                                        <div className="bounce3" />
-                                                                                    </div>
-                                                                                </button>
-                                                                            ) : (
-                                                                                <button
-                                                                                    className={
-                                                                                        this
-                                                                                            .state
-                                                                                            .isViewMode ===
-                                                                                            true
-                                                                                            ? 'primaryBtn-1 btn middle__btn disNone'
-                                                                                            : 'primaryBtn-1 btn middle__btn'
-                                                                                    }>
-                                                                                    {
-                                                                                        Resources
-                                                                                            .save[
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }
-                                                                                </button>
-                                                                            )}
-                                                                        <DocumentActions
-                                                                            isApproveMode={
-                                                                                this
-                                                                                    .state
-                                                                                    .isApproveMode
-                                                                            }
-                                                                            docTypeId={
-                                                                                this
-                                                                                    .state
-                                                                                    .docTypeId
-                                                                            }
-                                                                            docId={
-                                                                                this
-                                                                                    .state
-                                                                                    .docId
-                                                                            }
-                                                                            projectId={
-                                                                                this
-                                                                                    .state
-                                                                                    .projectId
-                                                                            }
-                                                                            docAlertId={
-                                                                                this
-                                                                                    .state
-                                                                                    .docAlertId
-                                                                            }
-                                                                            previousRoute={
-                                                                                this
-                                                                                    .state
-                                                                                    .previousRoute
-                                                                            }
-                                                                            docApprovalId={
-                                                                                this
-                                                                                    .state
-                                                                                    .docApprovalId
-                                                                            }
-                                                                            currentArrange={
-                                                                                this
-                                                                                    .state
-                                                                                    .arrange
-                                                                            }
-                                                                            showModal={
-                                                                                this
-                                                                                    .props
-                                                                                    .showModal
-                                                                            }
-                                                                            showOptionPanel={
-                                                                                this
-                                                                                    .showOptionPanel
-                                                                            }
-                                                                            permission={
-                                                                                this
-                                                                                    .state
-                                                                                    .permission
-                                                                            }
-                                                                            documentName="lettertitle"
-                                                                        />
-                                                                    </div>
+                                                                            </button>
+                                                                        )}
+                                                                    <DocumentActions
+                                                                        isApproveMode={
+                                                                            this
+                                                                                .state
+                                                                                .isApproveMode
+                                                                        }
+                                                                        docTypeId={
+                                                                            this
+                                                                                .state
+                                                                                .docTypeId
+                                                                        }
+                                                                        docId={
+                                                                            this
+                                                                                .state
+                                                                                .docId
+                                                                        }
+                                                                        projectId={
+                                                                            this
+                                                                                .state
+                                                                                .projectId
+                                                                        }
+                                                                        docAlertId={
+                                                                            this
+                                                                                .state
+                                                                                .docAlertId
+                                                                        }
+                                                                        previousRoute={
+                                                                            this
+                                                                                .state
+                                                                                .previousRoute
+                                                                        }
+                                                                        docApprovalId={
+                                                                            this
+                                                                                .state
+                                                                                .docApprovalId
+                                                                        }
+                                                                        currentArrange={
+                                                                            this
+                                                                                .state
+                                                                                .arrange
+                                                                        }
+                                                                        showModal={
+                                                                            this
+                                                                                .props
+                                                                                .showModal
+                                                                        }
+                                                                        showOptionPanel={
+                                                                            this
+                                                                                .showOptionPanel
+                                                                        }
+                                                                        permission={
+                                                                            this
+                                                                                .state
+                                                                                .permission
+                                                                        }
+                                                                        documentName="lettertitle"
+                                                                    />
                                                                 </div>
-                                                            ) : null}
-                                                    </Form>
-                                                )}
+                                                            </div>
+                                                        ) : null}
+                                                </Form>
+                                            )}
                                         </Formik>
                                     </div>
                                     <div>
@@ -1988,22 +1910,16 @@ class LettersAddEdit extends Component {
                                             {this.state.docId > 0 &&
                                                 this.state.isViewMode === false ? (
                                                     <UploadAttachmentWithProgress
-                                                        changeStatus={
-                                                            this.props.changeStatus
-                                                        }
+                                                        changeStatus={this.props.changeStatus}
                                                         AddAttachments={839}
                                                         EditAttachments={3223}
                                                         ShowDropBox={3607}
                                                         ShowGoogleDrive={3608}
-                                                        docTypeId={
-                                                            this.state.docTypeId
-                                                        }
+                                                        docTypeId={this.state.docTypeId}
                                                         docId={this.state.docId}
-                                                        projectId={
-                                                            this.state.projectId
-                                                        }
-                                                    />
-                                                ) : null}
+                                                        projectId={this.state.projectId}
+                                                    />)
+                                                : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus ===
                                                 true ? (

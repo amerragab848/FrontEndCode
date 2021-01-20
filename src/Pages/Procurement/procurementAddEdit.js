@@ -4,7 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
+import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachmentWithProgress";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
@@ -23,7 +23,7 @@ import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
+import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
 import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
@@ -1490,9 +1490,9 @@ class procurementAddEdit extends Component {
                                 )}
                         </Formik>
 
-                        <XSLfile
+                        <UploadSingleAttachment
                             key="procurementitem"
-                            docId={this.state.docId}
+                            projectId={this.state.docId}
                             docType={this.state.docType}
                             link={
                                 Config.getPublicConfiguartion().downloads + "/DownLoads/Excel/procurement.xlsx"
