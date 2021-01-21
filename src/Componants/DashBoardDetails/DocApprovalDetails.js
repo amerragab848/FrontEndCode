@@ -330,6 +330,7 @@ class DocApprovalDetails extends Component {
       groups: [],
       gridName: gridName
     };
+    
   }
 
   componentDidMount() {
