@@ -594,7 +594,7 @@ class InternalMemoAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput letterFullWidth valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
@@ -602,7 +602,7 @@ class InternalMemoAddEdit extends Component {
                                                                     onChange={event => this.onChangeMessage(event, "message")} />
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput letterFullWidth valid-input">
                                                             <label className="control-label">{Resources.answer[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
