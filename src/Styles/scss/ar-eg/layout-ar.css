@@ -25222,3 +25222,25 @@ tbody.grid-body tr .text.elipsisPadd {
     left: -28px;
     transform: translateY(-50%);
 }
+
+.dirIcon {
+    position: absolute;
+    right: 52%;
+    top: 9px;
+    z-index: 99;
+}
+.dirIcon  .btn {
+    background: transparent;
+    outline: 0;
+    border: 0;
+    box-shadow: none;
+    padding: 0 9px;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+}
+.dirIcon .btn:hover {
+    background-color: #e6e6e6;
+}
+.dirIcon .btn.active{
+    background-color: #e6e6e687;
+}
