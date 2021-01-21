@@ -842,6 +842,7 @@ class inspectionRequestAddEdit extends Component {
     AddNewCycle() {
         return (
             <Fragment>
+                <div className='document-fields'>
                 <Formik initialValues={{ ...this.state.documentCycle }} validationSchema={documentCycleValidationSchema} enableReinitialize={true}
                     onSubmit={(values) => {
                         this.saveInspectionRequestCycle(values)
@@ -853,7 +854,7 @@ class inspectionRequestAddEdit extends Component {
                                     <h2 className="zero">{Resources['newCycle'][currentLanguage]}</h2>
                                 </div>
                             </header>
-                            <div className='document-fields'>
+                            
                                 <div className="proForm first-proform">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
@@ -948,10 +949,11 @@ class inspectionRequestAddEdit extends Component {
                                             : <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>}
                                     </div>
                                 }
-                            </div>
+                           
                         </Form>
                     )}
                 </Formik>
+                </div>
             </Fragment>
         )
     }
@@ -973,6 +975,7 @@ class inspectionRequestAddEdit extends Component {
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
+                                            
                                             <div className="document-fields">
                                                 <Formik
                                                     initialValues={{ ...this.state.document }}
