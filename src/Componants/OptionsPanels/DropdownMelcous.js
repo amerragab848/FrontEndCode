@@ -50,7 +50,6 @@ class DropdownMelcous extends Component {
     };
 
     render() {
-
         const publicStyles = {
             control: (styles, { isFocused }) =>
             ({

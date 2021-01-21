@@ -289,7 +289,7 @@ class RfiAddEdit extends Component {
                 let areaId = this.props.document.area;
 
                 if (areaId) {
-                    let area = result.find(i => i.value ===parseInt(areaId) );
+                    let area = result.find(i => i.value === parseInt(areaId));
                     if (area) {
                         this.setState({
                             selectedArea: { label: area.label, value: areaId }
@@ -309,7 +309,7 @@ class RfiAddEdit extends Component {
                 let locationId = this.props.document.location;
 
                 if (locationId) {
-                    let location = result.find(i => i.value === parseInt(locationId) );
+                    let location = result.find(i => i.value === parseInt(locationId));
                     if (location) {
                         this.setState({
                             selectedLocation: { label: location.label, value: locationId }
@@ -387,14 +387,14 @@ class RfiAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-       
+
         let original_document = { ...this.state.document };
         let updated_document = {};
         if (event == null) {
             updated_document[field] = event;
-         }else{
-             updated_document[field] = event.value;
-         }
+        } else {
+            updated_document[field] = event.value;
+        }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -403,10 +403,10 @@ class RfiAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            if(event==null){
+            if (event == null) {
                 updated_document.arrange = "";
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
-                    updated_document.refDoc ="";
+                    updated_document.refDoc = "";
                 }
 
                 updated_document = Object.assign(original_document, updated_document);
@@ -415,34 +415,34 @@ class RfiAddEdit extends Component {
                     document: updated_document
                 });
             }
-            else{
+            else {
 
-           
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
-            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                updated_document.arrange = res.arrange;
-                if (Config.getPublicConfiguartion().refAutomatic === true) {
-                    updated_document.refDoc = res.refCode;
-                }
+                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
-                updated_document = Object.assign(original_document, updated_document);
+                dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                    updated_document.arrange = res.arrange;
+                    if (Config.getPublicConfiguartion().refAutomatic === true) {
+                        updated_document.refDoc = res.refCode;
+                    }
 
-                this.setState({
-                    document: updated_document
+                    updated_document = Object.assign(original_document, updated_document);
+
+                    this.setState({
+                        document: updated_document
+                    });
                 });
-            });
-          }
+            }
         }
         if (isSubscrib) {
-        
-            if(event==null){
+
+            if (event == null) {
                 this.setState({
                     [targetState]: []
                 });
-               
+
             }
-            else{
+            else {
                 let action = url + "?" + param + "=" + event.value
                 dataservice.GetDataList(action, 'contactName', 'id').then(result => {
                     this.setState({
@@ -635,7 +635,7 @@ class RfiAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown    isClear={true} data={this.state.companies} isMulti={false}
+                                                                    <Dropdown isClear={true} data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
                                                                             this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
@@ -647,7 +647,7 @@ class RfiAddEdit extends Component {
                                                                         id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                    <Dropdown   isClear={true} isMulti={false} data={this.state.fromContacts}
+                                                                    <Dropdown isClear={true} isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
@@ -663,7 +663,7 @@ class RfiAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown   isClear={true} isMulti={false} data={this.state.companies}
+                                                                    <Dropdown isClear={true} isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
                                                                         onChange={setFieldValue}
@@ -674,7 +674,7 @@ class RfiAddEdit extends Component {
                                                                         id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                    <Dropdown   isClear={true} isMulti={false} data={this.state.ToContacts}
+                                                                    <Dropdown isClear={true} isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
@@ -688,12 +688,12 @@ class RfiAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown   isClear={true} title="area" data={this.state.areas}
+                                                            <Dropdown isClear={true} title="area" data={this.state.areas}
                                                                 selectedValue={this.state.selectedArea}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')} />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown   isClear={true} title="location" data={this.state.locations}
+                                                            <Dropdown isClear={true} title="location" data={this.state.locations}
                                                                 selectedValue={this.state.selectedLocation}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocation')} />
                                                         </div>
@@ -720,7 +720,7 @@ class RfiAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown   isClear={true} title="discipline" data={this.state.discplines}
+                                                            <Dropdown isClear={true} title="discipline" data={this.state.discplines}
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')} />
                                                         </div>
@@ -740,7 +740,7 @@ class RfiAddEdit extends Component {
                                                                 }
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput letterFullWidth valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
@@ -748,7 +748,7 @@ class RfiAddEdit extends Component {
                                                                     onChange={this.onChangeMessageRfi} />
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput letterFullWidth valid-input">
                                                             <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor

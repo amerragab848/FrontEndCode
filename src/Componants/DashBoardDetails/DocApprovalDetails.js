@@ -353,6 +353,7 @@ class DocApprovalDetails extends Component {
       }
     };
 
+
     this.actions = [
       {
         title: 'Approve',
@@ -557,6 +558,8 @@ class DocApprovalDetails extends Component {
         let currentSelected = this.state.rows.find(x => x.id === id);
         if (firstSelected.workFlowId == currentSelected.workFlowId && firstSelected.arrange == currentSelected.arrange) {
           checked.push(id);
+        } else {
+          toast.warn('This Record Don\'t Match Prevoius Records');
         }
 
       } else {
@@ -773,9 +776,9 @@ class DocApprovalDetails extends Component {
                       <div className="textarea-group fullWidthWrapper textLeft">
                         <label>Comment</label>
                         <textarea className="form-control"
-                         onChange={e => this.handleChange(e.target.value, "comment")}
-                         value={this.state.approvalObj.comment}
-                         />
+                          onChange={e => this.handleChange(e.target.value, "comment")}
+                          value={this.state.approvalObj.comment}
+                        />
                       </div>
 
                       <div className="slider-Btns fullWidthWrapper">
