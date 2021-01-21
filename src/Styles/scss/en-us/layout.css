@@ -24673,9 +24673,7 @@ tbody.grid-body tr .text.elipsisPadd {
     right: -28px;
     transform: translateY(-50%);
 }
-<<<<<<< HEAD
 .doc-container .subiTabsContent .main__header .main__header--div {padding: 0}
-=======
 .dirIcon {
     position: absolute;
     left: 52%;
@@ -24697,4 +24695,3 @@ tbody.grid-body tr .text.elipsisPadd {
 .dirIcon .btn.active{
     background-color: #e6e6e687;
 }
->>>>>>> 86a03d3b80164b57c5db2fc844eba5df5e56d1f1
