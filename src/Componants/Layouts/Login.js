@@ -72,27 +72,21 @@ class Login extends Component {
                     let cookie = this.getCookie();
                     if (Config.getPublicConfiguartion().canSendAlert) {
                         browserObj.token = cookie;
-                        if (browserObj.publicIP === undefined) {
-                            Api.getPublicIP("https://ipapi.co/json").then(
-                                res => {
-                                    browserObj.publicIP = res.ip;
-                                    browserObj.macAddress =
-                                        res.latitude + "," + res.longitude;
-                                    Api.post(
-                                        "checkAccountLogin",
-                                        browserObj
-                                    ).then(resp => {
-                                        if (resp !== "Done")
-                                            this.setCookie(resp);
-                                    });
-                                }
-                            );
-                        }
+                        //if (browserObj.publicIP === undefined) {
+                        // Api.getPublicIP("https://ipapi.co/json").then(res => {
+                        //     browserObj.publicIP = res.ip;
+                        //     browserObj.macAddress =
+                        //         res.latitude + "," + res.longitude;
+                        //     Api.post("checkAccountLogin", browserObj).then(resp => {
+                        //         if (resp !== "Done")
+                        //             this.setCookie(resp);
+                        //     });
+                        // });
+                        //}
                     } else {
-                        Api.post("checkAccountLogin", browserObj).then(
-                            resp => {
-                                if (resp !== "Done") this.setCookie(resp);
-                            }
+                        Api.post("checkAccountLogin", browserObj).then(resp => {
+                            if (resp !== "Done") this.setCookie(resp);
+                        }
                         );
                     }
                     if (tokenStore.getItem("requestPermission")) {
