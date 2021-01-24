@@ -33,8 +33,8 @@ class Login extends Component {
     }
     loginHandler = input => {
         this.setState({ isLoading: true });
-        let companyId = Config.getPublicConfiguartion().accountCompanyId; // config["accountCompanyId"]
-        let loginServer = Config.getPublicConfiguartion().loginServer; // config["loginServer"]
+        let companyId = Config.getPublicConfiguartion().accountCompanyId;  
+        let loginServer = Config.getPublicConfiguartion().loginServer;  
         let url = "/token";
         let param = "grant_type=password&username=" + input.userName + "&password=" + input.password + "&companyId=" + companyId;
         Api.Login(loginServer, url, param).then(Response => {

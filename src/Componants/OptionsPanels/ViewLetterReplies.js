@@ -1,15 +1,10 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Component, Fragment } from "react"; 
 import CryptoJS from "crypto-js";
 import Api from "../../api";
-import Resources from "../../resources.json";
-
-import { connect } from "react-redux";
-import SkyLight from "react-skylight";
-import { bindActionCreators } from "redux";
-import moment from "moment";
-import * as communicationActions from "../../store/actions/communication";
-import Config from "../../Services/Config";
+import Resources from "../../resources.json"; 
+import { connect } from "react-redux"; 
+import { bindActionCreators } from "redux"; 
+import * as communicationActions from "../../store/actions/communication"; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -35,8 +30,8 @@ class ViewLetterReplies extends Component {
     }
 
     getReplies(viewRepliesOn) {
-        if (this.state.docId > 0) {
-            let url = (viewRepliesOn == 'false' ? this.state.repliesApi : this.state.api) + this.state.docId;
+        if (this.props.docId > 0) {
+            let url = (viewRepliesOn == 'false' ? this.state.repliesApi : this.state.api) + this.props.docId;
             this.GetLogData(url);
         }
     }
