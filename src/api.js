@@ -439,8 +439,7 @@ export default class Api {
                 return json.then(err => {
                     throw err;
                 });
-            })
-            .then(json => (json.result ? json.result : json));
+            }).then(json => (json.result ? json.result : json));
     }
     static Login(hostt, route, params) {
         const host = hostt;
