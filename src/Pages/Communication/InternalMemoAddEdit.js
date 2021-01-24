@@ -291,13 +291,15 @@ class InternalMemoAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
 
 
         let original_document = { ...this.state.document };
         let updated_document = {};
         if (event == null) {
             updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+
         } else {
             updated_document[field] = event.value;
         }
@@ -318,7 +320,8 @@ class InternalMemoAddEdit extends Component {
                 updated_document = Object.assign(original_document, updated_document);
 
                 this.setState({
-                    document: updated_document
+                    document: updated_document,
+                    [subDatasource]:null
                 });
             }
             else {
@@ -537,7 +540,7 @@ class InternalMemoAddEdit extends Component {
                                                                         isClear={true}
                                                                         data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
+                                                                        handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId"); }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
@@ -569,7 +572,7 @@ class InternalMemoAddEdit extends Component {
                                                                         isClear={true}
                                                                         isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact","toContactId")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}

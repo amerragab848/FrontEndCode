@@ -26,10 +26,10 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
+    refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]) ,
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true) ,
-    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).nullable(true) 
 });
 
 let docId = 0;
@@ -439,12 +439,14 @@ class TransmittalAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
         
         let original_document = { ...this.state.document };
         let updated_document = {};
         if (event == null) {
             updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+
          }else{
              updated_document[field] = event.value;
          }
@@ -588,7 +590,9 @@ class TransmittalAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={true}
+                                        <Formik initialValues={{ ...this.state.document }} 
+                                        validationSchema={validationSchema}
+                                         enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) {
                                                     return;
@@ -672,7 +676,7 @@ class TransmittalAddEdit extends Component {
                                                                        data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId");
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -704,7 +708,7 @@ class TransmittalAddEdit extends Component {
                                                                         isClear={true} 
                                                                         isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact","toContactId")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
