@@ -38,6 +38,8 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Dataservice from "../../Dataservice";
 import AdvacedPaymentAmount from "./AdvacedPaymentAmount";
+import Export from '../../Componants/OptionsPanels/Export';
+
 var steps_defination = [];
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -114,6 +116,7 @@ class ContractInfoAddEdit extends Component {
     }
 
     this.state = {
+      noItems: 0,
       showPopUpRevised: false,
       LoadingPage: false,
       docTypeId: 9,
@@ -184,9 +187,9 @@ class ContractInfoAddEdit extends Component {
       showBoqLinkBtn: false,
       selectedBoq: { label: Resources.selectBoq[currentLanguage], value: "" },
       notContractedBoqList: [],
-      AdvacedPaymentData:[],
-      ApmPageNumber:50,
-      AdvacedPaymentDataLength:0
+      AdvacedPaymentData: [],
+      ApmPageNumber: 50,
+      AdvacedPaymentDataLength: 0
     };
 
     this.groups = [];
@@ -540,7 +543,7 @@ class ContractInfoAddEdit extends Component {
       });
 
       DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-        if (result.length == 0) {
+        if (result.data.length == 0) {
           Dataservice.GetDataList(`getBoqNotContractedForDrop?projectId=${localStorage.getItem("lastSelectedProject")}`, "subject", "id").then(res => {
             this.setState({
               notContractedBoqList: res || [],
@@ -549,9 +552,10 @@ class ContractInfoAddEdit extends Component {
           })
         }
         this.setState({
-          rows: [...result]
+          rows: [...result.data],
+          noItems: result.total
         });
-        this.props.actions.ExportingData({ items: result });
+        this.props.actions.ExportingData({ items: result.data });
       });
 
       DataService.GetDataGrid("GetContractsChangeOrderByContractId?contractId=" + this.state.docId).then(result => {
@@ -767,13 +771,13 @@ class ContractInfoAddEdit extends Component {
     }
 
     if (tabName == 'matReleased') {
-     // this.getMaterialRelease();
+      // this.getMaterialRelease();
     }
     if (tabName == 'AdvPayAmount') {
-    //  this.getAdvacedPaymwntAmount();
+      //  this.getAdvacedPaymwntAmount();
     }
   };
-   
+
   getMaterialRelease() {
     if (this.state.materialReleaseItems.length == 0) {
       this.setState({ isLoading: true })
@@ -1057,7 +1061,7 @@ class ContractInfoAddEdit extends Component {
       let oldRows = [...this.state.rows];
       DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
-        const newRows = [...this.state.rows, ...result];
+        const newRows = [...this.state.rows, ...result.data];
         this.setState({
           rows: newRows,
           isLoading: false
@@ -1105,10 +1109,10 @@ class ContractInfoAddEdit extends Component {
 
         DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
-          const newRows = [...this.state.rows, ...result];
-
+          const newRows = [...this.state.rows, ...result.data];
           this.setState({
             rows: newRows,
+            noItems: result.total,
             isLoading: false
           });
         }).catch(ex => {
@@ -1397,9 +1401,13 @@ class ContractInfoAddEdit extends Component {
           <div className="submittalFilter readOnly__disabled">
             <div className="subFilter">
               <h3 className="zero"> {Resources['items'][currentLanguage]}</h3>
-              <span>{this.state.rows.length}</span>
+              <span>{this.state.rows.length + ' Of ' + this.state.noItems}</span>
+
             </div>
             <div className="rowsPaginations readOnly__disabled">
+
+              <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.cells} fileName={"Contract Items"} />
+
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                 <i className="angle left icon" />
               </button>
@@ -1682,7 +1690,7 @@ class ContractInfoAddEdit extends Component {
                           <input type="text" className="form-control" id="advancedPaymentAmount"
                             onChange={handleChange} onBlur={handleBlur}
                             defaultValue={this.state.document.advancedPaymentAmount}
-                            name="advancedPaymentAmount" placeholder={Resources.advancedPaymentAmount[currentLanguage]} readOnly/>
+                            name="advancedPaymentAmount" placeholder={Resources.advancedPaymentAmount[currentLanguage]} readOnly />
                         </div>
                       </div>
 
@@ -1857,8 +1865,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId=' + this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId=" + docId} type="Contract" docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
-          
-          {this.state.activeTab == "AdvPayAmount" ? (<AdvacedPaymentAmount isViewMode={this.state.isViewMode} contractId={this.state.docId} items={this.state.AdvacedPaymentData}  pageNumberinit={this.state.ApmPageNumber} totalRows={this.state.AdvacedPaymentDataLength}/>) : null}        
+
+          {this.state.activeTab == "AdvPayAmount" ? (<AdvacedPaymentAmount isViewMode={this.state.isViewMode} contractId={this.state.docId} items={this.state.AdvacedPaymentData} pageNumberinit={this.state.ApmPageNumber} totalRows={this.state.AdvacedPaymentDataLength} />) : null}
           {this.state.activeTab == "matReleased" ? (<MaterialReleased contractId={this.state.docId} items={this.state.materialItems} totalVals={this.state.totalVal} totalRturnedvals={this.state.totalRturnedVal} pageNumberinit={this.state.marPageNumber} totalRows={this.state.materialReleaseItemsLength} />) : null}
           {this.state.activeTab == "voi" ? (<Fragment>{voiContent}</Fragment>) : null}
 

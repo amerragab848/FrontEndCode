@@ -25,7 +25,8 @@ import Resources from '../../resources.json';
 import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
-import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment'; 
+import Export from '../../Componants/OptionsPanels/Export';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -324,6 +325,7 @@ class boqAddEdit extends Component {
         ];
 
         this.state = {
+            noItems: 0,
             loadingAddItemModel: true,
             AddItemDescription: null,
             EditItemDescription: null,
@@ -687,7 +689,7 @@ class boqAddEdit extends Component {
                 isLoading: true
             });
             Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize).then(res => {
-                let data = { items: res };
+                let data = { items: res.data };
                 // res.forEach((element) => {
                 //     Table.push({
                 //         id: element.id,
@@ -717,13 +719,14 @@ class boqAddEdit extends Component {
                 //     });
                 // });
                 this.setState({
-                    _items: res || [],
+                    _items: res.data || [],
+                    noItems: res.total,
                     LoadingPage: false,
                     isLoading: false
                 });
                 //this.props.actions.ExportingData(data);
             });
-       }
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -1149,10 +1152,11 @@ class boqAddEdit extends Component {
                 this.state.pageSize,
             )
                 .then(result => {
-                    const newRows = [...this.state._items, ...result];
+                    const newRows = [...this.state._items, ...result.data];
 
                     this.setState({
                         _items: newRows,
+                        noItems: result.total,
                         isLoading: false,
                     });
                 })
@@ -1184,10 +1188,11 @@ class boqAddEdit extends Component {
             this.state.pageSize,
         )
             .then(result => {
-                const newRows = [...this.state._items, ...result];
+                const newRows = [...this.state._items, ...result.data];
 
                 this.setState({
                     _items: newRows,
+                    noItems: result.total,
                     isLoading: false,
                 });
             })
@@ -2705,22 +2710,22 @@ class boqAddEdit extends Component {
 
                                             <div className={'slider-Btns fullWidthWrapper textLeft'}>
                                                 {this.state.isLoading === false ?
-                                                   <button
+                                                    <button
                                                         className={'primaryBtn-1 btn ' + (this.state.isViewMode === true ? 'disNone' : '')}
-                                                        type="submit" 
+                                                        type="submit"
                                                         disabled={this.state.isViewMode}>
                                                         {Resources[this.state.btnTxt][currentLanguage]}
                                                     </button>
-                                                     : 
-                                                        <button
-                                                            className="primaryBtn-1 btn  disabled"
-                                                            disabled="disabled">
-                                                            <div className="spinner">
-                                                                <div className="bounce1" />
-                                                                <div className="bounce2" />
-                                                                <div className="bounce3" />
-                                                            </div>
-                                                        </button> 
+                                                    :
+                                                    <button
+                                                        className="primaryBtn-1 btn  disabled"
+                                                        disabled="disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
                                                 }
                                             </div>
                                         </div>
@@ -2757,9 +2762,11 @@ class boqAddEdit extends Component {
                             <div className="submittalFilter readOnly__disabled">
                                 <div className="subFilter">
                                     <h3 className="zero"> {Resources['items'][currentLanguage]} </h3>
-                                    <span>{this.state._items.length}</span>
+                                    <span>{this.state._items.length + ' Of ' + this.state.noItems}</span>
                                 </div>
                                 <div className="rowsPaginations readOnly__disabled">
+                                    <Export rows={this.state.isLoading === false ? this.state._items : []} columns={this.boqItems} fileName={"BOQ Items"} />
+
                                     <button className={this.state.pageNumber == 0 ? 'rowunActive' : ''} onClick={() => this.GetPrevoiusData()}> <i className="angle left icon" />                                    </button>
                                     <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? 'rowunActive' : ''}
                                         onClick={() => this.GetNextData()}> <i className="angle right icon" /> </button>
