@@ -350,10 +350,15 @@ class ClaimsAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+           updated_document[field] = event;
+        }else{
+            updated_document[field] = event.value;
+        }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -362,11 +367,10 @@ class ClaimsAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
-            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                updated_document.arrange = res.arrange;
+            if(event==null){
+                updated_document.arrange ="";
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
-                    updated_document.refDoc = res.refCode;
+                    updated_document.refDoc = "";
                 }
 
                 updated_document = Object.assign(original_document, updated_document);
@@ -374,15 +378,42 @@ class ClaimsAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-            })
+            }
+            else{
+                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+                dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                    updated_document.arrange = res.arrange;
+                    if (Config.getPublicConfiguartion().refAutomatic === true) {
+                        updated_document.refDoc = res.refCode;
+                    }
+    
+                    updated_document = Object.assign(original_document, updated_document);
+    
+                    this.setState({
+                        document: updated_document
+                    });
+                })
+            }
+          
         }
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+        
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
+           
+            
         }
     }
 
@@ -417,7 +448,7 @@ class ClaimsAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
         saveDocument.projectId = this.state.projectId;
-       
+
         dataservice.addObject('AddClaims', saveDocument).then(result => {
             this.setState({
                 docId: result
@@ -594,6 +625,7 @@ class ClaimsAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -612,6 +644,7 @@ class ClaimsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
@@ -638,6 +671,7 @@ class ClaimsAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
@@ -655,6 +689,7 @@ class ClaimsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
@@ -675,6 +710,7 @@ class ClaimsAddEdit extends Component {
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                               isClear={true}
                                                                 title="discipline"
                                                                 data={this.state.discplines}
                                                                 selectedValue={this.state.selectedDiscpline}
@@ -682,7 +718,8 @@ class ClaimsAddEdit extends Component {
                                                                 index="claims-discipline" />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown
+                                                            <Dropdown 
+                                                              isClear={true}
                                                                 title="contractName"
                                                                 data={this.state.contracts}
                                                                 selectedValue={this.state.selectedContract}

@@ -7,6 +7,7 @@ import Config from '../../Services/Config.js';
 import numeral from 'numeral'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class Widgets extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class Widgets extends Component {
 
   componentDidMount() {
 
-    Api.get(this.props.props.api, undefined, Config.getPublicConfiguartion().dashboardApi).then(result => {
+    Api.get(this.props.props.api, undefined,moduleId).then(result => {
       if (result) {
         this.setState({
           value: result != null ? result : 0

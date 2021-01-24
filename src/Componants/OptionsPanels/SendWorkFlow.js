@@ -23,14 +23,16 @@ class SendWorkFlow extends Component {
                 workFlowId: null,
                 contacts: [],
                 dueDate: "",
-                useSelection: false
+                useSelection: false,
+               
             },
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
             selectedContact: [],
             submitLoading: false,
             WorkFlowData: [],
             WorkFlowContactData: [],
-            useSelection: false
+            useSelection: false,
+            isLoading:false
         }
     }
 
@@ -47,19 +49,32 @@ class SendWorkFlow extends Component {
     }
 
     componentDidMount = () => {
-
+        let val = this.props.isLoading;
+         this.setState({
+           submitLoading:false
+         })
         let url = "ProjectWorkFlowGetList?projectId=" + this.state.workFlowData.projectId;
         this.GetData(url, 'subject', 'id', 'WorkFlowData', 1);
         this.props.actions.SendingWorkFlow(true);
-    }
 
-    static getDerivedStateFromProps(nextProps, state) {
-        if (nextProps.showModal != state.showModal) {
-            return { submitLoading: false };
-        }
-        return null
     }
-
+    componentDidUpdate(prevProps, state){
+    //   if(prevProps.workFlowCycles.length != this.props.workFlowCycles.length)
+    //   {
+    //       this.setState({submitLoading:false})
+    //   }
+    }
+    // static getDerivedStateFromProps(nextProps, state) {
+    //     if (nextProps.showModal != state.showModal) {
+    //         return { submitLoading: false };
+    //     }
+    //     return null
+    // }
+    componentWillReceiveProps (nextProps, state) {
+        // if (nextProps.showModal != state.showModal) {
+        //     return { submitLoading: false };
+        // }
+    }
     inputChangeHandler = (e) => {
         this.setState({ workFlowData: { ...this.state.workFlowData, Comment: e.target.value } });
     }
@@ -71,7 +86,10 @@ class SendWorkFlow extends Component {
     }
 
     clickHandler = (e) => {
-        this.setState({ submitLoading: true })
+        // this.setState({ 
+        //     submitLoading:true
+           
+        // })
         var ids = this.state.selectedContact;
         if (this.state.useSelection == true) {
             ids = ids.map(i => i.value)
@@ -82,9 +100,13 @@ class SendWorkFlow extends Component {
         workFlowObj.contacts = ids;
         workFlowObj.workFlowId = this.state.selectedWorkFlow.value;
         workFlowObj.useSelection = this.state.useSelection;
-
+         this.props.actions.setLoading();
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.props.docId + '&docType=' + this.props.docTypeId + '&projectId=' + this.props.projectId;
         this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
+        // this.setState({ 
+        //     submitLoading:this.props.isLoading
+           
+        // })
     }
 
     render() {
@@ -107,7 +129,8 @@ class SendWorkFlow extends Component {
                     className={this.state.toCompanyClass}
                 />
                 <div className="fullWidthWrapper">
-                    {!this.state.submitLoading ?
+                     {this.props.isLoading===false ?                  
+                     
                         <button className="workFlowDataBtn-1 mediumBtn primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
                         : (
                             <button className="primaryBtn-1 btn  mediumBtn disabled">
@@ -180,7 +203,8 @@ function mapStateToProps(state) {
     return {
         workFlowCycles: state.communication.workFlowCycles,
         hasWorkflow: state.communication.hasWorkflow,
-        showModal: state.communication.showModal
+        showModal: state.communication.showModal,
+        isLoading: state.communication.isLoading
     }
 }
 
