@@ -25,10 +25,10 @@ import find from "lodash/find";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
-    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true),
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).nullable(true)
 })
 
 let docId = 0;
@@ -349,13 +349,14 @@ class ClaimsAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
 
        
         let original_document = { ...this.state.document };
         let updated_document = {};
         if (event == null) {
            updated_document[field] = event;
+           updated_document[subDatasourceId]=event;
         }else{
             updated_document[field] = event.value;
         }
@@ -376,7 +377,8 @@ class ClaimsAddEdit extends Component {
                 updated_document = Object.assign(original_document, updated_document);
 
                 this.setState({
-                    document: updated_document
+                    document: updated_document,
+                    [subDatasource]:null
                 });
             }
             else{
@@ -630,7 +632,7 @@ class ClaimsAddEdit extends Component {
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId");
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -676,7 +678,7 @@ class ClaimsAddEdit extends Component {
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event =>
-                                                                            this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                            this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact',"toContactId")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
