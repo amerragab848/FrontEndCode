@@ -26,7 +26,8 @@ import Api from '../../api';
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous'
 import UploadAttachmentWithProgress from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =
+    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(
@@ -146,6 +147,7 @@ class LettersAddEdit extends Component {
                 value: '0',
             },
             selectedReplyLetter: [],
+            selectedReplyLetterList: [],
             message: '',
             selectedWorkFlow: { label: 'select WorkFlow', value: 0 },
             selectedApproveId: { label: 'select To Contact', value: 0 },
@@ -166,7 +168,9 @@ class LettersAddEdit extends Component {
         updated_document.workFlowId = item.value;
         updated_document = Object.assign(original_document, updated_document);
 
-        let url = 'GetProjectWorkFlowContactsFirstLevelForList?workFlow=' + item.value;
+        let url =
+            'GetProjectWorkFlowContactsFirstLevelForList?workFlow=' +
+            item.value;
         dataservice.GetDataList(url, 'contactName', 'id').then(result => {
             this.setState({
                 document: updated_document,
@@ -546,17 +550,16 @@ class LettersAddEdit extends Component {
                     discplines: [...result],
                 });
             });
-        dataservice.GetLettersWithReplies('GetLettersWithRepliesList?projectId=' + this.state.projectId + "&letterId=" + this.state.docId, 'subject', 'id', 'letterId').then(result => {
-            if (result) {
-                let res = result.letters || [];
-                let lettersList = res.filter(function (item) {
-                    return result.replies.indexOf(item) < 0;
-                });
-                this.setState({
-                    letters: lettersList,
-                    selectedReplyLetter: result.replies
-                });
-            }
+        dataservice.GetLettersWithReplies('GetLettersWithRepliesList?projectId=' + this.state.projectId + "&letterId=" + this.state.docId, 'subject', 'id', 'id').then(result => {
+
+            let lettersList = result.letters.filter(function (item) {
+                return result.replies.indexOf(item) < 0;
+            });
+            this.setState({
+                letters: lettersList,
+                selectedReplyLetter: result.replies,
+                selectedReplyLetterList: result.replies,
+            });
         });
     }
 
@@ -608,7 +611,6 @@ class LettersAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue) {
-
         if (event == null) {
             this.setState({
                 [selectedValue]: event,
@@ -762,32 +764,39 @@ class LettersAddEdit extends Component {
 
     replieshandleChange = (e) => {
         var obj = {};
-        let selectedReplyLetter = this.state.selectedReplyLetter;
-
-        var newArr = [];
-        var myArr = selectedReplyLetter.concat(e);
-
-        newArr = myArr.filter(function (item) {
-            return e.indexOf(item) < 0 || selectedReplyLetter.indexOf(item) < 0;
-        });
+        let selectedReplyLetter = e;
+        let selectedReplyLetterList = this.state.selectedReplyLetterList;
 
         if (this.props.changeStatus === true && this.state.docId > 0) {
-            if (e.length < selectedReplyLetter.length) {
-                obj.addRemove = false
-                obj.letterId = newArr.value;
-                obj.replyId = this.state.docId;
-            } else {
-                obj.addRemove = true
-                obj.letterId = newArr[0].value;
-                obj.replyId = this.state.docId;
-            }
-            dataservice.addObject('EditReplyLetters', obj).then(result => {
-                this.setState({
-                    isLoading: false,
+
+            var removeReplies = selectedReplyLetterList.filter(x => selectedReplyLetter.indexOf(x) === -1);
+            removeReplies.forEach(item => {
+                obj.addRemove = false;
+                obj.replyId = item.value;
+                obj.letterId = this.state.docId;
+                dataservice.addObject('EditReplyLetters', obj).then(result => {
+                    this.setState({
+                        isLoading: false,
+                    });
+                    toast.success(Resources['operationSuccess'][currentLanguage]);
                 });
-                toast.success(Resources['operationSuccess'][currentLanguage]);
+
             });
-            this.setState({ repliesIds: e, selectedReplyLetter: e })
+
+            var addReplies = selectedReplyLetter.filter(x => selectedReplyLetterList.indexOf(x) === -1);
+            addReplies.forEach(item => {
+                obj.addRemove = true;
+                obj.replyId = item.value;
+                obj.letterId = this.state.docId;
+                dataservice.addObject('EditReplyLetters', obj).then(result => {
+                    this.setState({
+                        isLoading: false,
+                    });
+                    toast.success(Resources['operationSuccess'][currentLanguage]);
+                });
+
+            });
+            this.setState({ repliesIds: e, selectedReplyLetter: e, selectedReplyLetterList: e })
 
         } else {
             this.setState({ repliesIds: e, selectedReplyLetter: e })
@@ -1337,192 +1346,7 @@ class LettersAddEdit extends Component {
                                             )}
                                         </Formik>
                                     </div>
-                                    <div>
-                                        <div className="drive__wrapper">
-                                            <h2 className="title">
-                                                {
-                                                    Resources['replies'][
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                            </h2>
-                                        </div>
-                                        <table className="attachmentTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>Actions</span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>Subject</span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                ProjectName
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                From Company
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                From Contact
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                To Company
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell">
-                                                            <span>
-                                                                To Contact
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.replies.map(
-                                                    (ele, index) => {
-                                                        return (
-                                                            <tr key={ele.id}>
-                                                                <td className="removeTr">
-                                                                    <div className="contentCell tableCell-1">
-                                                                        <span
-                                                                            className="pdfImage"
-                                                                            onClick={() =>
-                                                                                this.navigateToReplyFromTable(
-                                                                                    ele,
-                                                                                    index,
-                                                                                )
-                                                                            }>
-                                                                            <a>
-                                                                                <i
-                                                                                    className="fa fa-link"
-                                                                                    aria-hidden="true"></i>
-                                                                            </a>
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.subject !=
-                                                                                    null
-                                                                                    ? ele.subject
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.subject
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.projectName !=
-                                                                                    null
-                                                                                    ? ele.projectName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.projectName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.fromCompanyName !=
-                                                                                    null
-                                                                                    ? ele.fromCompanyName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.fromCompanyName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.fromContactName !=
-                                                                                    null
-                                                                                    ? ele.fromContactName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.fromContactName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.toCompanyName !=
-                                                                                    null
-                                                                                    ? ele.toCompanyName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.toCompanyName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div className="contentCell">
-                                                                        <a
-                                                                            data-toggle="tooltip"
-                                                                            title={
-                                                                                ele.toContactName !=
-                                                                                    null
-                                                                                    ? ele.toContactName
-                                                                                    : ''
-                                                                            }>
-                                                                            {
-                                                                                ele.toContactName
-                                                                            }
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    },
-                                                )}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    {this.ViewLetterReplies()}
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 &&

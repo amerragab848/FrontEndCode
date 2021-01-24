@@ -33,8 +33,8 @@ class Login extends Component {
     }
     loginHandler = input => {
         this.setState({ isLoading: true });
-        let companyId = Config.getPublicConfiguartion().accountCompanyId; // config["accountCompanyId"]
-        let loginServer = Config.getPublicConfiguartion().loginServer; // config["loginServer"]
+        let companyId = Config.getPublicConfiguartion().accountCompanyId;  
+        let loginServer = Config.getPublicConfiguartion().loginServer;  
         let url = "/token";
         let param = "grant_type=password&username=" + input.userName + "&password=" + input.password + "&companyId=" + companyId;
         Api.Login(loginServer, url, param).then(Response => {
@@ -72,27 +72,21 @@ class Login extends Component {
                     let cookie = this.getCookie();
                     if (Config.getPublicConfiguartion().canSendAlert) {
                         browserObj.token = cookie;
-                        if (browserObj.publicIP === undefined) {
-                            Api.getPublicIP("https://ipapi.co/json").then(
-                                res => {
-                                    browserObj.publicIP = res.ip;
-                                    browserObj.macAddress =
-                                        res.latitude + "," + res.longitude;
-                                    Api.post(
-                                        "checkAccountLogin",
-                                        browserObj
-                                    ).then(resp => {
-                                        if (resp !== "Done")
-                                            this.setCookie(resp);
-                                    });
-                                }
-                            );
-                        }
+                        //if (browserObj.publicIP === undefined) {
+                        // Api.getPublicIP("https://ipapi.co/json").then(res => {
+                        //     browserObj.publicIP = res.ip;
+                        //     browserObj.macAddress =
+                        //         res.latitude + "," + res.longitude;
+                        //     Api.post("checkAccountLogin", browserObj).then(resp => {
+                        //         if (resp !== "Done")
+                        //             this.setCookie(resp);
+                        //     });
+                        // });
+                        //}
                     } else {
-                        Api.post("checkAccountLogin", browserObj).then(
-                            resp => {
-                                if (resp !== "Done") this.setCookie(resp);
-                            }
+                        Api.post("checkAccountLogin", browserObj).then(resp => {
+                            if (resp !== "Done") this.setCookie(resp);
+                        }
                         );
                     }
                     if (tokenStore.getItem("requestPermission")) {
