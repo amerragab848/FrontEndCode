@@ -162,62 +162,86 @@ class phoneAddEdit extends Component {
         });
     }
 
-    updateSelectedValue = (selected, label, value, targetState) => {
+    updateSelectedValue (selected, label, value, targetState)  {
         let original_document = { ...this.state.document };
         let updated_document = {};
+        updated_document = Object.assign(original_document, updated_document);
+        if(selected==null){
+            updated_document[label] = null;
+            updated_document[value] = null;
+        }else{
         updated_document[label] = selected.label;
         updated_document[value] = selected.value;
-        updated_document = Object.assign(original_document, updated_document);
+        }
         this.setState({
-            document: updated_document,
-            [targetState]: selected
+            [targetState]: selected,
+            document: updated_document
         });
     }
 
     handleChange = (key, value) => {
-
         switch (key) {
-            case 'fromCompany':
+            case 'fromCompany':{
                 this.setState({ isLoading: true })
-                DataService.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
-                    this.setState({ fromContactNameData: res, isLoading: false, fromCompany: value, selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" } })
-                })
-                this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany', 'fromContactNameData');
-                this.updateSelectedValue(value, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany')
+                if(value==null){
+                    this.setState({
+                        fromContactNameData:[],
+                        isLoading: false
+                    })
+                    this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
+                }
+                else{
+                    DataService.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
+                        this.setState({ fromContactNameData: res, isLoading: false, fromCompany: value, selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" } })
+                    })
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value,'fromCompanyId','fromCompanyName', 'selectedFromCompany', 'fromContactNameData');
+                }
+                setTimeout(()=> this.updateSelectedValue(value, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany')
+                ,300)
                 break;
+            }
             case 'toCompany':
                 this.setState({ isLoading: true })
-                DataService.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
-                    this.setState({ toContactNameData: res, toCompany: value, isLoading: false, selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" } })
-                })
-                this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'toCompanyName', 'toCompanyId', 'selectedToCompany', 'toContactNameData');
-                this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
+                if(value==null){
+                    this.setState({
+                        toContactNameData:[],
+                        isLoading: false
+                    })
+                    this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
+                }else{
+                        DataService.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
+                            this.setState({ toContactNameData: res, toCompany: value, isLoading: false, selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" } })
+                        })
+                        this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'toCompanyId','toCompanyName', 'selectedToCompany', 'toContactNameData');
+                 }
+                 setTimeout(()=> this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
+                 ,300)
                 break;
             case 'fromContact':
                 this.setState({ isLoading: false })
-
                 this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
-
                 break;
             case 'toContact':
+                setTimeout(()=>{
+                this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
                 let original_document = { ...this.state.document };
                 let updated_document = {};
-
-                this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
-
-                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
-
-                DataService.GetRefCodeArrangeMainDoc(url).then(res => {
-                    updated_document.arrange = res.arrange;
-                    if (Config.getPublicConfiguartion().refAutomatic === true) {
-                        updated_document.refDoc = res.refCode;
+                setTimeout(()=>{
+                    if(value !=null){
+                        let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
+                        DataService.GetRefCodeArrangeMainDoc(url).then(res => {
+                            updated_document.arrange = res.arrange ?res.arrange :null;
+                            if (Config.getPublicConfiguartion().refAutomatic === true) {
+                                updated_document.refDoc = res.refCode;
+                            }
+                            updated_document = Object.assign(original_document, updated_document);
+                            this.setState({
+                                document: updated_document
+                            });
+                        })
                     }
-                    updated_document = Object.assign(original_document, updated_document);
-
-                    this.setState({
-                        document: updated_document
-                    });
-                })
+                },400)
+            },50)
                 break;
             default:
                 this.setState({ document: { ...this.state.document, [key]: value } })
@@ -349,16 +373,16 @@ class phoneAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.phoneTitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
+                            // this.props.changeStatus == true ?
+                            //     <header className="main__header">
+                            //         <div className="main__header--div">
+                            //             <h2 className="zero">
+                            //                 {Resources.goEdit[currentLanguage]}
+                            //             </h2>
+                            //             <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
+                            //         </div>
+                            //     </header>
+                            //     : null
                         }
                         <div className="step-content">
                             <div className="subiTabsContent">
@@ -366,9 +390,10 @@ class phoneAddEdit extends Component {
                                     {this.state.isLoading ? <LoadingSection /> : null}
                                     <Formik
                                         initialValues={{
+                                            //...this.state.document
                                             subject: this.state.document.subject,
-                                            fromContact: this.state.selectedFromContact.value > 0 ? this.state.selectedFromContact : '',
-                                            toContact: this.state.selectedToContact.value > 0 ? this.state.selectedToContact : '',
+                                            fromContact: this.state.selectedFromContact !=null  ? this.state.selectedFromContact : null,
+                                            toContact: this.state.selectedToContact !=null  ? this.state.selectedToContact : null,
                                             callTime: this.state.document.callTime
                                         }}
                                         enableReinitialize={true}
@@ -383,8 +408,11 @@ class phoneAddEdit extends Component {
                                                 this.saveAndExit();
                                             }
                                         }}>
-                                        {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                            <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                            <Form id="signupForm1" 
+                                            className="proForm datepickerContainer customProform"
+                                            noValidate="novalidate" 
+                                            onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">{Resources['subject'][currentLanguage]} </label>
@@ -443,14 +471,18 @@ class phoneAddEdit extends Component {
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
                                                             <DropdownMelcous
+                                                                isClear={true}
                                                                 name="fromCompany"
                                                                 data={this.state.CompanyData}
                                                                 handleChange={e => this.handleChange('fromCompany', e)}
                                                                 placeholder='fromCompany'
-                                                                selectedValue={this.state.selectedFromCompany} styles={CompanyDropdown} classDrop="companyName1 " />
+                                                                selectedValue={this.state.selectedFromCompany}
+                                                                styles={CompanyDropdown} 
+                                                                classDrop="companyName1 " />
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
+                                                                isClear={true}
                                                                 name="fromContact"
                                                                 data={this.state.fromContactNameData}
                                                                 handleChange={e => this.handleChange('fromContact', e)}
@@ -461,7 +493,9 @@ class phoneAddEdit extends Component {
                                                                 error={errors.fromContact}
                                                                 touched={touched.fromContact}
                                                                 index="fromContact"
-                                                                id="fromContact" classDrop=" contactName1" styles={ContactDropdown} />
+                                                                id="fromContact" 
+                                                                classDrop="contactName1" 
+                                                                styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -470,14 +504,18 @@ class phoneAddEdit extends Component {
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
                                                             <DropdownMelcous
+                                                                isClear={true}
                                                                 name='toCompany'
                                                                 data={this.state.CompanyData}
                                                                 handleChange={(e) => this.handleChange("toCompany", e)}
                                                                 placeholder='toCompany'
-                                                                selectedValue={this.state.selectedToCompany} styles={CompanyDropdown} classDrop="companyName1 " />
+                                                                selectedValue={this.state.selectedToCompany}
+                                                                styles={CompanyDropdown} 
+                                                                classDrop="companyName1 " />
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
+                                                                isClear={true}
                                                                 name='toContact'
                                                                 data={this.state.toContactNameData}
                                                                 handleChange={(e) => this.handleChange("toContact", e)}
@@ -486,7 +524,8 @@ class phoneAddEdit extends Component {
                                                                 onChange={setFieldValue}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.toContact}
-                                                                touched={touched.toContact} classDrop=" contactName1" styles={ContactDropdown} />
+                                                                touched={touched.toContact} 
+                                                                classDrop=" contactName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -517,7 +556,40 @@ class phoneAddEdit extends Component {
                                                 <div className="slider-Btns fullWidthWrapper textLeft" style={{ margin: 0 }}>
                                                     {this.showBtnsSaving()}
                                                 </div>
-
+                                                    {
+                                                        this.props.changeStatus === true ?
+                                                            <div className="approveDocument">
+                                                                <div className="approveDocumentBTNS">
+                                                                    {this.state.isLoading ? (
+                                                                        <button className="primaryBtn-1 btn disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button>
+                                                                    ) : (
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                                                                {Resources.save[currentLanguage]}
+                                                                            </button>
+                                                                        )}
+                                                                    <DocumentActions
+                                                                        isApproveMode={this.state.isApproveMode}
+                                                                        docTypeId={this.state.docTypeId}
+                                                                        docId={this.state.docId}
+                                                                        projectId={this.state.projectId}
+                                                                        previousRoute={this.state.previousRoute}
+                                                                        docApprovalId={this.state.docApprovalId}
+                                                                        currentArrange={this.state.arrange}
+                                                                        showModal={this.props.showModal}
+                                                                        showOptionPanel={this.showOptionPanel}
+                                                                        permission={this.state.permission}
+                                                                        documentName={Resources.phoneTitle[currentLanguage]}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            : null
+                                                    }
                                             </Form>
                                         )}
                                     </Formik>
@@ -535,40 +607,6 @@ class phoneAddEdit extends Component {
                         </div>
                     </div>
                 </div>
-                {
-                    this.props.changeStatus === true ?
-                        <div className="approveDocument">
-                            <div className="approveDocumentBTNS">
-                                {this.state.isLoading ? (
-                                    <button className="primaryBtn-1 btn disabled">
-                                        <div className="spinner">
-                                            <div className="bounce1" />
-                                            <div className="bounce2" />
-                                            <div className="bounce3" />
-                                        </div>
-                                    </button>
-                                ) : (
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
-                                            {Resources.save[currentLanguage]}
-                                        </button>
-                                    )}
-                                <DocumentActions
-                                    isApproveMode={this.state.isApproveMode}
-                                    docTypeId={this.state.docTypeId}
-                                    docId={this.state.docId}
-                                    projectId={this.state.projectId}
-                                    previousRoute={this.state.previousRoute}
-                                    docApprovalId={this.state.docApprovalId}
-                                    currentArrange={this.state.arrange}
-                                    showModal={this.props.showModal}
-                                    showOptionPanel={this.showOptionPanel}
-                                    permission={this.state.permission}
-                                    documentName={Resources.phoneTitle[currentLanguage]}
-                                />
-                            </div>
-                        </div>
-                        : null
-                }
             </div>
         )
     }
