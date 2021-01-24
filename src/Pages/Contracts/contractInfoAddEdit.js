@@ -553,7 +553,7 @@ class ContractInfoAddEdit extends Component {
         }
         this.setState({
           rows: [...result.data],
-          noItems: result.total
+          noItems: result != null ? result.total : 0
         });
         this.props.actions.ExportingData({ items: result.data });
       });
@@ -1112,7 +1112,7 @@ class ContractInfoAddEdit extends Component {
           const newRows = [...this.state.rows, ...result.data];
           this.setState({
             rows: newRows,
-            noItems: result.total,
+            noItems: result != null ? result.total : 0,
             isLoading: false
           });
         }).catch(ex => {

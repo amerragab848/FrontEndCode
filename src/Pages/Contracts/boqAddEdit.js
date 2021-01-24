@@ -25,7 +25,7 @@ import Resources from '../../resources.json';
 import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
-import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment'; 
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 import Export from '../../Componants/OptionsPanels/Export';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -690,41 +690,41 @@ class boqAddEdit extends Component {
             });
             Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize).then(res => {
                 let data = { items: res.data };
-                // res.forEach((element) => {
-                //     Table.push({
-                //         id: element.id,
-                //         boqId: element.boqId,
-                //         unitPrice: this.state.items.unitPrice,
-                //         itemType: element.itemType,
-                //         itemTypeLabel: '',
-                //         days: element.days,
-                //         equipmentType: element.equipmentType,
-                //         equipmentTypeLabel: '',
-                //         editable: true,
-                //         boqSubTypeId: element.boqSubTypeId,
-                //         boqTypeId: element.boqTypeId,
-                //         boqChildTypeId: element.boqChildTypeId,
-                //         arrange: element.arrange,
-                //         boqType: element.boqType,
-                //         boqTypeChild: element.boqTypeChild,
-                //         boqSubType: element.boqSubType,
-                //         itemCode: element.itemCode,
-                //         description: element.description,
-                //         quantity: element.quantity,
-                //         revisedQuntitty: element.revisedQuantity,
-                //         unit: element.unit,
-                //         unitPrice: element.unitPrice,
-                //         total: element.total,
-                //         resourceCode: element.resourceCode,
-                //     });
-                // });
+                res.data.forEach((element) => {
+                    Table.push({
+                        id: element.id,
+                        boqId: element.boqId,
+                        unitPrice: this.state.items.unitPrice,
+                        itemType: element.itemType,
+                        itemTypeLabel: '',
+                        days: element.days,
+                        equipmentType: element.equipmentType,
+                        equipmentTypeLabel: '',
+                        editable: true,
+                        boqSubTypeId: element.boqSubTypeId,
+                        boqTypeId: element.boqTypeId,
+                        boqChildTypeId: element.boqChildTypeId,
+                        arrange: element.arrange,
+                        boqType: element.boqType,
+                        boqTypeChild: element.boqTypeChild,
+                        boqSubType: element.boqSubType,
+                        itemCode: element.itemCode,
+                        description: element.description,
+                        quantity: element.quantity,
+                        revisedQuntitty: element.revisedQuantity,
+                        unit: element.unit,
+                        unitPrice: element.unitPrice,
+                        total: element.total,
+                        resourceCode: element.resourceCode,
+                    });
+                });
                 this.setState({
                     _items: res.data || [],
-                    noItems: res.total,
+                    noItems: res != null ? res.total : 0,
                     LoadingPage: false,
                     isLoading: false
                 });
-                //this.props.actions.ExportingData(data);
+                this.props.actions.ExportingData(data);
             });
         }
     }
@@ -747,9 +747,7 @@ class boqAddEdit extends Component {
 
         let _items = props.items ? props.items : [];
 
-        if (
-            JSON.stringify(this.state._items.length) != JSON.stringify(_items)
-        ) {
+        if (JSON.stringify(this.state._items) != JSON.stringify(_items)) {
             this.setState({ isLoading: true });
             this.setState({ _items }, () =>
                 this.setState({ isLoading: false }),
@@ -1156,7 +1154,7 @@ class boqAddEdit extends Component {
 
                     this.setState({
                         _items: newRows,
-                        noItems: result.total,
+                        noItems: result != null ? result.total : 0,
                         isLoading: false,
                     });
                 })
@@ -1192,7 +1190,7 @@ class boqAddEdit extends Component {
 
                 this.setState({
                     _items: newRows,
-                    noItems: result.total,
+                    noItems: result != null ? result.total : 0,
                     isLoading: false,
                 });
             })
