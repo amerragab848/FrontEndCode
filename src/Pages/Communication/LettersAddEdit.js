@@ -22,12 +22,12 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from 'lodash/find';
-//import differenceBy from 'lodash/differenceBy'
 import Api from '../../api';
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous'
 import UploadAttachmentWithProgress from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+let currentLanguage =
+    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(
@@ -147,6 +147,7 @@ class LettersAddEdit extends Component {
                 value: '0',
             },
             selectedReplyLetter: [],
+            selectedReplyLetterList: [],
             message: '',
             selectedWorkFlow: { label: 'select WorkFlow', value: 0 },
             selectedApproveId: { label: 'select To Contact', value: 0 },
@@ -549,17 +550,16 @@ class LettersAddEdit extends Component {
                     discplines: [...result],
                 });
             });
-        dataservice.GetLettersWithReplies('GetLettersWithRepliesList?projectId=' + this.state.projectId + "&letterId=" + this.state.docId, 'subject', 'id', 'letterId').then(result => {
-            if (result) {
-                let res = result.letters || [];
-                let lettersList = res.filter(function (item) {
-                    return result.replies.indexOf(item) < 0;
-                });
-                this.setState({
-                    letters: lettersList,
-                    selectedReplyLetter: result.replies
-                });
-            }
+        dataservice.GetLettersWithReplies('GetLettersWithRepliesList?projectId=' + this.state.projectId + "&letterId=" + this.state.docId, 'subject', 'id', 'id').then(result => {
+
+            let lettersList = result.letters.filter(function (item) {
+                return result.replies.indexOf(item) < 0;
+            });
+            this.setState({
+                letters: lettersList,
+                selectedReplyLetter: result.replies,
+                selectedReplyLetterList: result.replies,
+            });
         });
     }
 
@@ -765,32 +765,39 @@ class LettersAddEdit extends Component {
 
     replieshandleChange = (e) => {
         var obj = {};
-        let selectedReplyLetter = this.state.selectedReplyLetter;
-
-        var newArr = [];
-        var myArr = selectedReplyLetter.concat(e);
-
-        newArr = myArr.filter(function (item) {
-            return e.indexOf(item) < 0 || selectedReplyLetter.indexOf(item) < 0;
-        });
+        let selectedReplyLetter = e;
+        let selectedReplyLetterList = this.state.selectedReplyLetterList;
 
         if (this.props.changeStatus === true && this.state.docId > 0) {
-            if (e.length < selectedReplyLetter.length) {
-                obj.addRemove = false
-                obj.letterId = newArr.value;
-                obj.replyId = this.state.docId;
-            } else {
-                obj.addRemove = true
-                obj.letterId = newArr[0].value;
-                obj.replyId = this.state.docId;
-            }
-            dataservice.addObject('EditReplyLetters', obj).then(result => {
-                this.setState({
-                    isLoading: false,
+
+            var removeReplies = selectedReplyLetterList.filter(x => selectedReplyLetter.indexOf(x) === -1);
+            removeReplies.forEach(item => {
+                obj.addRemove = false;
+                obj.replyId = item.value;
+                obj.letterId = this.state.docId;
+                dataservice.addObject('EditReplyLetters', obj).then(result => {
+                    this.setState({
+                        isLoading: false,
+                    });
+                    toast.success(Resources['operationSuccess'][currentLanguage]);
                 });
-                toast.success(Resources['operationSuccess'][currentLanguage]);
+
             });
-            this.setState({ repliesIds: e, selectedReplyLetter: e })
+
+            var addReplies = selectedReplyLetter.filter(x => selectedReplyLetterList.indexOf(x) === -1);
+            addReplies.forEach(item => {
+                obj.addRemove = true;
+                obj.replyId = item.value;
+                obj.letterId = this.state.docId;
+                dataservice.addObject('EditReplyLetters', obj).then(result => {
+                    this.setState({
+                        isLoading: false,
+                    });
+                    toast.success(Resources['operationSuccess'][currentLanguage]);
+                });
+
+            });
+            this.setState({ repliesIds: e, selectedReplyLetter: e, selectedReplyLetterList: e })
 
         } else {
             this.setState({ repliesIds: e, selectedReplyLetter: e })

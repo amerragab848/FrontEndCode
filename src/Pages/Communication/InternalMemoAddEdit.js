@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachmentWithProgress'
+import UploadAttachmentWithProgress from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
@@ -120,7 +120,8 @@ class InternalMemoAddEdit extends Component {
                 status: "true",
                 refDoc: "",
                 message: "",
-                answer: ""
+                answer: "",
+                viewDropZone: false
             };
 
             this.setState({ document: internalMemoDocument });
@@ -391,7 +392,8 @@ class InternalMemoAddEdit extends Component {
 
         dataservice.addObject('AddCommunicationInternalMemo', saveDocument).then(result => {
             this.setState({
-                docId: result.id
+                docId: result.id,
+                viewDropZone: true
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
@@ -428,6 +430,20 @@ class InternalMemoAddEdit extends Component {
         this.setState({
             docId: 0
         });
+    }
+
+    viewAttachments() {
+        return this.state.docId > 0 ? (
+            Config.IsAllow(101) === true ? (
+                <ViewAttachment
+                    isApproveMode={this.state.isViewMode}
+                    docTypeId={this.state.docTypeId}
+                    docId={this.state.docId}
+                    projectId={this.state.projectId}
+                    deleteAttachments={100}
+                />
+            ) : null
+        ) : null;
     }
 
     render() {
@@ -578,7 +594,7 @@ class InternalMemoAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput letterFullWidth valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
@@ -586,7 +602,7 @@ class InternalMemoAddEdit extends Component {
                                                                     onChange={event => this.onChangeMessage(event, "message")} />
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput letterFullWidth valid-input">
                                                             <label className="control-label">{Resources.answer[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
@@ -594,6 +610,23 @@ class InternalMemoAddEdit extends Component {
                                                                     onChange={event => this.onChangeMessage(event, "answer")} />
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div className="doc-pre-cycle letterFullWidth">
+                                                        {this.state.viewDropZone || this.state.docId > 0 ? (
+                                                            <div>
+                                                                <UploadAttachmentWithProgress
+                                                                    changeStatus={this.props.changeStatus}
+                                                                    AddAttachments={839}
+                                                                    EditAttachments={3223}
+                                                                    ShowDropBox={3607}
+                                                                    ShowGoogleDrive={3608}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                />
+                                                                {this.viewAttachments()}
+                                                            </div>)
+                                                            : null}
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.state.isLoading && this.props.changeStatus === false ?
@@ -606,6 +639,7 @@ class InternalMemoAddEdit extends Component {
                                                             </button> :
                                                             this.showBtnsSaving()}
                                                     </div>
+
                                                     {this.props.changeStatus === true ?
                                                         <div className="approveDocument">
                                                             <div className="approveDocumentBTNS">
@@ -643,6 +677,18 @@ class InternalMemoAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
+                                        {/* {this.state.viewDropZone ? (
+                                            <UploadAttachmentWithProgress
+                                                changeStatus={this.props.changeStatus}
+                                                AddAttachments={839}
+                                                EditAttachments={3223}
+                                                ShowDropBox={3607}
+                                                ShowGoogleDrive={3608}
+                                                docTypeId={this.state.docTypeId}
+                                                docId={this.state.docId}
+                                                projectId={this.state.projectId}
+                                            />)
+                                            : null} */}
                                         {/* <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={841} EditAttachments={3229} ShowDropBox={3619} ShowGoogleDrive={3620} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}

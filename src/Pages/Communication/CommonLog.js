@@ -502,7 +502,8 @@ class CommonLog extends Component {
     }
 
     filterMethodMain = (event, query, apiFilter) => {
-        var stringifiedQuery = JSON.stringify(query);
+        var stringifiedQuery=  encodeURIComponent(JSON.stringify(query));
+       // var stringifiedQuery = JSON.stringify(query);
         if (stringifiedQuery == '{"isCustom":true}') {
             stringifiedQuery = undefined;
         }

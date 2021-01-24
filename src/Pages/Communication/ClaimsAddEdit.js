@@ -367,11 +367,10 @@ class ClaimsAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
-            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                updated_document.arrange = res.arrange;
+            if(event==null){
+                updated_document.arrange ="";
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
-                    updated_document.refDoc = res.refCode;
+                    updated_document.refDoc = "";
                 }
 
                 updated_document = Object.assign(original_document, updated_document);
@@ -379,7 +378,23 @@ class ClaimsAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-            })
+            }
+            else{
+                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+                dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                    updated_document.arrange = res.arrange;
+                    if (Config.getPublicConfiguartion().refAutomatic === true) {
+                        updated_document.refDoc = res.refCode;
+                    }
+    
+                    updated_document = Object.assign(original_document, updated_document);
+    
+                    this.setState({
+                        document: updated_document
+                    });
+                })
+            }
+          
         }
         if (isSubscrib) {
         

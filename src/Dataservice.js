@@ -16,12 +16,12 @@ export default class Dataservice {
         }).catch(ex => Data);
     };
 
-    static GetLettersWithReplies(url, label, value,value2) {
+    static GetLettersWithReplies(url, label, value, value2) {
         let letters = [];
         let replies = [];
         let Data = {};
         return Api.get(url).then(result => {
-           (result.letters).forEach(item => {
+            (result.letters).forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
@@ -39,7 +39,7 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
-    
+
     static GetDataListForUserAlert(url, label, value) {
         let primaveraList = [];
         let scheduleList = [];
@@ -152,7 +152,7 @@ export default class Dataservice {
 
         let rows = await this.callAPIGetDataList(url, label, value, params);
         let Data = [];
-        if (rows.length > 0) {
+        if (rows != null && rows.length > 0) {
             rows.forEach(item => {
                 var obj = {};
                 obj.label = item[label];
@@ -168,7 +168,7 @@ export default class Dataservice {
     static async callAPIGetDataList(url) {
         let Data = []
         return Api.get(url).then(result => {
-            return result;
+            return result || [];
         }).catch(ex => Data);
     }
     static async getGoMeetingAPIs(url) {
@@ -259,7 +259,7 @@ export default class Dataservice {
             return result;
         }).catch(ex => { });
     };
- 
+
     static checkSubmittalRefCode = (projectId, code) => {
 
         return Api.get("checkSubmittalRefCode?projectId=" + projectId + "&code=" + code).then(result => {
