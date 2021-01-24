@@ -386,12 +386,14 @@ class RfiAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
 
         let original_document = { ...this.state.document };
         let updated_document = {};
         if (event == null) {
             updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+
         } else {
             updated_document[field] = event.value;
         }
@@ -417,7 +419,7 @@ class RfiAddEdit extends Component {
             }
             else {
 
-
+               if(event==null){
                 let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
                 dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
@@ -432,6 +434,20 @@ class RfiAddEdit extends Component {
                         document: updated_document
                     });
                 });
+               }
+               else{
+                        updated_document.arrange = "";
+                        if (Config.getPublicConfiguartion().refAutomatic === true) {
+                            updated_document.refDoc ="";
+                        }
+
+                        updated_document = Object.assign(original_document, updated_document);
+
+                        this.setState({
+                            document: updated_document
+                        }) 
+               }
+               
             }
         }
         if (isSubscrib) {
@@ -638,7 +654,7 @@ class RfiAddEdit extends Component {
                                                                     <Dropdown isClear={true} data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId");
                                                                         }} onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
@@ -665,7 +681,7 @@ class RfiAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown isClear={true} isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact","toContactId")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}

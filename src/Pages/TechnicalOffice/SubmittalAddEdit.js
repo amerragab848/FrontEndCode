@@ -208,15 +208,15 @@ class SubmittalAddEdit extends Component {
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+    // var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
 
-    for (var i = 0; i < links.length; i++) {
-      if ((i + 1) % 2 == 0) {
-        links[i].classList.add("even");
-      } else {
-        links[i].classList.add("odd");
-      }
-    }
+    // for (var i = 0; i < links.length; i++) {
+    //   if ((i + 1) % 2 == 0) {
+    //     links[i].classList.add("even");
+    //   } else {
+    //     links[i].classList.add("odd");
+    //   }
+    // }
 
     let submittalDocumentCycles = {
       //field

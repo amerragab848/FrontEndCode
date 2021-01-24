@@ -825,13 +825,15 @@ class meetingAgendaAddEdit extends Component {
         });
     }
 
-    updateSelectedValue = (selected, label, value, targetSelected) => {
+    updateSelectedValue = (selected, label, value,targetId, targetSelected) => {
         this.setState({ isLoading: true });
         let original_document = { ...this.state.document };
         let updated_document = {};
         if(selected==null){
             updated_document[value] = selected;
             updated_document[label] = selected;
+            updated_document[targetId] = selected;
+
         }
         else{
             updated_document[value] = selected.value;
@@ -846,7 +848,7 @@ class meetingAgendaAddEdit extends Component {
         });
     };
 
-    handleChangeDropDowns = (item,lbl, val,selected, listData, selected_subScripe, initialState) => {
+    handleChangeDropDowns = (item,lbl, val,selected, listData, selected_subScripe, initialState,targetId) => {
         this.setState({ isLoading: true });
         if(item==null){
             this.setState({
@@ -873,7 +875,7 @@ class meetingAgendaAddEdit extends Component {
             });
         }
        
-        this.updateSelectedValue(item, lbl, val);
+        this.updateSelectedValue(item, lbl, val,targetId);
     };
 
     handleChange = (key, value) => {
@@ -1161,7 +1163,8 @@ class meetingAgendaAddEdit extends Component {
                                                         "selectedActionByCompany",
                                                         "actionByContacts",
                                                         "selectedActionByContact",
-                                                        "toContactRequired"
+                                                        "toContactRequired",
+                                                        "actionByContact"
                                                     )
                                                 }
                                                 placeholder="actionByCompany"
@@ -1319,7 +1322,8 @@ class meetingAgendaAddEdit extends Component {
                                                             "selectedActionByCompany",
                                                             "attendencesContacts",
                                                             "selectedActionByContact",
-                                                            "toContactRequired"
+                                                            "toContactRequired",
+                                                            "attendeesContact"
                                                         )
                                                     }
                                                     placeholder="actionByCompany"
@@ -1687,7 +1691,8 @@ class meetingAgendaAddEdit extends Component {
                                                                 "selectedCalledByCompany",
                                                                 "calledContacts",
                                                                 "selectedCalledByContact",
-                                                                "calledByContactRequired"
+                                                                "calledByContactRequired",
+                                                                "calledByContactId"
                                                             )
                                                         }
                                                         placeholder="calledByCompany"
@@ -1710,7 +1715,7 @@ class meetingAgendaAddEdit extends Component {
                                                             this.updateSelectedValue(
                                                                 e,
                                                                 "calledByContactName",
-                                                                "calledByContactId",
+                                                                "calledByContactId","",
                                                                 "selectedCalledByContact"
                                                             )
                                                         }
@@ -1756,7 +1761,8 @@ class meetingAgendaAddEdit extends Component {
                                                                 "selectedFacilitatorCompany",
                                                                 "facilitatorContacts",
                                                                 "selectedFacilitatorContact",
-                                                                "facilitatorContactReuired"
+                                                                "facilitatorContactReuired",
+                                                                "facilitatorContactId"
                                                             )
                                                         }
                                                         placeholder="facilitatorCompany"
@@ -1779,7 +1785,7 @@ class meetingAgendaAddEdit extends Component {
                                                             this.updateSelectedValue(
                                                                 e,
                                                                 "facilitatorContactName",
-                                                                "facilitatorContactId",
+                                                                "facilitatorContactId","",
                                                                 "selectedFacilitatorContact"
                                                             )
                                                         }
@@ -1825,7 +1831,8 @@ class meetingAgendaAddEdit extends Component {
                                                                 "selectedNoteTakerCompany",
                                                                 "noteTakerContacts",
                                                                 "selectedNoteTakerContact",
-                                                                "noteTakerContactRequired"
+                                                                "noteTakerContactRequired",
+                                                                "noteTakerContactId"
                                                             )
                                                         }
                                                         placeholder="noteTakerCompany"
@@ -1848,7 +1855,7 @@ class meetingAgendaAddEdit extends Component {
                                                             this.updateSelectedValue(
                                                                 e,
                                                                 "noteTakerContactName",
-                                                                "noteTakerContactId",
+                                                                "noteTakerContactId","",
                                                                 "selectedNoteTakerContact"
                                                             )
                                                         }
