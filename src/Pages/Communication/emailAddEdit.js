@@ -255,15 +255,30 @@ class emailAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field,sub_field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+                [subDatasource]:null,
+                [targetState]:[]
+            });
+            updated_document[field] = event;
+            updated_document[sub_field]=null;
+            this.setState({
+                document: updated_document,
+            });
+        }
+        else{
+            this.setState({
+                [selectedValue]: event
+            })
+            updated_document[field] = event.value;
+        
         this.setState({
             document: updated_document,
-            [selectedValue]: event
         });
         if (field == "toContactId") {
             let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
@@ -272,7 +287,6 @@ class emailAddEdit extends Component {
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
                     updated_document.refDoc = res.refCode;
                 }
-
                 updated_document = Object.assign(original_document, updated_document);
                 this.setState({
                     document: updated_document
@@ -288,6 +302,7 @@ class emailAddEdit extends Component {
             });
         }
     }
+}
 
     editEmail(event) {
         this.setState({ isLoading: true });
@@ -353,22 +368,24 @@ class emailAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationEmails[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
+                            // this.props.changeStatus == true ?
+                            //     <header className="main__header">
+                            //         <div className="main__header--div">
+                            //             <h2 className="zero">
+                            //                 {Resources.goEdit[currentLanguage]}
+                            //             </h2>
+                            //             <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
+                            //         </div>
+                            //     </header>
+                            //     : null
                         }
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={this.props.changeStatus}
+                                        <Formik initialValues={{ ...this.state.document }}
+                                         validationSchema={validationSchema} 
+                                         enableReinitialize={/*this.props.changeStatus*/ true}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) { return; }
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
@@ -380,7 +397,11 @@ class emailAddEdit extends Component {
                                                 }
                                             }}>
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                <Form 
+                                                id="letterForm"
+                                                 className="customProform"
+                                                  noValidate="novalidate" 
+                                                  onSubmit={handleSubmit}>
                                                     <div className="proForm first-proform">
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
@@ -444,10 +465,13 @@ class emailAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown data={this.state.companies} isMulti={false}
+                                                                    <Dropdown 
+                                                                        isClear={true}
+                                                                        data={this.state.companies}
+                                                                        isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                            this.handleChangeDropDown(event, "fromCompanyId","fromContactId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -455,20 +479,22 @@ class emailAddEdit extends Component {
                                                                         touched={touched.fromCompanyId}
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
+                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " 
+                                                                        
+                                                                        />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event =>
-                                                                            this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
+                                                                            this.handleChangeDropDown(event, "fromContactId",null, false, "", "", "", "selectedFromContact")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
-                                                                        isClear={false}
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -480,10 +506,11 @@ class emailAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId","toContactId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
 
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -496,11 +523,12 @@ class emailAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event =>
-                                                                            this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
+                                                                            this.handleChangeDropDown(event, "toContactId",null, false, "", "", "", "selectedToContact")
                                                                         }
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}

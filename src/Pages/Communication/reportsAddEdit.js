@@ -217,7 +217,7 @@ class reportsAddEdit extends Component {
                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
                     });
 
-                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'toContactName', 'selectedToContact', 'ToContacts');
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'toContactName', 'selectedToContact', 'toContacts');
                 }
 
             }
@@ -251,70 +251,92 @@ class reportsAddEdit extends Component {
         });
     }
 
-    updateSelectedValue = (selected, label, value, targetState) => {
+    updateSelectedValue (selected, label, value, targetState)  {
         let original_document = { ...this.state.document };
         let updated_document = {};
+        updated_document = Object.assign(original_document, updated_document);
+        if(selected==null){
+            updated_document[label] = null;
+            updated_document[value] = null;
+        }else{
         updated_document[label] = selected.label;
         updated_document[value] = selected.value;
-        updated_document = Object.assign(original_document, updated_document);
+        }
         this.setState({
-            document: updated_document,
-            [targetState]: selected
+            [targetState]: selected,
+            document: updated_document
         });
     }
 
-    handleChange = (key, value) => {
 
+    handleChange = (key, value) => {
         switch (key) {
-            case 'fromCompany':
+            case 'fromCompany':{
                 this.setState({ isLoading: true })
-                dataservice.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
-                    this.setState({ fromContacts: res, isLoading: false, selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" } })
-                })
-                this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany', 'fromContacts');
-                this.updateSelectedValue(value, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany')
+                if(value==null){
+                    this.setState({
+                        fromContacts:[],
+                        isLoading: false
+                    })
+                    this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
+                }
+                else{
+                    dataservice.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
+                        this.setState({ fromContacts: res, isLoading: false, fromCompany: value, selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" } })
+                    })
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value,'fromCompanyId','fromCompanyName', 'selectedFromCompany', 'fromContacts');
+                }
+                setTimeout(()=> this.updateSelectedValue(value, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany')
+                ,300)
                 break;
+            }
             case 'toCompany':
                 this.setState({ isLoading: true })
-                dataservice.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
-                    this.setState({ toContacts: res, isLoading: false, selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" } })
-                })
-                this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'toCompanyName', 'toCompanyId', 'selectedToCompany', 'toContacts');
-                this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
+                if(value==null){
+                    this.setState({
+                        toContacts:[],
+                        isLoading: false
+                    })
+                    this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
+                }else{
+                    dataservice.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(res => {
+                            this.setState({ toContacts: res, toCompany: value, isLoading: false, selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" } })
+                        })
+                        this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'toCompanyId','toCompanyName', 'selectedToCompany', 'toContacts');
+                 }
+                 setTimeout(()=> this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
+                 ,300)
                 break;
             case 'fromContact':
                 this.setState({ isLoading: false })
-
                 this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
-
                 break;
             case 'toContact':
-
-
+                setTimeout(()=>{
                 this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
-
-                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
-
-                dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                    let original_document = { ...this.state.document };
-                    let updated_document = {};
-                    updated_document.arrange = res.arrange;
-                    if (Config.getPublicConfiguartion().refAutomatic === true) {
-                        updated_document.refDoc = res.refCode;
+                let original_document = { ...this.state.document };
+                let updated_document = {};
+                setTimeout(()=>{
+                    if(value !=null){
+                        let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
+                        dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                            updated_document.arrange = res.arrange ?res.arrange :null;
+                            if (Config.getPublicConfiguartion().refAutomatic === true) {
+                                updated_document.refDoc = res.refCode;
+                            }
+                            updated_document = Object.assign(original_document, updated_document);
+                            this.setState({
+                                document: updated_document
+                            });
+                        })
                     }
-
-                    updated_document = Object.assign(original_document, updated_document);
-
-                    this.setState({
-                        document: updated_document
-                    });
-                })
+                },400)
+            },50)
                 break;
             default:
                 this.setState({ document: { ...this.state.document, [key]: value } })
         }
     }
-
     editReport(event) {
         this.setState({
             isLoading: true
@@ -390,16 +412,16 @@ class reportsAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.Reports[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
+                            //this.props.changeStatus == true ?
+                                // <header className="main__header">
+                                //     <div className="main__header--div">
+                                //         <h2 className="zero">
+                                //             {Resources.goEdit[currentLanguage]}
+                                //         </h2>
+                                //         <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
+                                //     </div>
+                                // </header>
+                                // : null
                         }
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
@@ -409,8 +431,8 @@ class reportsAddEdit extends Component {
                                         <Formik
                                             initialValues={{
                                                 subject: this.state.document.subject,
-                                                fromContact: this.state.selectedFromContact.value > 0 ? this.state.selectedFromContact : '',
-                                                toContact: this.state.selectedToContact.value > 0 ? this.state.selectedToContact : '',
+                                                fromContact: this.state.selectedFromContact !=null  ? this.state.selectedFromContact : null,
+                                                toContact: this.state.selectedToContact !=null  ? this.state.selectedToContact : null,
                                                 refDoc: this.state.document.refDoc,
                                                 reportType: this.state.selectedReportType.value > 0 ? this.state.selectedReportType : ''
                                             }}
@@ -520,6 +542,7 @@ class reportsAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                       isClear={true}
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
@@ -530,6 +553,7 @@ class reportsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         name="fromContact"
                                                                         data={this.state.fromContacts}
                                                                         handleChange={e => this.handleChange('fromContact', e)}
@@ -549,6 +573,7 @@ class reportsAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event => this.handleChange('toCompany', event)}
@@ -557,6 +582,7 @@ class reportsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         name='toContact'
                                                                         data={this.state.toContacts}
                                                                         handleChange={(e) => this.handleChange("toContact", e)}

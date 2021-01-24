@@ -611,7 +611,6 @@ class LettersAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue) {
-
         if (event == null) {
             this.setState({
                 [selectedValue]: event,
