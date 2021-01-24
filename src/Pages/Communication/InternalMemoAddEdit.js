@@ -291,10 +291,15 @@ class InternalMemoAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+
+
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+        } else {
+            updated_document[field] = event.value;
+        }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -303,11 +308,10 @@ class InternalMemoAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
-            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                updated_document.arrange = res.arrange;
+            if (event == null) {
+                updated_document.arrange = "";
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
-                    updated_document.refDoc = res.refCode;
+                    updated_document.refDoc = "";
                 }
 
                 updated_document = Object.assign(original_document, updated_document);
@@ -315,15 +319,41 @@ class InternalMemoAddEdit extends Component {
                 this.setState({
                     document: updated_document
                 });
-            })
+            }
+            else {
+
+
+                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+                dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                    updated_document.arrange = res.arrange;
+                    if (Config.getPublicConfiguartion().refAutomatic === true) {
+                        updated_document.refDoc = res.refCode;
+                    }
+
+                    updated_document = Object.assign(original_document, updated_document);
+
+                    this.setState({
+                        document: updated_document
+                    });
+                })
+            }
         }
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+
+            if (event == null) {
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+
+            }
+            else {
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
         }
     }
 
@@ -487,7 +517,9 @@ class InternalMemoAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown data={this.state.companies} isMulti={false}
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                                                         onChange={setFieldValue}
@@ -498,7 +530,9 @@ class InternalMemoAddEdit extends Component {
                                                                         id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                    <Dropdown isMulti={false} data={this.state.fromContacts}
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={
                                                                             event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
@@ -515,7 +549,9 @@ class InternalMemoAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown isMulti={false} data={this.state.companies}
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
                                                                         onChange={setFieldValue}
@@ -526,7 +562,9 @@ class InternalMemoAddEdit extends Component {
                                                                         id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                    <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")

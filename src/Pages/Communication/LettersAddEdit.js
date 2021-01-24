@@ -5,6 +5,7 @@ import dataservice from '../../Dataservice';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
+import ViewLetterReplies from '../../Componants/OptionsPanels/ViewLetterReplies';
 import ViewWorkFlow from '../../Componants/OptionsPanels/ViewWorkFlow';
 import Resources from '../../resources.json';
 import { withRouter } from 'react-router-dom';
@@ -21,11 +22,12 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from 'lodash/find';
+//import differenceBy from 'lodash/differenceBy'
 import Api from '../../api';
+import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous'
 import UploadAttachmentWithProgress from '../../Componants/OptionsPanels/UploadAttachmentWithProgress';
- 
-let currentLanguage =
-    localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(
@@ -90,6 +92,7 @@ class LettersAddEdit extends Component {
 
         this.state = {
             replies: [],
+            repliesIds: [],
             tCompanyId: toCompanyId,
             frmCompanyId: fromCompanyId,
             tContactId: toContactId,
@@ -143,10 +146,7 @@ class LettersAddEdit extends Component {
                 label: Resources.disciplineRequired[currentLanguage],
                 value: '0',
             },
-            selectedReplyLetter: {
-                label: Resources.replyletter[currentLanguage],
-                value: '0',
-            },
+            selectedReplyLetter: [],
             message: '',
             selectedWorkFlow: { label: 'select WorkFlow', value: 0 },
             selectedApproveId: { label: 'select To Contact', value: 0 },
@@ -399,65 +399,6 @@ class LettersAddEdit extends Component {
             }
         });
     }
-    createReplyLink(docId) {
-        let addView = 'LettersAddEdit';
-
-        let obj = {
-            docId: docId,
-            prevLetterId: 0,
-            replyFromCompId: this.state.document.toCompanyId, //
-            replyFromContId: this.state.document.toContactId,
-
-            replyToCompId: this.state.document.fromCompanyId,
-            replyToContactId: this.state.document.fromContactId,
-
-            projectId: this.props.document.projectId,
-            projectName: this.state.document.projectName,
-            arrange: 0,
-            docApprovalId: 0,
-            docAlertId: 0,
-            isApproveMode: false,
-            perviousRoute: window.location.pathname + window.location.search,
-        };
-
-        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-
-        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-        var url = addView + '?id=' + encodedPaylod;
-
-        this.setState({
-            replyLink: url,
-        });
-    }
-    navigateToReplyFromTable(rowObj) {
-        let addView = 'LettersAddEdit';
-
-        let obj = {
-            docId: rowObj.id,
-            prevLetterId: 0,
-            replyFromCompId: rowObj.fromCompanyId,
-            replyFromContId: rowObj.fromContactId,
-            replyToCompId: rowObj.toCompanyId,
-            replyToContactId: rowObj.toContactId,
-            projectId: rowObj.projectId,
-            projectName: rowObj.projectName,
-            arrange: 0,
-            docApprovalId: 0,
-            docAlertId: 0,
-            isApproveMode: false,
-            perviousRoute: window.location.pathname + window.location.search,
-        };
-
-        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-
-        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-        var url = addView + '?id=' + encodedPaylod;
-        var win = window.open(url, '_blank');
-
-        win.focus();
-    }
 
     fillDropDowns(isEdit, cb) {
         if (!isEdit) {
@@ -589,14 +530,7 @@ class LettersAddEdit extends Component {
             });
 
         dataservice
-            .GetDataListCached(
-                'GetaccountsDefaultListForList?listType=discipline',
-                'title',
-                'id',
-                'defaultLists',
-                'discipline',
-                'listType',
-            )
+            .GetDataListCached('GetaccountsDefaultListForList?listType=discipline', 'title', 'id', 'defaultLists', 'discipline', 'listType')
             .then(result => {
                 if (isEdit) {
                     let disciplineId = this.props.document.disciplineId;
@@ -611,52 +545,22 @@ class LettersAddEdit extends Component {
                         });
                     }
                 }
-
                 this.setState({
                     discplines: [...result],
                 });
             });
-        dataservice
-            .GetDataList(
-                'GetLettersListByProjectId?projectId=' + this.state.projectId,
-                'subject',
-                'id',
-            )
-            .then(result => {
-                if (isEdit) {
-                    let replyId = this.props.document.replyId;
-                    let replyLetter = {};
-                    if (replyId) {
-                        replyLetter = find(result, function (item) {
-                            return item.value == replyId;
-                        });
-                        this.createReplyLink(replyLetter.value);
-                        this.setState({
-                            selectedReplyLetter: replyLetter,
-                        });
-                    }
-                } else {
-                    let replyId = prevLetterId ? prevLetterId : null;
-                    let replyLetter = {};
-
-                    if (replyId) {
-                        replyLetter = find(result, function (item) {
-                            return item.value == replyId;
-                        });
-                        this.createReplyLink(replyLetter.value);
-
-                        this.setState({
-                            selectedReplyLetter: {
-                                label: replyLetter.label,
-                                value: replyId,
-                            },
-                        });
-                    }
-                }
-                this.setState({
-                    letters: result,
+        dataservice.GetLettersWithReplies('GetLettersWithRepliesList?projectId=' + this.state.projectId + "&letterId=" + this.state.docId, 'subject', 'id', 'letterId').then(result => {
+            if (result) {
+                let res = result.letters || [];
+                let lettersList = res.filter(function (item) {
+                    return result.replies.indexOf(item) < 0;
                 });
-            });
+                this.setState({
+                    letters: lettersList,
+                    selectedReplyLetter: result.replies
+                });
+            }
+        });
     }
 
     onChangeMessage = value => {
@@ -776,40 +680,6 @@ class LettersAddEdit extends Component {
             });
     }
 
-    async replyNewLetter() {
-        if (Config.IsAllow(48)) {
-            let addView = 'LettersAddEdit';
-
-            let obj = {
-                docId: 0,
-                prevLetterId: this.state.docId,
-                replyFromCompId: this.state.document.fromCompanyId, //
-                replyFromContId: this.state.document.fromContactId,
-
-                replyToCompId: this.state.document.toCompanyId,
-                replyToContactId: this.state.document.toContactId,
-
-                projectId: this.props.document.projectId,
-                projectName: this.state.document.projectName,
-                arrange: 0,
-                docApprovalId: 0,
-                docAlertId: 0,
-                isApproveMode: false,
-                perviousRoute:
-                    window.location.pathname + window.location.search,
-            };
-
-            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-
-            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-            var url = addView + '?id=' + encodedPaylod;
-            var win = window.open(url, '_blank');
-
-            win.focus();
-        }
-    }
-
     saveLetter(event) {
         this.setState({
             isLoading: true,
@@ -817,6 +687,7 @@ class LettersAddEdit extends Component {
 
         let saveDocument = { ...this.state.document };
         saveDocument.projectId = this.props.projectId;
+        saveDocument.repliesIds = this.state.repliesIds.map(i => i.value);
 
         saveDocument.docDate = moment(saveDocument.docDate).format(
             'MM/DD/YYYY',
@@ -877,9 +748,54 @@ class LettersAddEdit extends Component {
         ) : null;
     }
 
+    ViewLetterReplies() {
+        return this.state.docId > 0 ? (
+            <ViewLetterReplies
+                docTypeId={this.state.docTypeId}
+                docId={this.state.docId}
+                projectId={this.state.projectId}
+                selectedReplyLetter={this.state.selectedReplyLetter}
+            />
+        ) : null;
+    }
+
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     };
+
+    replieshandleChange = (e) => {
+        var obj = {};
+        let selectedReplyLetter = this.state.selectedReplyLetter;
+
+        var newArr = [];
+        var myArr = selectedReplyLetter.concat(e);
+
+        newArr = myArr.filter(function (item) {
+            return e.indexOf(item) < 0 || selectedReplyLetter.indexOf(item) < 0;
+        });
+
+        if (this.props.changeStatus === true && this.state.docId > 0) {
+            if (e.length < selectedReplyLetter.length) {
+                obj.addRemove = false
+                obj.letterId = newArr.value;
+                obj.replyId = this.state.docId;
+            } else {
+                obj.addRemove = true
+                obj.letterId = newArr[0].value;
+                obj.replyId = this.state.docId;
+            }
+            dataservice.addObject('EditReplyLetters', obj).then(result => {
+                this.setState({
+                    isLoading: false,
+                });
+                toast.success(Resources['operationSuccess'][currentLanguage]);
+            });
+            this.setState({ repliesIds: e, selectedReplyLetter: e })
+
+        } else {
+            this.setState({ repliesIds: e, selectedReplyLetter: e })
+        }
+    }
 
     render() {
         let replyId = this.state.document.replyId;
@@ -920,31 +836,15 @@ class LettersAddEdit extends Component {
                                                 if (this.props.showModal) {
                                                     return;
                                                 }
-                                                if (
-                                                    this.props.changeStatus ===
-                                                    true &&
-                                                    this.state.docId > 0
-                                                ) {
+                                                if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
-                                                } else if (
-                                                    this.props.changeStatus ===
-                                                    false &&
-                                                    this.state.docId === 0
-                                                ) {
+                                                } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                     this.saveLetter();
                                                 } else {
                                                     this.saveAndExit();
                                                 }
                                             }}>
-                                            {({
-                                                errors,
-                                                touched,
-                                                handleBlur,
-                                                handleChange,
-                                                handleSubmit,
-                                                setFieldValue,
-                                                setFieldTouched,
-                                            }) => (
+                                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form
                                                     id="letterForm"
                                                     className="customProform"
@@ -953,132 +853,55 @@ class LettersAddEdit extends Component {
                                                     <div className="proForm first-proform">
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .subject[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.subject[currentLanguage]}
                                                             </label>
                                                             <div
-                                                                className={
-                                                                    'inputDev ui input' +
-                                                                    (errors.subject
-                                                                        ? ' has-error'
-                                                                        : !errors.subject &&
-                                                                            touched.subject
-                                                                            ? ' has-success'
-                                                                            : ' ')
-                                                                }>
+                                                                className={'inputDev ui input' + (errors.subject ? ' has-error' : !errors.subject && touched.subject ? ' has-success' : ' ')}>
                                                                 <textarea
                                                                     name="subject"
                                                                     id="subject"
                                                                     className="form-control fsadfsadsa"
-                                                                    placeholder={
-                                                                        Resources
-                                                                            .subject[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
+                                                                    placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete="off"
-                                                                    value={
-                                                                        this
-                                                                            .state
-                                                                            .document
-                                                                            .subject
-                                                                    }
+                                                                    value={this.state.document.subject}
                                                                     onBlur={e => {
-                                                                        handleBlur(
-                                                                            e,
-                                                                        );
-                                                                        handleChange(
-                                                                            e,
-                                                                        );
+                                                                        handleBlur(e);
+                                                                        handleChange(e);
                                                                     }}
-                                                                    onChange={e =>
-                                                                        this.handleChange(
-                                                                            e,
-                                                                            'subject',
-                                                                        )
-                                                                    }>
-                                                                    {touched.subject ? (
-                                                                        <em className="pError">
-                                                                            {
-                                                                                errors.subject
-                                                                            }
-                                                                        </em>
-                                                                    ) : null}
+                                                                    onChange={e => this.handleChange(e, 'subject')}>
+                                                                    {touched.subject ? (<em className="pError">  { errors.subject}   </em>) : null}
                                                                 </textarea>
                                                             </div>
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .status[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.status[currentLanguage]}
                                                             </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
                                                                 <input
                                                                     type="radio"
                                                                     name="letter-status"
-                                                                    defaultChecked={
-                                                                        this
-                                                                            .state
-                                                                            .document
-                                                                            .status ===
-                                                                            false
-                                                                            ? null
-                                                                            : 'checked'
-                                                                    }
+                                                                    defaultChecked={this.state.document.status === false ? null : 'checked'}
                                                                     value="true"
-                                                                    onChange={e =>
-                                                                        this.handleChange(
-                                                                            e,
-                                                                            'status',
-                                                                        )
-                                                                    }
+                                                                    onChange={e => this.handleChange(e, 'status')}
                                                                 />
                                                                 <label>
-                                                                    {
-                                                                        Resources
-                                                                            .oppened[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
+                                                                    {Resources.oppened[currentLanguage]}
                                                                 </label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue">
                                                                 <input
                                                                     type="radio"
                                                                     name="letter-status"
-                                                                    defaultChecked={
-                                                                        this
-                                                                            .state
-                                                                            .document
-                                                                            .status ===
-                                                                            false
-                                                                            ? 'checked'
-                                                                            : null
-                                                                    }
+                                                                    defaultChecked={this.state.document.status === false ? 'checked' : null}
                                                                     value="false"
                                                                     onChange={e =>
-                                                                        this.handleChange(
-                                                                            e,
-                                                                            'status',
-                                                                        )
+                                                                        this.handleChange(e, 'status')
                                                                     }
                                                                 />
                                                                 <label>
-                                                                    {
-                                                                        Resources
-                                                                            .closed[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
+                                                                    {Resources.closed[currentLanguage]}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1087,27 +910,15 @@ class LettersAddEdit extends Component {
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker
                                                                 title="docDate"
-                                                                startDate={
-                                                                    this.state
-                                                                        .document
-                                                                        .docDate
-                                                                }
+                                                                startDate={this.state.document.docDate}
                                                                 handleChange={e =>
-                                                                    this.handleChangeDate(
-                                                                        e,
-                                                                        'docDate',
-                                                                    )
+                                                                    this.handleChangeDate(e, 'docDate')
                                                                 }
                                                             />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .arrange[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.arrange[currentLanguage]}
                                                             </label>
                                                             <div className="ui input inputDev">
                                                                 <input
@@ -1115,102 +926,45 @@ class LettersAddEdit extends Component {
                                                                     className="form-control"
                                                                     id="arrange"
                                                                     readOnly
-                                                                    value={
-                                                                        this
-                                                                            .state
-                                                                            .document
-                                                                            .arrange
-                                                                    }
+                                                                    value={this.state.document.arrange}
                                                                     name="arrange"
-                                                                    placeholder={
-                                                                        Resources
-                                                                            .arrange[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
+                                                                    placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={e => {
-                                                                        handleChange(
-                                                                            e,
-                                                                        );
-                                                                        handleBlur(
-                                                                            e,
-                                                                        );
+                                                                        handleChange(e);
+                                                                        handleBlur(e);
                                                                     }}
-                                                                    onChange={e =>
-                                                                        this.handleChange(
-                                                                            e,
-                                                                            'arrange',
-                                                                        )
-                                                                    }
+                                                                    onChange={e => this.handleChange(e, 'arrange')}
                                                                 />
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .refDoc[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.refDoc[currentLanguage]}
                                                             </label>
                                                             <div className="ui input inputDev">
                                                                 <input
                                                                     type="text"
                                                                     className="form-control"
                                                                     id="refDoc"
-                                                                    value={
-                                                                        this
-                                                                            .state
-                                                                            .document
-                                                                            .refDoc
-                                                                    }
+                                                                    value={this.state.document.refDoc}
                                                                     name="refDoc"
-                                                                    placeholder={
-                                                                        Resources
-                                                                            .refDoc[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                    onChange={e =>
-                                                                        this.handleChange(
-                                                                            e,
-                                                                            'refDoc',
-                                                                        )
-                                                                    }
+                                                                    placeholder={Resources.refDoc[currentLanguage]}
+                                                                    onChange={e => this.handleChange(e, 'refDoc',)}
                                                                 />
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .sharedSettings[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.sharedSettings[currentLanguage]}
                                                             </label>
                                                             <div className="shareLinks">
                                                                 <div
-                                                                    className={
-                                                                        'inputDev ui input' +
-                                                                        (errors.sharedSettings
-                                                                            ? ' has-error'
-                                                                            : !errors.sharedSettings &&
-                                                                                touched.sharedSettings
-                                                                                ? ' has-success'
-                                                                                : ' ')
-                                                                    }>
+                                                                    className={'inputDev ui input' + (errors.sharedSettings ? ' has-error' : !errors.sharedSettings && touched.sharedSettings ? ' has-success' : ' ')}>
                                                                     <input
                                                                         type="text"
                                                                         className="form-control"
                                                                         id="sharedSettings"
-                                                                        onChange={e =>
-                                                                            this.handleChange(
-                                                                                e,
-                                                                                'sharedSettings',
-                                                                            )
-                                                                        }
+                                                                        onChange={e => this.handleChange(e, 'sharedSettings')}
                                                                         value={
                                                                             this
                                                                                 .state
@@ -1233,34 +987,14 @@ class LettersAddEdit extends Component {
                                                                         </em>
                                                                     ) : null}
                                                                 </div>
-                                                                {this.state
-                                                                    .document
-                                                                    .sharedSettings ===
-                                                                    '' ||
-                                                                    this.state
-                                                                        .document
-                                                                        .sharedSettings ===
-                                                                    null ||
-                                                                    this.state
-                                                                        .document
-                                                                        .sharedSettings ===
-                                                                    undefined ? null : (
+                                                                {this.state.document.sharedSettings === '' || this.state.document.sharedSettings === null ||
+                                                                    this.state.document.sharedSettings === undefined ? null :
+                                                                    (
                                                                         <a
                                                                             target="_blank"
-                                                                            href={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .sharedSettings
-                                                                            }>
+                                                                            href={this.state.document.sharedSettings}>
                                                                             <span>
-                                                                                {' '}
-                                                                                {
-                                                                                    Resources
-                                                                                        .openFolder[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }{' '}
+                                                                                {' '}{Resources.openFolder[currentLanguage]}{' '}
                                                                             </span>
                                                                         </a>
                                                                     )}
@@ -1268,39 +1002,20 @@ class LettersAddEdit extends Component {
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">
                                                             <label className="control-label">
-                                                                {
-                                                                    Resources
-                                                                        .fromCompany[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources.fromCompany[currentLanguage]}
                                                             </label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
                                                                         isClear={true}
-                                                                        data={
-                                                                            this
-                                                                                .state
-                                                                                .companies
-                                                                        }
-                                                                        isMulti={
-                                                                            false
-                                                                        }
-                                                                        selectedValue={
-                                                                            this
-                                                                                .state
-                                                                                .selectedFromCompany
-                                                                        }
+                                                                        data={this.state.companies}
+                                                                        isMulti={false}
+                                                                        selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
                                                                             this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact');
                                                                         }}
-                                                                        onChange={
-                                                                            setFieldValue
-                                                                        }
-                                                                        onBlur={
-                                                                            setFieldTouched
-                                                                        }
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
                                                                         error={
                                                                             errors.fromCompanyId
                                                                         }
@@ -1319,29 +1034,12 @@ class LettersAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown
                                                                         isClear={true}
-                                                                        isMulti={
-                                                                            false
+                                                                        isMulti={false}
+                                                                        data={this.state.fromContacts
                                                                         }
-                                                                        data={
-                                                                            this
-                                                                                .state
-                                                                                .fromContacts
-                                                                        }
-                                                                        selectedValue={
-                                                                            this
-                                                                                .state
-                                                                                .selectedFromContact
-                                                                        }
+                                                                        selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event =>
-                                                                            this.handleChangeDropDown(
-                                                                                event,
-                                                                                'fromContactId',
-                                                                                false,
-                                                                                '',
-                                                                                '',
-                                                                                '',
-                                                                                'selectedFromContact',
-                                                                            )
+                                                                            this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')
                                                                         }
                                                                         onChange={
                                                                             setFieldValue
@@ -1354,7 +1052,7 @@ class LettersAddEdit extends Component {
                                                                         }
                                                                         touched={
                                                                             true
-                                                                        } 
+                                                                        }
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId"
@@ -1382,17 +1080,7 @@ class LettersAddEdit extends Component {
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event =>
-                                                                            this.handleChangeDropDown(
-                                                                                event,
-                                                                                'toCompanyId',
-                                                                                true,
-                                                                                'ToContacts',
-                                                                                'GetContactsByCompanyId',
-                                                                                'companyId',
-                                                                                'selectedToCompany',
-                                                                                'selectedToContact',
-                                                                            )
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')
                                                                         }
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -1411,46 +1099,18 @@ class LettersAddEdit extends Component {
                                                                     <Dropdown
                                                                         isClear={true}
                                                                         isMulti={false}
-                                                                        data={
-                                                                            this
-                                                                                .state
-                                                                                .ToContacts
-                                                                        }
-                                                                        selectedValue={
-                                                                            this
-                                                                                .state
-                                                                                .selectedToContact
-                                                                        }
-                                                                        handleChange={event =>
-                                                                            this.handleChangeDropDown(
-                                                                                event,
-                                                                                'toContactId',
-                                                                                false,
-                                                                                '',
-                                                                                '',
-                                                                                '',
-                                                                                'selectedToContact',
-                                                                            )
-                                                                        }
-                                                                        onChange={
-                                                                            setFieldValue
-                                                                        }
-                                                                        onBlur={
-                                                                            setFieldTouched
-                                                                        }
-                                                                        touched={
-                                                                            true
-                                                                        }
-                                                                        error={
-                                                                            errors.toContactId
-                                                                        }
+                                                                        data={this.state.ToContacts}
+                                                                        selectedValue={this.state.selectedToContact}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        touched={true}
+                                                                        error={errors.toContactId}
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId"
                                                                         classDrop="contactName1"
-                                                                        styles={
-                                                                            ContactDropdown
-                                                                        }
+                                                                        styles={ContactDropdown}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1487,53 +1147,14 @@ class LettersAddEdit extends Component {
                                                                 position:
                                                                     'relative',
                                                             }}>
-                                                            <div className="shareLinks">
-                                                                <Dropdown
-                                                                    title="replyletter"
-                                                                    data={
-                                                                        this
-                                                                            .state
-                                                                            .letters
-                                                                    }
-                                                                    selectedValue={
-                                                                        this
-                                                                            .state
-                                                                            .selectedReplyLetter
-                                                                    }
-                                                                    handleChange={event =>
-                                                                        this.handleChangeDropDown(
-                                                                            event,
-                                                                            'replyId',
-                                                                            false,
-                                                                            '',
-                                                                            '',
-                                                                            '',
-                                                                            'selectedReplyLetter',
-                                                                        )
-                                                                    }
-                                                                    index="letter-replyId"
-                                                                />
-                                                                {this.props.changeStatus === true ? (
-                                                                    <i
-                                                                        onClick={e =>
-                                                                            this.replyNewLetter(e)
-                                                                        }
-                                                                        style={{
-                                                                            position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475',
-                                                                        }}
-                                                                        className="fa fa-reply"
-                                                                        aria-hidden="true"></i>
-                                                                ) : null}
-                                                                {this.state.selectedReplyLetter.value > 0 ? (
-                                                                    <a
-                                                                        style={{
-                                                                            marginLeft: '7%', marginTop: '2%',
-                                                                        }}
-                                                                        target="_blank"
-                                                                        href={this.state.replyLink}>
-                                                                        <span> {' '} {Resources.openFolder[currentLanguage]}{' '} </span>
-                                                                    </a>
-                                                                ) : null}
+                                                            <div className="dropdownMulti letterFullWidth">
+                                                                <DropdownMelcous title='replyletter'
+                                                                    data={this.state.letters}
+                                                                    value={this.state.selectedReplyLetter}
+                                                                    onChange={setFieldValue}
+                                                                    handleChange={(e) => this.replieshandleChange(e)}
+                                                                    placeholder='selectedReplies'
+                                                                    isMulti={true} />
                                                             </div>
                                                         </div>
                                                         <div className="letterFullWidth">
