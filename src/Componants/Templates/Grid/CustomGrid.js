@@ -85,12 +85,9 @@ export default class CustomGrid extends Component {
         let itemsColumns = this.props.cells;
         if (JSON.parse(savedGrid.columnsList).length === 0) {
 
-            // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
             var gridLocalStor = { columnsList: [], groups: [] };
-            //let newFilterLst = [];
             gridLocalStor.columnsList = JSON.stringify(itemsColumns);
             gridLocalStor.groups = JSON.stringify(currentGP);
-            //gridLocalStor.Filters = JSON.stringify(newFilterLst);
 
             localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
         }
@@ -114,7 +111,7 @@ export default class CustomGrid extends Component {
             columns: itemsColumns,
             groups: currentGP,
             groupsList: currentGP,
-            setFilters:savedGrid.Filters && savedGrid.Filters.length > 0 ? obj : itemsColumns,
+            setFilters: savedGrid.Filters && savedGrid.Filters.length > 0 ? obj : itemsColumns,
             GridLoading: false,
             filterLoading: false,
             ...state
@@ -181,13 +178,10 @@ export default class CustomGrid extends Component {
                 break;
             }
         }
-        // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
         var gridLocalStor = { columnsList: [], groups: [] };
-        //let newFilterLst = this.state.localStorFiltersList;
 
         gridLocalStor.columnsList = JSON.stringify(columnList);
         gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : []);
-        //gridLocalStor.Filters = JSON.stringify(newFilterLst);
 
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
         let showColumn = columnList.filter(i => i.hidden != true);
@@ -247,19 +241,12 @@ export default class CustomGrid extends Component {
                 state[index + "-column"] = '';
             }
         });
-
-        // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
         var gridLocalStor = { columnsList: [], groups: [] };
 
         gridLocalStor.groups = JSON.stringify(this.state.groupsList);
         gridLocalStor.columnsList = JSON.stringify(this.state.columns);
 
-        //let newFilterLst = this.state.localStorFiltersList;
-
-        //gridLocalStor.Filters = JSON.stringify(newFilterLst);
-
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStor));
-
         this.setState({ rows: this.props.data, setFilters: {}, state });
 
         // this.chunkData(0);
@@ -319,10 +306,7 @@ export default class CustomGrid extends Component {
             if (i > -1) newFilterLst[i] = { key: filter.key, index: index, value: newFilters[filter.key] };
             else newFilterLst.push({ key: filter.key, index: index, value: newFilters[filter.key] })
 
-            // var gridLocalStor = { columnsList: [], groups: [], Filters: [] };
-            var gridLocalStor = { columnsList: [], groups: []};
-
-           // gridLocalStor.Filters = JSON.stringify(newFilterLst);
+            var gridLocalStor = { columnsList: [], groups: [] };
             gridLocalStor.columnsList = JSON.stringify(this.state.columns);
             gridLocalStor.groups = JSON.stringify(this.state.groupsList.length > 0 ? this.state.groupsList : []);
 
@@ -470,13 +454,9 @@ export default class CustomGrid extends Component {
 
     handleGroupEvent = (groups) => {
 
-        // var gridLocalStore = { columnsList: [], groups: [], Filters: [] };
         var gridLocalStore = { columnsList: [], groups: [] };
-
-        //let newFilterLst = this.state.localStorFiltersList;
         gridLocalStore.groups = JSON.stringify(groups);
         gridLocalStore.columnsList = JSON.stringify(this.state.columns);
-        //gridLocalStore.Filters = JSON.stringify(newFilterLst);
         localStorage.setItem(this.props.gridKey, JSON.stringify(gridLocalStore));
 
         this.setState({ groupsList: groups });
@@ -489,17 +469,13 @@ export default class CustomGrid extends Component {
         let ColumnsHideShow = this.state.ColumnsHideShow;
         for (var i in ColumnsHideShow) {
             if (ColumnsHideShow[i].field === key) {
-                ColumnsHideShow[i].width = newWidth;
+                ColumnsHideShow[i].width = this.props.useModal === true ? ColumnsHideShow[i].width : newWidth;
                 break;
             }
         }
-
-        // var savedGrid = { columnsList: [], groups: [], Filters: [] };
         var savedGrid = { columnsList: [], groups: [] };
-        //let newFilterLst = this.state.localStorFiltersList;
         savedGrid.columnsList = JSON.stringify(ColumnsHideShow)
         savedGrid.groups = JSON.stringify(this.state.groupsList);
-        //savedGrid.Filters = JSON.stringify(newFilterLst);
         localStorage.setItem(this.props.gridKey, JSON.stringify(savedGrid))
 
         setTimeout(() => {
@@ -552,7 +528,7 @@ export default class CustomGrid extends Component {
         const columns = this.state.columns.filter(x => x.type !== "check-box");
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
 
-            let container = (document.getElementById('grid__column--content').offsetWidth * 0.5) * 0.47 * 0.8
+            let container = ((this.props.useModal === true ? document.getElementById('grid-container_addAttachments').offsetWidth : document.getElementById('grid__column--content').offsetWidth) * 0.5) * 0.47 * 0.8
             let BallsWidth = container / 4
             let activeWidth = (item.width * container / BallsWidth) - BallsWidth
             let diff = (activeWidth / BallsWidth) * 4
@@ -599,8 +575,8 @@ export default class CustomGrid extends Component {
                                                     <input type="text" autoComplete="off" key={index} placeholder={column.title}
                                                         onChange={e => this.saveFilter(e, index, column.title, column.type, column.field)}
                                                         value={this.state[index + "-column"] != null ? this.state[index + "-column"] : ''}
-                                                        onClick={() => this.changeDate(index, column.type)} 
-                                                        />
+                                                        onClick={() => this.changeDate(index, column.type)}
+                                                    />
 
                                                     {this.state.currentData === index && this.state.currentData != 0 ?
                                                         (<div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
@@ -730,15 +706,17 @@ export default class CustomGrid extends Component {
                                 </g>
                             </svg>
                         </div>
-                        <div className="V-tableSize" data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                                <g fill="none" fillRule="evenodd" transform="translate(5 5)">
-                                    <g fill="#CCD2DB" mask="url(#b)">
-                                        <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                        {this.props.useModal === true ? null :
+                            <div className="V-tableSize" data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                                    <g fill="none" fillRule="evenodd" transform="translate(5 5)">
+                                        <g fill="#CCD2DB" mask="url(#b)">
+                                            <path id="a" d="M0 1.007C0 .45.45 0 1.008 0h1.225c.556 0 1.008.45 1.008 1.007v11.986C3.24 13.55 2.79 14 2.233 14H1.008C.45 14 0 13.55 0 12.993V1.007zm5.38 0C5.38.45 5.83 0 6.387 0h1.226C8.169 0 8.62.45 8.62 1.007v11.986C8.62 13.55 8.17 14 7.613 14H6.387c-.556 0-1.007-.45-1.007-1.007V1.007zm5.38 0C10.76.45 11.21 0 11.766 0h1.225C13.55 0 14 .45 14 1.007v11.986C14 13.55 13.55 14 12.992 14h-1.225c-.556 0-1.008-.45-1.008-1.007V1.007z" />
+                                        </g>
                                     </g>
-                                </g>
-                            </svg>
-                        </div>
+                                </svg>
+                            </div>
+                        }
                     </div>
 
                     {this.state.GridLoading === false ?
@@ -756,17 +734,7 @@ export default class CustomGrid extends Component {
                                     showPicker={this.props.showPicker}
                                     shouldCheck={this.props.shouldCheck}
                                 />
-                                {/* <div className="paginationNumbers custom">
-                                    <ul className="zero">
-                                        <li><a><i className="angle left icon" />  </a></li>
-                                        <li className="active" onClick={e => this.chunkData(1)}>
-                                            <a> 1 </a>
-                                        </li>
-                                        <li onClick={e => this.chunkData(2)}><a> 2 </a></li>
-                                        <li onClick={e => this.chunkData(3)}><a> 3 </a></li>
-                                        <li ><a> <i className="angle right icon" /></a></li>
-                                    </ul>
-                                </div> */}
+
                             </>
                         )
                         : <LoadingSection />}

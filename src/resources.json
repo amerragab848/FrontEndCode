@@ -9215,5 +9215,9 @@
    "currentContract":{
     "en":"Current Contract",
     "ar":"العقد الحالي"
+   },
+   "copiesNumber":{
+    "en":"Copies Number",
+    "ar":"عدد النسخ"
    }
 }
