@@ -27,7 +27,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
 })
 
 let docId = 0;

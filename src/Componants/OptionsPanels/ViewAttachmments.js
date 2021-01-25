@@ -578,34 +578,18 @@ class ViewAttachmments extends Component {
                 }
             });
 
-            var timesNewRomanBuffer = await fetch(
-                '/assets/fonts/Times-New-Roman.ttf',
-            ).then(res => res.arrayBuffer());
-
-            var cairoRegularBuffer = await fetch(
-                '/public/fonts/Cairo-Regular.ttf',
-            ).then(res => res.arrayBuffer());
-
-            var robotoRegularBuffer = await fetch(
-                '/public/fonts/Roboto-Regular.ttf',
+            var scheherazadeBuffer = await fetch(
+                '/assets/fonts/Scheherazade-Regular.ttf',
             ).then(res => res.arrayBuffer());
 
             var notoEmojiBuffer = await fetch(
-                '/public/fonts/NotoEmoji-661A.ttf',
+                '/assets/fonts/NotoEmoji-661A.ttf',
             ).then(res => res.arrayBuffer());
 
             currentPDFDoc.registerFontkit(fontkit);
 
-            var timesNewRoman = await currentPDFDoc.embedFont(
-                timesNewRomanBuffer,
-            );
-
-            var cairoRegular = await currentPDFDoc.embedFont(
-                cairoRegularBuffer,
-            );
-
-            var robotoRegular = await currentPDFDoc.embedFont(
-                robotoRegularBuffer,
+            var scheherazade = await currentPDFDoc.embedFont(
+                scheherazadeBuffer,
             );
 
             var notoEmoji = await currentPDFDoc.embedFont(notoEmojiBuffer);
@@ -770,13 +754,9 @@ class ViewAttachmments extends Component {
                                 });
                             } else {
                                 let fontFamily =
-                                    cvs_obj.fontFamily === 'Roboto'
-                                        ? robotoRegular
-                                        : cvs_obj.fontFamily === 'Noto Emoji'
+                                    cvs_obj.fontFamily === 'Noto Emoji'
                                         ? notoEmoji
-                                        : cvs_obj.fontFamily === 'Cairo'
-                                        ? cairoRegular
-                                        : timesNewRoman;
+                                        : scheherazade;
 
                                 let color = net.brehaut.Color(
                                     cvs_obj.fill || '#000',
