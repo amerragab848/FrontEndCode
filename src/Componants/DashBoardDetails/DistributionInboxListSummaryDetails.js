@@ -96,11 +96,9 @@ class DistributionInboxListSummaryDetails extends Component {
       {
         title: 'Update',
         handleClick: values => {
-
           this.setState({
             isLoading: true
           });
-
           values.forEach((row) => {
             let item = find(this.state.rows, function (x) {
               return x.id == row;

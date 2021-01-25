@@ -391,7 +391,6 @@ export function GetWorkFlowCycles(urlAction) {
         return Api.get(urlAction)
             .then(resp => {
                 let result = BuildWorkFlowCycleStracture(resp);
-
                 dispatch({
                     type: types.Cycles_WorkFlow,
                     workFlowCycles: result.cycles,
