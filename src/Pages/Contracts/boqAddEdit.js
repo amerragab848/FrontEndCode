@@ -25,7 +25,7 @@ import Resources from '../../resources.json';
 import Config from '../../Services/Config.js';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from '../../Componants/Templates/Grid/CustomGrid';
-import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment'; 
+import UploadSingleAttachment from '../../Componants/OptionsPanels/UploadSingleAttachment';
 import Export from '../../Componants/OptionsPanels/Export';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -690,71 +690,85 @@ class boqAddEdit extends Component {
             });
             Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize).then(res => {
                 let data = { items: res.data };
-                // res.forEach((element) => {
-                //     Table.push({
-                //         id: element.id,
-                //         boqId: element.boqId,
-                //         unitPrice: this.state.items.unitPrice,
-                //         itemType: element.itemType,
-                //         itemTypeLabel: '',
-                //         days: element.days,
-                //         equipmentType: element.equipmentType,
-                //         equipmentTypeLabel: '',
-                //         editable: true,
-                //         boqSubTypeId: element.boqSubTypeId,
-                //         boqTypeId: element.boqTypeId,
-                //         boqChildTypeId: element.boqChildTypeId,
-                //         arrange: element.arrange,
-                //         boqType: element.boqType,
-                //         boqTypeChild: element.boqTypeChild,
-                //         boqSubType: element.boqSubType,
-                //         itemCode: element.itemCode,
-                //         description: element.description,
-                //         quantity: element.quantity,
-                //         revisedQuntitty: element.revisedQuantity,
-                //         unit: element.unit,
-                //         unitPrice: element.unitPrice,
-                //         total: element.total,
-                //         resourceCode: element.resourceCode,
-                //     });
-                // });
+                res.data.forEach((element) => {
+                    Table.push({
+                        id: element.id,
+                        boqId: element.boqId,
+                        unitPrice: this.state.items.unitPrice,
+                        itemType: element.itemType,
+                        itemTypeLabel: '',
+                        days: element.days,
+                        equipmentType: element.equipmentType,
+                        equipmentTypeLabel: '',
+                        editable: true,
+                        boqSubTypeId: element.boqSubTypeId,
+                        boqTypeId: element.boqTypeId,
+                        boqChildTypeId: element.boqChildTypeId,
+                        arrange: element.arrange,
+                        boqType: element.boqType,
+                        boqTypeChild: element.boqTypeChild,
+                        boqSubType: element.boqSubType,
+                        itemCode: element.itemCode,
+                        description: element.description,
+                        quantity: element.quantity,
+                        revisedQuntitty: element.revisedQuantity,
+                        unit: element.unit,
+                        unitPrice: element.unitPrice,
+                        total: element.total,
+                        resourceCode: element.resourceCode,
+                    });
+                });
                 this.setState({
                     _items: res.data || [],
-                    noItems: res.total,
+                    noItems: res != null ? res.total : 0,
                     LoadingPage: false,
                     isLoading: false
                 });
-                //this.props.actions.ExportingData(data);
+                this.props.actions.ExportingData(data);
             });
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+
+            this.checkDocumentIsView();
+
+
+            let _items = this.props.items ? this.props.items : [];
+
+            if (JSON.stringify(this.state._items) != JSON.stringify(_items)) {
+                this.setState({ isLoading: true });
+                this.setState({ _items }, () =>
+                    this.setState({ isLoading: false }),
+                );
+            }
+            let updated_document = {};
+
+            updated_document.statusName = this.props.document.status ? 'Opened' : 'Closed';
+            updated_document.documentDate = moment(this.props.document.documentDate);
+
+            updated_document = Object.assign(this.props.document, updated_document);
+
+            this.setState({ document: updated_document });
+        }
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow ||
+            this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
 
-    componentWillReceiveProps(props, state) {
-        if (props.document.id !== this.props.document.id) {
-            let docDate = moment(props.document.documentDate);
-            props.document.statusName = props.document.status ? 'Opened' : 'Closed';
-            let document = Object.assign(props.document, { documentDate: docDate, });
-            this.setState({ document });
-            this.fillDropDowns(true);
-            this.checkDocumentIsView();
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
+            return {
+                document: nextProps.document,
+                hasWorkflow: nextProps.hasWorkflow,
+                message: nextProps.document.message,
+            };
         }
 
-        let _items = props.items ? props.items : [];
-
-        if (
-            JSON.stringify(this.state._items.length) != JSON.stringify(_items)
-        ) {
-            this.setState({ isLoading: true });
-            this.setState({ _items }, () =>
-                this.setState({ isLoading: false }),
-            );
-        }
+        return null;
     }
 
     viewAttachments() {
@@ -1156,7 +1170,7 @@ class boqAddEdit extends Component {
 
                     this.setState({
                         _items: newRows,
-                        noItems: result.total,
+                        noItems: result != null ? result.total : 0,
                         isLoading: false,
                     });
                 })
@@ -1192,7 +1206,7 @@ class boqAddEdit extends Component {
 
                 this.setState({
                     _items: newRows,
-                    noItems: result.total,
+                    noItems: result != null ? result.total : 0,
                     isLoading: false,
                 });
             })
@@ -1304,31 +1318,14 @@ class boqAddEdit extends Component {
                                 <div className="proForm first-proform letterFullWidth">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources['subject'][
-                                                currentLanguage
-                                                ]
-                                            }{' '}
+                                            {Resources['subject'][currentLanguage]}{' '}
                                         </label>
-                                        <div
-                                            className={
-                                                'inputDev ui input ' +
-                                                (errors.subject
-                                                    ? 'has-error'
-                                                    : !errors.subject &&
-                                                        touched.subject
-                                                        ? ' has-success'
-                                                        : ' ')
-                                            }>
+                                        <div className={'inputDev ui input ' + (errors.subject ? 'has-error' : !errors.subject && touched.subject ? ' has-success' : ' ')}>
                                             <input
                                                 name="subject"
                                                 className="form-control"
                                                 id="subject"
-                                                placeholder={
-                                                    Resources['subject'][
-                                                    currentLanguage
-                                                    ]
-                                                }
+                                                placeholder={Resources['subject'][currentLanguage]}
                                                 autoComplete="off"
                                                 onBlur={handleBlur}
                                                 defaultValue={values.subject}
@@ -1498,15 +1495,7 @@ class boqAddEdit extends Component {
                                         <label className="control-label">
                                             {Resources.vat[currentLanguage]}
                                         </label>
-                                        <div
-                                            className={
-                                                'inputDev ui input ' +
-                                                (errors.vat
-                                                    ? 'has-error'
-                                                    : !errors.vat && touched.vat
-                                                        ? ' has-success'
-                                                        : ' ')
-                                            }>
+                                        <div className={'inputDev ui input ' + (errors.vat ? 'has-error' : !errors.vat && touched.vat ? ' has-success' : ' ')}>
                                             <input
                                                 type="text"
                                                 className="form-control"
@@ -1515,11 +1504,7 @@ class boqAddEdit extends Component {
                                                 onBlur={handleBlur}
                                                 onChange={e => handleChange(e)}
                                                 name="vat"
-                                                placeholder={
-                                                    Resources.vat[
-                                                    currentLanguage
-                                                    ]
-                                                }
+                                                placeholder={Resources.vat[currentLanguage]}
                                             />
                                             {errors.vat ? (
                                                 <em className="pError">
@@ -1530,11 +1515,7 @@ class boqAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources.advancedPayment[
-                                                currentLanguage
-                                                ]
-                                            }
+                                            {Resources.advancedPayment[currentLanguage]}
                                         </label>
                                         <div
                                             className={
@@ -1569,11 +1550,7 @@ class boqAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources.retainage[
-                                                currentLanguage
-                                                ]
-                                            }
+                                            {Resources.retainage[currentLanguage]}
                                         </label>
                                         <div
                                             className={
@@ -1647,11 +1624,7 @@ class boqAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources.advancedPaymentAmount[
-                                                currentLanguage
-                                                ]
-                                            }
+                                            {Resources.advancedPaymentAmount[currentLanguage]}
                                         </label>
                                         <div
                                             className={
@@ -2552,13 +2525,8 @@ class boqAddEdit extends Component {
                                                 <Dropdown
                                                     title="discipline"
                                                     isMulti={true}
-                                                    data={
-                                                        this.state.Disciplines
-                                                    }
-                                                    selectedValue={
-                                                        this.state
-                                                            .selectedDiscipline
-                                                    }
+                                                    data={this.state.Disciplines}
+                                                    value={this.state.selectedDiscipline}
                                                     handleChange={event => {
                                                         this.setState({
                                                             selectedDiscipline: event,
