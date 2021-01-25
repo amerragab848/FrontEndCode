@@ -24,14 +24,14 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const validationSchema = Yup.object().shape({
+const validationSchemaClintSelection = Yup.object().shape({
 
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
-    refDoc: Yup.string().required(Resources['refernceRequired'][currentLanguage]).nullable(true),
+    refDoc: Yup.string().required(Resources['refernceRequired'][currentLanguage]),
 
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
-        .nullable(true),
+        ,
 
     toContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage]),
@@ -449,11 +449,21 @@ class clientSelectionAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+            
+            this.setState({
+                
+                [subDatasource]: event
+            });
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -462,19 +472,37 @@ class clientSelectionAddEdit extends Component {
         });
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+         
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
+                });              
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
                 });
-            });
+            }
         }
     }
     handleChangeForSpecialDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+     
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.label;
+        
+        if (event == null) {
+            updated_document[field] = event;
+            this.setState({
+               
+                [subDatasource]: event
+            });
+         }
+         else{
+            updated_document[field] = event.label;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -482,13 +510,20 @@ class clientSelectionAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+        if (isSubscrib) {     
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
+                });               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
                 });
-            });
+            }
         }
     }
     editLetter(event) {
@@ -583,8 +618,9 @@ class clientSelectionAddEdit extends Component {
                                     <div className="document-fields">
                                         <Formik
                                             initialValues={{ ...this.state.document }}
-                                            validationSchema={validationSchema}
-                                            enableReinitialize={true}//this.props.changeStatus
+                                          
+                                            validationSchema={validationSchemaClintSelection}
+                                            enableReinitialize={true}
                                             onSubmit={(values) => {
 
                                                 if (this.props.showModal) { return; }
@@ -686,16 +722,15 @@ class clientSelectionAddEdit extends Component {
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         data={this.state.companies}
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact','fromContactId')
                                                                         }}
                                                                         onChange={setFieldValue}
-                                                                        onBlur={setFieldTouched}
-                                                                        error={errors.fromCompanyId}
-                                                                        touched={touched.fromCompanyId}
+                                                                        onBlur={setFieldTouched}                                                                      
                                                                         styles={CompanyDropdown}
                                                                         classDrop="companyName1"
                                                                         index="fromCompanyId"
@@ -704,6 +739,7 @@ class clientSelectionAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
@@ -727,16 +763,15 @@ class clientSelectionAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown
+                                                                    <Dropdown 
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event =>
-                                                                            this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                            this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact','toContactId')}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
-                                                                        error={errors.toCompanyId}
-                                                                        touched={touched.toCompanyId}
                                                                         name="toCompanyId"
                                                                         styles={CompanyDropdown}
                                                                         classDrop="companyName1"
@@ -744,6 +779,7 @@ class clientSelectionAddEdit extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
@@ -776,44 +812,50 @@ class clientSelectionAddEdit extends Component {
                                                                     </div>
                                                                 </React.Fragment> :
                                                                 <Dropdown
+                                                                    isClear={true}
                                                                     title="contractPo"
                                                                     data={this.state.contractsPos}
                                                                     selectedValue={this.state.selectedContract}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract','')}
                                                                     index="contractId" />}
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="approvalStatus"
+                                                            <Dropdown 
+                                                                isClear={true}
+                                                                title="approvalStatus"
                                                                 isMulti={false}
                                                                 data={this.state.approvalstatusList}
                                                                 selectedValue={this.state.selectedApprovalStatusId}
-                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
+                                                                handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId','')}
                                                                 index="clientSelection-approvalStatusId" />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="areaName"
                                                                 isMulti={false}
                                                                 data={this.state.areas}
                                                                 selectedValue={this.state.selecetedArea}
-                                                                handleChange={event => this.handleChangeForSpecialDropDown(event, 'area', false, '', '', '', 'selecetedArea')}
+                                                                handleChange={event => this.handleChangeForSpecialDropDown(event, 'area', false, '', '', '', 'selecetedArea','')}
                                                                 index="areaId" />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="location"
                                                                 isMulti={false}
                                                                 data={this.state.locations}
                                                                 selectedValue={this.state.selectedLocation}
-                                                                handleChange={event => this.handleChangeForSpecialDropDown(event, 'location', false, '', '', '', 'selectedLocation')}
+                                                                handleChange={event => this.handleChangeForSpecialDropDown(event, 'location', false, '', '', '', 'selectedLocation','')}
                                                                 index="location" />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="Building"
                                                                 isMulti={false}
                                                                 data={this.state.buildings}
@@ -923,6 +965,7 @@ class clientSelectionAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="clientSelectionType"
                                                                 data={this.state.clientSelections}
                                                                 selectedValue={this.state.selectedClientSelection}
