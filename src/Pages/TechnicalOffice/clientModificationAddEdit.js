@@ -693,6 +693,7 @@ class clientModificationAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown
                                                                         isClear={true}
+                                                                        
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
