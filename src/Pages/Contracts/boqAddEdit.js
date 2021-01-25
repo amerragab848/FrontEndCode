@@ -737,30 +737,46 @@ class boqAddEdit extends Component {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+
+            this.checkDocumentIsView();
+
+
+            let _items = this.props.items ? this.props.items : [];
+
+            if (JSON.stringify(this.state._items) != JSON.stringify(_items)) {
+                this.setState({ isLoading: true });
+                this.setState({ _items }, () =>
+                    this.setState({ isLoading: false }),
+                );
+            }
+            let updated_document = {};
+
+            updated_document.statusName = this.props.document.status ? 'Opened' : 'Closed';
+            updated_document.documentDate = moment(this.props.document.documentDate);
+
+            updated_document = Object.assign(this.props.document, updated_document);
+
+            this.setState({ document: updated_document });
+        }
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow ||
+            this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
 
-    componentWillReceiveProps(props, state) {
-        if (props.document.id !== this.props.document.id) {
-            let docDate = moment(props.document.documentDate);
-            props.document.statusName = props.document.status ? 'Opened' : 'Closed';
-            let document = Object.assign(props.document, { documentDate: docDate, });
-            this.setState({ document });
-            this.fillDropDowns(true);
-            this.checkDocumentIsView();
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
+            return {
+                document: nextProps.document,
+                hasWorkflow: nextProps.hasWorkflow,
+                message: nextProps.document.message,
+            };
         }
 
-        let _items = props.items ? props.items : [];
-
-        if (JSON.stringify(this.state._items) != JSON.stringify(_items)) {
-            this.setState({ isLoading: true });
-            this.setState({ _items }, () =>
-                this.setState({ isLoading: false }),
-            );
-        }
+        return null;
     }
 
     viewAttachments() {
@@ -1310,31 +1326,14 @@ class boqAddEdit extends Component {
                                 <div className="proForm first-proform letterFullWidth">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources['subject'][
-                                                currentLanguage
-                                                ]
-                                            }{' '}
+                                            {Resources['subject'][currentLanguage]}{' '}
                                         </label>
-                                        <div
-                                            className={
-                                                'inputDev ui input ' +
-                                                (errors.subject
-                                                    ? 'has-error'
-                                                    : !errors.subject &&
-                                                        touched.subject
-                                                        ? ' has-success'
-                                                        : ' ')
-                                            }>
+                                        <div className={'inputDev ui input ' + (errors.subject ? 'has-error' : !errors.subject && touched.subject ? ' has-success' : ' ')}>
                                             <input
                                                 name="subject"
                                                 className="form-control"
                                                 id="subject"
-                                                placeholder={
-                                                    Resources['subject'][
-                                                    currentLanguage
-                                                    ]
-                                                }
+                                                placeholder={Resources['subject'][currentLanguage]}
                                                 autoComplete="off"
                                                 onBlur={handleBlur}
                                                 defaultValue={values.subject}
@@ -1505,15 +1504,7 @@ class boqAddEdit extends Component {
                                         <label className="control-label">
                                             {Resources.vat[currentLanguage]}
                                         </label>
-                                        <div
-                                            className={
-                                                'inputDev ui input ' +
-                                                (errors.vat
-                                                    ? 'has-error'
-                                                    : !errors.vat && touched.vat
-                                                        ? ' has-success'
-                                                        : ' ')
-                                            }>
+                                        <div className={'inputDev ui input ' + (errors.vat ? 'has-error' : !errors.vat && touched.vat ? ' has-success' : ' ')}>
                                             <input
                                                 type="text"
                                                 className="form-control"
@@ -1522,11 +1513,7 @@ class boqAddEdit extends Component {
                                                 onBlur={handleBlur}
                                                 onChange={e => handleChange(e)}
                                                 name="vat"
-                                                placeholder={
-                                                    Resources.vat[
-                                                    currentLanguage
-                                                    ]
-                                                }
+                                                placeholder={Resources.vat[currentLanguage]}
                                             />
                                             {errors.vat ? (
                                                 <em className="pError">
@@ -1537,11 +1524,7 @@ class boqAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources.advancedPayment[
-                                                currentLanguage
-                                                ]
-                                            }
+                                            {Resources.advancedPayment[currentLanguage]}
                                         </label>
                                         <div
                                             className={
@@ -1576,11 +1559,7 @@ class boqAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources.retainage[
-                                                currentLanguage
-                                                ]
-                                            }
+                                            {Resources.retainage[currentLanguage]}
                                         </label>
                                         <div
                                             className={
@@ -1654,11 +1633,7 @@ class boqAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">
-                                            {
-                                                Resources.advancedPaymentAmount[
-                                                currentLanguage
-                                                ]
-                                            }
+                                            {Resources.advancedPaymentAmount[currentLanguage]}
                                         </label>
                                         <div
                                             className={
@@ -2565,13 +2540,8 @@ class boqAddEdit extends Component {
                                                     isClear={true}
                                                     title="discipline"
                                                     isMulti={true}
-                                                    data={
-                                                        this.state.Disciplines
-                                                    }
-                                                    selectedValue={
-                                                        this.state
-                                                            .selectedDiscipline
-                                                    }
+                                                    data={this.state.Disciplines}
+                                                    value={this.state.selectedDiscipline}
                                                     handleChange={event => {
                                                         this.setState({
                                                             selectedDiscipline: event,

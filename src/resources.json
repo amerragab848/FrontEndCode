@@ -9222,6 +9222,10 @@
    },
    "RequiredrequestByCompany":{
     "en":"select request By Company",
-    "ar":"  برجار اختيار  الشركه --"
+    "ar":"  برجار اختيار  الشركه --"}
+    ,
+   "copiesNumber":{
+    "en":"Copies Number",
+    "ar":"عدد النسخ"
    }
 }

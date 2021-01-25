@@ -271,12 +271,12 @@ class AddDocAttachment extends Component {
               </div>
             );
           },
-          width: 50
+          width: 380
         },
         {
           Header: Resources["docType"][currentLanguage],
           accessor: "docTypeName",
-          width: 50
+          width: 150
         },
         {
           Header: Resources["docDate"][currentLanguage],
@@ -285,7 +285,8 @@ class AddDocAttachment extends Component {
             <span>
               <span>{moment(row.value).format("DD/MM/YYYY")}</span>
             </span>
-          )
+          ),
+          width: 150
         }
       ]
 
@@ -374,7 +375,7 @@ class AddDocAttachment extends Component {
           Header: Resources["subject"][currentLanguage],
           accessor: "subject",
           Cell: this.renderEditable.bind(this),
-          width: 200
+          width: 280
         },
         {
           Header: Resources["docStatus"][currentLanguage],
@@ -387,7 +388,8 @@ class AddDocAttachment extends Component {
           accessor: "docDate",
           Cell: row => (
             <span> <span>{moment(row.value).format("DD/MM/YYYY")}</span> </span>
-          )
+          ),
+          width: 120,
         }
       ];
 

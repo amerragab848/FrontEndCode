@@ -246,10 +246,7 @@ class LettersAddEdit extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, state) {
-        if (
-            nextProps.document.id !== state.document.id &&
-            nextProps.changeStatus === true
-        ) {
+        if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
             return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -260,10 +257,7 @@ class LettersAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (
-            prevState.document.id !== this.props.document.id &&
-            this.props.changeStatus === true
-        ) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
             //         // und 976 --1
             //         //976 976 fire modal
             //         //976 976 close modal
