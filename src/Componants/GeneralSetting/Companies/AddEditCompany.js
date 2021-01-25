@@ -36,10 +36,10 @@ const validationSchema = Yup.object().shape({
     addressAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     addressEn: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     Telephone: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
-    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
+    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]).nullable(true),
     title: Yup.string().required(Resources['empTitleRequired'][currentLanguage]),
     companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]),
-    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage])
+    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage]).nullable(true)
 });
 
 const validationSchemaForEdit = Yup.object().shape({
@@ -49,9 +49,9 @@ const validationSchemaForEdit = Yup.object().shape({
     titleArCompany: Yup.string().max(50, Resources['maxLength'][currentLanguage]).test('contactNameAr', 'Name cannot be english', value => {
         return ar.test(value)
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
-    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
-    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]),
-    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage])
+    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]).nullable(true),
+    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]).nullable(true),
+    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage]).nullable(true)
 })
 
 class AddEditCompany extends Component {
@@ -290,7 +290,7 @@ class AddEditCompany extends Component {
 
     render() {
         return (
-            <div className="mainContainer main__fulldash">
+            <div className="mainContainer ">
                 <div className="documents-stepper cutome__inputs noTabs__document">
                     <div className="submittalHead">
                         <HeaderDocument

@@ -224,11 +224,21 @@ class projectPicturesAddEdit extends Component {
 
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+            this.setState({
+            
+                [subDatasource]: event
+            });
+         }
+         else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -237,12 +247,21 @@ class projectPicturesAddEdit extends Component {
         });
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
         }
     }
 
@@ -438,16 +457,16 @@ class projectPicturesAddEdit extends Component {
                                                         <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.companies} name="fromCompanyId"
+                                                                <Dropdown isClear={true}  data={this.state.companies} name="fromCompanyId"
                                                                     selectedValue={this.state.selectedFromCompany}
                                                                     handleChange={event => {
-                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact','fromContactId')
                                                                     }} styles={CompanyDropdown}
                                                                     classDrop="companyName1" />
                                                             </div>
 
                                                             <div className="super_company">
-                                                                <Dropdown data={this.state.fromContacts} onChange={setFieldValue} name="fromContactId"
+                                                                <Dropdown isClear={true} data={this.state.fromContacts} onChange={setFieldValue} name="fromContactId"
                                                                     onBlur={setFieldTouched} error={errors.fromContactId} id="fromContactId"
                                                                     touched={touched.fromContactId} index="IR-fromContactId"
                                                                     selectedValue={this.state.selectedFromContact}

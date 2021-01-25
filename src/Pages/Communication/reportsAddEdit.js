@@ -26,10 +26,10 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
-    toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
-    reportType: Yup.string().required(Resources['reportTypeRequired'][currentLanguage])
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
+    fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true),
+    reportType: Yup.string().required(Resources['reportTypeRequired'][currentLanguage]).nullable(true)
 })
 
 let docId = 0;
