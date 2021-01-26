@@ -74,6 +74,7 @@ const validationDeductionSchema = Yup.object().shape({
         /(^[0-9]+$)/,
         Resources['onlyNumbers'][currentLanguage],
     ),
+    
 });
 
 const validationItemsSchema = Yup.object().shape({
@@ -1380,10 +1381,14 @@ class requestPaymentsAddEdit extends Component {
         }
     }
     handleChangeDropDownDeduction(event, field, selectedValue) {
-        if (event == null) return;
+        
         let original_document = { ...this.state.documentDeduction };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -2552,6 +2557,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     handleDropAction(event) {
+        if(event!==null){
         switch (event.value) {
             case '1':
                 dataservice
@@ -2720,6 +2726,7 @@ class requestPaymentsAddEdit extends Component {
         this.setState({
             selectedDropDown: event,
         });
+    }
     }
 
     viewConfirmDelete(id, type) {
@@ -3428,6 +3435,7 @@ class requestPaymentsAddEdit extends Component {
                     return (
                         <div className="shareLinks">
                             <Dropdown
+                                isClear={true}
                                 title=""
                                 data={this.state.percentageStatus}
                                 handleChange={e =>
@@ -3583,6 +3591,7 @@ class requestPaymentsAddEdit extends Component {
                                     className="proForm datepickerContainer customProform"
                                     noValidate="novalidate">
                                     <Dropdown
+                                       isClear={true}
                                         title="boqType"
                                         data={this.state.boqTypes}
                                         selectedValue={
@@ -3607,6 +3616,7 @@ class requestPaymentsAddEdit extends Component {
                                         index="boqType"
                                     />
                                     <Dropdown
+                                    isClear={true}
                                         title="boqTypeChild"
                                         data={this.state.BoqTypeChilds}
                                         selectedValue={
@@ -3631,6 +3641,7 @@ class requestPaymentsAddEdit extends Component {
                                         index="boqChild"
                                     />
                                     <Dropdown
+                                    isClear={true}
                                         title="boqSubType"
                                         data={this.state.BoqSubTypes}
                                         selectedValue={
@@ -4426,6 +4437,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         ) : (
                                                                             <div className="linebylineInput valid-input">
                                                                                 <Dropdown
+                                                                                isClear={true}
                                                                                     title="contractName"
                                                                                     data={
                                                                                         this
@@ -4941,6 +4953,7 @@ class requestPaymentsAddEdit extends Component {
                                                                                                 '225px',
                                                                                         }}>
                                                                                         <Dropdown
+                                                                                        isClear={true}
                                                                                             data={
                                                                                                 this
                                                                                                     .state
@@ -5169,7 +5182,9 @@ class requestPaymentsAddEdit extends Component {
                                                         }}>
                                                         <div className="default__dropdown">
                                                             <Dropdown
+                                                            isClear={true}
                                                                 data={
+
                                                                     this.state
                                                                         .fillDropDownExport
                                                                 }
@@ -5636,6 +5651,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                      isClear={true}
                                                                         title="deductionType"
                                                                         data={
                                                                             this
@@ -5667,9 +5683,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         touched={
                                                                             touched.deductionTypeId
                                                                         }
-                                                                        isClear={
-                                                                            false
-                                                                        }
+                                                                       
                                                                         name="deductionTypeId"
                                                                         id="deductionTypeId"
                                                                         classDrop="deductionTypeId"
@@ -5872,6 +5886,7 @@ class requestPaymentsAddEdit extends Component {
                                 </label>
                                 <div className="shareLinks">
                                     <Dropdown
+                                    isClear={true}
                                         data={this.state.fillDropDownTress}
                                         selectedValue={
                                             this.state.selectedDropDownTrees

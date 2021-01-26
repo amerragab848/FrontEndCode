@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
     timeExtension: Yup.string().required(Resources['timeExtensionRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     contractId: Yup.string().required(Resources['contractRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true)
 })
 
 let docId = 0;
@@ -320,7 +320,8 @@ class VariationRequestAdd extends Component {
                 status: 'true',
                 description: '',
                 refDoc: '',
-                contractId: ''
+                contractId: '',
+                timeExtension:''
             };
             this.setState({ document: Variation });
             this.fillDropDowns(false);
@@ -460,11 +461,20 @@ class VariationRequestAdd extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+            this.setState({
+             
+                [subDatasource]: event
+            });
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -473,12 +483,22 @@ class VariationRequestAdd extends Component {
         });
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
+
+
         }
     }
 
@@ -711,7 +731,8 @@ class VariationRequestAdd extends Component {
                                                                 <div className="linebylineInput fullInputWidth">
                                                                     <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev"}>
-                                                                        <input type="text" className="form-control" id="refDoc" value={this.state.document.refDoc || ''}
+                                                                        <input type="text" className="form-control"
+                                                                         id="refDoc" value={this.state.document.refDoc || ''}
                                                                             name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
                                                                             onBlur={(e) => { handleChange(e); handleBlur(e) }}
                                                                             onChange={(e) => this.handleChange(e, 'refDoc')} />
@@ -722,9 +743,11 @@ class VariationRequestAdd extends Component {
                                                                     <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-                                                                            <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                                                            <Dropdown 
+                                                                             isClear={true}
+                                                                              data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                                                                 handleChange={event => {
-                                                                                    this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                                    this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact','fromContactId')
                                                                                 }}
                                                                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId}
                                                                                 touched={touched.fromCompanyId}
@@ -734,6 +757,7 @@ class VariationRequestAdd extends Component {
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
+                                                                             isClear={true}
                                                                                 isMulti={false}
                                                                                 data={this.state.fromContacts}
                                                                                 selectedValue={this.state.selectedFromContact}
@@ -754,11 +778,12 @@ class VariationRequestAdd extends Component {
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
                                                                             <Dropdown
+                                                                             isClear={true}
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
                                                                                 selectedValue={this.state.selectedToCompany}
                                                                                 handleChange={event =>
-                                                                                    this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                                    this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact','toContactId')}
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.toCompanyId}
@@ -769,6 +794,7 @@ class VariationRequestAdd extends Component {
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
+                                                                             isClear={true}
                                                                                 isMulti={false}
                                                                                 data={this.state.ToContacts}
                                                                                 selectedValue={this.state.selectedToContact}
@@ -785,6 +811,7 @@ class VariationRequestAdd extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="contractSubject"
                                                                         data={this.state.contracts}
                                                                         selectedValue={this.state.selectedContractSubject}
@@ -797,21 +824,25 @@ class VariationRequestAdd extends Component {
                                                                         name="contractId"
                                                                         id="contractId" />
                                                                 </div>
+                                                              
                                                                 <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.timeExtension[currentLanguage]}</label>
-                                                                    <div className={"ui input inputDev" + (errors.timeExtension && touched.timeExtension ? (" has-error") : (!errors.timeExtension && touched.timeExtension ? (" has-success") : "ui input inputDev has-success"))} >
+                                                                    <label className="control-label">{Resources.timeExtension[currentLanguage]}</label> 
+                                                                     <div className={"ui input inputDev" + (errors.timeExtension && touched.timeExtension ? (" has-error") : (!errors.timeExtension && touched.timeExtension ? (" has-success") : "ui input inputDev has-success"))} >
                                                                         <input type="text" className="form-control" id="timeExtension"
-                                                                            value={this.state.document.timeExtension || ''}
+                                                                            value={this.state.document.timeExtension}
                                                                             name="timeExtension"
                                                                             placeholder={Resources.timeExtension[currentLanguage]}
-                                                                            onBlur={(e) => {
-                                                                                handleChange(e)
-                                                                                handleBlur(e)
-                                                                            }}
+                                                                            // onBlur={(e) => {
+                                                                            //     handleChange(e)
+                                                                            //     handleBlur(e)
+                                                                            // }}
+                                                                            
                                                                             onChange={(e) => this.handleChange(e, 'timeExtension')} />
-                                                                        {touched.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}
+                                                                        {touched.timeExtension&errors.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}                                                                    
                                                                     </div>
+            
                                                                 </div>
+                                                               
                                                                 {this.props.changeStatus ? <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.totalCost[currentLanguage]}</label>
                                                                     <div className="ui input inputDev">

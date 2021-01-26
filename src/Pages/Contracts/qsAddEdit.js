@@ -370,30 +370,46 @@ class QsAddEdit extends Component {
 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
-    if (event == null) return;
+
 
     let original_document = { ...this.state.document };
 
     let updated_document = {};
 
-    updated_document[field] = event.value;
+      if (event == null) {
+        updated_document[field] = event;
+    }
+    else{
+        updated_document[field] = event.value;
+    }
 
     updated_document = Object.assign(original_document, updated_document);
 
     if (field == "companyId") {
-
-      let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
-
-      dataservice.GetNextArrangeMainDocument(url).then(res => {
-
-        updated_document.arrange = res;
-
+       if(event ===null){
+        updated_document.arrange = "";
+  
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
           document: updated_document
         });
-      });
+       }
+       else{
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+
+        dataservice.GetNextArrangeMainDocument(url).then(res => {
+  
+          updated_document.arrange = res;
+  
+          updated_document = Object.assign(original_document, updated_document);
+  
+          this.setState({
+            document: updated_document
+          });
+        });
+       }
+     
     }
 
     this.setState({
@@ -404,25 +420,36 @@ class QsAddEdit extends Component {
 
   handleChangeDropDownItems(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
-    if (event == null) return;
+    
 
     let original_document = { ...this.state.addItemDocument };
 
     let updated_document = {};
 
-    updated_document[field] = event.value;
+    if (event == null) {
+        updated_document[field] = event;
+    }
+    else{
+        updated_document[field] = event.value;
+    };
 
     updated_document = Object.assign(original_document, updated_document);
 
     if (field === "contractId") {
-
-      let url = "GetContractOrderByContractId?contractId=" + event.value;
-
-      dataservice.GetDataList(url, "details", "id").then(result => {
+       if(event===null){
         this.setState({
-          descriptionList: [...result]
+          descriptionList: []
         });
-      });
+       }else{
+        let url = "GetContractOrderByContractId?contractId=" + event.value;
+
+        dataservice.GetDataList(url, "details", "id").then(result => {
+          this.setState({
+            descriptionList: [...result]
+          });
+        });
+       }
+   
     }
 
     this.setState({
@@ -867,14 +894,14 @@ class QsAddEdit extends Component {
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="fromCompany" data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                <Dropdown isClear={true}  title="fromCompany" data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                   handleChange={event => this.handleChangeDropDown(event, "companyId", false, "", "", "", "selectedFromCompany")}
                                   onChange={setFieldValue} onBlur={setFieldTouched} error={errors.companyId}
                                   touched={touched.companyId} name="companyId" id="companyId" />
                               </div>
 
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="disciplineTitle" data={this.state.disciplines} isMulti={false}
+                                <Dropdown isClear={true} title="disciplineTitle" data={this.state.disciplines} isMulti={false}
                                   selectedValue={this.state.selectedDiscpline}
                                   handleChange={event => this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")}
                                   onChange={setFieldValue} onBlur={setFieldTouched} error={errors.disciplineId}
@@ -882,7 +909,7 @@ class QsAddEdit extends Component {
                               </div>
                               <div className="linebylineInput valid-input fullInputWidth">
 
-                                <Dropdown title="contract" isMulti={false}
+                                <Dropdown isClear={true}  title="contract" isMulti={false}
                                   data={this.state.contracts} selectedValue={this.state.selectedContract}
                                   handleChange={event => this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContract")}
                                   onChange={setFieldValue} onBlur={setFieldTouched} error={errors.contract}

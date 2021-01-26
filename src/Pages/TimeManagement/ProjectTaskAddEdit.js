@@ -26,8 +26,8 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
-  fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]),
-  bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage])
+  fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
+  bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
 });
 
 const validationSchemaForCycle = Yup.object().shape({
@@ -403,15 +403,28 @@ class ProjectTaskAddEdit extends Component {
     });
   }
 
-  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
 
-    if (event == null) return;
+    
 
     let original_document = { ...this.state.document };
 
     let updated_document = {};
 
-    updated_document[field] = event.value;
+    
+    if (event == null) {
+      updated_document[field] = event;
+      updated_document[subDatasourceId] = event;
+
+      this.setState({
+       
+        [subDatasource]: event
+      });
+  
+    }
+    else{
+        updated_document[field] = event.value;
+    }
 
     updated_document = Object.assign(original_document, updated_document);
 
@@ -421,24 +434,42 @@ class ProjectTaskAddEdit extends Component {
     });
 
     if (isSubscrib) {
-      let action = url + "?" + param + "=" + event.value;
-      dataservice.GetDataList(action, "contactName", "id").then(result => {
+   
+
+      if(event==null){
         this.setState({
-          [targetState]: result
+            [targetState]: []
         });
-      });
+       
+    }
+    else{
+        let action = url + "?" + param + "=" + event.value
+        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            this.setState({
+                [targetState]: result
+            });
+        });
+    }
     }
   }
 
-  handleChangeDropDownCycle(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-
-    if (event == null) return;
-
+  handleChangeDropDownCycle(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) 
+  {
     let original_document = { ...this.state.cycleDocument };
 
     let updated_document = {};
 
-    updated_document[field] = event.value;
+    
+    if (event == null) {
+      updated_document[field] = event;
+      updated_document[subDatasourceId] = event;
+      this.setState({     
+        [subDatasource]: event
+      });
+    }
+    else{
+        updated_document[field] = event.value;
+    }
 
     updated_document = Object.assign(original_document, updated_document);
 
@@ -448,12 +479,21 @@ class ProjectTaskAddEdit extends Component {
     });
 
     if (isSubscrib) {
-      let action = url + "?" + param + "=" + event.value;
-      dataservice.GetDataList(action, "contactName", "id").then(result => {
-        this.setState({
-          [targetState]: result
-        });
-      });
+
+      if(event==null) {
+          this.setState({
+              [targetState]: []
+          });
+        
+      }
+      else{
+          let action = url + "?" + param + "=" + event.value
+          dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+              this.setState({
+                  [targetState]: result
+              });
+          });
+      }
     }
   }
 
@@ -570,6 +610,8 @@ class ProjectTaskAddEdit extends Component {
   addNewCycle(event) {
 
     let saveDocument = { ...this.state.cycleDocument };
+    saveDocument.parentId=this.state. docId;
+    saveDocument.projectId=this.state.projectId
 
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
@@ -716,15 +758,19 @@ class ProjectTaskAddEdit extends Component {
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                  <Dropdown data={this.state.companies} isMulti={false}
+                                  <Dropdown
+                                    isClear={true}
+                                    data={this.state.companies} isMulti={false}
                                     selectedValue={this.state.selectedFromCompany}
-                                    handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
+                                    handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId"); }}
                                     onChange={setFieldValue} onBlur={setFieldTouched}
                                     error={errors.fromCompanyId} touched={touched.fromCompanyId}
                                     name="fromCompanyId" id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                 </div>
                                 <div className="super_company">
-                                  <Dropdown isMulti={false} data={this.state.fromContacts}
+                                  <Dropdown
+                                    isClear={true}
+                                    isMulti={false} data={this.state.fromContacts}
                                     selectedValue={this.state.selectedFromContact}
                                     handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromContactId} touched={touched.fromContactId}
@@ -739,14 +785,18 @@ class ProjectTaskAddEdit extends Component {
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                  <Dropdown isMulti={false} data={this.state.companies}
+                                  <Dropdown
+                                    isClear={true}
+                                    isMulti={false} data={this.state.companies}
                                     selectedValue={this.state.selectedBicCompany}
-                                    handleChange={event => this.handleChangeDropDown(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact")}
+                                    handleChange={event => this.handleChangeDropDown(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact","bicContactId")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                     touched={touched.bicCompanyId} name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                 </div>
                                 <div className="super_company">
-                                  <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                  <Dropdown
+                                    isClear={true}
+                                    isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
                                     handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
                                     name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -782,7 +832,9 @@ class ProjectTaskAddEdit extends Component {
                               </div>
                             </div>
                             <div className="linebylineInput valid-input">
-                              <Dropdown title="priority" data={this.state.priority} selectedValue={this.state.selectedPriority}
+                              <Dropdown
+                                isClear={true}
+                                title="priority" data={this.state.priority} selectedValue={this.state.selectedPriority}
                                 handleChange={event => this.handleChangeDropDown(event, "priorityId", false, "", "", "", "selectedPriority")} />
                             </div>
                             <div className="linebylineInput valid-input">
@@ -890,7 +942,10 @@ class ProjectTaskAddEdit extends Component {
         {this.state.viewModal === true ? (
           <div className="largePopup largeModal " style={{ display: this.state.viewModal ? "block" : "none" }}>
             <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources["addNewCycle"][currentLanguage]}>
-              <Formik initialValues={{ ...this.state.cycleDocument }} validationSchema={validationSchemaForCycle} onSubmit={values => { this.addNewCycle(); }}>
+              <Formik 
+              initialValues={{ ...this.state.cycleDocument }} 
+              validationSchema={validationSchemaForCycle} 
+              onSubmit={values => { this.addNewCycle(); }}>
                 {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldValue, setFieldTouched }) => (
                   <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                     <div className="dropWrapper">
@@ -964,15 +1019,19 @@ class ProjectTaskAddEdit extends Component {
                           </label>
                           <div className="supervisor__company">
                             <div className="super_name">
-                              <Dropdown data={this.state.companies} isMulti={false}
+                              <Dropdown 
+                                isClear={true} 
+                                data={this.state.companies} isMulti={false}
                                 selectedValue={this.state.selectedBicCompanyCycle}
-                                handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact"); }}
+                                handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedToContactCycle","bicContactId"); }}
                                 name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                             </div>
                             <div className="super_company">
-                              <Dropdown isMulti={false} data={this.state.ToContacts}
+                              <Dropdown
+                                isClear={true}
+                                isMulti={false} data={this.state.ToContacts}
                                 selectedValue={this.state.selectedToContactCycle}
-                                handleChange={event => this.handleChangeDropDownCycle(event, "bicContactId", false, "", "", "", "selectedToContactCycle")}
+                                handleChange={event => this.handleChangeDropDownCycle(event, "bicContactId", false, "", "", "", "selectedToContactCycle","")}
                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId}
                                 touched={touched.bicContactId}
                                 name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}
@@ -1006,8 +1065,10 @@ class ProjectTaskAddEdit extends Component {
                           </div>
                         </div>
 
-                        <Dropdown title="priority" data={this.state.priority} selectedValue={this.state.selectedPriorityCycle}
-                          handleChange={event => this.handleChangeDropDownCycle(event, "priorityId", false, "", "", "", "selectedPriorityCycle", "")} />
+                        <Dropdown 
+                          isClear={true}
+                          title="priority" data={this.state.priority} selectedValue={this.state.selectedPriorityCycle}
+                          handleChange={event => this.handleChangeDropDownCycle(event, "priorityId", false, "", "", "", "selectedPriorityCycle", "","")} />
 
                         <div className="fillter-status fillter-item-c">
                           <label className="control-label">

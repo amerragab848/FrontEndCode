@@ -177,7 +177,7 @@ class ContractsConditions extends Component {
                         initialValues={{
                             description: this.state.description,
                             arrange: this.state.activeTab == 0 ? this.state.G_Arrange : this.state.P_Arrange,
-                            fromContract: this.state.selectedContract.value == -1 ? '' : this.state.selectedContract.label
+                            fromContract: this.state.selectedContract!==null?this.state.selectedContract.value == -1 ? '' : this.state.selectedContract.label:''
                         }}
                         validationSchema={this.state.activeCondition == 1 ? conditionSchema : fromContractSchema}
                         onSubmit={(values) => {
@@ -229,6 +229,7 @@ class ContractsConditions extends Component {
                                     </div> :
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title={this.state.activeTab == 1 ? 'specsSection' : "conditions"}
                                             data={this.state.contracts}
                                             selectedValue={this.state.selectedContract}

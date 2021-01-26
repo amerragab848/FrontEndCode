@@ -578,35 +578,17 @@ class ViewAttachmments extends Component {
                 }
             });
 
-            var timesNewRomanBuffer = await fetch(
-                '/assets/fonts/Times-New-Roman.ttf',
-            ).then(res => res.arrayBuffer());
-
-            var cairoRegularBuffer = await fetch(
-                '/public/fonts/Cairo-Regular.ttf',
-            ).then(res => res.arrayBuffer());
-
-            var robotoRegularBuffer = await fetch(
-                '/public/fonts/Roboto-Regular.ttf',
+            var defaultFontBuffer = await fetch(
+                '/assets/fonts/DefaultFont.ttf',
             ).then(res => res.arrayBuffer());
 
             var notoEmojiBuffer = await fetch(
-                '/public/fonts/NotoEmoji-661A.ttf',
+                '/assets/fonts/NotoEmoji-661A.ttf',
             ).then(res => res.arrayBuffer());
 
             currentPDFDoc.registerFontkit(fontkit);
 
-            var timesNewRoman = await currentPDFDoc.embedFont(
-                timesNewRomanBuffer,
-            );
-
-            var cairoRegular = await currentPDFDoc.embedFont(
-                cairoRegularBuffer,
-            );
-
-            var robotoRegular = await currentPDFDoc.embedFont(
-                robotoRegularBuffer,
-            );
+            var defaultFont = await currentPDFDoc.embedFont(defaultFontBuffer);
 
             var notoEmoji = await currentPDFDoc.embedFont(notoEmojiBuffer);
 
@@ -695,11 +677,7 @@ class ViewAttachmments extends Component {
                                         cvs_obj.imageSrc.indexOf('http://') !==
                                         -1
                                     ) {
-                                        buffer = await fetch(
-                                            cvs_obj.imageSrc.replace(
-                                                'https://newgizaservices.procoor.com/downloads/',
-                                                'https://pdfservices.procoor.com/public/',
-                                            ),
+                                        buffer = await fetch(                                            cvs_obj.imageSrc.replace(Config.getPublicConfiguartion().local + 'downloads/', 'https://pdfservices.procoor.com/public/'),
                                         ).then(res => res.arrayBuffer());
                                     } else {
                                         buffer = cvs_obj.imageSrc;
@@ -769,14 +747,7 @@ class ViewAttachmments extends Component {
                                     thickness: cvs_obj.lineThickness,
                                 });
                             } else {
-                                let fontFamily =
-                                    cvs_obj.fontFamily === 'Roboto'
-                                        ? robotoRegular
-                                        : cvs_obj.fontFamily === 'Noto Emoji'
-                                            ? notoEmoji
-                                            : cvs_obj.fontFamily === 'Cairo'
-                                                ? cairoRegular
-                                                : timesNewRoman;
+                                let fontFamily = cvs_obj.fontFamily === 'Noto Emoji' ? notoEmoji : defaultFont;
 
                                 let color = net.brehaut.Color(
                                     cvs_obj.fill || '#000',
@@ -969,7 +940,7 @@ class ViewAttachmments extends Component {
                                     : doc;
 
             let createdDate = moment(item['createdDate']).format('DD/MM/YYYY');
- 
+
             return (
                 <tr key={Index}>
                     <td>{item.no}</td>

@@ -26,15 +26,14 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchemaClintSelection = Yup.object().shape({
 
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
 
     refDoc: Yup.string().required(Resources['refernceRequired'][currentLanguage]),
 
-    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
-        ,
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
 
     toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage]),
+        .required(Resources['toContactRequired'][currentLanguage]).nullable(true),
 
     total: Yup.string()
         .required(Resources['total'][currentLanguage])
@@ -751,7 +750,7 @@ class clientSelectionAddEdit extends Component {
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
                                                                         isClear={false}
-                                                                        index="IR-fromContactId"
+                                                                       // index="IR-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId" />
                                                                 </div>
