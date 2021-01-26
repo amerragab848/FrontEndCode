@@ -65,8 +65,8 @@ class projectScheduleAddEdit extends Component {
                 "title": "",
                 "type": "check-box",
                 "fixed": true,
-                "field": "id", 
-                "width":10
+                "field": "id",
+                "width": 10
             },
             {
                 "field": "arrange",
@@ -519,10 +519,20 @@ class projectScheduleAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+       
         let updated_document = this.state.documentItem
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+
+            this.setState({
+                
+                [subDatasource]: event
+            });
+         }else{
+             updated_document[field] = event.value;
+         }
 
         this.setState({
             documentItem: updated_document,
@@ -530,19 +540,38 @@ class projectScheduleAddEdit extends Component {
         });
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
+                });               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
                 });
-            });
+            }
         }
     }
 
-    handleChangeDropDownEdit(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDownEdit(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource, subDatasourceId) {
+
         let updated_document = this.state.documentItemEdit
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+
+            this.setState({
+
+                [subDatasource]: event
+            });
+        }
+        else {
+            updated_document[field] = event.value;
+        }
 
         this.setState({
             documentItemEdit: updated_document,
@@ -550,12 +579,21 @@ class projectScheduleAddEdit extends Component {
         });
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+
+            if (event == null) {
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+
+            }
+            else {
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
         }
     }
 
@@ -666,8 +704,8 @@ class projectScheduleAddEdit extends Component {
         dataservice.GetDataGrid("GetProjectScheduleItemsByScheduleId?scheduleId=" + this.state.docId).then(result => {
             this.setState({
                 scheduleItemData: result || [],
-                rows:result || [],
-                isLoading:false
+                rows: result || [],
+                isLoading: false
             });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
@@ -971,6 +1009,22 @@ class projectScheduleAddEdit extends Component {
                                     <div className="supervisor__company">
                                         <div className="super_name">
                                             <Dropdown
+                                                isClear={true}
+                                                isMulti={false}
+                                                data={this.state.companies}
+                                                selectedValue={this.state.selectedToCompanyEdit}
+                                                handleChange={event => this.handleChangeDropDownEdit(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompanyEdit', 'selectedToContactEdit', 'toContactId')}
+                                                onChange={setFieldValue}
+                                                onBlur={setFieldTouched}
+                                                error={errors.bicCompanyId}
+                                                touched={touched.bicCompanyId}
+                                                index="letter-toCompany"
+                                                name="toCompanyId"
+                                                id="toCompanyId" classDrop=" companyName1 " styles={CompanyDropdown} />
+                                        </div>
+                                        <div className="super_company">
+                                            <Dropdown
+                                                isClear={true}
                                                 isMulti={false}
                                                 data={this.state.ToContacts}
                                                 selectedValue={this.state.selectedToContactEdit}
@@ -981,22 +1035,9 @@ class projectScheduleAddEdit extends Component {
                                                 touched={touched.bicCompanyId}
                                                 index="letter-toContactId"
                                                 name="toContactId"
-                                                id="toContactId" styles={CompanyDropdown} classDrop="companyName1 " />
+                                                id="toContactId" styles={ContactDropdown} classDrop="contactName1 " />
                                         </div>
-                                        <div className="super_company">
-                                            <Dropdown
-                                                isMulti={false}
-                                                data={this.state.companies}
-                                                selectedValue={this.state.selectedToCompanyEdit}
-                                                handleChange={event => this.handleChangeDropDownEdit(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompanyEdit', 'selectedToContactEdit')}
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.bicCompanyId}
-                                                touched={touched.bicCompanyId}
-                                                index="letter-toCompany"
-                                                name="toCompanyId"
-                                                id="toCompanyId" classDrop=" contactName1" styles={ContactDropdown} />
-                                        </div>
+
                                     </div>
                                 </div>
 
@@ -1103,11 +1144,30 @@ class projectScheduleAddEdit extends Component {
                                                 startDate={this.state.documentItem.finishDate}
                                                 handleChange={this.finishDatehandleChange} />
                                         </div>
+
+
+
                                         <div className="linebylineInput valid-input mix_dropdown">
                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                             <div className="supervisor__company">
                                                 <div className="super_name">
                                                     <Dropdown
+                                                        isClear={true}
+                                                        isMulti={false}
+                                                        data={this.state.companies}
+                                                        selectedValue={this.state.selectedToCompany}
+                                                        handleChange={event => this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact', 'bicContactId')}
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.bicCompanyId}
+                                                        touched={touched.bicCompanyId}
+                                                        index="letter-bicCompanyId"
+                                                        name="bicCompanyId"
+                                                        id="bicCompanyId" classDrop=" companyName1" styles={CompanyDropdown} />
+                                                </div>
+                                                <div className="super_company">
+                                                    <Dropdown
+                                                        isClear={true}
                                                         isMulti={false}
                                                         data={this.state.ToContacts}
                                                         selectedValue={this.state.selectedToContact}
@@ -1118,24 +1178,12 @@ class projectScheduleAddEdit extends Component {
                                                         touched={touched.bicContactId}
                                                         index="letter-bicContactId"
                                                         name="bicContactId"
-                                                        id="bicContactId" styles={CompanyDropdown} classDrop="companyName1 " />
-                                                </div>
-                                                <div className="super_company">
-                                                    <Dropdown
-                                                        isMulti={false}
-                                                        data={this.state.companies}
-                                                        selectedValue={this.state.selectedToCompany}
-                                                        handleChange={event => this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-                                                        onChange={setFieldValue}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.bicCompanyId}
-                                                        touched={touched.bicCompanyId}
-                                                        index="letter-bicCompanyId"
-                                                        name="bicCompanyId"
-                                                        id="bicCompanyId" classDrop=" contactName1" styles={ContactDropdown} />
+                                                        id="bicContactId" styles={ContactDropdown} classDrop=" contactName1" />
                                                 </div>
                                             </div>
                                         </div>
+
+
 
                                     </div>
                                     <div className="slider-Btns">
@@ -1271,7 +1319,7 @@ class projectScheduleAddEdit extends Component {
                                                 <header>
                                                     <h2 className="zero">{Resources.items[currentLanguage]}</h2>
                                                 </header>
-                                               {this.state.isLoading?null: <ReactTable data={this.state.scheduleItemData}
+                                                {this.state.isLoading ? null : <ReactTable data={this.state.scheduleItemData}
                                                     columns={columnsSchedule}
                                                     defaultPageSize={5}
                                                     minRows={2}
