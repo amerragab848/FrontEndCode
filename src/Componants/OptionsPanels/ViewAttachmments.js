@@ -516,6 +516,8 @@ class ViewAttachmments extends Component {
                                 top: cvs_obj.getBoundingRect().top,
                                 angle: cvs_obj.angle,
                                 fill: cvs_obj.fill,
+                                rx: cvs_obj.rx,
+                                ry: cvs_obj.ry,
                                 stroke: cvs_obj.stroke,
                                 fontFamily: cvs_obj.fontFamily,
                                 fontSize: cvs_obj.fontSize * cvs_obj.scaleX,
@@ -701,6 +703,39 @@ class ViewAttachmments extends Component {
                                     }
                                 } else {
                                     let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${cvs_obj.svg}</svg>`;
+
+                                    if (cvs_obj.type === 'ellipse') {
+                                        var svg_mat = svg.substr(
+                                            svg.indexOf(
+                                                'transform="matrix(1 0 0 1 ',
+                                            ) +
+                                                'transform="matrix(1 0 0 1 '
+                                                    .length,
+                                        );
+
+                                        var matrix_section = svg_mat.substring(
+                                            0,
+                                            svg_mat.indexOf(')"'),
+                                        );
+
+                                        var matrix_vals = matrix_section.split(
+                                            ' ',
+                                        );
+
+                                        svg = svg.replace(
+                                            matrix_vals[0],
+                                            (cvs_obj.rx + 1)
+                                                .toString()
+                                                .replace('-', ''),
+                                        );
+
+                                        svg = svg.replace(
+                                            matrix_vals[1],
+                                            (cvs_obj.ry + 1)
+                                                .toString()
+                                                .replace('-', ''),
+                                        );
+                                    }
 
                                     let imgData = await this.svgToPng(
                                         svg,
