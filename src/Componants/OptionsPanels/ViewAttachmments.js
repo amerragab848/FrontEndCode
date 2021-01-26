@@ -578,8 +578,8 @@ class ViewAttachmments extends Component {
                 }
             });
 
-            var scheherazadeBuffer = await fetch(
-                '/assets/fonts/Scheherazade-Regular.ttf',
+            var defaultFontBuffer = await fetch(
+                '/assets/fonts/DefaultFont.ttf',
             ).then(res => res.arrayBuffer());
 
             var notoEmojiBuffer = await fetch(
@@ -588,9 +588,7 @@ class ViewAttachmments extends Component {
 
             currentPDFDoc.registerFontkit(fontkit);
 
-            var scheherazade = await currentPDFDoc.embedFont(
-                scheherazadeBuffer,
-            );
+            var defaultFont = await currentPDFDoc.embedFont(defaultFontBuffer);
 
             var notoEmoji = await currentPDFDoc.embedFont(notoEmojiBuffer);
 
@@ -756,7 +754,7 @@ class ViewAttachmments extends Component {
                                 let fontFamily =
                                     cvs_obj.fontFamily === 'Noto Emoji'
                                         ? notoEmoji
-                                        : scheherazade;
+                                        : defaultFont;
 
                                 let color = net.brehaut.Color(
                                     cvs_obj.fill || '#000',
