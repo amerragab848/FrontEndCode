@@ -1417,9 +1417,9 @@ class CommonLog extends Component {
     };
 
     afterUpload = () => {
-        this.setState({
-            docTemplateModal: false
-        });
+        // this.setState({
+        //     docTemplateModal: false
+        // });
         this.setState({ isLoading: true });
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
     };
@@ -2008,10 +2008,13 @@ class CommonLog extends Component {
                             <div className="grid__column--title">
                                 <h2>{Resources.chart[currentLanguage]}</h2>
                             </div>
-                            <div className="grid__column--content-wrapper">
-                                {RenderPopupShowChartColumns}
-                            </div>
-                            <div className="gridChart">chart</div>
+                            <div className="grid__column--content">
+                                <div className="grid__column--content-wrapper">
+                                    {RenderPopupShowChartColumns}
+                                </div>
+                                <div className="gridChart">chart</div>
+                                
+                            </div> 
                             <div className="grid__column--footer">
                                 <button
                                     className="btn primaryBtn-1"

@@ -159,10 +159,15 @@ class ContractInsurance extends Component {
         selectedValue,
         subDatasource
     ) {
-        if (event == null) return;
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+         }
+         else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -372,6 +377,7 @@ class ContractInsurance extends Component {
                                                 <div className="proForm datepickerContainer">
                                                     <div className="linebylineInput valid-input">
                                                         <Dropdown
+                                                            isClear={true}
                                                             title="CompanyName"
                                                             data={
                                                                 this.state

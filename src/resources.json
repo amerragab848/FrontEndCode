@@ -9215,5 +9215,21 @@
    "currentContract":{
     "en":"Current Contract",
     "ar":"العقد الحالي"
-   }
+   },
+   "requestByContaact":{
+    "en":"select request By Contact",
+    "ar":"  برجار اختيار  العقد --"
+   },
+   "RequiredrequestByCompany":{
+    "en":"select request By Company",
+    "ar":"  برجار اختيار  الشركه --"}
+    ,
+   "copiesNumber":{
+    "en":"Copies Number",
+    "ar":"عدد النسخ"
+   },
+   "departments": {
+    "en": "departments",
+    "ar": "الاقسام"
+    }
 }

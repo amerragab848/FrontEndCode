@@ -418,11 +418,21 @@ class ProcurmentRequestFormAddEdit extends Component {
             document: updated_document
         });
     }
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+     
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+            this.setState({
+                [subDatasource]: event
+            });
+        }
+        else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -432,12 +442,23 @@ class ProcurmentRequestFormAddEdit extends Component {
 
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value;
-            dataservice.GetDataList(action, "contactName", "id").then(result => {
+
+           
+
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
         }
     }
     showBtnsSaving() {
@@ -637,7 +658,7 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         onChange={e => this.handleChange(e, "refNo")} />
                                                                 </div>
                                                             </div>
-                                                            <div className="linebylineInput fullInputWidth">
+                                                            {/* <div className="linebylineInput fullInputWidth">
                                                                 <label className="control-label">
                                                                     {Resources.criticalFactor[currentLanguage]}
                                                                 </label>
@@ -648,19 +669,8 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         placeholder={Resources.criticalFactor[currentLanguage]}
                                                                         onChange={e => this.handleChange(e, "criticalFactor")} />
                                                                 </div>
-                                                            </div>
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {Resources.specialInstruction[currentLanguage]}
-                                                                </label>
-                                                                <div className="ui input inputDev">
-                                                                    <input type="text" className="form-control" id="specialInstruction"
-                                                                        value={this.state.document.specialInstruction}
-                                                                        name="specialInstruction"
-                                                                        placeholder={Resources.specialInstruction[currentLanguage]}
-                                                                        onChange={e => this.handleChange(e, "specialInstruction")} />
-                                                                </div>
-                                                            </div>
+                                                            </div> */}
+                                                          
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">
                                                                     {
@@ -669,11 +679,13 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedFromCompany}
                                                                             handleChange={event => {
-                                                                                this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                                this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId");
                                                                             }}
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
@@ -687,7 +699,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         />
                                                                     </div>
                                                                     <div className="super_company">
-                                                                        <Dropdown isMulti={false}
+                                                                        <Dropdown
+                                                                            isClear={true}
+                                                                            isMulti={false}
                                                                             data={this.state.fromContacts}
                                                                             selectedValue={this.state.selectedFromContact}
                                                                             handleChange={event =>
@@ -714,7 +728,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedBidderCompany}
                                                                             handleChange={event => this.handleChangeDropDown(event, "bidderCompanyId", false, "", "", "companyId", "selectedBidderCompany", "")}
@@ -733,7 +749,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                             </div>
 
                                                             <div className="linebylineInput valid-input">
-                                                                <Dropdown title="department"
+                                                                <Dropdown 
+                                                                    isClear={true}
+                                                                    title="department"
                                                                     data={this.state.departments}
                                                                     selectedValue={this.state.selectedDepartment}
                                                                     handleChange={event =>
@@ -761,7 +779,27 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                     />
                                                                 </div>
                                                             </div>
-
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.criticalFactor[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.criticalFactor}
+                                                                        onChange={value => this.onChangeMessage(value, "criticalFactor")}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                          
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.specialInstruction[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.specialInstruction}
+                                                                        onChange={value => this.onChangeMessage(value, "specialInstruction")}
+                                                                    />
+                                                                </div>
+                                                            </div>                
                                                         </div>
 
                                                     </Fragment>
@@ -774,19 +812,7 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                             </div>
                                                         </header>
                                                         <div className="proForm datepickerContainer">
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {Resources.justification[currentLanguage]}
-                                                                </label>
-                                                                <div className="ui input inputDev">
-                                                                    <input type="text" className="form-control" id="justification"
-                                                                        value={this.state.document.justification}
-                                                                        name="justification"
-                                                                        placeholder={Resources.justification[currentLanguage]}
-                                                                        onChange={e => this.handleChange(e, "justification")} />
-                                                                </div>
-                                                            </div>
-
+                                                         
                                                             <div className="linebylineInput valid-input ">
                                                                 <label className="control-label">
                                                                     {
@@ -795,7 +821,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedVendorCompany}
                                                                             handleChange={event => this.handleChangeDropDown(event, "vendorCompanyId", false, "", "", "companyId", "selectedVendorCompany", "")}
@@ -813,14 +841,25 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input">
-                                                                <Dropdown title="currentContract"
+                                                                <Dropdown
+                                                                    isClear={true}
+                                                                    title="currentContract"
                                                                     data={this.state.contracts}
                                                                     selectedValue={this.state.selectedContract}
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContract")
                                                                     } index="letter-discipline" />
                                                             </div>
-
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.justification[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.justification}
+                                                                        onChange={value => this.onChangeMessage(value, "justification")}
+                                                                    />
+                                                                </div>
+                                                            </div>          
 
                                                         </div>
                                                     </Fragment>
@@ -834,18 +873,8 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                         </header>
                                                         <div className="proForm datepickerContainer">
 
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {Resources.budgetComments[currentLanguage]}
-                                                                </label>
-                                                                <div className="ui input inputDev">
-                                                                    <input type="text" className="form-control" id="budgetComments"
-                                                                        value={this.state.document.budgetComments}
-                                                                        name="budgetComments"
-                                                                        placeholder={Resources.budgetComments[currentLanguage]}
-                                                                        onChange={e => this.handleChange(e, "budgetComments")} />
-                                                                </div>
-                                                            </div>
+                                                            
+                                                          
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title="budgetDate"
                                                                     startDate={this.state.document.budgetDate}
@@ -860,10 +889,12 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedBudgetCompany}
-                                                                            handleChange={event => this.handleChangeDropDown(event, "budgetCompanyId", true, "budgetContacts", "GetContactsByCompanyId", "companyId", "selectedBudgetCompany", "selectedBudgetContact")}
+                                                                            handleChange={event => this.handleChangeDropDown(event, "budgetCompanyId", true, "budgetContacts", "GetContactsByCompanyId", "companyId", "selectedBudgetCompany", "selectedBudgetContact","budgetContactId")}
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
                                                                             error={errors.budgetCompanyId}
@@ -876,7 +907,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         />
                                                                     </div>
                                                                     <div className="super_company">
-                                                                        <Dropdown isMulti={false}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            isMulti={false}
                                                                             data={this.state.budgetContacts}
                                                                             selectedValue={this.state.selectedBudgetContact}
                                                                             handleChange={event =>
@@ -895,7 +928,16 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.budgetComments[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.budgetComments}
+                                                                        onChange={value => this.onChangeMessage(value, "budgetComments")}
+                                                                    />
+                                                                </div>
+                                                            </div>                    
 
                                                         </div>
                                                     </Fragment>

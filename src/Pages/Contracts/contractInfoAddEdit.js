@@ -880,14 +880,15 @@ class ContractInfoAddEdit extends Component {
 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
-    if (event == null) return;
-
     let original_document = { ...this.state.document };
-
     let updated_document = {};
-
-    updated_document[field] = event.value;
-
+    if (event == null) {
+      updated_document[field] = event;
+    }
+    else
+    {
+        updated_document[field] = event.value;
+    }
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
@@ -896,27 +897,53 @@ class ContractInfoAddEdit extends Component {
     });
 
     if (field == "fromCompany") {
-      let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+      if (event===null){
 
-      Api.get(url).then(res => {
+          updated_document.arrange = "";
+    
+          updated_document = Object.assign(original_document, updated_document);
 
-        updated_document.arrange = res;
+          this.setState({
+            document: updated_document
+          });
 
-        updated_document = Object.assign(original_document, updated_document);
+      }
+      else{
 
-        this.setState({
-          document: updated_document
-        });
-      });
+          let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+          Api.get(url).then(res => {
+    
+            updated_document.arrange = res;
+    
+            updated_document = Object.assign(original_document, updated_document);
+    
+            this.setState({
+              document: updated_document
+            });
+          });
+
+      }
+    
     }
 
     if (isSubscrib) {
-      let action = url + event.value;
-      DataService.GetDataList(action, "contactName", "id").then(result => {
-        this.setState({
-          [targetState]: result
-        });
+     if(event===null){
+      this.setState({
+        [targetState]: []
       });
+     }
+     else{
+
+          let action = url + event.value;
+          DataService.GetDataList(action, "contactName", "id").then(result => {
+          this.setState({
+            [targetState]: result
+          });
+        });
+
+     }
+   
+
     }
   }
 
@@ -1447,7 +1474,7 @@ class ContractInfoAddEdit extends Component {
       <Fragment>
         <div className="document-fields">
           <Formik enableReinitialize={this.props.changeStatus}
-            initialValues={{ changeOrder: this.state.selectedVariationOrders.value > 0 ? this.state.selectedVariationOrders.value : "" }}
+            initialValues={{ changeOrder: this.state.selectedVariationOrders!==null?this.state.selectedVariationOrders.value > 0 ? this.state.selectedVariationOrders.value : "" :""}}
             validationSchema={variationOrdersSchema}
             onSubmit={values => { this.addChangeOrder(values); }}>
             {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
@@ -1459,7 +1486,9 @@ class ContractInfoAddEdit extends Component {
                 </div>
                 <div className="proForm datepickerContainer">
                   <div className="linebylineInput valid-input">
-                    <Dropdown title="changeOrder"
+                    <Dropdown
+                      isClear={true}
+                      title="changeOrder"
                       data={this.state.variationOrders}
                       selectedValue={this.state.selectedVariationOrders}
                       handleChange={event => { this.setState({ selectedVariationOrders: event }); }}
@@ -1518,9 +1547,9 @@ class ContractInfoAddEdit extends Component {
             <div className="document-fields">
               <Formik initialValues={{
                 subject: this.props.changeStatus ? this.state.document.subject : "",
-                fromCompany: this.state.selectedFromCompany.value > 0 ? this.state.selectedFromCompany.value : "",
-                contractTo: this.state.selectedContract.value > 0 ? this.state.selectedContract.value : "",
-                contact: this.state.selectedContractWithContact.value > 0 ? this.state.selectedContractWithContact.value : "",
+                fromCompany: this.state.selectedFromCompany!==null?this.state.selectedFromCompany.value > 0 ? this.state.selectedFromCompany.value : "":"",
+                contractTo: this.state.selectedContract!==null? this.state.selectedContract.value > 0 ? this.state.selectedContract.value : "":"",
+                contact: this.state.selectedContractWithContact!==null? this.state.selectedContractWithContact.value > 0 ? this.state.selectedContractWithContact.value : "":"",
                 tax: this.props.changeStatus ? this.props.document.tax : "",
                 vat: this.props.changeStatus ? this.props.document.vat : "",
                 retainage: this.props.changeStatus ? this.props.document.retainage : "",
@@ -1531,7 +1560,7 @@ class ContractInfoAddEdit extends Component {
                 completionDate: this.props.changeStatus ? this.props.document.completionDate : moment()
               }}
                 validationSchema={contractInfoSchema}
-                enableReinitialize={this.props.changeStatus}
+                enableReinitialize={true}
                 onSubmit={values => {
 
                   if (this.props.showModal) { return; }
@@ -1605,7 +1634,9 @@ class ContractInfoAddEdit extends Component {
                         </div>
                       </div>
                       <div className="linebylineInput valid-input">
-                        <Dropdown title="fromCompany"
+                        <Dropdown 
+                          isClear={true}
+                          title="fromCompany"
                           data={this.state.Companies}
                           selectedValue={this.state.selectedFromCompany}
                           handleChange={event => this.handleChangeDropDown(event, "fromCompany", false, "", "", "", "selectedFromCompany")}
@@ -1616,14 +1647,18 @@ class ContractInfoAddEdit extends Component {
                           name="fromCompany" id="fromCompany" />
                       </div>
                       <div className="linebylineInput valid-input">
-                        <Dropdown title="contractTo" data={this.state.Companies} selectedValue={this.state.selectedContract}
+                        <Dropdown
+                          isClear={true}
+                          title="contractTo" data={this.state.Companies} selectedValue={this.state.selectedContract}
                           handleChange={event => { this.setState({ selectedContract: event }); }}
                           onChange={setFieldValue} onBlur={setFieldTouched} error={errors.contractTo}
                           handleChange={event => this.handleChangeDropDown(event, "contractTo", true, "contacts", "GetContactsByCompanyId?companyId=", "", "selectedContract")}
                           touched={touched.contractTo} name="contractTo" index="contractTo" />
                       </div>
                       <div className="linebylineInput valid-input">
-                        <Dropdown title="contractWithContact" data={this.state.contacts}
+                        <Dropdown 
+                          isClear={true}
+                          title="contractWithContact" data={this.state.contacts}
                           selectedValue={this.state.selectedContractWithContact}
                           handleChange={event => {
                             this.setState({ selectedContractWithContact: event });
@@ -2095,7 +2130,9 @@ class ContractInfoAddEdit extends Component {
                     <div className='document-fields'>
                       <div className="proForm datepickerContainer">
                         <div className="linebylineInput letterFullWidth ">
-                          <Dropdown title="boq"
+                          <Dropdown 
+                            isClear={true}
+                            title="boq"
                             data={this.state.notContractedBoqList}
                             selectedValue={this.state.selectedBoq}
                             value={this.state.selectedBoq}

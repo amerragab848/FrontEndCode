@@ -35,7 +35,7 @@ const validationSchema = Yup.object().shape({
 
     description: Yup.string().required(Resources['description'][currentLanguage]),
 
-    companyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
+    companyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]).nullable(true),
 
     profit: Yup.string().required(Resources['profit'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
@@ -538,10 +538,14 @@ class pcoAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, selectedValue) {
-        if (event == null) return;
+        
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -633,10 +637,10 @@ class pcoAddEdit extends Component {
         let saveDocument = { ...this.state.voItem };
 
         saveDocument.proposalId = this.state.docId;
-        saveDocument.unit = this.state.selectedUnit.value;
-        saveDocument.boqTypeId = this.state.selectedBoqType.value;
-        saveDocument.boqChildTypeId = this.state.selectedBoqTypeChild.value;
-        saveDocument.boqSubTypeId = this.state.selectedBoqSubType.value;
+        saveDocument.unit = this.state.selectedUnit!==null? this.state.selectedUnit.value:null;
+        saveDocument.boqTypeId = this.state.selectedBoqType!==null?this.state.selectedBoqType.value:null;
+        saveDocument.boqChildTypeId = this.state.selectedBoqTypeChild!==null? this.state.selectedBoqTypeChild.value:null;
+        saveDocument.boqSubTypeId = this.state.selectedBoqSubType!==null?this.state.selectedBoqSubType.value:null;
 
         let currentTab = this.state.currIndex;
         saveDocument.action = currentTab;
@@ -662,14 +666,14 @@ class pcoAddEdit extends Component {
         let saveDocument = { ...this.state.voItemToEdit };
 
         saveDocument.proposalId = this.state.docId;
-        saveDocument.unit = this.state.selectedUnitToEdit.value;
-        saveDocument.unitName = this.state.selectedUnitToEdit.label;
-        saveDocument.boqTypeId = this.state.selectedBoqTypeToEdit.value;
-        saveDocument.boqChildTypeId = this.state.selectedBoqTypeChildToEdit.value;
-        saveDocument.boqSubTypeId = this.state.selectedBoqSubTypeToEdit.value;
-        saveDocument.boqType = this.state.selectedBoqTypeToEdit.label;
-        saveDocument.boqChildType = this.state.selectedBoqTypeChildToEdit.label;
-        saveDocument.boqSubType = this.state.selectedBoqSubTypeToEdit.label;
+        saveDocument.unit = this.state.selectedUnitToEdit!==null?this.state.selectedUnitToEdit.value:null;
+        saveDocument.unitName = this.state.selectedUnitToEdit!==null?this.state.selectedUnitToEdit.label:null;
+        saveDocument.boqTypeId = this.state.selectedBoqTypeToEdit!==null?this.state.selectedBoqTypeToEdit.value:null;
+        saveDocument.boqChildTypeId = this.state.selectedBoqTypeChildToEdit!==null?this.state.selectedBoqTypeChildToEdit.value:null;
+        saveDocument.boqSubTypeId = this.state.selectedBoqSubTypeToEdit!==null?this.state.selectedBoqSubTypeToEdit.value:null;
+        saveDocument.boqType = this.state.selectedBoqTypeToEdit!==null?this.state.selectedBoqTypeToEdit.label:null;
+        saveDocument.boqChildType = this.state.selectedBoqTypeChildToEdit!==null? this.state.selectedBoqTypeChildToEdit.label:null;
+        saveDocument.boqSubType = this.state.selectedBoqSubTypeToEdit!==null?this.state.selectedBoqSubTypeToEdit.label:null;
 
 
         let currentTab = this.state.currIndex;
@@ -742,11 +746,15 @@ class pcoAddEdit extends Component {
     }
 
     handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, isEdit) {
-        if (event == null) return;
+       
         if (isEdit == true) {
             let original_document = { ...this.state.voItemToEdit };
             let updated_document = {};
-            updated_document[field] = event.value;
+            if (event == null) {
+                updated_document[field] = event;
+             }else{
+                 updated_document[field] = event.value;
+             }
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
@@ -755,17 +763,34 @@ class pcoAddEdit extends Component {
             });
 
             if (isSubscribe) {
-                let action = url + "?" + param + "=" + event.value
-                dataservice.GetDataList(action, 'title', 'id').then(result => {
+                if(event===null){
                     this.setState({
-                        [nextTragetState]: result
+                        [nextTragetState]:[]
                     });
-                });
+                }else{
+                    let action = url + "?" + param + "=" + event.value
+                    dataservice.GetDataList(action, 'title', 'id').then(result => {
+                        this.setState({
+                            [nextTragetState]: result
+                        });
+                    });
+                }
+             
+
+
+
             }
         } else {
             let original_document = { ...this.state.documentCycle };
             let updated_document = {};
-            updated_document[field] = event.value;
+            
+            if (event == null) {
+                updated_document[field] = event;
+             }
+             else{
+                 updated_document[field] = event.value;
+             }
+
             updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
@@ -774,12 +799,19 @@ class pcoAddEdit extends Component {
             });
 
             if (isSubscribe) {
-                let action = url + "?" + param + "=" + event.value
-                dataservice.GetDataList(action, 'title', 'id').then(result => {
+                if(event===null){
                     this.setState({
-                        [nextTragetState]: result
+                        [nextTragetState]: []
                     });
-                });
+                }else{
+                    let action = url + "?" + param + "=" + event.value
+                    dataservice.GetDataList(action, 'title', 'id').then(result => {
+                        this.setState({
+                            [nextTragetState]: result
+                        });
+                    });
+                }
+               
             }
         }
 
@@ -872,6 +904,7 @@ class pcoAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="unit"
                                             data={this.state.units}
                                             selectedValue={this.state.selectedUnit}
@@ -880,6 +913,7 @@ class pcoAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="boqType"
                                             data={this.state.boqTypes}
                                             selectedValue={this.state.selectedBoqType}
@@ -889,6 +923,7 @@ class pcoAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="boqTypeChild"
                                             data={this.state.BoqTypeChilds}
                                             selectedValue={this.state.selectedBoqTypeChild}
@@ -900,6 +935,7 @@ class pcoAddEdit extends Component {
                                     <div className="linebylineInput valid-input">
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="boqSubType"
                                                 data={this.state.BoqSubTypes}
                                                 selectedValue={this.state.selectedBoqSubType}
@@ -913,6 +949,7 @@ class pcoAddEdit extends Component {
                                         <Fragment>
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown
+                                                    isClear={true}  
                                                     title="equipmentType"
                                                     data={this.state.equipmentTypes}
                                                     selectedValue={this.state.selectedEquipmenttypeId}
@@ -1115,6 +1152,7 @@ class pcoAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="fromCompany"
                                                                         data={this.state.companies}
                                                                         isMulti={false}
@@ -1142,6 +1180,7 @@ class pcoAddEdit extends Component {
                                                                     :
                                                                     <div className="linebylineInput valid-input">
                                                                         <Dropdown
+                                                                            isClear={true}
                                                                             title="contractPo"
                                                                             data={this.state.contractsPos}
                                                                             selectedValue={this.state.selectContract}
@@ -1205,7 +1244,9 @@ class pcoAddEdit extends Component {
                                                                     :
                                                                     <Fragment>
                                                                         <div className="linebylineInput valid-input">
-                                                                            <Dropdown title="approvalStatus"
+                                                                            <Dropdown
+                                                                                isClear={true}
+                                                                                title="approvalStatus"
                                                                                 isMulti={false}
                                                                                 data={this.state.approvalstatusList}
                                                                                 selectedValue={this.state.selectedApprovalStatusId}
@@ -1221,6 +1262,7 @@ class pcoAddEdit extends Component {
                                                                         </div>
                                                                         <div className="linebylineInput valid-input">
                                                                             <Dropdown
+                                                                                isClear={true}
                                                                                 title="cvr"
                                                                                 data={this.state.variations}
                                                                                 selectedValue={this.state.selectedCVR}
@@ -1479,6 +1521,7 @@ class pcoAddEdit extends Component {
                                             </div>
 
                                             <Dropdown
+                                                isClear={true}
                                                 title="unit"
                                                 data={this.state.units}
                                                 selectedValue={this.state.selectedUnitToEdit}
@@ -1486,6 +1529,7 @@ class pcoAddEdit extends Component {
                                                 index="unit" />
 
                                             <Dropdown
+                                                isClear={true}
                                                 title="boqType"
                                                 data={this.state.boqTypes}
                                                 selectedValue={this.state.selectedBoqTypeToEdit}
@@ -1494,6 +1538,7 @@ class pcoAddEdit extends Component {
                                                 index="boqType" />
 
                                             <Dropdown
+                                                isClear={true}
                                                 title="boqTypeChild"
                                                 data={this.state.BoqTypeChilds}
                                                 selectedValue={this.state.selectedBoqTypeChildToEdit}
@@ -1503,6 +1548,7 @@ class pcoAddEdit extends Component {
                                                 index="boqTypeChild" />
 
                                             <Dropdown
+                                                isClear={true}
                                                 title="boqSubType"
                                                 data={this.state.BoqSubTypes}
                                                 selectedValue={this.state.selectedBoqSubTypeToEdit}

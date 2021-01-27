@@ -37,14 +37,14 @@ const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    contractPoId: Yup.string().required(Resources['contractPoSelection'][currentLanguage]).nullable(),
-    disciplineId: Yup.string().required(Resources['disciplineRequired'][currentLanguage]).nullable(),
-    areaId: Yup.string().required(Resources['areaRequired'][currentLanguage]).nullable(),
-    fileNumberId: Yup.string().required(Resources['selectFileNumber'][currentLanguage]).nullable(),
-    specsSectionId: Yup.string().required(Resources['specsSectionSelection'][currentLanguage]).nullable(),
-    bicCompanyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]).nullable(),
-    bicContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(),
-    reasonForIssueId: Yup.string().required(Resources['SelectReasonForIssueId'][currentLanguage]).nullable()
+    contractPoId: Yup.string().required(Resources['contractPoSelection'][currentLanguage]),//.nullable(),
+    disciplineId: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),//.nullable(),
+    areaId: Yup.string().required(Resources['areaRequired'][currentLanguage]),//.nullable(),
+    fileNumberId: Yup.string().required(Resources['selectFileNumber'][currentLanguage]),//.nullable(),
+    specsSectionId: Yup.string().required(Resources['specsSectionSelection'][currentLanguage]),//.nullable(),
+    bicCompanyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),//.nullable(),
+    bicContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),//.nullable(),
+    reasonForIssueId: Yup.string().required(Resources['SelectReasonForIssueId'][currentLanguage]),//.nullable(),
 })
 
 class QualityControlAddEdit extends Component {
@@ -433,13 +433,24 @@ class QualityControlAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field,sub_field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+                [subDatasource]:null,
+                [targetState]:[]
+            });
+            updated_document[field] = event;
+            updated_document[sub_field]=null;
+            updated_document["arrange"]=null;
+            this.setState({
+                document: updated_document,
+            });
+        }else{
+        updated_document[field] = event.value;
         this.setState({
             document: updated_document,
             [selectedValue]: event
@@ -450,7 +461,6 @@ class QualityControlAddEdit extends Component {
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
-
                 this.setState({
                     document: updated_document
                 });
@@ -465,6 +475,7 @@ class QualityControlAddEdit extends Component {
             });
         }
     }
+}
 
     saveAndExit = () => {
 
@@ -569,10 +580,12 @@ class QualityControlAddEdit extends Component {
     }
 
     getQualityControlItems = (e) => {
+        if(e !=null){
         let url=docId > 0?`GetLogsQualityControlItemsByQualityControlId?qualityControlId=${e}`:`GetAccountsQualityControlItemsByParentId?parentId=${e.value}`
         dataservice.GetDataGrid(url).then(result => {
             this.setState({ qualityControlItemsList: result || [] })
         })
+    }
     }
     changeTableValue = (field, e, index) => {
         // if (e && index >= 0) {
@@ -647,7 +660,7 @@ class QualityControlAddEdit extends Component {
                                             this.saveQualityControl();
                                         }}>
 
-                                        {({ errors, touched, handleBlur, values, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                       {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                             <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform">
                                                     <div className="linebylineInput valid-input">
@@ -696,31 +709,41 @@ class QualityControlAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="areaName" data={this.state.areas}
-                                                            selectedValue={this.state.selecetedArea} index="areaId"
+                                                        <Dropdown 
+                                                            isClear={true}
+                                                            title="areaName"
+                                                            data={this.state.areas}
+                                                            selectedValue={this.state.selecetedArea} 
+                                                            index="areaId"
                                                             value={this.state.selecetedArea}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'areaId', false, '', '', '', 'selecetedArea')}
-                                                            error={errors.areaId} touched={touched.areaId}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'areaId',null, false, '', '', '', 'selecetedArea')}
+                                                            error={errors.areaId}
+                                                            touched={touched.areaId}
                                                             name="areaId" id="areaId"
+                                                            onChange={setFieldValue}
+                                                            onBlur={setFieldTouched}
                                                         />
                                                     </div>
                                                     <div className="linebylineInput valid-input mix_dropdown">
                                                         <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
+                                                                <Dropdown
+                                                                isClear={true}
+                                                                 data={this.state.companies} name="bicCompanyId"
                                                                     selectedValue={this.state.selectedFromCompany}
                                                                     handleChange={event => {
-                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                        this.handleChangeDropDown(event, 'bicCompanyId',"bicContactId", true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
                                                                     }} styles={CompanyDropdown} classDrop="companyName1 "
                                                                     error={errors.bicCompanyId} touched={touched.bicCompanyId}
                                                                     name="bicCompanyId" id="bicCompanyId"
                                                                 />
                                                             </div>
                                                             <div className="super_company">
-                                                                <Dropdown data={this.state.fromContacts} name="bicContactId"
+                                                                <Dropdown isClear={true}
+                                                                data={this.state.fromContacts} name="bicContactId"
                                                                     selectedValue={this.state.selectedFromContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedFromContact')}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId',null, false, '', '', '', 'selectedFromContact')}
                                                                     classDrop=" contactName1" styles={ContactDropdown}
                                                                     error={errors.bicContactId} touched={touched.bicContactId}
                                                                     name="bicContactId" id="bicContactId" />
@@ -728,50 +751,58 @@ class QualityControlAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown data={this.state.contractsPos} selectedValue={this.state.selectedContract}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'contractPoId', false, '', '', '', 'selectedContract')}
+                                                        <Dropdown isClear={true}
+                                                         data={this.state.contractsPos} selectedValue={this.state.selectedContract}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'contractPoId',null, false, '', '', '', 'selectedContract')}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} title="contractPo"
                                                             error={errors.contractPoId} touched={touched.contractPoId}
                                                             index="IR-contractPoId" name="contractPoId" id="contractPoId" />
                                                     </div>
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="discipline" data={this.state.discplines}
+                                                        <Dropdown isClear={true}
+                                                        title="discipline" data={this.state.discplines}
                                                             selectedValue={this.state.selectedDiscpline} touched={touched.disciplineId}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.disciplineId}
                                                             handleChange={event => {
-                                                                this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline');
+                                                                this.handleChangeDropDown(event, 'disciplineId',null, false, '', '', '', 'selectedDiscpline');
                                                                 this.getQualityControlItems(event);
                                                             }}
                                                             index="IR-disciplineId" name="disciplineId" id="disciplineId"
+                                                            onChange={setFieldValue}
+                                                            onBlur={setFieldTouched}
                                                         />
                                                     </div>
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="specsSection" name="specsSectionId"
+                                                        <Dropdown isClear={true}
+                                                        title="specsSection" name="specsSectionId"
                                                             data={this.state.specificationSectionList} selectedValue={this.state.selectedSpecsSectionId}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedSpecsSectionId')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId',null, false, '', '', '', 'selectedSpecsSectionId')}
                                                             error={errors.specsSectionId} touched={touched.specsSectionId}
                                                             name="specsSectionId" id="specsSectionId" />
                                                     </div>
                                                     <div className="linebylineInput valid-input">
                                                         <Dropdown
+                                                        isClear={true}
                                                             title="reasonForIssue"
                                                             data={this.state.reasonForIssues}
                                                             selectedValue={this.state.selectedReasonForIssue}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId', false, '', '', '', 'selectedReasonForIssue')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId',null, false, '', '', '', 'selectedReasonForIssue')}
                                                             index="reasonForIssueId"
                                                             error={errors.reasonForIssueId} touched={touched.reasonForIssueId}
                                                             name="reasonForIssueId" id="reasonForIssueId" />
                                                     </div>
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="lastRevNumber" data={this.state.lastRevNumberList}
+                                                        <Dropdown isClear={true}
+                                                        title="lastRevNumber" data={this.state.lastRevNumberList}
                                                             selectedValue={this.state.selectedLastRevNumber} index="lastRevNumber"
-                                                            handleChange={event => this.handleChangeDropDown(event, "lastRevNumber", false, '', '', '', 'selectedLastRevNumber')}
+                                                            handleChange={event => this.handleChangeDropDown(event, "lastRevNumber",null, false, '', '', '', 'selectedLastRevNumber')}
                                                         />
                                                     </div>
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="fileNumber" data={this.state.fileNumberList}
+                                                        <Dropdown isClear={true}
+                                                         title="fileNumber" data={this.state.fileNumberList}
                                                             selectedValue={this.state.selectedFileNumberId} index="fileNumberId"
-                                                            handleChange={event => this.handleChangeDropDown(event, 'fileNumberId', false, '', '', '', 'selectedFileNumberId')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'fileNumberId',null, false, '', '', '', 'selectedFileNumberId')}
                                                             error={errors.fileNumberId} touched={touched.fileNumberId}
                                                             name="fileNumberId" id="fileNumberId" />
                                                     </div>
@@ -820,6 +851,36 @@ class QualityControlAddEdit extends Component {
                                                             {RenderQualityControlItemsTable}
                                                         </tbody>
                                                     </table>
+                                                    {this.state.IsEditMode ?
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                {this.state.isLoading ?
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button> :
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}  type="submit">{Resources.save[currentLanguage]}</button>
+                                                                }
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.arrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                    documentName={Resources.NCRLog[currentLanguage]}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        : null
+                                                    }
                                                 </div>
                                                 <div className="slider-Btns">
                                                     {this.state.isLoading ?
@@ -840,36 +901,7 @@ class QualityControlAddEdit extends Component {
                             </div>
                         </div>
 
-                        {this.state.IsEditMode ?
-                            <div className="approveDocument">
-                                <div className="approveDocumentBTNS">
-                                    {this.state.isLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button> :
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveQualityControl} type="submit">{Resources.save[currentLanguage]}</button>
-                                    }
-                                    <DocumentActions
-                                        isApproveMode={this.state.isApproveMode}
-                                        docTypeId={this.state.docTypeId}
-                                        docId={this.state.docId}
-                                        projectId={this.state.projectId}
-                                        previousRoute={this.state.previousRoute}
-                                        docApprovalId={this.state.docApprovalId}
-                                        currentArrange={this.state.arrange}
-                                        showModal={this.props.showModal}
-                                        showOptionPanel={this.showOptionPanel}
-                                        permission={this.state.permission}
-                                        documentName={Resources.NCRLog[currentLanguage]}
-                                    />
-                                </div>
-                            </div>
-                            : null
-                        }
+                        
                     </div>
                 </div>
             </div>

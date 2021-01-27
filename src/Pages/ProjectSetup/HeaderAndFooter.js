@@ -260,8 +260,8 @@ class HeaderAndFooter extends Component {
 
     handleChange = (value, field) => {
         let original_document = { ...this.state.document };
-        let updated_document = {};
-        updated_document[field] = value;
+        let updated_document = {};   
+        updated_document[field] = value;       
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             document: updated_document
@@ -408,13 +408,19 @@ class HeaderAndFooter extends Component {
                                         <div className='document-fields'>
                                             <div className="proForm datepickerContainer">
                                                 <div className="linebylineInput fullInputWidth">
-                                                    <Dropdown title="type"
+                                                    <Dropdown
+                                                        isClear={true}
+                                                        title="type"
                                                         data={this.types}
                                                         isMulti={false}
                                                         selectedValue={this.state.selectedType}
                                                         handleChange={event => {
                                                             this.setState({ selectedType: event })
+                                                          if(event!==null){
                                                             this.handleChange(event.value, "type")
+                                                          }  else{
+                                                            this.handleChange(event, "type")
+                                                          }
                                                         }}
                                                         onChange={setFieldValue}
                                                         onBlur={setFieldTouched}
