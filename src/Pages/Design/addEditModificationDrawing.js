@@ -42,6 +42,7 @@ const validationSchema = Yup.object().shape({
 
 const validationSchemaNewCycle = Yup.object().shape({
     flowContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+    flowCompanyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
     approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]),
 })
 
@@ -278,6 +279,7 @@ class addEditModificationDrawing extends Component {
             }
         }
     };
+
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
@@ -522,13 +524,24 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field,sub_field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+                [subDatasource]:null,
+                [targetState]:[]
+            });
+            updated_document[field] = event;
+            updated_document[sub_field]=null;
+            updated_document["arrange"]=null;
+            this.setState({
+                document: updated_document,
+            });
+        }else{
+        updated_document[field] = event.value;
         this.setState({
             document: updated_document,
             [selectedValue]: event
@@ -543,6 +556,7 @@ class addEditModificationDrawing extends Component {
             });
         }
     }
+}
 
     handleChangeDateCycle(e, field) {
 
@@ -602,18 +616,28 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChangeDropDownCycle(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDownCycle(event, field,sub_field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         let original_document = { ...this.state.drawingCycle };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+                [subDatasource]:null,
+                [targetState]:[]
+            });
+            updated_document[field] = event;
+            updated_document[sub_field]=null;
+            updated_document["arrange"]=null;
+            this.setState({
+                document: updated_document,
+            });
+        }else{
+        updated_document[field] = event.value;
         this.setState({
             drawingCycle: updated_document,
             [selectedValue]: event
         });
-
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -623,6 +647,8 @@ class addEditModificationDrawing extends Component {
             });
         }
     }
+}
+     
 
     editDrawing(event) {
         this.setState({
@@ -786,14 +812,19 @@ class addEditModificationDrawing extends Component {
         }
     }
 
-    handleChangeCycleAddDrops = (value, field, selectedValue) => {
+    handleChangeCycleAddDrops = (value, field,sub_field, selectedValue,subSelectValue) => {
         let original_document = { ...this.state.drawingCycleAdd };
-
         let updated_document = {};
-
-        updated_document[field] = value.value;
-
         updated_document = Object.assign(original_document, updated_document);
+         if(value===null){
+            updated_document[field] = value
+            updated_document[sub_field]=value
+            this.setState({
+                [selectedValue]: value,
+                [subSelectValue]:value,
+            })
+         }else{
+        updated_document[field] = value.value;
         if (selectedValue === 'selectedFlowCompanyAdd') {
             dataservice.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(result => {
                 this.setState({
@@ -801,13 +832,16 @@ class addEditModificationDrawing extends Component {
                 });
             });
         }
-
+    
+    this.setState({
+        [selectedValue]: value 
+    });
+}
         this.setState({
-            [selectedValue]: value,
-            drawingCycleAdd: updated_document
-        });
-
-    }
+                drawingCycleAdd: updated_document
+        })
+   
+}   
 
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
@@ -1025,11 +1059,12 @@ class addEditModificationDrawing extends Component {
                                         <div className="supervisor__company">
                                             <div className="super_name">
                                                 <Dropdown
+                                                    isClear={true}
                                                     data={this.state.companies}
                                                     isMulti={false}
                                                     selectedValue={this.state.selectedFromCompany}
                                                     handleChange={event => {
-                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                        this.handleChangeDropDown(event, 'bicCompanyId','bicContactId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
                                                     }}
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
@@ -1042,9 +1077,10 @@ class addEditModificationDrawing extends Component {
                                             <div className="super_company">
 
                                                 <Dropdown
+                                                    isClear={true}
                                                     data={this.state.fromContacts}
                                                     selectedValue={this.state.selectedFromContact}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedFromContact')}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId',null, false, '', '', '', 'selectedFromContact')}
                                                     index="drawingModification-bicContactId"
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
@@ -1059,10 +1095,11 @@ class addEditModificationDrawing extends Component {
 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="discipline"
                                             data={this.state.discplines}
                                             selectedValue={this.state.selectedDiscpline}
-                                            handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                            handleChange={event => this.handleChangeDropDown(event, 'disciplineId',null, false, '', '', '', 'selectedDiscpline')}
                                             index="drawingModification-disciplineId"
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
@@ -1074,19 +1111,21 @@ class addEditModificationDrawing extends Component {
 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                        isClear={true}
                                             title="reasonForIssue"
                                             data={this.state.reasonForIssues}
                                             selectedValue={this.state.selectedReasonForIssue}
-                                            handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId', false, '', '', '', 'selectedReasonForIssue')}
+                                            handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId',null, false, '', '', '', 'selectedReasonForIssue')}
                                             index="reasonForIssue" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                        isClear={true}
                                             title="specsSection"
                                             data={this.state.specsSections}
                                             selectedValue={this.state.selectedspecsSection}
-                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedspecsSection')}
+                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId',null, false, '', '', '', 'selectedspecsSection')}
                                             index="specsSectionId" />
                                     </div>
 
@@ -1211,7 +1250,7 @@ class addEditModificationDrawing extends Component {
                 <div className="document-fields">
                     <Formik
                         initialValues={{ ...this.state.document }}
-                        //  validationSchema={validationSchema}
+                        validationSchema={validationSchemaNewCycle}
                         enableReinitialize={true}
                         onSubmit={(values) => {
                             if (this.props.showModal) { return; }
@@ -1288,26 +1327,36 @@ class addEditModificationDrawing extends Component {
                                             <div className="supervisor__company">
                                                 <div className="super_name">
                                                     <Dropdown
+                                                        isClear={true}
                                                         data={this.state.companies}
                                                         isMulti={false}
                                                         selectedValue={this.state.selectedFlowCompany}
                                                         handleChange={event => {
-                                                            this.handleChangeDropDownCycle(event, 'flowCompanyId', true, 'flowContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFlowCompany', 'selectedFlowContact')
+                                                            this.handleChangeDropDownCycle(event, 'flowCompanyId','flowContactId', true, 'flowContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFlowCompany', 'selectedFlowContact')
                                                         }}
                                                         index="flowCompanyId"
                                                         name="flowCompanyId"
-                                                        id="flowCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
+                                                        id="flowCompanyId" styles={CompanyDropdown} classDrop="companyName1 " 
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.flowCompanyId}
+                                                        touched={touched.flowCompanyId}/>
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown
+                                                       isClear={true}
                                                         isMulti={false}
                                                         data={this.state.flowContacts}
                                                         selectedValue={this.state.selectedFlowContact}
-                                                        handleChange={event => this.handleChangeDropDownCycle(event, 'flowContactId', false, '', '', '', 'selectedFlowContact')}
-                                                        isClear={false}
+                                                        handleChange={event => this.handleChangeDropDownCycle(event, 'flowContactId',null, false, '', '', '', 'selectedFlowContact')}
                                                         index="drawing-flowContactId"
                                                         name="flowContactId"
-                                                        id="flowContactId" classDrop=" contactName1" styles={ContactDropdown} />
+                                                        id="flowContactId" classDrop=" contactName1" styles={ContactDropdown} 
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.flowContactId}
+                                                        touched={touched.flowContactId}
+                                                        />
                                                 </div>
                                             </div>
                                         </div>
@@ -1315,10 +1364,10 @@ class addEditModificationDrawing extends Component {
                                         <div className="linebylineInput valid-input">
                                             <Dropdown title="approvalStatus"
                                                 isMulti={false}
+                                                isClear={true}
                                                 data={this.state.approvalstatusList}
                                                 selectedValue={this.state.selectedApprovalStatusId}
-                                                handleChange={(e) => this.handleChangeDropDownCycle(e, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
-
+                                                handleChange={(e) => this.handleChangeDropDownCycle(e, "approvalStatusId",null, false, '', '', '', 'selectedApprovalStatusId')}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.approvalStatusId}
@@ -1355,7 +1404,6 @@ class addEditModificationDrawing extends Component {
         }
 
         let Cycles = () => {
-
             const columnsCycles = [
                 {
                     Header: Resources["delete"][currentLanguage],
@@ -1413,7 +1461,6 @@ class addEditModificationDrawing extends Component {
                     sortabel: true
                 }
             ];
-
             return (
                 <Fragment>
                     {LastCycle()}
@@ -1534,10 +1581,10 @@ class addEditModificationDrawing extends Component {
                                             <div className="super_name">
                                                 <Dropdown
                                                     data={this.state.companies}
-
+                                                    isClear={true}
                                                     selectedValue={this.state.selectedFlowCompanyAdd}
                                                     handleChange={event => {
-                                                        this.handleChangeCycleAddDrops(event, 'flowCompanyId', 'selectedFlowCompanyAdd')
+                                                        this.handleChangeCycleAddDrops(event, 'flowCompanyId','flowContactId', 'selectedFlowCompanyAdd','selectedFlowContactAdd')
                                                     }}
                                                     index="flowCompanyId"
                                                     name="flowCompanyId"
@@ -1545,10 +1592,11 @@ class addEditModificationDrawing extends Component {
                                             </div>
                                             <div className="super_company">
                                                 <Dropdown
+                                                    isClear={true}
                                                     data={this.state.flowContactsAddCycle}
                                                     selectedValue={this.state.selectedFlowContactAdd}
                                                     handleChange={event => {
-                                                        this.handleChangeCycleAddDrops(event, "flowContactId", 'selectedFlowContactAdd')
+                                                        this.handleChangeCycleAddDrops(event, "flowContactId",null, 'selectedFlowContactAdd',null)
                                                     }}
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
@@ -1562,10 +1610,11 @@ class addEditModificationDrawing extends Component {
                                     </div>
 
                                     <Dropdown title="approvalStatus"
+                                        isClear={true}
                                         data={this.state.approvalstatusList}
                                         selectedValue={this.state.selectedApprovalStatusIdAdd}
                                         handleChange={event => {
-                                            this.handleChangeCycleAddDrops(event, 'approvalStatusId', 'selectedApprovalStatusIdAdd')
+                                            this.handleChangeCycleAddDrops(event, 'approvalStatusId',null, 'selectedApprovalStatusIdAdd',null)
                                         }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}

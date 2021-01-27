@@ -800,20 +800,29 @@ class materialRequestAddEdit extends Component {
     } 
     getNextArrange(companyId) {
         this.setState({ isLoading: true });
-        Api.get(
-            "GetNextArrangeMainDoc?projectId=" +
-            this.state.projectId +
-            "&docType=" +
-            this.state.docTypeId +
-            "&companyId=" +
-            companyId +
-            "&&contactId=undefined"
-        ).then(arrange => {
+        if(companyId!==null){
+            Api.get(
+                "GetNextArrangeMainDoc?projectId=" +
+                this.state.projectId +
+                "&docType=" +
+                this.state.docTypeId +
+                "&companyId=" +
+                companyId +
+                "&&contactId=undefined"
+            ).then(arrange => {
+                this.setState({
+                    document: { ...this.state.document, arrange },
+                    isLoading: false
+                });
+            });
+        }else{
             this.setState({
-                document: { ...this.state.document, arrange },
+                document: { ...this.state.document,
+                     arrange:"" },
                 isLoading: false
             });
-        });
+        }
+      
     } 
     fillDropDowns(isEdit) {
         this.setState({ isLoading: true });
@@ -1021,15 +1030,23 @@ class materialRequestAddEdit extends Component {
     } 
     GetBoqItemsStracture(boqId) {
         this.setState({ isLoading: true });
-
+       if(boqId!==null){
         Api.get("GetBoqItemsStracture?boqId=" + boqId)
-            .then(res => {
-                if (res){ 
-                    this.setState({ items: res || [], isLoading: false });
-                }
-                else this.setState({ items: [], isLoading: false });
-            })
-            .catch(() => this.setState({ items: [], isLoading: false }));
+        .then(res => {
+            if (res){ 
+                this.setState({ items: res || [], isLoading: false });
+            }
+            else this.setState({ items: [], isLoading: false });
+        })
+        .catch(() => this.setState({ items: [], isLoading: false }));
+       }
+       else{
+        this.setState({
+             items: [],
+             isLoading: false 
+            });
+       }
+      
     }
     fillInventoryItemsFilterTable() {
         let obj = { ...this.state.inventoryFilter };
@@ -1070,7 +1087,11 @@ class materialRequestAddEdit extends Component {
     handleChangeNormalDropdown(event, field, selected) {
         let original_document = { ...this.state.normalItems };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             normalItems: updated_document,
@@ -1128,15 +1149,15 @@ class materialRequestAddEdit extends Component {
             saveDocument.requiredDate,
             "YYYY-MM-DD"
         ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-        saveDocument.boqId = this.state.selectedContract.boqId;
-        saveDocument.companyId = this.state.fromCompany.value;
+        saveDocument.boqId = this.state.selectedContract!==null?this.state.selectedContract.boqId:null;
+        saveDocument.companyId = this.state.fromCompany!==null?this.state.fromCompany.value:null;
         // saveDocument.contractName=this.selectedContract.contr
-        saveDocument.area = this.state.area.label;
-        saveDocument.location = this.state.location.label;
-        saveDocument.disciplineId = this.state.discipline.value;
-        saveDocument.buildingNoId = this.state.buildingNumber.value;
-        saveDocument.apartmentNoId = this.state.apartmentNo.value;
-        saveDocument.companyName = this.state.fromCompany.value;
+        saveDocument.area = this.state.area!==null?this.state.area.label:null;
+        saveDocument.location = this.state.location!==null?this.state.location.label:null;
+        saveDocument.disciplineId = this.state.discipline!==null? this.state.discipline.value:null;
+        saveDocument.buildingNoId = this.state.buildingNumber!==null?this.state.buildingNumber.value:null;
+        saveDocument.apartmentNoId = this.state.apartmentNo!==null? this.state.apartmentNo.value:null;
+        saveDocument.companyName = this.state.fromCompany!==null? this.state.fromCompany.value:null;
         saveDocument.id = this.state.docId;
         dataservice
             .addObject("EditContractsSiteRequest", saveDocument)
@@ -1165,16 +1186,17 @@ class materialRequestAddEdit extends Component {
                     saveDocument.requiredDate,
                     "YYYY-MM-DD"
                 ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-                saveDocument.boqId = this.state.selectedContract.boqId;
-                saveDocument.contractId = this.state.selectedContract.value;
-                saveDocument.companyId = this.state.fromCompany.value;
-                saveDocument.companyName = this.state.fromCompany.value;
-                saveDocument.area = this.state.area.label;
-                saveDocument.location = this.state.location.label;
-                saveDocument.disciplineId = this.state.discipline.value;
-                saveDocument.disciplineName = this.state.discipline.label;
-                saveDocument.buildingNoId = this.state.buildingNumber.value;
-                saveDocument.apartmentNoId = this.state.apartmentNo.value;
+                saveDocument.boqId = this.state.selectedContract!==null?this.state.selectedContract.boqId:null;
+                saveDocument.contractId = this.state.selectedContract!==null?this.state.selectedContract.value:null;
+                saveDocument.companyId = this.state.fromCompany!==null?this.state.fromCompany.value:null;
+                saveDocument.companyName = this.state.fromCompany!==null? this.state.fromCompany.value:null;
+                saveDocument.area = this.state.area!==null?this.state.area.label:null;
+                saveDocument.location = this.state.location!==null?this.state.location.label:null;
+                saveDocument.disciplineId = this.state.discipline!==null? this.state.discipline.value:null;
+                saveDocument.disciplineName = this.state.discipline!==null? this.state.discipline.label:null;
+                saveDocument.buildingNoId = this.state.buildingNumber!==null?this.state.buildingNumber.value:null;
+                saveDocument.apartmentNoId = this.state.apartmentNo!==null? this.state.apartmentNo.value:null;
+              
                 dataservice
                     .addObject("AddContractsSiteRequest", saveDocument)
                     .then(result => {
@@ -1266,6 +1288,8 @@ class materialRequestAddEdit extends Component {
         ) : null;
     } 
     actionsChange(event) {
+        if(event!==null){
+
         switch (event.value) {
             case 1:
                 this.setState({ isLoading: true });
@@ -1311,6 +1335,7 @@ class materialRequestAddEdit extends Component {
                 }
                 break;
         }
+      }
     }
     addOneItem = () => {
         let length = this.state.updatedItems.length;
@@ -1621,6 +1646,7 @@ class materialRequestAddEdit extends Component {
                         </div>
                         <div className="linebylineInput valid-input">
                             <Dropdown
+                                isClear={true}
                                 title="itemType"
                                 data={this.state.itemTypesList}
                                 selectedValue={this.state.selectedItemType}
@@ -1672,6 +1698,7 @@ class materialRequestAddEdit extends Component {
                         </div>
                         <div className="linebylineInput valid-input">
                             <Dropdown
+                                isClear={true}
                                 title="unit"
                                 data={this.state.unitsList}
                                 selectedValue={this.state.selectedUnit}
@@ -2147,14 +2174,24 @@ class materialRequestAddEdit extends Component {
     } 
     handleChangeDropDown(event) {
         this.setState({ isLoading: true });
-        dataservice.GetDataList("GetContactsByCompanyId?companyId=" + event.value, "contactName", "id").then(res => {
-            if (res)
-                this.setState({
-                    isLoading: false,
-                    contacts: res,
-                    M_fromCompany: event
-                });
-        });
+        if(event!==null){
+            dataservice.GetDataList("GetContactsByCompanyId?companyId=" + event.value, "contactName", "id").then(res => {
+                if (res)
+                    this.setState({
+                        isLoading: false,
+                        contacts: res,
+                        M_fromCompany: event
+                    });
+            });
+        }
+        else{
+            this.setState({
+                isLoading: false,
+                contacts: [],
+                M_fromCompany: event
+            });
+        }
+    
     } 
     showChildern(childerns) {
         if (Config.IsAllow(117)) {
@@ -2373,13 +2410,13 @@ class materialRequestAddEdit extends Component {
                     initialValues={{
                         ...this.state.document,
                         fromCompany:
-                            this.state.fromCompany.value > 0
+                            this.state.fromCompany!==null?this.state.fromCompany.value > 0
                                 ? this.state.fromCompany
-                                : "",
+                                : "":"",
                         discipline:
-                            this.state.discipline.value > 0
+                            this.state.discipline!==null?this.state.discipline.value > 0
                                 ? this.state.discipline
-                                : ""
+                                : "":""
                     }}
                     validationSchema={validationSchema}
                     enableReinitialize={true}
@@ -2607,11 +2644,18 @@ class materialRequestAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="fromCompany"
                                             data={this.state.companies}
                                             selectedValue={this.state.fromCompany}
                                             handleChange={event => {
-                                                this.getNextArrange(event.value);
+                                                if(event!==null){
+                                                    this.getNextArrange(event.value);
+                                                }
+                                                else{
+                                                    this.getNextArrange(event);
+                                                }
+                                                
                                                 this.setState({
                                                     fromCompany: event
                                                 });
@@ -2625,20 +2669,30 @@ class materialRequestAddEdit extends Component {
                                     <div className="linebylineInput valid-input">
 
                                         <Dropdown
+                                            isClear={true}
                                             title="contractBoq"
                                             isDisabled={this.props.changeStatus}
                                             data={this.state.contractBoqLogs}
                                             selectedValue={this.state.selectedContract}
                                             handleChange={event => {
                                                 this.setState({ selectedContract: event });
-                                                this.GetBoqItemsStracture(
-                                                    event.boqId
-                                                );
+                                                if(event!==null){
+                                                    this.GetBoqItemsStracture(
+                                                        event.boqId
+                                                    );
+                                                }
+                                                else{
+                                                    this.GetBoqItemsStracture(
+                                                        event
+                                                    );
+                                                }
+                                             
                                             }}
                                         />
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="area"
                                             data={this.state.areas}
                                             selectedValue={this.state.area}
@@ -2649,6 +2703,7 @@ class materialRequestAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="location"
                                             data={this.state.locations}
                                             selectedValue={this.state.location}
@@ -2659,6 +2714,7 @@ class materialRequestAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="disciplineTitle"
                                             data={this.state.discplines}
                                             selectedValue={this.state.discipline}
@@ -2673,6 +2729,7 @@ class materialRequestAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="buildingNumber"
                                             data={this.state.buildings}
                                             selectedValue={
@@ -2687,6 +2744,7 @@ class materialRequestAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="apartmentNumber"
                                             data={this.state.apartmentNumbers}
                                             selectedValue={this.state.apartmentNo}
@@ -2941,7 +2999,9 @@ class materialRequestAddEdit extends Component {
                         <div className="default__dropdown--custom" style={{ marginBottom: "0" }}>
                             {this.state.isViewMode == true ? null : (
                                 <div className="default__dropdown">
-                                    <Dropdown title="" data={this.state.materialTypes} selectedValue={this.state.materialType}
+                                    <Dropdown
+                                       isClear={true}
+                                       title="" data={this.state.materialTypes} selectedValue={this.state.materialType}
                                         handleChange={event => {
                                             this.setState({
                                                 materialType: event
@@ -3505,6 +3565,7 @@ class materialRequestAddEdit extends Component {
                                             <div className="supervisor__company">
                                                 <div className="super_name">
                                                     <Dropdown
+                                                        isClear={true}
                                                         data={this.state.companies}
                                                         selectedValue={
                                                             this.state.M_fromCompany
@@ -3520,6 +3581,7 @@ class materialRequestAddEdit extends Component {
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown
+                                                        isClear={true}
                                                         data={this.state.contacts}
                                                         selectedValue={
                                                             this.state.M_contact
@@ -3540,6 +3602,7 @@ class materialRequestAddEdit extends Component {
                                             </div>
                                         </div>
                                         <Dropdown
+                                            isClear={true}
                                             title="siteRequest"
                                             data={this.state.siteRequests}
                                             selectedValue={this.state.M_siteRequest}
@@ -3555,6 +3618,7 @@ class materialRequestAddEdit extends Component {
                                             name="M_siteRequest"
                                         />
                                         <Dropdown
+                                            isClear={true}
                                             title="specsSection"
                                             data={this.state.specsSections}
                                             selectedValue={
@@ -3572,6 +3636,7 @@ class materialRequestAddEdit extends Component {
                                             name="M_specsSection"
                                         />
                                         <Dropdown
+                                            isClear={true}
                                             title="materialReleaseType"
                                             data={this.state.releaseTypes}
                                             selectedValue={this.state.M_releaseType}
@@ -3587,6 +3652,7 @@ class materialRequestAddEdit extends Component {
                                             name="M_releaseType"
                                         />
                                         <Dropdown
+                                            isClear={true}
                                             title="boqLog"
                                             data={this.state.contractBoqs}
                                             selectedValue={this.state.M_contractBoq}

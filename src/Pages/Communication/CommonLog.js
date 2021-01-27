@@ -1896,8 +1896,8 @@ class CommonLog extends Component {
                     <div
                         className={
                             this.state.chartColumnsModal
-                                ? 'grid__column active '
-                                : 'grid__column '
+                                ? 'grid__column fullmodal active '
+                                : 'grid__column fullmodal'
                         }>
                         <div className="grid__column--container">
                             <button
@@ -1909,7 +1909,11 @@ class CommonLog extends Component {
                                 <h2>{Resources.chart[currentLanguage]}</h2>
                             </div>
                             <div className="grid__column--content">
-                                {RenderPopupShowChartColumns}
+                                <div className="grid__column--content-wrapper">
+                                    {RenderPopupShowChartColumns}
+                                </div>
+                                <div className="gridChart">chart</div>
+                                
                             </div>
                             <div className="grid__column--footer">
                                 <button

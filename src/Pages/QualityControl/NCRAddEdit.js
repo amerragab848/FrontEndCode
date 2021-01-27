@@ -41,8 +41,8 @@ const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
-    toContactId: Yup.string().required(Resources['selectContact'][currentLanguage])
-        .nullable(true),
+    toContactId: Yup.string().required(Resources['selectContact'][currentLanguage]),
+        //.nullable(true),
 
     bicContactId: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage]),
@@ -612,13 +612,24 @@ class NCRAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field,sub_field,isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+                [subDatasource]:null,
+                [targetState]:[]
+            });
+            updated_document[field] = event;
+            updated_document[sub_field]=null;
+            updated_document["arrange"]=null;
+            this.setState({
+                document: updated_document,
+            });
+        }else{
+            updated_document[field] = event.value;
         this.setState({
             document: updated_document,
             [selectedValue]: event
@@ -645,6 +656,7 @@ class NCRAddEdit extends Component {
             });
         }
     }
+}
 
     saveAndExit = () => {
 
@@ -882,7 +894,8 @@ class NCRAddEdit extends Component {
 
                                                 <div className="linebylineInput valid-input">
                                                     <div className="inputDev ui input">
-                                                        <Dropdown title="approvalStatusName" data={this.state.approvalstatusList} name="ApprovalStatusCycle"
+                                                        <Dropdown
+                                                        isClear={true} title="approvalStatusName" data={this.state.approvalstatusList} name="ApprovalStatusCycle"
                                                             selectedValue={values.ApprovalStatusCycle}
                                                             onChange={setFieldValue}
                                                             handleChange={(e) => this.handleChangeDrops(e, "SelectedApprovalStatusCycle")}
@@ -1039,17 +1052,20 @@ class NCRAddEdit extends Component {
                                                         <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.companies} name="fromCompanyId"
+                                                                <Dropdown 
+                                                                 isClear={true}
+                                                                 data={this.state.companies} name="fromCompanyId"
                                                                     selectedValue={this.state.selectedFromCompany}
                                                                     handleChange={event => {
-                                                                        this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                        this.handleChangeDropDown(event, 'fromCompanyId',"fromContactId", true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
                                                                     }} styles={CompanyDropdown} classDrop="companyName1 " />
                                                             </div>
 
                                                             <div className="super_company">
-                                                                <Dropdown data={this.state.fromContacts} name="fromContactId"
+                                                                <Dropdown  isClear={true}
+                                                                data={this.state.fromContacts} name="fromContactId"
                                                                     selectedValue={this.state.selectedFromContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'fromContactId',null, false, '', '', '', 'selectedFromContact')}
                                                                     classDrop=" contactName1" styles={ContactDropdown} />
                                                             </div>
                                                         </div>
@@ -1059,17 +1075,21 @@ class NCRAddEdit extends Component {
                                                         <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.companies} selectedValue={this.state.selectedToCompany}
+                                                                <Dropdown
+                                                                 isClear={true}
+                                                                  data={this.state.companies} selectedValue={this.state.selectedToCompany}
                                                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toCompanyId}
                                                                     touched={touched.toCompanyId} name="toCompanyId"
                                                                     handleChange={event =>
-                                                                        this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                        this.handleChangeDropDown(event, 'toCompanyId',"toContactId", true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                                     styles={CompanyDropdown} classDrop="companyName1 " />
                                                             </div>
 
                                                             <div className="super_company">
-                                                                <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                <Dropdown 
+                                                                 isClear={true}
+                                                                 data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'toContactId',null, false, '', '', '', 'selectedToContact')}
                                                                     onChange={setFieldValue} onBlur={setFieldTouched}
                                                                     error={errors.toContactId} touched={touched.toContactId}
                                                                     index="IR-toContactId" name="toContactId" id="toContactId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -1081,89 +1101,93 @@ class NCRAddEdit extends Component {
                                                         <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
+                                                                <Dropdown  isClear={true} data={this.state.companies} name="bicCompanyId"
                                                                     selectedValue={this.state.selectedActionByCompanyId}
                                                                     handleChange={event =>
-                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
+                                                                        this.handleChangeDropDown(event, 'bicCompanyId', 'bicContactId', true,'bicContacts','GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
                                                                     styles={CompanyDropdown} classDrop="companyName1 " />
                                                             </div>
                                                             <div className="super_company">
-                                                                <Dropdown data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
+                                                                <Dropdown 
+                                                                 isClear={true}
+                                                                 data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
                                                                     onBlur={setFieldTouched} error={errors.bicContactId} id="bicContactId"
                                                                     touched={touched.bicContactId} index="IR-bicContactId"
                                                                     selectedValue={this.state.selectedActionByContactId}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId',null,false, '', '', '', 'selectedActionByContactId')}
                                                                     classDrop=" contactName1" styles={ContactDropdown} />
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown data={this.state.contractsPos} selectedValue={this.state.selectedContract}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                        <Dropdown  isClear={true}
+                                                        data={this.state.contractsPos} selectedValue={this.state.selectedContract}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId',null, false, '', '', '', 'selectedContract')}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} title="contractPo"
                                                             error={errors.contractId} touched={touched.contractId}
                                                             index="IR-contractId" name="contractId" id="contractId" />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="approvalStatus" data={this.state.approvalstatusList}
+                                                        <Dropdown  isClear={true}
+                                                         title="approvalStatus" data={this.state.approvalstatusList}
                                                             selectedValue={this.state.selectedApprovalStatusId} index="approvalStatusId"
-                                                            handleChange={event => this.handleChangeDropDown(event, "approvalStatusId", false, '', '', '', 'selectedApprovalStatusId')}
+                                                            handleChange={event => this.handleChangeDropDown(event, "approvalStatusId", null,false, '', '', '', 'selectedApprovalStatusId')}
                                                         />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="discipline" data={this.state.discplines}
+                                                        <Dropdown  isClear={true} title="discipline" data={this.state.discplines}
                                                             selectedValue={this.state.selectedDiscpline} touched={touched.disciplineId}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.disciplineId}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'disciplineId',null ,false, '', '', '', 'selectedDiscpline')}
                                                             index="IR-disciplineId" name="disciplineId" id="disciplineId"
                                                         />
                                                     </div>
 
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="specsSection" name="specsSectionId"
+                                                        <Dropdown  isClear={true} title="specsSection" name="specsSectionId"
                                                             data={this.state.specificationSectionList} selectedValue={this.state.selectedSpecsSectionId}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedSpecsSectionId')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'specsSectionId',null, false, '', '', '', 'selectedSpecsSectionId')}
                                                         />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="reviewResult" data={this.state.reviewResultList}
+                                                        <Dropdown  isClear={true} title="reviewResult" data={this.state.reviewResultList}
                                                             selectedValue={this.state.selectedReviewResult} index="reviewResultId"
-                                                            handleChange={event => this.handleChangeDropDown(event, "reviewResultId", false, '', '', '', 'selectedReviewResult')}
+                                                            handleChange={event => this.handleChangeDropDown(event, "reviewResultId",null, false, '', '', '', 'selectedReviewResult')}
                                                         />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="inspectionRequest" data={this.state.activityIRList}
+                                                        <Dropdown  isClear={true} title="inspectionRequest" data={this.state.activityIRList}
                                                             selectedValue={this.state.selectedInspectionRequestId} index="inspectionRequestId"
-                                                            handleChange={event => this.handleChangeDropDown(event, "inspectionRequestId", false, '', '', '', 'selectedInspectionRequestId')}
+                                                            handleChange={event => this.handleChangeDropDown(event, "inspectionRequestId",null, false, '', '', '', 'selectedInspectionRequestId')}
                                                         />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown
+                                                        <Dropdown  isClear={true}
                                                             title="reasonForIssue"
                                                             data={this.state.reasonForIssues}
                                                             selectedValue={this.state.selectedReasonForIssue}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId', false, '', '', '', 'selectedReasonForIssue')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId',null, false, '', '', '', 'selectedReasonForIssue')}
                                                             index="reasonForIssueId" />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="fileNumber" data={this.state.fileNumberList}
+                                                        <Dropdown  isClear={true} title="fileNumber" data={this.state.fileNumberList}
                                                             selectedValue={this.state.selectedFileNumberId} index="fileNumberId"
-                                                            handleChange={event => this.handleChangeDropDown(event, 'fileNumberId', false, '', '', '', 'selectedFileNumberId')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'fileNumberId',null, false, '', '', '', 'selectedFileNumberId')}
                                                         />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="areaName" data={this.state.areas}
+                                                        <Dropdown  isClear={true} title="areaName" data={this.state.areas}
                                                             selectedValue={this.state.selecetedArea} index="areaId"
-                                                            handleChange={event => this.handleChangeDropDown(event, 'areaId', false, '', '', '', 'selecetedArea')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'areaId',null, false, '', '', '', 'selecetedArea')}
                                                         />
                                                     </div>
 
@@ -1178,16 +1202,16 @@ class NCRAddEdit extends Component {
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="Building" data={this.state.buildings}
+                                                        <Dropdown  isClear={true} title="Building" data={this.state.buildings}
                                                             selectedValue={this.state.selectedbuildingno} index="buildingNumberId"
-                                                            handleChange={event => this.handleChangeDropDown(event, 'buildingNumberId', false, '', '', '', 'selectedbuildingno')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'buildingNumberId',null, false, '', '', '', 'selectedbuildingno')}
                                                         />
                                                     </div>
 
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="apartmentNumber" index="apartmentNumberId"
+                                                        <Dropdown  isClear={true} title="apartmentNumber" index="apartmentNumberId"
                                                             data={this.state.apartmentNumbers} selectedValue={this.state.selectedApartmentNoId}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'apartmentNumberId', false, '', '', '', 'selectedApartmentNoId')}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'apartmentNumberId',null, false, '', '', '', 'selectedApartmentNoId')}
                                                         />
                                                     </div>
 
@@ -1229,6 +1253,36 @@ class NCRAddEdit extends Component {
                                                             </button> : null
                                                         : this.showBtnsSaving()}
                                                 </div>
+                                               {this.state.IsEditMode ?
+                                                    <div className="approveDocument">
+                                                        <div className="approveDocumentBTNS">
+                                                            {this.state.isLoading ?
+                                                                <button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button> :
+                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}  type="submit">{Resources.save[currentLanguage]}</button>
+                                                            }
+                                                            <DocumentActions
+                                                                isApproveMode={this.state.isApproveMode}
+                                                                docTypeId={this.state.docTypeId}
+                                                                docId={this.state.docId}
+                                                                projectId={this.state.projectId}
+                                                                previousRoute={this.state.previousRoute}
+                                                                docApprovalId={this.state.docApprovalId}
+                                                                currentArrange={this.state.arrange}
+                                                                showModal={this.props.showModal}
+                                                                showOptionPanel={this.showOptionPanel}
+                                                                permission={this.state.permission}
+                                                                documentName={Resources.NCRLog[currentLanguage]}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    : null
+                                                }
                                             </Form>
                                         )}
                                     </Formik>
@@ -1268,36 +1322,7 @@ class NCRAddEdit extends Component {
                                 : null}
                         </div>
 
-                        {this.state.IsEditMode ?
-                            <div className="approveDocument">
-                                <div className="approveDocumentBTNS">
-                                    {this.state.isLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button> :
-                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR} type="submit">{Resources.save[currentLanguage]}</button>
-                                    }
-                                    <DocumentActions
-                                        isApproveMode={this.state.isApproveMode}
-                                        docTypeId={this.state.docTypeId}
-                                        docId={this.state.docId}
-                                        projectId={this.state.projectId}
-                                        previousRoute={this.state.previousRoute}
-                                        docApprovalId={this.state.docApprovalId}
-                                        currentArrange={this.state.arrange}
-                                        showModal={this.props.showModal}
-                                        showOptionPanel={this.showOptionPanel}
-                                        permission={this.state.permission}
-                                        documentName={Resources.NCRLog[currentLanguage]}
-                                    />
-                                </div>
-                            </div>
-                            : null
-                        }
+                       
                     </div>
                 </div>
 
