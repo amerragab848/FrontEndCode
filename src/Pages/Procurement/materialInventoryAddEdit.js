@@ -501,10 +501,17 @@ class MaterialInventoryAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            this.setState({              
+                [subDatasource]: event
+            });
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -863,7 +870,9 @@ class MaterialInventoryAddEdit extends Component {
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="discipline"
+                                                            <Dropdown 
+                                                               isClear={true}
+                                                               title="discipline"
                                                                 data={this.state.discplines}
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
@@ -880,6 +889,7 @@ class MaterialInventoryAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="specsSection"
                                                                 data={this.state.specifications}
                                                                 selectedValue={this.state.selectedSpecifications}

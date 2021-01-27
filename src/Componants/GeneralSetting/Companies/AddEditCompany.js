@@ -36,10 +36,10 @@ const validationSchema = Yup.object().shape({
     addressAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     addressEn: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     Telephone: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
-    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
+    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]).nullable(true),
     title: Yup.string().required(Resources['empTitleRequired'][currentLanguage]),
     companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]),
-    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage])
+    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage]).nullable(true)
 });
 
 const validationSchemaForEdit = Yup.object().shape({
@@ -49,9 +49,9 @@ const validationSchemaForEdit = Yup.object().shape({
     titleArCompany: Yup.string().max(50, Resources['maxLength'][currentLanguage]).test('contactNameAr', 'Name cannot be english', value => {
         return ar.test(value)
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
-    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
-    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]),
-    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage])
+    discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]).nullable(true),
+    companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage]).nullable(true),
+    companyType: Yup.string().required(Resources['companyTypeRequired'][currentLanguage]).nullable(true)
 })
 
 class AddEditCompany extends Component {
@@ -122,23 +122,41 @@ class AddEditCompany extends Component {
 
     handleChangeDropDown = (item, name) => {
         let original_document = this.state.document;
-
         switch (name) {
             case "title":
                 original_document.title = item.label;
                 this.setState({ selectedTitle: item, document: original_document })
                 break;
             case "companyRole":
-                original_document.companyRole = item.label;
-                this.setState({ selectedCompanyRole: item, document: original_document })
+                if(item !=null){
+                    original_document.companyRole = item.label;
+                    this.setState({ selectedCompanyRole: item, document: original_document })
+                }
+                else{
+                    original_document.companyRole = null;
+                    this.setState({ selectedCompanyRole: null, document: original_document })
+                }
+              
                 break;
             case "companyType":
+                if(item !=null){
                 original_document.companyType = item.label;
                 this.setState({ selectedCompanyType: item, document: original_document })
+                }else{
+                    original_document.companyType = null;
+                    this.setState({ selectedCompanyType: null, document: original_document })
+
+                }
+
                 break;
             case "discipline":
+                if(item !=null){
                 original_document.discipline = item.label;
                 this.setState({ selectedDiscipline: item, document: original_document })
+                }else{
+                    original_document.discipline = null;
+                    this.setState({ selectedDiscipline: null, document: original_document })
+                }
                 break;
             default:
                 break;
@@ -272,7 +290,7 @@ class AddEditCompany extends Component {
 
     render() {
         return (
-            <div className="mainContainer main__fulldash">
+            <div className="mainContainer ">
                 <div className="documents-stepper cutome__inputs noTabs__document">
                     <div className="submittalHead">
                         <HeaderDocument
@@ -326,6 +344,7 @@ class AddEditCompany extends Component {
 
                                                         <div className="linebylineInput valid-input passWrapperInput">
                                                             <Dropdown title="discipline" data={this.state.disciplineData}
+                                                                isClear={true}
                                                                 name="discipline"
                                                                 id="discipline"
                                                                 selectedValue={this.state.selectedDiscipline}
@@ -339,6 +358,7 @@ class AddEditCompany extends Component {
 
                                                         <div className="linebylineInput valid-input passWrapperInput">
                                                             <Dropdown title="companyRole"
+                                                                isClear={true}
                                                                 data={this.state.CompanyRoleData}
                                                                 name="companyRole"
                                                                 id="companyRole"
@@ -352,6 +372,7 @@ class AddEditCompany extends Component {
                                                         </div>
                                                         <div className="linebylineInput valid-input passWrapperInput">
                                                             <Dropdown
+                                                                isClear={true}
                                                                 title="companyType"
                                                                 data={this.state.CompanyTypeData}
                                                                 name="companyType"

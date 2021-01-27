@@ -34,7 +34,7 @@ const validationSchema = Yup.object().shape({
         .nullable(true),
 
     toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage]),
+        .required(Resources['toContactRequired'][currentLanguage]).nullable(true),
 
 
 })
@@ -317,11 +317,17 @@ class siteInstructionsAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subscribeState, initalState) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subscribeState, initalState,subField) {
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subField] = event;
+
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             document: updated_document,
@@ -334,12 +340,22 @@ class siteInstructionsAddEdit extends Component {
             this.setState({ [subscribeState]: initalState })
         }
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+          
+
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
         }
     }
 
@@ -506,11 +522,12 @@ class siteInstructionsAddEdit extends Component {
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
                                                                         <Dropdown
+                                                                            isClear={true}
                                                                             data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedFromCompany}
                                                                             handleChange={event => {
-                                                                                this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact', { label: Resources.fromContactRequired[currentLanguage], value: "0" })
+                                                                                this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact', { label: Resources.fromContactRequired[currentLanguage], value: "0" },"fromContactId")
                                                                             }}
                                                                             styles={CompanyDropdown}
                                                                             classDrop="companyName1"
@@ -520,6 +537,7 @@ class siteInstructionsAddEdit extends Component {
                                                                     </div>
                                                                     <div className="super_company">
                                                                         <Dropdown
+                                                                           isClear={true}
                                                                             isMulti={false}
                                                                             data={this.state.fromContacts}
                                                                             selectedValue={this.state.selectedFromContact}
@@ -541,18 +559,20 @@ class siteInstructionsAddEdit extends Component {
                                                                 <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown
+                                                                        <Dropdown 
+                                                                            isClear={true}
                                                                             isMulti={false}
                                                                             data={this.state.companies}
                                                                             selectedValue={this.state.selectedToCompany}
                                                                             handleChange={event =>
-                                                                                this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact', { label: Resources.toContactRequired[currentLanguage], value: "0" })}
+                                                                                this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact', { label: Resources.toContactRequired[currentLanguage], value: "0" },"toContactId")}
                                                                             name="toCompanyId"
                                                                             styles={CompanyDropdown}
                                                                             classDrop="companyName1" />
                                                                     </div>
                                                                     <div className="super_company">
                                                                         <Dropdown
+                                                                            isClear={true}
                                                                             isMulti={false}
                                                                             data={this.state.ToContacts}
                                                                             selectedValue={this.state.selectedToContact}
@@ -583,6 +603,7 @@ class siteInstructionsAddEdit extends Component {
                                                                         </div>
                                                                     </React.Fragment> :
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="contractPo"
                                                                         data={this.state.contracts}
                                                                         selectedValue={this.state.selectedContract}

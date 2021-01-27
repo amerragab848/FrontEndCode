@@ -1,15 +1,10 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Component, Fragment } from "react"; 
 import CryptoJS from "crypto-js";
 import Api from "../../api";
-import Resources from "../../resources.json";
-
-import { connect } from "react-redux";
-import SkyLight from "react-skylight";
-import { bindActionCreators } from "redux";
-import moment from "moment";
-import * as communicationActions from "../../store/actions/communication";
-import Config from "../../Services/Config";
+import Resources from "../../resources.json"; 
+import { connect } from "react-redux"; 
+import { bindActionCreators } from "redux"; 
+import * as communicationActions from "../../store/actions/communication"; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -35,8 +30,8 @@ class ViewLetterReplies extends Component {
     }
 
     getReplies(viewRepliesOn) {
-        if (this.state.docId > 0) {
-            let url = (viewRepliesOn == 'false' ? this.state.repliesApi : this.state.api) + this.state.docId;
+        if (this.props.docId > 0) {
+            let url = (viewRepliesOn == 'true' ? this.state.repliesApi : this.state.api) + this.props.docId;
             this.GetLogData(url);
         }
     }
@@ -117,19 +112,10 @@ class ViewLetterReplies extends Component {
     render() {
         let repliesTabel = this.state.repliesData.map((ele, index) => {
             return (
-                <tr key={ele.id}>
-                    <td className="removeTr">
-                        <div className="contentCell tableCell-1">
-                            <span className="pdfImage" onClick={() => this.navigateToReplyFromTable(ele, index)}>
-                                <a>
-                                    <i className="fa fa-link" aria-hidden="true"></i>
-                                </a>
-                            </span>
-                        </div>
-                    </td>
+                <tr key={ele.id}> 
                     <td>
-                        <div className="contentCell">
-                            <a data-toggle="tooltip" title={ele.subject != null ? ele.subject : ''}>
+                        <div>
+                            <a href="" data-toggle="tooltip"  title={ele.subject != null ? ele.subject : ''} onContextMenu={() => this.navigateToReplyFromTable(ele, index)} onClick={() => this.navigateToReplyFromTable(ele, index)}>
                                 {ele.subject}
                             </a>
                         </div>
@@ -197,12 +183,7 @@ class ViewLetterReplies extends Component {
                     </div>
                     <table className="attachmentTable">
                         <thead>
-                            <tr>
-                                <th>
-                                    <div className="headCell">
-                                        <span>Actions</span>
-                                    </div>
-                                </th>
+                            <tr> 
                                 <th>
                                     <div className="headCell">
                                         <span>Subject</span>

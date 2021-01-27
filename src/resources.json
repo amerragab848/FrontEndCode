@@ -9000,7 +9000,7 @@
         "ar": "السعر النهائي "
     },
     "budgetCompany": {
-        "en": "budget Company",
+        "en": "Budget By Company",
         "ar": "الميزانية"
     },
     "department": {
@@ -9016,7 +9016,7 @@
         "ar": "اختر الميزانية "
     },
     "BudgetContactRequired": {
-        "en": "Select Budget Contact",
+        "en": "Select Budgeted By Contact",
         "ar": "اختر المسئول عن الميزانية"
     },
     "departmentRequired": {
@@ -9036,7 +9036,7 @@
         "ar": "التبرير"
     },
     "specialInstruction": {
-        "en": "Secial Instructions",
+        "en": "Special Instructions",
         "ar": "تعليمات خاصة"
     },
     "budgetComments": {
@@ -9048,7 +9048,7 @@
         "ar": "تاريخ الميزانية"
     },
     "bidderCompany": {
-        "en": "Bidder Company",
+        "en": "Recommended Bidders",
         "ar": "الشركة مقدمة العرض"
     },
     "progressToDate": {
@@ -9199,6 +9199,33 @@
     "updateMaterialInventoryQuantitiesAndPrices":{
         "en":"Update Material Inventory Quantities And Prices",
         "ar":"تحديث كميات واسعار المخزن"
+   },
+   "mainSection":{
+    "en":"Main ",
+    "ar":" الرئيسى"
+   }, 
+    "directAwardSection":{
+    "en":"Direct Award ",
+    "ar":" القرار المباشر"
+   },  
+   "bugetSection":{
+    "en":"Buget ",
+    "ar":" الميزانيه"
+   },
+   "currentContract":{
+    "en":"Current Contract",
+    "ar":"العقد الحالي"
+   },
+   "requestByContaact":{
+    "en":"select request By Contact",
+    "ar":"  برجار اختيار  العقد --"
+   },
+   "RequiredrequestByCompany":{
+    "en":"select request By Company",
+    "ar":"  برجار اختيار  الشركه --"}
+    ,
+   "copiesNumber":{
+    "en":"Copies Number",
+    "ar":"عدد النسخ"
    }
- 
 }

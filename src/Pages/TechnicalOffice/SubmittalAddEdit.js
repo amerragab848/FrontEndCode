@@ -208,15 +208,15 @@ class SubmittalAddEdit extends Component {
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+    // var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
 
-    for (var i = 0; i < links.length; i++) {
-      if ((i + 1) % 2 == 0) {
-        links[i].classList.add("even");
-      } else {
-        links[i].classList.add("odd");
-      }
-    }
+    // for (var i = 0; i < links.length; i++) {
+    //   if ((i + 1) % 2 == 0) {
+    //     links[i].classList.add("even");
+    //   } else {
+    //     links[i].classList.add("odd");
+    //   }
+    // }
 
     let submittalDocumentCycles = {
       //field
@@ -841,64 +841,106 @@ class SubmittalAddEdit extends Component {
     });
   }
 
-  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
 
-    if (event == null) return;
+   
 
     let original_document = { ...this.state.document };
 
     let updated_document = {};
 
-    updated_document[field] = event.value;
+    if (event == null) {
+      updated_document[field] = event;
+      updated_document[subDatasourceId]=event
+      this.setState({      
+        [subDatasource]:event
+      });
+    }
+    else{
+          updated_document[field] = event.value;
+    }
 
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
       document: updated_document,
       [selectedValue]: event
+     
     });
 
     if (field == "bicCompanyId") {
-      let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
-
-      dataservice.GetNextArrangeMainDocument(url).then(res => {
-
-        updated_document.arrange = res;
-
+      if(event == null) {
+        updated_document.arrange = "";
+  
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
           document: updated_document
         });
-      });
+      }
+      else{
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+
+        dataservice.GetNextArrangeMainDocument(url).then(res => {
+  
+          updated_document.arrange = res;
+  
+          updated_document = Object.assign(original_document, updated_document);
+  
+          this.setState({
+            document: updated_document
+          });
+        });
+      }
+     
 
     }
 
     if (isSubscrib) {
-      let action = url + "?" + param + "=" + event.value;
-      dataservice.GetDataList(action, "contactName", "id").then(result => {
+      if(event==null){
         this.setState({
-          [targetState]: result
+            [targetState]: []
         });
-      });
+       
+    }
+    else{
+        let action = url + "?" + param + "=" + event.value
+        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            this.setState({
+                [targetState]: result
+            });
+        });
+    }
+     
     }
   }
 
-  handleChangeDropDownCycles(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+  handleChangeDropDownCycles(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
 
-    if (event == null) return;
+    
 
     let original_document = { ...this.state.documentCycle };
 
     let updated_document = {};
 
-    updated_document[field] = event.value;
+    if (event == null) {
+      updated_document[field] = event;
+      updated_document[subDatasourceId] = event;
+      this.setState({
+       
+        [subDatasource]:null
+      });
+    }
+    else{
+        updated_document[field] = event.value;
+    }
 
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
       documentCycle: updated_document,
       [selectedValue]: event
+     
     });
 
     // if (field == "flowCompanyId") {
@@ -919,13 +961,21 @@ class SubmittalAddEdit extends Component {
 
     if (isSubscrib) {
 
-      let action = url + "?" + param + "=" + event.value;
-
-      dataservice.GetDataList(action, "contactName", "id").then(result => {
+    
+      if(event==null){
         this.setState({
-          [targetState]: result
+            [targetState]: []
         });
-      });
+       
+    }
+    else{
+        let action = url + "?" + param + "=" + event.value
+        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            this.setState({
+                [targetState]: result
+            });
+        });
+    }
     }
   }
 
@@ -1023,8 +1073,8 @@ class SubmittalAddEdit extends Component {
     let saveDocument = this.state.document;
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocument.area = this.state.selectedArea.value === "0" ? "" : this.state.selectedArea.label;
-    saveDocument.location = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.label;
+    saveDocument.area =this.state.selectedArea!==null? this.state.selectedArea.value === "0" ? "" : this.state.selectedArea.label:"";
+    saveDocument.location =this.state.selectedLocation!==null? this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.label:"";
 
     this.changeCurrentStep(1);
 
@@ -1786,14 +1836,14 @@ class SubmittalAddEdit extends Component {
                                 </label>
                                 <div className="supervisor__company">
                                   <div className="super_name">
-                                    <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                    <Dropdown isClear={true}  data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                       styles={CompanyDropdown}
                                       classDrop="companyName1"
-                                      handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
+                                      handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","bicContactId"); }}
                                       name="fromCompanyId" id="fromCompanyId" />
                                   </div>
                                   <div className="super_company">
-                                    <Dropdown isMulti={false}
+                                    <Dropdown isClear={true} isMulti={false}
                                       data={this.state.fromContacts}
                                       selectedValue={this.state.selectedFromContact}
                                       handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedFromContact")}
@@ -1808,11 +1858,11 @@ class SubmittalAddEdit extends Component {
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="specsSection" data={this.state.specsSection} selectedValue={this.state.selectedSpecsSection}
+                                <Dropdown isClear={true} title="specsSection" data={this.state.specsSection} selectedValue={this.state.selectedSpecsSection}
                                   handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "", "", "", "selectedSpecsSection")} />
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="disciplineTitle"
+                                <Dropdown isClear={true} title="disciplineTitle"
                                   data={this.state.disciplines} isMulti={false}
                                   selectedValue={this.state.selectedDiscpline}
                                   handleChange={event => this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")}
@@ -1834,7 +1884,7 @@ class SubmittalAddEdit extends Component {
                                     </div>
                                   </Fragment>
                                 ) : (
-                                    <Dropdown title="contractPo" isMulti={false}
+                                    <Dropdown isClear={true} title="contractPo" isMulti={false}
                                       data={this.state.contracts}
                                       selectedValue={this.state.selectedContract}
                                       handleChange={event => this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContract")}
@@ -1846,7 +1896,7 @@ class SubmittalAddEdit extends Component {
                                   )}
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="reasonForIssue" data={this.state.reasonForIssue} selectedValue={this.state.selectedReasonForIssue}
+                                <Dropdown isClear={true} title="reasonForIssue" data={this.state.reasonForIssue} selectedValue={this.state.selectedReasonForIssue}
                                   handleChange={event => this.handleChangeDropDown(event, "reasonForIssueId", false, "", "", "", "selectedReasonForIssue")} />
                               </div>
                               <div className="linebylineInput valid-input">
@@ -1861,11 +1911,11 @@ class SubmittalAddEdit extends Component {
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="area" data={this.state.areas} selectedValue={this.state.selectedArea}
+                                <Dropdown isClear={true} title="area" data={this.state.areas} selectedValue={this.state.selectedArea}
                                   handleChange={event => this.handleChangeDropDown(event, "area", false, "", "", "", "selectedArea")} />
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="location" data={this.state.locations} selectedValue={this.state.selectedLocation}
+                                <Dropdown isClear={true} title="location" data={this.state.locations} selectedValue={this.state.selectedLocation}
                                   handleChange={event => this.handleChangeDropDown(event, "location", false, "", "", "", "selectedLocation")} />
                               </div>
                               <div className="linebylineInput valid-input">
@@ -1893,7 +1943,7 @@ class SubmittalAddEdit extends Component {
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="submittalType" data={this.state.SubmittalTypes} selectedValue={this.state.selectedSubmittalType}
+                                <Dropdown isClear={true} title="submittalType" data={this.state.SubmittalTypes} selectedValue={this.state.selectedSubmittalType}
                                   handleChange={event => this.handleChangeDropDown(event, "submittalTypeId", false, "", "", "", "selectedSubmittalType")} />
                               </div>
                               <div className="linebylineInput fullInputWidth">
@@ -2021,7 +2071,7 @@ class SubmittalAddEdit extends Component {
                                       </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                      <Dropdown title="approvalStatus" data={this.state.approvales}
+                                      <Dropdown isClear={true} title="approvalStatus" data={this.state.approvales}
                                         selectedValue={this.state.selectedApprovalStatus}
                                         handleChange={event => this.handleChangeDropDownCycles(event, "approvalStatusId", false, "", "", "", "selectedApprovalStatus")}
                                         onChange={setFieldValue}
@@ -2052,14 +2102,14 @@ class SubmittalAddEdit extends Component {
                                       </label>
                                       <div className="supervisor__company">
                                         <div className="super_name">
-                                          <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
-                                            handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContact"); }}
+                                          <Dropdown isClear={true} data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
+                                            handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContactCycles","flowContactId"); }}
                                             styles={CompanyDropdown}
                                             classDrop="companyName1"
                                             id="fromCompanyIdCycle" />
                                         </div>
                                         <div className="super_company">
-                                          <Dropdown data={this.state.fromContactsCycles}
+                                          <Dropdown isClear={true} data={this.state.fromContactsCycles}
                                             selectedValue={this.state.selectedFromContactCycles}
                                             handleChange={event => this.handleChangeDropDownCycles(event, "flowContactId", false, "", "", "", "selectedFromContactCycles")}
                                             onChange={setFieldValue}
@@ -2147,7 +2197,7 @@ class SubmittalAddEdit extends Component {
                                             </div>
                                           </div>
                                           <div className="linebylineInput valid-input">
-                                            <Dropdown isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                                            <Dropdown isClear={true} isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
                                               onChange={setFieldValue} onBlur={setFieldTouched}
                                               error={errors.reviewResult}
                                               touched={touched.reviewResult}
@@ -2329,7 +2379,7 @@ class SubmittalAddEdit extends Component {
                           {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                         </div>
                       </div>
-                      <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                      <Dropdown isClear={true} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
                         handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
                         onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
                         touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
@@ -2440,7 +2490,7 @@ class SubmittalAddEdit extends Component {
                         {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                       </div>
                     </div>
-                    <Dropdown title="approvalStatus"
+                    <Dropdown isClear={true} title="approvalStatus"
                       data={this.state.approvales}
                       selectedValue={this.state.selectedCycleAprrovalStatus}
                       handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "approvalStatusId", false, "", "", "", "selectedCycleAprrovalStatus")}
@@ -2470,7 +2520,7 @@ class SubmittalAddEdit extends Component {
                       </label>
                       <div className="supervisor__company">
                         <div className="super_name">
-                          <Dropdown data={this.state.companies}
+                          <Dropdown isClear={true} data={this.state.companies}
                             isMulti={false}
                             selectedValue={this.state.selectedNewFromCompanyCycles}
                             styles={CompanyDropdown}
@@ -2479,7 +2529,7 @@ class SubmittalAddEdit extends Component {
                             id="fromCompanyIdCycle" />
                         </div>
                         <div className="super_company">
-                          <Dropdown name="fromContactId"
+                          <Dropdown  isClear={true} name="fromContactId"
                             data={this.state.fromContactsCycles}
                             handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "flowContactId", false, "", "", "", "selectedNewFromContactCycles")}
                             selectedValue={this.state.selectedNewFromContactCycles}
@@ -2530,7 +2580,7 @@ class SubmittalAddEdit extends Component {
 
                   <div className="dropdownFullWidthContainer">
                     <div className="linebylineInput valid-input dropdownFullWidth">
-                      <Dropdown isMulti={false}
+                      <Dropdown isClear={true} isMulti={false}
                         title="reviewResult"
                         data={this.state.reviewResult}
                         selectedValue={this.state.selectedReviewResultInPop}

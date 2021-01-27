@@ -136,12 +136,17 @@ class TransferInventory extends Component {
     }
 
     handleChangeDropDown = (event) => {
-        if (event == null) return
+      
 
         let original_document = { ...this.state.document }
         let updated_document = {};
 
-        updated_document['fromProjectId'] = event.value;
+       
+        if (event == null) {
+            updated_document['fromProjectId'] = event;
+         }else{
+            updated_document['fromProjectId'] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({ document: updated_document, selectedProject: event })
@@ -213,6 +218,7 @@ class TransferInventory extends Component {
 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.fromProjectId}

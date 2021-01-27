@@ -26,10 +26,10 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
+    refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]) ,
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]).nullable(true) ,
-    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage])
+    sharedSettings: Yup.string().url(Resources['URLFormat'][currentLanguage]).nullable(true) 
 });
 
 let docId = 0;
@@ -304,10 +304,10 @@ class TransmittalAddEdit extends Component {
         //area
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "title", 'defaultLists', "area", "listType").then(result => {
             if (isEdit) {
-                let areaId = this.props.document.area;
-                if (areaId) {
-                    let area = result.find(i => i.value === areaId);
-                    this.setState({ selectedArea: area });
+                let area = this.props.document.area;
+                if (area) {
+                    let areaId = result.find(i => i.value.toLowerCase() ===area.toLowerCase());
+                    this.setState({ selectedArea: {label: area ,value:areaId}});
                 }
             }
             this.setState({ areas: [...result] });
@@ -316,10 +316,10 @@ class TransmittalAddEdit extends Component {
         //location
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "title", 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
-                let locationId = this.props.document.location;
-                if (locationId) {
-                    let location = result.find(i => i.value === locationId);
-                    this.setState({ selectedLocation: location });
+                let location = this.props.document.location;
+                if (location) {
+                    let value = result.find(i => i.label.toLowerCase() ===location.toLowerCase());
+                    this.setState({ selectedLocation:{label: location,value:value} });
                 }
             }
             this.setState({ locations: [...result] });
@@ -439,11 +439,17 @@ class TransmittalAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+        
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -452,6 +458,21 @@ class TransmittalAddEdit extends Component {
         });
 
         if (field == "toContactId") {
+            if(event==null){
+                updated_document.arrange = "";
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = "";
+                }
+
+                updated_document = Object.assign(original_document, updated_document);
+
+                this.setState({
+                    document: updated_document
+                });
+            }
+            else{
+
+         
             let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
@@ -466,14 +487,24 @@ class TransmittalAddEdit extends Component {
                     document: updated_document
                 });
             })
+          }
         }
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
         }
     }
 
@@ -559,7 +590,9 @@ class TransmittalAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={true}
+                                        <Formik initialValues={{ ...this.state.document }} 
+                                        validationSchema={validationSchema}
+                                         enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) {
                                                     return;
@@ -638,10 +671,12 @@ class TransmittalAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown data={this.state.companies} isMulti={false}
+                                                                    <Dropdown 
+                                                                       isClear={true}
+                                                                       data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId");
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -651,7 +686,9 @@ class TransmittalAddEdit extends Component {
                                                                         id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                    <Dropdown isMulti={false} data={this.state.fromContacts}
+                                                                    <Dropdown
+                                                                        isClear={true}
+                                                                        isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                                                         onChange={setFieldValue}
@@ -667,9 +704,11 @@ class TransmittalAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown isMulti={false} data={this.state.companies}
+                                                                    <Dropdown
+                                                                        isClear={true} 
+                                                                        isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact","toContactId")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
@@ -678,7 +717,9 @@ class TransmittalAddEdit extends Component {
                                                                         id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                    <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                    <Dropdown 
+                                                                        isClear={true}
+                                                                        isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
@@ -693,42 +734,54 @@ class TransmittalAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="discipline" data={this.state.discplines}
+                                                            <Dropdown
+                                                                isClear={true}
+                                                                title="discipline" data={this.state.discplines}
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 name="discipline"
                                                                 id="discipline"
                                                                 handleChange={event => this.handleChangeDropDown(event, 'discipline', false, '', '', '', 'selectedDiscpline')} />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="priority" data={this.state.priority}
+                                                            <Dropdown 
+                                                                isClear={true}
+                                                                title="priority" data={this.state.priority}
                                                                 selectedValue={this.state.selectedPriorityId}
                                                                 name="priorityId"
                                                                 id="priorityId"
                                                                 handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedPriorityId')} />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="submittedFor" data={this.state.transmittalSubmittedFor}
+                                                            <Dropdown 
+                                                                isClear={true}
+                                                                title="submittedFor" data={this.state.transmittalSubmittedFor}
                                                                 selectedValue={this.state.selectedSubmittedFor}
                                                                 name="submittedForId"
                                                                 id="submittedForId"
                                                                 handleChange={event => this.handleChangeDropDown(event, 'submittedForId', false, '', '', '', 'selectedSubmittedFor')} />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="sendingMethod" data={this.state.sendingMethods}
+                                                            <Dropdown
+                                                                isClear={true}
+                                                                title="sendingMethod" data={this.state.sendingMethods}
                                                                 selectedValue={this.state.selectedSendingMethod}
                                                                 name="sendingMethodId"
                                                                 id="sendingMethodId"
                                                                 handleChange={event => this.handleChangeDropDown(event, 'sendingMethodId', false, '', '', '', 'selectedSendingMethod')} />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="area" data={this.state.areas}
+                                                            <Dropdown 
+                                                                isClear={true}
+                                                                title="area" data={this.state.areas}
                                                                 selectedValue={this.state.selectedArea}
                                                                 name="area"
                                                                 id="area"
                                                                 handleChange={event => this.handleChangeDropDown(event, 'area', false, '', '', '', 'selectedArea')} />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
-                                                            <Dropdown title="location" data={this.state.locations}
+                                                            <Dropdown 
+                                                                isClear={true}
+                                                                title="location" data={this.state.locations}
                                                                 selectedValue={this.state.selectedLocation}
                                                                 name="location"
                                                                 id="location"
@@ -784,6 +837,7 @@ class TransmittalAddEdit extends Component {
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
+                                                                isClear={true} 
                                                                 title="attachedPaperSize"
                                                                 isMulti={true}
                                                                 data={

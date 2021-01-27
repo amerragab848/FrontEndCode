@@ -359,16 +359,23 @@ export function SnedToWorkFlow(url, formData, urlCycle) {
         return Api.post(url, formData)
             .then(resp => {
                 this.GetWorkFlowCycles(urlCycle);
+                dispatch({
+                    type: types.Send_WorkFlow,            
+                    isLoading:false
+                });
             })
             .catch(ex => {
                 dispatch({
                     type: types.Send_WorkFlow,
                     hasWorkflow: false,
                     showModal: false,
+                    
                 });
             });
     };
 }
+
+
 
 export function SendingWorkFlow(value) {
     return (dispatch, getState) => {
@@ -384,12 +391,10 @@ export function GetWorkFlowCycles(urlAction) {
         return Api.get(urlAction)
             .then(resp => {
                 let result = BuildWorkFlowCycleStracture(resp);
-
                 dispatch({
                     type: types.Cycles_WorkFlow,
                     workFlowCycles: result.cycles,
-                    hasWorkflow: result.hasWorkFlow,
-                    // showModal: false
+                    hasWorkflow: result.hasWorkFlow
                 });
             })
             .catch(ex => {
@@ -762,7 +767,7 @@ export function reportFilters(data) {
 export function setLoading() {
     return dispatch => {
         dispatch({
-            type: types.SET_LOADING,
+            type: types.SET_LOADING
         });
     };
 }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import dataservice from "../../Dataservice";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -10,6 +10,8 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let selectedRows = [];
 
@@ -19,7 +21,8 @@ class postitNotificationsDetail extends Component {
     this.state = {
       postitData: [],
       selected: {},
-      showDeleteModal: false
+      showDeleteModal: false,
+      SelectAll:false,
     };
   }
 
@@ -52,13 +55,27 @@ class postitNotificationsDetail extends Component {
       selected: newSelected
     });
   }
+  handleSelectAll(postitData){
+    let newSelected ={}
+    selectedRows=[]
+    let status=!this.state.SelectAll
+    for(let i=0; i<postitData.length ;i++){
+      newSelected[postitData[i].id]=status
+      if(status===true){
+      selectedRows.push(postitData[i]);
+      }
+    }
+    this.setState({
+      selected:newSelected,
+      SelectAll:status
+    });
 
+  }
   DeletePostit() {
     this.setState({
       showDeleteModal: true
     });
   }
-
   clickHandlerContinueMain = () => {
 
     if (selectedRows.length > 0) {
@@ -89,7 +106,6 @@ class postitNotificationsDetail extends Component {
       });
     }
   };
-
   routeToView(docView, projectId, projectName, arrange, docId) {
     dataservice.GetDataGrid("GetAccountsProjectsByIdForList").then(result => {
       result.forEach(item => {
@@ -118,7 +134,6 @@ class postitNotificationsDetail extends Component {
       });
     });
   }
-
   updateStatus(obj) {
     dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
       if (obj.description) {
@@ -843,8 +858,27 @@ class postitNotificationsDetail extends Component {
       }
     });
   }
+  handleUpdateAllStatus(Rows){
+    Rows.forEach(obj => {
+      if(obj.viewStatus !=true){
+        dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {})
+      }
+    });
+    selectedRows=[]
+    toast.success("operation done successfully")
+     setTimeout(()=>{ dataservice.GetDataGrid("GetNotificationPostitDetail").then(result => {
+      this.setState({
+        postitData: result,
+        selected:{}
+      });
+    });
+  },200)
+
+  }
 
   render() {
+    const filterCaseInsensitive = ({ id, value }, row) =>
+    row[id] ? row[id].toLowerCase().includes(value.toLowerCase()) : true
     const columns = [
       {
         Header: Resources["checkList"][currentLanguage],
@@ -866,7 +900,7 @@ class postitNotificationsDetail extends Component {
         id: "readUnread",
         accessor: "readUnread",
         Cell: ({ row }) => {
-          if (row._original.viewStatus === false) {
+          if (row._original.viewStatus === false ||row._original.viewStatus===null) {
             return (
               <div onClick={() => this.updateStatus(row._original)} style={{ cursor: "pointer", padding: "4px 8px", margin: "4px auto", borderRadius: "100px", backgroundColor: "#E74C3C", width: "auto", color: "#FFF", minWidth: ' 61px', height: '24px', fontFamily: 'Muli', fontSize: '11px', fontWeight: 'bold', fontStyle: 'normal', fontStretch: 'normal', lineHeight: '1.45', letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {Resources["unRead"][currentLanguage]}
@@ -918,38 +952,62 @@ class postitNotificationsDetail extends Component {
         sortabel: true
       },
     ];
-
+    const   ExportColumns=[
+      {field:"readUnread",title:"Read"},
+      {field:"title",title:"title"},
+      {field:"statusName",title:"Status"},
+      {field:"fromContactName",title:"from Contact Name"},
+      {field:"sentDate",title:"sent Date"},
+      {field:"sendMethod",title:"send Method"},
+    ]
+    const btnExport =
+    <Export rows={this.state.postitData} columns={ExportColumns} fileName={Resources["notification"][currentLanguage]} />;
     return (
       <div>
         <div className="mainContainer main__withouttabs">
           <div class="submittalFilter">
             <div class="subFilter">
-              <h3 class="zero">{Resources["Postit"][currentLanguage]}</h3>
+              <h3 class="zero">{Resources["notification"][currentLanguage]}</h3>
             </div>
+
+            <div className="filterBTNS">
+                {btnExport}
+             </div>
           </div>
-          <div style={{ position: "relative" }}>
+              <div style={{ position: "relative" }}>
             {selectedRows.length > 0 ? (
               <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} style={{ top: '0px' }}>
                 <div className="tableselcted-items">
+                  <span> 
+                    
+                     <div className="ui checked checkbox  checkBoxGray300 ">
+                          <input type="checkbox" className="checkbox" checked={this.state.SelectAll}
+                            onChange={()=>this.handleSelectAll(this.state.postitData)} />
+                          <label />
+                     </div>
+                  </span>
                   <span id="count-checked-checkboxes">{selectedRows.length}</span>
-                  <span>Selected</span>
+                  <span> Selected</span>
                 </div>
                 <div className="tableSelctedBTNs">
-                  <button className="defaultBtn btn smallBtn" onClick={this.DeletePostit.bind(this)}>
-                    {Resources["delete"][currentLanguage]}
+                  <button className="defaultBtn btn smallBtn" onClick={() => this.handleUpdateAllStatus(selectedRows)} /*onClick={this.DeletePostit.bind(this)}*/>
+                    {Resources["update"][currentLanguage]}
                   </button>
                 </div>
               </div>
             ) : null}
+
             <ReactTable
+              filterable
               data={this.state.postitData}
               columns={columns}
               defaultPageSize={10}
               noDataText={Resources["noData"][currentLanguage]}
               className="-striped -highlight"
-            />
+              defaultFilterMethod={filterCaseInsensitive}
+              />
           </div>
-        </div>
+          </div>
         {this.state.showDeleteModal == true ? (
           <ConfirmationModal title={Resources["smartDeleteMessageContent"][currentLanguage]} buttonName="delete" closed={this.onCloseModal}
             showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}

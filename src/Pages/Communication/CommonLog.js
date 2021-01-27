@@ -502,7 +502,8 @@ class CommonLog extends Component {
     }
 
     filterMethodMain = (event, query, apiFilter) => {
-        var stringifiedQuery = JSON.stringify(query);
+        var stringifiedQuery=  encodeURIComponent(JSON.stringify(query));
+       // var stringifiedQuery = JSON.stringify(query);
         if (stringifiedQuery == '{"isCustom":true}') {
             stringifiedQuery = undefined;
         }
@@ -1316,9 +1317,9 @@ class CommonLog extends Component {
     };
 
     afterUpload = () => {
-        this.setState({
-            docTemplateModal: false
-        });
+        // this.setState({
+        //     docTemplateModal: false
+        // });
         this.setState({ isLoading: true });
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
     };

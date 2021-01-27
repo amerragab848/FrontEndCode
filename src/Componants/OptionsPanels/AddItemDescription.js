@@ -166,21 +166,31 @@ class AddItemDescription extends Component {
 
     handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, fieldLabel) {
 
-        if (event == null) return;
+        
 
         let original_document = { ...this.state.itemDescription };
         let updated_document = {};
-        updated_document[field] = event.value;
-        updated_document[fieldLabel] = event.label;
+       
+        if (event == null) {
+            updated_document[field] = event;
+         }else{
+             updated_document[field] = event.value;
+             updated_document[fieldLabel] = event.label;
+            
+         }
+       
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
             itemDescription: updated_document,
             [selectedValue]: event,
-            itemTypeTitle: event.label === "Material" ? event.label : ""
+            itemTypeTitle: event!==null?event.label === "Material" ? event.label : "":""
         });
         if (field === "itemType") {
             let poolItemTypes = this.state.poolItemTypes;
+            if(event!==null){
+
+            
             let item = find(poolItemTypes, function (x) {
                 return x.id == event.value;
             });
@@ -189,14 +199,23 @@ class AddItemDescription extends Component {
                     action: item.action
                 });
             }
+          }
         }
         if (isSubscribe) {
-            let action = url + "?" + param + "=" + event.value;
-            DataService.GetDataList(action, "title", "id").then(result => {
+            if(event===null){
                 this.setState({
-                    [nextTragetState]: result
+                    [nextTragetState]: []
                 });
-            });
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value;
+                DataService.GetDataList(action, "title", "id").then(result => {
+                    this.setState({
+                        [nextTragetState]: result
+                    });
+                });
+            }
+           
         }
     }
 
@@ -341,7 +360,7 @@ class AddItemDescription extends Component {
                                             </div>
                                         </div> : null}
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="unit" data={this.state.Units} selectedValue={this.state.selectedUnit}
+                                            <Dropdown isClear={true}  title="unit" data={this.state.Units} selectedValue={this.state.selectedUnit}
                                                 handleChange={event => this.handleChangeItemDropDown(event, "unit", "selectedUnit", false, "", "", "")} index="unit" />
                                         </div>
                                         {this.state.action == 2 || this.state.action == 3 ?
@@ -363,20 +382,20 @@ class AddItemDescription extends Component {
                                         {this.props.showBoqType == true ? (
                                             <React.Fragment>
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown title="boqType" data={this.state.boqTypes}
+                                                    <Dropdown isClear={true} title="boqType" data={this.state.boqTypes}
                                                         selectedValue={this.state.selectedBOQType}
                                                         handleChange={event => this.handleChangeItemDropDown(event, "boqTypeId", "selectedBOQType", true, "GetAllBoqChild", "parentId", "BoqTypeChilds", "boqType")}
                                                         name="boqType" index="boqType" />
                                                 </div>
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown title="boqTypeChild" data={this.state.BoqTypeChilds}
+                                                    <Dropdown isClear={true} title="boqTypeChild" data={this.state.BoqTypeChilds}
                                                         selectedValue={this.state.selectedBOQSubTypeChild}
                                                         handleChange={event => this.handleChangeItemDropDown(event, "boqChildTypeId", "selectedBOQSubTypeChild", true, "GetAllBoqChild", "parentId", "BoqSubTypes", "boqChildType")}
                                                         name="boqTypeChild" index="boqTypeChild" />
                                                 </div>
                                                 <div className="letterFullWidth">
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="boqSubType" data={this.state.BoqSubTypes}
+                                                        <Dropdown isClear={true} title="boqSubType" data={this.state.BoqSubTypes}
                                                             selectedValue={this.state.selectedBOQSubType}
                                                             handleChange={event => this.handleChangeItemDropDown(event, "boqSubTypeId", "selectedBOQSubType", false, "", "", "", "boqSubType")}
                                                             name="boqSubType" index="boqSubType" />
@@ -386,7 +405,7 @@ class AddItemDescription extends Component {
                                         ) : null}
                                         <div
                                             className={"linebylineInput valid-input " + (this.props.showItemType !== false ? " " : " disNone")}>
-                                            <Dropdown title="itemType" data={this.state.itemTypes}
+                                            <Dropdown isClear={true} title="itemType" data={this.state.itemTypes}
                                                 selectedValue={this.state.selectedItemType}
                                                 handleChange={event => this.handleChangeItemDropDown(event, "itemType", "selectedItemType", false, "", "", "")}
                                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.itemType} touched={touched.itemType}
@@ -395,7 +414,7 @@ class AddItemDescription extends Component {
 
                                         {this.state.action == 3 ? (
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="equipmentType" data={this.state.equipmentTypes}
+                                                <Dropdown isClear={true} title="equipmentType" data={this.state.equipmentTypes}
                                                     selectedValue={this.state.selectedequipmentType}
                                                     handleChange={event => this.handleChangeItemDropDown(event, "equipmentType", "selectedequipmentType", false, "", "", "")}
                                                     name="equipmentType" index="equipmentType" />

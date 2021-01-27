@@ -8,9 +8,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import SkyLight from 'react-skylight';
+import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import eyeShow from "../../Styles/images/eyepw.svg";
+import { toast } from "react-toastify";
+
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let action = null;
+
+const validationSchema = Yup.object().shape({
+  password: Yup.string().required(Resources["passwordRequired"][currentLanguage])
+});
 class DocApprovalDetails extends Component {
 
   constructor(props) {
@@ -20,7 +31,7 @@ class DocApprovalDetails extends Component {
     for (let param of query.entries()) {
       action = param[1];
     }
-    
+
     const columnsGrid = [
       { title: '', type: 'check-box', fixed: true, field: 'id' },
       {
@@ -328,8 +339,37 @@ class DocApprovalDetails extends Component {
       filtersColumns: filtersColumns,
       apiFilter: "",
       groups: [],
-      gridName: gridName
+      gridName: gridName,
+      showModal: false,
+      selectedRows: [],
+      contactsList: [],
+      selectedContact: null,
+      approvalStatus: true,
+      type: false,
+      approvalObj: {
+        contactId: "",
+        password: "",
+        comment: ""
+      }
     };
+
+
+    this.actions = [
+      {
+        title: 'Approve',
+        handleClick: (value) => {
+          this.showPopUp(value, true);
+        },
+        classes: "autoGridBtn"
+      },
+      {
+        title: 'Reject',
+        handleClick: (value) => {
+          this.showPopUp(value, false);
+        },
+        classes: "autoGridBtn"
+      }
+    ]
   }
 
   componentDidMount() {
@@ -439,8 +479,8 @@ class DocApprovalDetails extends Component {
               obj.isModification = true;
             }
 
-            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj)); 
-            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms); 
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
             let doc_view = "/" + row.docLink.replace("/", "") + "?id=" + encodedPaylod;
             subject = doc_view;
           }
@@ -507,13 +547,109 @@ class DocApprovalDetails extends Component {
     this.setState({ isFilter: false });
   };
 
+  checkedRow = (id, checked) => {
+
+    let indexed = checked.findIndex(x => x === id);
+    if (indexed > -1) {
+      checked.splice(indexed, 1);
+    } else {
+      if (checked.length > 0) {
+        let firstSelected = this.state.rows.find(x => x.id === checked[0]);
+        let currentSelected = this.state.rows.find(x => x.id === id);
+        if (firstSelected.workFlowId == currentSelected.workFlowId && firstSelected.arrange == currentSelected.arrange) {
+          checked.push(id);
+        } else {
+          toast.warn('This Record Don\'t Match Prevoius Records');
+        }
+
+      } else {
+        checked.push(id);
+      }
+    }
+  }
+
+  showPopUp = (values, approvalStatus) => {
+    let paramsObj = this.state.rows.find(x => x.id == values[0]);
+    Api.get(`GetWorkFlowContactsByWorkFlowIdAndArrange?arrange=${paramsObj.arrange}&workFlowId=${paramsObj.workFlowId}&approvalStatus=${approvalStatus}`).then(result => {
+      this.setState({
+        showModal: true,
+        selectedRows: values,
+        contactsList: result ? result.map(i => ({ label: i.contactName, value: i.contactId })) : [],
+        approvalStatus: approvalStatus,
+        selectedContact: approvalStatus == true ? { label: Resources["approveTo"][currentLanguage], value: "0" } : { label: Resources["rejectedTo"][currentLanguage], value: "0" }
+      })
+    });
+    this.simpleDialog.show()
+  }
+
+  handleChangeDropDown = (value, field, selected) => {
+    let originalDoc = { ...this.state.approvalObj };
+    let newDoc = {};
+    newDoc[field] = value.value;
+    newDoc[selected] = value;
+    Object.assign(originalDoc, newDoc);
+    this.setState({ approvalObj: originalDoc })
+  }
+
+  handleChange = (value, field) => {
+    let originalDoc = { ...this.state.approvalObj };
+    let newDoc = {};
+    newDoc[field] = value;
+    Object.assign(originalDoc, newDoc);
+    this.setState({ approvalObj: originalDoc })
+  }
+
+  toggle = () => {
+    const currentType = this.state.type;
+    this.setState({ type: !currentType });
+  };
+
+  submitApprove = () => {
+    this.setState({ isLoading: true })
+    Api.getPassword("GetPassWordEncrypt", this.state.approvalObj.password).then(result => {
+      if (result) {
+        let serverObj = [];
+        this.state.selectedRows.forEach(item => {
+          let row = this.state.rows.find(x => x.id == item);
+          if (row) {
+            serverObj.push({
+              accountDocId: row.accountDocWorkFlowId,
+              approvalStatus: this.state.approvalStatus,
+              contacts: [this.state.approvalObj.contactId],
+              currentArrange: row.arrange,
+              docId: row.docId,
+              docTypeId: row.docTypeId,
+              projectId: row.projectId,
+              comment: this.state.approvalObj.comment
+            })
+          }
+        })
+        if (serverObj.length > 0) {
+          Api.post("SendMultipleWorkFlowApproval", serverObj).then(e => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            this.setState({
+              isLoading: false,
+              showModal: false,
+              selectedContact: null,
+              approvalObj: {
+                contactId: "",
+                password: "",
+                comment: ""
+              }
+            })
+          });
+        }
+      }
+    });
+  }
+
   render() {
     const dataGrid = this.state.isLoading === false ? (
-      < GridCustom
+      <GridCustom
         gridKey={this.state.gridName}
         data={this.state.rows}
         cells={this.state.columns}
-        actions={[]}
+        actions={this.actions}
         rowActions={[]}
         rowClick={cell => {
           if (cell) {
@@ -543,8 +679,13 @@ class DocApprovalDetails extends Component {
         }
         groups={this.state.groups}
         isFilter={this.state.isFilter}
-        changeValueOfProps={this.changeValueOfProps.bind(this)} />
+        changeValueOfProps={this.changeValueOfProps.bind(this)}
+        shouldCheck={(id, checked) => {
+          this.checkedRow(id, checked);
+        }}
+      />
     ) : <LoadingSection />;
+
 
 
 
@@ -581,6 +722,86 @@ class DocApprovalDetails extends Component {
         </div>
 
         <div>{dataGrid}</div>
+        <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
+          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={this.state.approvalStatus == true ? Resources["approvalModalApprove"][currentLanguage] : Resources["approvalModalReject"][currentLanguage]}>
+
+            <div className="">
+              <Formik initialValues={{ ...this.state.approvalObj }}
+                validationSchema={validationSchema}
+                enableReinitialize={true}
+                onSubmit={() => {
+                  this.submitApprove();
+                }}>
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                  <Form className="dropWrapper" onSubmit={handleSubmit}>
+                    <div className=" proForm customProform">
+                      <div className="fillter-status fillter-item-c ">
+                        <div className="passwordInputs showPasswordArea">
+                          <label className="control-label">Password *</label>
+                          <div className="inputPassContainer">
+                            <div className={"ui input inputDev" + (errors.password && touched.password ? " has-error" : !errors.password && touched.password ? " has-success" : " ")}>
+                              <span className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
+                                <img src={eyeShow} />
+                                <span className="show"> Show</span>
+                                <span className="hide"> Hide</span>
+                              </span>
+                              <input
+                                type={this.state.type ? "text" : "password"}
+                                name="password" className="form-control fsadfsadsa"
+                                id="password"
+                                placeholder={Resources.password[currentLanguage]}
+                                autoComplete="off" value={this.state.approvalObj.password}
+                                onBlur={e => { handleBlur(e); }}
+                                onChange={e => this.handleChange(e.target.value, "password")}
+                              />
+                              {errors.password && touched.password ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.password && touched.password ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                              {errors.password && touched.password ? (<em className="pError">{errors.password}</em>) : null}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <Dropdown
+                        title={this.state.approvalStatus == true ? "approveTo" : "rejectedTo"}
+                        data={this.state.contactsList}
+                        selectedValue={this.state.selectedContact}
+                        handleChange={(event) => {
+
+                          this.handleChangeDropDown(event, "contactId", "selectedContact")
+                        }
+                        }
+                        onBlur={setFieldTouched}
+                        name="contactId" id="contactId" />
+
+                      <div className="textarea-group fullWidthWrapper textLeft">
+                        <label>Comment</label>
+                        <textarea className="form-control"
+                          onChange={e => this.handleChange(e.target.value, "comment")}
+                          value={this.state.approvalObj.comment}
+                        />
+                      </div>
+
+                      <div className="slider-Btns fullWidthWrapper">
+                        {this.state.isLoading == false ?
+                          <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                            {this.state.approvalStatus == true ? Resources["approvalModalApprove"][currentLanguage] : Resources["approvalModalReject"][currentLanguage]}
+                          </button> : (
+                            <span className="primaryBtn-1 btn largeBtn disabled">
+                              <div className="spinner">
+                                <div className="bounce1" />
+                                <div className="bounce2" />
+                                <div className="bounce3" />
+                              </div>
+                            </span>
+                          )}
+                      </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </SkyLight>
+        </div>
       </div>
     );
   }

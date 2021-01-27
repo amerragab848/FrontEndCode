@@ -19,7 +19,7 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    projectId: Yup.string().required(Resources['selectProjects'][currentLanguage])
+    projectId: Yup.string().required(Resources['selectProjects'][currentLanguage]).nullable(true)
 });
 
 class DeliveredQuantitieReport extends Component {
@@ -172,12 +172,19 @@ class DeliveredQuantitieReport extends Component {
     }
 
     handleChangeDropDown(event) {
-        if (event == null) return;
+        if (event !== null) {
+            this.setState({
+                selectProjects: event,
+                projectId: event.value
+            });
+        }else{
+            this.setState({
+                selectProjects: event,
+                projectId: event
+            }); 
+        }
 
-        this.setState({
-            selectProjects: event,
-            projectId: event.value
-        });
+       
     }
 
     render() {
@@ -229,7 +236,9 @@ class DeliveredQuantitieReport extends Component {
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="projectName" data={this.state.projects}
+                                                        <Dropdown 
+                                                            isClear={true}
+                                                            title="projectName" data={this.state.projects}
                                                             selectedValue={this.state.selectProjects}
                                                             handleChange={event => this.handleChangeDropDown(event)}
                                                             onChange={setFieldValue}

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import CryptoJS from 'crypto-js';
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -117,7 +117,7 @@ class AddDocAttachment extends Component {
   save(selectedRows) {
     if (selectedRows.length > 0) {
       this.props.actions.addCommunicationDocsAttach(selectedRows, this.props.projectId, this.props.docTypeId, this.props.docId);
-      this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [], selected: {} , modalAdd : false});
+      this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [], selected: {}, modalAdd: false });
     }
     else {
       toast.warning(Resources["arrayEmpty"][currentLanguage]);
@@ -195,9 +195,9 @@ class AddDocAttachment extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    
+
     if (nextProps.documentData != prevState.documentData && prevState.isFilter === false) {
-      
+
       return {
         documentData: nextProps.documentData,
         isFilter: true,
@@ -210,7 +210,7 @@ class AddDocAttachment extends Component {
   changeDate() {
     this.setState({
       focused: true
-    }) 
+    })
   }
 
   onFilteredChangeCustom = (value, accessor) => {
@@ -259,7 +259,7 @@ class AddDocAttachment extends Component {
                 </div>
               );
             },
-            width: 70
+            width: 30
           }
         , {
           Header: Resources["subject"][currentLanguage],
@@ -271,12 +271,12 @@ class AddDocAttachment extends Component {
               </div>
             );
           },
-          width: 600
+          width: 380
         },
         {
           Header: Resources["docType"][currentLanguage],
           accessor: "docTypeName",
-          width: 250
+          width: 150
         },
         {
           Header: Resources["docDate"][currentLanguage],
@@ -285,7 +285,8 @@ class AddDocAttachment extends Component {
             <span>
               <span>{moment(row.value).format("DD/MM/YYYY")}</span>
             </span>
-          )
+          ),
+          width: 150
         }
       ]
 
@@ -296,28 +297,27 @@ class AddDocAttachment extends Component {
           field: 'id',
           title: '',
           type: 'check-box',
-          fixed: true,
-          hidden: false 
+          fixed: true, 
+          hidden: false
         },
         {
           field: 'subject',
           title: Resources['subject'][currentLanguage],
-          width: 180,
+          width: 55,
           fixed: false,
           groupable: true,
           type: "text",
-          sortable: true, 
-          classes: ' bold elipsisPadd',
-          onRightClick: cell => { this.cellClick(cell) },
+          sortable: true,
+          classes: ' bold elipsisPadd', 
           href: 'link',
         },
         {
           field: 'statusText',
           title: Resources['docStatus'][currentLanguage],
-          width:90,
+          width: 15,
           groupable: true,
           sortable: true,
-          fixed: true,
+          fixed: false,
           type: "text",
           classes: 'gridBtns status ',
           conditionalClasses: obj => {
@@ -327,7 +327,7 @@ class AddDocAttachment extends Component {
         {
           field: 'docDate',
           title: Resources['docDate'][currentLanguage],
-          width: 20,
+          width: 15,
           groupable: true,
           fixed: false,
           sortable: true,
@@ -346,11 +346,12 @@ class AddDocAttachment extends Component {
             selectedValue={this.state.selectDocument} handleChange={event => this.dropDownsEvent(event, "docType")} />
 
           {this.state.documentData.length ?
-            <Fragment> 
-              <div className="grid-container">
+            <Fragment>
+              <div className="grid-container" id={'grid-container_addAttachments'}>
                 {this.state.isLoading === false ? (
                   <GridCustom
-                    gridKey="newAttach"
+                    useModal={true}
+                    gridKey="AddDocAttachment"
                     data={this.state.documentData}
                     pageSize={this.state.documentData.length}
                     groups={[]}
@@ -374,7 +375,7 @@ class AddDocAttachment extends Component {
           Header: Resources["subject"][currentLanguage],
           accessor: "subject",
           Cell: this.renderEditable.bind(this),
-          width: 200
+          width: 280
         },
         {
           Header: Resources["docStatus"][currentLanguage],
@@ -387,7 +388,8 @@ class AddDocAttachment extends Component {
           accessor: "docDate",
           Cell: row => (
             <span> <span>{moment(row.value).format("DD/MM/YYYY")}</span> </span>
-          )
+          ),
+          width: 120,
         }
       ];
 
@@ -460,7 +462,7 @@ class AddDocAttachment extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return { 
+  return {
     docsAttachData: state.communication.docsAttachData,
     relatedLinkData: state.communication.relatedLinkData,
     documentData: state.communication.documentData,

@@ -50,25 +50,25 @@ let selectedRows = [];
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(
         Resources["subjectRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     orderFromCompanyId: Yup.string().required(
         Resources["fromCompany"][currentLanguage]
-    ),
+    ).nullable(true),
     specsSectionId: Yup.string().required(
         Resources["specsSectionSelection"][currentLanguage]
-    ),
+    ).nullable(true),
     orderFromContactId: Yup.string().required(
         Resources["fromContactRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     materialReleaseId: Yup.string().required(
         Resources["materialReleaseTypeSelection"][currentLanguage]
-    )
+    ).nullable(true)
 });
 
 const documentItemValidationSchema = Yup.object().shape({
     itemId: Yup.string().required(
         Resources["itemDescription"][currentLanguage]
-    ),
+    ).nullable(true),
 
     returnedQuantity: Yup.number()
         .required(Resources["returnedQuantity"][currentLanguage])
@@ -374,19 +374,27 @@ class materialReturnedAddEdit extends Component {
     }
 
     fillSubDropDown = (value, isEdit) => {
-        let action = "GetContactsByCompanyId?companyId=" + value;
-        dataservice.GetDataList(action, "contactName", "id").then(result => {
-            if (isEdit) {
-                let toSubField = this.state.document.orderFromContactId;
-                let targetFieldSelected = find(result, function (i) {
-                    return i.value == toSubField;
-                });
-                this.setState({
-                    selectedFromContact: targetFieldSelected
-                });
-            }
-            this.setState({ FromContactsData: result });
-        });
+        if(value!==null){
+            let action = "GetContactsByCompanyId?companyId=" + value;
+            dataservice.GetDataList(action, "contactName", "id").then(result => {
+                if (isEdit) {
+                    let toSubField = this.state.document.orderFromContactId;
+                    let targetFieldSelected = find(result, function (i) {
+                        return i.value == toSubField;
+                    });
+                    this.setState({
+                        selectedFromContact: targetFieldSelected
+                    });
+                }
+                this.setState({ FromContactsData: result });
+            });
+        }
+        else{
+            this.setState({
+                selectedFromContact: []
+            });
+        }
+     
     };
 
     fillDropDowns(isEdit) {
@@ -506,14 +514,25 @@ class materialReturnedAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, selectedValue) {
-        if (event == null) return;
+        
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        
+        if (event == null) {
+            updated_document[field] = event;
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ document: updated_document, [selectedValue]: event });
         if (isSubscrib) {
-            this.fillSubDropDown(event.value, false);
+            if(event===null){
+                this.fillSubDropDown(event, false);
+
+            }
+            else {
+                this.fillSubDropDown(event.value, false);
+            }
         }
     }
 
@@ -719,18 +738,9 @@ class materialReturnedAddEdit extends Component {
             let obj = {
                 materialReleaseId:this.state.docId, //this.state.document.id,
                 itemId: this.state.ItemDescriptionInfo.itemId,
-                areaId:
-                    this.state.SelectedArea.value === "0"
-                        ? undefined
-                        : this.state.SelectedArea.value,
-                locationId:
-                    this.state.SelectedLocation.value === "0"
-                        ? undefined
-                        : this.state.SelectedLocation.value,
-                boqItemId:
-                    this.state.SelectedBoqItem.value === "0"
-                        ? undefined
-                        : this.state.SelectedBoqItem.value,
+                areaId:     this.state.SelectedArea!==null?this.state.SelectedArea.value === "0"? undefined : this.state.SelectedArea.value:null,
+                locationId: this.state.SelectedLocation!==null?this.state.SelectedLocation.value === "0" ? undefined: this.state.SelectedLocation.value:null,
+                boqItemId:  this.state.SelectedBoqItem!==null?this.state.SelectedLocation.value === "0"? undefined : this.state.SelectedBoqItem.value:null,
                 arrange: this.state.arrangeItem,
                 quantity: this.state.quantity,
                 unitPrice: this.state.unitPrice,
@@ -801,17 +811,28 @@ class materialReturnedAddEdit extends Component {
         }
     };
 
-    handleChangeItemId = e => {
+    handleChangeItemId = event => {
         let data = [];
-        data = this.state.descriptionList.filter(i => i.id === e.value);
-        let obj = data[0];
-        console.log(obj);
-        this.setState({
-            selectedItemId: e,
-            unitPrice: obj.unitPrice,
-            ItemDescriptionInfo: obj,
-            quantity: obj.quantity
-        });
+        if(event!==null){
+            data = this.state.descriptionList.filter(i => i.id === event.value);
+            let obj = data[0];
+            console.log(obj);
+            this.setState({
+                selectedItemId: event,
+                unitPrice: obj.unitPrice,
+                ItemDescriptionInfo: obj,
+                quantity: obj.quantity
+            });
+        }
+        else{
+            this.setState({
+                selectedItemId: event,
+                unitPrice:"",
+                ItemDescriptionInfo: {},
+                quantity: ""
+            });
+        }
+  
     };
 
     ShowCostTree = () => {
@@ -927,14 +948,8 @@ class materialReturnedAddEdit extends Component {
                 id: this.state.objItemForEdit.id,
                 materialReleaseId: this.state.document.id,
                 itemId: this.state.objItemForEdit.itemId,
-                areaId:
-                    this.state.SelectedAreaForEdit.value === "0"
-                        ? undefined
-                        : this.state.SelectedAreaForEdit.value,
-                locationId:
-                    this.state.SelectedLocationForEdit.value === "0"
-                        ? undefined
-                        : this.state.SelectedLocationForEdit.value,
+                areaId: this.state.SelectedAreaForEdit!==null?this.state.SelectedAreaForEdit.value === "0"? undefined: this.state.SelectedAreaForEdit.value:null,
+                locationId: this.state.SelectedLocationForEdit!==null?this.state.SelectedLocationForEdit.value === "0" ? undefined: this.state.SelectedLocationForEdit.value:null,
                 arrange: this.state.objItemForEdit.arrange,
                 quantity: this.state.objItemForEdit.quantity,
                 unitPrice: this.state.objItemForEdit.unitPrice,
@@ -1150,6 +1165,7 @@ class materialReturnedAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="specsSection"
                                                 data={this.state.SpecsSectionData}
                                                 selectedValue={
@@ -1174,6 +1190,7 @@ class materialReturnedAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="fromCompany"
                                                 data={this.state.FromCompaniesData}
                                                 selectedValue={
@@ -1198,6 +1215,7 @@ class materialReturnedAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="orderFromContact"
                                                 data={this.state.FromContactsData}
                                                 selectedValue={
@@ -1222,6 +1240,7 @@ class materialReturnedAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="materialRelease"
                                                 data={
                                                     this.state.MaterialReleaseData
@@ -1249,6 +1268,7 @@ class materialReturnedAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="costCoding"
                                                 data={this.state.CostCodingData}
                                                 selectedValue={
@@ -1422,10 +1442,7 @@ class materialReturnedAddEdit extends Component {
                         }>
                         <Formik
                             initialValues={{
-                                itemId:
-                                    this.state.selectedItemId.value !== "0"
-                                        ? this.state.selectedItemId
-                                        : "",
+                                itemId: this.state.selectedItemId!==null?this.state.selectedItemId.value !== "0"? this.state.selectedItemId:"":"",
                                 unitPrice: this.state.unitPrice,
                                 returnedQuantity: this.state.quantity,
                                 arrangeItem: this.state.arrangeItem
@@ -1462,6 +1479,7 @@ class materialReturnedAddEdit extends Component {
                                             <div className="proForm datepickerContainer">
                                                 <div className="linebylineInput valid-input letterFullWidth ">
                                                     <Dropdown
+                                                        isClear={true}
                                                         title="itemDescription"
                                                         data={
                                                             this.state
@@ -1697,6 +1715,7 @@ class materialReturnedAddEdit extends Component {
 
                                                 <div className="linebylineInput valid-input ">
                                                     <Dropdown
+                                                        isClear={true}
                                                         data={
                                                             this.state.BoqItemData
                                                         }
@@ -1765,6 +1784,7 @@ class materialReturnedAddEdit extends Component {
 
                                                 <div className="linebylineInput valid-input ">
                                                     <Dropdown
+                                                        isClear={true}
                                                         data={this.state.AreaData}
                                                         selectedValue={
                                                             this.state.SelectedArea
@@ -1780,6 +1800,7 @@ class materialReturnedAddEdit extends Component {
 
                                                 <div className="linebylineInput valid-input ">
                                                     <Dropdown
+                                                        isClear={true}
                                                         data={
                                                             this.state.LocationData
                                                         }
@@ -2243,6 +2264,7 @@ class materialReturnedAddEdit extends Component {
 
                                             <div className="linebylineInput valid-input ">
                                                 <Dropdown
+                                                    isClear={true}
                                                     data={this.state.AreaData}
                                                     selectedValue={
                                                         this.state
@@ -2259,6 +2281,7 @@ class materialReturnedAddEdit extends Component {
 
                                             <div className="linebylineInput valid-input ">
                                                 <Dropdown
+                                                    isClear={true}
                                                     data={this.state.LocationData}
                                                     selectedValue={
                                                         this.state

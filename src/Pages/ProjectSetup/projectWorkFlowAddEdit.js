@@ -58,7 +58,7 @@ const ValidtionSchemaContactsForAdd = Yup.object().shape({
         .nullable(true),
     ContactName: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
-        .nullable(false),
+        .nullable(true),
     levelNo: Yup.number()
         .required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -91,7 +91,7 @@ const ValidtionSchemaForFollowUps = Yup.object().shape({
         .nullable(true),
     ContactNameFollowUp: Yup.string()
         .required(Resources['toContactRequired'][currentLanguage])
-        .nullable(false),
+        .nullable(true),
 });
 
 const ValidtionSchemaContactsForEdit = Yup.object().shape({
@@ -103,7 +103,7 @@ const ValidtionSchemaContactsForEdit = Yup.object().shape({
 const validationSchemaForAddEditWorkFlow = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     alertDays: Yup.number().required(Resources['isRequiredField'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
-    rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage])
+    rejectionOptions: Yup.string().required(Resources['rejectionOption'][currentLanguage]).nullable(true)
 })
 
 class projectWorkFlowAddEdit extends Component {
@@ -482,11 +482,20 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+                updated_document[field] = event;
+                updated_document[subDatasourceId] = event;
+            this.setState({
+                
+                [subDatasource]: event
+            });
+         }else{
+            
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -659,7 +668,7 @@ class projectWorkFlowAddEdit extends Component {
                     Duration: values.Duration,
                     workFlowId: this.state.docId,
                     multiApproval: false,
-                    approvalId: values.approvalText.value
+                    approvalId: values.approvalText!==null?values.approvalText.value:null
                 }
             ).then(
                 res => {
@@ -802,14 +811,14 @@ class projectWorkFlowAddEdit extends Component {
                 {
                     id: this.state.ContactDataForEdit.id,
                     arrange: values.levelNoForEdit,
-                    companyId: this.state.SelectedCompanyForEditContacts.value,
-                    contactId: values.SelectedContactForEditContacts.value,
+                    companyId: this.state.SelectedCompanyForEditContacts!==null?this.state.SelectedCompanyForEditContacts.value:null,
+                    contactId: values.SelectedContactForEditContacts!==null?values.SelectedContactForEditContacts.value:null,
                     Description: values.DescriptionForEdit,
                     workFlowId: this.state.docId,
                     multiApproval: false,
                     Duration: values.Duration,
                     //approvalId: values.approvalText.value
-                    approvalId: this.state.SelectedApproval.value
+                    approvalId: this.state.SelectedApproval!==null?this.state.SelectedApproval.value:null
                 }
             ).then(
                 res => {
@@ -1237,7 +1246,9 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown data={this.state.RejectionOptionData} selectedValue={this.state.selectedRejectionOptions}
+                                        <Dropdown 
+                                            isClear={true}
+                                            data={this.state.RejectionOptionData} selectedValue={this.state.selectedRejectionOptions}
                                             handleChange={event => this.handleChangeDropDown(event, 'rejectionOptions', false, '', '', '', 'selectedRejectionOptions')}
                                             onChange={setFieldValue} onBlur={setFieldTouched} title="rejectionOption"
                                             error={errors.rejectionOptions} touched={touched.rejectionOptions}
@@ -1245,7 +1256,9 @@ class projectWorkFlowAddEdit extends Component {
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown data={this.state.NextWorkFlowData} selectedValue={this.state.selectedNextWorkFlow}
+                                        <Dropdown 
+                                            isClear={true}
+                                            data={this.state.NextWorkFlowData} selectedValue={this.state.selectedNextWorkFlow}
                                             handleChange={event => this.handleChangeDropDown(event, 'nextWorkFlowId', false, '', '', '', 'selectedNextWorkFlow')}
                                             onChange={setFieldValue} onBlur={setFieldTouched} title="nextWorkFlow"
                                             error={errors.nextWorkFlowId} touched={touched.nextWorkFlowId}
@@ -1253,7 +1266,9 @@ class projectWorkFlowAddEdit extends Component {
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown data={this.state.DistributionList} selectedValue={this.state.selectedDistributionList}
+                                        <Dropdown
+                                            isClear={true}
+                                            data={this.state.DistributionList} selectedValue={this.state.selectedDistributionList}
                                             handleChange={event => this.handleChangeDropDown(event, 'distributionId', false, '', '', '', 'selectedDistributionList')}
                                             onChange={setFieldValue} onBlur={setFieldTouched} title="distributionList"
                                             index="distributionId" name="distributionList" id="distributionList" />
@@ -1367,13 +1382,17 @@ class projectWorkFlowAddEdit extends Component {
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="company" data={this.state.CompanyData} name="Company"
+                                            <Dropdown 
+                                                isClear={true}
+                                                title="company" data={this.state.CompanyData} name="Company"
                                                 selectedValue={values.Company} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "Company")} touched={touched.Company}
                                                 onBlur={setFieldTouched} error={errors.Company} value={values.Company} />
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="ContactName" data={this.state.ContactData} name="ContactName"
+                                            <Dropdown 
+                                                isClear={true}
+                                                title="ContactName" data={this.state.ContactData} name="ContactName"
                                                 selectedValue={values.ContactName} onChange={setFieldValue} value={values.ContactName}
                                                 handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
                                                 onBlur={setFieldTouched} error={errors.ContactName} touched={touched.ContactName} />
@@ -1395,8 +1414,14 @@ class projectWorkFlowAddEdit extends Component {
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="approvalText" data={this.state.ApprovalData} name="approvalText"
-                                                selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
+                                            <Dropdown 
+                                                isClear={true}
+                                                title="approvalText" 
+                                                data={this.state.ApprovalData} 
+                                                name="approvalText"
+                                                selectedValue={this.state.SelectedApproval}
+                                                onChange={setFieldValue} 
+                                                value={this.state.SelectedApproval!==null?this.state.SelectedApproval.value:""}
                                                 handleChange={(e) => this.handleChangeDrops(e, "Approval")}
                                                 onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
                                         </div>
@@ -1460,7 +1485,9 @@ class projectWorkFlowAddEdit extends Component {
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="company" data={this.state.CompanyData} name="CompanyFollowUp"
+                                            <Dropdown
+                                                isClear={true}
+                                                title="company" data={this.state.CompanyData} name="CompanyFollowUp"
                                                 selectedValue={values.CompanyFollowUp} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "CompanyFollowUp")}
                                                 onBlur={setFieldTouched} error={errors.CompanyFollowUp}
@@ -1468,7 +1495,9 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
 
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="ContactName" data={this.state.ContactData} name="ContactNameFollowUp"
+                                            <Dropdown
+                                               isClear={true}
+                                                title="ContactName" data={this.state.ContactData} name="ContactNameFollowUp"
                                                 selectedValue={values.ContactNameFollowUp} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "ContactNameFollowUp")}
                                                 onBlur={setFieldTouched} error={errors.ContactNameFollowUp}
@@ -1551,7 +1580,9 @@ class projectWorkFlowAddEdit extends Component {
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="docType" data={this.state.DocumentTypeDropData} name="DocumentTypeDrop"
+                                            <Dropdown
+                                                 isClear={true}
+                                                 title="docType" data={this.state.DocumentTypeDropData} name="DocumentTypeDrop"
                                                 selectedValue={values.DocumentTypeDrop} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "DocumentTypeDrop")}
                                                 onBlur={setFieldTouched}
@@ -1767,8 +1798,11 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="approvalText" data={this.state.ApprovalData} name="Approval"
-                                            selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
+                                        <Dropdown 
+                                            isClear={true}
+                                            title="approvalText" data={this.state.ApprovalData} name="Approval"
+                                            selectedValue={this.state.SelectedApproval} onChange={setFieldValue}
+                                            value={this.state.SelectedApproval!==null?this.state.SelectedApproval.value:""}
                                             handleChange={(e) => this.handleChangeDrops(e, "Approval")}
                                             onBlur={setFieldTouched} error={errors.Approval} touched={touched.Approval} />
                                     </div>

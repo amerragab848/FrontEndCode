@@ -209,7 +209,7 @@ class editItemDescription extends Component {
     }
 
     handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, fieldLabel) {
-        if (event == null) return;
+        
         let original_document = { ...this.state.itemDescription };
         let updated_document = {};
         if (field == "boqTypeId") {
@@ -224,8 +224,14 @@ class editItemDescription extends Component {
             updated_document["boqSubType"] = Resources.boqSubType[currentLanguage];
             this.setState({ selectedBoqSubType: obj })
         }
-        updated_document[field] = event.value;
-        updated_document[fieldLabel] = event.label;
+       
+        if (event == null) {
+            updated_document[field] = event;
+        }else{
+            updated_document[field] = event.value;
+            updated_document[fieldLabel] = event.label;
+        }
+       
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -235,23 +241,36 @@ class editItemDescription extends Component {
 
         if (field === "itemType") {
             let poolItemTypes = this.state.poolItemTypes;
-            let item = find(poolItemTypes, function (x) {
-                return x.id == event.value;
-            });
-            if (item) {
-                this.setState({
-                    action: item.action
+            if(event!==null){
+                let item = find(poolItemTypes, function (x) {
+                    return x.id == event.value;
                 });
+                if (item) {
+                    this.setState({
+                        action: item.action
+                    });
+                }
             }
+         
         }
 
         if (isSubscribe) {
-            let action = url + "?" + param + "=" + event.value;
-            dataservice.GetDataList(action, "title", "id").then(result => {
+             if(event===null){
                 this.setState({
-                    [nextTragetState]: result
+                    [nextTragetState]: []
                 });
-            });
+             }
+             else{
+                let action = url + "?" + param + "=" + event.value;
+                dataservice.GetDataList(action, "title", "id").then(result => {
+                    this.setState({
+                        [nextTragetState]: result
+                    });
+                });
+             }
+         
+
+
         }
     }
 
@@ -371,7 +390,9 @@ class editItemDescription extends Component {
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <Dropdown title="unit" data={this.state.Units}
+                                            <Dropdown
+                                                isClear={true}
+                                                title="unit" data={this.state.Units}
                                                 selectedValue={this.state.selectedUnit}
                                                 handleChange={event => this.handleChangeItemDropDown(event, "unit", "selectedUnit", false, "", "", "")}
                                                 index="unit" />
@@ -392,13 +413,17 @@ class editItemDescription extends Component {
                                         {this.props.showBoqType == true ? (
                                             <React.Fragment>
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown title="boqType" data={this.state.boqTypes}
+                                                    <Dropdown
+                                                        isClear={true}
+                                                        title="boqType" data={this.state.boqTypes}
                                                         selectedValue={this.state.selectedBoqType}
                                                         handleChange={event => this.handleChangeItemDropDown(event, "boqTypeId", "selectedBoqType", true, "GetBoqChildForList", "parentId", "BoqTypeChilds", "boqType")}
                                                         name="boqType" index="boqType" />
                                                 </div>
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown title="boqTypeChild"
+                                                    <Dropdown 
+                                                        isClear={true}
+                                                        title="boqTypeChild"
                                                         data={this.state.BoqTypeChilds}
                                                         selectedValue={this.state.selectedBoqSubTypeChild}
                                                         handleChange={event => this.handleChangeItemDropDown(event, "boqChildTypeId", "selectedBoqSubTypeChild", true, "GetBoqChildForList", "parentId", "BoqSubTypes", "boqChildType")}
@@ -406,7 +431,9 @@ class editItemDescription extends Component {
                                                 </div>
                                                 <div className="letterFullWidth">
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="boqSubType"
+                                                        <Dropdown
+                                                            isClear={true} 
+                                                            title="boqSubType"
                                                             data={this.state.BoqSubTypes}
                                                             selectedValue={this.state.selectedBoqSubType}
                                                             handleChange={event => this.handleChangeItemDropDown(event, "boqSubTypeId", "selectedBoqSubType", false, "", "", "", "boqSubType")}
@@ -418,7 +445,9 @@ class editItemDescription extends Component {
                                             </React.Fragment>
                                         ) : null}
                                         <div className={"linebylineInput valid-input " + (this.props.showItemType !== false ? " " : " disNone")}>
-                                            <Dropdown title="itemType" data={this.state.itemTypes}
+                                            <Dropdown 
+                                                isClear={true}
+                                                title="itemType" data={this.state.itemTypes}
                                                 selectedValue={this.state.selectedItemType}
                                                 handleChange={event => this.handleChangeItemDropDown(event, "itemType", "selectedItemType", false, "", "", "")}
                                                 onChange={setFieldValue} onBlur={setFieldTouched}
@@ -427,7 +456,9 @@ class editItemDescription extends Component {
                                         </div>
                                         {this.state.action == 2 ? (
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="equipmentType"
+                                                <Dropdown 
+                                                    isClear={true}
+                                                    title="equipmentType"
                                                     data={this.state.equipmentTypes}
                                                     selectedValue={this.state.selectedequipmentType}
                                                     handleChange={event => this.handleChangeItemDropDown(event, "equipmentType", "selectedequipmentType", false, "", "", "")}

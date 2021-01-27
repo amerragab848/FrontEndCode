@@ -247,18 +247,31 @@ class RequestProposalAddEdit extends Component {
     this.setState({ document: updated_document });
   }
 
-  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-    if (event == null) return;
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+    
     let original_document = { ...this.state.document };
     let updated_document = {};
-    updated_document[field] = event.value;
+    if (event == null) {
+      updated_document[field] = event;
+      updated_document[subDatasourceId] = event;
+      this.setState({ [subDatasource]: event });
+   }
+    else{
+        updated_document[field] = event.value;
+    }
     updated_document = Object.assign(original_document, updated_document);
     this.setState({ document: updated_document, [selectedValue]: event });
     if (isSubscrib) {
-      let action = url + "?" + param + "=" + event.value;
-      dataservice.GetDataList(action, "contactName", "id").then(result => {
-        this.setState({ [targetState]: result });
-      });
+      if(event!==null){
+        let action = url + "?" + param + "=" + event.value;
+        dataservice.GetDataList(action, "contactName", "id").then(result => {
+          this.setState({ [targetState]: result });
+        });
+      }
+      else{
+        this.setState({ [targetState]: [] });
+      }
+    
     }
   }
 
@@ -432,9 +445,11 @@ class RequestProposalAddEdit extends Component {
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                  <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                  <Dropdown 
+                                    isClear={true}
+                                    data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                     handleChange={event => {
-                                      this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                      this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId");
                                     }}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
@@ -445,7 +460,9 @@ class RequestProposalAddEdit extends Component {
                                     id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                 </div>
                                 <div className="super_company">
-                                  <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
+                                  <Dropdown
+                                   isClear={true}
+                                   isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
                                     handleChange={event =>
                                       this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                     onChange={setFieldValue}
@@ -465,9 +482,11 @@ class RequestProposalAddEdit extends Component {
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                  <Dropdown isMulti={false} data={this.state.companies} selectedValue={this.state.selectedToCompany}
+                                  <Dropdown
+                                    isClear={true}
+                                    isMulti={false} data={this.state.companies} selectedValue={this.state.selectedToCompany}
                                     handleChange={event =>
-                                      this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
+                                      this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact","toContactId")}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
                                     error={errors.toCompanyId}
@@ -477,7 +496,9 @@ class RequestProposalAddEdit extends Component {
                                     id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                 </div>
                                 <div className="super_company">
-                                  <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                  <Dropdown
+                                    isClear={true}
+                                    isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
                                     handleChange={event =>
                                       this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")}
                                     onChange={setFieldValue}

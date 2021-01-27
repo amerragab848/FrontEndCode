@@ -6,7 +6,9 @@ import { withRouter } from "react-router-dom";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class WidgetsWithText extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +20,7 @@ class WidgetsWithText extends Component {
   }
 
   componentDidMount() {
-    Api.get(this.props.props.api, undefined, Config.getPublicConfiguartion().dashboardApi).then(data => {
+    Api.get(this.props.props.api, undefined, moduleId).then(data => {
       if (data) {
         let _value = this.props.props.value.split("-");
         let _total = this.props.props.total.split("-");
