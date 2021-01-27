@@ -94,7 +94,10 @@ const DropGeneralData =
     { label: Resources["deductionType"][currentLanguage], value: "deductionType" },
     { label: Resources["submittalType"][currentLanguage], value: "SubmittalTypes" },
     { label: Resources["attachedPaperSize"][currentLanguage], value: "attachedPaperSize" },
-    { label: Resources["submittedFor"][currentLanguage], value: "submittedFor" }]
+    { label: Resources["submittedFor"][currentLanguage], value: "submittedFor" },
+    { label: Resources["departments"][currentLanguage], value: "departments" }
+
+]
 
 const ApprovalStatusDropData =
     [{ label: Resources["approved"][currentLanguage], value: 1 },

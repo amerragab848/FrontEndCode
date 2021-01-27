@@ -261,8 +261,6 @@ class ActionByAlerts extends Component {
                 }
             )
         }
-
-
     }
 
 
