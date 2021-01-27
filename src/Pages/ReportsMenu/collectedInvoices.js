@@ -19,7 +19,7 @@ import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    poId: Yup.string().required(Resources['projectInvoices'][currentLanguage])
+    poId: Yup.string().required(Resources['projectInvoices'][currentLanguage]).nullable(true)
 });
 
 class CollectedInvoices extends Component {
@@ -150,12 +150,20 @@ class CollectedInvoices extends Component {
     }
 
     handleChangeDropDown(event) {
-        if (event == null) return;
+        if(event!==null){
+            this.setState({
+                selectedPO: event,
+                poId: event.value
+            });
+        }
+        else{
+            this.setState({
+                selectedPO: event,
+                poId: event
+            });
+        }
 
-        this.setState({
-            selectedPO: event,
-            poId: event.value
-        });
+   
     }
 
     render() {
@@ -212,7 +220,7 @@ class CollectedInvoices extends Component {
                                                 <div className="proForm first-proform fullWidth_form">
                                                     <div className="linebylineInput valid-input">
                                                         <Dropdown 
-
+                                                           isClear={true}
                                                            title="invoicesForPO" data={this.state.po}
                                                             selectedValue={this.state.selectedPO}
                                                             handleChange={event => this.handleChangeDropDown(event)}

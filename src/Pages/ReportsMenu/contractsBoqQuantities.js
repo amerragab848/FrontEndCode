@@ -19,7 +19,7 @@ import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    boqId: Yup.string().required(Resources['selectBoq'][currentLanguage])
+    boqId: Yup.string().required(Resources['selectBoq'][currentLanguage]).nullable(true)
 });
 
 class ContractsBoqQuantities extends Component {
@@ -182,12 +182,19 @@ class ContractsBoqQuantities extends Component {
     }
 
     handleChangeDropDown(event) {
-        if (event == null) return;
+        if (event !== null) {
+            this.setState({
+                selectedBoq: event,
+                boqId: event.value
+            });
+        }else{
+            this.setState({
+                selectedBoq: event,
+                boqId: event
+            });
+        }
 
-        this.setState({
-            selectedBoq: event,
-            boqId: event.value
-        });
+       
     }
 
     render() {
@@ -244,7 +251,9 @@ class ContractsBoqQuantities extends Component {
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="boq" data={this.state.boq}
+                                                        <Dropdown 
+                                                            isClear={true}
+                                                            title="boq" data={this.state.boq}
                                                             selectedValue={this.state.selectedBoq}
                                                             handleChange={event => this.handleChangeDropDown(event)}
                                                             onChange={setFieldValue}
