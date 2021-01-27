@@ -709,8 +709,8 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
                                                                             error={errors.fromContactId}
-                                                                            touched={true}
-                                                                            isClear={false}
+                                                                            touched={touched.fromContactId}
+                                                                           
                                                                             index="letter-fromContactId"
                                                                             name="fromContactId"
                                                                             id="fromContactId"
@@ -917,8 +917,7 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
                                                                             error={errors.budgetContactId}
-                                                                            touched={true}
-                                                                            isClear={false}
+                                                                            touched={touched.budgetContactId}                                                                           
                                                                             index="letter-fromContactId"
                                                                             name="budgetContactId"
                                                                             id="budgetContactId"
