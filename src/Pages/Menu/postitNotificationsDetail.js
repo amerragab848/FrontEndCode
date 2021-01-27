@@ -1,16 +1,15 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import dataservice from "../../Dataservice";
 import ReactTable from "react-table";
-import "react-table/react-table.css";
 import Resources from "../../resources.json";
 import moment from "moment";
 import { toast } from "react-toastify";
 import CryptoJS from "crypto-js";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let selectedRows = [];
@@ -22,18 +21,17 @@ class postitNotificationsDetail extends Component {
       postitData: [],
       selected: {},
       showDeleteModal: false,
-      SelectAll:false,
+      SelectAll: false,
+      isLoading: false
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount() {
     dataservice.GetDataGrid("GetNotificationPostitDetail").then(result => {
       this.setState({
         postitData: result
       });
     });
-  };
-  componentDidMount() {
     this.props.actions.RouteToTemplate();
   }
 
@@ -55,27 +53,30 @@ class postitNotificationsDetail extends Component {
       selected: newSelected
     });
   }
-  handleSelectAll(postitData){
-    let newSelected ={}
-    selectedRows=[]
-    let status=!this.state.SelectAll
-    for(let i=0; i<postitData.length ;i++){
-      newSelected[postitData[i].id]=status
-      if(status===true){
-      selectedRows.push(postitData[i]);
+
+  handleSelectAll(postitData) {
+    let newSelected = {}
+    selectedRows = []
+    let status = !this.state.SelectAll
+    for (let i = 0; i < postitData.length; i++) {
+      newSelected[postitData[i].id] = status
+      if (status === true) {
+        selectedRows.push(postitData[i]);
       }
     }
     this.setState({
-      selected:newSelected,
-      SelectAll:status
+      selected: newSelected,
+      SelectAll: status
     });
 
   }
+
   DeletePostit() {
     this.setState({
       showDeleteModal: true
     });
   }
+
   clickHandlerContinueMain = () => {
 
     if (selectedRows.length > 0) {
@@ -135,750 +136,35 @@ class postitNotificationsDetail extends Component {
     });
   }
   updateStatus(obj) {
+    this.setState({
+      isLoading: true
+    });
     dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
-      if (obj.description) {
-        let id = obj.description.split("/")[1];
-        console.log(obj.description)
-        switch (obj.description.split("/")[0]) {
-          case "workspace":
-            this.props.history.push(obj.description);
-            break;
-
-          case "expensesUserAddEdit":
-            dataservice.GetDataGrid("GetExpensesUserForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-
-          case "transmittalAddEdit":
-            dataservice.GetDataGrid("GetCommunicationTransmittalForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-
-          case "lettersAddEdit":
-            dataservice.GetDataGrid("GetLettersById?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-
-          case "rfiAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationRfiForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "correspondenceReceivedAddEdit":
-            dataservice
-              .GetDataGrid(
-                "GetCommunicationCorrespondenceReceivedForEdit?id=" + id
-              )
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "correspondenceSentAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationCorrespondenceSentForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "emailAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationEmailsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "internalMemoAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationInternalMemoForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "meetingAgendaAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationMeetingAgendaForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "meetingMinutesAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationMeetingMinutesForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "NCRAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationNCRsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "phoneAddEdit":
-            dataservice.GetDataGrid("GetPhoneById?id=" + id).then(data => {
-              this.routeToView(
-                obj.description,
-                data["projectId"],
-                data["projectName"],
-                data["arrange"] != null ? data["arrange"] : undefined, id
-              );
-            });
-            break;
-
-          case "proposalAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationProposalForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "reportsAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationReportForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "requestProposalAddEdit":
-            dataservice
-              .GetDataGrid("GetRequestProposalById?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "boqAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsBoqForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "changeOrderAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsChangeOrderForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "clientModificationAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsClientModificationsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "contractInfoAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "costCodingTreeAddEdit":
-            dataservice
-              .GetDataGrid("GetCostCodingTreeForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "invoicesForPoAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsInvoicesForPoForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "pcoAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsPcoForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "procurementAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsProcurementForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "projectIssuesAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsProjectIssuesForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "purchaseOrderAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsPurchaseOrdersForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "qsAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsQsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "requestPaymentsAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsRequestPaymentsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "siteRequestAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsSiteRequestForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "variationRequestAddEdit":
-            dataservice
-              .GetDataGrid("GetContractsVariationRequestForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "addEditDrawing":
-            dataservice
-              .GetDataGrid("GetLogsDrawingsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "drawingListAddEdit":
-            dataservice
-              .GetDataGrid("GetDesignDrawingListForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "drawingPhasesAddEdit":
-            dataservice
-              .GetDataGrid("GetDesignDrawingPhasesForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "drawingSetsAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsDrawingsSetsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "resourcesTreeEdit":
-            dataservice
-              .GetDataGrid("GetResourcesTreeForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "baseAddEdit":
-            dataservice
-              .GetDataGrid("GetEstimationBaseForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "budgetFileAddEdit":
-            dataservice
-              .GetDataGrid("GetEstimationBudgetfileForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "projectEstimateAddEdit":
-            dataservice
-              .GetDataGrid("GetProjectEstimateForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "tenderAnalysisAddEdit":
-            dataservice
-              .GetDataGrid("GetTenderAnalysisForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "clientSelectionAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsClientSelectionForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "dailyReportsAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsDailyReportsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "equipmentDeliveryAddEdit":
-            dataservice
-              .GetDataGrid("GetCommunicationRfiForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "inspectionRequestAddEdit":
-            dataservice
-              .GetDataGrid("GetInspectionRequestForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "materialDeliveryAddEdit":
-            dataservice
-              .GetDataGrid("GetMaterialDeliveryForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "materialInspectionRequestAddEdit":
-            dataservice
-              .GetDataGrid("GetMaterialInspectionRequestForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "materialInventoryAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsMaterialInventoriesForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "materialReleaseAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsMaterialReleaseForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "punchListAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsPunchListsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "qualityControlAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsQualityControlForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "siteInstructionsAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsSiteInstructionsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "submittalAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsSubmittalForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "submittalSetsAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsSubmittalSetsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "weeklyReportsAddEdit":
-            dataservice
-              .GetDataGrid("GetLogsWeeklyReportsForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "projectWorkFlowAddEdit":
-            dataservice
-              .GetDataGrid("GetWorkFlowForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "projectCompaniesAddEdit":
-            dataservice
-              .GetDataGrid("GetProjectCompaniesForEdit?id=" + id)
-              .then(data => {
-                this.routeToView(
-                  obj.description,
-                  data["projectId"],
-                  data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined, id
-                );
-              });
-            break;
-
-          case "projectTaskGroupAddEdit":
-            dataservice.GetDataGrid("GetProjectTaskGroupForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-
-          case "projectScheduleAddEdit":
-            dataservice.GetDataGrid("GetProjectScheduleForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-
-          case "projectDistributionListAddEdit":
-            dataservice.GetDataGrid("GetProjectDistributionListForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-
-          case "projectPrimaveraScheduleAddEdit":
-            dataservice.GetDataGrid("GetPrimaveraScheduleForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-
-          case "projectCheckListAddEdit":
-            dataservice.GetDataGrid("GetProjectCheckListForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
-            });
-            break;
-        }
-      }
+      this.routeToView(obj.docLink, obj.projectId, obj.projectName, obj.arrange, obj.docId);
     });
-  }
-  handleUpdateAllStatus(Rows){
+  };
+
+  handleUpdateAllStatus(Rows) {
     Rows.forEach(obj => {
-      if(obj.viewStatus !=true){
-        dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {})
+      if (obj.viewStatus != true) {
+        dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => { })
       }
     });
-    selectedRows=[]
+    selectedRows = []
     toast.success("operation done successfully")
-     setTimeout(()=>{ dataservice.GetDataGrid("GetNotificationPostitDetail").then(result => {
-      this.setState({
-        postitData: result,
-        selected:{}
+    setTimeout(() => {
+      dataservice.GetDataGrid("GetNotificationPostitDetail").then(result => {
+        this.setState({
+          postitData: result,
+          selected: {}
+        });
       });
-    });
-  },200)
-
+    }, 200)
   }
 
   render() {
     const filterCaseInsensitive = ({ id, value }, row) =>
-    row[id] ? row[id].toLowerCase().includes(value.toLowerCase()) : true
+      row[id] ? row[id].toLowerCase().includes(value.toLowerCase()) : true
     const columns = [
       {
         Header: Resources["checkList"][currentLanguage],
@@ -900,7 +186,7 @@ class postitNotificationsDetail extends Component {
         id: "readUnread",
         accessor: "readUnread",
         Cell: ({ row }) => {
-          if (row._original.viewStatus === false ||row._original.viewStatus===null) {
+          if (row._original.viewStatus === false || row._original.viewStatus === null) {
             return (
               <div onClick={() => this.updateStatus(row._original)} style={{ cursor: "pointer", padding: "4px 8px", margin: "4px auto", borderRadius: "100px", backgroundColor: "#E74C3C", width: "auto", color: "#FFF", minWidth: ' 61px', height: '24px', fontFamily: 'Muli', fontSize: '11px', fontWeight: 'bold', fontStyle: 'normal', fontStretch: 'normal', lineHeight: '1.45', letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {Resources["unRead"][currentLanguage]}
@@ -952,16 +238,16 @@ class postitNotificationsDetail extends Component {
         sortabel: true
       },
     ];
-    const   ExportColumns=[
-      {field:"readUnread",title:"Read"},
-      {field:"title",title:"title"},
-      {field:"statusName",title:"Status"},
-      {field:"fromContactName",title:"from Contact Name"},
-      {field:"sentDate",title:"sent Date"},
-      {field:"sendMethod",title:"send Method"},
+    const ExportColumns = [
+      { field: "readUnread", title: "Read" },
+      { field: "title", title: "title" },
+      { field: "statusName", title: "Status" },
+      { field: "fromContactName", title: "from Contact Name" },
+      { field: "sentDate", title: "sent Date" },
+      { field: "sendMethod", title: "send Method" },
     ]
     const btnExport =
-    <Export rows={this.state.postitData} columns={ExportColumns} fileName={Resources["notification"][currentLanguage]} />;
+      <Export rows={this.state.postitData} columns={ExportColumns} fileName={Resources["notification"][currentLanguage]} />;
     return (
       <div>
         <div className="mainContainer main__withouttabs">
@@ -971,33 +257,47 @@ class postitNotificationsDetail extends Component {
             </div>
 
             <div className="filterBTNS">
-                {btnExport}
-             </div>
+              {btnExport}
+            </div>
           </div>
-              <div style={{ position: "relative" }}>
+          <div style={{ position: "relative" }}>
             {selectedRows.length > 0 ? (
               <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} style={{ top: '0px' }}>
                 <div className="tableselcted-items">
-                  <span> 
-                    
-                     <div className="ui checked checkbox  checkBoxGray300 ">
-                          <input type="checkbox" className="checkbox" checked={this.state.SelectAll}
-                            onChange={()=>this.handleSelectAll(this.state.postitData)} />
-                          <label />
-                     </div>
+                  <span>
+                    <div className="ui checked checkbox  checkBoxGray300 ">
+                      <input type="checkbox" className="checkbox" checked={this.state.SelectAll}
+                        onChange={() => this.handleSelectAll(this.state.postitData)} />
+                      <label />
+                    </div>
                   </span>
                   <span id="count-checked-checkboxes">{selectedRows.length}</span>
                   <span> Selected</span>
                 </div>
                 <div className="tableSelctedBTNs">
-                  <button className="defaultBtn btn smallBtn" onClick={() => this.handleUpdateAllStatus(selectedRows)} /*onClick={this.DeletePostit.bind(this)}*/>
+                  <button className="defaultBtn btn smallBtn" onClick={() => this.handleUpdateAllStatus(selectedRows)}>
                     {Resources["update"][currentLanguage]}
                   </button>
                 </div>
-              </div>
-            ) : null}
-
+              </div>) :
+              null}
+            {this.state.isLoading == true ? <LoadingSection /> : null}
             <ReactTable
+              getTrProps={(state, rowInfo) => {
+                if (rowInfo && rowInfo.row) {
+                  return {
+                    onClick: (e) => {
+                      this.updateStatus(rowInfo.row._original);
+                    },
+                    style: {
+                      background: rowInfo.index === this.state.selected ? '#00afec' : 'white',
+                      color: rowInfo.index === this.state.selected ? 'white' : 'black'
+                    }
+                  }
+                } else {
+                  return {}
+                }
+              }}
               filterable
               data={this.state.postitData}
               columns={columns}
@@ -1005,9 +305,9 @@ class postitNotificationsDetail extends Component {
               noDataText={Resources["noData"][currentLanguage]}
               className="-striped -highlight"
               defaultFilterMethod={filterCaseInsensitive}
-              />
+            />
           </div>
-          </div>
+        </div>
         {this.state.showDeleteModal == true ? (
           <ConfirmationModal title={Resources["smartDeleteMessageContent"][currentLanguage]} buttonName="delete" closed={this.onCloseModal}
             showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
