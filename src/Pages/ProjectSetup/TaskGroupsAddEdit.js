@@ -226,10 +226,9 @@ class TaskGroupsAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
     handleChangeDrops = (SelectedItem, DropName) => {
-
         switch (DropName) {
             case 'Company':
-                this.setState({ SelectedCompany: SelectedItem })
+              this.setState({ SelectedCompany: SelectedItem })
                 if (SelectedItem !== null) {
                     dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + SelectedItem.value + '', 'contactName', 'id')
                         .then(res => {
@@ -237,9 +236,19 @@ class TaskGroupsAddEdit extends Component {
                                 ContactData: res,
                             })
                         })
+                }else{
+                    this.setState({ 
+                        ContactData:[], 
+                        SelectedContact:null
+                    })
+                  
                 }
                 break;
-
+            case 'ContactName':
+                    this.setState({
+                        SelectedContact:SelectedItem
+                    })
+                break;
             default:
                 break;
         }
@@ -584,24 +593,34 @@ class TaskGroupsAddEdit extends Component {
 
 
                                         <div className="linebylineInput valid-input">
-                                            <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
-                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
+                                            <DropdownMelcous 
+                                                isClear={true}
+                                                title="company" data={this.state.CompanyData} name="Company"
+                                                selectedValue={/*this.state.IsEditExpensesWorkFlowItem ?*/ this.state.SelectedCompany /*: values.Company*/} 
+                                                onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "Company")}
                                                 onBlur={setFieldTouched}
                                                 error={errors.Company}
                                                 touched={touched.Company}
-                                                value={values.Company} isClear={true} />
+                                                //value={values.Company} 
+                                                 />
                                         </div>
 
 
                                         <div className="linebylineInput valid-input">
-                                            <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
-                                                selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContact : values.ContactName} onChange={setFieldValue}
+                                            <DropdownMelcous 
+                                                isClear={true}
+                                                title="ContactName" 
+                                                data={this.state.ContactData} 
+                                                name="ContactName"
+                                                selectedValue={/*this.state.IsEditExpensesWorkFlowItem ?*/ this.state.SelectedContact /*: values.ContactName*/} 
+                                                onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
                                                 onBlur={setFieldTouched}
                                                 error={errors.ContactName}
                                                 touched={touched.ContactName}
-                                                value={values.ContactName} />
+                                                //value={values.ContactName}
+                                                 />
                                         </div>
 
                                         <div className="linebylineInput valid-input">
