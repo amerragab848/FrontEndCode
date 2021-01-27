@@ -62,6 +62,14 @@ class FollowUpsSummaryDetails extends Component {
                 sortable: true,
                 type: 'text',
             }, {
+                field: 'epsName',
+                title: Resources['epsName'][currentLanguage],
+                width: 6,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: 'text',
+            }, {
                 field: 'companyType',
                 title: Resources['companyType'][currentLanguage],
                 groupable: true,
@@ -239,8 +247,7 @@ class FollowUpsSummaryDetails extends Component {
                     gridKey="FollowingUpSummary"
                     cells={this.state.columns}
                     data={this.state.rows}
-                    groups={this.state.groups}
-                    //pageSize={this.state.rows ? this.state.rows.length : 0}
+                    groups={this.state.groups} 
                     actions={[]}
                     rowActions={[]}
                     rowClick={obj => {
