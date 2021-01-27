@@ -46,15 +46,15 @@ steps_defination = [
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    orderFromCompanyId: Yup.string().required(Resources['fromCompany'][currentLanguage]),
-    specsSectionId: Yup.string().required(Resources['specsSectionSelection'][currentLanguage]),
-    orderFromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
-    materialReleaseId: Yup.string().required(Resources['materialReleaseTypeSelection'][currentLanguage]),
+    orderFromCompanyId: Yup.string().required(Resources['fromCompany'][currentLanguage]).nullable(true),
+    specsSectionId: Yup.string().required(Resources['specsSectionSelection'][currentLanguage]).nullable(true),
+    orderFromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    materialReleaseId: Yup.string().required(Resources['materialReleaseTypeSelection'][currentLanguage]).nullable(true),
 })
 
 const documentItemValidationSchema = Yup.object().shape({
 
-    itemId: Yup.string().required(Resources['itemDescription'][currentLanguage]),
+    itemId: Yup.string().required(Resources['itemDescription'][currentLanguage]).nullable(true),
 
     returnedQuantity: Yup.number().required(Resources['returnedQuantity'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -264,18 +264,24 @@ class materialReleaseAddEdit extends Component {
     }
 
     fillSubDropDown = (value, isEdit) => {
-        let action = 'GetContactsByCompanyId?companyId=' + value
+        if(value!==null){
+            let action = 'GetContactsByCompanyId?companyId=' + value
 
-        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
-            if (isEdit) {
-                let toSubField = this.state.document.orderFromContactId;
-                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
-                this.setState({
-                    selectedFromContact: targetFieldSelected,
-                })
-            }
-            this.setState({ FromContactsData: result });
-        });
+            dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                if (isEdit) {
+                    let toSubField = this.state.document.orderFromContactId;
+                    let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
+                    this.setState({
+                        selectedFromContact: targetFieldSelected,
+                    })
+                }
+                this.setState({ FromContactsData: result });
+            });
+        }
+        else{
+            this.setState({ FromContactsData: [] });
+        }
+    
     }
 
     fillDropDowns(isEdit) {
@@ -356,14 +362,26 @@ class materialReleaseAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, selectedValue) {
-        if (event == null) return
+        
         let original_document = { ...this.state.document }
         let updated_document = {};
-        updated_document[field] = event.value;
+       
+        if (event == null) {
+            updated_document[field] = event;
+         }
+         else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ document: updated_document, [selectedValue]: event })
         if (isSubscrib) {
-            this.fillSubDropDown(event.value, false)
+            if(event===null){
+                this.fillSubDropDown(event, false)
+
+            }
+            else{
+                this.fillSubDropDown(event.value, false)
+            }
         }
     }
 
@@ -436,7 +454,7 @@ class materialReleaseAddEdit extends Component {
         if (Mood === 'EditMood') {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.contractId = this.state.selectedMaterialRelease.contractId;
+            doc.contractId = this.state.selectedMaterialRelease!==null?this.state.selectedMaterialRelease.contractId:"";
             dataservice.addObject('EditLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -447,7 +465,7 @@ class materialReleaseAddEdit extends Component {
         } else {
             let doc = { ...this.state.document };
             doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.contractId = this.state.selectedMaterialRelease.contractId;
+            doc.contractId = this.state.selectedMaterialRelease!==null?this.state.selectedMaterialRelease.contractId:"";
             dataservice.addObject('AddLogsMaterialRelease', doc).then(result => {
                 this.setState({ isLoading: false, docId: result.id, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -514,8 +532,8 @@ class materialReleaseAddEdit extends Component {
                 materialReleaseId: this.state.docId,
                 itemId: this.state.ItemDescriptionInfo.itemId,
                 id: this.state.ItemDescriptionInfo.id,
-                areaId: this.state.SelectedArea.value === '0' ? undefined : this.state.SelectedArea.value,
-                locationId: this.state.SelectedLocation.value === '0' ? undefined : this.state.SelectedLocation.value,
+                areaId: this.state.SelectedArea!==null? this.state.SelectedArea.value === '0' ? undefined : this.state.SelectedArea.value:null,
+                locationId: this.state.SelectedLocation!==null? this.state.SelectedLocation.value === '0' ? undefined : this.state.SelectedLocation.value:null,
                 boqItemId: this.state.ItemDescriptionInfo.boqItemId,
                 arrange: this.state.arrangeItem,
                 quantity: this.state.quantity,
@@ -567,17 +585,29 @@ class materialReleaseAddEdit extends Component {
     }
 
     handleChangeItemId = (e) => {
-        let data = []
-        data = this.state.descriptionList.filter(i => i.id === e.value)
-        let obj = data[0]
-        console.log(obj,'handleChangeItemId...')
-        this.setState({
-            selectedItemId: e,
-            unitPrice: obj.unitPrice,
-            ItemDescriptionInfo: obj,
-            quantity: obj.remainingQuantity, 
-            QuantityInStock:obj.quantity,
-        })
+        if(e!==null){
+            let data = []
+            data = this.state.descriptionList.filter(i => i.id === e.value)
+            let obj = data[0]
+            console.log(obj,'handleChangeItemId...')
+            this.setState({
+                selectedItemId: e,
+                unitPrice: obj.unitPrice,
+                ItemDescriptionInfo: obj,
+                quantity: obj.remainingQuantity, 
+                QuantityInStock:obj.quantity,
+            })
+        }
+        else{
+            this.setState({
+                selectedItemId: e,
+                unitPrice: "",
+                ItemDescriptionInfo: {},
+                quantity: "", 
+                QuantityInStock:"",
+            }) 
+        }
+    
     }
 
     ShowCostTree = () => {
@@ -658,8 +688,8 @@ class materialReleaseAddEdit extends Component {
             id: this.state.objItemForEdit.id,
             materialReleaseId: this.state.document.id,
             itemId: this.state.objItemForEdit.itemId,
-            areaId: this.state.SelectedAreaForEdit.value === '0' ? undefined : this.state.SelectedAreaForEdit.value,
-            locationId: this.state.SelectedLocationForEdit.value === '0' ? undefined : this.state.SelectedLocationForEdit.value,
+            areaId: this.state.SelectedAreaForEdit!==null?this.state.SelectedAreaForEdit.value === '0' ? undefined : this.state.SelectedAreaForEdit.value:null,
+            locationId: this.state.SelectedLocationForEdit!==null? this.state.SelectedLocationForEdit.value === '0' ? undefined : this.state.SelectedLocationForEdit.value:null,
             arrange: this.state.objItemForEdit.arrange,
             quantity: this.state.objItemForEdit.quantity,
             unitPrice: this.state.objItemForEdit.unitPrice,
@@ -756,28 +786,36 @@ class materialReleaseAddEdit extends Component {
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="specsSection" data={this.state.SpecsSectionData} selectedValue={this.state.selectedSpecsSection}
+                                        <Dropdown
+                                            isClear={true}
+                                            title="specsSection" data={this.state.SpecsSectionData} selectedValue={this.state.selectedSpecsSection}
                                             handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "selectedSpecsSection")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.specsSectionId}
                                             touched={touched.specsSectionId} name="specsSectionId" id="specsSectionId" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="fromCompany" data={this.state.FromCompaniesData} selectedValue={this.state.selectedFromCompany}
+                                        <Dropdown 
+                                           isClear={true}
+                                            title="fromCompany" data={this.state.FromCompaniesData} selectedValue={this.state.selectedFromCompany}
                                             handleChange={event => this.handleChangeDropDown(event, "orderFromCompanyId", true, "selectedFromCompany")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.orderFromCompanyId}
                                             touched={touched.orderFromCompanyId} name="orderFromCompanyId" id="orderFromCompanyId" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="orderFromContact" data={this.state.FromContactsData} selectedValue={this.state.selectedFromContact}
+                                        <Dropdown 
+                                            isClear={true}
+                                            title="orderFromContact" data={this.state.FromContactsData} selectedValue={this.state.selectedFromContact}
                                             handleChange={event => this.handleChangeDropDown(event, "orderFromContactId", false, "selectedFromContact")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.orderFromContactId}
                                             touched={touched.orderFromContactId} name="orderFromContactId" id="orderFromContactId" />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="siteRequest" data={this.state.MaterialReleaseData} selectedValue={this.state.selectedMaterialRelease}
+                                        <Dropdown 
+                                            isClear={true}
+                                            title="siteRequest" data={this.state.MaterialReleaseData} selectedValue={this.state.selectedMaterialRelease}
                                             handleChange={event => this.handleChangeDropDown(event, "siteRequestId", false, "selectedMaterialRelease")}
                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.materialReleaseId}
                                             touched={touched.materialReleaseId} name="materialReleaseId" id="materialReleaseId" />
@@ -792,12 +830,16 @@ class materialReleaseAddEdit extends Component {
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="materialReleaseType" data={this.state.MaterialReleaseType} selectedValue={this.state.SelectedMaterialReleaseType}
+                                        <Dropdown
+                                         isClear={true}
+                                         title="materialReleaseType" data={this.state.MaterialReleaseType} selectedValue={this.state.SelectedMaterialReleaseType}
                                             handleChange={event => this.handleChangeDropDown(event, 'materialReleaseId', false, 'SelectedMaterialReleaseType')} />
                                     </div>
 
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="boqLog" data={this.state.CostCodingData} selectedValue={this.state.selectedCostCoding}
+                                        <Dropdown 
+                                         isClear={true}
+                                        title="boqLog" data={this.state.CostCodingData} selectedValue={this.state.selectedCostCoding}
                                             handleChange={event => this.handleChangeDropDown(event, 'boqId', false, 'selectedCostCoding')} />
                                     </div>
 
@@ -928,8 +970,8 @@ class materialReleaseAddEdit extends Component {
                     <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
                         <Formik
                             initialValues={{
-                                itemId: this.state.selectedItemId.value !== '0' ? this.state.selectedItemId : '',
-                                unitPrice: this.state.ItemDescriptionInfo.unitPrice,
+                                itemId: this.state.selectedItemId!==null?this.state.selectedItemId.value !== '0' ? this.state.selectedItemId : '':'',
+                                unitPrice: this.state.ItemDescriptionInfo!==null?this.state.ItemDescriptionInfo.unitPrice:'',
                                 returnedQuantity: this.state.quantity,
                                 arrangeItem: this.state.arrangeItem,
                             }}
@@ -950,7 +992,9 @@ class materialReleaseAddEdit extends Component {
                                         <div className="proForm datepickerContainer">
 
                                             <div className="linebylineInput valid-input letterFullWidth ">
-                                                <Dropdown title="itemDescription" data={this.state.descriptionDropData} selectedValue={this.state.selectedItemId}
+                                                <Dropdown
+                                                 isClear={true}
+                                                 title="itemDescription" data={this.state.descriptionDropData} selectedValue={this.state.selectedItemId}
                                                     handleChange={event => this.handleChangeItemId(event)} onBlur={setFieldTouched} error={errors.itemId}
                                                     onChange={setFieldValue} touched={touched.itemId} name="itemId" id="itemId" />
                                             </div>
@@ -1066,12 +1110,16 @@ class materialReleaseAddEdit extends Component {
                                             </div>
 
                                             <div className="linebylineInput valid-input ">
-                                                <Dropdown data={this.state.AreaData} selectedValue={this.state.SelectedArea}
+                                                <Dropdown 
+                                                 isClear={true}
+                                                data={this.state.AreaData} selectedValue={this.state.SelectedArea}
                                                     title="area" handleChange={e => this.setState({ SelectedArea: e })} />
                                             </div>
 
                                             <div className="linebylineInput valid-input ">
-                                                <Dropdown data={this.state.LocationData} selectedValue={this.state.SelectedLocation}
+                                                <Dropdown 
+                                                 isClear={true}
+                                                data={this.state.LocationData} selectedValue={this.state.SelectedLocation}
                                                     title="location" handleChange={e => this.setState({ SelectedLocation: e })} />
                                             </div>
 
@@ -1254,12 +1302,16 @@ class materialReleaseAddEdit extends Component {
                                         </div>
 
                                         <div className="linebylineInput valid-input ">
-                                            <Dropdown data={this.state.AreaData} selectedValue={this.state.SelectedAreaForEdit}
+                                            <Dropdown
+                                             isClear={true}
+                                             data={this.state.AreaData} selectedValue={this.state.SelectedAreaForEdit}
                                                 title="area" handleChange={e => this.setState({ SelectedAreaForEdit: e })} />
                                         </div>
 
                                         <div className="linebylineInput valid-input ">
-                                            <Dropdown data={this.state.LocationData} selectedValue={this.state.SelectedLocationForEdit}
+                                            <Dropdown 
+                                             isClear={true}
+                                            data={this.state.LocationData} selectedValue={this.state.SelectedLocationForEdit}
                                                 title="location" handleChange={e => this.setState({ SelectedLocationForEdit: e })} />
                                         </div>
 

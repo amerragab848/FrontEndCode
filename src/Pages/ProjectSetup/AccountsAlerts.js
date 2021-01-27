@@ -266,21 +266,29 @@ class AccountsAlerts extends Component {
     }
 
     handleChangeDropsForEdit = (SelectedItem, DropName) => {
-        switch (DropName) {
-            case 'ModuleDrop':
-                this.setState({ SelectedModuleDrop: SelectedItem })
-                if (SelectedItem !== null) {
-                    dataservice.GetDataList('GetDocsTypeByModuleId?moduleId=' + SelectedItem.value + '', 'docType', 'id')
-                        .then(res => {
-                            this.setState({
-                                DocumentTypeDropData: res,
+        if(SelectedItem!==null){
+            switch (DropName) {
+                case 'ModuleDrop':
+                    this.setState({ SelectedModuleDrop: SelectedItem })
+                    if (SelectedItem !== null) {
+                        dataservice.GetDataList('GetDocsTypeByModuleId?moduleId=' + SelectedItem.value + '', 'docType', 'id')
+                            .then(res => {
+                                this.setState({
+                                    DocumentTypeDropData: res,
+                                })
                             })
-                        })
-                }
-                break;
-            default:
-                break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            this.setState({
+                SelectedModuleDrop: SelectedItem,
+                DocumentTypeDropData: []
+            })
         }
+    
     }
 
     FillModuleDropData = () => {
@@ -462,7 +470,9 @@ class AccountsAlerts extends Component {
                                                     <Fragment>
                                                         <div className="linebylineInput valid-input">
 
-                                                            <DropdownMelcous title='selectModule' data={this.state.ModuleDropData} name='ModuleDrop'
+                                                            <DropdownMelcous
+                                                                isClear={true}
+                                                                title='selectModule' data={this.state.ModuleDropData} name='ModuleDrop'
                                                                 selectedValue={this.state.IsEditModel ? this.state.SelectedModuleDrop : values.ModuleDrop} onChange={setFieldValue}
                                                                 handleChange={(e) => this.handleChangeDropsForEdit(e, "ModuleDrop")}
                                                                 onBlur={setFieldTouched}
@@ -473,7 +483,9 @@ class AccountsAlerts extends Component {
 
                                                         <div className="linebylineInput valid-input">
 
-                                                            <DropdownMelcous title='docType' data={this.state.DocumentTypeDropData} name='DocumentTypeDrop'
+                                                            <DropdownMelcous
+                                                                isClear={true}
+                                                                title='docType' data={this.state.DocumentTypeDropData} name='DocumentTypeDrop'
                                                                 selectedValue={this.state.IsEditModel ? this.state.SelectedDocumentTypeDrop : values.DocumentTypeDrop} onChange={setFieldValue}
                                                                 handleChange={(e) => this.handleChangeDropsForEdit(e, "DocumentTypeDrop")}
                                                                 onBlur={setFieldTouched}

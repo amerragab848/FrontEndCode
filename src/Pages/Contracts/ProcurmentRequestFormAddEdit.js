@@ -418,11 +418,21 @@ class ProcurmentRequestFormAddEdit extends Component {
             document: updated_document
         });
     }
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource,subDatasourceId) {
+     
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+            this.setState({
+                [subDatasource]: event
+            });
+        }
+        else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -432,12 +442,23 @@ class ProcurmentRequestFormAddEdit extends Component {
 
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value;
-            dataservice.GetDataList(action, "contactName", "id").then(result => {
+
+           
+
+            if(event==null){
                 this.setState({
-                    [targetState]: result
+                    [targetState]: []
                 });
-            });
+               
+            }
+            else{
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                    this.setState({
+                        [targetState]: result
+                    });
+                });
+            }
         }
     }
     showBtnsSaving() {
@@ -669,11 +690,13 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedFromCompany}
                                                                             handleChange={event => {
-                                                                                this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                                this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact","fromContactId");
                                                                             }}
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
@@ -687,7 +710,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         />
                                                                     </div>
                                                                     <div className="super_company">
-                                                                        <Dropdown isMulti={false}
+                                                                        <Dropdown
+                                                                            isClear={true}
+                                                                            isMulti={false}
                                                                             data={this.state.fromContacts}
                                                                             selectedValue={this.state.selectedFromContact}
                                                                             handleChange={event =>
@@ -714,7 +739,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedBidderCompany}
                                                                             handleChange={event => this.handleChangeDropDown(event, "bidderCompanyId", false, "", "", "companyId", "selectedBidderCompany", "")}
@@ -733,7 +760,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                             </div>
 
                                                             <div className="linebylineInput valid-input">
-                                                                <Dropdown title="department"
+                                                                <Dropdown 
+                                                                    isClear={true}
+                                                                    title="department"
                                                                     data={this.state.departments}
                                                                     selectedValue={this.state.selectedDepartment}
                                                                     handleChange={event =>
@@ -795,7 +824,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedVendorCompany}
                                                                             handleChange={event => this.handleChangeDropDown(event, "vendorCompanyId", false, "", "", "companyId", "selectedVendorCompany", "")}
@@ -813,7 +844,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input">
-                                                                <Dropdown title="currentContract"
+                                                                <Dropdown
+                                                                    isClear={true}
+                                                                    title="currentContract"
                                                                     data={this.state.contracts}
                                                                     selectedValue={this.state.selectedContract}
                                                                     handleChange={event =>
@@ -860,10 +893,12 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown data={this.state.companies}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            data={this.state.companies}
                                                                             isMulti={false}
                                                                             selectedValue={this.state.selectedBudgetCompany}
-                                                                            handleChange={event => this.handleChangeDropDown(event, "budgetCompanyId", true, "budgetContacts", "GetContactsByCompanyId", "companyId", "selectedBudgetCompany", "selectedBudgetContact")}
+                                                                            handleChange={event => this.handleChangeDropDown(event, "budgetCompanyId", true, "budgetContacts", "GetContactsByCompanyId", "companyId", "selectedBudgetCompany", "selectedBudgetContact","budgetContactId")}
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
                                                                             error={errors.budgetCompanyId}
@@ -876,7 +911,9 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         />
                                                                     </div>
                                                                     <div className="super_company">
-                                                                        <Dropdown isMulti={false}
+                                                                        <Dropdown 
+                                                                            isClear={true}
+                                                                            isMulti={false}
                                                                             data={this.state.budgetContacts}
                                                                             selectedValue={this.state.selectedBudgetContact}
                                                                             handleChange={event =>

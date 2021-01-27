@@ -261,8 +261,8 @@ class Accounts extends Component {
             NewPassword: '',
             showResetPasswordModal: false,
             showCheckbox: false,
-            showDocTemplateModal:false,
-            docTemplateModalComponent:null
+            showDocTemplateModal: false,
+            docTemplateModalComponent: null
         }
         this.GetCellActions = this.GetCellActions.bind(this);
     }
@@ -444,6 +444,9 @@ class Accounts extends Component {
     }
 
     ConfirmResetPassword = () => {
+
+        this.setState({ isLoading: true, showResetPasswordModal: false })
+
         let id = this.state.rowSelectedId;
         let rowsData = this.state.rows;
 
@@ -454,11 +457,12 @@ class Accounts extends Component {
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&emailOrPassword=' + this.state.NewPassword + '&companyId=' + companyId + '&changePassword=true', null, 'PUT').then(data => {
             if (data.status == 200) {
                 Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword).then(result => {
-                    this.setState({ showResetPasswordModal: false })
+                    this.setState({ isLoading: false })
                 })
             } else {
                 toast.warn(data.msg);
-            }
+                this.setState({ isLoading: false }) 
+            } 
         })
     }
 
@@ -717,10 +721,10 @@ class Accounts extends Component {
         });
     };
 
-    closeDocTemplateModalHandler=()=>{
-        this.setState({showDocTemplateModal:false})
+    closeDocTemplateModalHandler = () => {
+        this.setState({ showDocTemplateModal: false })
     };
-    afterUpload=()=>{
+    afterUpload = () => {
         Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
             this.setState({
                 rows: result,
@@ -764,12 +768,12 @@ class Accounts extends Component {
         const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={Exportcolumns} fileName={this.state.pageTitle} /> : null;
 
         const ComponantFilter = <Filter filtersColumns={this.state.filtersColumns} filterMethod={this.filterMethodMain} />;
-      
-       const btnDocumentTemplate =config.IsAllow(801)?  (<button
+
+        const btnDocumentTemplate = config.IsAllow(801) ? (<button
             className="primaryBtn-2 btn mediumBtn"
             onClick={() => this.documentTemplateShowModalHandler()}>
             {Resources['DocTemplate'][currentLanguage]}
-        </button>):null;
+        </button>) : null;
 
         return (
             <div>
@@ -886,11 +890,11 @@ class Accounts extends Component {
                         buttonName='save' clickHandlerContinue={this.IsActiveFun}
                     />
                 ) : null}
-                  {DocTemplateModalComponent != null && this.state.showDocTemplateModal == true ? (
+                {DocTemplateModalComponent != null && this.state.showDocTemplateModal == true ? (
                     <DocTemplateModalComponent
                         afterUpload={this.afterUpload}
                         onClose={this.closeDocTemplateModalHandler}
-                        docTempLink={ config.getPublicConfiguartion().downloads + '/Downloads/Excel/AccountsTemplate.xlsx'}
+                        docTempLink={config.getPublicConfiguartion().downloads + '/Downloads/Excel/AccountsTemplate.xlsx'}
                     />
                 ) : null}
             </div>
