@@ -372,7 +372,6 @@ class punchListAddEdit extends Component {
 
     FillDropDowns = () => {
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
-
             if (this.state.IsEditMode) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -456,14 +455,14 @@ class punchListAddEdit extends Component {
         });
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
             if (docId) {
-
                 let conId = this.props.document.contractId;
                 let con = {};
                 if (conId) {
                     con = find(result, function (i) { return i.value == conId });
                     if (con) {
                         this.setState({
-                            selectedContract: { label: con.label, value: conId }
+                            selectedContract: { label: con.label, value: conId },
+                            contractsPos: [...result]
                         });
                     }
                 }
@@ -493,13 +492,23 @@ class punchListAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field,sub_field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+                [subDatasource]:null,
+                [targetState]:[]
+            });
+            updated_document[field]=event;
+            updated_document[sub_field]=event;
+            this.setState({
+                document: updated_document,
+            });
+        }else{
+        updated_document[field] = event.value;
         this.setState({
             document: updated_document,
             [selectedValue]: event
@@ -543,6 +552,7 @@ class punchListAddEdit extends Component {
             });
         }
     }
+}
 
     handleChange(e, field) {
         let original_document = { ...this.state.document };
@@ -704,7 +714,9 @@ class punchListAddEdit extends Component {
             arrange: values.arrangeItem, bicCompanyId: values.ActionByCompanyIdItem.value,
             bicContactId: values.ActionByContactItem.value, status: this.state.StatusItem,
             openedDate: OpenedDateItem, requiredDate: RequiredDateItem, docCloseDate: DocCloseDate,
-            description: values.description, locationId: values.location.value, areaId: values.AreaIdItem.value,
+            description: values.description, 
+            locationId: values.location ===null?null:values.location.value,
+             areaId: values.AreaIdItem ===null?null:values.AreaIdItem.value,
         }
 
         Api.post('AddLogsPunchListDetails', AddItemObj).then(
@@ -741,8 +753,10 @@ class punchListAddEdit extends Component {
             id: this.state.EditItems.id, punchListId: this.state.docId,
             arrange: values.arrangeItem, status: this.state.StatusItemForEdit,
             openedDate: OpenedDateItem, requiredDate: RequiredDateItem,
-            docCloseDate: DocCloseDate, areaId: this.state.SelectedAreaItem.value,
-            locationId: this.state.selectedLocationItem.value, description: values.description,
+            docCloseDate: DocCloseDate, 
+            areaId: this.state.SelectedAreaItem===null?null:this.state.SelectedAreaItem.value,
+            locationId: this.state.selectedLocationItem===null?null:this.state.selectedLocationItem.value, 
+            description: values.description,
             bicCompanyId: this.state.selectedActionByCompanyIdItem.value,
             bicContactId: this.state.selectedActionByContactItem.value,
             status: this.state.StatusItemForEdit
@@ -887,15 +901,23 @@ class punchListAddEdit extends Component {
                                                 </div>
                                             </div>
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown data={this.state.companies} selectedValue={this.state.selectedFromCompany}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'fromCompanyId', false, '', '', '', 'selectedFromCompany')}
+                                                <Dropdown 
+                                                    isClear={true}
+                                                    data={this.state.companies}
+                                                    selectedValue={this.state.selectedFromCompany}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'fromCompanyId',null, false, '', '', '', 'selectedFromCompany')}
                                                     onChange={setFieldValue} onBlur={setFieldTouched} title="fromCompany"
-                                                    error={errors.fromCompanyId} touched={touched.fromCompanyId}
-                                                    index="IR-fromCompanyId" name="fromCompanyId" id="fromCompanyId" />
+                                                    error={errors.fromCompanyId} 
+                                                    touched={touched.fromCompanyId}
+                                                    index="IR-fromCompanyId"
+                                                    name="fromCompanyId" 
+                                                    id="fromCompanyId" />
                                             </div>
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown data={this.state.companies} selectedValue={this.state.selectedToCompany}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', false, '', '', '', 'selectedToCompany')}
+                                                <Dropdown 
+                                                 isClear={true}
+                                                 data={this.state.companies} selectedValue={this.state.selectedToCompany}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'toCompanyId',null, false, '', '', '', 'selectedToCompany')}
                                                     onChange={setFieldValue} onBlur={setFieldTouched} title="toCompany"
                                                     error={errors.toCompanyId} touched={touched.toCompanyId}
                                                     index="IR-toCompanyId" name="toCompanyId" id="toCompanyId" />
@@ -904,17 +926,21 @@ class punchListAddEdit extends Component {
                                                 <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                 <div className="supervisor__company">
                                                     <div className="super_name">
-                                                        <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
+                                                        <Dropdown
+                                                          isClear={true}
+                                                           data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
                                                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                                             touched={touched.bicCompanyId} name="bicCompanyId"
                                                             handleChange={event =>
-                                                                this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
+                                                                this.handleChangeDropDown(event, 'bicCompanyId',"bicContactId", true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
                                                             styles={CompanyDropdown} classDrop="companyName1 " />
                                                     </div>
 
                                                     <div className="super_company">
-                                                        <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                                            handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
+                                                        <Dropdown 
+                                                         isClear={true}
+                                                        data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                            handleChange={event => this.handleChangeDropDown(event, 'bicContactId',null, false, '', '', '', 'selectedToContact')}
                                                             onChange={setFieldValue} onBlur={setFieldTouched}
                                                             error={errors.bicContactId} touched={touched.bicContactId}
                                                             index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -923,8 +949,10 @@ class punchListAddEdit extends Component {
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown data={this.state.discplines} selectedValue={this.state.selectedDiscpline}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                                <Dropdown data={this.state.discplines}
+                                                 isClear={true}
+                                                  selectedValue={this.state.selectedDiscpline}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'disciplineId',null, false, '', '', '', 'selectedDiscpline')}
                                                     onChange={setFieldValue} onBlur={setFieldTouched} title="discipline"
                                                     error={errors.disciplineId} touched={touched.disciplineId}
                                                     index="IR-disciplineId" name="disciplineId" id="disciplineId" />
@@ -932,23 +960,29 @@ class punchListAddEdit extends Component {
 
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown data={this.state.contractsPos} selectedValue={this.state.selectedContract}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'orderId', false, '', '', '', 'selectedContract')}
+                                                <Dropdown 
+                                                 isClear={true}
+                                                 data={this.state.contractsPos} selectedValue={this.state.selectedContract}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'orderId',null, false, '', '', '', 'selectedContract')}
                                                     onChange={setFieldValue} onBlur={setFieldTouched} title="contractPo"
                                                     error={errors.contractId} touched={touched.contractId}
                                                     index="IR-contractId" name="contractId" id="contractId" />
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown data={this.state.areas} selectedValue={this.state.selecetedArea}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'areaId', false, '', '', '', 'selecetedArea')}
+                                                <Dropdown 
+                                                 isClear={true}
+                                                 data={this.state.areas} selectedValue={this.state.selecetedArea}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'areaId',null, false, '', '', '', 'selecetedArea')}
                                                     onChange={setFieldValue} onBlur={setFieldTouched} title="areaName"
                                                     error={errors.areaId} touched={touched.areaId}
                                                     index="IR-areaId" name="areaId" id="areaId" />
                                             </div>
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="approvalStatus" data={this.state.AprovalsData} selectedValue={this.state.selectedApprovalStatus}
-                                                    handleChange={event => this.handleChangeDropDown(event, 'approvalStatus', false, '', '', '', 'selectedApprovalStatus')} />
+                                                <Dropdown 
+                                                 isClear={true}
+                                                 title="approvalStatus" data={this.state.AprovalsData} selectedValue={this.state.selectedApprovalStatus}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'approvalStatus',null, false, '', '', '', 'selectedApprovalStatus')} />
                                             </div>
                                         </div>
                                         <div className="doc-pre-cycle letterFullWidth">
@@ -1104,15 +1138,18 @@ class punchListAddEdit extends Component {
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown title="location" data={this.state.locations} name="location"
+                                                    <Dropdown 
+                                                        isClear={true}title="location" data={this.state.locations} name="location"
                                                         selectedValue={this.state.selectedLocationItem}
                                                         onChange={setFieldValue} onBlur={setFieldTouched}
-                                                        handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocationItem')} />
+                                                        handleChange={event => this.handleChangeDropDown(event, 'location',null, false, '', '', '', 'selectedLocationItem')} />
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown data={this.state.areas} selectedValue={this.state.SelectedAreaItem}
-                                                        handleChange={event => this.handleChangeDropDown(event, 'AreaIdItem', false, '', '', '', 'SelectedAreaItem')}
+                                                    <Dropdown
+                                                    isClear={true}
+                                                     data={this.state.areas} selectedValue={this.state.SelectedAreaItem}
+                                                        handleChange={event => this.handleChangeDropDown(event, 'AreaIdItem', null,false, '', '', '', 'SelectedAreaItem')}
                                                         onChange={setFieldValue} onBlur={setFieldTouched} title="areaName"
                                                         error={errors.AreaIdItem} touched={touched.AreaIdItem}
                                                         index="IR-AreaIdItem" name="AreaIdItem" id="AreaIdItem" />
@@ -1122,17 +1159,20 @@ class punchListAddEdit extends Component {
                                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyIdItem}
+                                                            <Dropdown
+                                                            isClear={true}
+                                                             data={this.state.companies} selectedValue={this.state.selectedActionByCompanyIdItem}
                                                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.ActionByCompanyIdItem}
                                                                 touched={touched.ActionByCompanyIdItem} name="ActionByCompanyIdItem"
                                                                 handleChange={event =>
-                                                                    this.handleChangeDropDown(event, 'ActionByCompanyIdItem', true, 'ToContactsItem', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyIdItem', 'selectedActionByContactItem')}
+                                                                    this.handleChangeDropDown(event, 'ActionByCompanyIdItem',"ActionByContactItem", true, 'ToContactsItem', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyIdItem', 'selectedActionByContactItem')}
                                                                 styles={CompanyDropdown} classDrop="companyName1 " />
                                                         </div>
 
                                                         <div className="super_company">
-                                                            <Dropdown data={this.state.ToContactsItem} selectedValue={this.state.selectedActionByContactItem}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem', false, '', '', '', 'selectedActionByContactItem')}
+                                                            <Dropdown isClear={true}
+                                                            data={this.state.ToContactsItem} selectedValue={this.state.selectedActionByContactItem}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem',null, false, '', '', '', 'selectedActionByContactItem')}
                                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                                 error={errors.ActionByContactItem} touched={touched.ActionByContactItem}
                                                                 index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" classDrop=" contactName1" styles={ContactDropdown} />
@@ -1176,10 +1216,10 @@ class punchListAddEdit extends Component {
             return (
                 <Formik initialValues={{
                     description: this.state.EditItems.description,
-                    ActionByContactItem: this.state.selectedToContact.value,
+                    ActionByContactItem: this.state.selectedToContact==null?null:this.state.selectedToContact.value,
                     arrangeItem: this.state.EditItems.arrange,
                     location: '',
-                    ActionByCompanyIdItem: this.state.selectedActionByCompanyId.value,
+                    ActionByCompanyIdItem: this.state.selectedActionByCompanyId==null?null:this.state.selectedActionByCompanyId.value,
                     AreaIdItem: ''
                 }}
                     enableReinitialize={true}
@@ -1246,13 +1286,17 @@ class punchListAddEdit extends Component {
                                     </div>
                                 </div>
 
-                                <Dropdown title="location" data={this.state.locations} name="location"
+                                <Dropdown 
+                                    isClear={true}
+                                    title="location" data={this.state.locations} name="location"
                                     selectedValue={this.state.selectedLocationItem}
                                     onChange={setFieldValue} onBlur={setFieldTouched}
-                                    handleChange={event => this.handleChangeDropDown(event, 'location', false, '', '', '', 'selectedLocationItem')} />
+                                    handleChange={event => this.handleChangeDropDown(event, 'location',null, false, '', '', '', 'selectedLocationItem')} />
 
-                                <Dropdown data={this.state.areas} selectedValue={this.state.SelectedAreaItem}
-                                    handleChange={event => this.handleChangeDropDown(event, 'AreaIdItem', false, '', '', '', 'SelectedAreaItem')}
+                                <Dropdown 
+                                    isClear={true}
+                                    data={this.state.areas} selectedValue={this.state.SelectedAreaItem}
+                                    handleChange={event => this.handleChangeDropDown(event, 'AreaIdItem',null, false, '', '', '', 'SelectedAreaItem')}
                                     onChange={setFieldValue} onBlur={setFieldTouched} title="areaName"
                                     error={errors.AreaIdItem} touched={touched.AreaIdItem}
                                     index="IR-AreaIdItem" name="AreaIdItem" id="AreaIdItem" />
@@ -1261,17 +1305,21 @@ class punchListAddEdit extends Component {
                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                     <div className="supervisor__company">
                                         <div className="super_name">
-                                            <Dropdown data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
+                                            <Dropdown 
+                                                isClear={true}
+                                                data={this.state.companies} selectedValue={this.state.selectedActionByCompanyId}
                                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
                                                 touched={touched.bicCompanyId} name="bicCompanyId"
                                                 handleChange={event =>
-                                                    this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
+                                                    this.handleChangeDropDown(event, 'bicCompanyId',"bicContactId", true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
                                                 styles={CompanyDropdown} classDrop="companyName1 " />
                                         </div>
 
                                         <div className="super_company">
-                                            <Dropdown data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
-                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
+                                            <Dropdown 
+                                            isClear={true}
+                                               data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
+                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId',null, false, '', '', '', 'selectedToContact')}
                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                 error={errors.bicContactId} touched={touched.bicContactId}
                                                 index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
