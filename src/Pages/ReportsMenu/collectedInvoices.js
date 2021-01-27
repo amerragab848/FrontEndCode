@@ -211,7 +211,9 @@ class CollectedInvoices extends Component {
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown title="invoicesForPO" data={this.state.po}
+                                                        <Dropdown 
+
+                                                           title="invoicesForPO" data={this.state.po}
                                                             selectedValue={this.state.selectedPO}
                                                             handleChange={event => this.handleChangeDropDown(event)}
                                                             onChange={setFieldValue}

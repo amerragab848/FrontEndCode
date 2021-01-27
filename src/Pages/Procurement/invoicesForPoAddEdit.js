@@ -51,7 +51,7 @@ const documentItemValidationSchema = Yup.object().shape({
 
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
 
-    itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
+    itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]).nullable(true),
 
     days: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 })
@@ -445,10 +445,16 @@ class invoicesForPoAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+
+        if (event == null) {
+            updated_document[field] = event;
+        }
+        else {
+            updated_document[field] = event.value;
+        }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -457,23 +463,39 @@ class invoicesForPoAddEdit extends Component {
         })
 
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'details', 'id').then(result => {
-                this.setState({
-                    BoqItemData: result
+            if (event !== null) {
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'details', 'id').then(result => {
+                    this.setState({
+                        BoqItemData: result
+                    });
                 });
-            });
+            }
+            else {
+                this.setState({
+                    BoqItemData: []
+                });
+            }
+
         }
         if (field === 'purchaseOrderId') {
-            if (docId === 0) {
-                Api.get('GetContractsOrdersItemsExcutionPoByPurchaseId?purchaseId=' + event.value).then(
-                    result => {
-                        this.setState({
-                            InvoicesItems: result
-                        })
-                    }
-                )
+            if (event !== null) {
+                if (docId === 0) {
+                    Api.get('GetContractsOrdersItemsExcutionPoByPurchaseId?purchaseId=' + event.value).then(
+                        result => {
+                            this.setState({
+                                InvoicesItems: result
+                            })
+                        }
+                    )
+                }
             }
+            else {
+                this.setState({
+                    InvoicesItems: []
+                })
+            }
+
         }
     }
 
@@ -533,45 +555,45 @@ class invoicesForPoAddEdit extends Component {
                 saveDocument.items = itemsList
                 dataservice.addObject('AddContractsInvoicesForPoItemsList', saveDocument).then(
                     res => {
-                      /******************************* to update doc details in add invoice mode********************** */
-                      let url = "GetContractsInvoicesForPoForEdit?id=" +result.id
-                      this.props.actions.documentForEdit(url, this.state.docTypeId, 'lettertitle');
-          
-                      Api.get('GetContractsInvoicesForPoItemsByInvoiceId?invoiceId=' +result.id).then(
-                          r => {
-                              this.setState({
-                                  InvoicesItems: r
-                              })
-                          }
-                      )
-          
-                      Api.get('GetContractsInvoicesForPoDeductionssByInvoiceId?invoiceId=' + result.id).then(
-                          result => {
-                              let items = []
-                              let data = []
-                              items = result
-                              items.map(i => {
-                                  let obj = {}
-                                  obj.id = i.id
-                                  obj.invoiceId = i.invoiceId
-                                  obj.deduction = i.deduction
-                                  obj.description = i.description
-                                  obj.factor = i.factor
-                                  obj.factorName = i.factor === 1 ? Resources.addition[currentLanguage] : Resources.deductions[currentLanguage]
-                                  data.push(obj)
-                              })
-          
-                              this.setState({
-                                  InvoicesDeductions: data
-                              })
-                          }
-                      )
-          
-                  });
-            
-                      /***************************************************** */
+                        /******************************* to update doc details in add invoice mode********************** */
+                        let url = "GetContractsInvoicesForPoForEdit?id=" + result.id
+                        this.props.actions.documentForEdit(url, this.state.docTypeId, 'lettertitle');
 
-                   
+                        Api.get('GetContractsInvoicesForPoItemsByInvoiceId?invoiceId=' + result.id).then(
+                            r => {
+                                this.setState({
+                                    InvoicesItems: r
+                                })
+                            }
+                        )
+
+                        Api.get('GetContractsInvoicesForPoDeductionssByInvoiceId?invoiceId=' + result.id).then(
+                            result => {
+                                let items = []
+                                let data = []
+                                items = result
+                                items.map(i => {
+                                    let obj = {}
+                                    obj.id = i.id
+                                    obj.invoiceId = i.invoiceId
+                                    obj.deduction = i.deduction
+                                    obj.description = i.description
+                                    obj.factor = i.factor
+                                    obj.factorName = i.factor === 1 ? Resources.addition[currentLanguage] : Resources.deductions[currentLanguage]
+                                    data.push(obj)
+                                })
+
+                                this.setState({
+                                    InvoicesDeductions: data
+                                })
+                            }
+                        )
+
+                    });
+
+                /***************************************************** */
+
+
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             })
         }
@@ -757,7 +779,7 @@ class invoicesForPoAddEdit extends Component {
         this.setState({ Loading: true })
         if (this.state.IsDeductionEdit) {
             let obj = this.state.ObjDeduction
-            obj.factor = this.state.selectedDeductionsType.value
+            obj.factor = this.state.selectedDeductionsType!==null?this.state.selectedDeductionsType.value:null
             obj.deduction = values.value
             obj.description = values.description
             obj.invoiceId = this.state.docId
@@ -786,7 +808,7 @@ class invoicesForPoAddEdit extends Component {
         else {
             let obj =
             {
-                factor: this.state.selectedDeductionsTypeAdd.value,
+                factor: this.state.selectedDeductionsTypeAdd!==null?this.state.selectedDeductionsTypeAdd.value:null,
                 invoiceId: this.state.docId,
                 deduction: values.value,
                 description: values.description
@@ -851,49 +873,59 @@ class invoicesForPoAddEdit extends Component {
         )
     }
 
-    handleChangeItemType = (e) => {
-        switch (e.label) {
+    handleChangeItemType = (event) => {
+        if (event !== null) {
 
-            case 'Material':
-                this.setState({
-                    selectedItemType: e,
-                    ShowDays: false,
-                    ShowEquipmentType: false,
-                    action: 1
-                })
-                break;
-            case 'Labor':
-                this.setState({
-                    selectedItemType: e,
-                    ShowDays: true,
-                    ShowEquipmentType: false,
-                    action: 2
-                })
-                break;
 
-            case 'Equipment':
-                this.setState({
-                    selectedItemType: e,
-                    ShowDays: true,
-                    ShowEquipmentType: true,
-                    action: 3
-                })
-                break;
-            case 'lumpSum':
-                this.setState({
-                    selectedItemType: e,
-                    ShowDays: false,
-                    ShowEquipmentType: false,
-                    action: 5
-                })
-                break;
+            switch (event.label) {
 
-            default:
-                this.setState({
-                    selectedItemType: e,
-                    ShowDays: false,
-                    ShowEquipmentType: false
-                })
+                case 'Material':
+                    this.setState({
+                        selectedItemType: event,
+                        ShowDays: false,
+                        ShowEquipmentType: false,
+                        action: 1
+                    })
+                    break;
+                case 'Labor':
+                    this.setState({
+                        selectedItemType: event,
+                        ShowDays: true,
+                        ShowEquipmentType: false,
+                        action: 2
+                    })
+                    break;
+
+                case 'Equipment':
+                    this.setState({
+                        selectedItemType: event,
+                        ShowDays: true,
+                        ShowEquipmentType: true,
+                        action: 3
+                    })
+                    break;
+                case 'lumpSum':
+                    this.setState({
+                        selectedItemType: event,
+                        ShowDays: false,
+                        ShowEquipmentType: false,
+                        action: 5
+                    })
+                    break;
+
+                default:
+                    this.setState({
+                        selectedItemType: event,
+                        ShowDays: false,
+                        ShowEquipmentType: false
+                    })
+            }
+        } else {
+            this.setState({
+                selectedItemType: event,
+                ShowDays: false,
+                ShowEquipmentType: false
+            })
         }
 
     }
@@ -1292,27 +1324,33 @@ class invoicesForPoAddEdit extends Component {
                                                 </div>
                                             </div>
 
-                                            {this.props.changeStatus ==true  ?
+                                            {this.props.changeStatus == true ?
                                                 <div className="linebylineInput valid-input linebylineInput__name">
                                                     <label className="control-label">{Resources.purchaseOrder[currentLanguage]}</label>
                                                     <div className="ui input inputDev "  >
                                                         <input type="text" className="form-control disabled" value={this.state.document.purchaseOrderName}
-                                                            placeholder={Resources.purchaseOrder[currentLanguage]}  />
+                                                            placeholder={Resources.purchaseOrder[currentLanguage]} />
                                                     </div>
                                                 </div>
                                                 :
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown isDisabled={this.props.changeStatus} title="purchaseOrder" data={this.state.PurchaseOrdersData} selectedValue={this.state.selectedPurchaseOrders}
+                                                    <Dropdown
+                                                        isClear={true}
+                                                        isDisabled={this.props.changeStatus} title="purchaseOrder" data={this.state.PurchaseOrdersData} selectedValue={this.state.selectedPurchaseOrders}
                                                         handleChange={event => this.handleChangeDropDown(event, 'purchaseOrderId', false, '', '', '', 'selectedPurchaseOrders')} />
                                                 </div>}
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="CompanyName" data={this.state.CompaniesData} selectedValue={this.state.selectedCompany}
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="CompanyName" data={this.state.CompaniesData} selectedValue={this.state.selectedCompany}
                                                     handleChange={event => this.handleChangeDropDown(event, 'companyId', false, '', '', '', 'selectedCompany')} />
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="BOQCostCoding" data={this.state.BOQCostCodingData} selectedValue={this.state.selectedBOQCostCoding}
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="BOQCostCoding" data={this.state.BOQCostCodingData} selectedValue={this.state.selectedBOQCostCoding}
                                                     handleChange={event => this.handleChangeDropDown(event, 'boqId', true, 'selectedBoqItem', 'GetContractsBoqItems', 'boqId', 'selectedBOQCostCoding', 'selectedBoqItem')} />
                                             </div>
 
@@ -1334,7 +1372,9 @@ class invoicesForPoAddEdit extends Component {
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="boqItem" data={this.state.BoqItemData} selectedValue={this.state.selectedBoqItem}
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="boqItem" data={this.state.BoqItemData} selectedValue={this.state.selectedBoqItem}
                                                     handleChange={event => this.handleChangeDropDown(event, 'boqItemId', false, '', '', '', 'selectedBoqItem')} />
                                             </div>
 
@@ -1369,12 +1409,16 @@ class invoicesForPoAddEdit extends Component {
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="transactionType" data={this.state.TransactionTypeData} selectedValue={this.state.selectedTransactionType}
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="transactionType" data={this.state.TransactionTypeData} selectedValue={this.state.selectedTransactionType}
                                                     handleChange={event => this.handleChangeDropDown(event, 'transactionType', false, '', '', '', 'selectedTransactionType')} />
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="approvalStatus" data={this.state.AprovalsData} selectedValue={this.state.selectedApprovalStatus}
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="approvalStatus" data={this.state.AprovalsData} selectedValue={this.state.selectedApprovalStatus}
                                                     handleChange={event => this.handleChangeDropDown(event, 'approvalStatus', false, '', '', '', 'selectedApprovalStatus')} />
                                             </div>
 
@@ -1514,7 +1558,9 @@ class invoicesForPoAddEdit extends Component {
                                         <div className="proForm datepickerContainer">
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="type" data={DeductionsDataDrop} name="type"
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="type" data={DeductionsDataDrop} name="type"
                                                     selectedValue={this.state.selectedDeductionsTypeAdd}
                                                     handleChange={e => this.setState({ selectedDeductionsTypeAdd: e })} />
                                             </div>
@@ -1605,7 +1651,9 @@ class invoicesForPoAddEdit extends Component {
                                         <div className="proForm datepickerContainer">
 
                                             <div className="linebylineInput valid-input">
-                                                <Dropdown title="type" data={DeductionsDataDrop}
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="type" data={DeductionsDataDrop}
                                                     selectedValue={this.state.selectedDeductionsType}
                                                     handleChange={e => this.setState({ selectedDeductionsType: e })} />
                                             </div>
@@ -1821,7 +1869,9 @@ class invoicesForPoAddEdit extends Component {
                                             </div>
 
                                             <div className="linebylineInput valid-input ">
-                                                <Dropdown title="itemType" data={this.state.itemTypes} selectedValue={this.state.selectedItemType}
+                                                <Dropdown
+                                                    isClear={true}
+                                                    title="itemType" data={this.state.itemTypes} selectedValue={this.state.selectedItemType}
                                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.itemType}
                                                     touched={touched.itemType} name="itemType"
                                                     handleChange={event => this.handleChangeItemType(event)}
@@ -1845,7 +1895,9 @@ class invoicesForPoAddEdit extends Component {
 
                                             {this.state.ShowEquipmentType ?
                                                 <div className="linebylineInput valid-input ">
-                                                    <Dropdown title="equipmentType" data={this.state.EquipmentTypeData} name="equipmentType"
+                                                    <Dropdown
+                                                        isClear={true}
+                                                        title="equipmentType" data={this.state.EquipmentTypeData} name="equipmentType"
                                                         selectedValue={this.state.selectedEquipmentType}
                                                         handleChange={e => this.setState({ selectedEquipmentType: e })} />
                                                 </div> : null}
@@ -1928,13 +1980,16 @@ class invoicesForPoAddEdit extends Component {
                                 <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
                                     <div className='document-fields'>
 
-                                        <div className="letterFullWidth proForm  first-proform ">
+                                        <div className="proForm first-proform">
+
                                             <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['description'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.details ? 'has-error' : !errors.details && touched.details ? (" has-success") : " ")}>
-                                                    <input name='details' className="form-control" autoComplete='off' placeholder={Resources['details'][currentLanguage]}
-                                                        value={this.state.ObjItem.details} onChange={e => this.handleChangeItems(e, 'details')} onBlur={handleBlur} />
-                                                    {errors.details ? (<em className="pError">{errors.details}</em>) : null}
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">{Resources['description'][currentLanguage]} </label>
+                                                    <div className={"inputDev ui input " + (errors.details ? 'has-error' : !errors.details && touched.details ? (" has-success") : " ")}>
+                                                        <input name='details' className="form-control" autoComplete='off' placeholder={Resources['details'][currentLanguage]}
+                                                            value={this.state.ObjItem.details} onChange={e => this.handleChangeItems(e, 'details')} onBlur={handleBlur} />
+                                                        {errors.details ? (<em className="pError">{errors.details}</em>) : null}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

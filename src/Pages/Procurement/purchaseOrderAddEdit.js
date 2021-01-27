@@ -58,10 +58,10 @@ const ValidtionSchemaForTermsPurchaseOrder = Yup.object().shape({
 const ValidtionSchemaForNewItems = Yup.object().shape({
     itemType: Yup.string()
         .required(Resources["itemTypeSelection"][currentLanguage])
-        .nullable(false),
+        .nullable(true),
     details: Yup.string()
         .required(Resources["descriptionRequired"][currentLanguage])
-        .nullable(false),
+        .nullable(true),
     unitPrice: Yup.number()
         .required(Resources["unitPriceRequired"][currentLanguage])
         .typeError(Resources["onlyNumbers"][currentLanguage]),
@@ -75,8 +75,8 @@ const ValidtionSchemaForNewItems = Yup.object().shape({
 const ValidtionSchemaForEditItems = Yup.object().shape({
     details: Yup.string().required(
         Resources["descriptionRequired"][currentLanguage]
-    ),
-    unit: Yup.string().required(Resources["unit"][currentLanguage]),
+    ).nullable(false),
+    unit: Yup.string().required(Resources["unit"][currentLanguage]).nullable(true),
     unitPrice: Yup.number()
         .required(Resources["unitPriceRequired"][currentLanguage])
         .typeError(Resources["onlyNumbers"][currentLanguage]),
@@ -85,7 +85,7 @@ const ValidtionSchemaForEditItems = Yup.object().shape({
         .typeError(Resources["onlyNumbers"][currentLanguage]),
     resourceCode: Yup.string().required(
         Resources["resourceCodeRequired"][currentLanguage]
-    )
+    ).nullable(false)
 });
 
 const ValidtionSchemaForInventoryItems = Yup.object().shape({
@@ -94,7 +94,7 @@ const ValidtionSchemaForInventoryItems = Yup.object().shape({
         .nullable(false),
     itemType: Yup.string()
         .required(Resources["itemTypeSelection"][currentLanguage])
-        .nullable(false),
+        .nullable(true),
     details: Yup.string()
         .required(Resources["descriptionRequired"][currentLanguage])
         .nullable(false),
@@ -106,12 +106,12 @@ const ValidtionSchemaForInventoryItems = Yup.object().shape({
         .typeError(Resources["onlyNumbers"][currentLanguage]),
     details: Yup.string().required(
         Resources["descriptionRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     resourceCode: Yup.string().required(
         Resources["resourceCodeRequired"][currentLanguage]
-    ),
-    days: Yup.string().required(Resources["daysRequired"][currentLanguage]),
-    itemCode: Yup.string().required(Resources["itemCode"][currentLanguage])
+    ).nullable(true),
+    days: Yup.string().required(Resources["daysRequired"][currentLanguage]).nullable(true),
+    itemCode: Yup.string().required(Resources["itemCode"][currentLanguage]).nullable(true)
 });
 
 const validationSchemaForMainDocument = Yup.object().shape({
@@ -121,10 +121,10 @@ const validationSchemaForMainDocument = Yup.object().shape({
     refDoc: Yup.string().required(Resources["selectRefNo"][currentLanguage]),
     toCompanyId: Yup.string().required(
         Resources["toCompanyRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     toContactId: Yup.string().required(
         Resources["toContactRequired"][currentLanguage]
-    ),
+    ).nullable(true),
     advancePaymentPercent: Yup.number().typeError(
         Resources["onlyNumbers"][currentLanguage]
     )
@@ -610,16 +610,29 @@ class PurchaseOrderAddEdit extends Component {
         url,
         param,
         selectedValue,
-        subDatasource
+        subDatasource,
+        subDatasourceId
     ) {
-        if (event == null) return;
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+            
+            this.setState({
+                [subDatasource]: event
+            });
+         }
+         else
+         {
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         if (field == "fromCompanyId") {
-            let url =
+            if(event!==null){
+                let url =
                 "GetNextArrangeMainDoc?projectId=" +
                 this.state.projectId +
                 "&docType=" +
@@ -639,16 +652,37 @@ class PurchaseOrderAddEdit extends Component {
                     document: updated_document
                 });
             });
+            }
+            else{
+                updated_document.arrange = [];
+                updated_document = Object.assign(
+                    original_document,
+                    updated_document
+                );
+
+                this.setState({
+                    document: updated_document
+                });
+            }
+            
         }
         if (isSubscrib) {
-            let action = url + "?" + param + "=" + event.value;
-            dataservice
-                .GetDataList(action, "contactName", "id")
-                .then(result => {
+                if(event==null){
                     this.setState({
-                        [targetState]: result
+                        [targetState]: []
                     });
-                });
+                   
+                }
+                else
+                {
+                    let action = url + "?" + param + "=" + event.value
+                    dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+                        this.setState({
+                            [targetState]: result
+                        });
+                    });
+                }
+
         }
 
         this.setState({
@@ -667,11 +701,17 @@ class PurchaseOrderAddEdit extends Component {
         selectedValue,
         subDatasource
     ) {
-        if (event == null) return;
+        
         let original_document = { ...this.state.purchaseOrderTerms };
         let updated_document = {};
         if (field === "details") {
+          
+        if (event == null) {
+            updated_document[field] = event;
+         }
+         else{
             updated_document[field] = event.label;
+         }
         }
 
         updated_document = Object.assign(original_document, updated_document);
@@ -684,9 +724,18 @@ class PurchaseOrderAddEdit extends Component {
     changeItemDropDownDetails(event) {
         let original_document = { ...this.state.purchaseOrderItems };
         let updated_document = {};
-        updated_document.details = event.label;
-        updated_document.resourceCode = event.resourceCode;
-        updated_document.unit = event.unit;
+        if(event!==null){
+            updated_document.details = event.label;
+            updated_document.resourceCode = event.resourceCode;
+            updated_document.unit = event.unit;
+        }
+        else
+        {
+            updated_document.details = event;
+            updated_document.resourceCode = event;
+            updated_document.unit = event;
+        }
+    
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             purchaseOrderItems: updated_document,
@@ -695,8 +744,15 @@ class PurchaseOrderAddEdit extends Component {
     changeItemDropDownItemType(event) {
         let original_document = { ...this.state.purchaseOrderItems };
         let updated_document = {};
-        updated_document.itemType = event.value;
-        updated_document.action = event.value;
+        if(event!==null){
+            updated_document.itemType = event.value;
+            updated_document.action = event.value;
+        }
+        else {
+            updated_document.itemType = event;
+            updated_document.action = event;
+        }
+      
         updated_document = Object.assign(original_document, updated_document);
         this.setState({
             purchaseOrderItems: updated_document,
@@ -712,16 +768,25 @@ class PurchaseOrderAddEdit extends Component {
         selectedValue,
         subDatasource
     ) {
-        if (event == null) return;
+
 
         let original_document = { ...this.state.purchaseOrderItems };
 
         let updated_document = {};
 
         if (field === "details" || field === "unit") {
-            updated_document[field] = event.label;
+           
+            if (event == null) {
+                updated_document[field] = event;
+             }else{
+                updated_document[field] = event.label;
+             }
         } else {
-            updated_document[field] = event.value;
+            if (event == null) {
+                updated_document[field] = event;
+             }else{
+                 updated_document[field] = event.value;
+             }
         }
 
         updated_document = Object.assign(original_document, updated_document);
@@ -731,10 +796,18 @@ class PurchaseOrderAddEdit extends Component {
             [selectedValue]: event
         });
     }
-    getcontractsBoqItems(e) {
-        Api.get(`getContractsBoqItemsBySpecsId?boqId=${this.state.selectedBoq.value}&specsId=${e.value}`).then(result => {
-            this.setState({ BoqData: result })
-        })
+    getcontractsBoqItems(event) {
+         if(event!==null&&this.state.selectedBoq!==null) {
+            Api.get(`getContractsBoqItemsBySpecsId?boqId=${this.state.selectedBoq.value}&specsId=${event.value}`).then(result => {
+                this.setState({ BoqData: result })
+            })
+         }
+         else{
+            this.setState({
+                 BoqData: [] 
+                })
+         }
+       
     }
     handleChangeDropDownItemsForBoq(
         event,
@@ -746,11 +819,25 @@ class PurchaseOrderAddEdit extends Component {
         selectedValue,
         subDatasource
     ) {
-        if (event == null) return;
+        
         if (field === "specsId") {
-            specsId = event.value;
-        } else if (field === "boqId") {
-            boqId = event.value;
+           
+
+            if (event == null) {
+                specsId = event;
+             }
+             else{
+                specsId = event.value;
+             }
+        } 
+        else if (field === "boqId") {
+           
+            if (event == null) {
+                boqId = event;
+               
+             }else{
+                boqId = event.value;
+             }
         }
 
         // if (boqId != "" && specsId != "") {
@@ -1157,6 +1244,7 @@ class PurchaseOrderAddEdit extends Component {
                             <div className="proForm datepickerContainer letterFullWidth">
                                 <div className="linebylineInput valid-input">
                                     <Dropdown
+                                       isClear={true}
                                         title="description"
                                         data={this.state.descriptions}
                                         selectedValue={
@@ -1305,6 +1393,7 @@ class PurchaseOrderAddEdit extends Component {
 
                             <div className="linebylineInput valid-input">
                                 <Dropdown
+                                    //isClear={true}
                                     title="itemType"
                                     data={this.state.itemType}
                                     selectedValue={this.state.selectedItemType}
@@ -1377,6 +1466,7 @@ class PurchaseOrderAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="equipmentType"
                                             data={this.state.equipmentType}
                                             selectedValue={
@@ -1455,6 +1545,7 @@ class PurchaseOrderAddEdit extends Component {
 
                             <div className="linebylineInput valid-input">
                                 <Dropdown
+                                   isClear={true}
                                     title="specsSection"
                                     data={this.state.specssectionType}
                                     selectedValue={this.state.selectedSpecssection}
@@ -1661,6 +1752,7 @@ class PurchaseOrderAddEdit extends Component {
 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="unit"
                                             data={this.state.units}
                                             selectedValue={this.state.selectedUnit}
@@ -1781,6 +1873,7 @@ class PurchaseOrderAddEdit extends Component {
 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="itemType"
                                             data={this.state.itemType}
                                             selectedValue={this.state.selectedItemType}
@@ -1855,6 +1948,7 @@ class PurchaseOrderAddEdit extends Component {
                                             </div>
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown
+                                                    isClear={true}
                                                     title="equipmentType"
                                                     data={this.state.equipmentType}
                                                     selectedValue={
@@ -1935,6 +2029,7 @@ class PurchaseOrderAddEdit extends Component {
                                             )}
                                     <div className="linebylineInput valid-input">
                                         <Dropdown
+                                            isClear={true}
                                             title="specsSection"
                                             data={this.state.specssectionType}
                                             selectedValue={
@@ -2040,6 +2135,7 @@ class PurchaseOrderAddEdit extends Component {
                 <div className="proForm datepickerContainer letterFullWidth">
                     <div className="linebylineInput valid-input">
                         <Dropdown
+                            isClear={true}
                             title="boq"
                             data={this.state.Boq}
                             selectedValue={this.state.selectedBoq}
@@ -2088,6 +2184,7 @@ class PurchaseOrderAddEdit extends Component {
 
                 <div className="linebylineInput valid-input">
                     <Dropdown
+                        isClear={true}
                         title={"specsSection"}
                         data={this.state.specssectionType}
                         selectedValue={this.state.selectedSpecssection}
@@ -2527,6 +2624,7 @@ class PurchaseOrderAddEdit extends Component {
                                     </div>
 
                                     <Dropdown
+                                        isClear={true}
                                         title="specsSection"
                                         data={this.state.specssectionType}
                                         selectedValue={
@@ -2649,6 +2747,7 @@ class PurchaseOrderAddEdit extends Component {
                                     </div>
 
                                     <Dropdown
+                                        isClear={true}
                                         title="equipmentType"
                                         data={this.state.equipmentType}
                                         selectedValue={
@@ -3358,6 +3457,7 @@ class PurchaseOrderAddEdit extends Component {
                                                 <div className="supervisor__company">
                                                     <div className="super_name">
                                                         <Dropdown
+                                                          isClear={true}
                                                             data={
                                                                 this.state.companies
                                                             }
@@ -3375,7 +3475,8 @@ class PurchaseOrderAddEdit extends Component {
                                                                     "GetContactsByCompanyId",
                                                                     "companyId",
                                                                     "selectedFromCompany",
-                                                                    "selectedFromContact"
+                                                                    "selectedFromContact",
+                                                                    "toContactId"
                                                                 );
                                                             }}
                                                             onChange={setFieldValue}
@@ -3392,6 +3493,7 @@ class PurchaseOrderAddEdit extends Component {
                                                     </div>
                                                     <div className="super_company">
                                                         <Dropdown
+                                                           isClear={true}
                                                             data={
                                                                 this.state.contacts
                                                             }
@@ -3429,6 +3531,7 @@ class PurchaseOrderAddEdit extends Component {
 
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown
+                                                   isClear={true}
                                                     data={this.state.companies}
                                                     selectedValue={
                                                         this.state.selectedToCompany
@@ -4081,6 +4184,7 @@ class PurchaseOrderAddEdit extends Component {
                                                 <div className="proForm datepickerContainer letterFullWidth">
                                                     <div className="linebylineInput valid-input">
                                                         <Dropdown
+                                                            isClear={true}
                                                             title="terms"
                                                             data={
                                                                 this.state.descriptions

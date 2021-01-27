@@ -360,12 +360,20 @@ class materialDeliveryAddEdit extends Component {
         url,
         param,
         selectedValue,
-        subDatasource
+        subDatasource,
+        subDatasourceId
     ) {
-        if (event == null) return;
+     
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+            this.setState({ [subDatasource]: event });
+         }
+         else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ document: updated_document, [selectedValue]: event });
     }
@@ -602,9 +610,9 @@ class materialDeliveryAddEdit extends Component {
                 rejectedQuantity: this.state.rejectedQuantity,
                 pendingQuantity: this.state.pendingQuantity,
                 materialCode:
-                    this.state.selectedMaterialCode.value !== "0"
+                    this.state.selectedMaterialCode!==null? this.state.selectedMaterialCode.value !== "0"
                         ? this.state.selectedMaterialCode.value
-                        : "",
+                        : "":"",
                 resourceCode: this.state.ItemDescriptionInfo.resourceCode,
                 unitPrice: this.state.unitPrice,
                 itemId: this.state.selectedItemId.value,
@@ -657,16 +665,26 @@ class materialDeliveryAddEdit extends Component {
         }
     };
 
-    handleChangeItemId = e => {
+    handleChangeItemId = event => {
         let data = [];
-        data = this.state.descriptionList.filter(i => i.id === e.value);
-        let obj = data[0];
-        console.log(obj);
-        this.setState({
-            selectedItemId: e,
-            unitPrice: obj.unitPrice,
-            ItemDescriptionInfo: obj
-        });
+        if(event!==null){
+            data = this.state.descriptionList.filter(i => i.id === event.value);
+            let obj = data[0];
+            console.log(obj);
+            this.setState({
+                selectedItemId: event,
+                unitPrice: obj.unitPrice,
+                ItemDescriptionInfo: obj
+            });
+        }
+        else{
+            this.setState({
+                selectedItemId: event,
+                unitPrice: "",
+                ItemDescriptionInfo: {}
+            });
+        }
+      
     };
 
     HandelChangeItems = (e, name) => {
@@ -909,6 +927,7 @@ class materialDeliveryAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="contractPo"
                                                 data={this.state.contractPoData}
                                                 selectedValue={
@@ -937,6 +956,7 @@ class materialDeliveryAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="specsSection"
                                                 data={this.state.specsSectionData}
                                                 selectedValue={
@@ -958,6 +978,7 @@ class materialDeliveryAddEdit extends Component {
 
                                         <div className="linebylineInput valid-input">
                                             <Dropdown
+                                                isClear={true}
                                                 title="materialDeliveryType"
                                                 data={this.state.materialTypeData}
                                                 selectedValue={
@@ -1246,9 +1267,9 @@ class materialDeliveryAddEdit extends Component {
                         <Formik
                             initialValues={{
                                 itemId:
-                                    this.state.selectedItemId.value !== "0"
+                                    this.state.selectedItemId!==null?this.state.selectedItemId.value !== "0"
                                         ? this.state.selectedItemId
-                                        : "",
+                                        : "":"",
                                 unitPrice: this.state.unitPrice,
                                 approvedQuantity: this.state.approvedQuantity,
                                 rejectedQuantity: this.state.rejectedQuantity,
@@ -1287,6 +1308,7 @@ class materialDeliveryAddEdit extends Component {
                                             <div className="proForm datepickerContainer">
                                                 <div className="linebylineInput valid-input letterFullWidth ">
                                                     <Dropdown
+                                                        isClear={true}
                                                         title="itemDescription"
                                                         data={
                                                             this.state
@@ -1390,6 +1412,7 @@ class materialDeliveryAddEdit extends Component {
 
                                                 <div className="linebylineInput valid-input ">
                                                     <Dropdown
+                                                        isClear={true}
                                                         title="materialCode"
                                                         data={
                                                             this.state
@@ -1791,6 +1814,7 @@ class materialDeliveryAddEdit extends Component {
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <Dropdown
+                                        isClear={true}
                                         title="approveOrReject"
                                         data={ApproveOrRejectData}
                                         selectedValue={
