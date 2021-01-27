@@ -431,18 +431,26 @@ class DrawingSetsAddEdit extends Component {
     });
   }
 
-  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-
-    if (event == null) return;
-
+  handleChangeDropDown(event, field,sub_field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     let original_document = { ...this.state.document };
-
     let updated_document = {};
-
-    updated_document[field] = event.value;
-
     updated_document = Object.assign(original_document, updated_document);
 
+    if (event == null) {
+      this.setState({
+          [selectedValue]: event,
+          [subDatasource]:null,
+          [targetState]:[]
+      });
+      updated_document[field] = event;
+      updated_document[sub_field]=null;
+      updated_document["arrange"]=null;
+      this.setState({
+          document: updated_document,
+      });
+  }else{
+      updated_document[field] = event.value;
+    
     this.setState({
       document: updated_document,
       [selectedValue]: event
@@ -462,7 +470,6 @@ class DrawingSetsAddEdit extends Component {
         });
       });
     }
-
     if (isSubscrib) {
       let action = url + "?" + param + "=" + event.value;
       dataservice.GetDataList(action, "contactName", "id").then(result => {
@@ -473,15 +480,22 @@ class DrawingSetsAddEdit extends Component {
     }
   }
 
-  handleChangeDropDownItems(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+  }
 
-    if (event == null) return;
+  handleChangeDropDownItems(event, selectedValue) {
 
+    if (event == null) {
+      this.setState({
+      drawingId: event,
+      [selectedValue]: event
+    });
+    }else{
     this.setState({
       drawingId: event.value,
       [selectedValue]: event
     });
   }
+}
 
   editDrawing(event) {
 
@@ -815,8 +829,10 @@ class DrawingSetsAddEdit extends Component {
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="area" data={this.state.areas} selectedValue={this.state.selectedArea}
-                                  handleChange={event => this.handleChangeDropDown(event, "area", false, "", "", "", "selectedArea")}
+                                <Dropdown 
+                                  isClear={true} 
+                                  title="area" data={this.state.areas} selectedValue={this.state.selectedArea}
+                                  handleChange={event => this.handleChangeDropDown(event, "area",null, false, "", "", "", "selectedArea")}
                                   onChange={setFieldValue} onBlur={setFieldTouched} error={errors.area} touched={touched.area}
                                   name="area" id="area" />
                               </div>
@@ -826,36 +842,45 @@ class DrawingSetsAddEdit extends Component {
                                 </label>
                                 <div className="supervisor__company">
                                   <div className="super_name">
-                                    <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
-                                      handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
+                                    <Dropdown 
+                                      isClear={true} data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                      handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId","bicContactId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                       onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId"
                                       styles={CompanyDropdown} classDrop="companyName1 " />
                                   </div>
                                   <div className="super_company">
-                                    <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
-                                      handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedFromContact")}
+                                    <Dropdown 
+                                      isClear={true}
+                                      isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
+                                      handleChange={event => this.handleChangeDropDown(event, "bicContactId",null, false, "", "", "", "selectedFromContact")}
                                       onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
                                       name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                   </div>
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="specsSection" data={this.state.specsSection} selectedValue={this.state.selectedSpecsSection}
-                                  handleChange={event => this.handleChangeDropDown(event, "specsSectionId", false, "", "", "", "selectedSpecsSection")}
+                                <Dropdown 
+                                  isClear={true}
+                                  title="specsSection" data={this.state.specsSection} selectedValue={this.state.selectedSpecsSection}
+                                  handleChange={event => this.handleChangeDropDown(event, "specsSectionId",null, false, "", "", "", "selectedSpecsSection")}
                                   onChange={setFieldValue} onBlur={setFieldTouched} error={errors.specsSectionId}
                                   touched={touched.specsSectionId} name="specsSectionId" id="specsSectionId" />
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="disciplineTitle" data={this.state.disciplines} isMulti={false} selectedValue={this.state.selectedDiscpline}
-                                  handleChange={event => this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")}
+                                <Dropdown 
+                                  isClear={true}
+                                  title="disciplineTitle" data={this.state.disciplines} isMulti={false} selectedValue={this.state.selectedDiscpline}
+                                  handleChange={event => this.handleChangeDropDown(event, "disciplineId",null, false, "", "", "", "selectedDiscpline")}
                                   onChange={setFieldValue} onBlur={setFieldTouched} error={errors.disciplineId}
                                   touched={touched.disciplineId} name="disciplineId" id="disciplineId" />
                               </div>
                               <div className="linebylineInput valid-input">
-                                <Dropdown title="reasonForIssue"
+                                <Dropdown 
+                                  isClear={true} 
+                                  title="reasonForIssue"
                                   data={this.state.reasonForIssue}
                                   selectedValue={this.state.selectedReasonForIssue}
-                                  handleChange={event => this.handleChangeDropDown(event, "reasonForIssueId", false, "", "", "", "selectedReasonForIssue")}
+                                  handleChange={event => this.handleChangeDropDown(event, "reasonForIssueId",null, false, "", "", "", "selectedReasonForIssue")}
                                   onChange={setFieldValue} onBlur={setFieldTouched}
                                   error={errors.reasonForIssueId}
                                   touched={touched.reasonForIssueId}
@@ -920,12 +945,15 @@ class DrawingSetsAddEdit extends Component {
                               <Form onSubmit={handleSubmit}>
                                 <div className="proForm datepickerContainer">
                                   <div className="linebylineInput valid-input">
-                                    <Dropdown isMulti={false} title="drawing" data={this.state.drawing}
+                                    <Dropdown 
+                                    isClear={true}
+                                    isMulti={false} title="drawing" data={this.state.drawing}
+                                      
                                       selectedValue={this.state.selectedDrawing}
                                       onChange={setFieldValue} onBlur={setFieldTouched}
                                       error={errors.drawing} touched={touched.drawing}
                                       name="drawing" id="drawing"
-                                      handleChange={event => this.handleChangeDropDownItems(event, "drawingId", false, "", "", "", "selectedDrawing")} />
+                                      handleChange={event => this.handleChangeDropDownItems(event, "selectedDrawing")} />
                                   </div>
                                 </div>
                                 <div className="slider-Btns">

@@ -500,7 +500,8 @@ class ProjectSetup extends Component {
                                                     </div>
                                                     {this.state.title === 'Area' ? null
                                                         : <div className="linebylineInput valid-input">
-                                                            <DropdownMelcous title={this.state.DropName} data={this.state.DropData} name='DropName'
+                                                            <DropdownMelcous
+                                                             isClear={true} title={this.state.DropName} data={this.state.DropData} name='DropName'
                                                                 selectedValue={this.state.IsEditModel ? this.state.SelectDropData : values.DropName} onChange={setFieldValue}
                                                                 handleChange={(e) => this.handleChangeDropsForEdit(e, "DropName")}
                                                                 onBlur={setFieldTouched}
