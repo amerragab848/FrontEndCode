@@ -19,20 +19,69 @@ import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
 import { Resources } from '../../Resources';
+import { Bar } from 'react-chartjs-2';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
 let docTempLink;
 
 let moduleId = Config.getPublicConfiguartion().commonLogApi;
-
+const colorSchema = [
+    '#39bd3d',
+    '#ab50df',
+    '#dfe2e6',
+    '#39bdef',
+    '#afe5ef',
+    '#522e5f'
+];
+let options = {
+    tooltips: {
+        xPadding: 15,
+        yPadding: 15,
+        bodySpacing: 15,
+        mode: 'nearest',
+        intersect: false,
+        axis: 'x',
+        titleFontSize: 18,
+        bodyFontSize: 16,
+    },
+    legend: {
+        display: false,
+    },
+    animation: {
+        duration: 1500,
+    },
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+        yAxes: [
+            {
+                ticks: {
+                    min: 0,
+                },
+            },
+        ],
+        xAxes: [
+            {
+                gridLines: {
+                    display: false,
+                },
+            },
+        ],
+    },
+    dataset: {
+        barPercentage: 0.9,
+    },
+};
 class CommonLog extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            singleChartType: false,
             ExcelFileUploaded: false,
             groups: [],
+            finalChosenCol: [],
             projectName: localStorage.getItem('lastSelectedprojectName'),
             isLoading: true,
             isExporting: false,
@@ -502,8 +551,8 @@ class CommonLog extends Component {
     }
 
     filterMethodMain = (event, query, apiFilter) => {
-        var stringifiedQuery=  encodeURIComponent(JSON.stringify(query));
-       // var stringifiedQuery = JSON.stringify(query);
+        var stringifiedQuery = encodeURIComponent(JSON.stringify(query));
+        // var stringifiedQuery = JSON.stringify(query);
         if (stringifiedQuery == '{"isCustom":true}') {
             stringifiedQuery = undefined;
         }
@@ -1023,17 +1072,20 @@ class CommonLog extends Component {
     };
 
     handleCheckForChart = key => {
+        let finalChosenCol = this.state.finalChosenCol;
         let data = this.state.chartColumns;
 
         for (var i in data) {
             if (data[i].field === key) {
                 let status = data[i].selected === true ? false : true;
                 data[i].selected = status;
+
+                finalChosenCol.push(data[i]);
                 break;
             }
         }
 
-        let chosenColumns = data.filter(i => i.selected === true);
+        let chosenColumns = finalChosenCol;
 
         var selectedcolumnsChart = [];
 
@@ -1046,7 +1098,7 @@ class CommonLog extends Component {
         });
 
         setTimeout(() => {
-            this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
+            this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false, finalChosenCol });
         }, 300);
     };
 
@@ -1144,77 +1196,125 @@ class CommonLog extends Component {
 
     btnStatisticsServerClick = () => {
         let chosenColumns = this.state.selectedcolumnsChart;
+        this.setState({ isExporting: true });
+        let docTypeId = this.state.documentObj.docTyp;
+        let query = this.state.query;
+        var stringifiedQuery = JSON.stringify(query);
+        if (stringifiedQuery == '{"isCustom":true}') {
+            stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+        } else {
+            stringifiedQuery =
+                '{"projectId":' +
+                this.state.projectId +
+                ',"isCustom":' +
+                this.state.isCustom +
+                '}';
+        }
+        let data = {};
+        data.docType = docTypeId;
+        data.query = stringifiedQuery;
+        data.projectId = this.state.projectId;
+        data.chosenColumns = chosenColumns;
+        let columns = [];
+        for (let i = 0; i < data.chosenColumns.length; i++) {
+            let obj = { field: data.chosenColumns[i].field, isMain: true, type: 'string' }
+            columns.push(obj);
+        }
+
+        data = {};
+        data.docType = docTypeId;
+        data.query = stringifiedQuery;
+        data.projectId = this.state.projectId;
+        data.columns = columns;
 
         if (chosenColumns.length > 1) {
-            toast.warning("Can't make a chart  With more than 1 Column ");
-            this.setState({ chartColumnsModal: false });
-        } else {
-            this.setState({ isExporting: true });
-            let docTypeId = this.state.documentObj.docTyp;
-            let query = this.state.query;
-            var stringifiedQuery = JSON.stringify(query);
-            if (stringifiedQuery == '{"isCustom":true}') {
-                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
-            } else {
-                stringifiedQuery =
-                    '{"projectId":' +
-                    this.state.projectId +
-                    ',"isCustom":' +
-                    this.state.isCustom +
-                    '}';
-            }
-            let data = {};
-            data.docType = docTypeId;
-            data.query = stringifiedQuery;
-            data.projectId = this.state.projectId;
-            data.chosenColumns = chosenColumns;
-            let columns = [];
-            for (let i = 0; i < data.chosenColumns.length; i++) {
-                let obj = { field: data.chosenColumns[i].field, isMain: true, type: 'string' }
-                columns.push(obj);
-            }
-
-            data = {};
-            data.docType = docTypeId;
-            data.query = stringifiedQuery;
-            data.projectId = this.state.projectId;
-            data.columns = columns;
-
-            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
-                if (data && data.length > 0) {  // data is datatable
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(res => {
+                let chartData = [];
+                if (res && res.data.length > 0) {  // data is datatable
                     // modal to show chart based on this data !
                     this.setState({
                         isExporting: false
                     })
-                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    res.data.map((obj, index) => {
+                        (Object.assign(obj, { backgroundColor: index / 2 === 0 ? colorSchema[0] : colorSchema[index] }))
+                    });
+                    chartData.datasets = res.data;
+                    chartData.labels = res.categories;
+
                     let Chart = (
-                        <BarChartCompJS
-                            reports=""
-                            rows={data}
-                            //    barContent={[
-                            //        { name: "Estimated", value: 'estimatedTime' },
-                            //        { name: "Actual", value: 'actualTotal' },
-                            //        { name: "Variance", value: 'variance' }
-
-                            //    ]}
-                            categoryName={Object.keys(data[0])[0]}
-                            ukey="wt-Name203"
-                            title={Resources[Object.keys(data[0])[0]][currentLanguage]}
-                            y="total"
-                        />)
-
-                    //////////////////////////////////////////////////////
+                        <div className="panel">
+                            <div className="panel-body">
+                                <h2>{'Statistics Chart'}</h2>
+                                <Bar
+                                    key={'statistics'}
+                                    data={chartData}
+                                    options={options}
+                                />
+                            </div>
+                        </div>)
                     this.setState({
                         chartColumnsModal: false,
                         isExporting: false,
                         chartContent: Chart,
-                        showChart: true
+                        showChart: true,
+                        finalChosenCol: []
                     })
                 }
                 else {
                     this.setState({
                         exportColumnsModal: false,
                         isExporting: false,
+                        finalChosenCol: []
+                    })
+                    toast.warn('no data found !');
+                };
+            });
+        } else {
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
+                if (data && data.length > 0) {  // data is datatable
+                    // modal to show chart based on this data !
+                    this.setState({
+                        isExporting: false
+                    })
+
+                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    let PieChartComp = require('../../Componants/ChartsWidgets/PieChartComp').default;
+
+                    let Chart = (
+                        this.state.singleChartType === true ?
+                            <BarChartCompJS
+                                reports=""
+                                rows={data}
+                                categoryName={Object.keys(data[0])[0]}
+                                ukey="wt-Name203"
+                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                                y="total"
+                            />
+                            :
+                            <PieChartComp
+                                reports=""
+                                rows={data}
+                                name={Object.keys(data[0])[0]}
+                                ukey="wt-Name204"
+                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                                y="total"
+                            />
+                    )
+
+                    //////////////////////////////////////////////////////
+                    this.setState({
+                        chartColumnsModal: false,
+                        isExporting: false,
+                        chartContent: Chart,
+                        showChart: true,
+                        finalChosenCol: []
+                    })
+                }
+                else {
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false,
+                        finalChosenCol: []
                     })
                     toast.warn('no data found !');
                 }
@@ -1914,7 +2014,7 @@ class CommonLog extends Component {
                                 </div>
                                 <div className="gridChart">chart</div>
                                 
-                            </div>
+                            </div> 
                             <div className="grid__column--footer">
                                 <button
                                     className="btn primaryBtn-1"
