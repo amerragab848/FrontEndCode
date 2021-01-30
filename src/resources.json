@@ -9227,5 +9227,9 @@
    "copiesNumber":{
     "en":"Copies Number",
     "ar":"عدد النسخ"
-   }
+   },
+   "departments": {
+    "en": "departments",
+    "ar": "الاقسام"
+    }
 }

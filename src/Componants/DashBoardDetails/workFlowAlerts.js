@@ -54,7 +54,15 @@ class workFlowAlerts extends Component {
         fixed: false,
         type: "text",
         sortable: true
-      },
+      }, {
+        field: 'epsName',
+        title: Resources['epsName'][currentLanguage],
+        width: 6,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: 'text',
+    },
       {
         field: 'docTypeName',
         title: Resources['docType'][currentLanguage],

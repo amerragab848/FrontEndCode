@@ -263,6 +263,9 @@ class TaskGroupsAddEdit extends Component {
                     dataservice.GetDataList('GetContactsByCompanyId?companyId=' + SelectedItem.value + '', 'contactName', 'id').then(res => {
                         this.setState({ ContactData: res });
                     })
+                }else{
+                    this.setState({ ContactData: [],SelectedContact:null
+                     });
                 }
                 break;
             case 'ContactName':
@@ -566,7 +569,10 @@ class TaskGroupsAddEdit extends Component {
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
-                                            <DropdownMelcous title="company" data={this.state.CompanyData} name="Company"
+                                            <DropdownMelcous 
+                                               isClear={true}
+                                               title="company" 
+                                                data={this.state.CompanyData} name="Company"
                                                 selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedCompany : values.Company} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "Company")}
                                                 onBlur={setFieldTouched}
@@ -575,7 +581,9 @@ class TaskGroupsAddEdit extends Component {
                                                 value={values.Company} isClear={true} />
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <DropdownMelcous title="ContactName" data={this.state.ContactData} name="ContactName"
+                                            <DropdownMelcous 
+                                                isClear={true}
+                                                title="ContactName" data={this.state.ContactData} name="ContactName"
                                                 selectedValue={this.state.IsEditExpensesWorkFlowItem ? this.state.SelectedContact : values.ContactName} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
                                                 onBlur={setFieldTouched}
@@ -596,7 +604,9 @@ class TaskGroupsAddEdit extends Component {
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <DropdownMelcous title="action" data={this.state.distributionAction} name="actionId"
+                                            <DropdownMelcous 
+                                                isClear={true}
+                                                title="action" data={this.state.distributionAction} name="actionId"
                                                 selectedValue={this.state.SelectedAction} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "actionId")}
                                                 onBlur={setFieldTouched}

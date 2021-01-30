@@ -24695,3 +24695,14 @@ tbody.grid-body tr .text.elipsisPadd {
 .dirIcon .btn.active{
     background-color: #e6e6e687;
 }
+.fullmodal .grid__column--container{
+    width: 80%;
+}
+.fullmodal  .grid__column--content-wrapper{
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.fullmodal .grid__content {width: 49%;}
+.fullmodal .grid__content .ui.checkbox {width: 100%;}
+.fullmodal .gridChart {width: 69%;}

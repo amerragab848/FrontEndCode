@@ -192,7 +192,8 @@ class drawingListAddEdit extends Component {
             PriorityData: [],
             ToCompany: [],
             contactData: [],
-            docTemplateModal:false
+            docTemplateModal:false,
+            selectedContact:{label:"contactName",value:"0"},
         }
 
 
@@ -450,26 +451,53 @@ class drawingListAddEdit extends Component {
     }
 
 
-    To_company_handleChange = (selectedOption) => {
-        let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
-        this.setState({
-            sendingData: { ...this.state.sendingData, bicCompanyId: selectedOption.value },
-        });
-        this.GetData(url, "contactName", "id", "contactData");
+    To_company_handleChange = (e) => {
+        if(e===null){
+            let d=this.state.sendingData;
+            d.bicCompanyId=e;
+            d.bicContactId=e;
+            this.setState({
+                sendingData: d,
+                contactData:[],
+                selectedContact:null
+            });
+        }else{
+            let url = "GetContactsByCompanyId?companyId=" + e.value;
+            this.setState({
+                sendingData: { ...this.state.sendingData, bicCompanyId: e.value },
+            });
+            this.GetData(url, "contactName", "id", "contactData");
+        }
+        
     }
 
     Priority_handelChange = (item) => {
-        this.setState({
-            sendingData: { ...this.state.sendingData, priorityId: item.value },
-        })
+        if(item===null){
+            this.setState({
+                sendingData: { ...this.state.sendingData, priorityId: item },
+            })   
+        }else{
+            this.setState({
+                sendingData: { ...this.state.sendingData, priorityId: item.value },
+            })
+        }
+       
     }
 
     Contact_handelChange = (item) => {
+        if(item===null){
+            this.setState({
+                sendingData: { ...this.state.sendingData, bicContactId: item },
+            })
+        }else{
         this.setState({
             sendingData: { ...this.state.sendingData, bicContactId: item.value },
         })
     }
-
+    this.setState({
+        selectedContact:item
+    })
+    }
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
@@ -498,12 +526,14 @@ class drawingListAddEdit extends Component {
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
+        if (event == null) {
+            updated_document[field] = event;
+        }else{
+            updated_document[field] = event.value;
+        }
         this.setState({
             document: updated_document,
             [selectedValue]: event
@@ -586,20 +616,20 @@ class drawingListAddEdit extends Component {
             selectDescipline: e,
             isLoading: true,
         })
-        if (e.value === '0') {
+        if (/*e.value === '0' ||*/e==null) {
             this.setState({
-                ShowAddItem: false
+                ShowAddItem: false,
+                rows: [],
             })
 
+            setTimeout(()=>{
+                this.setState({ isLoading: false})
+            },100)
         }
         else {
-
             this.setState({
                 ShowAddItem: true,
             })
-
-        }
-
         dataservice.GetDataGrid('GetDesignDrawingListItemsByDrawingListId?drawingId=' + this.state.docId + '&disciplineId=' + e.value + '').then(
             res => {
                 this.setState({
@@ -608,6 +638,8 @@ class drawingListAddEdit extends Component {
                 })
             }
         )
+    }
+
     }
 
     ShowPopUpForEdit = (obj) => {
@@ -770,7 +802,9 @@ class drawingListAddEdit extends Component {
                         <div className="proForm datepickerContainer">
                             <div className="proForm first-proform fullWidthWrapper textLeft">
                                 <div className='ui input inputDev linebylineInput '>
-                                    <Dropdown title='descipline' data={this.state.DesciplineDropData}
+                                    <Dropdown 
+                                        isClear={true}
+                                        title='descipline' data={this.state.DesciplineDropData}
                                         selectedValue={this.state.selectDescipline}
                                         handleChange={(e) => this.handleChangeDisciplineDrop(e)} 
                                         />
@@ -799,7 +833,6 @@ class drawingListAddEdit extends Component {
         let AddEditDrawingListItems = () => {
             return (
                 <div>
-
                     <Formik
                         initialValues={{
                             details: this.state.IsEditModeItem ? this.state.ItemForEdit.details : '',
@@ -820,8 +853,6 @@ class drawingListAddEdit extends Component {
 
                         {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                             <Form onSubmit={handleSubmit}>
-
-
                                 <div className='dropWrapper'>
                                     <div className="proForm customProform">
 
@@ -849,7 +880,6 @@ class drawingListAddEdit extends Component {
                                                     }} name="arrangeItems" />
                                             </div>
                                         </div>
-
 
                                         <div className="fillter-status fillter-item-c">
                                             <label className="control-label">{Resources['scale'][currentLanguage]}</label>
@@ -936,33 +966,36 @@ class drawingListAddEdit extends Component {
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUpProjectTask: false })}
                         title={Resources['projectTask'][currentLanguage]}
-                        onCloseClicked={() => this.setState({ showPopUpProjectTask: false })} isVisible={this.state.showPopUpProjectTask}>
+                        onCloseClicked={() => this.setState({ showPopUpProjectTask: false })} 
+                        isVisible={this.state.showPopUpProjectTask}>
                         <div className="dropWrapper">
                             <InputMelcous fullwidth='true' title='subject'
                                 placeholderText='subject'
                                 defaultValue={Resources['Task'][currentLanguage] + ':'}
                                 inputChangeHandler={this.inputSubjectChangeHandler} />
-
                             <Dropdown title='toCompany'
-                                data={this.state.ToCompany} handleChange={this.To_company_handleChange}
-                                placeholder='selectCompany' />
-
+                                isClear={true}
+                                data={this.state.ToCompany}
+                                //selectedValue={this.state.sendingData.bicCompanyId}
+                                handleChange={this.To_company_handleChange}
+                                placeholder='selectCompany'
+                                 />
                             <Dropdown title='ContactName'
-                                data={this.state.contactData} handleChange={this.Contact_handelChange}
+                                isClear={true}
+                                data={this.state.contactData}
+                                selectedValue={this.state.selectedContact}
+                                handleChange={this.Contact_handelChange}
                                 placeholder='selectContact' />
-
                             <DatePicker title='startDate'
                                 startDate={this.state.sendingData.startDate}
                                 handleChange={this.startDatehandleChange} />
-
                             <DatePicker title='finishDate'
                                 startDate={this.state.sendingData.finishDate}
                                 handleChange={this.finishDatehandleChange} />
-
                             <Dropdown title='priority' data={this.state.PriorityData}
+                              isClear={true}
                                 handleChange={this.Priority_handelChange}
                                 placeholder='prioritySelect' />
-
                             <div className="fullWidthWrapper">
                                 <button className="primaryBtn-1 btn" onClick={this.clickHandler}>
                                     {Resources['save'][currentLanguage]}</button>
@@ -1042,6 +1075,7 @@ class drawingListAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="projectType"
+                                                                isClear={true}
                                                                 data={this.state.ProjectDropData} name="projectTypeId"
                                                                 selectedValue={this.state.selectProject}
                                                                 onChange={setFieldValue}
@@ -1054,6 +1088,7 @@ class drawingListAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown title="submittedFor"
+                                                                isClear={true}
                                                                 data={this.state.submittedForData}
                                                                 name="submittedFor"
                                                                 selectedValue={this.state.selectSubmittedFor}
@@ -1166,7 +1201,9 @@ class drawingListAddEdit extends Component {
                            
                                 <div className="dropdownFullWidthContainer">
                                   <div className="linebylineInput valid-input dropdownFullWidth">
-                                        <Dropdown title="disciplineTitle"
+                                        <Dropdown
+                                        isClear={true}
+                                        title="disciplineTitle"
                                         isMulti={false}
                                         data={this.state.DesciplineDropData}
                                         selectedValue={this.state.selectDescipline}
@@ -1180,7 +1217,7 @@ class drawingListAddEdit extends Component {
                                     key="docTemplate"
                                     projectId={this.state.projectId}
                                     docId={docId}
-                                    disciplineId={this.state.selectDescipline.value != "0"? this.state.selectDescipline.value: null}
+                                    disciplineId={this.state.selectDescipline !=null? this.state.selectDescipline.value: null}
                                     drawinListItemdocumentTemplate={true}
                                     link={Config.getPublicConfiguartion().downloads +'/Downloads/Excel/tempDrawingListItems.xlsx'}
                                     header="addManyItems"
@@ -1213,11 +1250,9 @@ class drawingListAddEdit extends Component {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-
                 Data.push(obj);
 
             });
-
             this.setState({
                 [currState]: [...Data]
             });

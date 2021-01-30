@@ -658,7 +658,7 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         onChange={e => this.handleChange(e, "refNo")} />
                                                                 </div>
                                                             </div>
-                                                            <div className="linebylineInput fullInputWidth">
+                                                            {/* <div className="linebylineInput fullInputWidth">
                                                                 <label className="control-label">
                                                                     {Resources.criticalFactor[currentLanguage]}
                                                                 </label>
@@ -669,19 +669,8 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         placeholder={Resources.criticalFactor[currentLanguage]}
                                                                         onChange={e => this.handleChange(e, "criticalFactor")} />
                                                                 </div>
-                                                            </div>
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {Resources.specialInstruction[currentLanguage]}
-                                                                </label>
-                                                                <div className="ui input inputDev">
-                                                                    <input type="text" className="form-control" id="specialInstruction"
-                                                                        value={this.state.document.specialInstruction}
-                                                                        name="specialInstruction"
-                                                                        placeholder={Resources.specialInstruction[currentLanguage]}
-                                                                        onChange={e => this.handleChange(e, "specialInstruction")} />
-                                                                </div>
-                                                            </div>
+                                                            </div> */}
+                                                          
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">
                                                                     {
@@ -720,8 +709,8 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
                                                                             error={errors.fromContactId}
-                                                                            touched={true}
-                                                                            isClear={false}
+                                                                            touched={touched.fromContactId}
+                                                                           
                                                                             index="letter-fromContactId"
                                                                             name="fromContactId"
                                                                             id="fromContactId"
@@ -790,7 +779,27 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                     />
                                                                 </div>
                                                             </div>
-
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.criticalFactor[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.criticalFactor}
+                                                                        onChange={value => this.onChangeMessage(value, "criticalFactor")}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                          
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.specialInstruction[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.specialInstruction}
+                                                                        onChange={value => this.onChangeMessage(value, "specialInstruction")}
+                                                                    />
+                                                                </div>
+                                                            </div>                
                                                         </div>
 
                                                     </Fragment>
@@ -803,19 +812,7 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                             </div>
                                                         </header>
                                                         <div className="proForm datepickerContainer">
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {Resources.justification[currentLanguage]}
-                                                                </label>
-                                                                <div className="ui input inputDev">
-                                                                    <input type="text" className="form-control" id="justification"
-                                                                        value={this.state.document.justification}
-                                                                        name="justification"
-                                                                        placeholder={Resources.justification[currentLanguage]}
-                                                                        onChange={e => this.handleChange(e, "justification")} />
-                                                                </div>
-                                                            </div>
-
+                                                         
                                                             <div className="linebylineInput valid-input ">
                                                                 <label className="control-label">
                                                                     {
@@ -853,7 +850,16 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                         this.handleChangeDropDown(event, "contractId", false, "", "", "", "selectedContract")
                                                                     } index="letter-discipline" />
                                                             </div>
-
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.justification[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.justification}
+                                                                        onChange={value => this.onChangeMessage(value, "justification")}
+                                                                    />
+                                                                </div>
+                                                            </div>          
 
                                                         </div>
                                                     </Fragment>
@@ -867,18 +873,8 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                         </header>
                                                         <div className="proForm datepickerContainer">
 
-                                                            <div className="linebylineInput fullInputWidth">
-                                                                <label className="control-label">
-                                                                    {Resources.budgetComments[currentLanguage]}
-                                                                </label>
-                                                                <div className="ui input inputDev">
-                                                                    <input type="text" className="form-control" id="budgetComments"
-                                                                        value={this.state.document.budgetComments}
-                                                                        name="budgetComments"
-                                                                        placeholder={Resources.budgetComments[currentLanguage]}
-                                                                        onChange={e => this.handleChange(e, "budgetComments")} />
-                                                                </div>
-                                                            </div>
+                                                            
+                                                          
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title="budgetDate"
                                                                     startDate={this.state.document.budgetDate}
@@ -921,8 +917,7 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                             onChange={setFieldValue}
                                                                             onBlur={setFieldTouched}
                                                                             error={errors.budgetContactId}
-                                                                            touched={true}
-                                                                            isClear={false}
+                                                                            touched={touched.budgetContactId}                                                                           
                                                                             index="letter-fromContactId"
                                                                             name="budgetContactId"
                                                                             id="budgetContactId"
@@ -932,7 +927,16 @@ class ProcurmentRequestFormAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
+                                                            <div className="letterFullWidth">
+                                                                <label className="control-label">
+                                                                    {Resources.budgetComments[currentLanguage]}
+                                                                </label>
+                                                                <div className="inputDev ui input">
+                                                                    <TextEditor value={this.state.document.budgetComments}
+                                                                        onChange={value => this.onChangeMessage(value, "budgetComments")}
+                                                                    />
+                                                                </div>
+                                                            </div>                    
 
                                                         </div>
                                                     </Fragment>
