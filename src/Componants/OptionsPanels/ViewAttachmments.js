@@ -23,15 +23,6 @@ const net = window.net;
 const PDFLib = window.PDFLib;
 const fontkit = window.fontkit;
 
-const fontSize = 20;
-
-let style = {
-    backgroundColor: '#FFF',
-    fontSize,
-};
-
-<View style={style}></View>;
-
 let currentLanguage =
     localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let activeURL = '';
