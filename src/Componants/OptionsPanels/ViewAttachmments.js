@@ -725,14 +725,14 @@ class ViewAttachmments extends Component {
                                         );
 
                                         svg = svg.replace(
-                                            matrix_vals[4],
+                                            ` ${matrix_vals[4]}`,
                                             (cvs_obj.rx + 1)
                                                 .toString()
                                                 .replace('-', ''),
                                         );
 
                                         svg = svg.replace(
-                                            matrix_vals[5],
+                                            ` ${matrix_vals[5]}`,
                                             (cvs_obj.ry + 1)
                                                 .toString()
                                                 .replace('-', ''),
