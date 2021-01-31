@@ -2031,7 +2031,7 @@ class CommonLog extends Component {
                                             </div>
                                             {this.state.singleChartBtn == true ?
                                                 <div class="linebylineInput">
-                                                    <label class="control-label">Chart Type</label>
+                                                    {/* <label class="control-label">Chart Type</label> */}
                                                     <div class="ui checkbox radio radioBoxBlue">
                                                         <input type="radio" name="letter-status" defaultChecked={this.state.singleChartType === "true" ? 'checked' : null} value="true" onChange={this.changeChartType} />
                                                         <label>Bar</label>
