@@ -21,6 +21,9 @@ import { SkyLightStateless } from 'react-skylight';
 import { Resources } from '../../Resources';
 import { Bar } from 'react-chartjs-2';
 
+import Loader from '../../../src/Styles/images/ChartLoaders/BarChartLoader.webm';
+import NoData from '../../../src/Styles/images/ChartLoaders/BarChartNoData.png';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
 let docTempLink;
@@ -1022,9 +1025,9 @@ class CommonLog extends Component {
             });
         }, 300);
     };
-    
+
     changeChartType = (e) => {
-        this.setState({ singleChartType: e.target.value,showChart: false });
+        this.setState({ singleChartType: e.target.value, showChart: false });
         this.btnStatisticsServerClick();
     }
     handleCheck = key => {
@@ -1107,7 +1110,7 @@ class CommonLog extends Component {
         });
 
         setTimeout(() => {
-            this.setState({singleChartBtn : selectedcolumnsChart.length == 1 ? true : false , showChart: false, selectedcolumnsChart: selectedcolumnsChart, Loading: false, finalChosenCol });
+            this.setState({ singleChartBtn: selectedcolumnsChart.length == 1 ? true : false, showChart: false, selectedcolumnsChart: selectedcolumnsChart, Loading: false, finalChosenCol });
         }, 300);
     };
 
@@ -1266,14 +1269,14 @@ class CommonLog extends Component {
                         //chartColumnsModal: false,
                         isExporting: false,
                         chartContent: Chart,
-                        showChart: true, 
+                        showChart: true,
                         selectedcolumnsChart: []
                     })
                 }
                 else {
                     this.setState({
                         exportColumnsModal: false,
-                        isExporting: false, 
+                        isExporting: false,
                         selectedcolumnsChart: []
                     })
                     toast.warn('no data found !');
@@ -1314,16 +1317,16 @@ class CommonLog extends Component {
                     )
 
                     //////////////////////////////////////////////////////
-                    this.setState({ 
+                    this.setState({
                         isExporting: false,
                         chartContent: Chart,
-                        showChart: true 
+                        showChart: true
                     })
                 }
                 else {
                     this.setState({
                         exportColumnsModal: false,
-                        isExporting: false 
+                        isExporting: false
                     })
                     toast.warn('no data found !');
                 }
@@ -1375,52 +1378,6 @@ class CommonLog extends Component {
             });
         }
     }
-
-    btnExportStatisticsClick = () => {
-
-        if (Config.getPublicConfiguartion().activeExport != true) {
-            toast.warn('This feature is disabled. Please call your administrator for assistance');
-            return;
-        }
-
-        let chosenColumns = this.state.columnsExport;
-        if (chosenColumns.length > 2) {
-            toast.warning("Can't Draw With more than 2 Columns Choosen");
-        }
-        else {
-            this.setState({ isExporting: true });
-            let query = this.state.query;
-            var stringifiedQuery = JSON.stringify(query);
-
-            if (stringifiedQuery == '{"isCustom":true}') {
-                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
-            } else {
-                stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
-            }
-
-            let data = {};
-            data.query = stringifiedQuery;
-            data.columns = chosenColumns;
-            data.projectId = this.state.projectId;
-
-            dataservice.addObjectCore("GetStatisticSubmittalForProjectId", data, 'POST').then(data => {
-                if (data) {
-                    data = Config.getPublicConfiguartion().downloads + '/' + data;
-                    var a = document.createElement('A');
-                    a.href = data;
-                    a.download = data.substr(data.lastIndexOf('/') + 1);
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-
-                    this.setState({ exportColumnsModal: false, isExporting: false })
-                }
-            }).catch(e => {
-                this.setState({ exportColumnsModal: false })
-            });
-        }
-    }
-
     changeValueOfProps = () => {
         this.setState({ isFilter: false });
     };
@@ -2037,13 +1994,20 @@ class CommonLog extends Component {
                                                         <label>Bar</label>
                                                     </div>
                                                     <div class="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="letter-status" defaultChecked={this.state.singleChartType  === "false" ? 'checked' : null} value="false" onChange={this.changeChartType}/>
+                                                        <input type="radio" name="letter-status" defaultChecked={this.state.singleChartType === "false" ? 'checked' : null} value="false" onChange={this.changeChartType} />
                                                         <label>Pie</label>
                                                     </div>
                                                 </div>
                                                 : null}
                                         </div>
-                                    ) : null}
+                                    ) : <div className="panel">
+                                            <div className="panel-body-loader">
+                                                <h2>ds</h2>
+                                                <video style={{ width: '80%' }} autoPlay loop muted>
+                                                    <source src={Loader} type="video/webm" />
+                                                </video>
+                                            </div>
+                                        </div>}
                                     {/***************************charts******************************* */}
                                 </div>
 
