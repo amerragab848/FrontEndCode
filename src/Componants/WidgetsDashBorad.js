@@ -1123,7 +1123,7 @@ var widgets = [
         props: {
           api: "GetInspectionRequestForCountingCustomLog",
           apiDetails: "",
-          route: "",
+          route: "DashBoardCounterLog",
           value: "total",
           listType: "item",
           action: "action",

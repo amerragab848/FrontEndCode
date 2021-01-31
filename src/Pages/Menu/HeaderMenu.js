@@ -275,7 +275,8 @@ class HeaderMenu extends Component {
     if (!this.state.viewNotification) {
       // attach/remove event handler
       document.addEventListener('click', this.handleOutsideClick, false);
-    } else {
+    } else 
+    {
       document.removeEventListener('click', this.handleOutsideClick, false);
     }
     this.setState({

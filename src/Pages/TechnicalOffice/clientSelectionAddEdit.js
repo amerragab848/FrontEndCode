@@ -749,7 +749,7 @@ class clientSelectionAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
-                                                                        isClear={false}
+                                                                        
                                                                        // index="IR-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId" />
@@ -789,7 +789,7 @@ class clientSelectionAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
-                                                                        isClear={false}
+                                                                      
                                                                         index="IR-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId"
