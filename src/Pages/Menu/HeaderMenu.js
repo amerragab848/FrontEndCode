@@ -45,21 +45,21 @@ let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
 
 const dashboardMenu = {
   control: (styles, { isFocused }) =>
-    ({
-      ...styles,
-      transition: ' all 0.4s ease-in-out',
-      width: '166px',
-      height: '36px',
-      borderRadius: '4px',
-      border: isFocused ? 'solid 1px #3570e6' : 'solid 1px #5f98fa',
-      backgroundColor: isFocused ? '#f7faff' : 'rgba(255, 255, 255, 0)',
-      boxShadow: isFocused ? 'none' : 'none',
-      cursor: 'pointer',
-      '&:hover': {
-        border: ' solid 1px #4382f9',
-        backgroundColor: ' #fafcff',
-      }
-    }),
+  ({
+    ...styles,
+    transition: ' all 0.4s ease-in-out',
+    width: '166px',
+    height: '36px',
+    borderRadius: '4px',
+    border: isFocused ? 'solid 1px #3570e6' : 'solid 1px #5f98fa',
+    backgroundColor: isFocused ? '#f7faff' : 'rgba(255, 255, 255, 0)',
+    boxShadow: isFocused ? 'none' : 'none',
+    cursor: 'pointer',
+    '&:hover': {
+      border: ' solid 1px #4382f9',
+      backgroundColor: ' #fafcff',
+    }
+  }),
   option: (styles, { isDisabled, isFocused, isSelected }) => {
     return {
       ...styles,
@@ -300,6 +300,9 @@ class HeaderMenu extends Component {
 
   navigateLink(link, param) {
     if (link !== "") {
+      this.setState({
+        viewNotification: false
+      });
       this.props.history.push({ pathname: "/" + link, search: "?id=" + param });
     }
   }
@@ -1309,7 +1312,6 @@ class HeaderMenu extends Component {
                                       </g>
                                     </svg>
                                   </span>
-                                  {/* <img className="normalImg" src={notifIcon} /> */}
                                 </span>
                                 <span className="tabNAme">
                                   {Resources["general"][currentLanguage]}
@@ -1340,18 +1342,18 @@ class HeaderMenu extends Component {
 
                                   let obj = {
                                     docId: item.docId,
-                                    projectId: window.localStorage.getItem("lastSelectedProject"),
-                                    projectName: window.localStorage.getItem("lastSelectedprojectName"),
+                                    projectId: item.projectId,
+                                    projectName: item.projectName,
                                     arrange: 0,
                                     docApprovalId: 0,
                                     isApproveMode: false
                                   };
 
-                                  let currentLink = item.description.split("/");
+                                  let currentLink = item.docLink.split("/")[0];
 
                                   let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
                                   let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-                                  let link = currentLink[0] + "?id=" + encodedPaylod;
+                                  let link = currentLink + "?id=" + encodedPaylod;
 
                                   return (
                                     <div className="notifiContent" key={item.id} onClick={() => this.updateStatus(item)}>
@@ -1363,7 +1365,9 @@ class HeaderMenu extends Component {
                                         </div>
                                         <p className="notofoWorkflow">
                                           <span>{item.documentName}</span>
-                                          <a data-toggle="tooltip" title={item.title} href={link}
+                                          <a data-toggle="tooltip"
+                                            title={item.title}
+                                            href={link}
                                             onClick={() => this.navigateLink(currentLink[0], encodedPaylod).bind(this)}>
                                             “{item.title}”
                                           </a>

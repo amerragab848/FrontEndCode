@@ -375,6 +375,9 @@ export default class CustomGrid extends Component {
                 });
                 let newRows = Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows;
 
+                if (this.props.afterFilter != undefined)
+                    this.props.afterFilter(newRows);
+
                 this.setState({
                     rows: newRows,
                     Loading: false
@@ -426,6 +429,11 @@ export default class CustomGrid extends Component {
                     if (matched > 0) rowsList.push(row);
                 });
                 let newRows = Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows;
+
+                if (this.props.afterFilter != undefined)
+                    this.props.afterFilter(newRows);
+
+
                 this.setState({
                     rows: newRows,
                     Loading: false

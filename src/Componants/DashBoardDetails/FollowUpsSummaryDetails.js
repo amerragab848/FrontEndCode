@@ -62,6 +62,14 @@ class FollowUpsSummaryDetails extends Component {
                 sortable: true,
                 type: 'text',
             }, {
+                field: 'epsName',
+                title: Resources['epsName'][currentLanguage],
+                width: 6,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: 'text',
+            }, {
                 field: 'companyType',
                 title: Resources['companyType'][currentLanguage],
                 groupable: true,
@@ -199,6 +207,7 @@ class FollowUpsSummaryDetails extends Component {
             filtersColumns: filtersColumns,
             groups: groups,
             isCustom: true,
+            filteredRows:[]
         };
     }
 
@@ -225,6 +234,8 @@ class FollowUpsSummaryDetails extends Component {
                 row.link = '/' + row.docLink + '?id=' + encodedPaylod;
             });
 
+            this.getFilteredRows(result);
+
             this.setState({
                 rows: result != null ? result : [],
                 isLoading: false,
@@ -232,15 +243,19 @@ class FollowUpsSummaryDetails extends Component {
         });
     }
 
+    getFilteredRows = (data) => {
+        if (data != null && data != undefined)
+            this.setState({ filteredRows: data || [] });
+    }
+
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridCustom 
+                <GridCustom
                     gridKey="FollowingUpSummary"
                     cells={this.state.columns}
                     data={this.state.rows}
                     groups={this.state.groups}
-                    //pageSize={this.state.rows ? this.state.rows.length : 0}
                     actions={[]}
                     rowActions={[]}
                     rowClick={obj => {
@@ -268,6 +283,7 @@ class FollowUpsSummaryDetails extends Component {
                             });
                         }
                     }}
+                    afterFilter={this.getFilteredRows}
                 />
             ) : (
                     <LoadingSection />
@@ -276,13 +292,14 @@ class FollowUpsSummaryDetails extends Component {
         const btnExport =
             this.state.isLoading === false ? (
                 <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
+                    rows={this.state.isLoading === false ? this.state.filteredRows : []}
                     columns={this.state.columns}
                     fileName={this.state.pageTitle}
                 />
             ) : (
                     <LoadingSection />
                 );
+
 
         return (
             <div className="mainContainer">
