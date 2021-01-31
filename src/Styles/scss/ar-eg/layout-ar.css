@@ -25270,3 +25270,8 @@ tbody.grid-body tr .text.elipsisPadd {
     height: 345px !important;
     max-height: 345px !important;
 }
+.fullmodal .gridChart .linebylineInput .ui.radio.checkbox { margin-left: 10px;}
+.fullmodal .gridChart .ui.radio.checkbox .box,
+.fullmodal .gridChart .ui.radio.checkbox label,
+.fullmodal .gridChart .ui.checkbox .box, 
+.fullmodal .gridChart .ui.checkbox label {padding-left: 0;}
