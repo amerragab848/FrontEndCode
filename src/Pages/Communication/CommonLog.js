@@ -19,20 +19,70 @@ import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
 import { SkyLightStateless } from 'react-skylight';
 import { Resources } from '../../Resources';
+import { Bar } from 'react-chartjs-2';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
 let docTempLink;
 
 let moduleId = Config.getPublicConfiguartion().commonLogApi;
-
+const colorSchema = [
+    '#39bd3d',
+    '#ab50df',
+    '#dfe2e6',
+    '#39bdef',
+    '#afe5ef',
+    '#522e5f'
+];
+let options = {
+    tooltips: {
+        xPadding: 15,
+        yPadding: 15,
+        bodySpacing: 15,
+        mode: 'nearest',
+        intersect: false,
+        axis: 'x',
+        titleFontSize: 18,
+        bodyFontSize: 16,
+    },
+    legend: {
+        display: false,
+    },
+    animation: {
+        duration: 1500,
+    },
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+        yAxes: [
+            {
+                ticks: {
+                    min: 0,
+                },
+            },
+        ],
+        xAxes: [
+            {
+                gridLines: {
+                    display: false,
+                },
+            },
+        ],
+    },
+    dataset: {
+        barPercentage: 0.9,
+    },
+};
 class CommonLog extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            singleChartBtn: false,
+            singleChartType: 'true',
             ExcelFileUploaded: false,
             groups: [],
+            finalChosenCol: [],
             projectName: localStorage.getItem('lastSelectedprojectName'),
             isLoading: true,
             isExporting: false,
@@ -502,8 +552,8 @@ class CommonLog extends Component {
     }
 
     filterMethodMain = (event, query, apiFilter) => {
-        var stringifiedQuery=  encodeURIComponent(JSON.stringify(query));
-       // var stringifiedQuery = JSON.stringify(query);
+        var stringifiedQuery = encodeURIComponent(JSON.stringify(query));
+        // var stringifiedQuery = JSON.stringify(query);
         if (stringifiedQuery == '{"isCustom":true}') {
             stringifiedQuery = undefined;
         }
@@ -941,6 +991,10 @@ class CommonLog extends Component {
 
     closeModalColumn = () => {
         this.setState({
+            showChart: false,
+            finalChosenCol: [],
+            columnsExport: [],
+            selectedcolumnsChart: [],
             columnsModal: false,
             exportColumnsModal: false,
             docTemplateModal: false,
@@ -968,7 +1022,11 @@ class CommonLog extends Component {
             });
         }, 300);
     };
-
+    
+    changeChartType = (e) => {
+        this.setState({ singleChartType: e.target.value,showChart: false });
+        this.btnStatisticsServerClick();
+    }
     handleCheck = key => {
         this.setState({ [key]: !this.state[key], isLoading: true });
         let data = this.state.ColumnsHideShow;
@@ -1023,17 +1081,20 @@ class CommonLog extends Component {
     };
 
     handleCheckForChart = key => {
+        let finalChosenCol = this.state.finalChosenCol.filter(i => i.field != key);
         let data = this.state.chartColumns;
 
         for (var i in data) {
             if (data[i].field === key) {
                 let status = data[i].selected === true ? false : true;
                 data[i].selected = status;
+                if (status == true) { finalChosenCol.push(data[i]); }
+
                 break;
             }
         }
 
-        let chosenColumns = data.filter(i => i.selected === true);
+        let chosenColumns = finalChosenCol;
 
         var selectedcolumnsChart = [];
 
@@ -1046,7 +1107,7 @@ class CommonLog extends Component {
         });
 
         setTimeout(() => {
-            this.setState({ selectedcolumnsChart: selectedcolumnsChart, Loading: false });
+            this.setState({singleChartBtn : selectedcolumnsChart.length == 1 ? true : false , showChart: false, selectedcolumnsChart: selectedcolumnsChart, Loading: false, finalChosenCol });
         }, 300);
     };
 
@@ -1144,77 +1205,125 @@ class CommonLog extends Component {
 
     btnStatisticsServerClick = () => {
         let chosenColumns = this.state.selectedcolumnsChart;
+        this.setState({ isExporting: true, showChart: false });
+        let docTypeId = this.state.documentObj.docTyp;
+        let query = this.state.query;
+        var stringifiedQuery = JSON.stringify(query);
+        if (stringifiedQuery == '{"isCustom":true}') {
+            stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
+        } else {
+            stringifiedQuery =
+                '{"projectId":' +
+                this.state.projectId +
+                ',"isCustom":' +
+                this.state.isCustom +
+                '}';
+        }
+        let data = {};
+        data.docType = docTypeId;
+        data.query = stringifiedQuery;
+        data.projectId = this.state.projectId;
+        data.chosenColumns = chosenColumns;
+        let columns = [];
+        for (let i = 0; i < data.chosenColumns.length; i++) {
+            let obj = { field: data.chosenColumns[i].field, isMain: true, type: 'string' }
+            columns.push(obj);
+        }
+
+        data = {};
+        data.docType = docTypeId;
+        data.query = stringifiedQuery;
+        data.projectId = this.state.projectId;
+        data.columns = columns;
 
         if (chosenColumns.length > 1) {
-            toast.warning("Can't make a chart  With more than 1 Column ");
-            this.setState({ chartColumnsModal: false });
-        } else {
-            this.setState({ isExporting: true });
-            let docTypeId = this.state.documentObj.docTyp;
-            let query = this.state.query;
-            var stringifiedQuery = JSON.stringify(query);
-            if (stringifiedQuery == '{"isCustom":true}') {
-                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
-            } else {
-                stringifiedQuery =
-                    '{"projectId":' +
-                    this.state.projectId +
-                    ',"isCustom":' +
-                    this.state.isCustom +
-                    '}';
-            }
-            let data = {};
-            data.docType = docTypeId;
-            data.query = stringifiedQuery;
-            data.projectId = this.state.projectId;
-            data.chosenColumns = chosenColumns;
-            let columns = [];
-            for (let i = 0; i < data.chosenColumns.length; i++) {
-                let obj = { field: data.chosenColumns[i].field, isMain: true, type: 'string' }
-                columns.push(obj);
-            }
-
-            data = {};
-            data.docType = docTypeId;
-            data.query = stringifiedQuery;
-            data.projectId = this.state.projectId;
-            data.columns = columns;
-
-            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
-                if (data && data.length > 0) {  // data is datatable
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(res => {
+                let chartData = [];
+                if (res && res.data.length > 0) {  // data is datatable
                     // modal to show chart based on this data !
                     this.setState({
-                        isExporting: false
+                        isExporting: false,
+                        showChart: true
                     })
-                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    res.data.map((obj, index) => {
+                        (Object.assign(obj, { backgroundColor: index / 2 === 0 ? colorSchema[0] : colorSchema[index] }))
+                    });
+                    chartData.datasets = res.data;
+                    chartData.labels = res.categories;
+
                     let Chart = (
-                        <BarChartCompJS
-                            reports=""
-                            rows={data}
-                            //    barContent={[
-                            //        { name: "Estimated", value: 'estimatedTime' },
-                            //        { name: "Actual", value: 'actualTotal' },
-                            //        { name: "Variance", value: 'variance' }
-
-                            //    ]}
-                            categoryName={Object.keys(data[0])[0]}
-                            ukey="wt-Name203"
-                            title={Resources[Object.keys(data[0])[0]][currentLanguage]}
-                            y="total"
-                        />)
-
-                    //////////////////////////////////////////////////////
+                        <div className="panel">
+                            <div className="panel-body">
+                                <h2>{'Statistics Chart'}</h2>
+                                <Bar
+                                    key={'statistics'}
+                                    data={chartData}
+                                    options={options}
+                                />
+                            </div>
+                        </div>)
                     this.setState({
-                        chartColumnsModal: false,
+                        //chartColumnsModal: false,
                         isExporting: false,
                         chartContent: Chart,
-                        showChart: true
+                        showChart: true, 
+                        selectedcolumnsChart: []
                     })
                 }
                 else {
                     this.setState({
                         exportColumnsModal: false,
+                        isExporting: false, 
+                        selectedcolumnsChart: []
+                    })
+                    toast.warn('no data found !');
+                };
+            });
+        } else {
+            dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
+                if (data && data.length > 0) {  // data is datatable
+                    // modal to show chart based on this data !
+                    this.setState({
                         isExporting: false,
+                        showChart: true
+                    })
+
+                    let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
+                    let PieChartComp = require('../../Componants/ChartsWidgets/PieChartComp').default;
+
+                    let Chart = (
+                        this.state.singleChartType === 'true' ?
+                            <BarChartCompJS
+                                reports=""
+                                rows={data}
+                                categoryName={Object.keys(data[0])[0]}
+                                ukey="wt-Name203"
+                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                                y="total"
+                            />
+                            :
+                            <PieChartComp
+                                reports=""
+                                rows={data}
+                                name={Object.keys(data[0])[0]}
+                                ukey="wt-Name204"
+                                title={Resources[Object.keys(data[0])[0]][currentLanguage]}
+                                y="total"
+                            />
+
+                    )
+
+                    //////////////////////////////////////////////////////
+                    this.setState({ 
+                        isExporting: false,
+                        chartContent: Chart,
+                        showChart: true 
+                    })
+                }
+                else {
+                    this.setState({
+                        exportColumnsModal: false,
+                        isExporting: false 
                     })
                     toast.warn('no data found !');
                 }
@@ -1317,9 +1426,9 @@ class CommonLog extends Component {
     };
 
     afterUpload = () => {
-        // this.setState({
-        //     docTemplateModal: false
-        // });
+        this.setState({
+            docTemplateModal: false
+        });
         this.setState({ isLoading: true });
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
     };
@@ -1896,8 +2005,8 @@ class CommonLog extends Component {
                     <div
                         className={
                             this.state.chartColumnsModal
-                                ? 'grid__column active '
-                                : 'grid__column '
+                                ? 'grid__column fullmodal active '
+                                : 'grid__column fullmodal'
                         }>
                         <div className="grid__column--container">
                             <button
@@ -1909,7 +2018,35 @@ class CommonLog extends Component {
                                 <h2>{Resources.chart[currentLanguage]}</h2>
                             </div>
                             <div className="grid__column--content">
-                                {RenderPopupShowChartColumns}
+                                <div className="grid__column--content-wrapper">
+                                    {RenderPopupShowChartColumns}
+                                </div>
+                                <div className="gridChart">
+
+                                    {/***************************start charts******************************* */}
+                                    {this.state.showChart == true ? (
+                                        <div className="largePopup largeModal ">
+                                            <div>
+                                                {this.state.chartContent}
+                                            </div>
+                                            {this.state.singleChartBtn == true ?
+                                                <div class="linebylineInput">
+                                                    <label class="control-label">Chart Type</label>
+                                                    <div class="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="letter-status" defaultChecked={this.state.singleChartType === "true" ? 'checked' : null} value="true" onChange={this.changeChartType} />
+                                                        <label>Bar</label>
+                                                    </div>
+                                                    <div class="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="letter-status" defaultChecked={this.state.singleChartType  === "false" ? 'checked' : null} value="false" onChange={this.changeChartType}/>
+                                                        <label>Pie</label>
+                                                    </div>
+                                                </div>
+                                                : null}
+                                        </div>
+                                    ) : null}
+                                    {/***************************charts******************************* */}
+                                </div>
+
                             </div>
                             <div className="grid__column--footer">
                                 <button
@@ -1986,33 +2123,7 @@ class CommonLog extends Component {
                     </div>
                 ) : null}
 
-                {/***************************start charts******************************* */}
-                {this.state.showChart == true ? (
-                    <div className="largePopup largeModal ">
-                        <SkyLightStateless
-                            onOverlayClicked={() =>
-                                this.setState({
-                                    showChart: false,
-                                })
-                            }
 
-                            onCloseClicked={() =>
-                                this.setState({
-                                    showChart: false,
-                                })
-                            }
-                            isVisible={
-                                this.state.showChart
-                            }
-                            title={'statistics'}
-                        >
-                            <div>
-                                {this.state.chartContent}
-                            </div>
-                        </SkyLightStateless>
-                    </div>
-                ) : null}
-                {/***************************charts******************************* */}
             </Fragment>
         );
     }

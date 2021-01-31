@@ -604,16 +604,21 @@ class LettersAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue) {
-        if (event == null) {
-            this.setState({
-                [selectedValue]: event,
-            });
-            return
-        };
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue,subDatasource,subDatasourceId) {
+       
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+            updated_document[subDatasourceId] = event;
+
+            this.setState({
+               
+                [subDatasource]: event,
+            });
+         }else{
+             updated_document[field] = event.value;
+         }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -622,7 +627,8 @@ class LettersAddEdit extends Component {
         });
 
         if (field == 'toContactId') {
-            let url = 'GetRefCodeArrangeMainDoc?projectId=' + this.state.projectId +
+            if(event!==null){
+                let url = 'GetRefCodeArrangeMainDoc?projectId=' + this.state.projectId +
                 '&docType=' + this.state.docTypeId + '&fromCompanyId=' + this.state.document.fromCompanyId + '&fromContactId=' + this.state.document.fromContactId +
                 '&toCompanyId=' + this.state.document.toCompanyId + '&toContactId=' + event.value;
 
@@ -642,16 +648,42 @@ class LettersAddEdit extends Component {
                     document: updated_document,
                 });
             });
+            }else{
+                updated_document.arrange ="";
+
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = "";
+                }
+
+                updated_document = Object.assign(
+                    original_document,
+                    updated_document,
+                );
+
+                this.setState({
+                    document: updated_document,
+                });
+            }
+
         }
         if (isSubscrib) {
-            let action = url + '?' + param + '=' + event.value;
-            dataservice
-                .GetDataList(action, 'contactName', 'id')
-                .then(result => {
-                    this.setState({
-                        [targetState]: result,
+            if(event!==null) {
+                let action = url + '?' + param + '=' + event.value;
+                dataservice
+                    .GetDataList(action, 'contactName', 'id')
+                    .then(result => {
+                        this.setState({
+                            [targetState]: result,
+                        });
                     });
+            }else
+            {
+                this.setState({
+                    [targetState]: [],
                 });
+            }
+
+        
         }
     }
 
@@ -1012,7 +1044,7 @@ class LettersAddEdit extends Component {
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact');
+                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact','fromContactId');
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -1080,7 +1112,7 @@ class LettersAddEdit extends Component {
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact','toContactId')
                                                                         }
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}

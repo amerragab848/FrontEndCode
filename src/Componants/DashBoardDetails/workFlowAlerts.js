@@ -54,7 +54,15 @@ class workFlowAlerts extends Component {
         fixed: false,
         type: "text",
         sortable: true
-      },
+      }, {
+        field: 'epsName',
+        title: Resources['epsName'][currentLanguage],
+        width: 6,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: 'text',
+    },
       {
         field: 'docTypeName',
         title: Resources['docType'][currentLanguage],
@@ -107,7 +115,8 @@ class workFlowAlerts extends Component {
       viewfilter: false,
       isLoading: true,
       rows: [],
-      isCustom: true
+      isCustom: true,
+      filteredRows:[]
     };
   }
 
@@ -133,6 +142,9 @@ class workFlowAlerts extends Component {
           row.link = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
         }
       })
+
+      this.getFilteredRows(result);
+
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
@@ -192,10 +204,15 @@ class workFlowAlerts extends Component {
     this.setState({ isFilter: false });
   };
 
+  getFilteredRows = (data) => {
+    if (data != null && data != undefined)
+        this.setState({ filteredRows: data || [] });
+}
+
   render() {
 
     const btnExport = this.state.isLoading === false ?
-                  <Export rows={this.state.isLoading === false ? this.state.rows : []}
+                  <Export rows={this.state.isLoading === false ? this.state.filteredRows : []}
                     columns={this.columnGrid}
                     fileName={this.state.pageTitle} />
       : <LoadingSection />;
@@ -227,6 +244,7 @@ class workFlowAlerts extends Component {
               actions={[]}
               rowActions={[]}
               rowClick={(cell) => { this.onRowClick(cell) }}
+              afterFilter={this.getFilteredRows}
             />
           ) : <LoadingSection />}</div>
       </div>

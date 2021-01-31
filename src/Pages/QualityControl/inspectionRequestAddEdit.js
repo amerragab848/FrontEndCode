@@ -360,22 +360,21 @@ class inspectionRequestAddEdit extends Component {
     fillDropDowns(isEdit) {
         //location
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
-
             if (isEdit) {
 
                 let locationId = this.props.document.locationId;
-
                 if (locationId) {
-
                     let locationName = result.find(i => i.value === locationId);
-
                     if (locationName) {
-
                         this.setState({
                             selectedLocation: { label: locationName.label, value: locationId }
                         });
-
                     }
+                }
+                else{
+                    this.setState({
+                        selectedLocation:null
+                    });
                 }
             }
 
@@ -608,18 +607,31 @@ class inspectionRequestAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-        if (event == null) return;
+    handleChangeDropDown(event, field,sub_field,isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         let original_document = { ...this.state.document };
         let updated_document = {};
-        updated_document[field] = event.value;
         updated_document = Object.assign(original_document, updated_document);
-
+        if (event == null) {
+            this.setState({
+                [selectedValue]: event,
+                [subDatasource]:null,
+                [targetState]:[]
+            });
+            updated_document[field] = event;
+            updated_document[sub_field]=null;
+            updated_document["arrange"]=null;
+            this.setState({
+                document: updated_document,
+            });
+        }
+        else{
+            this.setState({
+                [selectedValue]: event
+            })
+        updated_document[field] = event.value;
         this.setState({
             document: updated_document,
-            [selectedValue]: event
         });
-
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value
             dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -628,6 +640,7 @@ class inspectionRequestAddEdit extends Component {
                 });
             });
         }
+    }
     }
 
     editInspectionRequest(event) {
@@ -640,7 +653,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.locationId = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.value;
+        saveDocument.locationId = this.state.selectedLocation===null  ? null : this.state.selectedLocation.value;
 
         dataservice.addObject('EditInspectionRequestOnly', saveDocument).then(result => {
             this.setState({
@@ -807,14 +820,16 @@ class inspectionRequestAddEdit extends Component {
             documentCycle: updated_document
         });
     }
-
+  
     handleChangeCycleDropDown(event, field, selectedValue) {
-        if (event == null) return;
         let original_document = { ...this.state.documentCycle };
         let updated_document = {};
-        updated_document[field] = event.value;
+        if (event == null) {
+            updated_document[field] = event;
+        }else{
+            updated_document[field] = event.value;
+        }
         updated_document = Object.assign(original_document, updated_document);
-
         this.setState({
             documentCycle: updated_document,
             [selectedValue]: event
@@ -829,7 +844,7 @@ class inspectionRequestAddEdit extends Component {
             documentCycle: { ...cycleObj }
         });
     }
-
+  
     editCycle(e) {
 
         let cycleObj = { ...this.state.documentCycle };
@@ -897,7 +912,7 @@ class inspectionRequestAddEdit extends Component {
                                             onBlur={setFieldTouched}
                                             // error={errors.approvalStatusId}
                                             // touched={touched.approvalStatusId}
-                                            isClear={false}
+                                            isClear={true}
                                             index="IR-approvalStatusId"
                                             name="approvalStatusId"
                                             id="approvalStatusId" />
@@ -1089,11 +1104,12 @@ class inspectionRequestAddEdit extends Component {
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
                                                                             <Dropdown
+                                                                                isClear={true}
                                                                                 data={this.state.companies}
                                                                                 isMulti={false}
                                                                                 selectedValue={this.state.selectedFromCompany}
                                                                                 handleChange={event => {
-                                                                                    this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                                    this.handleChangeDropDown(event,'fromCompanyId',"fromContactId", true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
                                                                                 }}
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
@@ -1108,12 +1124,12 @@ class inspectionRequestAddEdit extends Component {
                                                                                 isMulti={false}
                                                                                 data={this.state.fromContacts}
                                                                                 selectedValue={this.state.selectedFromContact}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                                handleChange={event => this.handleChangeDropDown(event,'fromContactId',null, false, '', '', '', 'selectedFromContact')}
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.fromContactId}
                                                                                 touched={touched.fromContactId}
-                                                                                isClear={false}
+                                                                                isClear={true}
                                                                                 index="IR-fromContactId"
                                                                                 name="fromContactId"
                                                                                 id="fromContactId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -1125,11 +1141,12 @@ class inspectionRequestAddEdit extends Component {
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
                                                                             <Dropdown
+                                                                                isClear={true}
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
                                                                                 selectedValue={this.state.selectedToCompany}
                                                                                 handleChange={event =>
-                                                                                    this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                                    this.handleChangeDropDown(event,'toCompanyId',"toContactId", true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.toCompanyId}
@@ -1141,13 +1158,13 @@ class inspectionRequestAddEdit extends Component {
                                                                                 isMulti={false}
                                                                                 data={this.state.ToContacts}
                                                                                 selectedValue={this.state.selectedToContact}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'toContactId',null, false, '', '', '', 'selectedToContact')}
 
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.toContactId}
                                                                                 touched={touched.toContactId}
-                                                                                isClear={false}
+                                                                                isClear={true}
                                                                                 index="IR-toContactId"
                                                                                 name="toContactId"
                                                                                 id="toContactId"
@@ -1161,11 +1178,13 @@ class inspectionRequestAddEdit extends Component {
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
                                                                             <Dropdown
+                                                                                isClear={true}
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
                                                                                 selectedValue={this.state.selectedActionByCompanyId}
                                                                                 handleChange={event =>
-                                                                                    this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
+                                                                                    //this.handleChangeDropDown(event, 'fromCompanyId',"fromContactId", true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                                    this.handleChangeDropDown(event, 'bicCompanyId',"bicContactId", true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
                                                                                 name="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                         </div>
                                                                         <div className="super_company">
@@ -1173,12 +1192,12 @@ class inspectionRequestAddEdit extends Component {
                                                                                 isMulti={false}
                                                                                 data={this.state.bicContacts}
                                                                                 selectedValue={this.state.selectedActionByContactId}
-                                                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'bicContactId',null, false, '', '', '', 'selectedActionByContactId')}
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.bicContactId}
                                                                                 touched={touched.bicContactId}
-                                                                                isClear={false}
+                                                                                isClear={true}
                                                                                 index="IR-bicContactId"
                                                                                 name="bicContactId"
                                                                                 id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -1188,10 +1207,11 @@ class inspectionRequestAddEdit extends Component {
                                                                 {this.props.changeStatus === false ?
                                                                     <div className="linebylineInput valid-input">
                                                                         <Dropdown
+                                                                            isClear={true}
                                                                             title="contractPo"
                                                                             data={this.state.contractsPos}
                                                                             selectedValue={this.state.selectedContract}
-                                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId',null, false, '', '', '', 'selectedContract')}
                                                                             index="contractId" />
                                                                     </div> :
                                                                     <div className="linebylineInput valid-input fullInputWidth">
@@ -1209,59 +1229,68 @@ class inspectionRequestAddEdit extends Component {
                                                                         isMulti={false}
                                                                         data={this.state.discplines}
                                                                         selectedValue={this.state.selectedDiscpline}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'disciplineId', null,false, '', '', '', 'selectedDiscpline')}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.disciplineId}
                                                                         touched={touched.disciplineId}
-                                                                        isClear={false}
+                                                                        isClear={true}
                                                                         index="IR-disciplineId"
                                                                         name="disciplineId"
                                                                         id="disciplineId" />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="reasonForIssue"
                                                                         data={this.state.reasonForIssues}
                                                                         selectedValue={this.state.selectedReasonForIssue}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId', false, '', '', '', 'selectedReasonForIssue')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId',null, false, '', '', '', 'selectedReasonForIssue')}
                                                                         index="reasonForIssue" />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="areaName"
                                                                         data={this.state.areas}
                                                                         selectedValue={this.state.selecetedArea}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'areaId', false, '', '', '', 'selecetedArea')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'areaId',null, false, '', '', '', 'selecetedArea')}
                                                                         index="areaId" />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="specsSection"
                                                                         data={this.state.specsSections}
                                                                         selectedValue={this.state.selectedspecsSection}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedspecsSection')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'specsSectionId',null, false, '', '', '', 'selectedspecsSection')}
                                                                         index="specsSection" />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="Buildings"
                                                                         data={this.state.buildings}
                                                                         selectedValue={this.state.selectedbuildingno}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'buildingNoId', false, '', '', '', 'selectedbuildingno')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'buildingNoId',null, false, '', '', '', 'selectedbuildingno')}
                                                                         index="buildingNoId" />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        isClear={true}
                                                                         title="apartmentNumber"
                                                                         data={this.state.apartmentNumbers}
                                                                         selectedValue={this.state.selectedApartmentNoId}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'apartmentNoId', false, '', '', '', 'selectedApartmentNoId')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'apartmentNoId',null, false, '', '', '', 'selectedApartmentNoId')}
                                                                         index="apartmentNoId" />
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
-                                                                    <Dropdown title="location" data={this.state.locations} selectedValue={this.state.selectedLocation}
-                                                                        handleChange={event => this.handleChangeDropDown(event, "locationId", false, "", "", "", "selectedLocation")} />
+                                                                    <Dropdown
+                                                                     isClear={true}
+                                                                     title="location"
+                                                                     data={this.state.locations} 
+                                                                     selectedValue={this.state.selectedLocation}
+                                                                     handleChange={event => this.handleChangeDropDown(event, "locationId",null, false, "", "", "", "selectedLocation")} />
                                                                 </div>
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
@@ -1313,7 +1342,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 projectId={this.state.projectId}
                                                                                 previousRoute={this.state.previousRoute}
                                                                                 docApprovalId={this.state.docApprovalId}
-
                                                                                 docAlertId={this.state.docAlertId}
 
                                                                                 currentArrange={this.state.arrange}
