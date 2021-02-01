@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs"; 
 import { Widgets, WidgetsWithText } from "./Componants/CounterWidget";
 import DashBoard from "./Componants/DashBoardProject";
 import language from "./resources.json";
@@ -26,8 +25,7 @@ import moment from "moment";
 
 import orderBy from "lodash/orderBy";
 import map from "lodash/map";
-import groupBy from "lodash/groupBy";
-// import Config from "./Services/Config";
+import groupBy from "lodash/groupBy"; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -247,17 +245,15 @@ class DashboardProject extends Component {
 
     renderWidget(widget, index) {
 
-        if (this.state.tabIndex === 0) {
+        if (this.state.tabIndex === 0) { 
 
             let drawWidget = Details.widgets.find(x => x.title === widget.title);
-
-            let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
-
-            drawWidget.props.api = drawWidget.props.api + projectId;
+  
+            drawWidget.props.api = drawWidget.props.api + (this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId);
 
             if (drawWidget.props.type === "twoWidget") {
                 return (
-                    <WidgetsWithText key={index + "DIV"} title={widget.title} {...drawWidget} />
+                    <WidgetsWithText key={index + "DIV"} title={widget.title} {...drawWidget } />
                 );
             } else if (drawWidget.props.type === "oneWidget") {
                 return (

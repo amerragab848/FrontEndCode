@@ -620,7 +620,8 @@ class DocApprovalDetails extends Component {
               docId: row.docId,
               docTypeId: row.docTypeId,
               projectId: row.projectId,
-              comment: this.state.approvalObj.comment
+              comment: this.state.approvalObj.comment,
+              docLink: window.location.href
             })
           }
         })
