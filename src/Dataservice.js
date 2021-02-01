@@ -111,7 +111,7 @@ export default class Dataservice {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
-                obj.param = item[param]
+                obj[param] = item[param]
                 Data.push(obj);
             });
             return Data;

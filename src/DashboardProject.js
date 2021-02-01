@@ -25,7 +25,7 @@ import moment from "moment";
 
 import orderBy from "lodash/orderBy";
 import map from "lodash/map";
-import groupBy from "lodash/groupBy"; 
+import groupBy from "lodash/groupBy";   
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 

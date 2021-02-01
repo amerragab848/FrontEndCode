@@ -25249,10 +25249,29 @@ tbody.grid-body tr .text.elipsisPadd {
     width: 80%;
 }
 .fullmodal  .grid__column--content-wrapper{
-    width: 30%;
+    width: 25%;
     display: flex;
     flex-wrap: wrap;
 }
-.fullmodal .grid__content {width: 49%;}
+.fullmodal .grid__column--content {align-items: flex-start;}
+.fullmodal .grid__content {
+    width: 100%;
+    border: 0;
+}
 .fullmodal .grid__content .ui.checkbox {width: 100%;}
-.fullmodal .gridChart {width: 69%;}
+.fullmodal .gridChart {
+    width: 74%;
+    border-right: 1px solid #E9EBF0;
+    padding-right: 10px;
+    margin: 5px 0;
+}
+.fullmodal .gridChart .panel {margin-bottom: 20px;}
+.fullmodal .gridChart .panel .chartjs-render-monitor {
+    height: 345px !important;
+    max-height: 345px !important;
+}
+.fullmodal .gridChart .linebylineInput .ui.radio.checkbox { margin-left: 10px;}
+.fullmodal .gridChart .ui.radio.checkbox .box,
+.fullmodal .gridChart .ui.radio.checkbox label,
+.fullmodal .gridChart .ui.checkbox .box, 
+.fullmodal .gridChart .ui.checkbox label {padding-left: 0;}
