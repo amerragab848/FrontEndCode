@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, useRef, Fragment, createRef } from 'react';
 import GridCustom from '../../Componants/Templates/Grid/CustomCommonLogGrid';
 import Filter from '../../Componants/FilterComponent/filterComponent';
 import Api from '../../api';
@@ -17,9 +17,10 @@ import { toast } from 'react-toastify';
 import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
-import { SkyLightStateless } from 'react-skylight';
 import { Resources } from '../../Resources';
 import { Bar } from 'react-chartjs-2';
+
+import Loader from '../../../src/Styles/images/ChartLoaders/BarChartLoader.webm';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -77,6 +78,7 @@ class CommonLog extends Component {
 
     constructor(props) {
         super(props);
+        this.chartReference = React.createRef();
         this.state = {
             singleChartBtn: false,
             singleChartType: 'true',
@@ -398,7 +400,18 @@ class CommonLog extends Component {
             toast.warning(Resources['missingPermissions'][currentLanguage]);
         }
     }
+    getImage() {
+        let instance = this.state.singleChartBtn === true ?
+            this.chartReference.current.chartReference.current.chartInstance :
+            this.chartReference.current.chartInstance;
+ 
+        const ctx = instance.toBase64Image();
 
+        var a = document.createElement("a");
+        a.href = ctx;
+        a.download = "Image.png";
+        a.click()
+    }
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
@@ -1022,9 +1035,9 @@ class CommonLog extends Component {
             });
         }, 300);
     };
-    
+
     changeChartType = (e) => {
-        this.setState({ singleChartType: e.target.value,showChart: false });
+        this.setState({ singleChartType: e.target.value, showChart: false });
         this.btnStatisticsServerClick();
     }
     handleCheck = key => {
@@ -1107,7 +1120,7 @@ class CommonLog extends Component {
         });
 
         setTimeout(() => {
-            this.setState({singleChartBtn : selectedcolumnsChart.length == 1 ? true : false , showChart: false, selectedcolumnsChart: selectedcolumnsChart, Loading: false, finalChosenCol });
+            this.setState({ singleChartBtn: selectedcolumnsChart.length == 1 ? true : false, showChart: false, selectedcolumnsChart: selectedcolumnsChart, Loading: false, finalChosenCol });
         }, 300);
     };
 
@@ -1259,6 +1272,7 @@ class CommonLog extends Component {
                                     key={'statistics'}
                                     data={chartData}
                                     options={options}
+                                    ref={this.chartReference}
                                 />
                             </div>
                         </div>)
@@ -1266,14 +1280,14 @@ class CommonLog extends Component {
                         //chartColumnsModal: false,
                         isExporting: false,
                         chartContent: Chart,
-                        showChart: true, 
+                        showChart: true,
                         selectedcolumnsChart: []
                     })
                 }
                 else {
                     this.setState({
                         exportColumnsModal: false,
-                        isExporting: false, 
+                        isExporting: false,
                         selectedcolumnsChart: []
                     })
                     toast.warn('no data found !');
@@ -1283,10 +1297,6 @@ class CommonLog extends Component {
             dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
                 if (data && data.length > 0) {  // data is datatable
                     // modal to show chart based on this data !
-                    this.setState({
-                        isExporting: false,
-                        showChart: true
-                    })
 
                     let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
                     let PieChartComp = require('../../Componants/ChartsWidgets/PieChartComp').default;
@@ -1295,40 +1305,44 @@ class CommonLog extends Component {
                         this.state.singleChartType === 'true' ?
                             <BarChartCompJS
                                 reports=""
-                                rows={data}
+                                rows={data != null ? data : {}}
                                 categoryName={Object.keys(data[0])[0]}
                                 ukey="wt-Name203"
                                 title={Resources[Object.keys(data[0])[0]][currentLanguage]}
                                 y="total"
+                                ref={this.chartReference}
                             />
                             :
                             <PieChartComp
                                 reports=""
+                                showLegend={true}
                                 rows={data}
                                 name={Object.keys(data[0])[0]}
                                 ukey="wt-Name204"
                                 title={Resources[Object.keys(data[0])[0]][currentLanguage]}
                                 y="total"
+                                ref={this.chartReference}
                             />
 
                     )
 
                     //////////////////////////////////////////////////////
-                    this.setState({ 
+                    this.setState({
                         isExporting: false,
                         chartContent: Chart,
-                        showChart: true 
+                        showChart: true
                     })
                 }
                 else {
                     this.setState({
                         exportColumnsModal: false,
-                        isExporting: false 
+                        isExporting: false
                     })
                     toast.warn('no data found !');
                 }
             });
         }
+
     };
 
     btnExportStatisticsClick = () => {
@@ -1375,52 +1389,6 @@ class CommonLog extends Component {
             });
         }
     }
-
-    btnExportStatisticsClick = () => {
-
-        if (Config.getPublicConfiguartion().activeExport != true) {
-            toast.warn('This feature is disabled. Please call your administrator for assistance');
-            return;
-        }
-
-        let chosenColumns = this.state.columnsExport;
-        if (chosenColumns.length > 2) {
-            toast.warning("Can't Draw With more than 2 Columns Choosen");
-        }
-        else {
-            this.setState({ isExporting: true });
-            let query = this.state.query;
-            var stringifiedQuery = JSON.stringify(query);
-
-            if (stringifiedQuery == '{"isCustom":true}') {
-                stringifiedQuery = '{"isCustom":' + this.state.isCustom + '}';
-            } else {
-                stringifiedQuery = '{"projectId":' + this.state.projectId + ',"isCustom":' + this.state.isCustom + '}'
-            }
-
-            let data = {};
-            data.query = stringifiedQuery;
-            data.columns = chosenColumns;
-            data.projectId = this.state.projectId;
-
-            dataservice.addObjectCore("GetStatisticSubmittalForProjectId", data, 'POST').then(data => {
-                if (data) {
-                    data = Config.getPublicConfiguartion().downloads + '/' + data;
-                    var a = document.createElement('A');
-                    a.href = data;
-                    a.download = data.substr(data.lastIndexOf('/') + 1);
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-
-                    this.setState({ exportColumnsModal: false, isExporting: false })
-                }
-            }).catch(e => {
-                this.setState({ exportColumnsModal: false })
-            });
-        }
-    }
-
     changeValueOfProps = () => {
         this.setState({ isFilter: false });
     };
@@ -2025,8 +1993,15 @@ class CommonLog extends Component {
 
                                     {/***************************start charts******************************* */}
                                     {this.state.showChart == true ? (
-                                        <div className="largePopup largeModal ">
-                                            <div>
+                                        <div className="largePopup largeModal">
+                                            <div className="filterBTNS">
+                                                <button
+                                                    className="btn primaryBtn-2"
+                                                    onClick={() => this.getImage()}>
+                                                    {Resources.export[currentLanguage]}{' '}
+                                                </button>
+                                            </div>
+                                            <div id="chartDiv">
                                                 {this.state.chartContent}
                                             </div>
                                             {this.state.singleChartBtn == true ?
@@ -2037,13 +2012,19 @@ class CommonLog extends Component {
                                                         <label>Bar</label>
                                                     </div>
                                                     <div class="ui checkbox radio radioBoxBlue">
-                                                        <input type="radio" name="letter-status" defaultChecked={this.state.singleChartType  === "false" ? 'checked' : null} value="false" onChange={this.changeChartType}/>
+                                                        <input type="radio" name="letter-status" defaultChecked={this.state.singleChartType === "false" ? 'checked' : null} value="false" onChange={this.changeChartType} />
                                                         <label>Pie</label>
                                                     </div>
                                                 </div>
                                                 : null}
                                         </div>
-                                    ) : null}
+                                    ) : <div className="panel">
+                                            <div className="panel-body-loader">
+                                                <video style={{ width: '80%' }} autoPlay loop muted>
+                                                    <source src={Loader} type="video/webm" />
+                                                </video>
+                                            </div>
+                                        </div>}
                                     {/***************************charts******************************* */}
                                 </div>
 

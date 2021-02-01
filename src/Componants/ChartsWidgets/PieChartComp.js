@@ -7,36 +7,22 @@ import Loader from '../../../src/Styles/images/ChartLoaders/PieChartLoader.webm'
 import NoData from '../../../src/Styles/images/ChartLoaders/PieChartNoData.png';
 
 const colorSchema = [
+    '#39bd3d',
+    '#ab50df',
     '#07bc0c',
     '#119015',
     '#47cc4a',
     '#7cdb79',
-    '#5fd45f',
-    '#119015',
-    '#07bc0c',
-    '#07bc0c',
-    '#119015',
-    '#47cc4a',
-    '#7cdb79',
-    '#5fd45f',
-    '#119015',
-    '#07bc0c',
-    '#07bc0c',
-    '#119015',
-    '#47cc4a',
-    '#7cdb79',
-    '#5fd45f',
-    '#119015',
-    '#07bc0c',
-    '#119015',
-    '#47cc4a',
-    '#7cdb79',
+    '#dfe2e6',
 ];
 
 let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class PieChartComp extends Component {
     constructor(props) {
         super(props);
+
+        this.chartReference = React.createRef();
+
         this.state = {
             chartData: {},
             chartDatasets: [],
@@ -71,7 +57,7 @@ class PieChartComp extends Component {
                         sectorPercentage: this.setSectorPercentage(
                             this.state.chartData.datasets[0].data,
                             this.state.chartData.datasets[0].data[
-                                elements[0]._index
+                            elements[0]._index
                             ],
                         ),
                     });
@@ -80,8 +66,24 @@ class PieChartComp extends Component {
         },
         cutoutPercentage: 39,
         legend: {
-            display: false,
+            display: this.props.showLegend,
         },
+
+        // legendCallback: function (chart) {
+        //     var legendHtml = [];
+        //     legendHtml.push('<ul>');
+        //     var item = chart.data.datasets[0];
+        //     console.log('legendCallback/.....')
+        //     for (var i = 0; i < item.data.length; i++) {
+        //         legendHtml.push('<li>');
+        //         legendHtml.push('<span class="chart-legend" style="background-color:' + item.backgroundColor[i] + '"></span>');
+        //         legendHtml.push('<span class="chart-legend-label-text">' + item.data[i] + '- ' + chart.data.labels[i] + ' </span>');
+        //         legendHtml.push('</li>');
+        //     }
+
+        //     legendHtml.push('</ul>');
+        //     return legendHtml.join("");
+        // },
         animation: {
             duration: 1500,
         },
@@ -147,14 +149,18 @@ class PieChartComp extends Component {
                     ],
                 },
             });
+ 
+
         }
     };
 
     setSectorPercentage = (data, totalAmount) => {
-        return (totalAmount / data.reduce((a, b) => a + b, 0)) * 100;
+        var result = (parseInt(totalAmount) / data.reduce((a, b) => parseInt(a) + parseInt(b), 0)) * 100;
+        return result;
     };
 
     render() {
+       // let lg= this.chartReference.generateLegend()
         if (this.state.isLoading) {
             return (
                 <div className="panel">
@@ -183,12 +189,10 @@ class PieChartComp extends Component {
                         <div className="chartContainer">
                             <div className="canvas-container">
                                 <Doughnut
-                                    ref={reference =>
-                                        (this.state.pieChartInst = reference)
-                                    }
+                                    ref={this.chartReference}
                                     data={this.state.chartData}
                                     options={this.options}
-                                />
+                                /> 
                             </div>
                             <p id="legenbd__teext">
                                 <span className="chartName">
@@ -202,8 +206,8 @@ class PieChartComp extends Component {
                                     )
                                         ? ''
                                         : parseFloat(
-                                              this.state.sectorPercentage,
-                                          ).toFixed(1) + '%'}
+                                            this.state.sectorPercentage,
+                                        ).toFixed(1) + '%'}
                                 </span>
                                 <span className="totalAmount">
                                     {Math.round(
