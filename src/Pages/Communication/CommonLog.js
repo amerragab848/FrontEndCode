@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, useRef, Fragment, createRef } from 'react';
 import GridCustom from '../../Componants/Templates/Grid/CustomCommonLogGrid';
 import Filter from '../../Componants/FilterComponent/filterComponent';
 import Api from '../../api';
@@ -17,12 +17,10 @@ import { toast } from 'react-toastify';
 import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
 import SkyLight from 'react-skylight';
-import { SkyLightStateless } from 'react-skylight';
 import { Resources } from '../../Resources';
 import { Bar } from 'react-chartjs-2';
 
 import Loader from '../../../src/Styles/images/ChartLoaders/BarChartLoader.webm';
-import NoData from '../../../src/Styles/images/ChartLoaders/BarChartNoData.png';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let documentObj = {};
@@ -80,6 +78,7 @@ class CommonLog extends Component {
 
     constructor(props) {
         super(props);
+        this.chartReference = React.createRef();
         this.state = {
             singleChartBtn: false,
             singleChartType: 'true',
@@ -401,7 +400,18 @@ class CommonLog extends Component {
             toast.warning(Resources['missingPermissions'][currentLanguage]);
         }
     }
+    getImage() {
+        let instance = this.state.singleChartBtn === true ?
+            this.chartReference.current.chartReference.current.chartInstance :
+            this.chartReference.current.chartInstance;
+ 
+        const ctx = instance.toBase64Image();
 
+        var a = document.createElement("a");
+        a.href = ctx;
+        a.download = "Image.png";
+        a.click()
+    }
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
@@ -1262,6 +1272,7 @@ class CommonLog extends Component {
                                     key={'statistics'}
                                     data={chartData}
                                     options={options}
+                                    ref={this.chartReference}
                                 />
                             </div>
                         </div>)
@@ -1286,10 +1297,6 @@ class CommonLog extends Component {
             dataservice.addObjectCore('GetStatisticsData', data, 'POST').then(data => {
                 if (data && data.length > 0) {  // data is datatable
                     // modal to show chart based on this data !
-                    this.setState({
-                        isExporting: false,
-                        showChart: true
-                    })
 
                     let BarChartCompJS = require('../../Componants/ChartsWidgets/BarChartCompJS').default;
                     let PieChartComp = require('../../Componants/ChartsWidgets/PieChartComp').default;
@@ -1298,20 +1305,23 @@ class CommonLog extends Component {
                         this.state.singleChartType === 'true' ?
                             <BarChartCompJS
                                 reports=""
-                                rows={data}
+                                rows={data != null ? data : {}}
                                 categoryName={Object.keys(data[0])[0]}
                                 ukey="wt-Name203"
                                 title={Resources[Object.keys(data[0])[0]][currentLanguage]}
                                 y="total"
+                                ref={this.chartReference}
                             />
                             :
                             <PieChartComp
                                 reports=""
+                                showLegend={true}
                                 rows={data}
                                 name={Object.keys(data[0])[0]}
                                 ukey="wt-Name204"
                                 title={Resources[Object.keys(data[0])[0]][currentLanguage]}
                                 y="total"
+                                ref={this.chartReference}
                             />
 
                     )
@@ -1332,6 +1342,7 @@ class CommonLog extends Component {
                 }
             });
         }
+
     };
 
     btnExportStatisticsClick = () => {
@@ -1982,8 +1993,15 @@ class CommonLog extends Component {
 
                                     {/***************************start charts******************************* */}
                                     {this.state.showChart == true ? (
-                                        <div className="largePopup largeModal ">
-                                            <div>
+                                        <div className="largePopup largeModal">
+                                            <div className="filterBTNS">
+                                                <button
+                                                    className="btn primaryBtn-2"
+                                                    onClick={() => this.getImage()}>
+                                                    {Resources.export[currentLanguage]}{' '}
+                                                </button>
+                                            </div>
+                                            <div id="chartDiv">
                                                 {this.state.chartContent}
                                             </div>
                                             {this.state.singleChartBtn == true ?
@@ -2002,7 +2020,6 @@ class CommonLog extends Component {
                                         </div>
                                     ) : <div className="panel">
                                             <div className="panel-body-loader">
-                                                <h2>ds</h2>
                                                 <video style={{ width: '80%' }} autoPlay loop muted>
                                                     <source src={Loader} type="video/webm" />
                                                 </video>
