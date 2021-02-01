@@ -3944,8 +3944,8 @@
         "ar": "طلبات الموقع"
     },
     "materialRequestcount": {
-        "en": "Material Request Counts",
-        "ar": " مجموع طلبات الموقع"
+        "en": "Material IR Counts",
+        "ar": " مجموع طلبات المعاينات"
     },
     "siteRequestAdd": {
         "en": "Add Material Request",
@@ -9231,5 +9231,25 @@
    "departments": {
     "en": "departments",
     "ar": "الاقسام"
+    },
+    "revisions":{
+        "en": "revisions",
+        "ar": "المراجعات"
+    },
+    "buildingNoName":{
+        "en": "building No",
+        "ar": "رقم المبنى"  
+    },
+    "apartmentNoName":{
+        "en": "apartment No",
+        "ar": "رقم المبنى"  
+    },
+    "bicCompanyName":{
+        "en": "Bic Company",
+        "ar": "الشركه"  
+    },
+    "bicContactName": {
+        "en": "Bic Contact",
+        "ar": "الشركه"  
     }
 }

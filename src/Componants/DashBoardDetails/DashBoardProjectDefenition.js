@@ -1640,7 +1640,152 @@ let widgets = [
         isCustom: true
       }
     ]
-  }
+  },
+  {
+    title: "inspectionRequestCount",
+    key: "1-6-2",
+    RouteEdit:'', 
+    apiDetails: "GetInspectionRequest",
+     columns: [
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true,
+    },
+    {
+      field: 'statusName',
+      title: Resources['status'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: false,
+      type: "text",
+      sortable: true,
+  },
+  {
+    field: 'projectName',
+    title: Resources['projectName'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true,
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true,
+},
+{
+  field: "fromCompanyName",
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true,
+},
+{
+  field: 'fromContactName',
+  title: Resources['fromContact'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'toCompanyName',
+  title: Resources['toCompany'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'toContactName',
+  title: Resources['ToContact'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'cyclesCount',
+  title: Resources['cyclesCount'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'refDoc',
+  title: Resources['refDoc'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'revisions',
+  title: Resources['refDoc'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true
+},
+{
+  field: 'docCloseDate',
+  title: Resources['docClosedate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: false,
+  type: "date",
+  sortable: true
+},
+    ],
+    filterApi: "",
+    filters: [
+      {
+        field: "subject",
+        name: "subject",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "statusName",
+        name: "status",
+        type: "toggle",
+        trueLabel: "oppened",
+        falseLabel: "closed",
+        isCustom: true
+      },
+      {
+        field: "projectName",
+        name: "projectName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      }
+    ]
+  },
 ];
 
 export default widgets;

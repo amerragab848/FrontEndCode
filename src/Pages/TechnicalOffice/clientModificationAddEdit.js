@@ -43,8 +43,8 @@ const validationSchema = Yup.object().shape({
         .required(Resources['total'][currentLanguage])
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]).nullable(true),
    //
-    fromCompanyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]).nullable(true),
-    toCompanyId: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]).nullable(true),
+    //fromCompanyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]).nullable(true),
+    //toCompanyId: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]).nullable(true),
     refDoc: Yup.string().required(Resources['refernceRequired'][currentLanguage]).nullable(true),
 
 })
@@ -691,25 +691,24 @@ class clientModificationAddEdit extends Component {
 
                                                                 </div>
                                                                 <div className="super_company">
-                                                                    <Dropdown
+                                                                   
+                                                                       <Dropdown
                                                                         isClear={true}
-                                                                        
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                         
+                                                                        classDrop="contactName1"
+                                                                        styles={ContactDropdown}
 
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
-                                                                        touched={touched.fromContactId}
-                                                                        isClear={false}
-                                                                        index="fromContactId"//clientSelection-
+                                                                        touched={touched.fromContactId}                                                                                                                                        
                                                                         name="fromContactId"
                                                                         id="fromContactId"
-                                                                        classDrop="contactName1"
-                                                                        styles={ContactDropdown}
-                                                                    />
+                                                                         />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -747,8 +746,8 @@ class clientModificationAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
-                                                                        isClear={false}
-                                                                        index="toContactId"//clientSelection-
+                                                                       
+                                                                       // index="toContactId"//clientSelection-
                                                                         name="toContactId"
                                                                         id="toContactId"
                                                                         classDrop="contactName1"
