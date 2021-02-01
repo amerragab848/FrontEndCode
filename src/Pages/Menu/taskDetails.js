@@ -63,7 +63,7 @@ class TaskDetails extends Component {
       <div className="mainContainer">
         <div className={ this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document" }>
           <HeaderDocument docTitle={Resources.taskDetails[currentLanguage]} 
-            perviousRoute={'/'}
+            perviousRoute={'/myTasks/'}
           />
           <div className="doc-container">
             <div className="step-content">

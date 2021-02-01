@@ -1761,7 +1761,7 @@ let widgets = [
     title: "inspectionRequestCount",
     key: "1-6-2",
     RouteEdit:'', 
-    apiDetails: "GetInspectionRequest",
+    apiDetails: "GetInspectionRequestForCustomLog",
      columns: [
       {
         field: 'subject',
@@ -1981,7 +1981,7 @@ let widgets = [
   sortable: true
 },
 ],
-    filterApi: "",
+    filterApi: "InspectionRequestDetailsFilter",
     filters: [
       {
         field: "subject",
