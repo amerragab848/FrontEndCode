@@ -94,6 +94,9 @@ let moduleId = Config.getPublicConfiguartion().dashboardApi;
 class BarChartCompJS extends Component {
     constructor(props) {
         super(props);
+
+        this.chartReference = React.createRef();
+
         this.state = {
             chartData: {},
             isLoading: true,
@@ -103,7 +106,7 @@ class BarChartCompJS extends Component {
         };
     }
 
-    componentDidMount() {
+    componentDidMount() {  
         if (this.props.reports === undefined) {
             Api.get(this.props.api, undefined,moduleId).then(results => {
                 if (results) this.GenerateDataFromProps(results);
@@ -223,6 +226,7 @@ class BarChartCompJS extends Component {
                             key={this.props.ukey}
                             data={this.state.chartData}
                             options={this.options}
+                            ref={this.chartReference}
                         />
                     </div>
                 </div>

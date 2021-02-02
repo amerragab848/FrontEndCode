@@ -5,14 +5,18 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import { toast } from "react-toastify";
+import Config from '../../Services/Config.js';
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require("lodash");
-
+let perviousRoute = '';
 class MyTasks extends Component {
   constructor(props) {
     super(props);
+
+ 
     this.state = {
       taskData: [],
       originalData: [],
@@ -26,7 +30,8 @@ class MyTasks extends Component {
       startDate: "",
       finishDate: "",
       estimatedTime: "",
-      description: ""
+      description: "",
+      perviousRoute:perviousRoute
     };
   }
 
@@ -99,7 +104,9 @@ class MyTasks extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document">
-          <HeaderDocument docTitle={Resources.Reports[currentLanguage] + "  " + Resources.myTasks[currentLanguage]} />
+          <HeaderDocument docTitle={Resources.Reports[currentLanguage] + "  " + Resources.myTasks[currentLanguage]}
+             perviousRoute={'/'}
+           />
           <div className="doc-container">
             <div className="step-content">
               <div id="step1" className="step-content-body">

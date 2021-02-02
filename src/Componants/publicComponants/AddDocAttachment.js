@@ -197,8 +197,7 @@ class AddDocAttachment extends Component {
  
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("nextProps....",nextProps);
-    console.log("prevState....",prevState);
+   
     if ((nextProps.documentData.length != prevState.documentData.length && nextProps.docTypeId != prevState.selectDocument.value ) && prevState.isFilter === false) {
 
       return {
