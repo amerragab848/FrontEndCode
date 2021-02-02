@@ -194,9 +194,12 @@ class AddDocAttachment extends Component {
 
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+ 
 
-    if (nextProps.documentData != prevState.documentData && prevState.isFilter === false) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log("nextProps....",nextProps);
+    console.log("prevState....",prevState);
+    if ((nextProps.documentData.length != prevState.documentData.length && nextProps.docTypeId != prevState.selectDocument.value ) && prevState.isFilter === false) {
 
       return {
         documentData: nextProps.documentData,
@@ -325,6 +328,24 @@ class AddDocAttachment extends Component {
           }
         },
         {
+          field: 'fileNumber',
+          title: Resources['fileNumber'][currentLanguage],
+          width: 20,
+          fixed: false,
+          groupable: true,
+          type: "text",
+          sortable: true
+        },
+        {
+          field: 'refDoc',
+          title: Resources['refDoc'][currentLanguage],
+          width: 20,
+          fixed: false,
+          groupable: true,
+          type: "text",
+          sortable: true
+        },
+        {
           field: 'docDate',
           title: Resources['docDate'][currentLanguage],
           width: 15,
@@ -353,12 +374,12 @@ class AddDocAttachment extends Component {
                     useModal={true}
                     gridKey="AddDocAttachment"
                     data={this.state.documentData}
-                    pageSize={this.state.documentData.length}
                     groups={[]}
                     actions={this.actions}
                     rowActions={[]}
                     cells={columns}
                     rowClick={cell => { }}
+                    showCheckAll={this.props.showCheckAll != undefined?this.props.showCheckAll:false}
                   />
                 ) : <LoadingSection />}
               </div>
