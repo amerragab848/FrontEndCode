@@ -143,18 +143,7 @@ class ProjectTaskAddEdit extends Component {
       );
     }
   }
-
-  componentDidMount() {
-    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-    for (var i = 0; i < links.length; i++) {
-      if ((i + 1) % 2 == 0) {
-        links[i].classList.add("even");
-      } else {
-        links[i].classList.add("odd");
-      }
-    }
-    this.checkDocumentIsView();
-  }
+ 
 
   componentWillReceiveProps(nextProps, prevProps) {
 
@@ -206,7 +195,16 @@ class ProjectTaskAddEdit extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+    for (var i = 0; i < links.length; i++) {
+      if ((i + 1) % 2 == 0) {
+        links[i].classList.add("even");
+      } else {
+        links[i].classList.add("odd");
+      }
+    }
+    this.checkDocumentIsView();
 
     if (this.state.docId > 0) {
 

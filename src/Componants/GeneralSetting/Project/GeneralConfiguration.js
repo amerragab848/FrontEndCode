@@ -112,7 +112,7 @@ class GeneralConfiguration extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         dataservice.GetDataGrid('GetConfigurations').then(
             res => {
                 let SelectedTimesheet = find(TimesheetPolicyDropData, function (i) { return i.value === res.timesheetPolicy });

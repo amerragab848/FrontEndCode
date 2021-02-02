@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import ReactTable from "react-table";
-import dataservice from "../../Dataservice";
-import Config from "../../Services/Config.js";
+import dataservice from "../../Dataservice"; 
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -19,7 +18,7 @@ class ContractsDeductions extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         dataservice.GetDataGrid('GetContractsDeductionsList?contractId=' + this.state.contractId + 'pageNumber=0&pageSize=10').then(
             res => {
                 this.setState({
