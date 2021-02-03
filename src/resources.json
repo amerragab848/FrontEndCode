@@ -9263,6 +9263,14 @@
     "bicContactName": {
         "en": "Bic Contact",
         "ar": "الشركه"  
+    },
+    "actionByCompanyName":{
+        "en": "Action By CompanyName",
+        "ar": "اسم الشركه " 
+    },
+    "actionByContactName":{
+        "en": "Action By ContactName",
+        "ar": "اسم جه الاتصال " 
     }
 
 }

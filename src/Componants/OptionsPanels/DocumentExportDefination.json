@@ -2740,6 +2740,17 @@
             "description",
             "levelDuration",
             "Approval"
+        ],
+        "columnsSecItems":[
+            "arrange",
+            "actionByCompanyName",
+            "actionByContactName"
+          
+        ],
+        "SecItemsfriendlyNames":[
+            "arrange",
+            "actionByCompanyName",
+            "actionByContactName"
         ]
     },
     "9": {

@@ -116,7 +116,14 @@ export function ExportingData(data) {
         });
     };
 }
-
+export function ExportingDataSec(data) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.Export_Document_Sec,
+            secItems: data.secItems,
+        });
+    };
+}
 export function SetCyclesExportingData(data) {
     return (dispatch, getState) => {
         dispatch({

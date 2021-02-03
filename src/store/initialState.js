@@ -25,6 +25,7 @@ export default {
             viewModel: false,
             documentCycle: {},
             items: [],
+            secItems:[],
             cycles: [],
             cyclesFields: [],
             cyclesfriendlyNames: [],

@@ -21,6 +21,12 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state, items: _items
             }
+          case types.Export_Document_Sec:
+            let _secItems = state.secItems.length > 0 ? state.secItems : action.secItems.length > 0 ? action.secItems : []
+
+              return{
+                        ...state,secItems:_secItems
+              }
 
         case types.Set_DocumentCycle:
             let _cycles = state.cycles.length > 0 ? state.cycles : action.cycles.length > 0 ? action.cycles : []
