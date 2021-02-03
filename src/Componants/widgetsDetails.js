@@ -608,13 +608,41 @@ let widgets = {
         "props": {
             "permission": 3510,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=42",
+            "api": "getOpenedDocumentsCount?docType=42&projectId=0&status=true",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
             "value": "count-0",
             "total": "total-1",
             "action": "action",
             "key": "1-2-2"
+        }
+    },
+    "closedSubmittals": {
+        "title": "closedSubmittals",
+        "props": {
+            "permission": 3510,
+            "type": "twoWidget",
+            "api": "getOpenedDocumentsCount?docType=42&projectId=0&status=false",
+            "apiDetails": "",
+            "route": "DashBoardCounterLog",
+            "value": "count-0",
+            "total": "total-1",
+            "action": "action",
+            "key": "1-2-4"
+        }
+    },
+    "pendingSubmittals": {
+        "title": "pendingSubmittals",
+        "props": {
+            "permission": 3510,
+            "type": "twoWidget",
+            "api": "getOpenedDocumentsCount?docType=42",
+            "apiDetails": "",
+            "route": "DashBoardCounterLog",
+            "value": "count-0",
+            "total": "total-1",
+            "action": "action",
+            "key": "1-2-5"
         }
     },
     "rejectedSubmittals": {

@@ -9251,5 +9251,13 @@
     "bicContactName": {
         "en": "Bic Contact",
         "ar": "الشركه"  
+    },
+    "closedSubmittals": {
+        "en": "Closed Submittal",
+        "ar": " مجموعات تقديمات المغلقة"
+    },
+    "pendingSubmittals": {
+        "en": "Pending Submittal",
+        "ar": " مجموعات تقديمات المعلقة"
     }
 }

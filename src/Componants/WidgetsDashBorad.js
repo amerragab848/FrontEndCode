@@ -792,29 +792,13 @@ var widgets = [
           action: "action",
           isModal: false
         }
-      }, {
-        title: "openedSubmittals",
-        permission: 3510,
-        canView: false,
-        checked: false,
-        order: 2,
-        type: "twoWidget",
-        props: {
-          api: "getOpenedDocumentsCount?docType=42",
-          apiDetails: "",
-          route: "DashBoardCounterLog",
-          value: "count-0",
-          total: "total-1",
-          action: "action",
-          isModal: false
-        }
-      },
+      }, 
       {
         title: "rejectedSubmittals",
         permission: 3494,
         canView: false,
         checked: false,
-        order: 3,
+        order: 2,
         type: "twoWidget",
         props: {
           api: "GetApprocalStatusCount?status=false",
@@ -824,6 +808,57 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
+        }
+      },
+      {
+        title: "openedSubmittals",
+        permission: 3510,
+        canView: false,
+        checked: false,
+        order: 3,
+        type: "twoWidget",
+        props: {
+          api: "getOpenedDocumentsCount?docType=42&projectId=0&status=true",
+          apiDetails: "",
+          route: "DashBoardCounterLog",
+          value: "count-0",
+          total: "total-1",
+          action: "action",
+          isModal: false
+        }
+      },
+      {
+        title: "closedSubmittals",
+        permission: 3510,
+        canView: false,
+        checked: false,
+        order: 4,
+        type: "twoWidget",
+        props: {
+          api: "getOpenedDocumentsCount?docType=42&projectId=0&status=false",
+          apiDetails: "",
+          route: "DashBoardCounterLog",
+          value: "count-0",
+          total: "total-1",
+          action: "action",
+          isModal: false
+        }
+      },
+      {
+        title: "pendingSubmittals",
+        permission: 3510,
+        canView: false,
+        checked: false,
+        order: 5,
+        type: "twoWidget",
+        props: {
+          api: "getOpenedDocumentsCount?docType=42",
+          apiDetails: "",
+          route: "DashBoardCounterLog",
+          value: "count-0",
+          total: "total-1",
+          action: "action",
+          isModal: false
         }
       }
     ]

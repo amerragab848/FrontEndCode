@@ -225,7 +225,7 @@ let CounterWidgetsWithDetails = [{
 {
     id: 'wt_openedSubmittal_4',
     title: 'openedSubmittals',
-    api: 'getOpenedDocumentsCount?docType=42',
+    api: 'getOpenedDocumentsCount?docType=42&projectId=0&status=true',
     apiDetails: 'GetOpenedDocumentsDetails?docType=42',
     value: "count-0",
     total: "total-1",
@@ -265,7 +265,29 @@ let CounterWidgetsWithDetails = [{
     isModal: 'true',
     route: 'route-to-view',
     permission: 3513
-}
+},
+{
+    id: 'wt_ClosedSubmittal_8',
+    title: 'closedSubmittals',
+    api: 'getOpenedDocumentsCount?docType=42&projectId=0&status=false',
+    apiDetails: 'GetOpenedDocumentsDetails?docType=42',
+    value: "count-0",
+    total: "total-1",
+    isModal: 'true',
+    route: 'route-to-view',
+    permission: 3510
+},
+{
+    id: 'wt_PendingSubmittal_9',
+    title: 'pendingSubmittals',
+    api: 'getOpenedDocumentsCount?docType=42',
+    apiDetails: 'GetOpenedDocumentsDetails?docType=42',
+    value: "count-0",
+    total: "total-1",
+    isModal: 'true',
+    route: 'route-to-view',
+    permission: 3510
+},
 ];
 
 export default {
