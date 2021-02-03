@@ -24722,3 +24722,19 @@ tbody.grid-body tr .text.elipsisPadd {
     max-height: 345px !important;
 }
 .fullmodal .gridChart .linebylineInput .ui.radio.checkbox {margin-right: 10px;}
+thead.grid-header tr.action-bar .actions button.toWorkFlow {width: auto;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem {
+    border-bottom: 10px solid transparent;
+    margin-left: 1px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem:before{
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.gray{border-color: #e9ecf1;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.red{border-color: #eb4b3b;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.blue{border-color: #4283fb;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.green{border-color: #45cd49;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.yellow{border-color: #fec107;}

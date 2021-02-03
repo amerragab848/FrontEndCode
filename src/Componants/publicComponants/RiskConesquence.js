@@ -24,7 +24,7 @@ class RiskConesquence extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.state.riskId) {
 
             dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {

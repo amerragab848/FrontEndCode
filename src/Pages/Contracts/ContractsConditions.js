@@ -11,8 +11,7 @@ import DataService from '../../Dataservice'
 import { toast } from "react-toastify";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../store/actions/communication';
-import 'react-table/react-table.css'
+import * as communicationActions from '../../store/actions/communication'; 
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -24,10 +23,6 @@ const conditionSchema = Yup.object().shape({
     description: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     arrange: Yup.number().required(Resources['arrangeRequired'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
 });
-
-
-
-
 
 class ContractsConditions extends Component {
     constructor(props) {
@@ -56,7 +51,7 @@ class ContractsConditions extends Component {
             this.setState({ selectedContract: { label: Resources.selectConditions[currentLanguage], value: -1 } })
         this.setState({ activeTab: tabIndex })
     }
-    componentWillMount = () => {
+    componentDidMount = () => {
         this.setState({ isLoading: true })
         DataService.GetDataList("GetAccountsContractsConditionsCategories?accountOwnerId=2&pageNumber=0&pageSize=1000", 'details', 'id').then((res) => {
             this.setState({ contracts: res, isLoading: false })
@@ -64,18 +59,18 @@ class ContractsConditions extends Component {
             this.setState({ isLoading: false })
         })
         this.setState({ isLoading: true })
-        Api.get('GetContractGeneralConditions?contractId='+this.props.contractId).then(res=>{
-            if(res)
-            this.setState({generalRows:res, isLoading: false})
+        Api.get('GetContractGeneralConditions?contractId=' + this.props.contractId).then(res => {
+            if (res)
+                this.setState({ generalRows: res, isLoading: false })
             else
-            this.setState({ isLoading: false})
+                this.setState({ isLoading: false })
         })
         this.setState({ isLoading: true })
-        Api.get('GetContractParticularConditions?contractId='+this.props.contractId).then(res=>{
-            if(res)
-            this.setState({particularRows:res, isLoading: false})
+        Api.get('GetContractParticularConditions?contractId=' + this.props.contractId).then(res => {
+            if (res)
+                this.setState({ particularRows: res, isLoading: false })
             else
-            this.setState({ isLoading: false})
+                this.setState({ isLoading: false })
         })
     }
 
@@ -96,7 +91,7 @@ class ContractsConditions extends Component {
             conditionType: this.state.activeTab == 0 ? 'general' : 'particular',
             details: this.state.activeCondition == 1 ? values.description : '',
             arrange: this.state.activeCondition == 1 ? values.arrange : arrange,
-            contractId: this.props.contractId, 
+            contractId: this.props.contractId,
             accountsContractId: this.state.activeCondition == 0 ? (this.state.activeTab == 1 ? this.state.selectedContract.value : this.state.selectedContract.label) : undefined
         }
         if (this.state.activeTab == 1)
@@ -177,7 +172,7 @@ class ContractsConditions extends Component {
                         initialValues={{
                             description: this.state.description,
                             arrange: this.state.activeTab == 0 ? this.state.G_Arrange : this.state.P_Arrange,
-                            fromContract: this.state.selectedContract!==null?this.state.selectedContract.value == -1 ? '' : this.state.selectedContract.label:''
+                            fromContract: this.state.selectedContract !== null ? this.state.selectedContract.value == -1 ? '' : this.state.selectedContract.label : ''
                         }}
                         validationSchema={this.state.activeCondition == 1 ? conditionSchema : fromContractSchema}
                         onSubmit={(values) => {

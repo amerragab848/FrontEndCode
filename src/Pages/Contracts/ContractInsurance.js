@@ -49,11 +49,9 @@ class ContractInsurance extends Component {
             currentId: 0
         };
     }
-
+  
     componentDidMount() {
-        var links = document.querySelectorAll(
-            ".noTabs__document .doc-container .linebylineInput"
-        );
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add("even");
@@ -61,9 +59,7 @@ class ContractInsurance extends Component {
                 links[i].classList.add("odd");
             }
         }
-    }
 
-    componentWillMount() {
         let typeColumn = this.props.type;
 
         const objDocument = {
@@ -110,7 +106,7 @@ class ContractInsurance extends Component {
         dataservice
             .GetDataList(
                 "GetProjectProjectsCompaniesForList?projectId=" +
-                    this.state.projectId,
+                this.state.projectId,
                 "companyName",
                 "companyId"
             )
@@ -159,15 +155,15 @@ class ContractInsurance extends Component {
         selectedValue,
         subDatasource
     ) {
-       
+
         let original_document = { ...this.state.document };
         let updated_document = {};
         if (event == null) {
             updated_document[field] = event;
-         }
-         else{
-             updated_document[field] = event.value;
-         }
+        }
+        else {
+            updated_document[field] = event.value;
+        }
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -418,9 +414,9 @@ class ContractInsurance extends Component {
                                                         <label className="control-label">
                                                             {
                                                                 Resources[
-                                                                    "policyType"
+                                                                "policyType"
                                                                 ][
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </label>
@@ -430,9 +426,9 @@ class ContractInsurance extends Component {
                                                                 (errors.policyType
                                                                     ? "has-error"
                                                                     : !errors.policyType &&
-                                                                      touched.policyType
-                                                                    ? " has-success"
-                                                                    : " ")
+                                                                        touched.policyType
+                                                                        ? " has-success"
+                                                                        : " ")
                                                             }>
                                                             <input
                                                                 name="policyType"
@@ -440,9 +436,9 @@ class ContractInsurance extends Component {
                                                                 id="policyType"
                                                                 placeholder={
                                                                     Resources[
-                                                                        "policyType"
+                                                                    "policyType"
                                                                     ][
-                                                                        currentLanguage
+                                                                    currentLanguage
                                                                     ]
                                                                 }
                                                                 autoComplete="off"
@@ -484,7 +480,7 @@ class ContractInsurance extends Component {
                                                             {
                                                                 Resources
                                                                     .arrange[
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </label>
@@ -509,7 +505,7 @@ class ContractInsurance extends Component {
                                                                 placeholder={
                                                                     Resources
                                                                         .arrange[
-                                                                        currentLanguage
+                                                                    currentLanguage
                                                                     ]
                                                                 }
                                                             />
@@ -520,7 +516,7 @@ class ContractInsurance extends Component {
                                                             {
                                                                 Resources
                                                                     .policyLimit[
-                                                                    currentLanguage
+                                                                currentLanguage
                                                                 ]
                                                             }
                                                         </label>
@@ -544,7 +540,7 @@ class ContractInsurance extends Component {
                                                                 placeholder={
                                                                     Resources
                                                                         .policyLimit[
-                                                                        currentLanguage
+                                                                    currentLanguage
                                                                     ]
                                                                 }
                                                             />
@@ -603,34 +599,34 @@ class ContractInsurance extends Component {
                                                 </div>
                                                 <div className="slider-Btns">
                                                     {this.state.isLoading ===
-                                                    false ? (
-                                                        <button
-                                                            className={
-                                                                "primaryBtn-1 btn " +
-                                                                (this.props
-                                                                    .isViewMode ===
-                                                                true
-                                                                    ? "disNone"
-                                                                    : "")
-                                                            }
-                                                            type="submit">
-                                                            {
-                                                                Resources[
+                                                        false ? (
+                                                            <button
+                                                                className={
+                                                                    "primaryBtn-1 btn " +
+                                                                    (this.props
+                                                                        .isViewMode ===
+                                                                        true
+                                                                        ? "disNone"
+                                                                        : "")
+                                                                }
+                                                                type="submit">
+                                                                {
+                                                                    Resources[
                                                                     "goAdd"
-                                                                ][
+                                                                    ][
                                                                     currentLanguage
-                                                                ]
-                                                            }
-                                                        </button>
-                                                    ) : (
-                                                        <button className="primaryBtn-1 btn disabled">
-                                                            <div className="spinner">
-                                                                <div className="bounce1" />
-                                                                <div className="bounce2" />
-                                                                <div className="bounce3" />
-                                                            </div>
-                                                        </button>
-                                                    )}
+                                                                    ]
+                                                                }
+                                                            </button>
+                                                        ) : (
+                                                            <button className="primaryBtn-1 btn disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button>
+                                                        )}
                                                 </div>
                                             </Form>
                                         )}
@@ -641,7 +637,7 @@ class ContractInsurance extends Component {
                                         <h2 className="zero">
                                             {
                                                 Resources["insuranceList"][
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }
                                         </h2>
