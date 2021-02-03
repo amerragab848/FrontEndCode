@@ -8,6 +8,7 @@ import {
 } from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
+import Dataservice from '../../Dataservice';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -24,7 +25,7 @@ class SendWorkFlow extends Component {
                 contacts: [],
                 dueDate: "",
                 useSelection: false,
-               
+
             },
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
             selectedContact: [],
@@ -32,7 +33,8 @@ class SendWorkFlow extends Component {
             WorkFlowData: [],
             WorkFlowContactData: [],
             useSelection: false,
-            isLoading:false
+            isLoading: false,
+            isMultipleSelect: this.props.isMultipleSelect
         }
     }
 
@@ -50,19 +52,19 @@ class SendWorkFlow extends Component {
 
     componentDidMount = () => {
         let val = this.props.isLoading;
-         this.setState({
-           submitLoading:false
-         })
+        this.setState({
+            submitLoading: false
+        })
         let url = "ProjectWorkFlowGetList?projectId=" + this.state.workFlowData.projectId;
         this.GetData(url, 'subject', 'id', 'WorkFlowData', 1);
         this.props.actions.SendingWorkFlow(true);
 
     }
-    componentDidUpdate(prevProps, state){
-    //   if(prevProps.workFlowCycles.length != this.props.workFlowCycles.length)
-    //   {
-    //       this.setState({submitLoading:false})
-    //   }
+    componentDidUpdate(prevProps, state) {
+        //   if(prevProps.workFlowCycles.length != this.props.workFlowCycles.length)
+        //   {
+        //       this.setState({submitLoading:false})
+        //   }
     }
     // static getDerivedStateFromProps(nextProps, state) {
     //     if (nextProps.showModal != state.showModal) {
@@ -70,7 +72,7 @@ class SendWorkFlow extends Component {
     //     }
     //     return null
     // }
-    componentWillReceiveProps (nextProps, state) {
+    componentWillReceiveProps(nextProps, state) {
         // if (nextProps.showModal != state.showModal) {
         //     return { submitLoading: false };
         // }
@@ -86,10 +88,8 @@ class SendWorkFlow extends Component {
     }
 
     clickHandler = (e) => {
-        // this.setState({ 
-        //     submitLoading:true
-           
-        // })
+        let isMultipleSelect = this.state.isMultipleSelect;
+ 
         var ids = this.state.selectedContact;
         if (this.state.useSelection == true) {
             ids = ids.map(i => i.value)
@@ -100,13 +100,31 @@ class SendWorkFlow extends Component {
         workFlowObj.contacts = ids;
         workFlowObj.workFlowId = this.state.selectedWorkFlow.value;
         workFlowObj.useSelection = this.state.useSelection;
-         this.props.actions.setLoading();
+        this.props.actions.setLoading();
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.props.docId + '&docType=' + this.props.docTypeId + '&projectId=' + this.props.projectId;
-        this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
-        // this.setState({ 
-        //     submitLoading:this.props.isLoading
-           
-        // })
+
+        if (isMultipleSelect === true) {
+            var objServer = {
+                projectId: workFlowObj.projectId,
+                docIds: workFlowObj.docId,
+                docTypeId: workFlowObj.docTypeId,
+                workFlowId: workFlowObj.workFlowId,
+                contacts: workFlowObj.contacts
+            };
+
+            this.setState({
+                isLoading: true
+            });
+            
+            Dataservice.addObject('SnedMultipleToWorkFlow', objServer).then(result => {
+                this.props.actions.showMultipleWFModal(false);
+                this.setState({
+                    isLoading: false
+                });
+            });
+        } else {
+            this.props.actions.SnedToWorkFlow("SnedToWorkFlow", workFlowObj, url);
+        } 
     }
 
     render() {
@@ -129,9 +147,9 @@ class SendWorkFlow extends Component {
                     className={this.state.toCompanyClass}
                 />
                 <div className="fullWidthWrapper">
-                     {this.props.isLoading===false ?                  
-                     
-                        <button className="workFlowDataBtn-1 mediumBtn primaryBtn-1 btn middle__btn" onClick={this.clickHandler}>{Resources['send'][currentLanguage]}</button>
+                    {this.props.isLoading === false ?
+
+                        <button className="workFlowDataBtn-1 mediumBtn primaryBtn-1 btn middle__btn" onClick={(e) => this.clickHandler(e)}>{Resources['send'][currentLanguage]}</button>
                         : (
                             <button className="primaryBtn-1 btn  mediumBtn disabled">
                                 <div className="spinner">
@@ -204,7 +222,8 @@ function mapStateToProps(state) {
         workFlowCycles: state.communication.workFlowCycles,
         hasWorkflow: state.communication.hasWorkflow,
         showModal: state.communication.showModal,
-        isLoading: state.communication.isLoading
+        isLoading: state.communication.isLoading,
+        ShowMultipleWF: state.communication.ShowMultipleWF
     }
 }
 

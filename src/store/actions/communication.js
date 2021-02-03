@@ -72,6 +72,16 @@ export function showOptionPanel(show) {
     };
 }
 
+export function showMultipleWFModal(show) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.ShowMultipleWF,
+            isLoading:false,
+            ShowMultipleWF: show,
+        });
+    };
+}
+
 export function GetDocumentCycle(urlAction) {
     return (dispatch, getState) => {
         return Api.get(urlAction)
@@ -375,7 +385,25 @@ export function SnedToWorkFlow(url, formData, urlCycle) {
     };
 }
 
-
+export function SnedMultipleToWorkFlow(url, formData) {
+    return (dispatch, getState) => {
+        return Api.post(url, formData)
+            .then(resp => { 
+                dispatch({
+                    type: types.Send_WorkFlow,            
+                    isLoading:false
+                });
+            })
+            .catch(ex => {
+                dispatch({
+                    type: types.Send_WorkFlow,
+                    hasWorkflow: false,
+                    showModal: false,
+                    
+                });
+            });
+    };
+}
 
 export function SendingWorkFlow(value) {
     return (dispatch, getState) => {

@@ -20,6 +20,7 @@ class WidgetsWithText extends Component {
   }
 
   componentDidMount() {
+    console.table( this.props.props);
     Api.get(this.props.props.api, undefined, moduleId).then(data => {
       if (data) {
         let _value = this.props.props.value.split("-");
@@ -47,7 +48,8 @@ class WidgetsWithText extends Component {
   render() {
     return (
       <Fragment>
-        <div className="summerisItem withOutOf">
+
+        <div className={"summerisItem withOutOf " + this.props.props.class}>
           <div className="content">
             <h4 className="title">
               {Resources[this.props.title][currentLanguage]}

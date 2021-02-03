@@ -30,7 +30,7 @@ let widgets = {
     "pendingExpenses": {
         "title": "pendingExpenses",
         "props": {
-            "class": "red",
+            "class": "gray",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetPendingExpensesSummary",
@@ -631,6 +631,7 @@ let widgets = {
     "approvalSubmittals": {
         "title": "approvalSubmittals",
         "props": {
+            "class": "green",
             "permission": 3493,
             "type": "twoWidget",
             "api": "GetApprocalStatusCount?status=true",
@@ -646,6 +647,7 @@ let widgets = {
         "title": "openedSubmittals",
         "props": {
             "permission": 3510,
+            "class": "gray",
             "type": "twoWidget",
             "api": "getOpenedDocumentsCount?docType=42",
             "apiDetails": "",
@@ -660,7 +662,8 @@ let widgets = {
         "title": "rejectedSubmittals",
         "props": {
             "permission": 3494,
-            "type": "twoWidget",
+            "type": "twoWidget", 
+            "class": "red",
             "api": "GetApprocalStatusCount?status=false",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -675,6 +678,7 @@ let widgets = {
         "props": {
             "permission": 3512,
             "type": "twoWidget",
+            "class": "gray",
             "api": "getOpenedDocumentsCount?docType=19",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -689,6 +693,7 @@ let widgets = {
         "props": {
             "permission": 3513,
             "type": "twoWidget",
+            "class": "gray",
             "api": "getOpenedDocumentsCount?docType=25",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -703,6 +708,7 @@ let widgets = {
         "props": {
             "permission": 3495,
             "type": "twoWidget",
+            "class": "gray",
             "api": "GetRfiOpenCount",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -717,6 +723,7 @@ let widgets = {
         "props": {
             "permission": 3511,
             "type": "twoWidget",
+            "class": "gray",
             "api": "getOpenedDocumentsCount?docType=28",
             "apiDetails": "",
             "route": "DashBoardCounterLog",

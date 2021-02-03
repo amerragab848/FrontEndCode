@@ -13,6 +13,7 @@ import language from '../resources.json';
 import Config from '../Services/Config';
 import IndexedDb from '../IndexedDb';
 import Details from './widgetsDetails';
+
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import mapValues from 'lodash/mapValues';
@@ -93,12 +94,12 @@ class Index extends Component {
         });
     }
 
-    renderWidget(widget, index) { 
+    renderWidget(widget, index) {
         if (Details.widgets[widget.title].props.type === 'threeWidget') {
             return (
                 <ApprovedWidget
                     key={index + 'DIV'}
-                    {...Details.widgets[widget.title]}
+                    {...Details.widgets[widget.title]} 
                     title={language[widget.title][currentLanguage]}
                 />
             );
@@ -166,13 +167,13 @@ class Index extends Component {
                             stack={Details.widgets[widget.title].stack}
                             yTitle={
                                 language[
-                                    Details.widgets[widget.title].props.yTitle
+                                Details.widgets[widget.title].props.yTitle
                                 ][currentLanguage]
                             }
                             barContent={
                                 Details.widgets[widget.title].props.barContent
                                     ? Details.widgets[widget.title].props
-                                          .barContent
+                                        .barContent
                                     : []
                             }
                         />
@@ -195,7 +196,7 @@ class Index extends Component {
                             stack={Details.widgets[widget.title].stack}
                             yTitle={
                                 language[
-                                    Details.widgets[widget.title].props.yTitle
+                                Details.widgets[widget.title].props.yTitle
                                 ][currentLanguage]
                             }
                             multiSeries={
@@ -204,7 +205,7 @@ class Index extends Component {
                             barContent={
                                 Details.widgets[widget.title].props.barContent
                                     ? Details.widgets[widget.title].props
-                                          .barContent
+                                        .barContent
                                     : []
                             }
                         />
@@ -212,8 +213,6 @@ class Index extends Component {
                 </Fragment>
             );
         }
-    //   });
-    //  }
     }
 
     renderCategory(category, index) {
@@ -221,18 +220,15 @@ class Index extends Component {
             <div className="SummeriesContainer" key={index}>
                 <Fragment>
                     <h2
-                        className={
-                            'SummeriesTitle ' +
-                            (category.title == 'mainAlerts' ? 'disNone' : '')
-                        }>
+                        className={'SummeriesTitle ' + (category.title == 'mainAlerts' ? 'disNone' : '')}>
                         {language[category.title][currentLanguage]}
                     </h2>
                     <div
                         className={
                             'SummeriesContainerContent ' +
                             (category.title == 'summaries' ||
-                            category.title == 'Submittal' ||
-                            category.title == 'communication'
+                                category.title == 'Submittal' ||
+                                category.title == 'communication'
                                 ? ' numbersContainerContent'
                                 : ' ')
                         }>

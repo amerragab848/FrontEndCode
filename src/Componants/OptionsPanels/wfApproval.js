@@ -47,7 +47,7 @@ class wfApproval extends Component {
     this.fillContacts(this.props.docApprovalId, this.props.approvalStatus);
   };
 
-  fillContacts(docApprovalId, approvalStatus) {//GetDataListWithAdditionalParam , 'contactName', 'contactId', 'arrange'
+  fillContacts(docApprovalId, approvalStatus) {
     dataservice.callAPIGetDataList("GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" + docApprovalId + "&approvalStatus=" + approvalStatus).then(result => {
       if (result) {
         let approveData = [];

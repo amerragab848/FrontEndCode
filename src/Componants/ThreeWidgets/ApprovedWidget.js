@@ -73,7 +73,7 @@ class ApprovedWidget extends Component {
       });
       return (
 
-        <div className= {"summerisItem "+this.props.class} >
+        <div className={"summerisItem "} >
           <div className="content">
             <h4 className="title">{this.props.title}</h4>
             <p className="number" onClick={() => this.onOpenModal(high.action, high[this.props.props.value])}>

@@ -4,7 +4,7 @@ let ThreeWidgetsData = [
         title: "assessmentSummary",
         key: "0-101-1001",
         props: {
-            class: "red",
+           
             api: "GetAssessmentSummary",
             apiDetails: "",
             route: ["TimeSheetDetails", "DocApprovalDetails?action=", "PendingExpensesDetails"],
@@ -21,7 +21,7 @@ let ThreeWidgetsData = [
         title: "inboxSummary",
         key: "0-101-1002",
         props: {
-            class: "red",
+           
             api: "GetInboxSummary",
             apiDetails: "",
             route: ["DistributionInboxListSummaryDetails?id=0&action="],
@@ -38,7 +38,7 @@ let ThreeWidgetsData = [
         title: "closedSummary",
         key: "0-101-1003",
         props: {
-            class: "red",
+            class: "blue",
             api: "GetClosedDocumentsSummaryCount",
             apiDetails: "SelectDocTypeByProjectIdClosedByAction?action=",
             route: ["ClosedSummaryDetails?action="],
@@ -55,7 +55,7 @@ let ThreeWidgetsData = [
         title: "distributionSummary",
         key: "0-101-1004",
         props: {
-            class: "red",
+           
             api: "GetDistributionInboxSummary",
             apiDetails: "",
             route: ["DistributionInboxListSummaryDetails?id=1&action="],
@@ -72,7 +72,7 @@ let ThreeWidgetsData = [
         title: "actionBySummary",
         key: "0-101-1005",
         props: {
-            class: "red",
+           
             api: "GetActionByCount",
             apiDetails: "GetActionsBySummaryDetails?action=",
             route: ["ActionBySummaryDetails?action="],
@@ -89,7 +89,7 @@ let ThreeWidgetsData = [
         title: "notCodedExpensesSummary",
         key: "0-101-1006",
         props: {
-            class: "red",
+           
             api: "GetNotCodedExpensesSummary",
             apiDetails: "GetNotCodedExpensesSummaryDetail?action=",
             route: ["NotCodedExpensesSummaryDetails?action="],
@@ -106,7 +106,7 @@ let ThreeWidgetsData = [
         title: "rejecerdItem",
         key: "0-102-1007",
         props: {
-            class: "red",
+           
             api: "GetWorkFlowSummary",
             apiDetails: "",
             route: ["DocApprovalDetails?action=", "DocNotifyLogDetails"],
@@ -123,7 +123,7 @@ let ThreeWidgetsData = [
         title: "notCodedPayment",
         key: "0-102-1008",
         props: {
-            class: "red",
+           
             api: "GetNotCodedPaymentsSummary",
             apiDetails: "GetPaymentUserByRange?action=",
             route: ["NotCodedPaymentDetails?action="],
@@ -140,7 +140,7 @@ let ThreeWidgetsData = [
         title: "openedSummary",
         key: "0-102-1009",
         props: {
-            class: "red",
+            class: "gray",
             api: "GetOppenedDocumentsSummaryCount",
             apiDetails: "SelectDocTypeByProjectIdOpened?action=",
             route: ["OpenedSummaryDetails?action="],
@@ -157,7 +157,7 @@ let ThreeWidgetsData = [
         title: "schedualActionBy",
         key: "0-102-1010",
         props: {
-            class: "red",
+           
             api: "GetActionByScheduleCount",
             apiDetails: "GetActionsByScheduleSummaryDetails?action=",
             route: ["SchedualActionByDetails?action="],
@@ -174,7 +174,7 @@ let ThreeWidgetsData = [
         title: "ScheduleAlertsSummary",
         key: "0-102-1011",
         props: {
-            class: "red",
+           
             api: "GetScheduleAlertSummaryCount",
             apiDetails: "GetScheduleAlertSummary?action=",
             route: ["ScheduleAlertsSummaryDetails?action="],
@@ -191,7 +191,7 @@ let ThreeWidgetsData = [
         title: "alertingQntySummary",
         key: "0-102-1012",
         props: {
-            class: "red",
+           
             api: "GetBoqQuantityRequestedAlert",
             apiDetails: "GetBoqQuantityRequestedAlertDetails",
             route: ["AlertingQuantitySummaryDetails?action="],
@@ -208,7 +208,7 @@ let ThreeWidgetsData = [
         title: "notCodedInvoicesSummary",
         key: "0-102-1013",
         props: {
-            class: "red",
+           
             api: "GetNotCodedInvoicesSummary",
             apiDetails: "GetInvoicesUserByRange?action=",
             route: ["NotCodedInvoicesSummaryDetails?action="],
@@ -225,7 +225,7 @@ let ThreeWidgetsData = [
         title: "usersAlertSummary",
         key: "0-101-1005",
         props: {
-            class: "red",
+           
             api: "GetusersAlertSummaryCount",
             apiDetails: "GetusersAlertSummaryDetails?action=",
             route: ["usersAlertSummaryDetails?action="],
