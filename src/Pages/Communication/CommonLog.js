@@ -177,7 +177,7 @@ class CommonLog extends Component {
                         selectedRows: values,
                     });
                 },
-                classes: '',
+                classes: 'toWorkFlow',
             }
         ];
 
