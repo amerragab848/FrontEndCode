@@ -9231,5 +9231,18 @@
    "departments": {
     "en": "departments",
     "ar": "الاقسام"
+    },
+    "workFlowDuration": {
+        "en": "Work Flow Duration",
+        "ar": "مدة الدورة المستندية"
+    },
+    "levelDuration":{
+        "en":"Level Duration",
+        "ar":"المدة"
+    },
+    "Approval":{
+        "en":"Approval",
+       "ar":"الاعتماد"
     }
+
 }
