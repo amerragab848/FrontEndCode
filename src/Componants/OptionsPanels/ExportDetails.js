@@ -95,7 +95,7 @@ class ExportDetails extends Component {
           + '<body>'
           + ' <table>{Fields}</table><table> <h6>Document Cycles </h6></table> '
           + ' <table>{items}</table><table> <h6> Attachments </h6></table> '
-          + ' <table>{secItems}</table><table> <h6> secItems </h6></table> '          
+          + ' <table>{secItems}</table><table> <h6> Follow Up </h6></table> '          
           + ' <table>{attachmentTable}</table>   <table><h6>   </table> '
           + ' <table>{workflowCycles}</table>   <table> Doc. Attachments </table> '
           + ' <table>{docAttachments}</table>     '
