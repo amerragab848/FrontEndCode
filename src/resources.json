@@ -9232,7 +9232,6 @@
     "en": "departments",
     "ar": "الاقسام"
     },
-<<<<<<< HEAD
     "workFlowDuration": {
         "en": "Work Flow Duration",
         "ar": "مدة الدورة المستندية"
@@ -9244,7 +9243,7 @@
     "Approval":{
         "en":"Approval",
        "ar":"الاعتماد"
-=======
+    },
     "revisions":{
         "en": "revisions",
         "ar": "المراجعات"
@@ -9264,7 +9263,6 @@
     "bicContactName": {
         "en": "Bic Contact",
         "ar": "الشركه"  
->>>>>>> 5fee91d7047bfc5cbcd4be589f4727432caeef80
     }
 
 }
