@@ -14,7 +14,7 @@ var widgets = [
         checked: true,
         order: 2,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetDocumentApprovalSummary",
           apiDetails: "",
           route: "DocApprovalDetails?action=2",
@@ -34,7 +34,7 @@ var widgets = [
         checked: true,
         order: 4,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetDocumentRejectedSummary",
           apiDetails: "",
           route: "DocApprovalDetails?action=1",
@@ -53,7 +53,7 @@ var widgets = [
         checked: true,
         order: 5,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetDocumentNotifySummary",
           apiDetails: "",
           route: "DocNotifyLogDetails",
@@ -72,7 +72,7 @@ var widgets = [
         checked: true,
         order: 6,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetWorkFlowAlertCount",
           apiDetails: "",
           route: "workFlowAlerts",
@@ -90,7 +90,7 @@ var widgets = [
         checked: true,
         order: 7,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetCountMonitorTasks",
           apiDetails: "",
           route: "MonitorTasks",
@@ -107,7 +107,7 @@ var widgets = [
         checked: true,
         order: 8,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "SelectByAccountIdCount",
           apiDetails: "",
           route: "FollowUpsSummaryDetails",
@@ -124,7 +124,7 @@ var widgets = [
         checked: true,
         order: 9,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetLevelDurationDelayCount",
           apiDetails: "",
           route: "levelDurationAlertDetails",
@@ -142,7 +142,7 @@ var widgets = [
         checked: true,
         order: 10,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetSendToWFTodayCount",
           apiDetails: "",
           route: "SendToWFToday",
@@ -169,7 +169,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetBoqQuantityRequestedAlert",
           apiDetails: "GetBoqQuantityRequestedAlertDetails",
           route: "AlertingQuantitySummaryDetails?action=",
@@ -188,7 +188,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetClosedDocumentsSummaryCount",
           apiDetails: "SelectDocTypeByProjectIdClosedByAction?action=",
           route: "ClosedSummaryDetails?action=",
@@ -207,7 +207,8 @@ var widgets = [
         checked: false,
         order: 3,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
+         
           api: "GetDistributionInboxSummary",
           apiDetails: "",
           route: "DistributionInboxListSummaryDetails?id=1&action=",
@@ -226,7 +227,7 @@ var widgets = [
         checked: false,
         order: 4,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetInboxSummary",
           apiDetails: "",
           route: "DistributionInboxListSummaryDetails?id=0&action=",
@@ -245,7 +246,7 @@ var widgets = [
         checked: false,
         order: 5,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetNotCodedExpensesSummary",
           apiDetails: "GetNotCodedExpensesSummaryDetail?action=",
           route: "NotCodedExpensesSummaryDetails?action=",
@@ -264,7 +265,7 @@ var widgets = [
         checked: false,
         order: 6,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetNotCodedInvoicesSummary",
           apiDetails: "GetInvoicesUserByRange?action=",
           route: "NotCodedInvoicesSummaryDetails?action=",
@@ -283,7 +284,7 @@ var widgets = [
         checked: false,
         order: 7,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetNotCodedPaymentsSummary",
           apiDetails: "GetPaymentUserByRange?action=",
           route: "NotCodedPaymentDetails?action=",
@@ -302,7 +303,7 @@ var widgets = [
         checked: false,
         order: 8,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetActionByCount",
           apiDetails: "GetActionsBySummaryDetails?action=",
           route: "ActionBySummaryDetails?action=",
@@ -322,7 +323,7 @@ var widgets = [
         checked: false,
         order: 9,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetOppenedDocumentsSummaryCount",
           apiDetails: "SelectDocTypeByProjectIdOpened?action=",
           route: "OpenedSummaryDetails?action=",
@@ -341,7 +342,7 @@ var widgets = [
         checked: false,
         order: 10,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetActionByScheduleCount",
           apiDetails: "GetActionsByScheduleSummaryDetails?action=",
           route: "SchedualActionByDetails?action=",
@@ -360,7 +361,7 @@ var widgets = [
         checked: false,
         order: 11,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetScheduleAlertSummaryCount",
           apiDetails: "GetScheduleAlertSummary?action=",
           route: "ScheduleAlertsSummaryDetails?action=",
@@ -379,7 +380,7 @@ var widgets = [
         checked: false,
         order: 13,
         type: "threeWidget",
-        props: {
+        props: { class: "red",
           api: "GetusersAlertCount",
           apiDetails: "GetusersAlertSummaryDetails?action=",
           route: "usersAlertSummaryDetails?action=",
@@ -407,7 +408,7 @@ var widgets = [
         // key: "0-3-1",
         title: 'projectStatus',
         order: 1,
-        props: {
+        props: { class: "red",
           'api': 'GetProjectsStatusSummaryCount',
           'name': 'item',
           'y': 'total'
@@ -421,7 +422,7 @@ var widgets = [
         checked: true,
         title: 'percentageExpensesTypesOfTotal',
         order: 2,
-        props: {
+        props: { class: "red",
           'api': 'GetPercentageExpensesType',
           'name': 'projectName',
           'y': 'total'
@@ -436,7 +437,7 @@ var widgets = [
         permission: 3507,
         title: 'expensesAllProject',
         order: 3,
-        props: {
+        props: { class: "red",
           'api': 'GetExpensesByTypeForAllProjects',
           'name': 'expenseTypeName',
           'y': 'total'
@@ -451,7 +452,7 @@ var widgets = [
         permission: 10041,
         title: 'riskStatusYearly',
         order: 4,
-        props: {
+        props: { class: "red",
           'api': 'GetRiskDataChartLine'
         },
         topicNames: ['Opened', 'Closed'],
@@ -463,7 +464,7 @@ var widgets = [
         permission: 3498,
         title: 'percentOfApprovedSubmittalPerProject',
         order: 5,
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveApprovedSubmittal?status=true',
           'name': 'projectName',
           'data': 'percentage'
@@ -481,7 +482,7 @@ var widgets = [
         checked: false,
         title: 'letterStatusYearly',
         order: 6,
-        props: {
+        props: { class: "red",
           'api': 'GetChartLineDataByDocType?docType=19'
         },
         topicNames: ['Opened', 'Closed'],
@@ -492,7 +493,7 @@ var widgets = [
         permission: 3497,
         order: 7,
         title: 'percentOfMaterialRequestPerProject',
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveRequests',
           'name': 'projectName',
           'data': 'percentage'
@@ -509,7 +510,7 @@ var widgets = [
         permission: 10039,
         order: 8,
         title: 'submittalStatusYearly',
-        props: {
+        props: { class: "red",
           'api': 'GetChartLineDataByDocType?docType=42'
         },
         topicNames: ['Opened', 'Closed'],
@@ -520,7 +521,7 @@ var widgets = [
         permission: 3499,
         order: 9,
         title: 'percentOfRejectedSubmittalPerProject',
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveApprovedSubmittal?status=false',
           'name': 'projectName',
           'data': 'percentage'
@@ -537,7 +538,7 @@ var widgets = [
         permission: 3505,
         order: 11,
         title: 'contractsPerProject',
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveContracts'
         },
         type: 'column',
@@ -552,7 +553,7 @@ var widgets = [
         permission: 10043,
         order: 10,
         title: 'countinspectionApprovedChar',
-        props: {
+        props: { class: "red",
           'api': 'GetStatusIspectionRequest?status=true',
           'name': 'projectName',
           'data': 'percentage'
@@ -569,7 +570,7 @@ var widgets = [
         permission: 10040,
         order: 13,
         title: 'transmittalStatusYearly',
-        props: {
+        props: { class: "red",
           'api': 'GetChartLineDataByDocType?docType=28'
         },
         topicNames: ['Opened', 'Closed'],
@@ -580,7 +581,7 @@ var widgets = [
         title: 'budgetVariance',
         permission: 3509,
         order: 12,
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveBudgetVariance'
         },
         type: 'column',
@@ -604,7 +605,7 @@ var widgets = [
         permission: 1377,
         title: 'riskStatus',
         order: 1,
-        props: {
+        props: { class: "red",
           'api': 'RiskByStatus',
           'name': 'item',
           'y': 'total'
@@ -617,7 +618,7 @@ var widgets = [
         checked: true,
         title: 'riskPeriority',
         order: 2,
-        props: {
+        props: { class: "red",
           'api': 'RiskByPriority',
           'name': 'item',
           'y': 'total'
@@ -630,7 +631,7 @@ var widgets = [
         permission: 3507,
         title: 'riskType',
         order: 3,
-        props: {
+        props: { class: "red",
           'api': 'RiskByRiskType',
           'name': 'item',
           'y': 'total'
@@ -655,7 +656,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetTotalPo",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -672,7 +673,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetMaterialRequestCounting",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -689,7 +690,7 @@ var widgets = [
         checked: false,
         order: 3,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetRejectedTimesheetBySystemCount",
           apiDetails: "",
           route: "RejectedTimesheetsDetails",
@@ -706,7 +707,7 @@ var widgets = [
         checked: false,
         order: 4,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetTotalPayment",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -723,7 +724,7 @@ var widgets = [
         checked: false,
         order: 5,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetCounMonthlyTasks",
           apiDetails: "",
           route: "MonthlyTasksDetails",
@@ -739,7 +740,7 @@ var widgets = [
         canView: false,
         order: 7,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetTimeSheetSummary",
           apiDetails: "",
           route: "TimeSheetDetails",
@@ -757,7 +758,7 @@ var widgets = [
         checked: false,
         order: 8,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetPendingExpensesSummary",
           apiDetails: "",
           route: "PendingExpensesDetails",
@@ -783,7 +784,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "twoWidget",
-        props: {
+        props: { class: "red",
           api: "GetApprocalStatusCount?status=true",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -799,7 +800,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "twoWidget",
-        props: {
+        props: { class: "red",
           api: "getOpenedDocumentsCount?docType=42",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -816,7 +817,7 @@ var widgets = [
         checked: false,
         order: 3,
         type: "twoWidget",
-        props: {
+        props: { class: "red",
           api: "GetApprocalStatusCount?status=false",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -842,7 +843,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "twoWidget",
-        props: {
+        props: { class: "red",
           api: "getOpenedDocumentsCount?docType=19",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -858,7 +859,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "twoWidget",
-        props: {
+        props: { class: "red",
           api: "getOpenedDocumentsCount?docType=25",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -875,7 +876,7 @@ var widgets = [
         checked: false,
         order: 3,
         type: "twoWidget",
-        props: {
+        props: { class: "red",
           api: "GetRfiOpenCount",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -892,7 +893,7 @@ var widgets = [
         checked: false,
         order: 4,
         type: "twoWidget",
-        props: {
+        props: { class: "red",
           api: "getOpenedDocumentsCount?docType=28",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -918,7 +919,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetCountinspection?status=null",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -934,7 +935,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetCountinspection?status=false",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -951,7 +952,7 @@ var widgets = [
         checked: false,
         order: 3,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetCountinspection?status=true",
           apiDetails: "",
           route: "DashBoardCounterLog",
@@ -977,7 +978,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetAvgTimeRespond?isMonthly=false&docType=19",
           apiDetails: "",
           route: "",
@@ -993,7 +994,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetAvgTimeRespond?isMonthly=false&docType=28",
           apiDetails: "",
           route: "",
@@ -1010,7 +1011,7 @@ var widgets = [
         checked: false,
         order: 3,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetAvgTimeRespond?isMonthly=false&docType=25",
           apiDetails: "",
           route: "",
@@ -1027,7 +1028,7 @@ var widgets = [
         checked: false,
         order: 4,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetAvgTimeRespond?isMonthly=false&docType=103",
           apiDetails: "",
           route: "",
@@ -1044,7 +1045,7 @@ var widgets = [
         checked: false,
         order: 5,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetAvgTimeRespond?isMonthly=false&docType=23",
           apiDetails: "",
           route: "",
@@ -1061,7 +1062,7 @@ var widgets = [
         checked: false,
         order: 6,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetAvgTimeRespond?isMonthly=false&docType=42",
           apiDetails: "",
           route: "",
@@ -1078,7 +1079,7 @@ var widgets = [
         checked: false,
         order: 7,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetAvgTimeRespond?isMonthly=false&docType=70",
           apiDetails: "",
           route: "",
@@ -1104,7 +1105,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetMaterialRequestCounting",
           apiDetails: "",
           route: "",
@@ -1120,7 +1121,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetInspectionRequestForCountingCustomLog",
           apiDetails: "InspectionRequestDetailsFilter",
           route: "DashBoardCounterLog",
@@ -1136,7 +1137,7 @@ var widgets = [
         checked: false,
         order: 3,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetCommunicationNCRCountingForCustomLog",
           apiDetails: "",
           route: "",
@@ -1152,7 +1153,7 @@ var widgets = [
         checked: false,
         order: 4,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetLogsSiteInstructionsCountingForCustomLog",
           apiDetails: "",
           route: "",
@@ -1178,7 +1179,7 @@ var widgets = [
         checked: false,
         order: 1,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "GetInvoicesForPoCountingForCustomLog",
           apiDetails: "",
           route: "",
@@ -1194,7 +1195,7 @@ var widgets = [
         checked: false,
         order: 2,
         type: "oneWidget",
-        props: {
+        props: { class: "red",
           api: "SelectAllMaterialInventoryCount",
           apiDetails: "",
           route: "",
@@ -1218,7 +1219,7 @@ var widgets = [
         permission: 0,
         order: 1,
         title: 'completedActivitiesCommulative',
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveCompletedActivities',
           'name': 'projectName',
           'data': 'percentage'
@@ -1235,7 +1236,7 @@ var widgets = [
         permission: 0,
         order: 2,
         title: 'completedActivitiesThisMonth',
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveMonthlyCompletedActivities',
           'name': 'projectName',
           'data': 'percentage'
@@ -1253,7 +1254,7 @@ var widgets = [
         permission: 0,
         order: 3,
         title: 'percentOfMaterialRequestPerProject',
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveRequests',
           'name': 'projectName',
           'data': 'percentage'
@@ -1271,7 +1272,7 @@ var widgets = [
         permission: 0,
         order: 4,
         title: 'percentOfRejectedSubmittalPerProject',
-        props: {
+        props: { class: "red",
           'api': 'GetTopFiveApprovedSubmittal?status=false',
           'name': 'projectName',
           'data': 'percentage'
@@ -1288,7 +1289,7 @@ var widgets = [
         permission: 0,
         order: 5,
         title: 'rejectedInspectionRequest',
-        props: {
+        props: { class: "red",
           'api': 'GetStatusIspectionRequest?status=false',
           'name': 'projectName',
           'data': 'percentage'
@@ -1305,7 +1306,7 @@ var widgets = [
         permission: 0,
         order: 6,
         title: 'pendingItemInWorkFlow',
-        props: {
+        props: { class: "red",
           'api': 'GetPendingItemInWorkFlowTopFive',
           'name': 'docName',
           'data': 'count'
@@ -1322,8 +1323,8 @@ var widgets = [
         permission: 0,
         order: 7,
         title: 'contractsSummaryAllProjectProject',
-        props: {
-          'api': 'GetTopFiveContractsForAllProjects' 
+        props: { class: "red",
+          'api': 'GetTopFiveContractsForAllProjects'
         },
         type: 'column',
         stack: '',
