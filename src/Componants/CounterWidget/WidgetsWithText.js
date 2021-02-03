@@ -19,8 +19,7 @@ class WidgetsWithText extends Component {
     };
   }
 
-  componentDidMount() {
-    console.table( this.props.props);
+  componentDidMount() { 
     Api.get(this.props.props.api, undefined, moduleId).then(data => {
       if (data) {
         let _value = this.props.props.value.split("-");

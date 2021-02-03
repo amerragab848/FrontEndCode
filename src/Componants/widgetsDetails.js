@@ -2,7 +2,7 @@ let widgets = {
     "timesheetLog": {
         "title": "timesheetLog",
         "props": {
-            "class": "red",
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetTimeSheetSummary",
@@ -16,7 +16,7 @@ let widgets = {
     "docApproval": {
         "title": "docApproval",
         "props": {
-            "class": "red",
+            "class": "green",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetDocumentApprovalSummary",
@@ -30,7 +30,7 @@ let widgets = {
     "pendingExpenses": {
         "title": "pendingExpenses",
         "props": {
-            "class": "gray",
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetPendingExpensesSummary",
@@ -58,7 +58,7 @@ let widgets = {
     "docNotify": {
         "title": "docNotify",
         "props": {
-            "class": "red",
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetDocumentNotifySummary",
@@ -72,7 +72,7 @@ let widgets = {
     "workFlowAlert": {
         "title": "workFlowAlert",
         "props": {
-            "class": "red",
+            "class": "blue",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetWorkFlowAlertCount",
@@ -86,7 +86,7 @@ let widgets = {
     "monitorTasks": {
         "title": "monitorTasks",
         "props": {
-            "class": "red",
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetCountMonitorTasks",
@@ -100,7 +100,7 @@ let widgets = {
     "monthlyTasks": {
         "title": "monthlyTasks",
         "props": {
-            "class": "red",
+            "class": "gray",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetCounMonthlyTasks",
@@ -111,24 +111,10 @@ let widgets = {
             "key": "0-1-8"
         }
     },
-    "followUpsSummary": {
-        "title": "followUpsSummary",
-        "props": {
-            "class": "red",
-            "permission": 0,
-            "type": "oneWidget",
-            "api": "SelectByAccountIdCount",
-            "route": "FollowUpsSummaryDetails",
-            "value": "total",
-            "listType": "item",
-            "action": "action",
-            "key": "0-1-9"
-        }
-    },
     "levelDurationAlert": {
         "title": "levelDurationAlert",
         "props": {
-            "class": "red",
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetLevelDurationDelayCount",
@@ -142,7 +128,7 @@ let widgets = {
     "SendToWFToday": {
         "title": "SendToWFToday",
         "props": {
-            "class": "red",
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetSendToWFTodayCount",
@@ -171,7 +157,7 @@ let widgets = {
     "closedSummary": {
         "title": "closedSummary",
         "props": {
-            "class": "red",
+            "class": "blue",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetClosedDocumentsSummaryCount",
@@ -183,10 +169,24 @@ let widgets = {
             "key": "0-2-2"
         }
     },
+    "followUpsSummary": {
+        "title": "followUpsSummary",
+        "props": {
+            "class": "yellow",
+            "permission": 0,
+            "type": "oneWidget",
+            "api": "SelectByAccountIdCount",
+            "route": "FollowUpsSummaryDetails",
+            "value": "total",
+            "listType": "item",
+            "action": "action",
+            "key": "0-1-9"
+        }
+    },
     "distributionInboxSummary": {
         "title": "distributionInboxSummary",
         "props": {
-            "class": "red",
+            "class": "yellow",
 
             "permission": 0,
             "type": "threeWidget",
@@ -202,7 +202,7 @@ let widgets = {
     "inboxSummary": {
         "title": "inboxSummary",
         "props": {
-            "class": "red",
+            "class": "yellow",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetInboxSummary",
@@ -591,6 +591,7 @@ let widgets = {
     "materialRequestcount": {
         "title": "materialRequestcount",
         "props": {
+            "class":"gray",
             "permission": 3343,
             "type": "oneWidget",
             "api": "GetMaterialRequestCounting",
@@ -605,6 +606,7 @@ let widgets = {
     "rejectedTimeSheet": {
         "title": "rejectedTimeSheet",
         "props": {
+            "class":"red",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetRejectedTimesheetBySystemCount",
@@ -618,6 +620,7 @@ let widgets = {
     "monthlyPaymentRequisitions": {
         "title": "monthlyPaymentRequisitions",
         "props": {
+            "class":"yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetTotalPayment",
