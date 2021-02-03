@@ -66,6 +66,13 @@ export default function (state = initialState.app.communication, action) {
                 showModal: action.showModal
             };
 
+        case types.ShowMultipleWF:
+
+            return {
+                ...state,
+                ShowMultipleWF: action.ShowMultipleWF,
+                isLoading: false,
+            };
         case types.Document_Adding:
             return {
                 ...state,
@@ -186,7 +193,7 @@ export default function (state = initialState.app.communication, action) {
                 workFlowCycles: action.workFlowCycles,
                 hasWorkflow: action.hasWorkflow,
                 showModal: action.showModal,
-                isLoading:false
+                isLoading: false
             };
 
 
@@ -432,7 +439,7 @@ export default function (state = initialState.app.communication, action) {
             })
             return {
                 ...state,
-                docId:documentId,
+                docId: documentId,
                 items: originalItems,
                 totalCost,
                 isLoading: false
