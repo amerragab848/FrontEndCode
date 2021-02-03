@@ -24722,3 +24722,4 @@ tbody.grid-body tr .text.elipsisPadd {
     max-height: 345px !important;
 }
 .fullmodal .gridChart .linebylineInput .ui.radio.checkbox {margin-right: 10px;}
+thead.grid-header tr.action-bar .actions button.toWorkFlow {width: 109px;}
