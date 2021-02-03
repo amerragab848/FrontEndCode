@@ -4,7 +4,7 @@ import Api from "../../api";
 import Resources from "../../resources.json";
 import moment from "moment";
 import Export from "../OptionsPanels/Export";
-import DashBoardDefenition from "./DashBoardProjectDefenition"; 
+import DashBoardDefenition from "./DashBoardProjectDefenition";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as dashboardComponantActions from '../../store/actions/communication';
@@ -59,16 +59,13 @@ class DashBoardProjectCounterLog extends Component {
       };
     }
   }
-
-  componentWillMount = () => {
-
+ 
+  componentDidMount() {
     let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
 
     var e = { label: this.props.projectName, value: projectId };
     this.props.actions.RouteToDashboardProject(e);
-  };
 
-  componentDidMount() {
     if (this.state.apiDetails) {
       let spliteData = this.state.apiDetails.split("-");
 

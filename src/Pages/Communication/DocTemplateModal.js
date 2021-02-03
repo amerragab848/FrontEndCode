@@ -79,7 +79,7 @@ class DocTemplateModal extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.state.docType == 'submittal') {
             this.setState({
                 docTempLink: Config.getPublicConfiguartion().downloads + '/Downloads/Excel/tempSubmittal.xlsx'

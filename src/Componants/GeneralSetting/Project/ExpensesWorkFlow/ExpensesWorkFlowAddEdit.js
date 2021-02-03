@@ -310,8 +310,9 @@ class ExpensesWorkFlowAddEdit extends Component {
                 break;
         }
     }
+ 
+    componentDidMount = () => {
 
-    componentWillMount = () => {
         const query = new URLSearchParams(this.props.location.search);
         for (let param of query.entries()) {
 
@@ -352,9 +353,6 @@ class ExpensesWorkFlowAddEdit extends Component {
                 showCheckbox: true
             })
         }
-    }
-
-    componentDidMount = () => {
 
         dataservice.GetDataList('GetProjectCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id').then(
             res => {

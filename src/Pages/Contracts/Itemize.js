@@ -166,7 +166,7 @@ class Itemize extends Component {
         );
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.getTabelData(this.state.parentId);
     }
     getTabelData(id) {

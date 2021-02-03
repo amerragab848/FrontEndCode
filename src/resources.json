@@ -3944,8 +3944,8 @@
         "ar": "طلبات الموقع"
     },
     "materialRequestcount": {
-        "en": "Material Request Counts",
-        "ar": " مجموع طلبات الموقع"
+        "en": "Material IR Counts",
+        "ar": " مجموع طلبات المعاينات"
     },
     "siteRequestAdd": {
         "en": "Add Material Request",
@@ -9232,6 +9232,7 @@
     "en": "departments",
     "ar": "الاقسام"
     },
+<<<<<<< HEAD
     "workFlowDuration": {
         "en": "Work Flow Duration",
         "ar": "مدة الدورة المستندية"
@@ -9243,6 +9244,27 @@
     "Approval":{
         "en":"Approval",
        "ar":"الاعتماد"
+=======
+    "revisions":{
+        "en": "revisions",
+        "ar": "المراجعات"
+    },
+    "buildingNoName":{
+        "en": "building No",
+        "ar": "رقم المبنى"  
+    },
+    "apartmentNoName":{
+        "en": "apartment No",
+        "ar": "رقم المبنى"  
+    },
+    "bicCompanyName":{
+        "en": "Bic Company",
+        "ar": "الشركه"  
+    },
+    "bicContactName": {
+        "en": "Bic Contact",
+        "ar": "الشركه"  
+>>>>>>> 5fee91d7047bfc5cbcd4be589f4727432caeef80
     }
 
 }

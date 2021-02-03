@@ -10,8 +10,7 @@ import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import DataService from '../../Dataservice'
-import { toast } from "react-toastify";
-import 'react-table/react-table.css'
+import { toast } from "react-toastify"; 
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
@@ -211,7 +210,7 @@ class SubContract extends Component {
 
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
         this.setState({ isLoading: true });
 

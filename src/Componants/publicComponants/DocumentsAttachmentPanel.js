@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from "react";
 import Api from "../../api";
-import Dropdown from "../OptionsPanels/DropdownMelcous";
-import "react-table/react-table.css";
+import Dropdown from "../OptionsPanels/DropdownMelcous"; 
 import Resources from "../../resources.json";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import dataservice from "../../Dataservice"; 
-import ReactTable from "react-table";
-import 'react-table/react-table.css'
+import ReactTable from "react-table"; 
 import moment from "moment";
 import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
@@ -43,8 +41,7 @@ class DocumentsAttachmentPanel extends Component {
     changeStatus=this.props.objAttach.changeStatus;
   } 
 
-  componentWillMount = () => {
-    //GetModuleList
+  componentDidMount = () => { 
     dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => {
       this.setState({
         moduls: [...result]

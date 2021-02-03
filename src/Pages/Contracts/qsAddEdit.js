@@ -144,22 +144,7 @@ class QsAddEdit extends Component {
       }
     ];
   }
-
-  componentDidMount() {
-
-    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-
-    for (var i = 0; i < links.length; i++) {
-      if ((i + 1) % 2 == 0) {
-        links[i].classList.add("even");
-      } else {
-        links[i].classList.add("odd");
-      }
-    }
-
-    this.checkDocumentIsView();
-  }
-
+ 
   componentWillReceiveProps(nextProps, prevProps) {
     if (nextProps.document.id) {
 
@@ -210,7 +195,19 @@ class QsAddEdit extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
+
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
+    for (var i = 0; i < links.length; i++) {
+      if ((i + 1) % 2 == 0) {
+        links[i].classList.add("even");
+      } else {
+        links[i].classList.add("odd");
+      }
+    }
+
+    this.checkDocumentIsView();
     //field
     const itemDocument = {
       id: 0,

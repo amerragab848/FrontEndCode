@@ -5,6 +5,7 @@ import ConfirmationModal from "../publicComponants/ConfirmationModal";
 import eyeShow from "../../Styles/images/eyepw.svg";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
+import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
 import dataservice from "../../Dataservice";
 import { connect } from "react-redux";
@@ -47,9 +48,11 @@ class wfApproval extends Component {
   };
 
   fillContacts(docApprovalId, approvalStatus) {
-    dataservice.GetDataList("GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" + docApprovalId + "&approvalStatus=" + approvalStatus, 'contactName', 'contactId').then(result => {
+    dataservice.GetDataListWithAdditionalParam("GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" + docApprovalId + "&approvalStatus=" + approvalStatus, 'contactName', 'contactId', 'arrange').then(result => {
+
       this.setState({
-        approveData: result
+        approveData: result,
+        nextArrange: result ? result[0].arrange : this.state.currentArrange
       });
     }).catch(ex => {
       toast.error(ex);
@@ -84,16 +87,20 @@ class wfApproval extends Component {
 
   selectHandleChange = e => {
     let contactId = [];
+    let arrange = 0;
     e.forEach(element => {
       contactId.push(element.value);
+      arrange = element.arrange;
     });
+
     this.setState({
-      updateWorkFlow: { ...this.state.updateWorkFlow, contacts: contactId }
+      updateWorkFlow: { ...this.state.updateWorkFlow, contacts: contactId },
+      nextArrange: arrange
     });
   };
 
   sendToWorkFlow(values, fromConfirm) {
-    
+
     if (values) {
       let selectedContacts = this.state.updateWorkFlow.contacts;
       let approvalStatus = this.state.updateWorkFlow.approvalStatus;
@@ -107,7 +114,25 @@ class wfApproval extends Component {
         Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
           if (result === true) {
             this.setState({ submitLoading: true });
-            Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
+
+            let objApproval = this.state.updateWorkFlow;
+            // let nextArrange = selectedContacts.length == 0 ? this.state.approveData.length > 0 ? this.state.approveData[0].arrange : objApproval.currentArrange
+            //   : this.state.nextArrange;
+            let obj = {
+              docId: objApproval.docId,
+              projectId: this.props.projectId,
+              projectName: this.props.projectName,
+              arrange: this.state.nextArrange,
+              docApprovalId: objApproval.accountDocId,
+              isApproveMode: true
+            };
+
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+            objApproval.docLink = window.location.pathname.replace('/', '') + "?id=" + encodedPaylod;
+
+            Api.post("SendWorkFlowApproval", objApproval).then(e => {
 
               this.setState({ submitLoading: false });
 

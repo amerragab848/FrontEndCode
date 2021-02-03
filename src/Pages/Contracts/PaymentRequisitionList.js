@@ -19,7 +19,7 @@ class PaymentRequisitionList extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         dataservice.GetDataGrid('GetRequestPaymentsByContractId?contractId=' + this.state.contractId + '').then(
             res => {
                 this.setState({

@@ -28,7 +28,7 @@ class RiskCause extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         let rows = this.state.rows;
         if (rows.length == 0 && this.state.riskId > 0) {
             dataservice.GetDataGrid('GetRiskCause?riskId=' + this.state.riskId).then(result => {

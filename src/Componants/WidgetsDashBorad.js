@@ -1122,8 +1122,8 @@ var widgets = [
         type: "oneWidget",
         props: {
           api: "GetInspectionRequestForCountingCustomLog",
-          apiDetails: "",
-          route: "",
+          apiDetails: "InspectionRequestDetailsFilter",
+          route: "DashBoardCounterLog",
           value: "total",
           listType: "item",
           action: "action",

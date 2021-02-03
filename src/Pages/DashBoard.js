@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import * as dashboardComponantActions from '../store/actions/communication';
 
 class DashBoard extends Component {
-    componentWillMount = () => {
+    componentDidMount = () => {
         var e = { label: this.props.projectName, value: this.props.projectId };
 
         this.props.actions.RouteToMainDashboard(e);

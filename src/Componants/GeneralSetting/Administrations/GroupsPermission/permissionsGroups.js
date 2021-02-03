@@ -177,7 +177,8 @@ class permissionsGroups extends Component {
             this.setState({ isLoading: false })
         })
     } 
-    componentWillMount = () => {
+    
+    componentDidMount = () => {
         Api.get('GetPermissionsGroupsGrid?pageNumber=0&pageSize=200').then(result => {
             if (result != null) {
                 let groupList = []

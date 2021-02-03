@@ -171,7 +171,7 @@ class AmendmentList extends Component {
         ];
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         dataservice.GetDataGrid('GetContractAmendmentByContractId?parentId=' + this.state.contractId).then(
             res => {
                 this.setState({
@@ -189,10 +189,7 @@ class AmendmentList extends Component {
             }
         )
     }
-
-    componentDidMount = () => {
-
-    }
+ 
 
     fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
         this.setState({ isLoading: true })

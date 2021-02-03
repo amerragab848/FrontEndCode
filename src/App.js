@@ -18,8 +18,7 @@ import Config from './Services/Config';
 import IndexedDb from './IndexedDb';
 import Dataservice from './Dataservice';
 
-import 'react-customized-grid/main.css';
-import { date } from 'yup';
+import 'react-customized-grid/main.css'; 
 // import ConnectionProvider from "./Componants/Layouts/Layout";
 // import ConnectionConsomer from "./Componants/Layouts/ConsomerLayout";
 

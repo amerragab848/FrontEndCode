@@ -8,9 +8,11 @@ import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
  
 let id = 0;
+let perviousRoute = '';
 class TaskDetails extends Component {
   constructor(props) {
     super(props);
+   
     this.state = {
       id:0, 
       subject: "",
@@ -24,7 +26,8 @@ class TaskDetails extends Component {
       finishDate: "",
       estimatedTime: "",
       actualTotal: "",
-      docDelay: ""
+      docDelay: "",
+      perviousRoute:perviousRoute
     }; 
 
      id =this.props.location.search.split("=")[1];
@@ -59,7 +62,9 @@ class TaskDetails extends Component {
     return (
       <div className="mainContainer">
         <div className={ this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document" }>
-          <HeaderDocument docTitle={Resources.taskDetails[currentLanguage]} />
+          <HeaderDocument docTitle={Resources.taskDetails[currentLanguage]} 
+            perviousRoute={'/myTasks/'}
+          />
           <div className="doc-container">
             <div className="step-content">
               <div id="step1" className="step-content-body">
