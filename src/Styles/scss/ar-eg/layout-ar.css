@@ -25275,4 +25275,4 @@ tbody.grid-body tr .text.elipsisPadd {
 .fullmodal .gridChart .ui.radio.checkbox label,
 .fullmodal .gridChart .ui.checkbox .box, 
 .fullmodal .gridChart .ui.checkbox label {padding-left: 0;}
-thead.grid-header tr.action-bar .actions button.toWorkFlow {width: 109px;}
+thead.grid-header tr.action-bar .actions button.toWorkFlow {width: auto;}
