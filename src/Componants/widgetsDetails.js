@@ -2,6 +2,7 @@ let widgets = {
     "timesheetLog": {
         "title": "timesheetLog",
         "props": {
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetTimeSheetSummary",
@@ -15,6 +16,7 @@ let widgets = {
     "docApproval": {
         "title": "docApproval",
         "props": {
+            "class": "green",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetDocumentApprovalSummary",
@@ -28,6 +30,7 @@ let widgets = {
     "pendingExpenses": {
         "title": "pendingExpenses",
         "props": {
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetPendingExpensesSummary",
@@ -41,6 +44,7 @@ let widgets = {
     "docRejected": {
         "title": "docRejected",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetDocumentRejectedSummary",
@@ -54,6 +58,7 @@ let widgets = {
     "docNotify": {
         "title": "docNotify",
         "props": {
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetDocumentNotifySummary",
@@ -67,6 +72,7 @@ let widgets = {
     "workFlowAlert": {
         "title": "workFlowAlert",
         "props": {
+            "class": "blue",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetWorkFlowAlertCount",
@@ -80,6 +86,7 @@ let widgets = {
     "monitorTasks": {
         "title": "monitorTasks",
         "props": {
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetCountMonitorTasks",
@@ -93,6 +100,7 @@ let widgets = {
     "monthlyTasks": {
         "title": "monthlyTasks",
         "props": {
+            "class": "gray",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetCounMonthlyTasks",
@@ -103,22 +111,10 @@ let widgets = {
             "key": "0-1-8"
         }
     },
-    "followUpsSummary": {
-        "title": "followUpsSummary",
-        "props": {
-            "permission": 0,
-            "type": "oneWidget",
-            "api": "SelectByAccountIdCount",
-            "route": "FollowUpsSummaryDetails",
-            "value": "total",
-            "listType": "item",
-            "action": "action",
-            "key": "0-1-9"
-        }
-    },
     "levelDurationAlert": {
         "title": "levelDurationAlert",
         "props": {
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetLevelDurationDelayCount",
@@ -132,6 +128,7 @@ let widgets = {
     "SendToWFToday": {
         "title": "SendToWFToday",
         "props": {
+            "class": "yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetSendToWFTodayCount",
@@ -145,6 +142,7 @@ let widgets = {
     "alertingQntySummary": {
         "title": "alertingQntySummary",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetBoqQuantityRequestedAlert",
@@ -159,6 +157,7 @@ let widgets = {
     "closedSummary": {
         "title": "closedSummary",
         "props": {
+            "class": "blue",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetClosedDocumentsSummaryCount",
@@ -170,9 +169,25 @@ let widgets = {
             "key": "0-2-2"
         }
     },
+    "followUpsSummary": {
+        "title": "followUpsSummary",
+        "props": {
+            "class": "yellow",
+            "permission": 0,
+            "type": "oneWidget",
+            "api": "SelectByAccountIdCount",
+            "route": "FollowUpsSummaryDetails",
+            "value": "total",
+            "listType": "item",
+            "action": "action",
+            "key": "0-1-9"
+        }
+    },
     "distributionInboxSummary": {
         "title": "distributionInboxSummary",
         "props": {
+            "class": "yellow",
+
             "permission": 0,
             "type": "threeWidget",
             "api": "GetDistributionInboxSummary",
@@ -187,6 +202,7 @@ let widgets = {
     "inboxSummary": {
         "title": "inboxSummary",
         "props": {
+            "class": "yellow",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetInboxSummary",
@@ -201,6 +217,7 @@ let widgets = {
     "notCodedExpensesSummary": {
         "title": "notCodedExpensesSummary",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetNotCodedExpensesSummary",
@@ -215,6 +232,7 @@ let widgets = {
     "notCodedInvoicesSummary": {
         "title": "notCodedInvoicesSummary",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetNotCodedInvoicesSummary",
@@ -229,6 +247,7 @@ let widgets = {
     "notCodedPayment": {
         "title": "notCodedPayment",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetNotCodedPaymentsSummary",
@@ -243,6 +262,7 @@ let widgets = {
     "actionBySummary": {
         "title": "actionBySummary",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetActionByCount",
@@ -257,6 +277,7 @@ let widgets = {
     "usersAlertSummary": {
         "title": "usersAlertSummary",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetusersAlertSummaryCount",
@@ -271,6 +292,7 @@ let widgets = {
     "openedSummary": {
         "title": "openedSummary",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetOppenedDocumentsSummaryCount",
@@ -285,6 +307,7 @@ let widgets = {
     "schedualActionBy": {
         "title": "schedualActionBy",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetActionByScheduleCount",
@@ -299,6 +322,7 @@ let widgets = {
     "ScheduleAlertsSummary": {
         "title": "ScheduleAlertsSummary",
         "props": {
+            "class": "red",
             "permission": 0,
             "type": "threeWidget",
             "api": "GetScheduleAlertSummaryCount",
@@ -313,6 +337,7 @@ let widgets = {
     "projectStatus": {
         "title": "projectStatus",
         "props": {
+            "class": "red",
             "id": 'wt-Name01',
             "permission": 1377,
             "type": "pie",
@@ -326,6 +351,7 @@ let widgets = {
     "percentageExpensesTypesOfTotal": {
         "title": "percentageExpensesTypesOfTotal",
         "props": {
+            "class": "red",
             "id": 'wt-Name02',
             "permission": 3500,
             "type": "pie",
@@ -339,6 +365,7 @@ let widgets = {
     "expensesAllProject": {
         "title": "expensesAllProject",
         "props": {
+            "class": "red",
             "id": 'wt-Name03',
             "permission": 3507,
             "type": "pie",
@@ -352,6 +379,7 @@ let widgets = {
     "riskStatusYearly": {
         "title": "riskStatusYearly",
         "props": {
+            "class": "red",
             "id": 'wt-Name04',
             "permission": 10041,
             "type": "line",
@@ -363,6 +391,7 @@ let widgets = {
     "percentOfApprovedSubmittalPerProject": {
         "title": "percentOfApprovedSubmittalPerProject",
         "props": {
+            "class": "red",
             "id": 'wt-Name05',
             "permission": 3498,
             "type": "column",
@@ -380,6 +409,7 @@ let widgets = {
     "letterStatusYearly": {
         "title": "letterStatusYearly",
         "props": {
+            "class": "red",
             "id": 'wt-Name6',
             "permission": 10042,
             "type": "line",
@@ -391,6 +421,7 @@ let widgets = {
     "percentOfMaterialRequestPerProject": {
         "title": "percentOfMaterialRequestPerProject",
         "props": {
+            "class": "red",
             "id": 'wt-Name7',
             "permission": 3497,
             "type": "column",
@@ -408,6 +439,7 @@ let widgets = {
     "submittalStatusYearly": {
         "title": "submittalStatusYearly",
         "props": {
+            "class": "red",
             "id": 'wt-Name8',
             "permission": 10039,
             "type": "line",
@@ -419,6 +451,7 @@ let widgets = {
     "percentOfRejectedSubmittalPerProject": {
         "title": "percentOfRejectedSubmittalPerProject",
         "props": {
+            "class": "red",
             "id": 'wt-Name09',
             "permission": 3499,
             "type": "column",
@@ -436,6 +469,7 @@ let widgets = {
     "countinspectionApprovedChar": {
         "title": "countinspectionApprovedChar",
         "props": {
+            "class": "red",
             "id": 'wt-Name10',
             "permission": 10043,
             "type": "column",
@@ -453,6 +487,7 @@ let widgets = {
     "contractsPerProject": {
         "title": "contractsPerProject",
         "props": {
+            "class": "red",
             "id": 'wt-Name11',
             "permission": 3505,
             "key": "0-3-11",
@@ -470,6 +505,7 @@ let widgets = {
     "budgetVariance": {
         "title": "budgetVariance",
         "props": {
+            "class": "red",
             "id": 'wt-Name12',
             "permission": 3509,
             "type": "column",
@@ -487,6 +523,7 @@ let widgets = {
     "transmittalStatusYearly": {
         "title": "transmittalStatusYearly",
         "props": {
+            "class": "red",
             "id": 'wt-Name13',
             "permission": 10040,
             "type": "line",
@@ -498,6 +535,7 @@ let widgets = {
     "riskStatus": {
         "title": "riskStatus",
         "props": {
+            "class": "red",
             "id": "wt-riskStatus01",
             "permission": 1377,
             "type": "pie",
@@ -511,6 +549,7 @@ let widgets = {
     "riskPeriority": {
         "title": "riskPeriority",
         "props": {
+            "class": "red",
             "id": 'wt-riskPeriority02',
             "permission": 3500,
             "type": 'pie',
@@ -552,6 +591,7 @@ let widgets = {
     "materialRequestcount": {
         "title": "materialRequestcount",
         "props": {
+            "class":"gray",
             "permission": 3343,
             "type": "oneWidget",
             "api": "GetMaterialRequestCounting",
@@ -566,6 +606,7 @@ let widgets = {
     "rejectedTimeSheet": {
         "title": "rejectedTimeSheet",
         "props": {
+            "class":"red",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetRejectedTimesheetBySystemCount",
@@ -579,6 +620,7 @@ let widgets = {
     "monthlyPaymentRequisitions": {
         "title": "monthlyPaymentRequisitions",
         "props": {
+            "class":"yellow",
             "permission": 0,
             "type": "oneWidget",
             "api": "GetTotalPayment",
@@ -592,6 +634,7 @@ let widgets = {
     "approvalSubmittals": {
         "title": "approvalSubmittals",
         "props": {
+            "class": "green",
             "permission": 3493,
             "type": "twoWidget",
             "api": "GetApprocalStatusCount?status=true",
@@ -607,6 +650,7 @@ let widgets = {
         "title": "openedSubmittals",
         "props": {
             "permission": 3510,
+            "class": "gray",
             "type": "twoWidget",
             "api": "getOpenedDocumentsCount?docType=42",
             "apiDetails": "",
@@ -621,7 +665,8 @@ let widgets = {
         "title": "rejectedSubmittals",
         "props": {
             "permission": 3494,
-            "type": "twoWidget",
+            "type": "twoWidget", 
+            "class": "red",
             "api": "GetApprocalStatusCount?status=false",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -636,6 +681,7 @@ let widgets = {
         "props": {
             "permission": 3512,
             "type": "twoWidget",
+            "class": "gray",
             "api": "getOpenedDocumentsCount?docType=19",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -650,6 +696,7 @@ let widgets = {
         "props": {
             "permission": 3513,
             "type": "twoWidget",
+            "class": "gray",
             "api": "getOpenedDocumentsCount?docType=25",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -664,6 +711,7 @@ let widgets = {
         "props": {
             "permission": 3495,
             "type": "twoWidget",
+            "class": "gray",
             "api": "GetRfiOpenCount",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
@@ -678,6 +726,7 @@ let widgets = {
         "props": {
             "permission": 3511,
             "type": "twoWidget",
+            "class": "gray",
             "api": "getOpenedDocumentsCount?docType=28",
             "apiDetails": "",
             "route": "DashBoardCounterLog",

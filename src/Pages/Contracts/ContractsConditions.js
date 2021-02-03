@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import Api from '../../api'
-import Resources from '../../resources.json';
-//import _ from "lodash";
+import Resources from '../../resources.json'; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";

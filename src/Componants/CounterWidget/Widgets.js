@@ -48,7 +48,7 @@ class Widgets extends Component {
   render() {
     return (
       <Fragment>
-        <div className="summerisItem__number">
+        <div className={"summerisItem__number " + this.props.props.class}>
           <div className="content__number">
             <p className="number" onClick={this.onOpenModal.bind(this)}>
               {this.state.value != null ? numeral(this.state.value).format('0a') : 0}

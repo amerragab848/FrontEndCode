@@ -24733,8 +24733,23 @@ thead.grid-header tr.action-bar .actions button.toWorkFlow {width: auto;}
     bottom: 0;
     top: 0;
 }
-.SummeriesContainer .SummeriesContainerContent .summerisItem.gray{border-color: #e9ecf1;}
-.SummeriesContainer .SummeriesContainerContent .summerisItem.red{border-color: #eb4b3b;}
-.SummeriesContainer .SummeriesContainerContent .summerisItem.blue{border-color: #4283fb;}
-.SummeriesContainer .SummeriesContainerContent .summerisItem.green{border-color: #45cd49;}
-.SummeriesContainer .SummeriesContainerContent .summerisItem.yellow{border-color: #fec107;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.gray,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.gray{border-color: #e9ecf1;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.red,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.red{border-color: #eb4b3b;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.blue,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.blue{border-color: #4283fb;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.green,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.green{border-color: #45cd49;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.yellow,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.yellow{border-color: #fec107;}
+
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number {
+    margin: 0 4px;
+    border-bottom: 10px solid transparent;
+    padding-bottom: 0;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number .content__number {
+    padding: 0;
+    margin: 0;
+}
