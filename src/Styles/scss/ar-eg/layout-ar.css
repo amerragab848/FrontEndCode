@@ -25276,8 +25276,7 @@ tbody.grid-body tr .text.elipsisPadd {
 .fullmodal .gridChart .ui.checkbox .box, 
 .fullmodal .gridChart .ui.checkbox label {padding-left: 0;}
 thead.grid-header tr.action-bar .actions button.toWorkFlow {width: auto;}
-.SummeriesContainer .SummeriesContainerContent .summerisItem,
-.SummeriesContainer .SummeriesContainerContent .summerisItem__number {
+.SummeriesContainer .SummeriesContainerContent .summerisItem{
     border-bottom: 10px solid transparent;
     margin-right: 1px;
 }
@@ -25297,3 +25296,12 @@ thead.grid-header tr.action-bar .actions button.toWorkFlow {width: auto;}
 .SummeriesContainer .SummeriesContainerContent .summerisItem__number.green{border-color: #45cd49;}
 .SummeriesContainer .SummeriesContainerContent .summerisItem.yellow,
 .SummeriesContainer .SummeriesContainerContent .summerisItem__number.yellow{border-color: #fec107;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number {
+    margin: 0 4px;
+    border-bottom: 10px solid transparent;
+    padding-bottom: 0;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number .content__number {
+    padding: 0;
+    margin: 0;
+}
