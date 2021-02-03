@@ -1,7 +1,7 @@
 {
   "BlobStorageContainerName": "project-files-monorail",
   "acApp": "AC",
-  "accountCompanyId": "17",
+  "accountCompanyId": "2",
   "azureStorage": true,
   "canSendAlert": "false",
   "cdn": "https://newgiza.azureedge.net",

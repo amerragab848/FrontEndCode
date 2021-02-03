@@ -19,6 +19,7 @@ export default {
             file: {},
             arrange: 0,
             showModal: false,
+            ShowMultipleWF: false,
             attendees: [],
             topics: [],
             viewModel: false,
