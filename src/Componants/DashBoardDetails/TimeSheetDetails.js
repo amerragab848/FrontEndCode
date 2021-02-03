@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Api from "../../api";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import Resources from "../../resources.json";
 import * as actions from '../../store/actions/communication'
-import {connect} from 'react-redux';
-import { bindActionCreators } from 'redux'; 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -14,7 +14,7 @@ class TimeSheetDetails extends Component {
   constructor(props) {
 
     super(props);
- const columnGrid = [
+    const columnGrid = [
 
       {
         field: 'requestCount',
@@ -44,7 +44,7 @@ class TimeSheetDetails extends Component {
         sortable: true,
       }
     ];
- this.state = {
+    this.state = {
       pageTitle: Resources["timeSheet"][currentLanguage],
       viewfilter: false,
       columns: columnGrid,
@@ -55,7 +55,8 @@ class TimeSheetDetails extends Component {
       viewModal: false
     };
   }
-  componentWillMount() {
+
+  componentDidMount() {
     Api.get("GetApprovalRequestsGroupByUserId?requestType=timeSheet").then(
       result => {
         this.setState({
@@ -64,14 +65,12 @@ class TimeSheetDetails extends Component {
         });
       }
     );
-  }
-  componentDidMount() {
     this.props.actions.RouteToTemplate();
   }
- isCustomHandlel() {
+  isCustomHandlel() {
     this.setState({ isCustom: !this.state.isCustom });
   }
- RouteHandler(obj) {
+  RouteHandler(obj) {
     if (obj) {
       this.props.history.push({
         pathname: "/TimeSheetWorkFlow",
@@ -83,22 +82,22 @@ class TimeSheetDetails extends Component {
     const dataGrid =
       this.state.isLoading === false ? (
         <GridCustom
-        ref='custom-data-grid'
-        gridKey="TimeSheetDetails"
-        data={this.state.rows}
-        pageSize={this.state.rows.length}
-        groups={[]}
-        actions={[]}
-        rowActions={[]}
-        cells={this.state.columns}
-        rowClick={this.RouteHandler.bind(this)}
-      />
-        ) : <LoadingSection />;
+          ref='custom-data-grid'
+          gridKey="TimeSheetDetails"
+          data={this.state.rows}
+          pageSize={this.state.rows.length}
+          groups={[]}
+          actions={[]}
+          rowActions={[]}
+          cells={this.state.columns}
+          rowClick={this.RouteHandler.bind(this)}
+        />
+      ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
-  return (
+    return (
       <div className="mainContainer">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
@@ -120,12 +119,11 @@ class TimeSheetDetails extends Component {
     );
   }
 }
-function mapDispatchToProps(dispatch)
-{
-  return{
-      actions:bindActionCreators(actions,dispatch)
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
   };
 }
-export default connect(null,mapDispatchToProps)(withRouter(TimeSheetDetails));
+export default connect(null, mapDispatchToProps)(withRouter(TimeSheetDetails));
 
 

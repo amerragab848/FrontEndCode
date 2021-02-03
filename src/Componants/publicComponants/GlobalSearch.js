@@ -206,13 +206,13 @@ class GlobalSearch extends Component {
             selectedDocs: [],
             attachementsSearchResult: [],
             allAttaches: [],
-            refCode:'',
-            fileNumber:''
+            refCode: '',
+            fileNumber: ''
         }
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
         var e = { label: this.props.projectName, value: this.props.projectId };
         this.props.actions.RouteToMainDashboard(e);
         let searchOptions = {
@@ -366,7 +366,7 @@ class GlobalSearch extends Component {
 
         dataService.addObject("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
-               // this.readFiles(this.state.allAttaches, searchOptions, false);
+                // this.readFiles(this.state.allAttaches, searchOptions, false);
 
                 let data = []
                 if (searchResult.searchResp.searchList.length > 0)
@@ -530,7 +530,7 @@ class GlobalSearch extends Component {
                                 <input type="text" autoComplete="off" placeholder="Ref Number" defaultValue={this.state.refCode} onChange={(event) => this.setState({ refCode: event.target.value })} />
                             </div>
                         </div>
-                         {/************************************** */}
+                        {/************************************** */}
 
                         <button className="defaultBtn btn" onClick={() => this.search(0)} type="button">Search</button>
                     </div>

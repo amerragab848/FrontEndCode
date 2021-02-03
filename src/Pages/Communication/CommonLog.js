@@ -864,7 +864,7 @@ class CommonLog extends Component {
                     chartColumns: chartColumns
                 });
 
-                if (docTypeId == 19 || docTypeId == 42) {
+                if (docTypeId == 19 || docTypeId == 42||docTypeId==23) {
                     showChartBtn = true;
                 }
 

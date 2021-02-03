@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import ReactTable from "react-table";
@@ -11,8 +11,7 @@ import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import Export from "../../Componants/OptionsPanels/Export";
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-//const _ = require('lodash')
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'); 
 const TabTwoSchema = Yup.object().shape({
     ProjectSchedule: Yup.string().required(Resources['selectProjectSchedule'][currentLanguage])
 });
@@ -71,7 +70,7 @@ class Schedule extends Component {
         });
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
 
         dataservice.GetDataGrid(this.state.ApiGet).then(result => {
             this.setState({

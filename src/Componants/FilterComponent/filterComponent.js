@@ -62,10 +62,6 @@ class FilterComponent extends Component {
   }
 
   componentDidMount() {
-  }
-
-  componentWillMount() {
-
     let state = {};
 
     this._isMounted = false;
@@ -82,7 +78,7 @@ class FilterComponent extends Component {
       state
     })
   }
-
+ 
   getValueHandler(event, type, field, indexx, isSubmittals) {
     var obj = {};
 

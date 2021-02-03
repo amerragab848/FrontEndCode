@@ -84,7 +84,8 @@ class Menu extends Component {
         {this.state.isLoading == false ?
           <HeaderMenu
             contactName={this.state.contactName}
-            profilePath={this.state.profilePath} /> :
+            profilePath={this.state.profilePath} />
+          :
           <div style={loadingStyle.container}>
             <span style={loadingStyle.spinner}></span>
           </div>}

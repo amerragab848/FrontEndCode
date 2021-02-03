@@ -92,7 +92,7 @@ class AddEditItems extends Component {
         if (this.props.isViewMode !== prevProps.isViewMode) {
         }
     }
-    componentWillMount() {
+    componentDidMount() {
         this.fillTable();
         DataService.GetDataList(
             "GetDefaultListForUnit?listType=unit",
@@ -226,7 +226,7 @@ class AddEditItems extends Component {
         });
         if (field === "itemType") {
             let poolItemTypes = this.state.poolItemTypes;
-            let item = find(poolItemTypes, function(x) {
+            let item = find(poolItemTypes, function (x) {
                 return x.id == event.value;
             });
             if (item) {
@@ -277,7 +277,7 @@ class AddEditItems extends Component {
                                         <h2 className="zero">
                                             {
                                                 Resources["addItems"][
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }
                                         </h2>
@@ -289,7 +289,7 @@ class AddEditItems extends Component {
                                             <label className="control-label">
                                                 {
                                                     Resources["description"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }{" "}
                                             </label>
@@ -299,9 +299,9 @@ class AddEditItems extends Component {
                                                     (errors.description
                                                         ? "has-error"
                                                         : !errors.description &&
-                                                          touched.description
-                                                        ? " has-success"
-                                                        : " ")
+                                                            touched.description
+                                                            ? " has-success"
+                                                            : " ")
                                                 }>
                                                 <input
                                                     name="description"
@@ -310,7 +310,7 @@ class AddEditItems extends Component {
                                                     id="description"
                                                     placeholder={
                                                         Resources[
-                                                            "description"
+                                                        "description"
                                                         ][currentLanguage]
                                                     }
                                                     onBlur={handleBlur}
@@ -340,7 +340,7 @@ class AddEditItems extends Component {
                                             <label className="control-label">
                                                 {
                                                     Resources.quantity[
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }
                                             </label>
@@ -358,7 +358,7 @@ class AddEditItems extends Component {
                                                     }
                                                     placeholder={
                                                         Resources.quantity[
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                     onChange={e =>
@@ -380,7 +380,7 @@ class AddEditItems extends Component {
                                             <label className="control-label">
                                                 {
                                                     Resources.unitPrice[
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }
                                             </label>
@@ -396,7 +396,7 @@ class AddEditItems extends Component {
                                                     }
                                                     placeholder={
                                                         Resources.unitPrice[
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                     name="unitPrice"
@@ -420,7 +420,7 @@ class AddEditItems extends Component {
                                             <label className="control-label">
                                                 {
                                                     Resources["itemCode"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }{" "}
                                             </label>
@@ -430,9 +430,9 @@ class AddEditItems extends Component {
                                                     (errors.itemCode
                                                         ? "has-error"
                                                         : !errors.itemCode &&
-                                                          touched.itemCode
-                                                        ? " has-success"
-                                                        : " ")
+                                                            touched.itemCode
+                                                            ? " has-success"
+                                                            : " ")
                                                 }>
                                                 <input
                                                     name="itemCode"
@@ -441,7 +441,7 @@ class AddEditItems extends Component {
                                                     id="itemCode"
                                                     placeholder={
                                                         Resources["itemCode"][
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                     onBlur={handleBlur}
@@ -469,7 +469,7 @@ class AddEditItems extends Component {
                                             <label className="control-label">
                                                 {
                                                     Resources["resourceCode"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }{" "}
                                             </label>
@@ -481,7 +481,7 @@ class AddEditItems extends Component {
                                                     autoComplete="off"
                                                     placeholder={
                                                         Resources[
-                                                            "resourceCode"
+                                                        "resourceCode"
                                                         ][currentLanguage]
                                                     }
                                                     onBlur={handleBlur}
@@ -504,7 +504,7 @@ class AddEditItems extends Component {
                                             <label className="control-label">
                                                 {
                                                     Resources.unitPrice[
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }
                                             </label>
@@ -515,7 +515,7 @@ class AddEditItems extends Component {
                                                     id="unitPrice"
                                                     placeholder={
                                                         Resources.unitPrice[
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                     value={
@@ -544,7 +544,7 @@ class AddEditItems extends Component {
                                             <label className="control-label">
                                                 {
                                                     Resources["days"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }{" "}
                                             </label>
@@ -554,9 +554,9 @@ class AddEditItems extends Component {
                                                     (errors.days
                                                         ? "has-error"
                                                         : !errors.days &&
-                                                          touched.days
-                                                        ? " has-success"
-                                                        : " ")
+                                                            touched.days
+                                                            ? " has-success"
+                                                            : " ")
                                                 }>
                                                 <input
                                                     name="days"
@@ -565,7 +565,7 @@ class AddEditItems extends Component {
                                                     id="days"
                                                     placeholder={
                                                         Resources["days"][
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                     onBlur={handleBlur}
@@ -593,7 +593,7 @@ class AddEditItems extends Component {
                                             className={
                                                 "linebylineInput valid-input " +
                                                 (this.props.showItemType !==
-                                                false
+                                                    false
                                                     ? " "
                                                     : " disNone")
                                             }>
@@ -639,21 +639,21 @@ class AddEditItems extends Component {
                                                     }>
                                                     {
                                                         Resources["save"][
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                 </button>
                                             ) : (
-                                                <button
-                                                    className="primaryBtn-1 btn  disabled"
-                                                    disabled="disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
-                                                </button>
-                                            )}
+                                                    <button
+                                                        className="primaryBtn-1 btn  disabled"
+                                                        disabled="disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                )}
                                         </div>
                                     </div>
                                 </div>
