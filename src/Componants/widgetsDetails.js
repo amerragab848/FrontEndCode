@@ -589,15 +589,15 @@ let widgets = {
             "key": "1-1-4"
         }
     },
-    "approvalSubmittals": {
-        "title": "approvalSubmittals",
+    "pendingSubmittals": {
+        "title": "pendingSubmittals",
         "props": {
-            "permission": 3493,
+            "permission": 10145,
             "type": "twoWidget",
-            "api": "GetApprocalStatusCount?status=true",
+            "api": "GetApprocalStatusCount?action=3",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
-            "value": "total-0",
+            "value": "count-0",
             "total": "total-1",
             "action": "action",
             "key": "1-2-1"
@@ -608,7 +608,7 @@ let widgets = {
         "props": {
             "permission": 3510,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=42&projectId=0&status=true",
+            "api": "getOpenedDocumentsCount?docType=42&status=true",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
             "value": "count-0",
@@ -617,40 +617,12 @@ let widgets = {
             "key": "1-2-2"
         }
     },
-    "closedSubmittals": {
-        "title": "closedSubmittals",
+    "approvalSubmittals": {
+        "title": "approvalSubmittals",
         "props": {
-            "permission": 3510,
+            "permission": 3493,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=42&projectId=0&status=false",
-            "apiDetails": "",
-            "route": "DashBoardCounterLog",
-            "value": "count-0",
-            "total": "total-1",
-            "action": "action",
-            "key": "1-2-4"
-        }
-    },
-    "pendingSubmittals": {
-        "title": "pendingSubmittals",
-        "props": {
-            "permission": 3510,
-            "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=42",
-            "apiDetails": "",
-            "route": "DashBoardCounterLog",
-            "value": "count-0",
-            "total": "total-1",
-            "action": "action",
-            "key": "1-2-5"
-        }
-    },
-    "rejectedSubmittals": {
-        "title": "rejectedSubmittals",
-        "props": {
-            "permission": 3494,
-            "type": "twoWidget",
-            "api": "GetApprocalStatusCount?status=false",
+            "api": "GetApprocalStatusCount?action=1",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
             "value": "total-0",
@@ -659,12 +631,40 @@ let widgets = {
             "key": "1-2-3"
         }
     },
+    "rejectedSubmittals": {
+        "title": "rejectedSubmittals",
+        "props": {
+            "permission": 3494,
+            "type": "twoWidget",
+            "api": "GetApprocalStatusCount?action=2",
+            "apiDetails": "",
+            "route": "DashBoardCounterLog",
+            "value": "total-0",
+            "total": "total-1",
+            "action": "action",
+            "key": "1-2-4"
+        }
+    },
+    "closedSubmittals": {
+        "title": "closedSubmittals",
+        "props": {
+            "permission": 10144,
+            "type": "twoWidget",
+            "api": "getOpenedDocumentsCount?docType=42&status=false",
+            "apiDetails": "",
+            "route": "DashBoardCounterLog",
+            "value": "count-0",
+            "total": "total-1",
+            "action": "action",
+            "key": "1-2-5"
+        }
+    },
     "openedLetters": {
         "title": "openedLetters",
         "props": {
             "permission": 3512,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=19",
+            "api": "getOpenedDocumentsCount?docType=19&status=true",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
             "value": "count-0",
@@ -678,7 +678,7 @@ let widgets = {
         "props": {
             "permission": 3513,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=25",
+            "api": "getOpenedDocumentsCount?docType=25&status=true",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
             "value": "count-0",
@@ -706,7 +706,7 @@ let widgets = {
         "props": {
             "permission": 3511,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=28",
+            "api": "getOpenedDocumentsCount?docType=28&status=true",
             "apiDetails": "",
             "route": "DashBoardCounterLog",
             "value": "count-0",

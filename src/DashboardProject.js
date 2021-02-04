@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
 import { Widgets, WidgetsWithText } from "./Componants/CounterWidget";
 import DashBoard from "./Componants/DashBoardProject";
 import language from "./resources.json";
@@ -27,7 +26,6 @@ import moment from "moment";
 import orderBy from "lodash/orderBy";
 import map from "lodash/map";
 import groupBy from "lodash/groupBy";
-//// import Config from "./Services/Config";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -49,7 +47,7 @@ class DashboardProject extends Component {
 
         let accountImage = localStorage.getItem("profilePath");
 
-        accountImage =accountImage !=null? accountImage.split("downloads"):"";
+        accountImage = accountImage != null ? accountImage.split("downloads") : "";
 
         let contactName = localStorage.getItem("contactName");
 
@@ -233,7 +231,7 @@ class DashboardProject extends Component {
                         <div className={"SummeriesContainerContent " + (category.title == "Submittal" || category.title == "communication" ? " numbersContainerContent" : " ")}>
                             {category.widgets.map((widget, widgetIndex) => {
                                 // if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
-                                    return this.renderWidget(widget, widgetIndex);
+                                return this.renderWidget(widget, widgetIndex);
                                 // }
                             })}
                         </div>
@@ -249,11 +247,11 @@ class DashboardProject extends Component {
 
         if (this.state.tabIndex === 0) {
 
-            let drawWidget = Details.widgets.find(x => x.title === widget.title);
+            let widgetsList =JSON.parse(JSON.stringify([...Details.widgets])) 
 
-            let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
+            let drawWidget = widgetsList.find(x => x.title === widget.title);
 
-            drawWidget.props.api = drawWidget.props.api + projectId;
+            drawWidget.props.api = drawWidget.props.api + (this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId);
 
             if (drawWidget.props.type === "twoWidget") {
                 return (
@@ -1455,7 +1453,7 @@ class DashboardProject extends Component {
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={
-                            language["smartDeleteMessageContent"][currentLanguage] 
+                            language["smartDeleteMessageContent"][currentLanguage]
                         }
                         buttonName="delete"
                         closed={this.onCloseModal}

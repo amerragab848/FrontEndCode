@@ -365,10 +365,158 @@ let widgets = [
       }
     ]
   },
+  { 
+    title: "pendingSubmittals",
+    key: "1-2-1",
+    RouteEdit:'submittalAddEdit',
+    apiDetails: "GetApprocalStatusDetails?action=3",
+    columns: [
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true,
+        href:'link',
+        classes:'bold'
+    },
+    {
+      field: 'statusName',
+      title: Resources['status'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: true,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'projectName',
+    title: Resources['projectName'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: true,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: true,
+  type: "date",
+  sortable: true
+}
+    ],
+    filterApi: "",
+    filters: [
+      {
+        field: "subject",
+        name: "subject",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "statusName",
+        name: "status",
+        type: "toggle",
+        trueLabel: "oppened",
+        falseLabel: "closed"
+      },
+      {
+        field: "projectName",
+        name: "projectName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      }
+    ]
+  },
+  { 
+    title: "openedSubmittals",
+    key: "1-2-2",
+    RouteEdit:'submittalAddEdit',
+    apiDetails: "GetOpenedDocumentsDetails?docType=42&projectId=0&status=true",
+    columns: [
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true,
+        href:'link',
+        classes:'bold'
+    },
+    {
+      field: 'statusName',
+      title: Resources['status'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: true,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'projectName',
+    title: Resources['projectName'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: true,
+    type: "text",
+    sortable: true
+},
+{
+  field: 'docDate',
+  title: Resources['docDate'][currentLanguage],
+  width: 10,
+  groupable: true,
+  fixed: true,
+  type: "date",
+  sortable: true
+}
+    ],
+    filterApi: "",
+    filters: [
+      {
+        field: "subject",
+        name: "subject",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "statusName",
+        name: "status",
+        type: "toggle",
+        trueLabel: "oppened",
+        falseLabel: "closed"
+      },
+      {
+        field: "projectName",
+        name: "projectName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      }
+    ]
+  },
   {
     title: "approvalSubmittals",
-    key: "1-2-1",
-    apiDetails: "GetApprocalStatusDetails?status=true",
+    key: "1-2-3",
+    apiDetails: "GetApprocalStatusDetails?action=1",
     RouteEdit:'submittalAddEdit',
     columns: [
       {
@@ -635,85 +783,11 @@ let widgets = [
       }
     ]
   },
-  { 
-    title: "openedSubmittals",
-    key: "1-2-2",
-    RouteEdit:'submittalAddEdit',
-    apiDetails: "GetOpenedDocumentsDetails?docType=42",
-    columns: [
-      {
-        field: 'subject',
-        title: Resources['subject'][currentLanguage],
-        width: 20,
-        groupable: true,
-        fixed: true,
-        type: "text",
-        sortable: true,
-        href:'link',
-        classes:'bold'
-    },
-    {
-      field: 'statusName',
-      title: Resources['status'][currentLanguage],
-      width: 10,
-      groupable: true,
-      fixed: true,
-      type: "text",
-      sortable: true
-  },
-  {
-    field: 'projectName',
-    title: Resources['projectName'][currentLanguage],
-    width: 10,
-    groupable: true,
-    fixed: true,
-    type: "text",
-    sortable: true
-},
-{
-  field: 'docDate',
-  title: Resources['docDate'][currentLanguage],
-  width: 10,
-  groupable: true,
-  fixed: true,
-  type: "date",
-  sortable: true
-}
-    ],
-    filterApi: "",
-    filters: [
-      {
-        field: "subject",
-        name: "subject",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "statusName",
-        name: "status",
-        type: "toggle",
-        trueLabel: "oppened",
-        falseLabel: "closed"
-      },
-      {
-        field: "projectName",
-        name: "projectName",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "docDate",
-        name: "docDate",
-        type: "date",
-        isCustom: true
-      }
-    ]
-  },
   {
     title: "rejectedSubmittals",
-    key: "1-2-3",
+    key: "1-2-4",
     RouteEdit:'submittalAddEdit',
-    apiDetails: "GetApprocalStatusDetails?status=false",
+    apiDetails: "GetApprocalStatusDetails?action=2",
     columns: [
       {
         field: 'refNo',
@@ -981,11 +1055,86 @@ let widgets = [
         }
       ]
     },
+    { 
+      title: "closedSubmittals",
+      key: "1-2-5",
+      RouteEdit:'submittalAddEdit',
+      apiDetails: "GetOpenedDocumentsDetails?docType=42&projectId=0&status=false",
+      columns: [
+        {
+          field: 'subject',
+          title: Resources['subject'][currentLanguage],
+          width: 20,
+          groupable: true,
+          fixed: true,
+          type: "text",
+          sortable: true,
+          href:'link',
+          classes:'bold'
+      },
+      {
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+    },
+    {
+      field: 'projectName',
+      title: Resources['projectName'][currentLanguage],
+      width: 10,
+      groupable: true,
+      fixed: true,
+      type: "text",
+      sortable: true
+  },
+  {
+    field: 'docDate',
+    title: Resources['docDate'][currentLanguage],
+    width: 10,
+    groupable: true,
+    fixed: true,
+    type: "date",
+    sortable: true
+  }
+      ],
+      filterApi: "",
+      filters: [
+        {
+          field: "subject",
+          name: "subject",
+          type: "string",
+          isCustom: true
+        },
+        {
+          field: "statusName",
+          name: "status",
+          type: "toggle",
+          trueLabel: "oppened",
+          falseLabel: "closed"
+        },
+        {
+          field: "projectName",
+          name: "projectName",
+          type: "string",
+          isCustom: true
+        },
+        {
+          field: "docDate",
+          name: "docDate",
+          type: "date",
+          isCustom: true
+        }
+      ]
+    },
+    
   {
     title: "openedLetters",
     RouteEdit:'lettersAddEdit',
     key: "1-3-1",
-    apiDetails: "GetOpenedDocumentsDetails?docType=19",
+    apiDetails: "GetOpenedDocumentsDetails?docType=19&projectId=0&status=true",
     columns: [
       {
         field: 'subject',
@@ -1062,7 +1211,7 @@ let widgets = [
     title: "openedIR",
     key: "1-3-2",
     RouteEdit:'inspectionRequestAddEdit',
-    apiDetails: "GetOpenedDocumentsDetails?docType=25",
+    apiDetails: "GetOpenedDocumentsDetails?docType=25&projectId=0&status=true",
     columns: [
       {
         field: 'subject',
@@ -1426,7 +1575,7 @@ let widgets = [
     title: "openedTransmittals",
     key: "1-3-4",
     RouteEdit:'TransmittalAddEdit', 
-    apiDetails: "GetOpenedDocumentsDetails?docType=28",
+    apiDetails: "GetOpenedDocumentsDetails?docType=28&projectId=0&status=true",
     columns: [
       {
         field: 'subject',

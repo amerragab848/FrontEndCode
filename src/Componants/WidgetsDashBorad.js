@@ -784,7 +784,7 @@ var widgets = [
         order: 1,
         type: "twoWidget",
         props: {
-          api: "GetApprocalStatusCount?status=true",
+          api: "GetApprocalStatusCount?action=1",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "total-0",
@@ -801,7 +801,7 @@ var widgets = [
         order: 2,
         type: "twoWidget",
         props: {
-          api: "GetApprocalStatusCount?status=false",
+          api: "GetApprocalStatusCount?action=2",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "total-0",
@@ -818,7 +818,7 @@ var widgets = [
         order: 3,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=42&projectId=0&status=true",
+          api: "getOpenedDocumentsCount?docType=42&status=true",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "count-0",
@@ -829,13 +829,13 @@ var widgets = [
       },
       {
         title: "closedSubmittals",
-        permission: 3510,
+        permission: 10144,
         canView: false,
         checked: false,
         order: 4,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=42&projectId=0&status=false",
+          api: "getOpenedDocumentsCount?docType=42&status=false",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "count-0",
@@ -846,13 +846,13 @@ var widgets = [
       },
       {
         title: "pendingSubmittals",
-        permission: 3510,
+        permission: 10145,
         canView: false,
         checked: false,
         order: 5,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=42",
+          api: "GetApprocalStatusCount?action=3",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "count-0",
@@ -878,7 +878,7 @@ var widgets = [
         order: 1,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=19",
+          api: "getOpenedDocumentsCount?docType=19&status=true",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "count-0",
@@ -894,7 +894,7 @@ var widgets = [
         order: 2,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=25",
+          api: "getOpenedDocumentsCount?docType=25&status=true",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "count-0",
@@ -928,7 +928,7 @@ var widgets = [
         order: 4,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=28",
+          api: "getOpenedDocumentsCount?docType=28&status=true",
           apiDetails: "",
           route: "DashBoardCounterLog",
           value: "count-0",

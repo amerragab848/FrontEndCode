@@ -270,276 +270,9 @@ let widgets = [
     ]
   },
   {
-    title: "approvalSubmittals",
+    title: "pendingSubmittals",
     key: "0-2-1",
-    apiDetails: "GetApprocalStatusDetails?status=true&projectId=",
-    columns: [
-      {
-        field: 'refNo',
-        title: Resources['refNo'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: true,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'statusName',
-        title: Resources['statusName'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'subject',
-        title: Resources['subject'][currentLanguage],
-        width: 20,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'approvalStatusName',
-        title: Resources['approvalStatus'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'docDate',
-        title: Resources['docDate'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "date",
-        sortable: true
-      },
-      {
-        field: 'approvedDate',
-        title: Resources['approvedDate'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "date",
-        sortable: true
-      },
-      {
-        field: 'lastWorkFlow',
-        title: Resources['lastWorkFlow'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'contractName',
-        title: Resources['contractName'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'duration',
-        title: Resources['duration'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'docCloseDate',
-        title: Resources['docClosedate'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "date",
-        sortable: true
-      },
-      {
-        field: 'cycleDate',
-        title: Resources['cycleDate'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "date",
-        sortable: true
-      },
-      {
-        field: 'cycleCloseDate',
-        title: Resources['cycleCloseDate'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "date",
-        sortable: true
-      },
-      {
-        field: 'submittalType',
-        title: Resources['submittalType'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'cyclesCount',
-        title: Resources['cyclesCount'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'disciplineName',
-        title: Resources['disciplineName'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'area',
-        title: Resources['area'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      },
-      {
-        field: 'location',
-        title: Resources['location'][currentLanguage],
-        width: 10,
-        groupable: true,
-        fixed: false,
-        type: "text",
-        sortable: true
-      }
-    ],
-    filterApi: "",
-    filters: [
-      {
-        field: "refNo",
-        name: "refNo",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "statusName",
-        name: "statusName",
-        type: "toggle",
-        trueLabel: "oppened",
-        falseLabel: "closed"
-      },
-      {
-        field: "subject",
-        name: "subject",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "approvalStatusName",
-        name: "approvalStatus",
-        type: "toggle",
-        trueLabel: "approvalModalApprove",
-        falseLabel: "rejected"
-      },
-      {
-        field: "docDate",
-        name: "docDate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "approvedDate",
-        name: "approvedDate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "lastWorkFlow",
-        name: "lastWorkFlow",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "contractName",
-        name: "contractName",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "duration",
-        name: "duration",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "docCloseDate",
-        name: "docClosedate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "cycleDate",
-        name: "cycleDate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "cycleCloseDate",
-        name: "cycleCloseDate",
-        type: "date",
-        isCustom: true
-      },
-      {
-        field: "submittalType",
-        name: "submittalType",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "cyclesCount",
-        name: "cyclesCount",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "disciplineName",
-        name: "disciplineName",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "area",
-        name: "area",
-        type: "string",
-        isCustom: true
-      },
-      {
-        field: "location",
-        name: "location",
-        type: "string",
-        isCustom: true
-      }
-    ]
-  },
-  {
-    title: "openedSubmittals",
-    key: "0-2-2",
-    apiDetails: "GetOpenedDocumentsDetails?docType=42&projectId=",
+    apiDetails: "GetApprocalStatusDetails?action=3&projectId=",
     columns: [
       {
         field: 'subject',
@@ -608,9 +341,80 @@ let widgets = [
     ]
   },
   {
-    title: "rejectedSubmittals",
+    title: "openedSubmittals",
+    key: "0-2-2",
+    apiDetails: "GetOpenedDocumentsDetails?docType=42&status=true&projectId=",
+    columns: [
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      }
+    ],
+    filterApi: "",
+    filters: [
+      {
+        field: "subject",
+        name: "subject",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "statusName",
+        name: "status",
+        type: "toggle",
+        trueLabel: "oppened",
+        falseLabel: "closed"
+      },
+      {
+        field: "projectName",
+        name: "projectName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      }
+    ]
+  },
+  {
+    title: "approvalSubmittals",
     key: "0-2-3",
-    apiDetails: "GetApprocalStatusDetails?status=false&projectId=",
+    apiDetails: "GetApprocalStatusDetails?action=1&projectId=",
     columns: [
       {
         field: 'refNo',
@@ -875,9 +679,347 @@ let widgets = [
     ]
   },
   {
+    title: "rejectedSubmittals",
+    key: "0-2-4",
+    apiDetails: "GetApprocalStatusDetails?action=2&projectId=",
+    columns: [
+      {
+        field: 'refNo',
+        title: Resources['refNo'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'statusName',
+        title: Resources['statusName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'approvalStatusName',
+        title: Resources['approvalStatus'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'approvedDate',
+        title: Resources['approvedDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'lastWorkFlow',
+        title: Resources['lastWorkFlow'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'contractName',
+        title: Resources['contractName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'duration',
+        title: Resources['duration'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docCloseDate',
+        title: Resources['docClosedate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'cycleDate',
+        title: Resources['cycleDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'cycleCloseDate',
+        title: Resources['cycleCloseDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      },
+      {
+        field: 'submittalType',
+        title: Resources['submittalType'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'cyclesCount',
+        title: Resources['cyclesCount'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'disciplineName',
+        title: Resources['disciplineName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'area',
+        title: Resources['area'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'location',
+        title: Resources['location'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      }
+    ],
+    filterApi: "",
+    filters: [
+      {
+        field: "refNo",
+        name: "refNo",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "statusName",
+        name: "statusName",
+        type: "toggle",
+        trueLabel: "oppened",
+        falseLabel: "closed"
+      },
+      {
+        field: "subject",
+        name: "subject",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "approvalStatusName",
+        name: "approvalStatus",
+        type: "toggle",
+        trueLabel: "approvalModalApprove",
+        falseLabel: "rejected"
+      },
+      {
+        field: "docDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "approvedDate",
+        name: "approvedDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "lastWorkFlow",
+        name: "lastWorkFlow",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "contractName",
+        name: "contractName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "duration",
+        name: "duration",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docCloseDate",
+        name: "docClosedate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "cycleDate",
+        name: "cycleDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "cycleCloseDate",
+        name: "cycleCloseDate",
+        type: "date",
+        isCustom: true
+      },
+      {
+        field: "submittalType",
+        name: "submittalType",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "cyclesCount",
+        name: "cyclesCount",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "disciplineName",
+        name: "disciplineName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "area",
+        name: "area",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "location",
+        name: "location",
+        type: "string",
+        isCustom: true
+      }
+    ]
+  },
+  {
+    title: "closedSubmittals",
+    key: "0-2-5",
+    apiDetails: "GetOpenedDocumentsDetails?docType=42&status=false&projectId=",
+    columns: [
+      {
+        field: 'subject',
+        title: Resources['subject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'statusName',
+        title: Resources['status'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'projectName',
+        title: Resources['projectName'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "text",
+        sortable: true
+      },
+      {
+        field: 'docDate',
+        title: Resources['docDate'][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        type: "date",
+        sortable: true
+      }
+    ],
+    filterApi: "",
+    filters: [
+      {
+        field: "subject",
+        name: "subject",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "statusName",
+        name: "status",
+        type: "toggle",
+        trueLabel: "oppened",
+        falseLabel: "closed"
+      },
+      {
+        field: "projectName",
+        name: "projectName",
+        type: "string",
+        isCustom: true
+      },
+      {
+        field: "docDate",
+        name: "docDate",
+        type: "date",
+        isCustom: true
+      }
+    ]
+  },
+  {
     title: "openedLetters",
     key: "0-3-1",
-    apiDetails: "GetOpenedDocumentsDetails?docType=19&projectId=",
+    apiDetails: "GetOpenedDocumentsDetails?docType=19&status=true&projectId=",
     columns: [
       {
         field: 'subject',
@@ -948,7 +1090,7 @@ let widgets = [
   {
     title: "openedIR",
     key: "0-3-2",
-    apiDetails: "GetOpenedDocumentsDetails?docType=25&projectId=",
+    apiDetails: "GetOpenedDocumentsDetails?docType=25&status=true&projectId=",
     columns: [
       {
         field: 'subject',
@@ -1315,7 +1457,7 @@ let widgets = [
   {
     title: "openedTransmittals",
     key: "0-3-4",
-    apiDetails: "GetOpenedDocumentsDetails?docType=28&projectId=",
+    apiDetails: "GetOpenedDocumentsDetails?docType=28&status=true&projectId=",
     columns: [
       {
         field: 'subject',

@@ -18,7 +18,7 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
 import UploadSingleAttachment from "../../Componants/OptionsPanels/UploadSingleAttachment";
- 
+
 //var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 //var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -73,21 +73,6 @@ class boqStructure extends Component {
         this.printChild = this.printChild.bind(this);
     }
 
-    componentDidMount() {
-        var links = document.querySelectorAll(
-            ".noTabs__document .doc-container .linebylineInput"
-        );
-
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add("even");
-            } else {
-                links[i].classList.add("odd");
-            }
-        }
-
-    }
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.projectId !== this.state.projectId) {
             this.setState({ isLoading: true });
@@ -104,8 +89,17 @@ class boqStructure extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add("even");
+            } else {
+                links[i].classList.add("odd");
+            }
+        }
         this.props.actions.documentForAdding();
         this.setState({ isLoading: true });
         dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + this.state.projectId).then(result => {
@@ -157,7 +151,7 @@ class boqStructure extends Component {
             if (item.collapse === undefined) { item.collapse = true }
             if (id == item.id) {
                 item.collapse = !item.collapse;
-            } 
+            }
             updateTrees.push(item);
             if (item.trees && item.trees.length > 0) {
                 this.search(id, item.trees, updateTrees, parentId);
@@ -522,8 +516,8 @@ class boqStructure extends Component {
                                         projectId={this.props.projectId}
                                         link={Config.getPublicConfiguartion().downloads + "/downloads/excel/tempBoqStructure.xlsx"}
                                         header="addManyItems"
-                                        afterUpload={() => {                    
-                                            this.setState({ docTemplateModal: false }) 
+                                        afterUpload={() => {
+                                            this.setState({ docTemplateModal: false })
                                         }
                                         } />
 

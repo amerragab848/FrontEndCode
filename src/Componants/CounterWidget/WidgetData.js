@@ -192,8 +192,8 @@ let Widgets = [{
 let CounterWidgetsWithDetails = [{
     id: 'wt_rejectedSubmittals_1',
     title: 'rejectedSubmittals',
-    api: 'GetApprocalStatusCount?status=false',
-    apiDetails: 'GetApprocalStatusDetails?status=false',
+    api: 'GetApprocalStatusCount?action=2',
+    apiDetails: 'GetApprocalStatusDetails?action=2',
     value: "total-0",
     total: "total-1",
     isModal: 'true',
@@ -203,8 +203,8 @@ let CounterWidgetsWithDetails = [{
 {
     id: 'wt_approvalSubmittals_2',
     title: 'approvalSubmittals',
-    api: 'GetApprocalStatusCount?status=true',
-    apiDetails: 'GetApprocalStatusDetails?status=true',
+    api: 'GetApprocalStatusCount?action=1',
+    apiDetails: 'GetApprocalStatusDetails?action=1',
     value: "total-0",
     total: "total-1",
     isModal: 'true',
@@ -225,8 +225,8 @@ let CounterWidgetsWithDetails = [{
 {
     id: 'wt_openedSubmittal_4',
     title: 'openedSubmittals',
-    api: 'getOpenedDocumentsCount?docType=42&projectId=0&status=true',
-    apiDetails: 'GetOpenedDocumentsDetails?docType=42',
+    api: 'getOpenedDocumentsCount?docType=42&status=true',
+    apiDetails: 'GetOpenedDocumentsDetails?docType=42&status=true&projectId=',
     value: "count-0",
     total: "total-1",
     isModal: 'true',
@@ -236,8 +236,8 @@ let CounterWidgetsWithDetails = [{
 {
     id: 'wt_openedTransmittals_5',
     title: 'openedTransmittals',
-    api: 'getOpenedDocumentsCount?docType=28',
-    apiDetails: 'GetOpenedDocumentsDetails?docType=28',
+    api: 'getOpenedDocumentsCount?docType=28&status=true',
+    apiDetails: 'GetOpenedDocumentsDetails?docType=28&status=true&projectId=',
     value: "count-0",
     total: "total-1",
     isModal: 'true',
@@ -247,8 +247,8 @@ let CounterWidgetsWithDetails = [{
 {
     id: 'wt_openedLetters_6',
     title: 'openedLetters',
-    api: 'getOpenedDocumentsCount?docType=19',
-    apiDetails: 'GetOpenedDocumentsDetails?docType=19',
+    api: 'getOpenedDocumentsCount?docType=19&status=true',
+    apiDetails: 'GetOpenedDocumentsDetails?docType=19&status=true&projectId=',
     value: "count-0",
     total: "total-1",
     isModal: 'true',
@@ -258,8 +258,8 @@ let CounterWidgetsWithDetails = [{
 {
     id: 'wt_openedInspectionRequests_7',
     title: 'openedIR',
-    api: 'getOpenedDocumentsCount?docType=25',
-    apiDetails: 'GetOpenedDocumentsDetails?docType=25',
+    api: 'getOpenedDocumentsCount?docType=25&status=true',
+    apiDetails: 'GetOpenedDocumentsDetails?docType=25&status=true&projectId=',
     value: "count-0",
     total: "total-1",
     isModal: 'true',
@@ -269,24 +269,24 @@ let CounterWidgetsWithDetails = [{
 {
     id: 'wt_ClosedSubmittal_8',
     title: 'closedSubmittals',
-    api: 'getOpenedDocumentsCount?docType=42&projectId=0&status=false',
-    apiDetails: 'GetOpenedDocumentsDetails?docType=42',
+    api: 'getOpenedDocumentsCount?docType=42&status=false',
+    apiDetails: 'GetOpenedDocumentsDetails?docType=42&status=false&projectId=',
     value: "count-0",
     total: "total-1",
     isModal: 'true',
     route: 'route-to-view',
-    permission: 3510
+    permission: 10144
 },
 {
     id: 'wt_PendingSubmittal_9',
     title: 'pendingSubmittals',
-    api: 'getOpenedDocumentsCount?docType=42',
-    apiDetails: 'GetOpenedDocumentsDetails?docType=42',
+    api: 'GetApprocalStatusCount?action=3',
+    apiDetails: 'GetApprocalStatusDetails?action=3',
     value: "count-0",
     total: "total-1",
     isModal: 'true',
     route: 'route-to-view',
-    permission: 3510
+    permission: 10145
 },
 ];
 

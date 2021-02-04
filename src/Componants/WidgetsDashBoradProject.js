@@ -72,17 +72,17 @@ var DashBoardWidgets = [
     order: 2,
     widgets: [
       {
-        title: "approvalSubmittals",
+        title: "pendingSubmittals",
         key: "0-2-1",
         canView: false,
         checked: false,
         order: 1,
-        permission: 10051,
+        permission: 10147,
         type: "twoWidget",
         props: {
-          api: "GetApprocalStatusCount?status=true&projectId=",
+          api: "GetApprocalStatusCount?action=3&projectId=",
           route: "DashBoardProjectCounterLog",
-          value: "total-0",
+          value: "count-0",
           total: "total-1",
           action: "action",
           isModal: false,
@@ -98,7 +98,7 @@ var DashBoardWidgets = [
         permission: 10052,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=42&projectId=",
+          api: "getOpenedDocumentsCount?docType=42&status=true&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
@@ -108,15 +108,15 @@ var DashBoardWidgets = [
         }
       },
       {
-        title: "rejectedSubmittals",
+        title: "approvalSubmittals",
         key: "0-2-3",
         canView: false,
         checked: false,
         order: 3,
-        permission: 10053,
+        permission: 10051,
         type: "twoWidget",
         props: {
-          api: "GetApprocalStatusCount?status=false&projectId=",
+          api: "GetApprocalStatusCount?action=1&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "total-0",
           total: "total-1",
@@ -124,7 +124,43 @@ var DashBoardWidgets = [
           isModal: false,
           key: "0-2-3"
         }
-      }
+      },
+      {
+        title: "rejectedSubmittals",
+        key: "0-2-4",
+        canView: false,
+        checked: false,
+        order: 4,
+        permission: 10053,
+        type: "twoWidget",
+        props: {
+          api: "GetApprocalStatusCount?action=2&projectId=",
+          route: "DashBoardProjectCounterLog",
+          value: "total-0",
+          total: "total-1",
+          action: "action",
+          isModal: false,
+          key: "0-2-4"
+        }
+      },
+      {
+        title: "closedSubmittals",
+        key: "0-2-5",
+        canView: false,
+        checked: false,
+        order: 5,
+        permission: 10146,
+        type: "twoWidget",
+        props: {
+          api: "getOpenedDocumentsCount?docType=42&status=false&projectId=",
+          route: "DashBoardProjectCounterLog",
+          value: "count-0",
+          total: "total-1",
+          action: "action",
+          isModal: false,
+          key: "0-2-5"
+        }
+      },
     ]
   },
   {
@@ -144,7 +180,7 @@ var DashBoardWidgets = [
         permission: 10054,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=19&projectId=",
+          api: "getOpenedDocumentsCount?docType=19&status=true&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
@@ -162,7 +198,7 @@ var DashBoardWidgets = [
         permission: 10055,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=25&projectId=",
+          api: "getOpenedDocumentsCount?docType=25&status=true&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",
@@ -198,7 +234,7 @@ var DashBoardWidgets = [
         order: 4,
         type: "twoWidget",
         props: {
-          api: "getOpenedDocumentsCount?docType=28&projectId=",
+          api: "getOpenedDocumentsCount?docType=28&status=true&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "count-0",
           total: "total-1",

@@ -444,18 +444,8 @@ class corrRecievedSent extends Component {
                 }
             }
         ]
-    }
-    componentDidMount() {
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add('even');
-            }
-            else {
-                links[i].classList.add('odd');
-            }
-        }
-    };
+    } 
+
     componentWillReceiveProps(props) {
         if (this.state.projectId != props.projectId)
             this.setState({ projectId: props.projectId })
@@ -504,7 +494,18 @@ class corrRecievedSent extends Component {
 
         };
     }
-    componentWillMount() {
+    componentDidMount() {
+        
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add('even');
+            }
+            else {
+                links[i].classList.add('odd');
+            }
+        }
+        
         this.setState({ receivedLoading: true })
         Api.get('GetCommunicationCorrespondenceReceived?projectId=' + this.state.projectId + '&pageNumber=0&pageSize=200').then(res => {
             let rows = res != null ? res : []

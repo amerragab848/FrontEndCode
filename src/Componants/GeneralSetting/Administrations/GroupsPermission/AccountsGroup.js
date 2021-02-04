@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Api from "../../../../api";
 import LoadingSection from "../../../../Componants/publicComponants/LoadingSection";
-import Export from "../../../OptionsPanels/Export"; 
+import Export from "../../../OptionsPanels/Export";
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
@@ -9,12 +9,12 @@ import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import GridCustom from "../../../../Componants/Templates/Grid/CustomGrid";
 
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"); 
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class permissionsGroups extends Component {
     constructor(props) {
         super(props);
-          const columnGrid = [
+        const columnGrid = [
             {
                 field: 'userName',
                 title: Resources['UserName'][currentLanguage],
@@ -32,7 +32,7 @@ class permissionsGroups extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            },   {
+            }, {
                 field: 'empCode',
                 title: Resources['employeeCode'][currentLanguage],
                 width: 10,
@@ -40,7 +40,7 @@ class permissionsGroups extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            },  {
+            }, {
                 field: 'SupervisorCompanyName',
                 title: Resources['SupervisorCompany'][currentLanguage],
                 width: 15,
@@ -66,23 +66,23 @@ class permissionsGroups extends Component {
                 sortable: true,
             }
         ];
-        this.rowActions=[
+        this.rowActions = [
             {
-                title:'Delete',
-                handleClick:values=>{
+                title: 'Delete',
+                handleClick: values => {
                     this.setState({ showDeleteModal: true, row: values })
                 },
-                classes:''
+                classes: ''
             }
         ]
 
         this.state = {
             columns: columnGrid,
             isLoading: true,
-            groupId:props.match.params.groupId,
+            groupId: props.match.params.groupId,
             currentTitle: 'add',
             rows: [],
-            row:{},
+            row: {},
             selectedRows: [],
             groupList: [],
             totalRows: 0
@@ -94,7 +94,7 @@ class permissionsGroups extends Component {
             })
         }
     }
-   deleteGroupName = (rowId) => {
+    deleteGroupName = (rowId) => {
         this.setState({ showDeleteModal: true, rowId: rowId })
     }
 
@@ -107,10 +107,10 @@ class permissionsGroups extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false, showResetPasswordModal: false });
     };
- 
+
     ConfirmdeleteAccount = () => {
         if (this.state.row.id != null) {
-            this.setState({ isLoading: true , showDeleteModal: false })
+            this.setState({ isLoading: true, showDeleteModal: false })
             Api.get('DeleteAccountsGroup?id=' + this.state.row.id).then(() => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let rows = []
@@ -119,7 +119,7 @@ class permissionsGroups extends Component {
                         rows.push(element)
                     }
                 })
-                this.setState({ rows, isLoading: false})
+                this.setState({ rows, isLoading: false })
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ isLoading: false })
@@ -127,8 +127,8 @@ class permissionsGroups extends Component {
         }
     }
 
-    componentWillMount = () => {
-        Api.get('AccountsGroupGetByGroupId?groupId='+this.state.groupId+'&pageNumber=0&pageSize=200').then(result => {
+    componentDidMount = () => {
+        Api.get('AccountsGroupGetByGroupId?groupId=' + this.state.groupId + '&pageNumber=0&pageSize=200').then(result => {
             if (result != null) {
                 this.setState({
                     rows: result,
@@ -149,32 +149,32 @@ class permissionsGroups extends Component {
             isLoading: true
         })
         // if (column.key != 'select-row') {
-            this.props.history.push({
-                pathname: "/EditAccount",
-                search: "?id=" + value.id
-            });
-    // }
-    } 
+        this.props.history.push({
+            pathname: "/EditAccount",
+            search: "?id=" + value.id
+        });
+        // }
+    }
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridCustom
-                ref='custom-data-grid'
-                gridKey="AccountsGroup"
-                data={this.state.rows}
-                pageSize={this.state.rows.length}
-                groups={[]}
-                actions={[]}
-                rowActions={this.rowActions}
-                cells={this.state.columns}
-                rowClick={(cell) => {this.onRowClick(cell)}}
-              />
+                    ref='custom-data-grid'
+                    gridKey="AccountsGroup"
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={[]}
+                    rowActions={this.rowActions}
+                    cells={this.state.columns}
+                    rowClick={(cell) => { this.onRowClick(cell) }}
+                />
             ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'accountsGroup'} />
             : null;
-  
+
         return (
             <div className='mainContainer main__withouttabs' >
                 <div className="submittalFilter readOnly__disabled">

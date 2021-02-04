@@ -39,16 +39,16 @@ let widgets = [
         }
     },
     {
-        "title": "approvalSubmittals",
+        "title": "pendingSubmittals",
         "props": {
-            "permission": 10051,
+            "permission": 10147,
             "type": "twoWidget",
-            "api": "GetApprocalStatusCount?status=true&projectId=",
+            "api": "GetApprocalStatusCount?action=3&projectId=",
             "route": "DashBoardProjectCounterLog",
-            "value": "total-0",
+            "value": "count-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-2-1"
+            "key": "0-2-1",
         }
     },
     {
@@ -56,7 +56,7 @@ let widgets = [
         "props": {
             "permission": 10052,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=42&projectId=",
+            "api": "getOpenedDocumentsCount?docType=42&status=true&projectId=",
             "route": "DashBoardProjectCounterLog",
             "value": "count-0",
             "total": "total-1",
@@ -65,11 +65,11 @@ let widgets = [
         }
     },
     {
-        "title": "rejectedSubmittals",
+        "title": "approvalSubmittals",
         "props": {
-            "permission": 10053,
+            "permission": 10051,
             "type": "twoWidget",
-            "api": "GetApprocalStatusCount?status=false&projectId=",
+            "api": "GetApprocalStatusCount?action=1&projectId=",
             "route": "DashBoardProjectCounterLog",
             "value": "total-0",
             "total": "total-1",
@@ -78,11 +78,37 @@ let widgets = [
         }
     },
     {
+        "title": "rejectedSubmittals",
+        "props": {
+            "permission": 10053,
+            "type": "twoWidget",
+            "api": "GetApprocalStatusCount?action=2&projectId=",
+            "route": "DashBoardProjectCounterLog",
+            "value": "total-0",
+            "total": "total-1",
+            "action": "action",
+            "key": "0-2-4"
+        }
+    },
+    {
+        "title": "closedSubmittals",
+        "props": {
+            "permission": 10146,
+            "type": "twoWidget",
+            "api": "getOpenedDocumentsCount?docType=42&status=false&projectId=",
+            "route": "DashBoardProjectCounterLog",
+            "value": "count-0",
+            "total": "total-1",
+            "action": "action",
+            "key": "0-2-5",
+        }
+    },
+    {
         "title": "openedLetters",
         "props": {
             "permission": 10054,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=19&projectId=",
+            "api": "getOpenedDocumentsCount?docType=19&status=true&projectId=",
             "route": "DashBoardProjectCounterLog",
             "value": "count-0",
             "total": "total-1",
@@ -95,7 +121,7 @@ let widgets = [
         "props": {
             "permission": 10055,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=25&projectId=",
+            "api": "getOpenedDocumentsCount?docType=25&status=true&projectId=",
             "route": "DashBoardProjectCounterLog",
             "value": "count-0",
             "total": "total-1",
@@ -121,7 +147,7 @@ let widgets = [
         "props": {
             "permission": 10057,
             "type": "twoWidget",
-            "api": "getOpenedDocumentsCount?docType=28&projectId=",
+            "api": "getOpenedDocumentsCount?docType=28&status=true&projectId=",
             "route": "DashBoardProjectCounterLog",
             "value": "count-0",
             "total": "total-1",

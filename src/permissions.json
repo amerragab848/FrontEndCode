@@ -16268,6 +16268,22 @@
                 "ar": " (متوسط الاستجابه (التقديمات"
               },
               "value": false
+            },
+            {
+              "code": 10144,
+              "title": {
+                "en": "Closed Submittals",
+                "ar": "التقديمات المغلقة"
+              },
+              "value": false
+            },
+            {
+              "code": 10145,
+              "title": {
+                "en": "Pending Submittals",
+                "ar": "التقديمات المعلقة"
+              },
+              "value": false
             }
           ]
         },
@@ -16435,6 +16451,22 @@
               "title": {
                 "en": "Avg Respond(PO)",
                 "ar": " (متوسط الاستجابه (طلبات الشراء"
+              },
+              "value": false
+            },
+            {
+              "code": 10146,
+              "title": {
+                "en": "Closed Submittal",
+                "ar": " مجموعات تقديمات المغلقة"
+              },
+              "value": false
+            },
+            {
+              "code": 10147,
+              "title": {
+                "en": "Pending Submittal",
+                "ar": " مجموعات تقديمات المعلقة"
               },
               "value": false
             }

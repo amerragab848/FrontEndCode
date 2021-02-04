@@ -21,7 +21,7 @@ class Widgets extends Component {
 
   componentDidMount() {
 
-    Api.get(this.props.props.api, undefined,moduleId).then(result => {
+    Api.get(this.props.props.api, undefined, moduleId).then(result => {
       if (result) {
         this.setState({
           value: result != null ? result : 0
@@ -35,15 +35,10 @@ class Widgets extends Component {
       if (this.state.value > 0) {
         let arr = this.props.props.route.split('action');
         if (arr.length > 1) {
-          this.props.history.push(
-            this.props.props.route
-          );
+          this.props.history.push(this.props.props.route);
         }
         else {
-          this.props.history.push({
-            pathname: this.props.props.route,
-            search: "?key=" + this.props.props.key
-          });
+          this.props.history.push({ pathname: this.props.props.route, search: "?key=" + this.props.props.key });
         }
       }
     }

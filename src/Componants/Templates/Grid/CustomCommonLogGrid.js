@@ -87,7 +87,7 @@ export default class CustomGrid extends Component {
                     }
                 }
             }
-            currentGP = JSON.parse(selectedCols.groups);
+            currentGP = (selectedCols.groups !=null && selectedCols.groups.length > 0)? JSON.parse(selectedCols.groups):[];
         }
         this.setState({
             ColumnsHideShow: itemsColumns,

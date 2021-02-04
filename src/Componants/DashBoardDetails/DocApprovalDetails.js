@@ -612,6 +612,8 @@ class DocApprovalDetails extends Component {
         this.state.selectedRows.forEach(item => {
           let row = this.state.rows.find(x => x.id == item);
           if (row) {
+
+
             serverObj.push({
               accountDocId: row.accountDocWorkFlowId,
               approvalStatus: this.state.approvalStatus,
@@ -620,7 +622,8 @@ class DocApprovalDetails extends Component {
               docId: row.docId,
               docTypeId: row.docTypeId,
               projectId: row.projectId,
-              comment: this.state.approvalObj.comment
+              comment: this.state.approvalObj.comment,
+              //docLink: window.location.href
             })
           }
         })
