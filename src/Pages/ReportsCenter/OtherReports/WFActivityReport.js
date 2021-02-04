@@ -9,13 +9,19 @@ import moment from "moment";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+import CryptoJS from 'crypto-js';
+import documentDefenition from '../../../documentDefenition.json';
+import { withRouter } from "react-router-dom";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
+  
 class WFActivityReport extends Component {
 
     constructor(props) {
         super(props)
+       
+
         this.state = {
             isLoading: false,
             employeesList: [],
@@ -28,7 +34,8 @@ class WFActivityReport extends Component {
             checkAllEmployees: false,
             pageNumber: 0,
             pageSize: 100,
-            totalRows: 0
+            totalRows: 0,
+           
         }
 
         if (!Config.IsAllow(4017)) {
@@ -277,12 +284,55 @@ class WFActivityReport extends Component {
             });
         }
     };
+  handleClick=(cell)=>{
+  
+        if (cell.id != 0) {
+          
+               let documentObj = (Object.values(documentDefenition)).filter(function(item){
+                return item.docTyp ==cell.docTypeId;
+                    }).map(function({docTyp, documentAddEditLink, documentTitle}){
+                        return {docTyp, documentAddEditLink, documentTitle};
+                    });
 
+                let addView =documentObj[0].documentAddEditLink;
+
+                    let obj = {
+                        docId: cell.docId,
+                        projectId: cell.projectId,
+                        projectName: this.state.projectName,
+                        arrange: 0,
+                        docApprovalId: 0,
+                        isApproveMode: false,
+                        perviousRoute:
+                            window.location.pathname +
+                            window.location.search,
+                    };                  
+                    let parms = CryptoJS.enc.Utf8.parse(
+                        JSON.stringify(obj),
+                    );
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify( parms, );
+
+                    this.props.history.push({
+
+                        pathname: '/' + addView,
+                        search: '?id=' + encodedPaylod,
+                    });
+               
+        }
+    }
+
+  
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridCustom ref='custom-data-grid' gridKey="WFActivityReport" groups={[]} data={this.state.rows || []} cells={this.columns}
-                pageSize={this.state.rows ? this.state.rows.length : 0} actions={[]} rowActions={[]} rowClick={() => { }}
+            <GridCustom ref='custom-data-grid'
+             gridKey="WFActivityReport"
+             groups={[]} data={this.state.rows || []} 
+             cells={this.columns}
+             pageSize={this.state.rows ? this.state.rows.length : 0} 
+             actions={[]} rowActions={[]} 
+             rowClick={(cell) => { this.handleClick(cell) }}
+
             />
         ) : <LoadingSection />;
 
@@ -385,4 +435,4 @@ class WFActivityReport extends Component {
     }
 }
 
-export default WFActivityReport
+export default withRouter(WFActivityReport); 

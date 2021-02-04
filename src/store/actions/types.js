@@ -93,3 +93,7 @@ export const Clear_Cash_CompanyContact='Clear_Cash_CompanyContact';
 export const STORE_COMMON_LOG_CoLUMNS='STORE_COMMON_LOG_CoLUMNS';
 
 export const fireLoading='fireLoading';
+
+export const ShowMultipleWF = 'ShowMultipleWF';
+
+export const Export_Document_Sec='Export_Document_Sec';

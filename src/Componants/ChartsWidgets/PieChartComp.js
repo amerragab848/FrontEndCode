@@ -7,13 +7,30 @@ import Loader from '../../../src/Styles/images/ChartLoaders/PieChartLoader.webm'
 import NoData from '../../../src/Styles/images/ChartLoaders/PieChartNoData.png';
 
 const colorSchema = [
-    '#39bd3d',
-    '#ab50df',
     '#07bc0c',
     '#119015',
     '#47cc4a',
     '#7cdb79',
-    '#dfe2e6',
+    '#5fd45f',
+    '#119015',
+    '#07bc0c',
+    '#07bc0c',
+    '#119015',
+    '#47cc4a',
+    '#7cdb79',
+    '#5fd45f',
+    '#119015',
+    '#07bc0c',
+    '#07bc0c',
+    '#119015',
+    '#47cc4a',
+    '#7cdb79',
+    '#5fd45f',
+    '#119015',
+    '#07bc0c',
+    '#119015',
+    '#47cc4a',
+    '#7cdb79',
 ];
 
 let moduleId = Config.getPublicConfiguartion().dashboardApi;

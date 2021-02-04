@@ -358,7 +358,11 @@ class projectWorkFlowAddEdit extends Component {
                     this.setState({
                         FollowUpsData: res
                     })
+
+                   this.props.actions.ExportingDataSec({secItems:res});
+
                 }
+
             )
 
             dataservice.GetDataGrid('GetWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.docId).then(

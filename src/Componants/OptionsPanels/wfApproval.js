@@ -20,7 +20,7 @@ class wfApproval extends Component {
     super(props);
     this.state = {
       docApprovalId: this.props.docApprovalId,
-      data: [],
+      data: [], hideDropContacts: false,
       type: false,
       approveData: [],
       password: "",
@@ -48,12 +48,29 @@ class wfApproval extends Component {
   };
 
   fillContacts(docApprovalId, approvalStatus) {
-    dataservice.GetDataListWithAdditionalParam("GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" + docApprovalId + "&approvalStatus=" + approvalStatus, 'contactName', 'contactId', 'arrange').then(result => {
+    dataservice.callAPIGetDataList("GetWorkFlowItemsByWorkFlowIdLevelType?docApprovalId=" + docApprovalId + "&approvalStatus=" + approvalStatus).then(result => {
+      if (result) {
+        let approveData = [];
+        result.forEach(item => {
+          var obj = {};
+          obj.label = item.contactName;
+          obj.value = item.contactId;
+          obj.arrange = item.arrange
+          approveData.push(obj);
+        });
+        let hideDropContacts = false;
+        if (approvalStatus == true) {
+          if (result.length > 0) {
+            hideDropContacts = result[0].useSelection != true && result[0].multiApproval === true ? true : false;
+          }
+        }
+        this.setState({
+          hideDropContacts: hideDropContacts,
+          approveData: approveData,
+          nextArrange: result.length > 0 ? result[0].arrange : this.state.currentArrange
+        });
 
-      this.setState({
-        approveData: result,
-        nextArrange: result ? result[0].arrange : this.state.currentArrange
-      });
+      }
     }).catch(ex => {
       toast.error(ex);
     });
@@ -206,7 +223,9 @@ class wfApproval extends Component {
                   </div>
                 </div>
               </div>
-              <Dropdown title={this.props.approvalStatus === true ? "approveTo" : "rejectedTo"} data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
+              {this.state.hideDropContacts == true ? null :
+                <Dropdown title={this.props.approvalStatus === true ? "approveTo" : "rejectedTo"} data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
+              }
               <div className="textarea-group fullWidthWrapper textLeft">
                 <label>Comment</label>
                 <textarea className="form-control" onBlur={e => this.commentOnBlurHandler(e)} />

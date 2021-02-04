@@ -45,7 +45,7 @@ class ExportDetails extends Component {
     this.ExportDocument = this.ExportDocument.bind(this);
   }
 
-  ExportDocument(Fields, items, name) {
+  ExportDocument(Fields, items,secItems, name) {
     if (Config.getPublicConfiguartion().activeExport != true) {
       toast.warn('This feature is disabled. Please call your administrator for assistance');
       return;
@@ -95,6 +95,7 @@ class ExportDetails extends Component {
           + '<body>'
           + ' <table>{Fields}</table><table> <h6>Document Cycles </h6></table> '
           + ' <table>{items}</table><table> <h6> Attachments </h6></table> '
+          + ' <table>{secItems}</table><table> <h6> Follow Up </h6></table> '          
           + ' <table>{attachmentTable}</table>   <table><h6>   </table> '
           + ' <table>{workflowCycles}</table>   <table> Doc. Attachments </table> '
           + ' <table>{docAttachments}</table>     '
@@ -102,22 +103,30 @@ class ExportDetails extends Component {
         , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
         , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
 
-      var Fields = '', items = '', attachmentTable = '', workflowCycles = '', docAttachments = '';
+      var Fields = '', items = '', attachmentTable = '', workflowCycles = '', docAttachments = '',secItems='';
       if (!'Fields'.nodeType) Fields = document.getElementById('Fields').innerHTML
 
       if (this.props.items.length) items = this.props.docTypeId == 120 ? document.getElementById('interimPaymentCertificate').innerHTML : document.getElementById('items').innerHTML
+       //added
+        if (this.props.docTypeId==16){
+            secItems = document.getElementById('secItems').innerHTML
 
+       }
       if (!'attachmentTable'.nodeType) attachmentTable = document.getElementById('attachmentTable').innerHTML
       if (this.props.workFlowCycles.length) workflowCycles = document.getElementById('workflowCycles').innerHTML
       if (this.props.docsAttachData.length) docAttachments = document.getElementById('attachDocuments').innerHTML
 
+   
+
+      
       var ctx = {
         name: 'procoor Export',
         Fields: Fields,
         items: items,
         attachmentTable: attachmentTable,
         workflowCycles: workflowCycles,
-        docAttachments: docAttachments
+        docAttachments: docAttachments,
+        secItems:secItems
       }
 
       this.setState({
@@ -201,7 +210,7 @@ class ExportDetails extends Component {
       </table>
     )
   }
-
+ 
   drawItems() {
     let fieldsItems = DED[this.props.docTypeId].columnsItems
 
@@ -228,6 +237,41 @@ class ExportDetails extends Component {
                 </tr>
               )
             })}
+          </tbody>
+        </table>
+      )
+    }
+  }
+  drawSecItems() {
+    let fieldsItems = DED[this.props.docTypeId].columnsSecItems
+
+    let fieldsSecName = DED[this.props.docTypeId].SecItemsfriendlyNames
+    if (fieldsSecName.length > 0) {
+      return (
+        <table id="secItems" style={{ border: 'double' }}>
+          <thead valign="top">
+            <tr key={'dd- '} style={{ border: '4px' }}>
+              {fieldsSecName!=null&&fieldsSecName!=undefined?fieldsSecName.map((column, index) => {
+                return (
+                  <th key={'dddd- ' + index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}>{Resources[column][currentLanguage]}</th>
+                )
+              }):"added"}
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.secItems!=null&&this.props.secItems!=undefined?this.props.secItems.map((row, index) => {
+              return (
+                <tr key={'rwow- ' + index}>
+                  {fieldsItems.map((field, index) => {
+                    return (<td key={'field- ' + index}>{row[field]}</td>)
+                  })}
+                </tr>
+              )
+            })
+            :<div key={'value is null'}>
+           
+             </div>
+            }
           </tbody>
         </table>
       )
@@ -691,6 +735,13 @@ class ExportDetails extends Component {
             : null
           }
 
+         {/* {this.props.items.length > 0 ? */}
+           {this.props.docTypeId==16? < div className="table__withItem">{this.drawSecItemsPdf()}
+            </div>:null
+         }
+           {/* : null */}
+         {/* } */}
+
           {this.props.cycles.length > 0 ?
 
             < div className="table__withItem">{this.drawCycles_pdf()}
@@ -771,6 +822,49 @@ class ExportDetails extends Component {
     }
   }
 
+  drawSecItemsPdf() {
+    let fieldsItems = DED[this.props.docTypeId].columnsSecItems
+    let rows = this.props.secItems!=null&&this.props.secItems!=undefined?this.props.secItems.length > 0 ?
+      (this.props.secItems.map((row, index) => {
+        return (
+          <tr key={'tr-item- ' + index}>
+            {fieldsItems.map((field, index) => {
+              return (<td key={'td-item- ' + index}><div className="contentCell tableCell-2"><a>{row[field]}</a></div></td>)
+            })}
+          </tr>
+        )
+      })
+      )
+      : null:null
+    let fieldsName = DED[this.props.docTypeId].SecItemsfriendlyNames
+    if (fieldsName.length > 0) {
+      return (
+        <Fragment>
+          <p id="pdfLength">{Resources.itemsList[currentLanguage]}</p>
+          <table id="secItems" className="attachmentTable attachmentTable__items">
+            <thead >
+              <tr >
+                {fieldsName!=null&&fieldsName!=undefined?fieldsName.map((column, index) => {
+                  return (
+                    <th key={'th-items ' + index}>
+                      <div className="headCell ">
+                        {Resources[column][currentLanguage]}
+                      </div>
+                    </th>
+                  )
+                }):""}
+              </tr>
+            </thead>
+            <tbody>
+              {rows}
+            </tbody>
+          </table>
+        </Fragment>)
+    }
+    else {
+      return (null)
+    }
+  }
 
   drawCycles_pdf() {
     let fieldsItems = this.props.cyclesFields
@@ -1379,6 +1473,8 @@ class ExportDetails extends Component {
           {this.drawFields()}
           {this.props.docTypeId != 120 ? this.drawItems() : null}
 
+         
+          {this.props.docTypeId == 16 ? this.drawSecItems() : null}
           {this.drawAttachments()}
           {this.drawWorkFlow()}
           {this.drawattachDocuments()}
@@ -1407,6 +1503,11 @@ function mapStateToProps(state, ownProps) {
     files: state.communication.files,
     workFlowCycles: state.communication.workFlowCycles,
     items: state.communication.items,
+
+    secItems: state.communication.secItems,
+    secItemsfriendlyNames: state.communication.secItemsfriendlyNames,
+    secItemsFields: state.communication.secItemsFields,
+
     cycles: state.communication.cycles,
     cyclesFields: state.communication.cyclesFields,
     cyclesfriendlyNames: state.communication.cyclesfriendlyNames,

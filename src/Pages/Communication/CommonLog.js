@@ -16,6 +16,7 @@ import * as communicationActions from '../../store/actions/communication';
 import { toast } from 'react-toastify';
 import Config from '../../Services/Config.js';
 import ExportDetails from '../../Componants/OptionsPanels/ExportDetails';
+import SendToWorkFlow from '../../Componants/OptionsPanels/SendWorkFlow';
 import SkyLight from 'react-skylight';
 import { Resources } from '../../Resources';
 import { Bar } from 'react-chartjs-2';
@@ -79,6 +80,7 @@ class CommonLog extends Component {
     constructor(props) {
         super(props);
         this.chartReference = React.createRef();
+
         this.state = {
             singleChartBtn: false,
             singleChartType: 'true',
@@ -110,6 +112,7 @@ class CommonLog extends Component {
             query: '',
             isCustom: true,
             showDeleteModal: false,
+            showWFModal: false,
             showExportModal: false,
             showInventoryItemsModal: false,
             inventoryItems: [],
@@ -164,6 +167,18 @@ class CommonLog extends Component {
                 },
                 classes: '',
             },
+            {
+                title: 'To Work Flow',
+
+                handleClick: values => {
+                    this.props.actions.showMultipleWFModal(true);
+                    this.setState({
+                        showWFModal: true,
+                        selectedRows: values,
+                    });
+                },
+                classes: 'toWorkFlow',
+            }
         ];
 
         this.rowActions = [
@@ -404,7 +419,7 @@ class CommonLog extends Component {
         let instance = this.state.singleChartBtn === true ?
             this.chartReference.current.chartReference.current.chartInstance :
             this.chartReference.current.chartInstance;
- 
+
         const ctx = instance.toBase64Image();
 
         var a = document.createElement("a");
@@ -670,12 +685,23 @@ class CommonLog extends Component {
     onCloseModal = () => {
         this.setState({ showDeleteModal: false });
     };
+    onCloseWFModal = () => {
+        this.props.actions.showMultipleWFModal(false);
+
+        this.setState({ showWFModal: false });
+    };
+
     onInventoryItemsCloseModal = () => {
         this.setState({ showInventoryItemsModal: false });
     };
 
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
+    };
+    clickHandlerCancelWFModal = () => {
+        this.props.actions.showMultipleWFModal(false);
+
+        this.setState({ showWFModal: false });
     };
 
     clickHandlerContinueMain = () => {
@@ -838,7 +864,7 @@ class CommonLog extends Component {
                     chartColumns: chartColumns
                 });
 
-                if (docTypeId == 19 || docTypeId == 42||docTypeId==23) {
+                if (docTypeId == 19 || docTypeId == 42||docTypeId==23||docTypeId==28) {
                     showChartBtn = true;
                 }
 
@@ -2087,25 +2113,62 @@ class CommonLog extends Component {
                         </div>
                     ) : null}
                 {/***************************end export******************************* */}
-                {this.state.showInventoryItemsModal == true ? (
-                    <div className="largePopup largeModal ">
-                        <InventoryItemsModal
-                            title={Resources['items'][currentLanguage]}
-                            buttonName="MoreDetails"
-                            inventoryItems={this.state.inventoryItems}
-                            closed={this.onInventoryItemsCloseModal}
-                            showInventoryItemsModal={
-                                this.state.showInventoryItemsModal
-                            }
-                            clickMoreDetailsHandler={
-                                this.clickMoreDetailsHandler
-                            }
-                        />
-                    </div>
-                ) : null}
+
+                {/***************************start WF******************************* */}
+                {this.props.ShowMultipleWF == true ? (
+                    <div className={'grid__column largemodal active'}>
+                        <div className="grid__column--container">
+                            <button
+                                className="closeColumn"
+                                onClick={this.onCloseWFModal}>
+                                X
+                            </button>
+                            <div className="grid__column--title">
+                                <h2>{Resources.sendToWorkFlow[currentLanguage]}</h2>
+                            </div>
+                            <div className="grid__column--content">
+                                <div className="grid__column--content-wrapper">
+
+                                    <SendToWorkFlow
+                                        isMultipleSelect={true}
+                                        docId={this.state.selectedRows}
+                                        docAlertId={0}
+                                        approvalStatus={true}
+                                        projectId={this.state.projectId}
+                                        docApprovalId={0}
+                                        currentArrange={0}
+                                        docTypeId={this.state.documentObj.docTyp}
+                                        documentName={
+                                            this.state.documentObj.documentTitle
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>) : null}
+
+                {/***************************end WF******************************* */}
+                {
+                    this.state.showInventoryItemsModal == true ? (
+                        <div className="largePopup largeModal ">
+                            <InventoryItemsModal
+                                title={Resources['items'][currentLanguage]}
+                                buttonName="MoreDetails"
+                                inventoryItems={this.state.inventoryItems}
+                                closed={this.onInventoryItemsCloseModal}
+                                showInventoryItemsModal={
+                                    this.state.showInventoryItemsModal
+                                }
+                                clickMoreDetailsHandler={
+                                    this.clickMoreDetailsHandler
+                                }
+                            />
+                        </div>
+                    ) : null
+                }
 
 
-            </Fragment>
+            </Fragment >
         );
     }
 }
@@ -2121,6 +2184,8 @@ function mapStateToProps(state, ownProps) {
         files: state.communication.files,
         workFlowCycles: state.communication.workFlowCycles,
         inventoryItems: state.communication.inventoryItems,
+        ShowMultipleWF: state.communication.ShowMultipleWF, 
+        isLoading: state.communication.isLoading
     };
 }
 

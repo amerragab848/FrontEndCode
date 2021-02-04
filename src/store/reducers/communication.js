@@ -21,6 +21,12 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state, items: _items
             }
+          case types.Export_Document_Sec:
+            let _secItems = state.secItems.length > 0 ? state.secItems : action.secItems.length > 0 ? action.secItems : []
+
+              return{
+                        ...state,secItems:_secItems
+              }
 
         case types.Set_DocumentCycle:
             let _cycles = state.cycles.length > 0 ? state.cycles : action.cycles.length > 0 ? action.cycles : []
@@ -66,6 +72,13 @@ export default function (state = initialState.app.communication, action) {
                 showModal: action.showModal
             };
 
+        case types.ShowMultipleWF:
+
+            return {
+                ...state,
+                ShowMultipleWF: action.ShowMultipleWF,
+                isLoading: false,
+            };
         case types.Document_Adding:
             return {
                 ...state,
@@ -186,7 +199,7 @@ export default function (state = initialState.app.communication, action) {
                 workFlowCycles: action.workFlowCycles,
                 hasWorkflow: action.hasWorkflow,
                 showModal: action.showModal,
-                isLoading:false
+                isLoading: false
             };
 
 
@@ -432,7 +445,7 @@ export default function (state = initialState.app.communication, action) {
             })
             return {
                 ...state,
-                docId:documentId,
+                docId: documentId,
                 items: originalItems,
                 totalCost,
                 isLoading: false

@@ -25275,3 +25275,33 @@ tbody.grid-body tr .text.elipsisPadd {
 .fullmodal .gridChart .ui.radio.checkbox label,
 .fullmodal .gridChart .ui.checkbox .box, 
 .fullmodal .gridChart .ui.checkbox label {padding-left: 0;}
+thead.grid-header tr.action-bar .actions button.toWorkFlow {width: auto;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem{
+    border-bottom: 10px solid transparent;
+    margin-right: 1px;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem:before{
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.gray,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.gray{border-color: #e9ecf1;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.red,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.red{border-color: #eb4b3b;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.blue,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.blue{border-color: #4283fb;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.green,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.green{border-color: #45cd49;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem.yellow,
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number.yellow{border-color: #fec107;}
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number {
+    margin: 0 4px;
+    border-bottom: 10px solid transparent;
+    padding-bottom: 0;
+}
+.SummeriesContainer .SummeriesContainerContent .summerisItem__number .content__number {
+    padding: 0;
+    margin: 0;
+}

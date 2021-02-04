@@ -9232,6 +9232,18 @@
     "en": "departments",
     "ar": "الاقسام"
     },
+    "workFlowDuration": {
+        "en": "Work Flow Duration",
+        "ar": "مدة الدورة المستندية"
+    },
+    "levelDuration":{
+        "en":"Level Duration",
+        "ar":"المدة"
+    },
+    "Approval":{
+        "en":"Approval",
+       "ar":"الاعتماد"
+    },
     "revisions":{
         "en": "revisions",
         "ar": "المراجعات"
@@ -9259,5 +9271,14 @@
     "pendingSubmittals": {
         "en": "Pending Submittal",
         "ar": " مجموعات تقديمات المعلقة"
+    },
+    "actionByCompanyName":{
+        "en": "Action By CompanyName",
+        "ar": "اسم الشركه " 
+    },
+    "actionByContactName":{
+        "en": "Action By ContactName",
+        "ar": "اسم جه الاتصال " 
     }
+
 }

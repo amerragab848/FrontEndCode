@@ -2705,6 +2705,11 @@
                 "type": "S"
             },
             {
+                "name": "docType",
+                "value": "distributionSubjet",
+                "type": "S"
+            },
+            {
                 "name": "closeAfterApproval",
                 "value": "closeAfterApprovalName",
                 "type": "S"
@@ -2713,19 +2718,39 @@
                 "name": "useSelection",
                 "value": "useSelectionName",
                 "type": "S"
+            },
+            {
+                "name": "workFlowDuration",
+                "value": "alertDays",
+                "type": "S"
             }
         ],
         "columnsItems": [
             "arrange",
             "companyName",
             "contactName",
-            "description"
+            "description",
+            "level",
+            "ApprovalLevel"
         ],
         "friendlyNames": [
             "numberAbb",
             "CompanyName",
             "ContactName",
-            "description"
+            "description",
+            "levelDuration",
+            "Approval"
+        ],
+        "columnsSecItems":[
+            "arrange",
+            "actionByCompanyName",
+            "actionByContactName"
+          
+        ],
+        "SecItemsfriendlyNames":[
+            "arrange",
+            "actionByCompanyName",
+            "actionByContactName"
         ]
     },
     "9": {

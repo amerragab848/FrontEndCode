@@ -115,6 +115,7 @@ class DocumentActions extends Component {
                     this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true, currentArrange: this.props.currentArrange, docTypeId: this.props.docTypeId, documentTitle: this.props.documentName });
 
                 this.setState({ module: module.default, currentTitle: item.title })
+                
                 this.props.showOptionPanel();
                 this.simpleDialog.show();
             });

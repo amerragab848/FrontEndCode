@@ -3544,7 +3544,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "n"
+        "exportDataType": "n",
+        "showInChart":false
       },
       {
         "field": "statusName",
@@ -3556,7 +3557,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":true
       },
       {
         "field": "subject",
@@ -3568,7 +3570,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "fromCompanyName",
@@ -3580,7 +3583,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":true
       },
       {
         "field": "fromContactName",
@@ -3592,7 +3596,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "toCompanyName",
@@ -3604,7 +3609,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":true
       },
       {
         "field": "toContactName",
@@ -3616,7 +3622,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "docDate",
@@ -3628,7 +3635,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "d"
+        "exportDataType": "d",
+        "showInChart":false
       },
       {
         "field": "requiredDate",
@@ -3640,7 +3648,8 @@
         "isTime": false,
         "showInExport": false,
         "isCustom": false,
-        "exportDataType": "d"
+        "exportDataType": "d",
+        "showInChart":false
       },
       {
         "field": "docCloseDate",
@@ -3652,7 +3661,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": false,
-        "exportDataType": "d"
+        "exportDataType": "d",
+        "showInChart":false
       },
       {
         "field": "discipline",
@@ -3664,7 +3674,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "refDoc",
@@ -3676,7 +3687,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": true,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "building",
@@ -3688,7 +3700,8 @@
         "isTime": false,
         "showInExport": false,
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "oppenedBy",
@@ -3700,7 +3713,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "closedBy",
@@ -3712,7 +3726,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "lastEditBy",
@@ -3724,7 +3739,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "lastEditDate",
@@ -3736,7 +3752,8 @@
         "isTime": false,
         "showInExport": true,
         "isCustom": false,
-        "exportDataType": "d"
+        "exportDataType": "d",
+        "showInChart":false
       },
       {
         "field": "lastSendDate",
@@ -3748,7 +3765,8 @@
         "isTime": false,
         "showInExport": false,
         "isCustom": false,
-        "exportDataType": "d"
+        "exportDataType": "d",
+        "showInChart":false
       },
       {
         "field": "lastSendTime",
@@ -3760,7 +3778,8 @@
         "isTime": true,
         "showInExport": false,
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       },
       {
         "field": "lastApproveDate",
@@ -3772,7 +3791,8 @@
         "isTime": false,
         "showInExport": false,
         "isCustom": false,
-        "exportDataType": "d"
+        "exportDataType": "d",
+        "showInChart":false
       },
       {
         "field": "lastApproveTime",
@@ -3784,7 +3804,8 @@
         "isTime": true,
         "showInExport": false,
         "isCustom": false,
-        "exportDataType": "s"
+        "exportDataType": "s",
+        "showInChart":false
       }
     ],
     "forEditApi": "GetCommunicationTransmittalForEdit",
