@@ -8424,6 +8424,7 @@
     "documentEditPermission": 117,
     "documentDeletePermission": 118,
     "documentPermission": 120,
+    "documentViewPermission":119,
     "documentApi": {
       "get": "GetContractsSiteRequestByProjectIdWithItems",
       "getCustom": "GetContractsSiteRequestWithItemsCustom",

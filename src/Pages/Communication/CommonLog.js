@@ -745,7 +745,7 @@ class CommonLog extends Component {
         }
     };
 
-    renderComponent(documentName, projectId, isCustom) {
+    renderComponent=(documentName, projectId, isCustom)=> {
         var projectId = projectId;
         var documents = documentName;
 
@@ -796,13 +796,13 @@ class CommonLog extends Component {
                                     : 'text',
                     };
 
-                    if (item.field === 'subject') {
+                    if (item.field === 'subject' && (Config.IsAllow(documentObj.documentViewPermission) ||Config.IsAllow(documentObj.documentEditPermission))) {
                         obj.href = 'link';
                         obj.onClick = () => { };
                         obj.classes = 'bold';
                     }
 
-                    if (item.field === 'description' && documentObj.docTyp == 50) {
+                    if (item.field === 'description' && documentObj.docTyp == 50 && (Config.IsAllow(documentObj.documentViewPermission) ||Config.IsAllow(documentObj.documentEditPermission))) {
                         obj.href = 'link';
                         obj.onClick = () => { };
                         obj.classes = 'bold';
@@ -1563,16 +1563,7 @@ class CommonLog extends Component {
                 openModalColumn={this.state.columnsModal}
                 rowClick={cell => {
                     if (cell.id != 0) {
-                        if (
-                            Config.IsAllow(
-                                this.state.documentObj
-                                    .documentViewPermission,
-                            ) ||
-                            Config.IsAllow(
-                                this.state.documentObj
-                                    .documentEditPermission,
-                            )
-                        ) {
+                        if (Config.IsAllow(this.state.documentObj.documentViewPermission) ||Config.IsAllow(this.state.documentObj.documentEditPermission)) {
                             let addView = this.state.routeAddEdit;
 
                             let columns = this.state.columns;

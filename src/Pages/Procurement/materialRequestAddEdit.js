@@ -1056,8 +1056,10 @@ class materialRequestAddEdit extends Component {
                 obje[key] = val;
             }
         }, []);
-        console.log("obje", obje)
-        let StringfiedObj = JSON.stringify(obje);
+
+        // let StringfiedObj = JSON.stringify(obje);
+        let StringfiedObj = encodeURIComponent(JSON.stringify(obje));
+        
         this.setState({ isLoading: true })
         Api.get(`GetInventoryListByFilter?projectId=${this.state.projectId}&query=${StringfiedObj}`).then(res => {
             this.setState({
