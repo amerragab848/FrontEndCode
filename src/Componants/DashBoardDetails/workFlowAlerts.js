@@ -8,6 +8,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Grid from "../../Componants/Templates/Grid/CustomGrid";
+import Config from '../../Services/Config.js';
+
+let moduleId = Config.getPublicConfiguartion().dashboardApi;
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -62,7 +65,7 @@ class workFlowAlerts extends Component {
         fixed: false,
         sortable: true,
         type: 'text',
-    },
+      },
       {
         field: 'docTypeName',
         title: Resources['docType'][currentLanguage],
@@ -116,7 +119,10 @@ class workFlowAlerts extends Component {
       isLoading: true,
       rows: [],
       isCustom: true,
-      filteredRows:[]
+      filteredRows: [],
+      pageNumber: 0,
+      pageSize: 500,
+      totalRows:0
     };
   }
 
@@ -124,32 +130,41 @@ class workFlowAlerts extends Component {
 
     this.props.actions.RouteToTemplate();
 
-    Api.get("GetWorkFlowAlertDetails").then(result => {
-      result.forEach(row => {
-        if (row) {
-          let obj = {
-            docId: row.docId,
-            projectId: row.projectId,
-            projectName: row.projectName,
-            arrange: 0,
-            docApprovalId: 0,
-            isApproveMode: false,
-            perviousRoute: window.location.pathname + window.location.search
-          };
+    Api.get(`GetWorkFlowAlertDetails?pageNumber=${this.state.pageNumber}&pageSize=${this.state.pageSize}`,undefined,moduleId).then(result => {
+      if (result != null && result.data != null && result.data.length > 0) {
+        result.data.forEach(row => {
+          if (row) {
+            let obj = {
+              docId: row.docId,
+              projectId: row.projectId,
+              projectName: row.projectName,
+              arrange: 0,
+              docApprovalId: 0,
+              isApproveMode: false,
+              perviousRoute: window.location.pathname + window.location.search
+            };
 
-          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-          row.link = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
-        }
-      })
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+            row.link = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
+          }
+        })
 
-      this.getFilteredRows(result);
+        this.getFilteredRows(result.data);
 
-      this.setState({
-        rows: result != null ? result : [],
-        isLoading: false
-      });
+        this.setState({
+          rows: result != null ? result.data : [],
+          totalRows:result !=null?result.total :0,
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
+      }
     });
+
   }
 
   cellClick = (rowId, colID) => {
@@ -206,15 +221,121 @@ class workFlowAlerts extends Component {
 
   getFilteredRows = (data) => {
     if (data != null && data != undefined)
-        this.setState({ filteredRows: data || [] });
-}
+      this.setState({ filteredRows: data || [] });
+  }
+
+  GetPrevoiusData() {
+    let pageNumber = this.state.pageNumber - 1;
+
+    if (pageNumber >= 0) {
+      this.setState({
+        isLoading: true,
+        pageNumber: pageNumber,
+      });
+      let oldRows = this.state.rows;
+      Api.get(`GetWorkFlowAlertDetails?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`,undefined,moduleId).then(result => {
+        if (result != null && result.data != null && result.data.length > 0) {
+          result.data.forEach(row => {
+            if (row) {
+              let obj = {
+                docId: row.docId,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+              };
+
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+              row.link = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
+            }
+          })
+
+          this.getFilteredRows(result.data);
+
+          this.setState({
+            rows: result != null ? result.data : [],
+            totalRows:result !=null?result.total :0,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            rows: oldRows,
+            isLoading: false
+          });
+        }
+      }).catch(ex => {
+        this.setState({
+          rows: oldRows,
+          isLoading: false,
+        });
+      });
+
+    }
+  }
+
+  GetNextData() {
+    let pageNumber = this.state.pageNumber + 1;
+
+    let maxRows = this.state.totalRows;
+
+    if (this.state.pageSize * pageNumber <= maxRows) {
+      this.setState({
+        isLoading: true,
+        pageNumber: pageNumber,
+      });
+
+      let oldRows = this.state.rows;
+      Api.get(`GetWorkFlowAlertDetails?pageNumber=${pageNumber}&pageSize=${this.state.pageSize}`,undefined,moduleId).then(result => {
+        if (result != null && result.data != null && result.data.length > 0) {
+          result.data.forEach(row => {
+            if (row) {
+              let obj = {
+                docId: row.docId,
+                projectId: row.projectId,
+                projectName: row.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+              };
+
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+              row.link = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
+            }
+          })
+
+          this.getFilteredRows(result.data);
+
+          this.setState({
+            rows: result != null ? result.data : [],
+            totalRows:result !=null?result.total :0,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            rows: oldRows,
+            isLoading: false
+          });
+        }
+      }).catch(ex => {
+        this.setState({
+          rows: oldRows,
+          isLoading: false,
+        });
+      });
+    }
+  }
 
   render() {
 
     const btnExport = this.state.isLoading === false ?
-                  <Export rows={this.state.isLoading === false ? this.state.filteredRows : []}
-                    columns={this.columnGrid}
-                    fileName={this.state.pageTitle} />
+      <Export rows={this.state.isLoading === false ? this.state.filteredRows : []}
+        columns={this.columnGrid}
+        fileName={this.state.pageTitle} />
       : <LoadingSection />;
     return (
       <div className="mainContainer">
@@ -226,6 +347,25 @@ class workFlowAlerts extends Component {
           <div className="filterBTNS">
             {btnExport}
           </div>
+          <div className="rowsPaginations readOnly__disabled">
+                            <div className="rowsPagiRange">
+                               
+                            <span> {this.state.pageSize * this.state.pageNumber + 1} </span>{' '}   -
+                                
+                            <span> {this.state.pageSize * this.state.pageNumber + this.state.pageSize}</span>
+                                
+                                { Resources['jqxGridLanguagePagerrangestring'][currentLanguage]  }
+                                  
+                                <span> {this.state.totalRows}</span>
+                            </div>
+                            <button className={ this.state.pageNumber == 0 ? 'rowunActive' : ''} onClick={() => this.GetPrevoiusData()}>
+                                <i className="angle left icon" />
+                            </button>
+                            <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? 'rowunActive' : '' } onClick={() => this.GetNextData()}>
+                                <i className="angle right icon" />
+                            </button>
+                        </div>
+                   
         </div>
         <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
